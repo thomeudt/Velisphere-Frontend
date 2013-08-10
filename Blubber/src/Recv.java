@@ -25,13 +25,7 @@ public class Recv implements Runnable {
 
     channel.queueDeclare(QUEUE_NAME, false, false, false, null);
     System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
-    
-
-    // unfertig
-    // channel.exchangeDeclare("blubber.all", "fanout");
-   // channel.queueBind(QUEUE_NAME, "blubber.all", "");
-   // channel.queueBind(QUEUE_NAME, "", "");
-    
+     
     QueueingConsumer consumer = new QueueingConsumer(channel);
     channel.basicConsume(QUEUE_NAME, true, consumer);
 	
