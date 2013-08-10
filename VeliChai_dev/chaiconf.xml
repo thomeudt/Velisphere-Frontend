@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>This file contains LDAP login information. Do not overwrite!</comment>
+<entry key="LDAP PW">1Suplies!</entry>
+<entry key="Controller Queue Name">controller</entry>
+<entry key="VeliBunny AMPQ Broker IP">16.1.1.180</entry>
+<entry key="LDAP Principal">cn=Manager,dc=velisphere-dir,dc=com</entry>
+<entry key="LDAP URL">ldap://16.1.1.180:389/dc=velisphere-dir,dc=com</entry>
+</properties>

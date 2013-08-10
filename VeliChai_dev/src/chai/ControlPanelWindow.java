@@ -1,0 +1,214 @@
+package chai;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.ListModel;
+
+import java.awt.Color;
+
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.UIManager;
+
+import java.awt.Font;
+
+import javax.swing.JList;
+import javax.swing.AbstractListModel;
+import javax.swing.JScrollPane;
+
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.awt.Panel;
+
+import javax.swing.JTextField;
+
+import java.awt.Button;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Properties;
+
+import javax.swing.JMenuItem;
+import javax.swing.JButton;
+
+
+
+public class ControlPanelWindow {
+
+	private JFrame frame;
+	private JTextField txtLdapUrl;
+	private JTextField txtLdapPrincipal;
+	private JTextField txtLdapPassword;
+	private JTextField txtBroadcastText;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		
+		/**
+		 * Load Config File and set config variables
+		 */
+		
+				
+		ConfigHandler cfh = new ConfigHandler();
+		cfh.loadParamChangesAsXML();
+	
+		
+		
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					
+					ControlPanelWindow window = new ControlPanelWindow();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	
+
+	
+	
+	/**
+	 * Create the application.
+	 */
+	public ControlPanelWindow() {
+		
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 781, 562);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setBackground(Color.LIGHT_GRAY);
+		lblNewLabel.setIcon(new ImageIcon(ControlPanelWindow.class.getResource("/chai/Resources/chai.jpg")));
+		lblNewLabel.setBounds(676, 35, 79, 69);
+		frame.getContentPane().add(lblNewLabel);
+		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBounds(0, 0, 765, 21);
+		frame.getContentPane().add(menuBar);
+		
+		JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
+		
+		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			System.exit(0);
+			}
+		});
+		mnFile.add(mntmExit);
+		
+		JLabel lblVelisphereChaiControl = new JLabel("VeliSphere Chai Control Panel");
+		lblVelisphereChaiControl.setFont(lblVelisphereChaiControl.getFont().deriveFont(lblVelisphereChaiControl.getFont().getStyle() | Font.BOLD));
+		lblVelisphereChaiControl.setBounds(10, 34, 218, 14);
+		frame.getContentPane().add(lblVelisphereChaiControl);
+		
+		JLabel lblThisApplicationIs = new JLabel("This application is used to control and manage the VeliSphere Controller Engine (Chai)");
+		lblThisApplicationIs.setFont(UIManager.getFont("Label.font"));
+		lblThisApplicationIs.setBounds(10, 51, 656, 14);
+		frame.getContentPane().add(lblThisApplicationIs);
+				
+				JScrollPane scrollPane = new JScrollPane();
+				scrollPane.setBounds(10, 108, 303, 130);
+				frame.getContentPane().add(scrollPane);
+		
+				String[] ldapMobiles;
+			
+			    
+			    
+				LdapGet ldapPullMobiles = new LdapGet(); 
+				
+				ldapMobiles = ldapPullMobiles.getLdapMobiles();
+			
+			
+				
+				JList lstDirectory = new JList(ldapMobiles);
+				scrollPane.setViewportView(lstDirectory);
+				
+				JLabel lblLdapDirectoryContent = new JLabel("LDAP Directory Content:");
+				lblLdapDirectoryContent.setBounds(10, 90, 184, 14);
+				frame.getContentPane().add(lblLdapDirectoryContent);
+				
+				txtLdapUrl = new JTextField();
+				txtLdapUrl.setBounds(129, 249, 184, 20);
+				frame.getContentPane().add(txtLdapUrl);
+				txtLdapUrl.setColumns(10);
+				
+				JLabel lblLdapServerUrl = new JLabel("LDAP Server URL");
+				lblLdapServerUrl.setBounds(10, 249, 109, 14);
+				frame.getContentPane().add(lblLdapServerUrl);
+				
+				txtLdapPrincipal = new JTextField();
+				txtLdapPrincipal.setColumns(10);
+				txtLdapPrincipal.setBounds(129, 278, 184, 20);
+				frame.getContentPane().add(txtLdapPrincipal);
+				
+				JLabel lblLdapLogin = new JLabel("LDAP Login");
+				lblLdapLogin.setBounds(10, 281, 109, 14);
+				frame.getContentPane().add(lblLdapLogin);
+				
+				txtLdapPassword = new JTextField();
+				txtLdapPassword.setColumns(10);
+				txtLdapPassword.setBounds(129, 309, 184, 20);
+				frame.getContentPane().add(txtLdapPassword);
+				
+				JLabel lblLdapPassword = new JLabel("LDAP Password");
+				lblLdapPassword.setBounds(10, 312, 109, 14);
+				frame.getContentPane().add(lblLdapPassword);
+
+				/**
+				 * Fill LDAP fields
+				 */
+				
+				txtLdapUrl.setText(ServerParameters.ldapUrl);
+				txtLdapPrincipal.setText(ServerParameters.ldapPrincipal);
+				txtLdapPassword.setText(ServerParameters.ldapPassword);
+				
+				JButton btnBroadcastShutdownWarning = new JButton("Broadcast to Blubber Clients");
+				btnBroadcastShutdownWarning.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						try {
+							
+							// Here we are sending a broadcast message to all blubber chat clients using the "blubber.all" exchange
+							// Every blubber client should bind to the blubber.all exchange.							
+							
+							Broadcast.broadcastToExchange(txtBroadcastText.getText(), "blubber.all");
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				});
+				btnBroadcastShutdownWarning.setIcon(new ImageIcon(ControlPanelWindow.class.getResource("/com/sun/java/swing/plaf/windows/icons/Warn.gif")));
+				btnBroadcastShutdownWarning.setBounds(344, 138, 218, 41);
+				frame.getContentPane().add(btnBroadcastShutdownWarning);
+				
+				txtBroadcastText = new JTextField();
+				txtBroadcastText.setText("Enter broadcast text here");
+				txtBroadcastText.setBounds(344, 107, 218, 20);
+				frame.getContentPane().add(txtBroadcastText);
+				txtBroadcastText.setColumns(10);
+
+				
+	}
+}
