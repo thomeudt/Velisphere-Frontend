@@ -42,7 +42,7 @@ import javax.swing.JButton;
 
 public class ControlPanelWindow {
 
-	private JFrame frame;
+	private JFrame frmVelisphereChaiControl;
 	private JTextField txtLdapUrl;
 	private JTextField txtLdapPrincipal;
 	private JTextField txtLdapPassword;
@@ -68,7 +68,7 @@ public class ControlPanelWindow {
 				try {
 					
 					ControlPanelWindow window = new ControlPanelWindow();
-					window.frame.setVisible(true);
+					window.frmVelisphereChaiControl.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -92,20 +92,21 @@ public class ControlPanelWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 781, 562);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmVelisphereChaiControl = new JFrame();
+		frmVelisphereChaiControl.setTitle("VeliSphere Chai Control Panel - Containing DNA of the Internet of Things");
+		frmVelisphereChaiControl.setBounds(100, 100, 781, 562);
+		frmVelisphereChaiControl.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmVelisphereChaiControl.getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setBackground(Color.LIGHT_GRAY);
 		lblNewLabel.setIcon(new ImageIcon(ControlPanelWindow.class.getResource("/chai/Resources/chai.jpg")));
 		lblNewLabel.setBounds(676, 35, 79, 69);
-		frame.getContentPane().add(lblNewLabel);
+		frmVelisphereChaiControl.getContentPane().add(lblNewLabel);
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBounds(0, 0, 765, 21);
-		frame.getContentPane().add(menuBar);
+		frmVelisphereChaiControl.getContentPane().add(menuBar);
 		
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
@@ -121,16 +122,16 @@ public class ControlPanelWindow {
 		JLabel lblVelisphereChaiControl = new JLabel("VeliSphere Chai Control Panel");
 		lblVelisphereChaiControl.setFont(lblVelisphereChaiControl.getFont().deriveFont(lblVelisphereChaiControl.getFont().getStyle() | Font.BOLD));
 		lblVelisphereChaiControl.setBounds(10, 34, 218, 14);
-		frame.getContentPane().add(lblVelisphereChaiControl);
+		frmVelisphereChaiControl.getContentPane().add(lblVelisphereChaiControl);
 		
 		JLabel lblThisApplicationIs = new JLabel("This application is used to control and manage the VeliSphere Controller Engine (Chai)");
 		lblThisApplicationIs.setFont(UIManager.getFont("Label.font"));
 		lblThisApplicationIs.setBounds(10, 51, 656, 14);
-		frame.getContentPane().add(lblThisApplicationIs);
+		frmVelisphereChaiControl.getContentPane().add(lblThisApplicationIs);
 				
 				JScrollPane scrollPane = new JScrollPane();
 				scrollPane.setBounds(10, 108, 303, 130);
-				frame.getContentPane().add(scrollPane);
+				frmVelisphereChaiControl.getContentPane().add(scrollPane);
 		
 				String[] ldapMobiles;
 			
@@ -147,34 +148,34 @@ public class ControlPanelWindow {
 				
 				JLabel lblLdapDirectoryContent = new JLabel("LDAP Directory Content:");
 				lblLdapDirectoryContent.setBounds(10, 90, 184, 14);
-				frame.getContentPane().add(lblLdapDirectoryContent);
+				frmVelisphereChaiControl.getContentPane().add(lblLdapDirectoryContent);
 				
 				txtLdapUrl = new JTextField();
 				txtLdapUrl.setBounds(129, 249, 184, 20);
-				frame.getContentPane().add(txtLdapUrl);
+				frmVelisphereChaiControl.getContentPane().add(txtLdapUrl);
 				txtLdapUrl.setColumns(10);
 				
 				JLabel lblLdapServerUrl = new JLabel("LDAP Server URL");
 				lblLdapServerUrl.setBounds(10, 249, 109, 14);
-				frame.getContentPane().add(lblLdapServerUrl);
+				frmVelisphereChaiControl.getContentPane().add(lblLdapServerUrl);
 				
 				txtLdapPrincipal = new JTextField();
 				txtLdapPrincipal.setColumns(10);
 				txtLdapPrincipal.setBounds(129, 278, 184, 20);
-				frame.getContentPane().add(txtLdapPrincipal);
+				frmVelisphereChaiControl.getContentPane().add(txtLdapPrincipal);
 				
 				JLabel lblLdapLogin = new JLabel("LDAP Login");
 				lblLdapLogin.setBounds(10, 281, 109, 14);
-				frame.getContentPane().add(lblLdapLogin);
+				frmVelisphereChaiControl.getContentPane().add(lblLdapLogin);
 				
 				txtLdapPassword = new JTextField();
 				txtLdapPassword.setColumns(10);
 				txtLdapPassword.setBounds(129, 309, 184, 20);
-				frame.getContentPane().add(txtLdapPassword);
+				frmVelisphereChaiControl.getContentPane().add(txtLdapPassword);
 				
 				JLabel lblLdapPassword = new JLabel("LDAP Password");
 				lblLdapPassword.setBounds(10, 312, 109, 14);
-				frame.getContentPane().add(lblLdapPassword);
+				frmVelisphereChaiControl.getContentPane().add(lblLdapPassword);
 
 				/**
 				 * Fill LDAP fields
@@ -201,12 +202,12 @@ public class ControlPanelWindow {
 				});
 				btnBroadcastShutdownWarning.setIcon(new ImageIcon(ControlPanelWindow.class.getResource("/com/sun/java/swing/plaf/windows/icons/Warn.gif")));
 				btnBroadcastShutdownWarning.setBounds(344, 138, 218, 41);
-				frame.getContentPane().add(btnBroadcastShutdownWarning);
+				frmVelisphereChaiControl.getContentPane().add(btnBroadcastShutdownWarning);
 				
 				txtBroadcastText = new JTextField();
 				txtBroadcastText.setText("Enter broadcast text here");
 				txtBroadcastText.setBounds(344, 107, 218, 20);
-				frame.getContentPane().add(txtBroadcastText);
+				frmVelisphereChaiControl.getContentPane().add(txtBroadcastText);
 				txtBroadcastText.setColumns(10);
 
 				

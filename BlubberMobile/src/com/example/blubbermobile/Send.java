@@ -1,3 +1,4 @@
+package com.example.blubbermobile;
 
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
@@ -18,7 +19,7 @@ public class Send {
     Channel channel = connection.createChannel();
     
     
-    // System.out.println("QUEUE DEFINED AS....."+queue_name+"...");  
+    System.out.println("QUEUE DEFINED AS....."+queue_name+"...");  
     if (queue_name.equals("controller"))
     {
     	boolean durable = true;
@@ -32,7 +33,7 @@ public class Send {
     
     message = "[" + ServerParameters.my_queue_name + "] " + message;
     channel.basicPublish("", queue_name, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
-    // System.out.println(" [x] Sent '" + message + "'");
+    System.out.println(" [x] Sent '" + message + "'");
     
     channel.close();
     connection.close();

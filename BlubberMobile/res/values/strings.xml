@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">BlubberMobile</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="app_purpose">Blubber is an experimental messenger showcasing VeliSphere Technology.</string>
+    <string name="Send">Send</string>
+    <string name="targetQueue">Chat with</string>
+
+</resources>

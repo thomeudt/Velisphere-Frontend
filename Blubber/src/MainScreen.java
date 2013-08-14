@@ -73,7 +73,7 @@ public class MainScreen {
 	private void initialize() {
 		frmBlubberMessenger = new JFrame();
 		frmBlubberMessenger.getContentPane().setBackground(new Color(230, 230, 250));
-		frmBlubberMessenger.setTitle("Blubber Messenger");
+		frmBlubberMessenger.setTitle("Blubber Messenger - Containing DNA of the Internet of Things");
 		frmBlubberMessenger.setBounds(100, 100, 666, 447);
 		frmBlubberMessenger.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		messageHistory = "";
