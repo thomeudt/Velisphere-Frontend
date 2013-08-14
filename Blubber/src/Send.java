@@ -1,8 +1,11 @@
 
+
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.MessageProperties;
+import com.rabbitmq.client.AMQP.BasicProperties;
+
+
 
 
 
@@ -28,10 +31,15 @@ public class Send {
     	channel.queueDeclare(queue_name, false, false, false, null);	
     }
     
+    // implemented reply queue to allow tracing the sender for callback
     
+    BasicProperties props = new BasicProperties
+            .Builder()
+            .replyTo(ServerParameters.my_queue_name)
+            .build();
     
     message = "[" + ServerParameters.my_queue_name + "] " + message;
-    channel.basicPublish("", queue_name, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
+    channel.basicPublish("", queue_name, props, message.getBytes());
     // System.out.println(" [x] Sent '" + message + "'");
     
     channel.close();
