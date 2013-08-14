@@ -13,16 +13,23 @@ import com.rabbitmq.client.ShutdownSignalException;
 public class Recv implements Runnable {
 
 	
+	/**
+	 *  This class contains routines that are triggered when the
+	 *  worker is started
+	 */
+	
 	
 	
     public  void run() {
 
-    	/**
-    	 * Load Config File and set config variables
-    	 */
-    	
 
-    	
+    	/**
+    	 *  This is the listener method. It constantly monitors the controller queue for new messages
+    	 *  and sends them for inspection or triggers certain administrative actions.
+    	 *  
+    	 *  
+    	 */
+    		
     
 
 	try {
@@ -66,6 +73,9 @@ public class Recv implements Runnable {
     
     messageInspect mI = new messageInspect();
     mI.inspectAMQP(message);
+    
+    ImdbLog logger = new ImdbLog();
+    logger.writeLog("", message, "", "");
     // Here we acknowledge completion of the task
     channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
     
