@@ -6,10 +6,11 @@ import org.voltdb.client.*;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.UUID;
 
 public class ImdbLog {
 
-    public static void writeLog(String exchangeName, String message, String queueName, String routingKey) throws Exception {
+    public void writeLog(String exchangeName, String message, String queueName, String routingKey) throws Exception {
 
         /*
          * Instantiate a client and connect to the database.
@@ -23,11 +24,10 @@ public class ImdbLog {
          */
         
                 
-        Date date= new Date();
-   	 	Timestamp t = new Timestamp(System.currentTimeMillis());    
-   	    
-   	 	
-        montanaClient.callProcedure("Insert", exchangeName, message, queueName, routingKey, t.getNanos());
+            
+   	    UUID identifier = UUID.randomUUID();
+   	    String identifierString = identifier.toString();
+        montanaClient.callProcedure("Insert", exchangeName, message, queueName, routingKey, identifierString);
         
 
     }
