@@ -14,6 +14,7 @@ public class ChaiWorker {
 		 * Show startup message
 		 */
 		
+		System.out.println();
 		System.out.println("*     * VeliChai v0.0.1 - VeliSphere Controller");
 		System.out.println(" *   *  Copyright (C) 2013 Thorsten Meudt. All rights reserved.");
 		System.out.println("  * *   ");
