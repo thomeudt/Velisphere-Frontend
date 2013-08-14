@@ -36,6 +36,7 @@ public class Send {
     BasicProperties props = new BasicProperties
             .Builder()
             .replyTo(ServerParameters.my_queue_name)
+            .deliveryMode(2)
             .build();
     
     message = "[" + ServerParameters.my_queue_name + "] " + message;
