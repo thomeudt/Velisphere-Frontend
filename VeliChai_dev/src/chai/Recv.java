@@ -3,6 +3,7 @@ import java.io.IOException;
 
 import org.json.JSONException;
 
+import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
@@ -65,7 +66,10 @@ public class Recv implements Runnable {
    while (!Thread.currentThread().isInterrupted()){
     QueueingConsumer.Delivery delivery = consumer.nextDelivery();
     String message = new String(delivery.getBody());
-    System.out.println(" [x] Received '" + message + "'");
+    BasicProperties props = delivery.getProperties();
+    
+    
+    System.out.println(" [x] Received from "+ props.getReplyTo() + " the message: '" + message + "'");
     
     /*
      *  Here the inspection of the message is being triggered.
