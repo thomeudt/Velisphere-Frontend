@@ -14,7 +14,7 @@ public class messageInspect {
 	public void inspectAMQP(String messageBody) throws Exception
 	{
 		System.out.println("Inspected: "+ messageBody);
-		ImdbLog.writeLog("", messageBody, "", "");
+		
 		MessageAdm.provideLdapMobiles("ute");
 		
 		
