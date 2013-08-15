@@ -1,0 +1,2 @@
+serviceClass: com.velisphere.tigerspice.client.GreetingService
+path: 68E67F0450825716AE3E013C01FC53E7.gwt.rpc
