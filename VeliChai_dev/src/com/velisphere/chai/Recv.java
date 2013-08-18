@@ -54,7 +54,8 @@ public class Recv implements Runnable {
     boolean durable = true;
     channel.queueDeclare(ServerParameters.controllerQueueName, durable, false, false, null);
     
-    System.out.println(" [*] Waiting for messages on queue " + ServerParameters.controllerQueueName + ". To exit press CTRL+C");
+    System.out.println(" [OK] Connection Successful.");
+    System.out.println(" [OK] Waiting for messages on queue: " + ServerParameters.controllerQueueName + ". To exit press CTRL+C");
     
     QueueingConsumer consumer = new QueueingConsumer(channel);
 
@@ -69,7 +70,7 @@ public class Recv implements Runnable {
     BasicProperties props = delivery.getProperties();
     
     
-    System.out.println(" [x] Received from "+ props.getReplyTo() + " the message: '" + message + "'");
+    System.out.println(" [RX] Received from "+ props.getReplyTo() + " the message: '" + message + "'");
     
     /*
      *  Here the inspection of the message is being triggered.
@@ -90,10 +91,12 @@ public class Recv implements Runnable {
    }
 	 catch (IOException | ShutdownSignalException | ConsumerCancelledException e) {
 		// TODO Auto-generated catch block
-		e.printStackTrace();
+		 System.out.println("*** Connection error. Conntection to Broker could not be established.");
+		 e.printStackTrace();
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
-		e.printStackTrace();
+		
+		// e.printStackTrace();
 	}
 	
 	
