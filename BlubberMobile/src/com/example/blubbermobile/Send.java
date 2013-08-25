@@ -11,7 +11,7 @@ public class Send {
 
   
 
-  public static void main(String message, String queue_name) throws Exception {
+  public static void main(String message, String queue_name, String myQueueName) throws Exception {
       	      
     ConnectionFactory factory = new ConnectionFactory();
     factory.setHost(ServerParameters.bunny_ip);
@@ -31,7 +31,7 @@ public class Send {
     
     
     
-    message = "[" + ServerParameters.my_queue_name + "] " + message;
+    message = "[" + myQueueName + "] " + message;
     channel.basicPublish("", queue_name, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
     System.out.println(" [x] Sent '" + message + "'");
     

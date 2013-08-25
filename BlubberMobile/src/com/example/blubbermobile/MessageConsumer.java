@@ -72,9 +72,9 @@ public class MessageConsumer extends  IConnectToRabbitMQ{
  
            try {
                
-          	   mModel.queueDeclare("ute", false, false, false, null);
+          	   mModel.queueDeclare(mQueueName, false, false, false, null);
           	   MySubscription = new QueueingConsumer(mModel);
-               mModel.basicConsume("ute", true, MySubscription);
+               mModel.basicConsume(mQueueName, true, MySubscription);
                System.out.println("DECLARED");
                         
             } catch (IOException e) {

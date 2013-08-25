@@ -7,5 +7,6 @@
     <string name="app_purpose">Blubber is an experimental messenger showcasing VeliSphere Technology.</string>
     <string name="Send">Send</string>
     <string name="targetQueue">Chat with</string>
+    <string name="loginButton">Login</string>
 
 </resources>

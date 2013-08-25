@@ -17,7 +17,7 @@ import android.widget.EditText;
 public class MainActivity extends Activity implements OnClickListener {
 
 	private Button buttonSend;
-	private static String history;
+	private Button buttonLogin;
 	private MessageConsumer mConsumer;
     private EditText mOutput;
 
@@ -28,8 +28,18 @@ public class MainActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		buttonSend = (Button)findViewById(R.id.buttonSend);
+		buttonSend.setEnabled(false);
 		buttonSend.setOnClickListener(this);
+		
+		buttonLogin = (Button)findViewById(R.id.buttonLogin);
+		buttonLogin.setOnClickListener(this);
 	    
+		
+		
+		/* 
+		 * 
+		 * Depracted Out Login with Start, now changed to button click
+		
 		//The output TextView we'll use to display messages
         mOutput =  (EditText) findViewById(R.id.txtMessageHistory);
  
@@ -46,15 +56,14 @@ public class MainActivity extends Activity implements OnClickListener {
  
             public void onReceiveMessage(String message) {
                  
-                mOutput.setText("E"+message);
+                mOutput.append(message);
+                mOutput.append("\r\n");
+                
             }
         });
  
-		
-		// Altes verfahren mit Recv
-		// Thread t = new Thread(new Recv(), "listener");
-		// t.start();
-
+        
+		**/
 		
 	}
 
@@ -66,34 +75,73 @@ public class MainActivity extends Activity implements OnClickListener {
 	}
 
 	@Override
-	public void onClick(View arg0) {
+	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		try {
-			EditText sendMessageField = (EditText) findViewById(R.id.txtSendMessage);
-			String sendMessage = sendMessageField.getText().toString();
-			
-			Send.main(sendMessage, "ute");
-			//updateHistory("EEEEEEEEEEE");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		
+		switch(v.getId()){
+        	case R.id.buttonSend:
+        	
+        	EditText sendMessageField = (EditText) findViewById(R.id.txtSendMessage);
+        	String sendMessage = sendMessageField.getText().toString();
+		
+        	EditText sendToQueueField = (EditText) findViewById(R.id.txtReceiverQueue);
+        	String sendToQueue = sendToQueueField.getText().toString();
+		
+        	try {
+        		EditText myQueueField = (EditText) findViewById(R.id.txtLoginName);
+                String myQueueName = myQueueField.getText().toString();
+        		Send.main(sendMessage, sendToQueue, myQueueName);
+        		mOutput.append(sendMessage);
+                mOutput.append("\r\n");
+        		sendMessageField.setText("");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
+        	break;
+        	
+        	case R.id.buttonLogin:
+        		//The output TextView we'll use to display messages
+                mOutput =  (EditText) findViewById(R.id.txtMessageHistory);
+         
+                //Create the consumer
+                EditText myQueueField = (EditText) findViewById(R.id.txtLoginName);
+                String myQueueName = myQueueField.getText().toString();
+                mConsumer = new MessageConsumer(ServerParameters.bunny_ip, myQueueName);
+         
+                //Connect to broker
+                mConsumer.connectToRabbitMQ();
+         
+                //register for messages
+                
+                mConsumer.setOnReceiveMessageHandler(new OnReceiveMessageHandler()
+                {
+         
+                    public void onReceiveMessage(String message) {
+                         
+                        mOutput.append(message);
+                        mOutput.append("\r\n");
+                        
+                    }
+                });
+                // Make send button clickable
+                Button btnSend=(Button)findViewById(R.id.buttonSend);
+                btnSend.setEnabled(true);
+                
+                
+                
+            	
+            	
+            break;
+        	
 		}
+        
+		
 		
 	}
 
-	public void updateHistory(String toconcat)
-	{	
-			
-			EditText historyField = (EditText)findViewById(R.id.txtMessageHistory);
-			history = historyField.getText().toString();
-				
-			history = history.concat(toconcat);
-			history = history.concat("\r\n");
-			historyField.setText(history);
-			// JScrollBar vertical = scpHistory.getVerticalScrollBar();
-			// vertical.setValue( vertical.getMaximum());
-			// txtHistory.setCaretPosition(txtHistory.getDocument().getLength());
 
-	}
 	
 }
