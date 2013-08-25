@@ -47,7 +47,7 @@ public class Recv implements Runnable {
     // we do some simple QoS here to avoid overloading a single controller
     // if previous task has not been completed, it will be moved directly to the next controller available
     
-    int prefetchCount = 1;
+    int prefetchCount = 10;
     channel.basicQos(prefetchCount);
     
     // declare the controller queue and make it durable, so no queues are lost
@@ -61,7 +61,12 @@ public class Recv implements Runnable {
 
     
     // The controller always needs to acknowledge a task completed
-    boolean autoAck = false; 
+   
+    
+    // boolean autoAck = false;
+    
+    // temporarily changed to see if prefetch improves perf
+    boolean autoAck = true;
     channel.basicConsume(ServerParameters.controllerQueueName, autoAck, consumer);
 	
    while (!Thread.currentThread().isInterrupted()){
@@ -70,19 +75,33 @@ public class Recv implements Runnable {
     BasicProperties props = delivery.getProperties();
     
     
-    System.out.println(" [RX] Received from "+ props.getReplyTo() + " the message: '" + message + "'");
+    // System.out.println(" [RX] Received from "+ props.getReplyTo() + " the message: '" + message + "'");
     
     /*
      *  Here the inspection of the message is being triggered.
+     *  Inspect only messages of type REG
      */
     
-    messageInspect mI = new messageInspect();
-    mI.inspectAMQP(message);
+    MessagePack mp = new MessagePack();
+    String messagetype = mp.extractProperty(message, "TYPE");
+    
+    
+    if(messagetype.equals("REG")) {
+    	
+        messageInspect mI = new messageInspect();
+
+        mI.inspectAMQP(message);
+    }
+    
+    // messageInspect mI = new messageInspect();
+    //mI.inspectAMQP(message);
     
     ImdbLog logger = new ImdbLog();
     logger.writeLog("", message, "", "");
     // Here we acknowledge completion of the task
-    channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+   
+    // temporarily changed to see if prefetch improves perf
+    // channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
     
    }
    }catch(InterruptedException e){

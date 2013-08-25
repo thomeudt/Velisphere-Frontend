@@ -37,9 +37,13 @@ public class ChaiWorker {
 		 */
 		
 		
-		Thread listenerThread;
-		listenerThread = new Thread(new Recv(), "listener");
-		listenerThread.start();
+		for(Integer i=0; i<8; i++)
+		{
+			Thread listenerThread;
+			
+			listenerThread = new Thread(new Recv(), "listener"+i.toString());
+			listenerThread.start();
+		}
 	
 }	
 }

@@ -22,7 +22,7 @@ public class Send {
     
     message = "[" + "via controller" + "] " + message;
     channel.basicPublish("", queue_name, null, message.getBytes());
-    System.out.println(" [x] Sent '" + message + "'");
+    // System.out.println(" [TX] Sent '" + message + "'");
     
     channel.close();
     connection.close();
