@@ -20,7 +20,7 @@ public class Send {
 
     channel.queueDeclare(queue_name, false, false, false, null);
     
-    message = "[" + "Redirect" + "] " + message;
+    message = "[" + "via controller" + "] " + message;
     channel.basicPublish("", queue_name, null, message.getBytes());
     System.out.println(" [x] Sent '" + message + "'");
     

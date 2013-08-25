@@ -4,6 +4,11 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.AMQP.BasicProperties;
+import java.io.IOException;
+import java.io.StringWriter;
+import org.json.simple.JSONObject;
+
+
 
 
 
@@ -39,8 +44,25 @@ public class Send {
             .deliveryMode(2)
             .build();
     
+    
+    
     message = "[" + ServerParameters.my_queue_name + "] " + message;
-    channel.basicPublish("", queue_name, props, message.getBytes());
+    
+    JSONObject messagePack = new JSONObject();
+    JsonTools tooler = new JsonTools();
+    
+    messagePack = tooler.addArgument(messagePack, ServerParameters.my_queue_name, "EPID");
+    messagePack = tooler.addArgument(messagePack, null, "SECTOK");
+    messagePack = tooler.addArgument(messagePack, queue_name, "0");
+    messagePack = tooler.addArgument(messagePack, message, "1");
+            
+    
+    StringWriter out = new StringWriter();
+    messagePack.writeJSONString(out);
+    
+    String messagePackText = out.toString();
+        
+    channel.basicPublish("", "controller", props, messagePackText.getBytes());
     // System.out.println(" [x] Sent '" + message + "'");
     
     channel.close();

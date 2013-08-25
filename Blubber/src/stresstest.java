@@ -5,7 +5,7 @@ public class stresstest {
 		int i = 0;
 		
 		while (i<1000) {
-			Send.main("the quick brown fox jumps over the lazy dog", "controller");
+			Send.main("the quick brown fox jumps over the lazy dog", "adam");
 			i = i + 1;
 		}
 		
