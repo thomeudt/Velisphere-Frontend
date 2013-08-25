@@ -61,7 +61,7 @@ public class Send {
     messagePack.writeJSONString(out);
     
     String messagePackText = out.toString();
-        
+    
     channel.basicPublish("", "controller", props, messagePackText.getBytes());
     // System.out.println(" [x] Sent '" + message + "'");
     

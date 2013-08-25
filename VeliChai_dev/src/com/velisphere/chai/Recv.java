@@ -8,6 +8,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConsumerCancelledException;
+import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 
@@ -68,6 +69,8 @@ public class Recv implements Runnable {
     QueueingConsumer.Delivery delivery = consumer.nextDelivery();
     String message = new String(delivery.getBody());
     BasicProperties props = delivery.getProperties();
+    Envelope env = delivery.getEnvelope();
+    
     
     
     System.out.println(" [RX] Received from "+ props.getReplyTo() + " the message: '" + message + "'");
@@ -76,8 +79,9 @@ public class Recv implements Runnable {
      *  Here the inspection of the message is being triggered.
      */
     
-    messageInspect mI = new messageInspect();
-    mI.inspectAMQP(message);
+    MessageInspect mI = new MessageInspect();
+    mI.inspectAMQP(message, props, env);
+    
     
     ImdbLog logger = new ImdbLog();
     logger.writeLog("", message, "", "");
