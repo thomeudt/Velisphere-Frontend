@@ -55,7 +55,8 @@ public class Send {
     messagePack = tooler.addArgument(messagePack, null, "SECTOK");
     messagePack = tooler.addArgument(messagePack, queue_name, "0");
     messagePack = tooler.addArgument(messagePack, message, "1");
-            
+    messagePack = tooler.addArgument(messagePack, null, "TIMESTAMP");
+    messagePack = tooler.addArgument(messagePack, "REG", "TYPE");
     
     StringWriter out = new StringWriter();
     messagePack.writeJSONString(out);
@@ -63,6 +64,8 @@ public class Send {
     String messagePackText = out.toString();
         
     channel.basicPublish("", "controller", props, messagePackText.getBytes());
+    // channel.basicPublish("", "sana", props, messagePackText.getBytes());
+
     // System.out.println(" [x] Sent '" + message + "'");
     
     channel.close();
