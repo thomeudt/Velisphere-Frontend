@@ -11,7 +11,7 @@ public class messageInspect {
 	 */
 	
 	
-	public void inspectAMQP(String messageBody) throws Exception
+	public static final void inspectAMQP(String messageBody) throws Exception
 	{
 		// System.out.println(" [IN] "+ messageBody);
 		

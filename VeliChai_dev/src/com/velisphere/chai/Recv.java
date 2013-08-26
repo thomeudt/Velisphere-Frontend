@@ -88,16 +88,18 @@ public class Recv implements Runnable {
     
     if(messagetype.equals("REG")) {
     	
-        messageInspect mI = new messageInspect();
+        // messageInspect mI = new messageInspect(); made static
 
-        mI.inspectAMQP(message);
+        messageInspect.inspectAMQP(message);
     }
     
     // messageInspect mI = new messageInspect();
     //mI.inspectAMQP(message);
     
-    ImdbLog logger = new ImdbLog();
-    logger.writeLog("", message, "", "");
+    // logger disabled for performance testing
+    
+    // ImdbLog logger = new ImdbLog();
+    // logger.writeLog("", message, "", "");
     // Here we acknowledge completion of the task
    
     // temporarily changed to see if prefetch improves perf

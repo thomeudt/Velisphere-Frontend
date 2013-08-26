@@ -1,11 +1,17 @@
 package com.velisphere.chai;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.QueueingConsumer;
 
 public class ChaiWorker {
+	
+	static ObjectMapper mapper = new ObjectMapper(); // create once, reuse
+	public static JsonFactory factory = mapper.getFactory();
 	
 	
 	public static void main(String[] args) {
