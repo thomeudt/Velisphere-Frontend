@@ -82,9 +82,10 @@ public class Recv implements Runnable {
      *  Inspect only messages of type REG
      */
     
-    MessagePack mp = new MessagePack();
-    String messagetype = mp.extractProperty(message, "TYPE");
+    // MessagePack mp = new MessagePack();
+    // String messagetype = mp.extractProperty(message, "TYPE"); changed to static for performance
     
+    String messagetype = MessagePack.extractProperty(message, "TYPE");
     
     if(messagetype.equals("REG")) {
     	

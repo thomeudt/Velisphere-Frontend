@@ -21,7 +21,7 @@ import com.fasterxml.jackson.*;
 
 public class MessagePack {
 
-	 public String extractProperty(String jsonInput, String propertyID) throws JsonProcessingException, IOException 
+	 public static String extractProperty(String jsonInput, String propertyID) throws JsonProcessingException, IOException 
 	   {
 	      // JSONParser parser=new JSONParser();
 	      // Object obj = parser.parse(jsonInput);

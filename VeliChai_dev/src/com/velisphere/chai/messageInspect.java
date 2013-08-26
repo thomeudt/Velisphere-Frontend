@@ -21,9 +21,10 @@ public class messageInspect {
 		// now follows the chat example, meaning: just unpack the incoming messagePack and forward to destination queue as plain text
 		
 		
-		MessagePack mp = new MessagePack();
-		String DestQueueName = mp.extractProperty(messageBody, "0");
-		String ChatMessage = mp.extractProperty(messageBody, "1");
+		// MessagePack mp = new MessagePack(); changed to static for performance
+		
+		String DestQueueName = MessagePack.extractProperty(messageBody, "0");
+		String ChatMessage = MessagePack.extractProperty(messageBody, "1");
 		
 
 		// First, we discard all messages where the controller queue is addressed as the target queue in the messagepack

@@ -4,8 +4,20 @@ public class stresstest {
 	public static void main(String[] args) throws Exception {
 		int i = 0;
 		
-		while (i<2000) {
+		while (i<1000) {
+			Send.main("S.", "adam");
+			Send.main("S.", "adam");
+			Send.main("S.", "adam");
+			Send.main("S.", "adam");
 			Send.main("Specifies .", "adam");
+			Send.main("Specifies .", "adam");
+			Send.main("Specifies .", "adam");
+			Send.main("Specifies .", "adam");
+			Send.main("Specifies .", "adam");
+			Send.main("Specifies .", "adam");
+			
+
+			
 			i = i + 1;
 		}
 		
