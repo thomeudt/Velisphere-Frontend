@@ -33,14 +33,14 @@ public class Recv implements Runnable {
     	 *  
     	 */
     		
-    ExecutorService unpacker = Executors.newFixedThreadPool(5); // create thread pool for message unpacking
+    ExecutorService unpacker = Executors.newCachedThreadPool(); // create thread pool for message unpacking
     
     	
 
 	try {
     
 	BrokerConnection bc = new BrokerConnection();
-	Channel channel = bc.establishChannel();
+	Channel channel = bc.establishRxChannel();
 		
 
     // we do some simple QoS here to avoid overloading a single controller

@@ -26,7 +26,7 @@ public class Send implements Runnable {
     
 	BrokerConnection bc = new BrokerConnection();
 	
-	Channel channel = bc.establishChannel();  
+	Channel channel = bc.establishTxChannel();  
 	channel.queueDeclare(queue_name, false, false, false, null);
     
     message = "[" + "via controller" + "] " + message;

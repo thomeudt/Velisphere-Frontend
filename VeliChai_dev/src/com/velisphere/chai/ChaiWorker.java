@@ -25,7 +25,7 @@ public class ChaiWorker {
 		 */
 		
 		System.out.println();
-		System.out.println("*     * VeliChai v0.0.1 - VeliSphere Controller");
+		System.out.println("*     * VeliChai v0.0.2 - VeliSphere Controller");
 		System.out.println(" *   *  Copyright (C) 2013 Thorsten Meudt. All rights reserved.");
 		System.out.println("  * *   ");
 		System.out.println("   *    VeliChai is part of the VeliSphere IoTS ecosystem.");
@@ -56,16 +56,15 @@ public class ChaiWorker {
 		 */
 		
 		
-		// Removed multi thread for performance testing
 		
-		// for(Integer i=0; i<8; i++)
+		
+		
 		// {
 			Thread listenerThread;
 			
 			listenerThread = new Thread(new Recv(), "listener");
-			// listenerThread.start();
-		 
-			ExecutorService listener = Executors.newFixedThreadPool(5);
+			
+			ExecutorService listener = Executors.newCachedThreadPool();
 		 	listener.execute(listenerThread);
 		 	listener.shutdown();
 		 
