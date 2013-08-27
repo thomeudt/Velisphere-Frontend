@@ -92,6 +92,7 @@ public class messageInspect implements Runnable {
 				e.printStackTrace();
 			}
 		}
+		return;
 		
 	}
 
