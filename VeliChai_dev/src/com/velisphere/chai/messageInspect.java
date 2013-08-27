@@ -1,17 +1,26 @@
 package com.velisphere.chai;
 
+import java.io.IOException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class messageInspect {
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+public class messageInspect implements Runnable {
 
 	/*
 	 * This contains all the possible inspection actions
 	 * 
 	 */
 	
+	// Declare class in method
 	
-	public static final void inspectAMQP(String messageBody) throws Exception
+	String messageBody = new String();
+	messageInspect(String s) { messageBody = s; }
+	
+	
+	public static final void ispectAMQP(String messageBody) throws Exception
 	{
 		// System.out.println(" [IN] "+ messageBody);
 		
@@ -34,7 +43,14 @@ public class messageInspect {
 		}
 		else
 		{		
-			Send.main(ChatMessage, DestQueueName);
+			// Send.main(ChatMessage, DestQueueName);
+			Thread senderThread;
+			
+			senderThread = new Thread(new Send(ChatMessage, DestQueueName), "sender");
+			senderThread.start();
+	    	
+			
+			
 		}
 		
 		
@@ -42,6 +58,44 @@ public class messageInspect {
 		
 		
 	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+
+		
+		String ChatMessage = null;
+		String DestQueueName = null;
+		try {
+			ChatMessage = MessagePack.extractProperty(messageBody, "1");
+			DestQueueName = MessagePack.extractProperty(messageBody, "0");
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
+		// First, we discard all messages where the controller queue is addressed as the target queue in the messagepack
+		
+		if (DestQueueName.equals(ServerParameters.controllerQueueName)){
+			System.out.println("False send to controller queue!!!");
+		}
+		else
+		{		
+			try {
+				Send.main(ChatMessage, DestQueueName);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+
 	
 	
 	
