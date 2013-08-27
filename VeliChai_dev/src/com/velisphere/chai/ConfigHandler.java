@@ -72,9 +72,9 @@ public class ConfigHandler {
     ServerParameters.bunny_ip = props.getProperty("VeliBunny AMPQ Broker IP");
     ServerParameters.threadpoolSize = Integer.parseInt(props.getProperty("Threadpool Size"));
     
-    System.out.println("Reading Configuration");
-    System.out.println("Selected VeliBunny AMQP Broker: "+ ServerParameters.bunny_ip);
-    System.out.println("Threadpool Size: "+ ServerParameters.threadpoolSize);
+    System.out.println(" [IN] Reading Configuration");
+    System.out.println(" [IN] Selected VeliBunny AMQP Broker: "+ ServerParameters.bunny_ip);
+    System.out.println(" [IN] Threadpool Size: "+ ServerParameters.threadpoolSize);
     
 	}
 

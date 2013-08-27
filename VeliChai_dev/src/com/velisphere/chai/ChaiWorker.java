@@ -49,7 +49,9 @@ public class ChaiWorker {
 		
 		BrokerConnection.establishConnection();
 		 
+		// Open the IMDB Logger Database
 		
+		ImdbLog.openDatabase();
 		
 		/*
 		 * Start the listening service

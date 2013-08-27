@@ -8,6 +8,10 @@ import com.rabbitmq.client.ConnectionFactory;
 
 public class BrokerConnection {
 
+	// this class is used to provide connectivity to the AMQP broker
+	// it is a utility class
+	// needs a lot of cleanup!
+	
 	public static ConnectionFactory factory;
 	public static Channel channel;
 	static Connection rxConnection;
@@ -38,7 +42,7 @@ public class BrokerConnection {
 	public Channel establishTxChannel() throws IOException {
 		
 		
-	    return channel = rxConnection.createChannel();
+	    return channel = txConnection.createChannel();
 		
 	}
 	

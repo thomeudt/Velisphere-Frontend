@@ -52,6 +52,8 @@ public class AMQPUnpack implements Runnable {
 					
 				 	inspector.execute(inspectionThread);
 				 	
+				 	
+				 	ImdbLog.writeLog("null", message, "controller", "null");
 				 
 					
 					// ChaiWorker.listener.execute(inspectionThread);
@@ -66,6 +68,9 @@ public class AMQPUnpack implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
