@@ -26,9 +26,10 @@ public class ConfigHandler {
 	        props.setProperty("LDAP PW", password);
 	        props.setProperty("Controller Queue Name", controllerQueueName);
 	        props.setProperty("VeliBunny AMPQ Broker IP", veliBunnyIP);
+	        
 	        File f = new File("chaiconf.xml");
 	        OutputStream out = new FileOutputStream( f );
-	        props.storeToXML(out, "This file contains LDAP login information. Do not overwrite!");
+	        props.storeToXML(out, "This file contains chai configuration information. Do not overwrite!");
 	    }
 	    catch (Exception e ) {
 	        e.printStackTrace();
@@ -69,8 +70,11 @@ public class ConfigHandler {
     ServerParameters.ldapPassword = props.getProperty("LDAP PW");
     ServerParameters.controllerQueueName = props.getProperty("Controller Queue Name");
     ServerParameters.bunny_ip = props.getProperty("VeliBunny AMPQ Broker IP");
-    System.out.println("Selected VeliBunny AMQP Broker: "+ ServerParameters.bunny_ip);
+    ServerParameters.threadpoolSize = Integer.parseInt(props.getProperty("Threadpool Size"));
     
+    System.out.println("Reading Configuration");
+    System.out.println("Selected VeliBunny AMQP Broker: "+ ServerParameters.bunny_ip);
+    System.out.println("Threadpool Size: "+ ServerParameters.threadpoolSize);
     
 	}
 

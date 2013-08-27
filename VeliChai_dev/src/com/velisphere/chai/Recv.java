@@ -33,7 +33,7 @@ public class Recv implements Runnable {
     	 *  
     	 */
     		
-    ExecutorService unpacker = Executors.newCachedThreadPool(); // create thread pool for message unpacking
+    ExecutorService unpacker = Executors.newFixedThreadPool(ServerParameters.threadpoolSize); // create thread pool for message unpacking
     
     	
 

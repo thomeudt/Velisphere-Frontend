@@ -8,6 +8,7 @@ public class ServerParameters {
 	  public static String ldapPrincipal;
 	  public static String ldapPassword;
 	  public static String controllerQueueName;
+	  public static Integer threadpoolSize;
 	  public static String msgTypeAdministrativeRequest = "*ADM*";
 	  
 	  

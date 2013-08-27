@@ -17,7 +17,7 @@ public class AMQPUnpack implements Runnable {
 	AMQPUnpack(QueueingConsumer.Delivery d) { delivery = d; }
 
 	 
-	 ExecutorService inspector = Executors.newCachedThreadPool(); // create thread pool for message inspection
+	 ExecutorService inspector = Executors.newFixedThreadPool(ServerParameters.threadpoolSize); // create thread pool for message inspection
 	 	
 	 
 	public void run() {

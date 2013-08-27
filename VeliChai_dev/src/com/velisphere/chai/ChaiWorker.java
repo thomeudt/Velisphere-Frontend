@@ -64,7 +64,7 @@ public class ChaiWorker {
 			
 			listenerThread = new Thread(new Recv(), "listener");
 			
-			ExecutorService listener = Executors.newCachedThreadPool();
+			ExecutorService listener = Executors.newFixedThreadPool(ServerParameters.threadpoolSize);
 		 	listener.execute(listenerThread);
 		 	listener.shutdown();
 		 
