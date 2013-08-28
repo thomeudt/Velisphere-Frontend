@@ -9,15 +9,20 @@ import com.rabbitmq.client.ShutdownSignalException;
 
 public class Recv implements Runnable {
 
+	private int workerNumber;
 
+    Recv(int number) {
+        workerNumber = number;
+    }
+
+	
 	/*
 	 *  This class contains routines that are triggered when the
 	 *  worker is started
 	 */
 
 	public  void run() {
-
-
+		  
 		/*
 		 *  This is the listener method. It constantly monitors the controller queue for new messages
 		 *  and sends them for inspection or triggers certain administrative actions.
@@ -32,9 +37,10 @@ public class Recv implements Runnable {
 			BrokerConnection bc = new BrokerConnection();
 			Channel channel = bc.establishRxChannel();
 
-			// Prefetch of 10 has proven to be a good choice for performance reasons
+			// Prefetch of 100 has proven to be a good choice for performance reasons, but this needs further evaluation
 
-			int prefetchCount = 10;
+
+			int prefetchCount = 100;
 			channel.basicQos(prefetchCount);
 
 			System.out.println(" [OK] Connection Successful.");
@@ -42,7 +48,9 @@ public class Recv implements Runnable {
 
 			QueueingConsumer consumer = new QueueingConsumer(channel);
 
-			boolean autoAck = true;
+			// Message acknowledgment is needed to make sure no messages are lost
+			
+			boolean autoAck = false;
 			channel.basicConsume(ServerParameters.controllerQueueName, autoAck, consumer);
 
 			while (!Thread.currentThread().isInterrupted()){
@@ -51,11 +59,10 @@ public class Recv implements Runnable {
 				try{
 					delivery = consumer.nextDelivery();
 					Thread unpackingThread;
-
 					unpackingThread = new Thread(new AMQPUnpack(delivery), "unpacker");
-
 					unpacker.execute(unpackingThread);
-
+					channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false); // here we ack receipt of the message
+					
 				} catch (ShutdownSignalException | ConsumerCancelledException
 						| InterruptedException e) {
 					// TODO Auto-generated catch block

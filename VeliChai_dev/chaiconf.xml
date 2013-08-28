@@ -7,5 +7,5 @@
 <entry key="VeliBunny AMPQ Broker IP">16.1.1.180</entry>
 <entry key="LDAP Principal">cn=Manager,dc=velisphere-dir,dc=com</entry>
 <entry key="LDAP URL">ldap://16.1.1.180:389/dc=velisphere-dir,dc=com</entry>
-<entry key="Threadpool Size">10</entry>
+<entry key="Threadpool Size">20</entry>
 </properties>

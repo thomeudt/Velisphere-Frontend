@@ -2,6 +2,11 @@
 public class Bombarder implements Runnable {
 
 	
+	 private int workerNumber;
+
+	    Bombarder(int number) {
+	        workerNumber = number;
+	    }
 	public void run() {
 		int i = 0;
 		

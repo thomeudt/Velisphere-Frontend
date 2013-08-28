@@ -52,17 +52,19 @@ public class ChaiWorker {
 		 */
 		// {
 
-		Thread listenerThread;
 
-		listenerThread = new Thread(new Recv(), "listener");
+		// open as many listener threads as defined in threadpool size in config file.
+		
+		int numworkers = ServerParameters.threadpoolSize; 
 
-		ExecutorService listener = Executors.newFixedThreadPool(ServerParameters.threadpoolSize);
-		listener.execute(listenerThread);
-		listener.shutdown();
-
-		// BrokerConnection.closeFactory();
-
-		// }
-
+		ExecutorService receiver = Executors.newFixedThreadPool(ServerParameters.threadpoolSize);
+		
+		Recv[] receiverThread = new Recv[numworkers];
+		for (int i = 0; i < numworkers; i++) {
+			receiverThread[i] = new Recv(i);
+			receiver.execute(receiverThread[i]);
+            
+        }
+		
 	}	
 }
