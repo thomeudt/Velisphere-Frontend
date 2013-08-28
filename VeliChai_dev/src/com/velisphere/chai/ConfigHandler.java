@@ -12,7 +12,6 @@ import java.util.Properties;
 public class ConfigHandler {
 
 
-
 	/*
 	 * 
 	 * Save the preferences
@@ -76,7 +75,6 @@ public class ConfigHandler {
 		System.out.println(" [IN] Reading Configuration");
 		System.out.println(" [IN] Selected VeliBunny AMQP Broker: "+ ServerParameters.bunny_ip);
 		System.out.println(" [IN] Threadpool Size: "+ ServerParameters.threadpoolSize);
-
 
 	}
 

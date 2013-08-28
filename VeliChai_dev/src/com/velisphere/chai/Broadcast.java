@@ -10,7 +10,6 @@ import com.rabbitmq.client.Channel;
 
 public class Broadcast {
 
-
 	public static void broadcastToExchange(String message, String exchange_name) throws Exception {
 
 		ConnectionFactory factory = new ConnectionFactory();
@@ -23,7 +22,6 @@ public class Broadcast {
 		channel.close();
 		connection.close();
 	}
-
 
 
 }

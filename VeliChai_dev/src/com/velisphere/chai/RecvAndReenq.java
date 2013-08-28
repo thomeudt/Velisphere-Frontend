@@ -28,5 +28,4 @@ public class RecvAndReenq {
 			Send.main(message, ServerParameters.DestinationQueue);
 		}
 	}
-
 }
