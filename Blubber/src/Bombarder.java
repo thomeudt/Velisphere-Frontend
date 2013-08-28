@@ -5,9 +5,9 @@ public class Bombarder implements Runnable {
 	public void run() {
 		int i = 0;
 		
-		while (i<100000) {
+		while (i<1000) {
 			try {
-				Send.main("S.", "adam");
+				Send.main("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH.", "adam");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
