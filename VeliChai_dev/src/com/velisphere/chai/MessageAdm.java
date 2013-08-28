@@ -1,44 +1,37 @@
 package com.velisphere.chai;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONStringer;
-
 public class MessageAdm {
 
-	
+
 	/*
 	 * This class contains all methods used for sending administrative messages to a defined target queue
 	 * 
 	 */
-	
-	
+
 	public void provideLDAP()
 	{
-	
+
 		/*
 		 * To be filled with more generic LDAP message submission code
 		 * 		
 		 */
-		
+
 	}
-	
+
 	public static void provideLdapMobiles(String targetQueue) throws 
-Exception
+	Exception
 
 
-/*
- *  This method is used to provide all mobile phone numbers in the LDAP directory to the queue of the entity requesting it.
- */
-	
+	/*
+	 *  This method is used to provide all mobile phone numbers in the LDAP directory to the queue of the entity requesting it.
+	 */
+
 	{
 		LdapGet ldapMobiles = new LdapGet();
 		String ldapDir = ldapMobiles.getLdapFull();
 		Send.sendJson("*ADM*"+ldapDir, targetQueue);		
-	
+
 	}
-	
-	
-	
+
+
 }

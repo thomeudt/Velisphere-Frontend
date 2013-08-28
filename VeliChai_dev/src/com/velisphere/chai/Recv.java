@@ -1,11 +1,7 @@
 package com.velisphere.chai;
 import java.io.IOException;
-
-import org.json.JSONException;
-
-import com.rabbitmq.client.AMQP.BasicProperties;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Connection;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
@@ -13,115 +9,80 @@ import com.rabbitmq.client.ShutdownSignalException;
 
 public class Recv implements Runnable {
 
+	private int workerNumber;
+
+    Recv(int number) {
+        workerNumber = number;
+    }
+
 	
-	/**
+	/*
 	 *  This class contains routines that are triggered when the
 	 *  worker is started
 	 */
-	
-	
-	
-    public  void run() {
+
+	public  void run() {
+		  
+		/*
+		 *  This is the listener method. It constantly monitors the controller queue for new messages
+		 *  and sends them for inspection or triggers certain administrative actions.
+		 *  
+		 *  
+		 */
+
+		ExecutorService unpacker = Executors.newFixedThreadPool(ServerParameters.threadpoolSize); // create thread pool for message unpacking
+
+		try {
+
+			BrokerConnection bc = new BrokerConnection();
+			Channel channel = bc.establishRxChannel();
+
+			// Prefetch of 100 has proven to be a good choice for performance reasons, but this needs further evaluation
 
 
-    	/**
-    	 *  This is the listener method. It constantly monitors the controller queue for new messages
-    	 *  and sends them for inspection or triggers certain administrative actions.
-    	 *  
-    	 *  
-    	 */
-    		
-    
+			int prefetchCount = 100;
+			channel.basicQos(prefetchCount);
 
-	try {
-    ConnectionFactory factory = new ConnectionFactory();
-    
-    
-    factory.setHost(ServerParameters.bunny_ip);
-    
-    Connection connection;
-		connection = factory.newConnection();
-	
-    Channel channel = connection.createChannel();
+			System.out.println(" [OK] Connection Successful.");
+			System.out.println(" [OK] Waiting for messages on queue: " + ServerParameters.controllerQueueName + ". To exit press CTRL+C");
 
-    // we do some simple QoS here to avoid overloading a single controller
-    // if previous task has not been completed, it will be moved directly to the next controller available
-    
-    int prefetchCount = 10;
-    channel.basicQos(prefetchCount);
-    
-    // declare the controller queue and make it durable, so no queues are lost
-    boolean durable = true;
-    channel.queueDeclare(ServerParameters.controllerQueueName, durable, false, false, null);
-    
-    System.out.println(" [OK] Connection Successful.");
-    System.out.println(" [OK] Waiting for messages on queue: " + ServerParameters.controllerQueueName + ". To exit press CTRL+C");
-    
-    QueueingConsumer consumer = new QueueingConsumer(channel);
+			QueueingConsumer consumer = new QueueingConsumer(channel);
 
-    
-    // The controller always needs to acknowledge a task completed
-   
-    
-    // boolean autoAck = false;
-    
-    // temporarily changed to see if prefetch improves perf
-    boolean autoAck = true;
-    channel.basicConsume(ServerParameters.controllerQueueName, autoAck, consumer);
-	
-   while (!Thread.currentThread().isInterrupted()){
-    QueueingConsumer.Delivery delivery = consumer.nextDelivery();
-    String message = new String(delivery.getBody());
-    BasicProperties props = delivery.getProperties();
-    
-    
-    // System.out.println(" [RX] Received from "+ props.getReplyTo() + " the message: '" + message + "'");
-    
-    /*
-     *  Here the inspection of the message is being triggered.
-     *  Inspect only messages of type REG
-     */
-    
-    // MessagePack mp = new MessagePack();
-    // String messagetype = mp.extractProperty(message, "TYPE"); changed to static for performance
-    
-    String messagetype = MessagePack.extractProperty(message, "TYPE");
-    
-    if(messagetype.equals("REG")) {
-    	
-        // messageInspect mI = new messageInspect(); made static
+			// Message acknowledgment is needed to make sure no messages are lost
+			
+			boolean autoAck = false;
+			channel.basicConsume(ServerParameters.controllerQueueName, autoAck, consumer);
 
-        messageInspect.inspectAMQP(message);
-    }
-    
-    // messageInspect mI = new messageInspect();
-    //mI.inspectAMQP(message);
-    
-    // logger disabled for performance testing
-    
-    // ImdbLog logger = new ImdbLog();
-    // logger.writeLog("", message, "", "");
-    // Here we acknowledge completion of the task
-   
-    // temporarily changed to see if prefetch improves perf
-    // channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
-    
-   }
-   }catch(InterruptedException e){
-       Thread.currentThread().interrupt();
-       
-   }
-	 catch (IOException | ShutdownSignalException | ConsumerCancelledException e) {
-		// TODO Auto-generated catch block
-		 System.out.println("*** Connection error. Conntection to Broker could not be established.");
-		 e.printStackTrace();
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		
-		// e.printStackTrace();
+			while (!Thread.currentThread().isInterrupted()){
+
+				QueueingConsumer.Delivery delivery;
+				try{
+					delivery = consumer.nextDelivery();
+					Thread unpackingThread;
+					unpackingThread = new Thread(new AMQPUnpack(delivery), "unpacker");
+					unpacker.execute(unpackingThread);
+					channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false); // here we ack receipt of the message
+					
+				} catch (ShutdownSignalException | ConsumerCancelledException
+						| InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			channel.close(); // close channel
+
+			unpacker.shutdown(); // close thread pool for message unpacking
+		}
+		catch (IOException | ShutdownSignalException | ConsumerCancelledException e) {
+			// TODO Auto-generated catch block
+			System.out.println("*** Connection error. Conntection to Broker could not be established.");
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+
+			// e.printStackTrace();
+		}
+		return; // close current thread
 	}
-	
-	
-  }
-    
+
 }
