@@ -1,9 +1,28 @@
+/*******************************************************************************
+ * CONFIDENTIAL INFORMATION
+ *  __________________
+ *  
+ *   Copyright (C) 2013 Thorsten Meudt 
+ *   All Rights Reserved.
+ *  
+ *  NOTICE:  All information contained herein is, and remains
+ *  the property of Thorsten Meudt and its suppliers,
+ *  if any.  The intellectual and technical concepts contained
+ *  herein are proprietary to Thorsten Meudt
+ *  and its suppliers and may be covered by Patents,
+ *  patents in process, and are protected by trade secret or copyright law.
+ *  Dissemination of this information or reproduction of this material
+ *  is strictly forbidden unless prior written permission is obtained
+ *  from Thorsten Meudt.
+ ******************************************************************************/
 package com.example.blubbermobile;
 
 import java.io.IOException;
 
 import android.os.Handler;
 
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
@@ -66,17 +85,18 @@ public class MessageConsumer extends  IConnectToRabbitMQ{
     public boolean connectToRabbitMQ()
     {
     	
-    	System.out.println("CONNECTING");
+    	
        if(super.connectToRabbitMQ())
        {
  
            try {
-               
+                      	   
           	   mModel.queueDeclare(mQueueName, false, false, false, null);
           	   MySubscription = new QueueingConsumer(mModel);
                mModel.basicConsume(mQueueName, true, MySubscription);
                System.out.println("DECLARED");
-                        
+               
+               
             } catch (IOException e) {
                 e.printStackTrace();
                 return false;

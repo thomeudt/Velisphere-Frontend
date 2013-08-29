@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/junit.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/rabbitmq-client.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/rabbitmq-client-tests.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/json-simple-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

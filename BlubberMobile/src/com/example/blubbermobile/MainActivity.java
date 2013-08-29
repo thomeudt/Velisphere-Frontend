@@ -1,3 +1,20 @@
+/*******************************************************************************
+ * CONFIDENTIAL INFORMATION
+ *  __________________
+ *  
+ *   Copyright (C) 2013 Thorsten Meudt 
+ *   All Rights Reserved.
+ *  
+ *  NOTICE:  All information contained herein is, and remains
+ *  the property of Thorsten Meudt and its suppliers,
+ *  if any.  The intellectual and technical concepts contained
+ *  herein are proprietary to Thorsten Meudt
+ *  and its suppliers and may be covered by Patents,
+ *  patents in process, and are protected by trade secret or copyright law.
+ *  Dissemination of this information or reproduction of this material
+ *  is strictly forbidden unless prior written permission is obtained
+ *  from Thorsten Meudt.
+ ******************************************************************************/
 package com.example.blubbermobile;
 
 
@@ -91,8 +108,8 @@ public class MainActivity extends Activity implements OnClickListener {
         	try {
         		EditText myQueueField = (EditText) findViewById(R.id.txtLoginName);
                 String myQueueName = myQueueField.getText().toString();
-        		Send.main(sendMessage, sendToQueue, myQueueName);
-        		mOutput.append(sendMessage);
+        		Send.main(sendMessage, sendToQueue);
+           		mOutput.append(sendMessage);
                 mOutput.append("\r\n");
         		sendMessageField.setText("");
 			} catch (Exception e) {
@@ -109,6 +126,8 @@ public class MainActivity extends Activity implements OnClickListener {
                 //Create the consumer
                 EditText myQueueField = (EditText) findViewById(R.id.txtLoginName);
                 String myQueueName = myQueueField.getText().toString();
+				
+                ServerParameters.my_queue_name = myQueueName;
                 mConsumer = new MessageConsumer(ServerParameters.bunny_ip, myQueueName);
          
                 //Connect to broker
