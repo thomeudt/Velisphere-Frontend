@@ -45,7 +45,11 @@ public class ChaiWorker {
 
 		// Open the IMDB Logger Database
 
-		ImdbLog.openDatabase();
+		// Disabled for Testing
+		
+		// ImdbLog.openDatabase();
+		
+		System.out.println(" [IN] Skipping connection to VoltDB.");
 
 		/*
 		 * Start the listening service
