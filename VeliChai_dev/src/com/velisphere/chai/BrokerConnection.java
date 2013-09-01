@@ -33,7 +33,7 @@ public class BrokerConnection {
 	// needs a lot of cleanup!
 
 	
-	CachingConnectionFactory connectionFactory = new CachingConnectionFactory("somehost");
+	// CachingConnectionFactory connectionFactory = new CachingConnectionFactory("somehost");
 	public static ConnectionFactory factory;
 	public static Channel channel;
 	static Connection rxConnection;
