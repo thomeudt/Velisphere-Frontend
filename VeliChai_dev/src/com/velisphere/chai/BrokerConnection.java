@@ -19,9 +19,12 @@ package com.velisphere.chai;
 
 import java.io.IOException;
 
+
+
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 
 public class BrokerConnection {
 
@@ -29,6 +32,8 @@ public class BrokerConnection {
 	// it is a utility class
 	// needs a lot of cleanup!
 
+	
+	CachingConnectionFactory connectionFactory = new CachingConnectionFactory("somehost");
 	public static ConnectionFactory factory;
 	public static Channel channel;
 	static Connection rxConnection;
