@@ -17,6 +17,7 @@
  ******************************************************************************/
 import java.io.IOException;
 
+import com.phidgets.PhidgetException;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
@@ -24,9 +25,8 @@ import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 
-public class Pong implements Runnable {
+public class RecvPhi implements Runnable {
 
-	// Testing class - responds to sending queue with exactly the same message
 	
 	
     public  void run() {
@@ -51,7 +51,16 @@ public class Pong implements Runnable {
     QueueingConsumer.Delivery delivery = consumer.nextDelivery();
     String message = new String(delivery.getBody());
     System.out.println(" [x] Received '" + message + "'");
-    Send.main("PONG:" + message, "adam");
+    
+    // Respond to Phidget Instructions
+    
+    if (message.contains("lightsoff")) {
+    	PhiTest.relayOn();
+    } 
+    if (message.contains("lightson")) {
+    	PhiTest.relayOff();
+    } 
+    
     
     boolean admFilterResult = filterMqttAdmMessage(message);   
     if(admFilterResult==false){
@@ -69,7 +78,7 @@ public class Pong implements Runnable {
 	 catch (IOException | ShutdownSignalException | ConsumerCancelledException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
-	} catch (Exception e) {
+	} catch (PhidgetException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
