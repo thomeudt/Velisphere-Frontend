@@ -60,13 +60,12 @@ public class ChaiWorker {
 
 		BrokerConnection.establishConnection();
 
-		// Open the IMDB Logger Database
-
-		// Disabled for Testing
+		// Open the IMDB  Database
+	
+		System.out.println(" [IN] Selected VoltDB: " + ServerParameters.volt_ip);
+		Imdb.openDatabase();
 		
-		// ImdbLog.openDatabase();
 		
-		System.out.println(" [IN] Skipping connection to VoltDB.");
 
 		/*
 		 * Start the listening service

@@ -55,7 +55,7 @@ public class AMQPUnpack implements Runnable {
 				Thread inspectionThread;
 				inspectionThread = new Thread(new messageInspect(message), "inspector");
 				inspector.execute(inspectionThread);
-				// ImdbLog.writeLog("null", message, "controller", "null");
+				Imdb.writeLog("null", message, ServerParameters.controllerQueueName, "null");
 				
 			}
 

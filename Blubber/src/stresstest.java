@@ -24,7 +24,7 @@ public class stresstest {
 	public static void main(String[] args) throws Exception {
 
 		
-		int numworkers = 100;
+		int numworkers = 70;
 		
 		ExecutorService B52 = Executors.newFixedThreadPool(1000);
 		Bombarder[] bombThread = new Bombarder[numworkers];

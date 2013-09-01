@@ -196,7 +196,7 @@ public class MainScreen {
 					btnSendMessage.setEnabled(true);
 			
 					// Connect user queue to blubber.all fanout exchange for broadcasts.
-					QueueMgmt.bindQueueFanout(ServerParameters.my_queue_name, "blubber.all");
+					// QueueMgmt.bindQueueFanout(ServerParameters.my_queue_name, "blubber.all");
 					
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block

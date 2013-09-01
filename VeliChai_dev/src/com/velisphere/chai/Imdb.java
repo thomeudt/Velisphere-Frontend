@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.UUID;
 
-public class ImdbLog {
+public class Imdb {
 
 	public static org.voltdb.client.Client montanaClient;
 
@@ -32,8 +32,9 @@ public class ImdbLog {
 		 * Instantiate a client and connect to the database.
 		 */
 
-		ImdbLog.montanaClient = ClientFactory.createClient();
-		ImdbLog.montanaClient.createConnection("16.1.1.149");
+		Imdb.montanaClient = ClientFactory.createClient();
+		Imdb.montanaClient.createConnection(ServerParameters.volt_ip);
+		System.out.println(" [IN] Connected to VoltDB on address: " + ServerParameters.volt_ip);
 	}
 
 	public static void writeLog(String exchangeName, String message, String queueName, String routingKey) throws Exception {
@@ -47,8 +48,8 @@ public class ImdbLog {
 
 		// TODO: change to a meaningful log table!
 
-		ImdbLog.montanaClient.callProcedure("Insert", "1", "1", "1", "1", identifierString);
-
+		Imdb.montanaClient.callProcedure("Insert", "1", message, queueName, "1", identifierString);
+		
 	}
 
 
