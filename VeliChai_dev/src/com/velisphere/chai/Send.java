@@ -18,8 +18,14 @@
 package com.velisphere.chai;
 
 import java.io.IOException;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Connection;
+
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.rabbit.connection.Connection;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+
 import com.rabbitmq.client.Channel;
 
 
@@ -34,16 +40,26 @@ public class Send implements Runnable {
 		BrokerConnection bc = new BrokerConnection();
 		Channel channel = bc.establishTxChannel();  
 		channel.queueDeclare(queue_name, false, false, false, null);
+		
+		
+		
 		message = "[" + "via controller" + "] " + message;
-		channel.basicPublish("", queue_name, null, message.getBytes());
+		// channel.basicPublish("", queue_name, null, message.getBytes());
+		
+		MessageProperties mp = new MessageProperties();
+		bc.veliTemplate.send(queue_name, new Message(message.getBytes(), mp));
+		
+		
+		
+		System.out.println(message);
 		channel.close();
 	}
 
 	public static void sendJson (String jsonContainer, String queue_name) throws Exception {
-		ConnectionFactory factory = new ConnectionFactory();
+		CachingConnectionFactory factory = new CachingConnectionFactory();
 		factory.setHost(ServerParameters.bunny_ip);
-		Connection connection = factory.newConnection();
-		Channel channel = connection.createChannel();
+		Connection connection = factory.createConnection();
+		Channel channel = connection.createChannel(true);
 
 		channel.queueDeclare(queue_name, false, false, false, null);
 
@@ -61,11 +77,12 @@ public class Send implements Runnable {
 
 		Connection connection;
 		try {
-			connection = BrokerConnection.factory.newConnection();
-			Channel channel = connection.createChannel();
+			connection = BrokerConnection.factory.createConnection();
+			Channel channel = connection.createChannel(true);
 			channel.queueDeclare(queue_name, false, false, false, null);
 			message = "[" + "via controller" + "] " + message;
 			channel.basicPublish("", queue_name, null, message.getBytes());
+			System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
 			channel.close();
 			connection.close();
 		} catch (IOException e) {

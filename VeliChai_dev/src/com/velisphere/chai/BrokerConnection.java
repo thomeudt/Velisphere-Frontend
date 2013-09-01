@@ -21,10 +21,23 @@ import java.io.IOException;
 
 
 
+
+
+
+
+
+
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
+
+import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Queue;
+// import com.rabbitmq.client.Connection;
+// import com.rabbitmq.client.ConnectionFactory;
+import org.springframework.amqp.rabbit.connection.Connection;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 public class BrokerConnection {
 
@@ -33,36 +46,41 @@ public class BrokerConnection {
 	// needs a lot of cleanup!
 
 	
-	CachingConnectionFactory connectionFactory = new CachingConnectionFactory("somehost");
-	public static ConnectionFactory factory;
+//	
+	
+	public static CachingConnectionFactory factory;
 	public static Channel channel;
+	public static AmqpTemplate veliTemplate;
 	static Connection rxConnection;
 	static Connection txConnection;
 
+	
+	
+	
+	
 	public static void establishConnection(){
-		factory = new ConnectionFactory();
+		factory = new CachingConnectionFactory();
 		factory.setHost(ServerParameters.bunny_ip);
 
-		try {
-			txConnection = factory.newConnection();
-			rxConnection = factory.newConnection();
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		factory.setUsername("guest");
+		factory.setPassword("guest");
+				
+		veliTemplate = new RabbitTemplate(factory);
+		
+		txConnection = factory.createConnection();
+		rxConnection = factory.createConnection();
 
 	}
 
 	public Channel establishRxChannel() throws IOException {
 
-		return channel = rxConnection.createChannel();
+		return channel = rxConnection.createChannel(true);
 
 	}
 
 	public Channel establishTxChannel() throws IOException {
 
-		return channel = txConnection.createChannel();
+		return channel = txConnection.createChannel(true);
 
 	}
 
@@ -70,13 +88,8 @@ public class BrokerConnection {
 
 	public static void closeFactory(){
 
-		try {
-			txConnection.close();
-			rxConnection.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		txConnection.close();
+		rxConnection.close();
 	}
 
 
