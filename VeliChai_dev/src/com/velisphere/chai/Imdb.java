@@ -53,7 +53,7 @@ public class Imdb {
 		// TODO: change to a meaningful log table!
 
 		Imdb.montanaClient.callProcedure("Insert", "1", message, queueName, "1", identifierString);
-		
+
 	}
 
 	public static void runChecks(String endpointID, String propertyID, String checkValue, String operator, byte expired) throws Exception {
@@ -61,58 +61,67 @@ public class Imdb {
 		/*
 		 * Run the lowest level check engine
 		 */
-		
+
 
 		/*
 		 * Step 1: Query all checks matching the data in terms of endPointID, propertyID, CheckValue etc.
 		 * 
 		 */
-		
+
 		final ClientResponse selectResponse = Imdb.montanaClient.callProcedure("FindMatchingChecksEqual", endpointID, propertyID, checkValue, operator, expired);
 
 		// Check if there was a proper resonse from Volt
-		
+
 		if (selectResponse.getStatus() != ClientResponse.SUCCESS){
-            System.err.println(selectResponse.getStatusString());
-            
-        }
-		
+			System.err.println(selectResponse.getStatusString());
+
+		}
+
 		// if no matching response was found, send a console message. needs to be removed
-		
+
 		final VoltTable results[] = selectResponse.getResults();
-        if (results.length == 0) {
-            System.out.printf("Not valid match found!\n");
-        }
-	             
-        List<String> validCheckIDs = new ArrayList<String>();
-        
-        // now all checkids that met the search criteria get filled into an array list for later use
-        
-        for (int i = 0; i < results.length; i++)
-        {
-        	VoltTableRow row = results[i].fetchRow(i);
-        	validCheckIDs.add(row.getString("CHECKID"));
-    		// System.out.println("OUTPUT: " + row.getString("CHECKID"));
-        }
-        
-        /*
+		if (results.length == 0) {
+			System.out.printf("Not valid match found!\n");
+		}
+
+		List<String> validCheckIDs = new ArrayList<String>();
+
+		// now all checkids that met the search criteria get filled into an array list for later use
+
+
+		for (int i = 0; i < results.length; i++)
+		{
+			// check if any rows have been returned 
+			if (results[i].getRowCount() > 0)
+			{
+
+				// get the row
+				VoltTableRow row = results[i].fetchRow(i);
+				// extract the value in column checkid
+				validCheckIDs.add(row.getString("CHECKID"));
+				//System.out.println("OUTPUT: " + row.getString("CHECKID"));
+			}
+		}
+
+
+		/*
 		 * Step 2: Update all check entries in VoltDB with the new state "1" for true
 		 * 
 		 */
-           
-        for (String checkID : validCheckIDs)
-        {
-        	final ClientResponse updateResponse = Imdb.montanaClient.callProcedure("UpdateChecks", 1, checkID);
-        	if (updateResponse.getStatus() != ClientResponse.SUCCESS){
-                System.err.println(selectResponse.getStatusString());
-               
-            }
-        }
-	
-	
+
+		for (String checkID : validCheckIDs)
+		{
+			final ClientResponse updateResponse = Imdb.montanaClient.callProcedure("UpdateChecks", 1, checkID);
+			if (updateResponse.getStatus() != ClientResponse.SUCCESS){
+				System.err.println(selectResponse.getStatusString());
+
+			}
+		}
+
+
 	}
 
-	
+
 
 
 }
