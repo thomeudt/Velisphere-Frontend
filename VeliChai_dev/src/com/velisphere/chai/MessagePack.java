@@ -18,6 +18,8 @@
 package com.velisphere.chai;
 
 import java.io.IOException;
+import java.util.HashMap;
+
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
@@ -47,6 +49,25 @@ public class MessagePack {
 		jp.close();		 
 
 		return foundValue;  
-
 	}
+
+	public static HashMap<String, String> extractKeyPropertyPair(String jsonInput) throws JsonProcessingException, IOException 
+	{
+
+		JsonParser jp = ChaiWorker.factory.createParser(jsonInput);
+		HashMap<String, String> foundMap = new HashMap<String, String>();
+
+		while (jp.nextToken() != JsonToken.END_OBJECT) {
+
+			String fieldname = jp.getCurrentName();
+			foundMap.put(jp.getCurrentName(), jp.getText());
+		}
+
+		jp.close();		 
+
+		return foundMap;  
+	}
+
+
+
 }

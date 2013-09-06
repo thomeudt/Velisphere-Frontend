@@ -17,6 +17,8 @@
  ******************************************************************************/
 package com.velisphere.chai;
 
+import org.voltdb.VoltTable;
+import org.voltdb.VoltTableRow;
 import org.voltdb.client.*;
 
 import java.io.IOException;
@@ -51,6 +53,41 @@ public class Imdb {
 		Imdb.montanaClient.callProcedure("Insert", "1", message, queueName, "1", identifierString);
 		
 	}
+
+	public static void runChecks(String endpointID, String propertyID, String checkValue, String operator, byte expired) throws Exception {
+
+		/*
+		 * Run the lowest level check engine
+		 */
+		
+
+		final ClientResponse response = Imdb.montanaClient.callProcedure("FindMatchingChecksEqual", endpointID, propertyID, checkValue, operator, expired);
+
+		if (response.getStatus() != ClientResponse.SUCCESS){
+            System.err.println(response.getStatusString());
+            System.exit(-1);
+        }
+		
+		
+		final VoltTable results[] = response.getResults();
+        if (results.length == 0) {
+            System.out.printf("Not valid match found!\n");
+        }
+		
+        System.out.println("Length: " + results.length);
+        
+        for (int i = 0; i < results.length; i++)
+        {
+        	VoltTableRow row = results[i].fetchRow(i);
+    		// System.out.println("OUTPUT: " + row.getString("CHECKID"));
+        }
+        
+	
+	
+	
+	}
+
+	
 
 
 }

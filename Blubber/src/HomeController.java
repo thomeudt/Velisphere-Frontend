@@ -11,8 +11,10 @@ import javax.swing.AbstractAction;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
 import javax.swing.Action;
+import javax.swing.JButton;
 
 
 public class HomeController {
@@ -24,6 +26,8 @@ public class HomeController {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
+		ServerParameters.my_queue_name="1003";
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -62,10 +66,23 @@ public class HomeController {
 		
 		frmVelisphereHomeController.getContentPane().add(tglbtnLicht);
 		
+		JButton btnLichtAus = new JButton("Licht aus");
+		btnLichtAus.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnLichtAus.setBounds(10, 72, 121, 23);
+		frmVelisphereHomeController.getContentPane().add(btnLichtAus);
+		
 		tglbtnLicht.addActionListener(new ActionListener( ) {
 		      public void actionPerformed(ActionEvent ev) {
 		        try {
-					Send.main("lightsoff", "phi");
+					
+		        	HashMap<String, String> messageHash = new HashMap<String, String>();
+		        	messageHash.put("1000", "1");
+		        	Send.sendHashTable(messageHash, "controller");
+
+		        	// Send.main("lightsoff", "phi");
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -73,13 +90,28 @@ public class HomeController {
 		        JOptionPane.showMessageDialog(frmVelisphereHomeController,
                         "Licht umgeschaltet"
                         );
-
-		      
 		      }
-		      	      
 		    });
-		
+
+		btnLichtAus.addActionListener(new ActionListener( ) {
+		      public void actionPerformed(ActionEvent ev) {
+		        try {
+					
+		        	HashMap<String, String> messageHash = new HashMap<String, String>();
+		        	messageHash.put("1001", "1");
+		        	Send.sendHashTable(messageHash, "controller");
+
+		        	// Send.main("lightsoff", "phi");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        JOptionPane.showMessageDialog(frmVelisphereHomeController,
+                      "Licht ausgeschaltet"
+                      );
+		      }
+		    });
+
 		
 	}
-	
 }

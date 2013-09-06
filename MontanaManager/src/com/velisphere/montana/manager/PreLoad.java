@@ -32,21 +32,35 @@ public class PreLoad {
 	        preLoader.callProcedure("ENDPOINT.insert", "1000", "Thorstens Blubber Account", "1000");
 	        preLoader.callProcedure("ENDPOINT.insert", "1001", "RaspberryPi im Arbeitszimmer", "1001");
 	        preLoader.callProcedure("ENDPOINT.insert", "1002", "Utes Blubber Account", "1000");
+	        preLoader.callProcedure("ENDPOINT.insert", "1003", "Homecontroller App", "1002");
 	        
 	        System.out.println("Endpoints loaded");
 	        
 	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1000", "1000", "1000");
 	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1001", "1001", "1000");
 	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1002", "1002", "1001");
+	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1003", "1003", "1000");
 	        
 	        System.out.println("Endpoints and Users linked");
 	        
-	        preLoader.callProcedure("PROPERTY.insert", "1000", "Text Message", "String", "");
-	        preLoader.callProcedure("PROPERTY.insert", "1001", "Two State Relay State", "Byte", "");
-	        preLoader.callProcedure("PROPERTY.insert", "1002", "Brightness", "Double", "lux");
+	        preLoader.callProcedure("PROPERTYCLASS.insert", "1000", "Text Message", "String", "");
+	        preLoader.callProcedure("PROPERTYCLASS.insert", "1001", "Generic Digital Port", "Byte", "");
+	        preLoader.callProcedure("PROPERTYCLASS.insert", "1002", "Brightness", "Double", "lux");
+	        preLoader.callProcedure("PROPERTYCLASS.insert", "1003", "On Off Switch", "Byte", "");
+	        preLoader.callProcedure("PROPERTYCLASS.insert", "1004", "On Off Indicator", "Byte", "");
+	        
+	        System.out.println("Property Classes loaded");
+	        
+	        preLoader.callProcedure("PROPERTY.insert", "1000", "Switch 1", "1003", "1003");
+	        preLoader.callProcedure("PROPERTY.insert", "1001", "Switch 2", "1003", "1003");
+	        preLoader.callProcedure("PROPERTY.insert", "1002", "Light 1 On Indicator", "1004", "1003");
+	        preLoader.callProcedure("PROPERTY.insert", "1003", "Digital Port 6", "1001", "1001");
 	        
 	        System.out.println("Properties loaded");
 	        
+	        preLoader.callProcedure("CHECK.insert", "1000", "1001", "1003", "1", "=", "0", "0"); // Checks if relay on RPI is on
+	        preLoader.callProcedure("CHECK.insert", "1001", "1003", "1000", "1", "=", "0", "0"); // Checks if button 1 on home controller is pressed
+	        	        
 	        System.out.println("Done!");
 	        
 	        /*
