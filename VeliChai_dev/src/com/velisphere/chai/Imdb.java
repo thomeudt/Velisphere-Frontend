@@ -23,6 +23,8 @@ import org.voltdb.client.*;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Imdb {
@@ -61,28 +63,51 @@ public class Imdb {
 		 */
 		
 
-		final ClientResponse response = Imdb.montanaClient.callProcedure("FindMatchingChecksEqual", endpointID, propertyID, checkValue, operator, expired);
+		/*
+		 * Step 1: Query all checks matching the data in terms of endPointID, propertyID, CheckValue etc.
+		 * 
+		 */
+		
+		final ClientResponse selectResponse = Imdb.montanaClient.callProcedure("FindMatchingChecksEqual", endpointID, propertyID, checkValue, operator, expired);
 
-		if (response.getStatus() != ClientResponse.SUCCESS){
-            System.err.println(response.getStatusString());
-            System.exit(-1);
+		// Check if there was a proper resonse from Volt
+		
+		if (selectResponse.getStatus() != ClientResponse.SUCCESS){
+            System.err.println(selectResponse.getStatusString());
+            
         }
 		
+		// if no matching response was found, send a console message. needs to be removed
 		
-		final VoltTable results[] = response.getResults();
+		final VoltTable results[] = selectResponse.getResults();
         if (results.length == 0) {
             System.out.printf("Not valid match found!\n");
         }
-		
-        System.out.println("Length: " + results.length);
+	             
+        List<String> validCheckIDs = new ArrayList<String>();
+        
+        // now all checkids that met the search criteria get filled into an array list for later use
         
         for (int i = 0; i < results.length; i++)
         {
         	VoltTableRow row = results[i].fetchRow(i);
+        	validCheckIDs.add(row.getString("CHECKID"));
     		// System.out.println("OUTPUT: " + row.getString("CHECKID"));
         }
         
-	
+        /*
+		 * Step 2: Update all check entries in VoltDB with the new state "1" for true
+		 * 
+		 */
+           
+        for (String checkID : validCheckIDs)
+        {
+        	final ClientResponse updateResponse = Imdb.montanaClient.callProcedure("UpdateChecks", 1, checkID);
+        	if (updateResponse.getStatus() != ClientResponse.SUCCESS){
+                System.err.println(selectResponse.getStatusString());
+               
+            }
+        }
 	
 	
 	}
