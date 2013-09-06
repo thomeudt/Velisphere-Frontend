@@ -138,7 +138,7 @@ public class Send {
 	    // Now add payload to MessagePack
 	    for (Map.Entry<String, String> e: message.entrySet()) 
 	    {
-	    	System.out.println( e.getKey() + "="+ e.getValue() );
+	    	// System.out.println( e.getKey() + "="+ e.getValue() );
 	    	messagePack = tooler.addArgument(messagePack, e.getValue(), e.getKey());
 	    }
 	    
@@ -149,7 +149,7 @@ public class Send {
 	        
 	    channel.basicPublish("", "controller", props, messagePackText.getBytes());
 	 
-	    System.out.println(" [x] Sent '" + messagePackText + "'");
+	    // System.out.println(" [x] Sent '" + messagePackText + "'");
 	    
 	    channel.close();
 	    connection.close();

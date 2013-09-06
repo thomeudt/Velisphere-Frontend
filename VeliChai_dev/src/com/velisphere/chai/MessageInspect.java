@@ -89,11 +89,11 @@ public class MessageInspect implements Runnable {
 					// System.out.println( e.getKey() + "="+ e.getValue() );
 					if(e.getKey() != "EPID" && e.getKey() != null && e.getKey() != "SECTOK" && e.getKey() != "TIMESTAMP" && e.getKey() != "TYPE" )
 					{
-						System.out.println("EPID: " + EPID);
-						System.out.println("KEY:  " + e.getKey());
-						System.out.println("VALUE:" + e.getValue());
-						
+						// System.out.println("EPID: " + EPID);
+						// System.out.println("KEY:  " + e.getKey());
+						// System.out.println("VALUE:" + e.getValue());
 						Imdb.runChecks(EPID, e.getKey(), e.getValue(), "=", (byte) 0);
+						Send.main("OK", "adam");
 
 					}
 				}

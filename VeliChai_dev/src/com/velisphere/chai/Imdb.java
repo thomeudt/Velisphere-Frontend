@@ -118,10 +118,46 @@ public class Imdb {
 			}
 		}
 
+		/*
+		 * Step 3: Find all Multichecks linked to the Checks that were just evaluated, return a List
+		 */
 
+		/*
+		 * Step 4: Evaluate if these Multichecks are true and update multicheck state accordingly
+		 */
+
+			
+		/*
+		 * Step 5: Find all Multichecks linked to the Multichecks that were just evaluated, return a List
+		 * 			
+		 */
+
+		/*
+		 * Step 6a: If List is empty, all multichecks have been iterated, no additional action, return 
+		 */
+		
+		/*
+		 * Step 6b: If List is not empty, evaluate if these Multichecks are true and update multicheck state accordingly
+		 * 			Also, find all rules related to the multichecks that are true and trigger their action
+		 * 			
+		 */
+				
 	}
 
 
+	public static void runCheckParentMulticheck(String checkID)
+	{
+		// Evaluate first in line Multicheck
+	}
+	
+	public static void runMultiCheckParentMulticheck(String checkID)
+	{
+		// Evaluate subsequent Multichecks
+	}
+	
+	
+	
+	
 
 
 }

@@ -36,7 +36,7 @@ public class ChaiWorker {
 		 */
 
 		System.out.println();
-		System.out.println("*     * VeliChai v0.0.2 - VeliSphere Controller");
+		System.out.println("*     * VeliChai v0.0.3 - VeliSphere Controller");
 		System.out.println(" *   *  Copyright (C) 2013 Thorsten Meudt. All rights reserved.");
 		System.out.println("  * *   ");
 		System.out.println("   *    VeliChai is part of the VeliSphere IoTS ecosystem.");
