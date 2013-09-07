@@ -55,23 +55,34 @@ public class PreLoad {
 	        preLoader.callProcedure("PROPERTY.insert", "1001", "Switch 2", "1003", "1003");
 	        preLoader.callProcedure("PROPERTY.insert", "1002", "Light 1 On Indicator", "1004", "1003");
 	        preLoader.callProcedure("PROPERTY.insert", "1003", "Digital Port 6", "1001", "1001");
+	        preLoader.callProcedure("PROPERTY.insert", "1004", "Switch 3", "1003", "1003");
 	        
 	        System.out.println("Properties loaded");
 	        
 	        preLoader.callProcedure("CHECK.insert", "1000", "1001", "1003", "1", "=", "0", "0"); // Checks if relay on RPI is on
 	        preLoader.callProcedure("CHECK.insert", "1001", "1003", "1000", "1", "=", "0", "0"); // Checks if button "Lights" on home controller is pressed
 	        preLoader.callProcedure("CHECK.insert", "1002", "1003", "1001", "1", "=", "0", "0"); // Checks if button "Lightsoff" on home controller is pressed
+	        preLoader.callProcedure("CHECK.insert", "1003", "1003", "1004", "1", "=", "0", "0"); // Checks if button "Lightsoff" on home controller is pressed
 	        
 	        System.out.println("Checks loaded");
 	        
 	        preLoader.callProcedure("MULTICHECK.insert", "1000", "AND", "0", "0");
+	        preLoader.callProcedure("MULTICHECK.insert", "1001", "AND", "0", "0");
+	        preLoader.callProcedure("MULTICHECK.insert", "1002", "AND", "0", "0");
 	        	 
 	        System.out.println("Multichecks loaded");
 	        
 	        preLoader.callProcedure("MULTICHECK_CHECK_LINK.insert", "1000", "1000", "1001");
 	        preLoader.callProcedure("MULTICHECK_CHECK_LINK.insert", "1001", "1000", "1002");
+	        preLoader.callProcedure("MULTICHECK_CHECK_LINK.insert", "1002", "1001", "1001");
+	        preLoader.callProcedure("MULTICHECK_CHECK_LINK.insert", "1003", "1001", "1003");
 	        
 	        System.out.println("Multichecks and Checks linked");
+	        
+	        preLoader.callProcedure("MULTICHECK_MULTICHECK_LINK.insert", "1000", "1002", "1000");
+	        preLoader.callProcedure("MULTICHECK_MULTICHECK_LINK.insert", "1001", "1002", "1001");
+	        
+	        System.out.println("Multichecks and Multichecks linked");
 	        
 	        System.out.println("Done!");
 	        

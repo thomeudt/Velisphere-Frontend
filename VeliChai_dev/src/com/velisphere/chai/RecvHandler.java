@@ -16,6 +16,9 @@
  *  from Thorsten Meudt.
  ******************************************************************************/
 package com.velisphere.chai;
+/*
+ * UNUSED - REMOVE LATER!
+ */
 
 public class RecvHandler {
 	public void handleMessage(String text) {
