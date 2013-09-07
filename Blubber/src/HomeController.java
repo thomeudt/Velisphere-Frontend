@@ -61,7 +61,7 @@ public class HomeController {
 		lblArbeitszimmer.setBounds(10, 13, 99, 14);
 		frmVelisphereHomeController.getContentPane().add(lblArbeitszimmer);
 		
-		JToggleButton tglbtnLicht = new JToggleButton("Licht");
+		final JToggleButton tglbtnLicht = new JToggleButton("Licht");
 		tglbtnLicht.setBounds(10, 38, 121, 23);
 		
 		frmVelisphereHomeController.getContentPane().add(tglbtnLicht);
@@ -96,11 +96,15 @@ public class HomeController {
 		btnLichtAus.addActionListener(new ActionListener( ) {
 		      public void actionPerformed(ActionEvent ev) {
 		        try {
-					
+
+		        	String toggle1 = "0";
+		        	if(tglbtnLicht.isSelected()){ toggle1 = "1";}
 		        	HashMap<String, String> messageHash = new HashMap<String, String>();
-		        	messageHash.put("1001", "1");
+		        	messageHash.put("1001", "1");        	
+		        	messageHash.put("1000", toggle1);
 		        	Send.sendHashTable(messageHash, "controller");
 		        	messageHash.put("1001", "0");
+		        	messageHash.put("1000", toggle1);
 		        	Send.sendHashTable(messageHash, "controller");
 
 		        	

@@ -59,8 +59,20 @@ public class PreLoad {
 	        System.out.println("Properties loaded");
 	        
 	        preLoader.callProcedure("CHECK.insert", "1000", "1001", "1003", "1", "=", "0", "0"); // Checks if relay on RPI is on
-	        preLoader.callProcedure("CHECK.insert", "1001", "1003", "1000", "1", "=", "0", "0"); // Checks if button 1 on home controller is pressed
-	        	        
+	        preLoader.callProcedure("CHECK.insert", "1001", "1003", "1000", "1", "=", "0", "0"); // Checks if button "Lights" on home controller is pressed
+	        preLoader.callProcedure("CHECK.insert", "1002", "1003", "1001", "1", "=", "0", "0"); // Checks if button "Lightsoff" on home controller is pressed
+	        
+	        System.out.println("Checks loaded");
+	        
+	        preLoader.callProcedure("MULTICHECK.insert", "1000", "AND", "0", "0");
+	        	 
+	        System.out.println("Multichecks loaded");
+	        
+	        preLoader.callProcedure("MULTICHECK_CHECK_LINK.insert", "1000", "1000", "1001");
+	        preLoader.callProcedure("MULTICHECK_CHECK_LINK.insert", "1001", "1000", "1002");
+	        
+	        System.out.println("Multichecks and Checks linked");
+	        
 	        System.out.println("Done!");
 	        
 	        /*

@@ -83,6 +83,7 @@ public class MessageInspect implements Runnable {
 
 				String EPID = forEvaluation.get("EPID");
 			
+				Imdb.resetChecksForEndpoint(EPID);
 				
 				for ( Map.Entry<String, String> e : forEvaluation.entrySet() )
 				{
