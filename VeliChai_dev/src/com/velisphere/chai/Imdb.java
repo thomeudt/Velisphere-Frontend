@@ -64,7 +64,19 @@ public class Imdb {
 
 
 		/*
-		 * Step 1: Query all checks matching the data in terms of endPointID, propertyID, CheckValue etc.
+		 * Step 1: Reset all checks for this endpoint type to false to prepare for new incoming data
+		 * 
+		 */
+
+		final ClientResponse resetResponse = Imdb.montanaClient.callProcedure("ResetChecks", endpointID);
+		if (resetResponse.getStatus() != ClientResponse.SUCCESS){
+			System.err.println(resetResponse.getStatusString());
+
+		}
+	
+		
+		/*
+		 * Step 2: Query all checks matching the data in terms of endPointID, propertyID, CheckValue etc.
 		 * 
 		 */
 
@@ -105,7 +117,7 @@ public class Imdb {
 
 
 		/*
-		 * Step 2: Update all check entries in VoltDB with the new state "1" for true
+		 * Step 3: Update all check entries in VoltDB with the new state "1" for true
 		 * 
 		 */
 
@@ -119,25 +131,25 @@ public class Imdb {
 		}
 
 		/*
-		 * Step 3: Find all Multichecks linked to the Checks that were just evaluated, return a List
+		 * Step 4: Find all Multichecks linked to the Checks that were just evaluated, return a List
 		 */
 
 		/*
-		 * Step 4: Evaluate if these Multichecks are true and update multicheck state accordingly
+		 * Step 5: Evaluate if these Multichecks are true and update multicheck state accordingly
 		 */
 
 			
 		/*
-		 * Step 5: Find all Multichecks linked to the Multichecks that were just evaluated, return a List
+		 * Step 6: Find all Multichecks linked to the Multichecks that were just evaluated, return a List
 		 * 			
 		 */
 
 		/*
-		 * Step 6a: If List is empty, all multichecks have been iterated, no additional action, return 
+		 * Step 7a: If List is empty, all multichecks have been iterated, no additional action, return 
 		 */
 		
 		/*
-		 * Step 6b: If List is not empty, evaluate if these Multichecks are true and update multicheck state accordingly
+		 * Step 7b: If List is not empty, evaluate if these Multichecks are true and update multicheck state accordingly
 		 * 			Also, find all rules related to the multichecks that are true and trigger their action
 		 * 			
 		 */

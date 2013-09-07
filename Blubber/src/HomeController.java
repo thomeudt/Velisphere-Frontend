@@ -100,7 +100,10 @@ public class HomeController {
 		        	HashMap<String, String> messageHash = new HashMap<String, String>();
 		        	messageHash.put("1001", "1");
 		        	Send.sendHashTable(messageHash, "controller");
+		        	messageHash.put("1001", "0");
+		        	Send.sendHashTable(messageHash, "controller");
 
+		        	
 		        	// Send.main("lightsoff", "phi");
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
