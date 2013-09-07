@@ -129,6 +129,7 @@ public class Imdb {
 		/*
 		 * Step 3: Update all check entries in VoltDB with the new state "1" for true
 		 * and find all Multichecks linked to the Checks that were just evaluated, return a List
+		 * Also, reset the state of the multi check to false as a basis for the next round of checks
 		 * 
 		 */
 
@@ -162,7 +163,8 @@ public class Imdb {
 						// extract the value in column checkid
 						validMultiCheckIDs.add(row.getString("MULTICHECKID"));
 						System.out.println("MULTICHECK FOUND: " + row.getString("MULTICHECKID"));
-
+						// reset the multicheck state
+						Imdb.montanaClient.callProcedure("UpdateMultiChecks", 0, row.getString("MULTICHECKID"));
 					}
 				}
 			}
@@ -243,11 +245,26 @@ public class Imdb {
 				// here we do the evaluation based on the operator
 
 				boolean multiCheckState = false;
-				if(checkStates.contains(true) && checkStates.contains(false)){
+				
+				
+				// first, we look up the operator
+				final ClientResponse findMultiCheckOperatorResponse = Imdb.montanaClient.callProcedure("FindMultiChecksForMultiCheckID", multicheckID);
+				final VoltTable findMultiCheckOperatorResults[] = findMultiCheckOperatorResponse.getResults();
+				VoltTableRow multiCheckOperatorRow = findMultiCheckOperatorResults[0].fetchRow(0);
+				String multiCheckOperator = multiCheckOperatorRow.getString("OPERATOR");
+				
+				if(checkStates.contains(true) && multiCheckOperator.equals("OR")){
 					multiCheckState = true;
+					Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1, multicheckID);
+					System.out.println("Multicheck Eval OR Result: " + multiCheckState);
 				}
-				System.out.println("Multicheck Eval Result: " + multiCheckState);
-
+				
+				if((checkStates.contains(true) == true && checkStates.contains(false) == false) && multiCheckOperator.equals("AND")){
+					multiCheckState = true;
+					Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1, multicheckID);
+					System.out.println("Multicheck Eval AND Result for MultiCheck " + multicheckID + ": " + multiCheckState);
+				}
+				
 			}				
 		}
 

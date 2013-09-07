@@ -32,8 +32,13 @@ public class Bombarder implements Runnable {
 			try {
 				HashMap<String, String> messageHash = new HashMap<String, String>();
 	        	messageHash.put("1001", "1");
+	        	messageHash.put("1000", "1");
+	        	Send.sendHashTable(messageHash, "controller");
+	        	messageHash.put("1001", "1");
+	        	messageHash.put("1000", "0");
 	        	Send.sendHashTable(messageHash, "controller");
 
+	        	
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
