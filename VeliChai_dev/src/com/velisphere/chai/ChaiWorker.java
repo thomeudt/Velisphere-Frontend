@@ -25,9 +25,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ChaiWorker {
 
-	static ObjectMapper mapper = new ObjectMapper(); // object mapper for jackson json parser - create once, reuse for performance
+	static ObjectMapper mapper = new ObjectMapper(); // object mapper for
+	// jackson json parser -
+	// create once, reuse
+	// for performance
 	public static JsonFactory factory = mapper.getFactory();
-
 
 	public static void main(String[] args) throws IOException {
 
@@ -36,18 +38,15 @@ public class ChaiWorker {
 		 */
 
 		System.out.println();
-		System.out.println("*     * VeliChai v0.0.3 - VeliSphere Controller");
+		System.out.println("*     * VeliChai v0.0.4 - VeliSphere Controller");
 		System.out.println(" *   *  Copyright (C) 2013 Thorsten Meudt. All rights reserved.");
 		System.out.println("  * *   ");
 		System.out.println("   *    VeliChai is part of the VeliSphere IoTS ecosystem.");
 		System.out.println();
 
-
-
 		/*
 		 * Load Config File and set config variables
 		 */
-
 
 		ConfigHandler cfh = new ConfigHandler();
 		cfh.loadParamChangesAsXML();
@@ -55,36 +54,35 @@ public class ChaiWorker {
 		/*
 		 * 
 		 * Creating the connection to Rabbit
-		 * 
 		 */
 
 		BrokerConnection.establishConnection();
 
-		// Open the IMDB  Database
-	
-		System.out.println(" [IN] Selected VoltDB: " + ServerParameters.volt_ip);
+		// Open the IMDB Database
+
+		System.out
+				.println(" [IN] Selected VoltDB: " + ServerParameters.volt_ip);
 		Imdb.openDatabase();
-		
-		
 
 		/*
 		 * Start the listening service
 		 */
 		// {
 
+		// open as many listener threads as defined in threadpool size in config
+		// file.
 
-		// open as many listener threads as defined in threadpool size in config file.
-		
-		int numworkers = ServerParameters.threadpoolSize; 
+		int numworkers = ServerParameters.threadpoolSize;
 
-		ExecutorService receiver = Executors.newFixedThreadPool(ServerParameters.threadpoolSize);
-		
+		ExecutorService receiver = Executors
+				.newFixedThreadPool(ServerParameters.threadpoolSize);
+
 		Recv[] receiverThread = new Recv[numworkers];
 		for (int i = 0; i < numworkers; i++) {
 			receiverThread[i] = new Recv(i);
 			receiver.execute(receiverThread[i]);
-            
-        }
-		
-	}	
+
+		}
+
+	}
 }
