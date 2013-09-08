@@ -85,6 +85,9 @@ public class MessageInspect implements Runnable {
 			
 				Imdb.resetChecksForEndpoint(EPID);
 				
+				System.out.println("**************************** IMDB CHECK INITIATED ************************************");
+				
+				
 				for ( Map.Entry<String, String> e : forEvaluation.entrySet() )
 				{
 					// System.out.println( e.getKey() + "="+ e.getValue() );

@@ -127,7 +127,7 @@ public class Imdb {
 						VoltTableRow row = result.fetchRow(i);
 						// extract the value in column checkid
 						validCheckIDs.add(row.getString("CHECKID"));
-						System.out.println("CHECKID FOUND: "
+						System.out.println("*** VALID CHECK FOUND: "
 								+ row.getString("CHECKID"));
 					}
 				}
@@ -289,7 +289,7 @@ public class Imdb {
 					multiCheckState = true;
 					Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
 							multicheckID);
-					System.out.println("Multicheck Eval OR Result: "
+					System.out.println("*** Multicheck Eval OR Result: "
 							+ multiCheckState);
 				}
 
@@ -300,7 +300,7 @@ public class Imdb {
 					Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
 							multicheckID);
 					System.out
-							.println("Multicheck Eval AND Result for MultiCheck "
+							.println("*** Multicheck Eval AND Result for MultiCheck "
 									+ multicheckID + ": " + multiCheckState);
 				}
 
@@ -458,7 +458,7 @@ public class Imdb {
 					multiCheckState = true;
 					Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
 							multicheckID);
-					System.out.println("Cyclical Multicheck Eval OR Result: "
+					System.out.println("*** Cyclical Multicheck Eval OR Result: "
 							+ multiCheckState);
 				}
 
@@ -469,7 +469,7 @@ public class Imdb {
 					Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
 							multicheckID);
 					System.out
-							.println("Cyclical Multicheck Eval AND Result for MultiCheck "
+							.println("*** Cyclical Multicheck Eval AND Result for MultiCheck "
 									+ multicheckID + ": " + multiCheckState);
 				}
 
@@ -489,6 +489,12 @@ public class Imdb {
 		 * propertyID, CheckValue etc.
 		 */
 
+		System.out.println("------------------NEW IMDB CHECK---------------------------");
+		System.out.println("Endpoint:    " + endpointID);
+		System.out.println("Property:    " + propertyID);
+		System.out.println("Checkvalue   " + checkValue);
+		System.out.println("-----------------------------------------------------------");
+		
 		List<String> validCheckIDs = findChecks(endpointID, propertyID,
 				checkValue, operator, expired);
 

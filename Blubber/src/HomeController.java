@@ -61,7 +61,7 @@ public class HomeController {
 		lblArbeitszimmer.setBounds(10, 13, 99, 14);
 		frmVelisphereHomeController.getContentPane().add(lblArbeitszimmer);
 		
-		final JToggleButton tglbtnLicht = new JToggleButton("Licht");
+		final JToggleButton tglbtnLicht = new JToggleButton("Licht 1");
 		tglbtnLicht.setBounds(10, 38, 121, 23);
 		
 		frmVelisphereHomeController.getContentPane().add(tglbtnLicht);
@@ -71,7 +71,7 @@ public class HomeController {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		btnLichtAus.setBounds(10, 72, 121, 23);
+		btnLichtAus.setBounds(256, 138, 121, 23);
 		frmVelisphereHomeController.getContentPane().add(btnLichtAus);
 		
 		JButton btnRolladenRunter = new JButton("Rolladen runter");
@@ -79,15 +79,76 @@ public class HomeController {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		btnRolladenRunter.setBounds(10, 109, 121, 23);
+		btnRolladenRunter.setBounds(256, 172, 121, 23);
 		frmVelisphereHomeController.getContentPane().add(btnRolladenRunter);
 		
+		final JToggleButton tglbtnLicht_2 = new JToggleButton("Licht 2");
+		tglbtnLicht_2.setBounds(10, 72, 121, 23);
+		frmVelisphereHomeController.getContentPane().add(tglbtnLicht_2);
+		
+		final JToggleButton tglbtnLicht_3 = new JToggleButton("Licht 3");
+		tglbtnLicht_3.setBounds(10, 107, 121, 23);
+		frmVelisphereHomeController.getContentPane().add(tglbtnLicht_3);
+		
+		final JToggleButton tglbtnLicht_4 = new JToggleButton("Licht 4");
+		tglbtnLicht_4.setBounds(10, 138, 121, 23);
+		frmVelisphereHomeController.getContentPane().add(tglbtnLicht_4);
+		
+		final JToggleButton tglbtnLicht_5 = new JToggleButton("Licht 5");
+		tglbtnLicht_5.setBounds(10, 172, 121, 23);
+		frmVelisphereHomeController.getContentPane().add(tglbtnLicht_5);
+						
 		tglbtnLicht.addActionListener(new ActionListener( ) {
-		      public void actionPerformed(ActionEvent ev) {
-		        try {
+		   
+			
+			public void actionPerformed(ActionEvent ev) {
+		
+				String b1, b2, b3, b4, b5;
+				
+				if(tglbtnLicht.isSelected()){
+					b1 = "1";
+					}
+				else{
+					b1 = "0";
+				}
+				
+				if(tglbtnLicht_2.isSelected()){
+					b2 = "1";
+					}
+				else{
+					b2 = "0";
+				}
+				
+				if(tglbtnLicht_3.isSelected()){
+					b3 = "1";
+					}
+				else{
+					b3 = "0";
+				}
+				
+				if(tglbtnLicht_4.isSelected()){
+					b4 = "1";
+					}
+				else{
+					b4 = "0";
+				}
+				
+				if(tglbtnLicht_5.isSelected()){
+					b5 = "1";
+					}
+				else{
+					b5 = "0";
+				}
+				
+				try {
 					
 		        	HashMap<String, String> messageHash = new HashMap<String, String>();
-		        	messageHash.put("1000", "1");
+		        	messageHash.put("1000", b1);
+		        	messageHash.put("1001", b2);
+		        	messageHash.put("1004", b3);
+		        	messageHash.put("1005", b4);
+		        	messageHash.put("1006", b5);
+		        	
 		        	Send.sendHashTable(messageHash, "controller");
 
 		        	// Send.main("lightsoff", "phi");
@@ -101,60 +162,10 @@ public class HomeController {
 		      }
 		    });
 
-		btnLichtAus.addActionListener(new ActionListener( ) {
-		      public void actionPerformed(ActionEvent ev) {
-		        try {
-
-		        	String toggle1 = "0";
-		        	if(tglbtnLicht.isSelected()){ toggle1 = "1";}
-		        	HashMap<String, String> messageHash = new HashMap<String, String>();
-		        	messageHash.put("1001", "1");        	
-		        	messageHash.put("1000", toggle1);
-		        	Send.sendHashTable(messageHash, "controller");
-		        	messageHash.put("1001", "0");
-		        	messageHash.put("1000", toggle1);
-		        	Send.sendHashTable(messageHash, "controller");
-
-		        	
-		        	// Send.main("lightsoff", "phi");
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		        JOptionPane.showMessageDialog(frmVelisphereHomeController,
-                      "Licht ausgeschaltet"
-                      );
-		      }
-		    });
-
-		btnRolladenRunter.addActionListener(new ActionListener( ) {
-		      public void actionPerformed(ActionEvent ev) {
-		        try {
-
-		        	String toggle1 = "0";
-		        	if(tglbtnLicht.isSelected()){ toggle1 = "1";}
-		        	HashMap<String, String> messageHash = new HashMap<String, String>();
-		        	messageHash.put("1004", "1");        	
-		        	messageHash.put("1001", "1");
-		        	messageHash.put("1000", toggle1);
-
-		        	Send.sendHashTable(messageHash, "controller");
-		        	messageHash.put("1004", "0");
-		        	messageHash.put("1000", toggle1);
-		        	// Send.sendHashTable(messageHash, "controller");
-
-		        	
-		        	// Send.main("lightsoff", "phi");
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		        JOptionPane.showMessageDialog(frmVelisphereHomeController,
-                    "Licht ausgeschaltet"
-                    );
-		      }
-		    });
-
+		
+		
+		
+		
 		
 	}
 }
