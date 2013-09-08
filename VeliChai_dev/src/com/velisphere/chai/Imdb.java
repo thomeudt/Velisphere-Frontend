@@ -506,7 +506,8 @@ public class Imdb {
 		 * state accordingly
 		 */
 
-		evaluateMultiChecks(validMultiCheckIDs);
+		if (validMultiCheckIDs.isEmpty() == false)
+			evaluateMultiChecks(validMultiCheckIDs);
 
 		/*
 		 * Step 4: Find all MultiChecks that are parents to the MultiChecks that
@@ -518,21 +519,16 @@ public class Imdb {
 
 		/*
 		 * Step 5: Evaluate if these Multichecks are true and update multicheck
-		 * state accordingly
+		 * state accordingly Run this in a loop until no further parent
+		 * multichecks can be found
 		 */
 
 		evaluateCycleMultiChecks(validCycleMultiCheckIDs);
 
-		/*
-		 * Step 7a: If List is empty, all multichecks have been iterated, no
-		 * additional action, return
-		 */
-
-		/*
-		 * Step 7b: If List is not empty, evaluate if these Multichecks are true
-		 * and update multicheck state accordingly Also, find all rules related
-		 * to the multichecks that are true and trigger their action
-		 */
+		while (validCycleMultiCheckIDs.isEmpty() == false) {
+			evaluateCycleMultiChecks(validCycleMultiCheckIDs);
+			validCycleMultiCheckIDs = getMultiCheckParents(validCycleMultiCheckIDs);
+		}
 
 	}
 
