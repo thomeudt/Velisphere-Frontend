@@ -57,7 +57,7 @@ public class HomeController {
 		frmVelisphereHomeController.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmVelisphereHomeController.getContentPane().setLayout(null);
 		
-		JLabel lblArbeitszimmer = new JLabel("Arbeitszimmer");
+		JLabel lblArbeitszimmer = new JLabel("Licht");
 		lblArbeitszimmer.setBounds(10, 13, 99, 14);
 		frmVelisphereHomeController.getContentPane().add(lblArbeitszimmer);
 		
@@ -71,7 +71,7 @@ public class HomeController {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		btnLichtAus.setBounds(256, 138, 121, 23);
+		btnLichtAus.setBounds(163, 38, 121, 23);
 		frmVelisphereHomeController.getContentPane().add(btnLichtAus);
 		
 		JButton btnRolladenRunter = new JButton("Rolladen runter");
@@ -79,7 +79,7 @@ public class HomeController {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		btnRolladenRunter.setBounds(256, 172, 121, 23);
+		btnRolladenRunter.setBounds(163, 72, 121, 23);
 		frmVelisphereHomeController.getContentPane().add(btnRolladenRunter);
 		
 		final JToggleButton tglbtnLicht_2 = new JToggleButton("Licht 2");
@@ -97,6 +97,10 @@ public class HomeController {
 		final JToggleButton tglbtnLicht_5 = new JToggleButton("Licht 5");
 		tglbtnLicht_5.setBounds(10, 172, 121, 23);
 		frmVelisphereHomeController.getContentPane().add(tglbtnLicht_5);
+		
+		JLabel lblFenster = new JLabel("Fenster");
+		lblFenster.setBounds(163, 13, 99, 14);
+		frmVelisphereHomeController.getContentPane().add(lblFenster);
 						
 		tglbtnLicht.addActionListener(new ActionListener( ) {
 		   

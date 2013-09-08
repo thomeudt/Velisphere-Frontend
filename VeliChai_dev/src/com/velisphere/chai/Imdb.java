@@ -83,8 +83,8 @@ public class Imdb {
 
 	}
 
-	static HashMap<String, List<String>> findChecks(String endpointID, String propertyID,
-			String checkValue, String operator, byte expired)
+	static HashMap<String, List<String>> findChecks(String endpointID,
+			String propertyID, String checkValue, String operator, byte expired)
 			throws NoConnectionsException, IOException, ProcCallException {
 
 		/*
@@ -93,7 +93,7 @@ public class Imdb {
 		 */
 
 		List<String> ruleIDs = new ArrayList<String>();
-		
+
 		final ClientResponse selectResponse = Imdb.montanaClient.callProcedure(
 				"FindMatchingChecksEqual", endpointID, propertyID, checkValue,
 				operator, expired);
@@ -128,24 +128,20 @@ public class Imdb {
 						VoltTableRow row = result.fetchRow(i);
 						// extract the value in column checkid
 						validCheckIDs.add(row.getString("CHECKID"));
-						
+
 						// find the rules attached to the check and trigger them
-						ruleIDs = lookupRulesForCheckID(row.getString("CHECKID"));
+						ruleIDs = lookupRulesForCheckID(row
+								.getString("CHECKID"));
 						// System.out.println("*** VALID CHECK FOUND: "
 						// + row.getString("CHECKID"));
 					}
 				}
 		}
 
-		
-		
-		
 		HashMap<String, List<String>> returnRulesAndCheckIDs = new HashMap<String, List<String>>();
 		returnRulesAndCheckIDs.put("validCheckIDs", validCheckIDs);
 		returnRulesAndCheckIDs.put("ruleIDs", ruleIDs);
 		return returnRulesAndCheckIDs;
-
-
 
 	}
 
@@ -208,7 +204,7 @@ public class Imdb {
 		 * Evaluate if these Multichecks are true and update multicheck state
 		 * accordingly
 		 */
-		
+
 		List<String> ruleIDs = new ArrayList<String>();
 
 		for (String multicheckID : validMultiCheckIDs) {
@@ -299,13 +295,13 @@ public class Imdb {
 				if (checkStates.contains(true)
 						&& multiCheckOperator.equals("OR")) {
 					multiCheckState = true;
-					
+
 					// lookup rules and get ID for return
 					ruleIDs = lookupRulesForMultiCheckID(multicheckID);
-					
+
 					Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
 							multicheckID);
-										
+
 					// System.out.println("*** Multicheck Eval OR Result: "
 					// + multiCheckState);
 				}
@@ -314,14 +310,12 @@ public class Imdb {
 						.contains(false) == false)
 						&& multiCheckOperator.equals("AND")) {
 					multiCheckState = true;
-					
+
 					// lookup rules and get ID for return
 					ruleIDs = lookupRulesForMultiCheckID(multicheckID);
 					Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
 							multicheckID);
-	
-					
-					
+
 					// System.out
 					// .println("*** Multicheck Eval AND Result for MultiCheck "
 					// + multicheckID + ": " + multiCheckState);
@@ -330,7 +324,6 @@ public class Imdb {
 			}
 		}
 		return ruleIDs;
-
 
 	}
 
@@ -381,14 +374,15 @@ public class Imdb {
 		return validCycleMultiCheckIDs;
 	}
 
-	static List<String> evaluateCycleMultiChecks(List<String> validCycleMultiCheckIDs)
+	static List<String> evaluateCycleMultiChecks(
+			List<String> validCycleMultiCheckIDs)
 			throws NoConnectionsException, IOException, ProcCallException {
 
 		/*
 		 * Evaluate if these Multichecks are true and update multicheck state
 		 * accordingly
 		 */
-		
+
 		List<String> ruleIDs = new ArrayList<String>();
 
 		for (String multicheckID : validCycleMultiCheckIDs) {
@@ -478,12 +472,13 @@ public class Imdb {
 
 				if (multiCheckStates.contains(true)
 						&& multiCheckOperator.equals("OR")) {
-					// lookup matching rules and update multicheck with new status "true"
-					
+					// lookup matching rules and update multicheck with new
+					// status "true"
+
 					ruleIDs = lookupRulesForMultiCheckID(multicheckID);
 					Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
 							multicheckID);
-			
+
 					// System.out.println("*** Cyclical Multicheck Eval OR Result: "
 					// + multiCheckState);
 				}
@@ -491,11 +486,12 @@ public class Imdb {
 				if ((multiCheckStates.contains(true) == true && multiCheckStates
 						.contains(false) == false)
 						&& multiCheckOperator.equals("AND")) {
-					// lookup matching rules and update multicheck with new status "true"
+					// lookup matching rules and update multicheck with new
+					// status "true"
 					ruleIDs = lookupRulesForMultiCheckID(multicheckID);
 					Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
 							multicheckID);
-					
+
 					// System.out
 					// .println("*** Cyclical Multicheck Eval AND Result for MultiCheck "
 					// + multicheckID + ": " + multiCheckState);
@@ -506,12 +502,11 @@ public class Imdb {
 		return ruleIDs;
 	}
 
-	
 	public static List<String> lookupRulesForCheckID(String checkID)
 			throws NoConnectionsException, IOException, ProcCallException {
 
 		List<String> ruleIDs = new ArrayList<String>();
-		
+
 		final ClientResponse findRulesForCheckIDResponse = Imdb.montanaClient
 				.callProcedure("FindRulesForCheckID", checkID);
 		if (findRulesForCheckIDResponse.getStatus() != ClientResponse.SUCCESS) {
@@ -537,26 +532,26 @@ public class Imdb {
 					}
 				}
 		}
-			
+
 		return ruleIDs;
-	}	
+	}
 
 	public static List<String> lookupRulesForMultiCheckID(String multiCheckID)
 			throws NoConnectionsException, IOException, ProcCallException {
 
 		List<String> ruleIDs = new ArrayList<String>();
-		
+
 		final ClientResponse findRulesForMultiCheckIDResponse = Imdb.montanaClient
 				.callProcedure("FindRulesForMultiCheckID", multiCheckID);
 		if (findRulesForMultiCheckIDResponse.getStatus() != ClientResponse.SUCCESS) {
-			System.err.println(findRulesForMultiCheckIDResponse.getStatusString());
+			System.err.println(findRulesForMultiCheckIDResponse
+					.getStatusString());
 		}
 		final VoltTable findRulesForMultiCheckIDResults[] = findRulesForMultiCheckIDResponse
 				.getResults();
 		if (findRulesForMultiCheckIDResults.length == 0) {
 			// System.out.printf("Not valid match found!\n");
 		}
-
 
 		for (VoltTable result : findRulesForMultiCheckIDResults) {
 			// check if any rows have been returned
@@ -572,24 +567,20 @@ public class Imdb {
 					}
 				}
 		}
-			
-		return ruleIDs;
-		
-	}	
 
-	
-	
+		return ruleIDs;
+
+	}
+
 	public static List<String> runChecks(String endpointID, String propertyID,
 			String checkValue, String operator, byte expired) throws Exception {
 
 		/*
 		 * Run the lowest level check engine
 		 */
-		
+
 		// Initialize list of rules to be triggered after evaluation
-		
-		
-		
+
 		/*
 		 * Step 1: Query all checks matching the data in terms of endPointID,
 		 * propertyID, CheckValue etc.
@@ -601,13 +592,13 @@ public class Imdb {
 		// System.out.println("Checkvalue   " + checkValue);
 		// System.out.println("-----------------------------------------------------------");
 
-		HashMap<String, List<String>> validChecksContainer = findChecks(endpointID, propertyID,
-				checkValue, operator, expired);
+		HashMap<String, List<String>> validChecksContainer = findChecks(
+				endpointID, propertyID, checkValue, operator, expired);
 
 		List<String> validCheckIDs = validChecksContainer.get("validCheckIDs");
 		List<String> triggerRules = new ArrayList<String>();
 		triggerRules.addAll(validChecksContainer.get("ruleIDs"));
-		
+
 		/*
 		 * Step 2: Update all check entries in VoltDB with the new state "1" for
 		 * true and find all Multichecks linked to the Checks that were just
@@ -642,11 +633,12 @@ public class Imdb {
 		evaluateCycleMultiChecks(validCycleMultiCheckIDs);
 
 		while (validCycleMultiCheckIDs.isEmpty() == false) {
-			triggerRules.addAll(evaluateCycleMultiChecks(validCycleMultiCheckIDs));
+			triggerRules
+					.addAll(evaluateCycleMultiChecks(validCycleMultiCheckIDs));
 			validCycleMultiCheckIDs = getMultiCheckParents(validCycleMultiCheckIDs);
 		}
 		return triggerRules;
 
 	}
-	
+
 }
