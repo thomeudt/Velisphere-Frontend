@@ -97,6 +97,11 @@ public class PreLoad {
 	        
 	        System.out.println("Multichecks and Multichecks linked");
 	        
+	        preLoader.callProcedure("RULE.insert", "1000", "Licht im Arbeitszimmer AN", "1001", ""); // Button 1 gedrückt
+	        preLoader.callProcedure("RULE.insert", "1001", "Licht im Arbeitszimmer AUS", "", "1000"); // Button 1 und 2 gedrückt
+	        
+	        System.out.println("Rules loaded");
+	        
 	        System.out.println("Done!");
 	        
 	        /*

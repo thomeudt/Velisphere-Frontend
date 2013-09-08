@@ -18,7 +18,9 @@
 package com.velisphere.chai;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -87,6 +89,7 @@ public class MessageInspect implements Runnable {
 				
 				//System.out.println("**************************** IMDB CHECK INITIATED ************************************");
 				
+				List<String> triggeredRules = new ArrayList<String>();
 				
 				for ( Map.Entry<String, String> e : forEvaluation.entrySet() )
 				{
@@ -96,12 +99,16 @@ public class MessageInspect implements Runnable {
 						// System.out.println("EPID: " + EPID);
 						// System.out.println("KEY:  " + e.getKey());
 						// System.out.println("VALUE:" + e.getValue());
-						Imdb.runChecks(EPID, e.getKey(), e.getValue(), "=", (byte) 0);
-						
+						triggeredRules.addAll(Imdb.runChecks(EPID, e.getKey(), e.getValue(), "=", (byte) 0));
 					}
 				}
 				
-				Send.main("OK", "adam");
+				for(int i=0; i < triggeredRules.size(); i++)
+				{
+				System.out.println("Rule found: " + triggeredRules.get(i));
+				Send.main(triggeredRules.get(i), "adam");
+				}
+				
 				
 				
 
