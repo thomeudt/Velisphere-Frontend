@@ -46,8 +46,8 @@ public class Imdb {
 
 		Imdb.montanaClient = ClientFactory.createClient();
 		Imdb.montanaClient.createConnection(ServerParameters.volt_ip);
-		System.out.println(" [IN] Connected to VoltDB on address: "
-				+ ServerParameters.volt_ip);
+		// System.out.println(" [IN] Connected to VoltDB on address: "
+		//		+ ServerParameters.volt_ip);
 	}
 
 	public static void writeLog(String exchangeName, String message,
@@ -109,7 +109,7 @@ public class Imdb {
 
 		final VoltTable results[] = selectResponse.getResults();
 		if (results.length == 0) {
-			System.out.printf("Not valid match found!\n");
+			//System.out.printf("Not valid match found!\n");
 		}
 
 		List<String> validCheckIDs = new ArrayList<String>();
@@ -127,8 +127,8 @@ public class Imdb {
 						VoltTableRow row = result.fetchRow(i);
 						// extract the value in column checkid
 						validCheckIDs.add(row.getString("CHECKID"));
-						System.out.println("*** VALID CHECK FOUND: "
-								+ row.getString("CHECKID"));
+						//System.out.println("*** VALID CHECK FOUND: "
+						//		+ row.getString("CHECKID"));
 					}
 				}
 		}
@@ -166,7 +166,7 @@ public class Imdb {
 			final VoltTable findMulticheckResults[] = findMulticheckResponse
 					.getResults();
 			if (findMulticheckResults.length == 0) {
-				System.out.printf("Not valid match found!\n");
+				//System.out.printf("Not valid match found!\n");
 			}
 
 			for (VoltTable findMulticheckResult : findMulticheckResults) {
@@ -177,8 +177,8 @@ public class Imdb {
 						VoltTableRow row = findMulticheckResult.fetchRow(i);
 						// extract the value in column checkid
 						validMultiCheckIDs.add(row.getString("MULTICHECKID"));
-						System.out.println("MULTICHECK FOUND: "
-								+ row.getString("MULTICHECKID"));
+						//System.out.println("MULTICHECK FOUND: "
+						//		+ row.getString("MULTICHECKID"));
 						// reset the multicheck state
 						Imdb.montanaClient.callProcedure("UpdateMultiChecks",
 								0, row.getString("MULTICHECKID"));
@@ -219,7 +219,7 @@ public class Imdb {
 			final VoltTable findCheckForMulticheckResults[] = findCheckForMulticheckResponse
 					.getResults();
 			if (findCheckForMulticheckResults.length == 0) {
-				System.out.printf("Not valid match found!\n");
+				//System.out.printf("Not valid match found!\n");
 			}
 
 			// Query all the checks that define the Multichecks
@@ -237,8 +237,8 @@ public class Imdb {
 						// extract the value in column checkid
 						checkIDsMatchingMultiCheck
 								.add(row.getString("CHECKID"));
-						System.out.println("ATTCHED CHECKS FOUND: "
-								+ row.getString("CHECKID"));
+						//System.out.println("ATTCHED CHECKS FOUND: "
+						//		+ row.getString("CHECKID"));
 
 						// evaluate each check linked to the multicheck whether
 						// it is true or not
@@ -257,10 +257,10 @@ public class Imdb {
 									VoltTableRow checkRow = findCheckStateResult
 											.fetchRow(j);
 									if (checkRow.getLong("STATE") == 1) {
-										System.out.println("STATE: TRUE");
+										//System.out.println("STATE: TRUE");
 										checkStates.add(true);
 									} else {
-										System.out.println("STATE: FALSE");
+										//System.out.println("STATE: FALSE");
 										checkStates.add(false);
 									}
 								}
@@ -289,8 +289,8 @@ public class Imdb {
 					multiCheckState = true;
 					Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
 							multicheckID);
-					System.out.println("*** Multicheck Eval OR Result: "
-							+ multiCheckState);
+					//System.out.println("*** Multicheck Eval OR Result: "
+					//		+ multiCheckState);
 				}
 
 				if ((checkStates.contains(true) == true && checkStates
@@ -299,9 +299,9 @@ public class Imdb {
 					multiCheckState = true;
 					Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
 							multicheckID);
-					System.out
-							.println("*** Multicheck Eval AND Result for MultiCheck "
-									+ multicheckID + ": " + multiCheckState);
+					//System.out
+					//		.println("*** Multicheck Eval AND Result for MultiCheck "
+					//				+ multicheckID + ": " + multiCheckState);
 				}
 
 			}
@@ -322,7 +322,7 @@ public class Imdb {
 		List<String> validCycleMultiCheckIDs = new ArrayList<String>();
 
 		for (String multiCheckID : validMultiCheckIDs) {
-			System.out.println("Cycling for Multicheck: " + multiCheckID);
+			//System.out.println("Cycling for Multicheck: " + multiCheckID);
 
 			final ClientResponse findMulticheckResponse = Imdb.montanaClient
 					.callProcedure("FindParentMultiChecksForMultiCheckID",
@@ -333,7 +333,7 @@ public class Imdb {
 			final VoltTable findMulticheckResults[] = findMulticheckResponse
 					.getResults();
 			if (findMulticheckResults.length == 0) {
-				System.out.printf("Not valid match found!\n");
+				//System.out.printf("Not valid match found!\n");
 			}
 
 			for (VoltTable findMulticheckResult : findMulticheckResults) {
@@ -345,8 +345,8 @@ public class Imdb {
 						// extract the value in column checkid
 						validCycleMultiCheckIDs.add(row
 								.getString("MULTICHECKLID"));
-						System.out.println("CYCLICAL MULTICHECK FOUND: "
-								+ row.getString("MULTICHECKLID"));
+						//System.out.println("CYCLICAL MULTICHECK FOUND: "
+						//		+ row.getString("MULTICHECKLID"));
 						// reset the multicheck state
 						Imdb.montanaClient.callProcedure("UpdateMultiChecks",
 								0, row.getString("MULTICHECKLID"));
@@ -403,8 +403,8 @@ public class Imdb {
 						// extract the value in column checkid
 						multiCheckIDsMatchingMultiCheck.add(row
 								.getString("MULTICHECKRID"));
-						System.out.println("ATTCHED MULTICHECKS FOUND: "
-								+ row.getString("MULTICHECKRID"));
+						//System.out.println("ATTCHED MULTICHECKS FOUND: "
+						//		+ row.getString("MULTICHECKRID"));
 
 						// evaluate each check linked to the multicheck whether
 						// it is true or not
@@ -424,12 +424,12 @@ public class Imdb {
 									VoltTableRow checkRow = findMultiCheckStateResult
 											.fetchRow(j);
 									if (checkRow.getLong("STATE") == 1) {
-										System.out
-												.println("MULTICHECKSTATE: TRUE");
+										//System.out
+										//		.println("MULTICHECKSTATE: TRUE");
 										multiCheckStates.add(true);
 									} else {
-										System.out
-												.println("MULTICHECKSTATE: FALSE");
+										//System.out
+										//		.println("MULTICHECKSTATE: FALSE");
 										multiCheckStates.add(false);
 									}
 								}
@@ -458,8 +458,8 @@ public class Imdb {
 					multiCheckState = true;
 					Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
 							multicheckID);
-					System.out.println("*** Cyclical Multicheck Eval OR Result: "
-							+ multiCheckState);
+					//System.out.println("*** Cyclical Multicheck Eval OR Result: "
+					//		+ multiCheckState);
 				}
 
 				if ((multiCheckStates.contains(true) == true && multiCheckStates
@@ -468,9 +468,9 @@ public class Imdb {
 					multiCheckState = true;
 					Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
 							multicheckID);
-					System.out
-							.println("*** Cyclical Multicheck Eval AND Result for MultiCheck "
-									+ multicheckID + ": " + multiCheckState);
+					//System.out
+					//		.println("*** Cyclical Multicheck Eval AND Result for MultiCheck "
+					//				+ multicheckID + ": " + multiCheckState);
 				}
 
 			}
@@ -489,11 +489,11 @@ public class Imdb {
 		 * propertyID, CheckValue etc.
 		 */
 
-		System.out.println("------------------NEW IMDB CHECK---------------------------");
-		System.out.println("Endpoint:    " + endpointID);
-		System.out.println("Property:    " + propertyID);
-		System.out.println("Checkvalue   " + checkValue);
-		System.out.println("-----------------------------------------------------------");
+		//System.out.println("------------------NEW IMDB CHECK---------------------------");
+		//System.out.println("Endpoint:    " + endpointID);
+		//System.out.println("Property:    " + propertyID);
+		//System.out.println("Checkvalue   " + checkValue);
+		//System.out.println("-----------------------------------------------------------");
 		
 		List<String> validCheckIDs = findChecks(endpointID, propertyID,
 				checkValue, operator, expired);

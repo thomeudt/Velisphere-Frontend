@@ -85,7 +85,7 @@ public class MessageInspect implements Runnable {
 			
 				Imdb.resetChecksForEndpoint(EPID);
 				
-				System.out.println("**************************** IMDB CHECK INITIATED ************************************");
+				//System.out.println("**************************** IMDB CHECK INITIATED ************************************");
 				
 				
 				for ( Map.Entry<String, String> e : forEvaluation.entrySet() )
@@ -97,11 +97,11 @@ public class MessageInspect implements Runnable {
 						// System.out.println("KEY:  " + e.getKey());
 						// System.out.println("VALUE:" + e.getValue());
 						Imdb.runChecks(EPID, e.getKey(), e.getValue(), "=", (byte) 0);
-						Send.main("OK", "adam");
-
+						
 					}
 				}
 				
+				Send.main("OK", "adam");
 				
 				
 
