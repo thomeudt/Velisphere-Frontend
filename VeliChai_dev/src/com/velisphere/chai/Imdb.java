@@ -528,7 +528,7 @@ public class Imdb {
 						VoltTableRow row = result.fetchRow(i);
 						// extract the value in column checkid
 						ruleIDs.add(row.getString("RULEID"));
-						System.out.println(row.getString("RULEID"));
+						// System.out.println(row.getString("RULEID"));
 					}
 				}
 		}
@@ -563,7 +563,7 @@ public class Imdb {
 						VoltTableRow row = result.fetchRow(i);
 						// extract the value in column checkid
 						ruleIDs.add(row.getString("RULEID"));
-						System.out.println(row.getString("RULEID"));
+						// System.out.println(row.getString("RULEID"));
 					}
 				}
 		}

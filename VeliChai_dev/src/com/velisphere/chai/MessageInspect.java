@@ -105,8 +105,8 @@ public class MessageInspect implements Runnable {
 				
 				for(int i=0; i < triggeredRules.size(); i++)
 				{
-				System.out.println("Rule found: " + triggeredRules.get(i));
-				Send.main(triggeredRules.get(i), "adam");
+				// System.out.println("Rule found: " + triggeredRules.get(i));
+				Send.main(triggeredRules.get(i), "ludwig");
 				}
 				
 				

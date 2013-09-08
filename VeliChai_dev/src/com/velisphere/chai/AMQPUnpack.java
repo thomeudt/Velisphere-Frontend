@@ -32,8 +32,8 @@ public class AMQPUnpack implements Runnable {
 	AMQPUnpack(QueueingConsumer.Delivery d) { delivery = d; }
 
 
-	ExecutorService inspector = Executors.newFixedThreadPool(ServerParameters.threadpoolSize); // create thread pool for message inspection
-
+	ExecutorService inspector = Executors.newFixedThreadPool((ServerParameters.threadpoolSize*32)); // create thread pool for message inspection
+	// ExecutorService inspector = Executors.newFixedThreadPool(1); // create thread pool for message inspection
 
 	public void run() {
 
@@ -54,7 +54,8 @@ public class AMQPUnpack implements Runnable {
 
 				Thread inspectionThread;
 				inspectionThread = new Thread(new MessageInspect(message), "inspector");
-				inspector.execute(inspectionThread);
+				//inspector.execute(inspectionThread);
+				ChaiWorker.receiver.execute(inspectionThread);
 				Imdb.writeLog("null", message, ServerParameters.controllerQueueName, "null");
 				
 			}

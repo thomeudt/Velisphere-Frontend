@@ -25,11 +25,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ChaiWorker {
 
+	public static ExecutorService receiver;
+
+	
 	static ObjectMapper mapper = new ObjectMapper(); // object mapper for
 	// jackson json parser -
 	// create once, reuse
 	// for performance
+
 	public static JsonFactory factory = mapper.getFactory();
+
+
 
 	public static void main(String[] args) throws IOException {
 
@@ -72,10 +78,10 @@ public class ChaiWorker {
 		// open as many listener threads as defined in threadpool size in config
 		// file.
 
-		int numworkers = ServerParameters.threadpoolSize;
-
-		ExecutorService receiver = Executors
-				.newFixedThreadPool(ServerParameters.threadpoolSize);
+		// int numworkers = ServerParameters.threadpoolSize;
+		int numworkers = ServerParameters.threadpoolSize/32;
+		
+		receiver = Executors.newFixedThreadPool(ServerParameters.threadpoolSize);
 
 		Recv[] receiverThread = new Recv[numworkers];
 		for (int i = 0; i < numworkers; i++) {

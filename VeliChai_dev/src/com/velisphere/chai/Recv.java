@@ -47,8 +47,9 @@ public class Recv implements Runnable {
 		 *  
 		 */
 
-		ExecutorService unpacker = Executors.newFixedThreadPool(ServerParameters.threadpoolSize); // create thread pool for message unpacking
-
+		ExecutorService unpacker = Executors.newFixedThreadPool(ServerParameters.threadpoolSize*32); // create thread pool for message unpacking
+		//ExecutorService unpacker = Executors.newFixedThreadPool(1); // create thread pool for message unpacking
+		
 		try {
 
 			BrokerConnection bc = new BrokerConnection();
@@ -77,7 +78,8 @@ public class Recv implements Runnable {
 					delivery = consumer.nextDelivery();
 					Thread unpackingThread;
 					unpackingThread = new Thread(new AMQPUnpack(delivery), "unpacker");
-					unpacker.execute(unpackingThread);
+					// unpacker.execute(unpackingThread);
+					ChaiWorker.receiver.execute(unpackingThread);
 					channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false); // here we ack receipt of the message
 					
 				} catch (ShutdownSignalException | ConsumerCancelledException
