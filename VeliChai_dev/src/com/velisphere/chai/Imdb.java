@@ -84,15 +84,12 @@ public class Imdb {
 
 	}
 
-	public static void runChecks(String endpointID, String propertyID,
-			String checkValue, String operator, byte expired) throws Exception {
+	static List<String> findChecks(String endpointID, String propertyID,
+			String checkValue, String operator, byte expired)
+			throws NoConnectionsException, IOException, ProcCallException {
 
 		/*
-		 * Run the lowest level check engine
-		 */
-
-		/*
-		 * Step 2: Query all checks matching the data in terms of endPointID,
+		 * Query all checks matching the data in terms of endPointID,
 		 * propertyID, CheckValue etc.
 		 */
 
@@ -136,11 +133,19 @@ public class Imdb {
 				}
 		}
 
+		return validCheckIDs;
+
 		// ADD CHECK IF CHECK IS REFERENCED IN A RULE --> TRIGGER ACTION
 
+	}
+
+	static List<String> markChecksTrueAndGetParentMultiChecks(
+			List<String> validCheckIDs) throws NoConnectionsException,
+			IOException, ProcCallException {
+
 		/*
-		 * Step 3: Update all check entries in VoltDB with the new state "1" for
-		 * true and find all Multichecks linked to the Checks that were just
+		 * Update all check entries in VoltDB with the new state "1" for true
+		 * and find all Multichecks linked to the Checks that were just
 		 * evaluated, return a List Also, reset the state of the multi check to
 		 * false as a basis for the next round of checks
 		 */
@@ -182,10 +187,16 @@ public class Imdb {
 			}
 
 		}
+		return validMultiCheckIDs;
+
+	}
+
+	static void evaluateMultiChecks(List<String> validMultiCheckIDs)
+			throws NoConnectionsException, IOException, ProcCallException {
 
 		/*
-		 * Step 4: Evaluate if these Multichecks are true and update multicheck
-		 * state accordingly
+		 * Evaluate if these Multichecks are true and update multicheck state
+		 * accordingly
 		 */
 
 		for (String multicheckID : validMultiCheckIDs) {
@@ -298,10 +309,14 @@ public class Imdb {
 
 		// ADD CHECK IF MULTICHECK IS REFERENCED IN A RULE --> TRIGGER ACTION
 
+	}
+
+	static List<String> getMultiCheckParents(List<String> validMultiCheckIDs)
+			throws NoConnectionsException, IOException, ProcCallException {
 		/*
-		 * Step 4: Find all MultiChecks that are parents to the MultiChecks that
-		 * were just evaluated, return a List Also, reset the state of the
-		 * MultiCheck to false as a basis for the next round of checks
+		 * Find all MultiChecks that are parents to the MultiChecks that were
+		 * just evaluated, return a List Also, reset the state of the MultiCheck
+		 * to false as a basis for the next round of checks
 		 */
 
 		List<String> validCycleMultiCheckIDs = new ArrayList<String>();
@@ -340,10 +355,15 @@ public class Imdb {
 			}
 
 		}
+		return validCycleMultiCheckIDs;
+	}
+
+	static void evaluateCycleMultiChecks(List<String> validCycleMultiCheckIDs)
+			throws NoConnectionsException, IOException, ProcCallException {
 
 		/*
-		 * Step 6: Find all child Multichecks linked to the parent Multichecks
-		 * that were just evaluated, return a List
+		 * Evaluate if these Multichecks are true and update multicheck state
+		 * accordingly
 		 */
 
 		for (String multicheckID : validCycleMultiCheckIDs) {
@@ -455,6 +475,53 @@ public class Imdb {
 
 			}
 		}
+	}
+
+	public static void runChecks(String endpointID, String propertyID,
+			String checkValue, String operator, byte expired) throws Exception {
+
+		/*
+		 * Run the lowest level check engine
+		 */
+
+		/*
+		 * Step 1: Query all checks matching the data in terms of endPointID,
+		 * propertyID, CheckValue etc.
+		 */
+
+		List<String> validCheckIDs = findChecks(endpointID, propertyID,
+				checkValue, operator, expired);
+
+		/*
+		 * Step 2: Update all check entries in VoltDB with the new state "1" for
+		 * true and find all Multichecks linked to the Checks that were just
+		 * evaluated, return a List Also, reset the state of the multi check to
+		 * false as a basis for the next round of checks
+		 */
+
+		List<String> validMultiCheckIDs = markChecksTrueAndGetParentMultiChecks(validCheckIDs);
+
+		/*
+		 * Step 3: Evaluate if these Multichecks are true and update multicheck
+		 * state accordingly
+		 */
+
+		evaluateMultiChecks(validMultiCheckIDs);
+
+		/*
+		 * Step 4: Find all MultiChecks that are parents to the MultiChecks that
+		 * were just evaluated, return a List Also, reset the state of the
+		 * MultiCheck to false as a basis for the next round of checks
+		 */
+
+		List<String> validCycleMultiCheckIDs = getMultiCheckParents(validMultiCheckIDs);
+
+		/*
+		 * Step 5: Evaluate if these Multichecks are true and update multicheck
+		 * state accordingly
+		 */
+
+		evaluateCycleMultiChecks(validCycleMultiCheckIDs);
 
 		/*
 		 * Step 7a: If List is empty, all multichecks have been iterated, no
