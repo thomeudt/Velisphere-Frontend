@@ -53,7 +53,7 @@ public class AMQPUnpack implements Runnable {
 			if(messagetype.equals("REG")) {
 
 				Thread inspectionThread;
-				inspectionThread = new Thread(new messageInspect(message), "inspector");
+				inspectionThread = new Thread(new MessageInspect(message), "inspector");
 				inspector.execute(inspectionThread);
 				Imdb.writeLog("null", message, ServerParameters.controllerQueueName, "null");
 				

@@ -23,8 +23,9 @@ public class stresstest {
 
 	public static void main(String[] args) throws Exception {
 
+		ServerParameters.my_queue_name = "1003";
 		
-		int numworkers = 70;
+		int numworkers = 50;
 		
 		ExecutorService B52 = Executors.newFixedThreadPool(1000);
 		Bombarder[] bombThread = new Bombarder[numworkers];
