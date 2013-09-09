@@ -25,7 +25,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.AMQP.BasicProperties;
 
-public class AMQPUnpack implements Runnable {
+public class AMQPUnpack {
 
 
 	QueueingConsumer.Delivery delivery;
@@ -52,10 +52,12 @@ public class AMQPUnpack implements Runnable {
 			messagetype = MessagePack.extractProperty(message, "TYPE");
 			if(messagetype.equals("REG")) {
 
-				Thread inspectionThread;
-				inspectionThread = new Thread(new MessageInspect(message), "inspector");
+				// Thread inspectionThread;
+				// inspectionThread = new Thread(new MessageInspect(message), "inspector");
 				//inspector.execute(inspectionThread);
-				ChaiWorker.receiver.execute(inspectionThread);
+				// ChaiWorker.receiver.execute(inspectionThread);
+				MessageInspect mI = new MessageInspect(message);
+				mI.run();
 				Imdb.writeLog("null", message, ServerParameters.controllerQueueName, "null");
 				
 			}

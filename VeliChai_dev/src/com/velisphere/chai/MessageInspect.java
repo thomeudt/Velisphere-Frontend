@@ -27,7 +27,7 @@ import java.util.Map.Entry;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-public class MessageInspect implements Runnable {
+public class MessageInspect  {
 
 	/*
 	 * This contains all the possible inspection actions
@@ -40,7 +40,6 @@ public class MessageInspect implements Runnable {
 	MessageInspect(String s) { messageBody = s; }
 
 	
-	@Override
 	public void run() {
 
 		/*
@@ -111,6 +110,7 @@ public class MessageInspect implements Runnable {
 						// System.out.println("KEY:  " + e.getKey());
 						// System.out.println("VALUE:" + e.getValue());
 						triggeredRules.addAll(Imdb.runChecks(EPID, e.getKey(), e.getValue(), "=", (byte) 0));
+						
 					}
 					it.remove();
 				}

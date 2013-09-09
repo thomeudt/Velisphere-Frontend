@@ -76,11 +76,14 @@ public class Recv implements Runnable {
 				QueueingConsumer.Delivery delivery;
 				try{
 					delivery = consumer.nextDelivery();
-					Thread unpackingThread;
-					unpackingThread = new Thread(new AMQPUnpack(delivery), "unpacker");
+					// Thread unpackingThread;
+					// unpackingThread = new Thread(new AMQPUnpack(delivery), "unpacker");
 					// unpacker.execute(unpackingThread);
-					ChaiWorker.receiver.execute(unpackingThread);
-					channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false); // here we ack receipt of the message
+					// ChaiWorker.receiver.execute(unpackingThread);
+					AMQPUnpack uP = new AMQPUnpack(delivery);
+					uP.run();
+					
+					// channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false); // here we ack receipt of the message
 					
 				} catch (ShutdownSignalException | ConsumerCancelledException
 						| InterruptedException e) {

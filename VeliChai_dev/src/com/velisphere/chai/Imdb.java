@@ -586,8 +586,11 @@ public class Imdb {
 		HashMap<String, List<String>> validChecksContainer = findChecks(
 				endpointID, propertyID, checkValue, operator, expired);
 
-		List<String> validCheckIDs = validChecksContainer.get("validCheckIDs");
 		List<String> triggerRules = new ArrayList<String>();
+		
+		if (validChecksContainer.isEmpty() == false)
+		{
+		List<String> validCheckIDs = validChecksContainer.get("validCheckIDs");
 		triggerRules.addAll(validChecksContainer.get("ruleIDs"));
 
 		/*
@@ -597,7 +600,11 @@ public class Imdb {
 		 * false as a basis for the next round of checks
 		 */
 
-		List<String> validMultiCheckIDs = markChecksTrueAndGetParentMultiChecks(validCheckIDs);
+		
+		if(validCheckIDs.isEmpty() == false)
+		{
+			List<String> validMultiCheckIDs = markChecksTrueAndGetParentMultiChecks(validCheckIDs);
+		
 
 		/*
 		 * Step 3: Evaluate if these Multichecks are true and update multicheck
@@ -613,6 +620,8 @@ public class Imdb {
 		 * MultiCheck to false as a basis for the next round of checks
 		 */
 
+		if(validMultiCheckIDs.isEmpty() == false)
+		{
 		List<String> validCycleMultiCheckIDs = getMultiCheckParents(validMultiCheckIDs);
 
 		/*
@@ -621,15 +630,26 @@ public class Imdb {
 		 * multichecks can be found
 		 */
 
+		
 		evaluateCycleMultiChecks(validCycleMultiCheckIDs);
 
-		while (validCycleMultiCheckIDs.isEmpty() == false) {
+		List<String> validAddCycleMultiCheckIDs = new ArrayList<String>();
+		Iterator<String> eCMCI = validCycleMultiCheckIDs.iterator();
+		Iterator<String> eACMCI = validAddCycleMultiCheckIDs.iterator();
+		
+		while (eACMCI.hasNext()){
+		while (eCMCI.hasNext()) {
 			triggerRules
 					.addAll(evaluateCycleMultiChecks(validCycleMultiCheckIDs));
-			validCycleMultiCheckIDs = getMultiCheckParents(validCycleMultiCheckIDs);
+		}
+			validAddCycleMultiCheckIDs = getMultiCheckParents(validCycleMultiCheckIDs);
+			eACMCI = validAddCycleMultiCheckIDs.iterator();
+		}
+		}
+		}
 		}
 		return triggerRules;
-
+		
 	}
 
 }
