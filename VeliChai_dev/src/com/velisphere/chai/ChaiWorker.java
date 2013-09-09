@@ -79,7 +79,7 @@ public class ChaiWorker {
 		// file.
 
 		// int numworkers = ServerParameters.threadpoolSize;
-		int numworkers = ServerParameters.threadpoolSize/32;
+		int numworkers = ServerParameters.threadpoolSize/2;
 		
 		receiver = Executors.newFixedThreadPool(ServerParameters.threadpoolSize);
 

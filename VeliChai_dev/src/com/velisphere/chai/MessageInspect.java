@@ -20,8 +20,10 @@ package com.velisphere.chai;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -91,9 +93,18 @@ public class MessageInspect implements Runnable {
 				
 				List<String> triggeredRules = new ArrayList<String>();
 				
-				for ( Map.Entry<String, String> e : forEvaluation.entrySet() )
+				Iterator<Map.Entry<String, String>> it = forEvaluation.entrySet().iterator();
+				
+				
+				
+				
+				//for ( Map.Entry<String, String> e : forEvaluation.entrySet() )
+				while (it.hasNext())
 				{
 					// System.out.println( e.getKey() + "="+ e.getValue() );
+					
+					Map.Entry<String, String> e = (Map.Entry<String, String>)it.next();
+					
 					if(e.getKey() != "EPID" && e.getKey() != null && e.getKey() != "SECTOK" && e.getKey() != "TIMESTAMP" && e.getKey() != "TYPE" )
 					{
 						// System.out.println("EPID: " + EPID);
@@ -101,15 +112,18 @@ public class MessageInspect implements Runnable {
 						// System.out.println("VALUE:" + e.getValue());
 						triggeredRules.addAll(Imdb.runChecks(EPID, e.getKey(), e.getValue(), "=", (byte) 0));
 					}
+					it.remove();
 				}
 				
-				for(int i=0; i < triggeredRules.size(); i++)
+				//for(int i=0; i < triggeredRules.size(); i++)
+				for(Iterator<String> rIT = triggeredRules.iterator(); rIT.hasNext();)
 				{
 				// System.out.println("Rule found: " + triggeredRules.get(i));
-				Send.main(triggeredRules.get(i), "ludwig");
+				Send.main((String)rIT.next(), "ludwig");
+				rIT.remove();	
 				}
 				
-				
+				Send.main("A", "ludwig");
 				
 
 
