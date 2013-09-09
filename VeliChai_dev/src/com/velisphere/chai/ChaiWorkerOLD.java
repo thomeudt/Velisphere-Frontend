@@ -108,9 +108,9 @@ public class ChaiWorkerOLD {
 			try {
 				delivery = consumer.nextDelivery();
 				Thread unpackingThread;
-				unpackingThread = new Thread(new AMQPUnpack(delivery),
-						"unpacker");
-				 unpacker.execute(unpackingThread);
+			//	unpackingThread = new Thread(new AMQPUnpack(delivery),
+				//		"unpacker");
+				// unpacker.execute(unpackingThread);
 				
 				// AMQPUnpack unPacker = new AMQPUnpack(delivery);
 				// unPacker.run();

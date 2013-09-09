@@ -28,131 +28,90 @@ import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 import com.rabbitmq.client.AMQP.BasicProperties;
 
-public class AMQPUnpack implements Runnable{
+public class AMQPUnpack implements Runnable {
+
 
 
 	
-	
-	
-	QueueingConsumer.Delivery delivery;
-	AMQPUnpack(QueueingConsumer.Delivery d) { delivery = d; }
 
-
-	ExecutorService inspector = Executors.newFixedThreadPool((ServerParameters.threadpoolSize)); // create thread pool for message inspection
-	// ExecutorService inspector = Executors.newFixedThreadPool(1); // create thread pool for message inspection
 
 	public void run() {
-		
+
 		BrokerConnection bc = new BrokerConnection();
-		Channel channel = null;
+		Channel channel;
+		
 		try {
 			channel = bc.establishRxChannel();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		int prefetchCount = 1;
-		try {
-			channel.basicQos(prefetchCount);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		QueueingConsumer consumer = new QueueingConsumer(channel);
+		
 
-		// Message acknowledgment is needed to make sure no messages are lost
 
-		boolean autoAck = false;
-		try {
-			channel.basicConsume(ServerParameters.controllerQueueName, autoAck,
-					consumer);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+			// Prefetch of 100 has proven to be a good choice for performance
+			// reasons, but this needs further evaluation
 
-		/*
-		 * Start the listening service
-		 */
-
-		QueueingConsumer.Delivery delivery;
-
-		ExecutorService unpacker = Executors
-				.newFixedThreadPool(ServerParameters.threadpoolSize/16);
-
-		while (true) {
+			int prefetchCount = 1;
 			try {
-				delivery = consumer.nextDelivery();
-				Thread unpackingThread;
-				unpackingThread = new Thread(new AMQPUnpack(delivery),
-						"unpacker");
-				 unpacker.execute(unpackingThread);
-				
-				// AMQPUnpack unPacker = new AMQPUnpack(delivery);
-				// unPacker.run();
-				
-				channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false); 
-				String message = new String(delivery.getBody());
-				BasicProperties props = delivery.getProperties(); // not yet used
+				channel.basicQos(prefetchCount);
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			QueueingConsumer consumer = new QueueingConsumer(channel);
 
-				/*
-				 *  Here the inspection of the message is being triggered.
-				 *  Inspect only messages of type REG
-				 */
+			// Message acknowledgment is needed to make sure no messages are lost
+
+			boolean autoAck = false;
+			try {
+				channel.basicConsume(ServerParameters.controllerQueueName, autoAck,
+							consumer);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		
+			/*
+			 * Start the listening service
+			 */
+
+			QueueingConsumer.Delivery delivery;
 
 
-				String messagetype;
+			while (true) {
 				try {
+					delivery = consumer.nextDelivery();
+
+					String message = new String(delivery.getBody());
+					BasicProperties props = delivery.getProperties(); // not yet used
+
+					/*
+					 *  Here the inspection of the message is being triggered.
+					 *  Inspect only messages of type REG
+					 */
+
+
+					ExecutorService inspector = Executors.newFixedThreadPool(ServerParameters.threadpoolSize/4); // create thread pool for message inspection
+					String messagetype;
 					messagetype = MessagePack.extractProperty(message, "TYPE");
 					if(messagetype.equals("REG")) {
-
 						Thread inspectionThread;
 						inspectionThread = new Thread(new MessageInspect(message), "inspector");
 						inspector.execute(inspectionThread);
-						//ChaiWorker.receiver.execute(inspectionThread);
-						// MessageInspect mI = new MessageInspect(message);
-						// mI.run();
 						Imdb.writeLog("null", message, ServerParameters.controllerQueueName, "null");
-						
+						channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+					 
 					}
+					inspector.shutdown(); // close thread pool for message inspection
+					} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-
-				} catch (JsonProcessingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				inspector.shutdown(); // close thread pool for message inspection
-
+					}
 			
-			} catch (ShutdownSignalException | ConsumerCancelledException
-					| InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		} catch (IOException e3) {
+			// TODO Auto-generated catch block
+			e3.printStackTrace();
 
-			try {
-				channel.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			return; // close the current thread
 		}
-
 	}
-
-
-
-
-
-
 }

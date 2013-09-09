@@ -83,11 +83,12 @@ public class ChaiWorker {
 		ExecutorService unpacker = Executors
 				.newFixedThreadPool(ServerParameters.threadpoolSize);
 
+		for(int i = 0; i<ServerParameters.threadpoolSize; i++){
 				Thread unpackingThread;
-				unpackingThread = new Thread(new AMQPUnpack(null),
+				unpackingThread = new Thread(new AMQPUnpack(),
 						"unpacker");
-				 unpacker.execute(unpackingThread);
-				
+			    unpacker.execute(unpackingThread);
+		}
 		
 		
 	}

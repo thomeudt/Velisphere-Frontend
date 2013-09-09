@@ -31,38 +31,34 @@ public class MessageInspect implements Runnable {
 
 	/*
 	 * This contains all the possible inspection actions
-	 * 
 	 */
 
 	// Declare class in method
 
 	String messageBody = new String();
-	MessageInspect(String s) { messageBody = s; }
 
-	
+	MessageInspect(String s) {
+		messageBody = s;
+	}
+
 	public void run() {
 
 		/*
 		 * This is the old chat example
-		
-		
-		String ChatMessage = null;
-		String DestQueueName = null;
-		try {
-			ChatMessage = MessagePack.extractProperty(messageBody, "1");
-			DestQueueName = MessagePack.extractProperty(messageBody, "0");
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		*/
+		 * 
+		 * 
+		 * String ChatMessage = null; String DestQueueName = null; try {
+		 * ChatMessage = MessagePack.extractProperty(messageBody, "1");
+		 * DestQueueName = MessagePack.extractProperty(messageBody, "0"); }
+		 * catch (JsonProcessingException e) { e.printStackTrace(); } catch
+		 * (IOException e) { e.printStackTrace(); }
+		 */
 
-		// First, we discard all messages where the controller queue is addressed as the target queue in the messagepack
+		// First, we discard all messages where the controller queue is
+		// addressed as the target queue in the messagepack
 
 		String DestQueueName = null;
-		
+
 		try {
 			DestQueueName = MessagePack.extractProperty(messageBody, "0");
 		} catch (JsonProcessingException e) {
@@ -72,64 +68,59 @@ public class MessageInspect implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		if (DestQueueName.equals(ServerParameters.controllerQueueName)){
+
+		if (DestQueueName.equals(ServerParameters.controllerQueueName)) {
 			System.out.println("False send to controller queue!!!");
-		}
-		else
-		{		
-		
+		} else {
+
 			HashMap<String, String> forEvaluation = new HashMap<String, String>();
 			try {
 				forEvaluation = MessagePack.extractKeyPropertyPair(messageBody);
 
 				String EPID = forEvaluation.get("EPID");
-			
+
 				Imdb.resetChecksForEndpoint(EPID);
-				
-				//System.out.println("**************************** IMDB CHECK INITIATED ************************************");
-				
+
+				// System.out.println("**************************** IMDB CHECK INITIATED ************************************");
+
 				List<String> triggeredRules = new ArrayList<String>();
-				
-				Iterator<Map.Entry<String, String>> it = forEvaluation.entrySet().iterator();
-				
-				
-				
-				
-				//for ( Map.Entry<String, String> e : forEvaluation.entrySet() )
-				while (it.hasNext())
-				{
+
+				Iterator<Map.Entry<String, String>> it = forEvaluation
+						.entrySet().iterator();
+
+				// for ( Map.Entry<String, String> e : forEvaluation.entrySet()
+				// )
+				while (it.hasNext()) {
 					// System.out.println( e.getKey() + "="+ e.getValue() );
-					
-					Map.Entry<String, String> e = (Map.Entry<String, String>)it.next();
-					
-					if(e.getKey() != "EPID" && e.getKey() != null && e.getKey() != "SECTOK" && e.getKey() != "TIMESTAMP" && e.getKey() != "TYPE" )
-					{
+
+					Map.Entry<String, String> e = (Map.Entry<String, String>) it
+							.next();
+
+					if (e.getKey() != "EPID" && e.getKey() != null
+							&& e.getKey() != "SECTOK"
+							&& e.getKey() != "TIMESTAMP"
+							&& e.getKey() != "TYPE") {
 						// System.out.println("EPID: " + EPID);
 						// System.out.println("KEY:  " + e.getKey());
 						// System.out.println("VALUE:" + e.getValue());
-						triggeredRules.addAll(Imdb.runChecks(EPID, e.getKey(), e.getValue(), "=", (byte) 0));
-						
+						triggeredRules.addAll(Imdb.runChecks(EPID, e.getKey(),
+								e.getValue(), "=", (byte) 0));
+
 					}
 					it.remove();
 				}
-				
-				//for(int i=0; i < triggeredRules.size(); i++)
-				for(Iterator<String> rIT = triggeredRules.iterator(); rIT.hasNext();)
-				{
-				// System.out.println("Rule found: " + triggeredRules.get(i));
-				Send.main((String)rIT.next(), "adam");
-				rIT.remove();	
+
+				// for(int i=0; i < triggeredRules.size(); i++)
+				for (Iterator<String> rIT = triggeredRules.iterator(); rIT
+						.hasNext();) {
+					// System.out.println("Rule found: " +
+					// triggeredRules.get(i));
+					Send.main((String) rIT.next(), "adam");
+					rIT.remove();
 				}
-				
+
 				// Send.main("A", "ludwig");
-				
 
-
-
-			
-			
 			} catch (JsonProcessingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -140,9 +131,7 @@ public class MessageInspect implements Runnable {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
-			
-			
+
 		}
 		return;
 
