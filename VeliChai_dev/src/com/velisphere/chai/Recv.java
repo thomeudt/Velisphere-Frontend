@@ -26,8 +26,11 @@ import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.QueueingConsumer.Delivery;
 import com.rabbitmq.client.ShutdownSignalException;
 
-public class Recv implements Runnable {
+public class Recv  {
 
+	
+	// depracted in this version 0.0.4
+	
 	private Channel passedChannel;
 	private QueueingConsumer passedConsumer; 
 
@@ -51,7 +54,7 @@ public class Recv implements Runnable {
 		 *  
 		 */
 
-		//ExecutorService unpacker = Executors.newFixedThreadPool(ServerParameters.threadpoolSize*32); // create thread pool for message unpacking
+		ExecutorService unpacker = Executors.newCachedThreadPool(); // create thread pool for message unpacking
 		//ExecutorService unpacker = Executors.newFixedThreadPool(1); // create thread pool for message unpacking
 		
 		try {
@@ -61,12 +64,12 @@ public class Recv implements Runnable {
 			while (!Thread.currentThread().isInterrupted()){
 				try{
 					delivery = passedConsumer.nextDelivery();
-					// Thread unpackingThread;
-					// unpackingThread = new Thread(new AMQPUnpack(delivery), "unpacker");
+					Thread unpackingThread;
+				//	unpackingThread = new Thread(new AMQPUnpack(delivery), "unpacker");
+				//	unpacker.execute(unpackingThread);
 					// unpacker.execute(unpackingThread);
-					// ChaiWorker.receiver.execute(unpackingThread);
-					AMQPUnpack uP = new AMQPUnpack(delivery);
-					uP.run();
+					// AMQPUnpack uP = new AMQPUnpack(delivery);
+					// uP.run();
 					
 					passedChannel.basicAck(delivery.getEnvelope().getDeliveryTag(), false); // here we ack receipt of the message
 					
@@ -80,7 +83,7 @@ public class Recv implements Runnable {
 			
 			passedChannel.close(); // close channel
 
-			// unpacker.shutdown(); // close thread pool for message unpacking
+			unpacker.shutdown(); // close thread pool for message unpacking
 		}
 		catch ( ShutdownSignalException | ConsumerCancelledException e) {
 			// TODO Auto-generated catch block

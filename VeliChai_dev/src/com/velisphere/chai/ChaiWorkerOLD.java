@@ -28,7 +28,7 @@ import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 
-public class ChaiWorker {
+public class ChaiWorkerOLD {
 
 	public static ExecutorService receiver;
 
@@ -79,16 +79,50 @@ public class ChaiWorker {
 				+ ServerParameters.controllerQueueName
 				+ ". To exit press CTRL+C");
 
-		
-		ExecutorService unpacker = Executors
-				.newFixedThreadPool(ServerParameters.threadpoolSize);
+		BrokerConnection bc = new BrokerConnection();
+		Channel channel = bc.establishRxChannel();
 
+		// Prefetch of 100 has proven to be a good choice for performance
+		// reasons, but this needs further evaluation
+
+		int prefetchCount = 1;
+		channel.basicQos(prefetchCount);
+		QueueingConsumer consumer = new QueueingConsumer(channel);
+
+		// Message acknowledgment is needed to make sure no messages are lost
+
+		boolean autoAck = false;
+		channel.basicConsume(ServerParameters.controllerQueueName, autoAck,
+				consumer);
+
+		/*
+		 * Start the listening service
+		 */
+
+		QueueingConsumer.Delivery delivery;
+
+		ExecutorService unpacker = Executors
+				.newFixedThreadPool(ServerParameters.threadpoolSize/16);
+
+		while (true) {
+			try {
+				delivery = consumer.nextDelivery();
 				Thread unpackingThread;
-				unpackingThread = new Thread(new AMQPUnpack(null),
+				unpackingThread = new Thread(new AMQPUnpack(delivery),
 						"unpacker");
 				 unpacker.execute(unpackingThread);
 				
-		
-		
+				// AMQPUnpack unPacker = new AMQPUnpack(delivery);
+				// unPacker.run();
+				
+				channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false); 
+			} catch (ShutdownSignalException | ConsumerCancelledException
+					| InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
 	}
 }

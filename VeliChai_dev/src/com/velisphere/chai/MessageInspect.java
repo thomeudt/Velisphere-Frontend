@@ -27,7 +27,7 @@ import java.util.Map.Entry;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-public class MessageInspect  {
+public class MessageInspect implements Runnable {
 
 	/*
 	 * This contains all the possible inspection actions
