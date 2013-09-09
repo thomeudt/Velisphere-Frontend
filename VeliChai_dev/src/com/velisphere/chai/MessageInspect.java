@@ -119,11 +119,11 @@ public class MessageInspect  {
 				for(Iterator<String> rIT = triggeredRules.iterator(); rIT.hasNext();)
 				{
 				// System.out.println("Rule found: " + triggeredRules.get(i));
-				Send.main((String)rIT.next(), "ludwig");
+				Send.main((String)rIT.next(), "adam");
 				rIT.remove();	
 				}
 				
-				Send.main("A", "ludwig");
+				// Send.main("A", "ludwig");
 				
 
 

@@ -32,7 +32,7 @@ public class AMQPUnpack {
 	AMQPUnpack(QueueingConsumer.Delivery d) { delivery = d; }
 
 
-	ExecutorService inspector = Executors.newFixedThreadPool((ServerParameters.threadpoolSize*32)); // create thread pool for message inspection
+	//ExecutorService inspector = Executors.newFixedThreadPool((ServerParameters.threadpoolSize*32)); // create thread pool for message inspection
 	// ExecutorService inspector = Executors.newFixedThreadPool(1); // create thread pool for message inspection
 
 	public void run() {
@@ -73,7 +73,7 @@ public class AMQPUnpack {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		inspector.shutdown(); // close thread pool for message inspection
+		// inspector.shutdown(); // close thread pool for message inspection
 		return; // close the current thread
 	}
 

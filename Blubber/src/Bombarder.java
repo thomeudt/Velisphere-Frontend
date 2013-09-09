@@ -34,8 +34,8 @@ public class Bombarder implements Runnable {
 				messageHash.put("1004", "1");
 				messageHash.put("1001", "1");
 	        	messageHash.put("1000", "1");
-	        	// messageHash.put("1005", "1");
-	        	// messageHash.put("1006", "1");
+	        	//messageHash.put("1005", "1");
+	        	//messageHash.put("1006", "1");
 	        	Send.sendHashTable(messageHash, "controller");
 	        	//Send.sendHashTable(messageHash, "controller");
 

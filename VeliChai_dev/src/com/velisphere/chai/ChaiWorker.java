@@ -20,8 +20,11 @@ package com.velisphere.chai;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.QueueingConsumer;
 
 public class ChaiWorker {
 
@@ -70,6 +73,29 @@ public class ChaiWorker {
 				.println(" [IN] Selected VoltDB: " + ServerParameters.volt_ip);
 		Imdb.openDatabase();
 
+		System.out.println(" [OK] Connection Successful.");
+		System.out.println(" [OK] Waiting for messages on queue: " + ServerParameters.controllerQueueName + ". To exit press CTRL+C");
+
+			BrokerConnection bc = new BrokerConnection();
+			Channel channel = bc.establishRxChannel();
+
+			// Prefetch of 100 has proven to be a good choice for performance reasons, but this needs further evaluation
+
+
+			int prefetchCount = 0;
+			channel.basicQos(prefetchCount);
+			QueueingConsumer consumer = new QueueingConsumer(channel);
+
+			// Message acknowledgment is needed to make sure no messages are lost
+			
+			boolean autoAck = false;
+			channel.basicConsume(ServerParameters.controllerQueueName, autoAck, consumer);
+
+			channel.basicConsume(ServerParameters.controllerQueueName, autoAck, consumer);
+			
+			
+
+				
 		/*
 		 * Start the listening service
 		 */
@@ -80,15 +106,17 @@ public class ChaiWorker {
 
 		// int numworkers = ServerParameters.threadpoolSize;
 		int numworkers = ServerParameters.threadpoolSize;
+			
 		
 		receiver = Executors.newFixedThreadPool(ServerParameters.threadpoolSize);
 
 		Recv[] receiverThread = new Recv[numworkers];
 		for (int i = 0; i < numworkers; i++) {
-			receiverThread[i] = new Recv(i);
+			receiverThread[i] = new Recv(channel, consumer);
 			receiver.execute(receiverThread[i]);
-
+			// channel.close(); // close channel
 		}
+		
 
 	}
 }
