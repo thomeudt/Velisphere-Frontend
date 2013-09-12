@@ -103,9 +103,8 @@ public class MessageInspect implements Runnable {
 						// System.out.println("EPID: " + EPID);
 						// System.out.println("KEY:  " + e.getKey());
 						// System.out.println("VALUE:" + e.getValue());
-						triggeredRules.addAll(Imdb.runChecks(EPID, e.getKey(),
-								e.getValue(), "=", (byte) 0));
-
+						//triggeredRules.addAll(Imdb.runChecks(EPID, e.getKey(), e.getValue(), "=", (byte) 0));
+						triggeredRules.addAll(BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), "=", (byte) 0));
 					}
 					it.remove();
 				}

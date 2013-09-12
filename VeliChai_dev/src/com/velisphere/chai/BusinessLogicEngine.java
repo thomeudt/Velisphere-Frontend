@@ -26,13 +26,16 @@ package com.velisphere.chai;
 import org.voltdb.VoltTable;
 import org.voltdb.VoltTableRow;
 import org.voltdb.client.*;
+
 import com.amd.aparapi.*;
+
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 
@@ -69,484 +72,12 @@ public class BusinessLogicEngine {
 
 	}
 
-	public static void resetChecksForEndpoint(String endpointID)
-			throws Exception {
-
-		/*
-		 * Step 1: Reset all checks for this endpoint type to false to prepare
-		 * for new incoming data
-		 */
-
-		final ClientResponse resetResponse = BusinessLogicEngine.montanaClient.callProcedure(
-				"ResetChecks", endpointID);
-		if (resetResponse.getStatus() != ClientResponse.SUCCESS) {
-			System.err.println(resetResponse.getStatusString());
-
-		}
-
-	}
-
-	static HashMap<String, List<String>> findChecks(String endpointID,
-			String propertyID, String checkValue, String operator, byte expired)
-			throws NoConnectionsException, IOException, ProcCallException {
-
-		/*
-		 * Query all checks matching the data in terms of endPointID,
-		 * propertyID, CheckValue etc.
-		 */
-
-		List<String> ruleIDs = new ArrayList<String>();
-
-		final ClientResponse selectResponse = BusinessLogicEngine.montanaClient.callProcedure(
-				"FindMatchingChecksEqual", endpointID, propertyID, checkValue,
-				operator, expired);
-
-		// Check if there was a proper resonse from Volt
-
-		if (selectResponse.getStatus() != ClientResponse.SUCCESS) {
-			System.err.println(selectResponse.getStatusString());
-
-		}
-
-		// if no matching response was found, send a console message. needs to
-		// be removed
-
-		final VoltTable results[] = selectResponse.getResults();
-		if (results.length == 0) {
-			// System.out.printf("Not valid match found!\n");
-		}
-
-		List<String> validCheckIDs = new ArrayList<String>();
-
-		// now all checkids that met the search criteria get filled into an
-		// array list for later use
-
-		VoltTable result = results[0];
-		// check if any rows have been returned
-
-		while (result.advanceRow()) {
-
-			// extract the value in column checkid
-			validCheckIDs.add(result.getString("CHECKID"));
-
-			// find the rules attached to the check and trigger them
-			ruleIDs = lookupRulesForCheckID(result.getString("CHECKID"));
-			// System.out.println("*** VALID CHECK FOUND: "
-			// + row.getString("CHECKID"));
-		}
-					
-		HashMap<String, List<String>> returnRulesAndCheckIDs = new HashMap<String, List<String>>();
-		returnRulesAndCheckIDs.put("validCheckIDs", validCheckIDs);
-		returnRulesAndCheckIDs.put("ruleIDs", ruleIDs);
-		return returnRulesAndCheckIDs;
-
-	}
-
-	static HashMap<String, List<String>> improvedFindChecks(String endpointID,
-			String propertyID, String checkValue, String operator, byte expired)
-			throws NoConnectionsException, IOException, ProcCallException {
-
-		/*
-		 * Query all checks matching the data in terms of endPointID,
-		 * propertyID, CheckValue etc.
-		 */
-
-		List<String> ruleIDs = new ArrayList<String>();
-
-		final ClientResponse selectResponse = BusinessLogicEngine.montanaClient.callProcedure(
-				"ImprovedFindMatchingChecksEqual", endpointID, propertyID, checkValue,
-				operator, expired);
-
-		// Check if there was a proper resonse from Volt
-
-		if (selectResponse.getStatus() != ClientResponse.SUCCESS) {
-			System.err.println(selectResponse.getStatusString());
-
-		}
-
-		
-		// if no matching response was found, send a console message. needs to
-		// be removed
-
-		final VoltTable results[] = selectResponse.getResults();
-		if (results.length == 0) {
-			// System.out.printf("Not valid match found!\n");
-		}
-
-		List<String> validCheckIDs = new ArrayList<String>();
-
-		// now all checkids that met the search criteria get filled into an
-		// array list for later use
-
-		VoltTable result = results[1];
-		// check if any rows have been returned
-
-		while (result.advanceRow()) {
-
-			// extract the value in column checkid
-			validCheckIDs.add(result.getString("CHECKID"));
-
-			// find the rules attached to the check and trigger them
-			ruleIDs = lookupRulesForCheckID(result.getString("CHECKID"));
-			// System.out.println("*** VALID CHECK FOUND: "
-			// + row.getString("CHECKID"));
-		}
-					
-		HashMap<String, List<String>> returnRulesAndCheckIDs = new HashMap<String, List<String>>();
-		returnRulesAndCheckIDs.put("validCheckIDs", validCheckIDs);
-		returnRulesAndCheckIDs.put("ruleIDs", ruleIDs);
-		return returnRulesAndCheckIDs;
-
-	}
-	
-	
-	
-	
-	static List<String> markChecksTrueAndGetParentMultiChecks(
-			List<String> validCheckIDs) throws NoConnectionsException,
-			IOException, ProcCallException {
-
-		/*
-		 * Find all Multichecks linked to the Checks that were just
-		 * evaluated, return a List Also, reset the state of the multi check to
-		 * false as a basis for the next round of checks
-		 */
-
-		List<String> validMultiCheckIDs = new ArrayList<String>();
-
-		
-		
-		for (String checkID : validCheckIDs) {
-		
-		
-			final ClientResponse findMulticheckResponse = BusinessLogicEngine.montanaClient
-					.callProcedure("ImprovedFindAllMultichecksForCheck", checkID);
-			if (findMulticheckResponse.getStatus() != ClientResponse.SUCCESS) {
-				System.err.println(findMulticheckResponse.getStatusString());
-			}
-			final VoltTable findMulticheckResults[] = findMulticheckResponse
-					.getResults();
-			if (findMulticheckResults.length == 0) {
-				// System.out.printf("Not valid match found!\n");
-			}
-
-			VoltTable findMulticheckResult = findMulticheckResults[0]; 
-				// check if any rows have been returned
-					while (findMulticheckResult.advanceRow()) {
-						validMultiCheckIDs.add(findMulticheckResult.getString("MULTICHECKID"));
-						// System.out.println("MULTICHECK FOUND: "
-						// + row.getString("MULTICHECKID"));
-						// reset the multicheck state
-						//Imdb.montanaClient.callProcedure("UpdateMultiChecks",
-						//		0, findMulticheckResult.getString("MULTICHECKID"));
-					}
-				
-			
-
-		}
-		return validMultiCheckIDs;
-
-	}
-
-	static List<String> evaluateMultiChecks(List<String> validMultiCheckIDs)
-			throws NoConnectionsException, IOException, ProcCallException {
-
-		/*
-		 * Evaluate if these Multichecks are true and update multicheck state
-		 * accordingly
-		 */
-
-		List<String> ruleIDs = new ArrayList<String>();
-
-		for (String multicheckID : validMultiCheckIDs) {
-
-			// to this list we add all the check states that are part of the
-			// multicheck. if all entries are true, a logical AND is met, if any
-			// entry is true, a logical OR is met
-			List<Boolean> checkStates = new ArrayList<Boolean>();
-
-			// Query the Multichecks
-
-			final ClientResponse findCheckForMulticheckResponse = BusinessLogicEngine.montanaClient
-					.callProcedure("FindChecksForMultiCheckID", multicheckID);
-
-			if (findCheckForMulticheckResponse.getStatus() != ClientResponse.SUCCESS) {
-				System.err.println(findCheckForMulticheckResponse
-						.getStatusString());
-			}
-
-			final VoltTable findCheckForMulticheckResults[] = findCheckForMulticheckResponse
-					.getResults();
-			if (findCheckForMulticheckResults.length == 0) {
-				// System.out.printf("Not valid match found!\n");
-			}
-
-			// Query all the checks that define the Multichecks
-
-			List<String> checkIDsMatchingMultiCheck = new ArrayList<String>();
-
-			VoltTable findCheckForMulticheckResult = findCheckForMulticheckResults[0];
-			// check if any rows have been returned
-			while (findCheckForMulticheckResult.advanceRow()) {
-				// extract the value in column checkid
-				checkIDsMatchingMultiCheck.add(findCheckForMulticheckResult
-						.getString("CHECKID"));
-				// System.out.println("ATTCHED CHECKS FOUND: "
-				// + row.getString("CHECKID"));
-
-				// evaluate each check linked to the multicheck whether
-				// it is true or not
-
-				final ClientResponse findCheckStateResponse = BusinessLogicEngine.montanaClient
-						.callProcedure("FindChecksForCheckID",
-								findCheckForMulticheckResult
-										.getString("CHECKID"));
-				final VoltTable findCheckStateResults[] = findCheckStateResponse
-						.getResults();
-
-				VoltTable findCheckStateResult = findCheckStateResults[0]; 
-					// check if any rows have been returned
-					
-						while (findCheckStateResult.advanceRow()) {
-							
-							if (findCheckStateResult.getLong("STATE") == 1) {
-								// System.out.println("STATE: TRUE");
-								checkStates.add(true);
-							} else {
-								// System.out.println("STATE: FALSE");
-								checkStates.add(false);
-							}
-						}
-					
-
-				
-			}
-			// here we do the evaluation based on the operator
-
-			boolean multiCheckState = false;
-
-			// first, we look up the operator
-			final ClientResponse findMultiCheckOperatorResponse = BusinessLogicEngine.montanaClient
-					.callProcedure("FindMultiChecksForMultiCheckID",
-							multicheckID);
-			final VoltTable findMultiCheckOperatorResults[] = findMultiCheckOperatorResponse
-					.getResults();
-			VoltTableRow multiCheckOperatorRow = findMultiCheckOperatorResults[0]
-					.fetchRow(0);
-			String multiCheckOperator = multiCheckOperatorRow
-					.getString("OPERATOR");
-
-			if (checkStates.contains(true) && multiCheckOperator.equals("OR")) {
-				multiCheckState = true;
-
-				// lookup rules and get ID for return
-				ruleIDs = lookupRulesForMultiCheckID(multicheckID);
-
-				BusinessLogicEngine.montanaClient.callProcedure("UpdateMultiChecks", 1,
-						multicheckID);
-
-				// System.out.println("*** Multicheck Eval OR Result: "
-				// + multiCheckState);
-			}
-
-			if ((checkStates.contains(true) == true && checkStates
-					.contains(false) == false)
-					&& multiCheckOperator.equals("AND")) {
-				multiCheckState = true;
-
-				// lookup rules and get ID for return
-				ruleIDs = lookupRulesForMultiCheckID(multicheckID);
-				BusinessLogicEngine.montanaClient.callProcedure("UpdateMultiChecks", 1,
-						multicheckID);
-
-				// System.out
-				// .println("*** Multicheck Eval AND Result for MultiCheck "
-				// + multicheckID + ": " + multiCheckState);
-			}
-
-		}
-
-		return ruleIDs;
-
-	}
-
-	static List<String> getMultiCheckParents(List<String> validMultiCheckIDs)
-			throws NoConnectionsException, IOException, ProcCallException {
-		/*
-		 * Find all MultiChecks that are parents to the MultiChecks that were
-		 * just evaluated, return a List Also, reset the state of the MultiCheck
-		 * to false as a basis for the next round of checks
-		 */
-
-		List<String> validCycleMultiCheckIDs = new ArrayList<String>();
-
-		for (String multiCheckID : validMultiCheckIDs) {
-			// System.out.println("Cycling for Multicheck: " + multiCheckID);
-
-			final ClientResponse findMulticheckResponse = BusinessLogicEngine.montanaClient
-					.callProcedure("FindParentMultiChecksForMultiCheckID",
-							multiCheckID);
-			if (findMulticheckResponse.getStatus() != ClientResponse.SUCCESS) {
-				System.err.println(findMulticheckResponse.getStatusString());
-			}
-			final VoltTable findMulticheckResults[] = findMulticheckResponse
-					.getResults();
-			if (findMulticheckResults.length == 0) {
-				// System.out.printf("Not valid match found!\n");
-			}
-
-			
-			
-			
-			
-			VoltTable findMulticheckResult = findMulticheckResults[0]; 
-			
-			while (findMulticheckResult.advanceRow()) {
-						
-						// extract the value in column checkid
-						validCycleMultiCheckIDs.add(findMulticheckResult
-								.getString("MULTICHECKLID"));
-						// System.out.println("CYCLICAL MULTICHECK FOUND: "
-						// + row.getString("MULTICHECKLID"));
-						// reset the multicheck state
-						BusinessLogicEngine.montanaClient.callProcedure("UpdateMultiChecks",
-								0, findMulticheckResult.getString("MULTICHECKLID"));
-					}
-				
-			
-
-		}
-		return validCycleMultiCheckIDs;
-	}
-
-	static List<String> evaluateCycleMultiChecks(
-			List<String> validCycleMultiCheckIDs)
-			throws NoConnectionsException, IOException, ProcCallException {
-
-		/*
-		 * Evaluate if these Multichecks are true and update multicheck state
-		 * accordingly
-		 */
-
-		List<String> ruleIDs = new ArrayList<String>();
-
-			
-		
-		for (String multicheckID : validCycleMultiCheckIDs) {
-
-			// to this list we add all the check states that are part of the
-			// multicheck. if all entries are true, a logical AND is met, if any
-			// entry is true, a logical OR is met
-			List<Boolean> multiCheckStates = new ArrayList<Boolean>();
-
-			final ClientResponse findMultiCheckForMulticheckResponse = BusinessLogicEngine.montanaClient
-					.callProcedure("FindLinkedMultiChecksForMultiCheckID",
-							multicheckID);
-
-			if (findMultiCheckForMulticheckResponse.getStatus() != ClientResponse.SUCCESS) {
-				System.err.println(findMultiCheckForMulticheckResponse
-						.getStatusString());
-			}
-
-			final VoltTable findMultiCheckForMulticheckResults[] = findMultiCheckForMulticheckResponse
-					.getResults();
-			if (findMultiCheckForMulticheckResults.length == 0) {
-				System.out.printf("Not valid match found!\n");
-			}
-
-			// Query all the Multichecks that define the Multichecks
-
-			List<String> multiCheckIDsMatchingMultiCheck = new ArrayList<String>();
-
-			VoltTable findMultiCheckForMulticheckResult = findMultiCheckForMulticheckResults[0]; 
-				while (findMultiCheckForMulticheckResult.advanceRow()) {
-						// extract the value in column checkid
-						multiCheckIDsMatchingMultiCheck.add(findMultiCheckForMulticheckResult
-								.getString("MULTICHECKRID"));
-						// System.out.println("ATTCHED MULTICHECKS FOUND: "
-						// + row.getString("MULTICHECKRID"));
-
-						// evaluate each check linked to the multicheck whether
-						// it is true or not
-
-						final ClientResponse findMultiCheckStateResponse = BusinessLogicEngine.montanaClient
-								.callProcedure(
-										"FindMultiChecksForMultiCheckID",
-										findMultiCheckForMulticheckResult.getString("MULTICHECKRID"));
-						final VoltTable findMultiCheckStateResults[] = findMultiCheckStateResponse
-								.getResults();
-
-						VoltTable findMultiCheckStateResult = findMultiCheckStateResults[0]; 
-							// check if any rows have been returned
-							 
-								while (findMultiCheckStateResult.advanceRow()) {
-									
-									if (findMultiCheckStateResult.getLong("STATE") == 1) {
-										// System.out
-										// .println("MULTICHECKSTATE: TRUE");
-										multiCheckStates.add(true);
-									} else {
-										// System.out
-										// .println("MULTICHECKSTATE: FALSE");
-										multiCheckStates.add(false);
-									}
-								}
-							
-						
-					}
-				
-
-				// here we do the evaluation based on the operator
-
-				// first, we look up the operator
-				final ClientResponse findMultiCheckOperatorResponse = BusinessLogicEngine.montanaClient
-						.callProcedure("FindMultiChecksForMultiCheckID",
-								multicheckID);
-				final VoltTable findMultiCheckOperatorResults[] = findMultiCheckOperatorResponse
-						.getResults();
-				VoltTableRow multiCheckOperatorRow = findMultiCheckOperatorResults[0]
-						.fetchRow(0);
-				String multiCheckOperator = multiCheckOperatorRow
-						.getString("OPERATOR");
-
-				if (multiCheckStates.contains(true)
-						&& multiCheckOperator.equals("OR")) {
-					// lookup matching rules and update multicheck with new
-					// status "true"
-
-					ruleIDs = lookupRulesForMultiCheckID(multicheckID);
-					BusinessLogicEngine.montanaClient.callProcedure("UpdateMultiChecks", 1,
-							multicheckID);
-
-					// System.out.println("*** Cyclical Multicheck Eval OR Result: "
-					// + multiCheckState);
-				}
-
-				if ((multiCheckStates.contains(true) == true && multiCheckStates
-						.contains(false) == false)
-						&& multiCheckOperator.equals("AND")) {
-					// lookup matching rules and update multicheck with new
-					// status "true"
-					ruleIDs = lookupRulesForMultiCheckID(multicheckID);
-					BusinessLogicEngine.montanaClient.callProcedure("UpdateMultiChecks", 1,
-							multicheckID);
-
-					// System.out
-					// .println("*** Cyclical Multicheck Eval AND Result for MultiCheck "
-					// + multicheckID + ": " + multiCheckState);
-				}
-
-			
-		}
-		return ruleIDs;
-	}
-
 	public static List<String> lookupRulesForCheckID(String checkID)
 			throws NoConnectionsException, IOException, ProcCallException {
 
 		List<String> ruleIDs = new ArrayList<String>();
 
-		final ClientResponse findRulesForCheckIDResponse = BusinessLogicEngine.montanaClient
+		final ClientResponse findRulesForCheckIDResponse = Imdb.montanaClient
 				.callProcedure("FindRulesForCheckID", checkID);
 		if (findRulesForCheckIDResponse.getStatus() != ClientResponse.SUCCESS) {
 			System.err.println(findRulesForCheckIDResponse.getStatusString());
@@ -572,40 +103,105 @@ public class BusinessLogicEngine {
 		return ruleIDs;
 	}
 
-	public static List<String> lookupRulesForMultiCheckID(String multiCheckID)
-			throws NoConnectionsException, IOException, ProcCallException {
 
-		List<String> ruleIDs = new ArrayList<String>();
-
-		final ClientResponse findRulesForMultiCheckIDResponse = BusinessLogicEngine.montanaClient
-				.callProcedure("FindRulesForMultiCheckID", multiCheckID);
-		if (findRulesForMultiCheckIDResponse.getStatus() != ClientResponse.SUCCESS) {
-			System.err.println(findRulesForMultiCheckIDResponse
-					.getStatusString());
-		}
-		final VoltTable findRulesForMultiCheckIDResults[] = findRulesForMultiCheckIDResponse
-				.getResults();
-		if (findRulesForMultiCheckIDResults.length == 0) {
-			// System.out.printf("Not valid match found!\n");
-		}
-
-		VoltTable result = findRulesForMultiCheckIDResults[0]; 
-			// check if any rows have been returned
-			while (result.advanceRow()) {
-					{
-						// extract the value in column checkid
-						ruleIDs.add(result.getString("RULEID"));
-						//System.out.println(result.getString("RULEID"));
-					}
-				}
-			
-		return ruleIDs;
-
-	}
-
+	
 	public static List<String> runChecks(String endpointID, String propertyID,
 			String checkValue, String operator, byte expired) throws Exception {
 
+		List<String> triggerRules = new ArrayList<String>();
+		List<String> ruleIDs = new ArrayList<String>();		
+
+		// find checks that match the incoming expression
+		
+		final ClientResponse bleChecksForExpression = Imdb.montanaClient.callProcedure(
+				"BLE_ChecksForExpression", endpointID, propertyID, checkValue,
+				operator, expired);
+
+		if (bleChecksForExpression.getStatus() != ClientResponse.SUCCESS) {
+			System.err.println(bleChecksForExpression.getStatusString());
+
+		}
+
+
+		final VoltTable vtChecksForExpression[] = bleChecksForExpression.getResults();
+		
+		List<String> validCheckIDs = new ArrayList<String>();
+
+		VoltTable vtChecksForExpressionT = vtChecksForExpression[0];
+
+		while (vtChecksForExpressionT.advanceRow()) {
+
+			validCheckIDs.add(vtChecksForExpressionT.getString("CHECKID"));
+			ruleIDs = lookupRulesForCheckID(vtChecksForExpressionT.getString("CHECKID"));
+		}
+		
+		
+		// lookup relevant checkpaths that contain the check
+		
+		HashMap<String,String> checkPathMembers = new HashMap<String,String>();
+
+		Iterator<String> itVCI = validCheckIDs.iterator();
+		while (itVCI.hasNext())
+		{
+			String sTR = itVCI.next();
+			final ClientResponse bleCheckPathForChecks = Imdb.montanaClient.callProcedure(
+					"BLE_CheckPathForChecks", sTR);
+
+			if (bleChecksForExpression.getStatus() != ClientResponse.SUCCESS) {
+				System.err.println(bleChecksForExpression.getStatusString());
+
+			}
+
+			final VoltTable vtCheckPathForChecks[] = bleCheckPathForChecks.getResults();
+
+
+
+			VoltTable vtCheckPathForChecksT = vtCheckPathForChecks[0];
+
+			 while (vtCheckPathForChecksT.advanceRow()) {
+
+				checkPathMembers.put(vtCheckPathForChecksT.getString("CHECKPATHID"), vtCheckPathForChecksT.getString("CHECKID"));
+								
+			}
+
+		}
+		
+		// lookup MultiChecks contained in the checkpaths
+
+		HashMap<String,String> checkPathMultiCheckMembers = new HashMap<String,String>();
+
+		Iterator<String> itCPM = checkPathMembers.keySet().iterator();
+		while (itCPM.hasNext())
+		{
+			String sTR = itCPM.next();
+			final ClientResponse bleCheckPathForMultiChecks = Imdb.montanaClient.callProcedure(
+					"BLE_CheckPathForMultiChecks", sTR);
+
+			if (bleChecksForExpression.getStatus() != ClientResponse.SUCCESS) {
+				System.err.println(bleChecksForExpression.getStatusString());
+
+			}
+
+			final VoltTable vtCheckPathForMultiChecks[] = bleCheckPathForMultiChecks.getResults();
+
+
+
+			VoltTable vtCheckPathForMultiChecksT = vtCheckPathForMultiChecks[0];
+
+			 while (vtCheckPathForMultiChecksT.advanceRow()) {
+
+				checkPathMultiCheckMembers.put(vtCheckPathForMultiChecksT.getString("CHECKPATHID"), vtCheckPathForMultiChecksT.getString("MULTICHECKID"));
+								
+			}
+
+		}
+
+		
+		
+		
+		
+		
+		
 		/*
 		 * Run the lowest level check engine
 		 */
@@ -615,7 +211,7 @@ public class BusinessLogicEngine {
 		/*
 		 * Step 1: Query all checks matching the data in terms of endPointID,
 		 * propertyID, CheckValue etc.
-		 */
+		 *
 
 		// System.out.println("------------------NEW IMDB CHECK---------------------------");
 		// System.out.println("Endpoint:    " + endpointID);
@@ -635,7 +231,7 @@ public class BusinessLogicEngine {
 		 * true and find all Multichecks linked to the Checks that were just
 		 * evaluated, return a List Also, reset the state of the multi check to
 		 * false as a basis for the next round of checks
-		 */
+		 *
 
 		List<String> validMultiCheckIDs = new ArrayList<String>();
 		
@@ -647,7 +243,7 @@ public class BusinessLogicEngine {
 		/*
 		 * Step 3: Evaluate if these Multichecks are true and update multicheck
 		 * state accordingly
-		 */
+		 
 
 		if (validMultiCheckIDs.isEmpty() == false)
 			triggerRules.addAll(evaluateMultiChecks(validMultiCheckIDs));
@@ -656,7 +252,7 @@ public class BusinessLogicEngine {
          * Step 4: Find all MultiChecks that are parents to the MultiChecks that
          * were just evaluated, return a List Also, reset the state of the
          * MultiCheck to false as a basis for the next round of checks
-         */
+         *
 
         
 		List<String> validCycleMultiCheckIDs = new ArrayList<String>();

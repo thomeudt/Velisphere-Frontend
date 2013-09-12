@@ -102,6 +102,22 @@ public class PreLoad {
 	        
 	        System.out.println("Rules loaded");
 	        
+	        preLoader.callProcedure("CHECKPATH.insert", "1000"); // Checpath für Button 1 gedrückt
+	        preLoader.callProcedure("CHECKPATH.insert", "1001"); // Checkpath Button 1 und 2 gedrückt
+	        
+	        System.out.println("Checkpaths loaded");
+
+	        preLoader.callProcedure("CHECKPATH_CHECK_LINK.insert", "1000", "1000", "1001"); 
+	        preLoader.callProcedure("CHECKPATH_CHECK_LINK.insert", "1001", "1001", "1001");
+	        preLoader.callProcedure("CHECKPATH_CHECK_LINK.insert", "1002", "1001", "1003"); 
+	        
+	        System.out.println("Checkpaths and Checks linked");
+
+	        preLoader.callProcedure("CHECKPATH_MULTICHECK_LINK.insert", "1000", "1001", "1000"); 
+	        	        
+	        System.out.println("Checkpaths and MultiChecks linked");
+	        
+	        
 	        System.out.println("Done!");
 	        
 	        /*
