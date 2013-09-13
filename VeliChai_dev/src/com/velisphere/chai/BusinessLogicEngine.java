@@ -111,7 +111,7 @@ public class BusinessLogicEngine {
 		List<String> triggerRules = new ArrayList<String>();
 		List<String> ruleIDs = new ArrayList<String>();		
 
-		// find checks that match the incoming expression
+		// find checks that match the incoming expression and mark as true
 		
 		final ClientResponse bleChecksForExpression = Imdb.montanaClient.callProcedure(
 				"BLE_ChecksForExpression", endpointID, propertyID, checkValue,
@@ -163,7 +163,7 @@ public class BusinessLogicEngine {
 
 				String key = vtCheckPathForChecksT.getString("CHECKPATHID");
 				String value = vtCheckPathForChecksT.getString("CHECKID");
-				System.out.println(vtCheckPathForChecksT.getString("CHECKPATHID"));
+				//System.out.println(vtCheckPathForChecksT.getString("CHECKPATHID"));
 				checkPathMembers.put(key, value);	
 				
 				 
@@ -180,6 +180,7 @@ public class BusinessLogicEngine {
 
 
 		HashMap<String,String> checkPathMultiCheckMembers = new HashMap<String,String>();
+		
 		Iterator<String> itCPM = checkPathMembers.keySet().iterator();		
 		if (checkPathMembers.isEmpty() == false){
 		
@@ -210,76 +211,90 @@ public class BusinessLogicEngine {
 					 
 		}
 		}
-		
-		System.out.println(checkPathMultiCheckMembers);
-		
+						
 		// evaluate first level multichecks (connected to checks) in relevant checkpaths
 		
-		HashMap<String,String> relevantFirstLevelMultiChecks = new HashMap<String,String>();
+		List<String> validFirstLevelMultiChecks = new ArrayList<String>();
 				
-		Iterator<String> itCPMCM = checkPathMultiCheckMembers.keySet().iterator();
+		Iterator<Entry<String, String>> itCPMCM = checkPathMultiCheckMembers.entrySet().iterator();
 		while (itCPMCM.hasNext())
 		{
 						
-			String sTR = itCPMCM.next();
-			
-			final ClientResponse bleCheckPathForMultiChecks = Imdb.montanaClient.callProcedure(
-					"BLE_CheckPathForMultiChecks", sTR);
+			String sTR = itCPMCM.next().getValue();
+			final ClientResponse bleIsMultiCheckTrue = Imdb.montanaClient.callProcedure(
+					"BLE_IsMultiCheckTrue", sTR);
 
 			if (bleChecksForExpression.getStatus() != ClientResponse.SUCCESS) {
 				System.err.println(bleChecksForExpression.getStatusString());
 
 			}
 
-			final VoltTable vtCheckPathForMultiChecks[] = bleCheckPathForMultiChecks.getResults();
+			final VoltTable vtIsMultiCheckTrue[] = bleIsMultiCheckTrue.getResults();
 
+			VoltTable vtIsMultiCheckTrueT = vtIsMultiCheckTrue[0];
 
+			 while (vtIsMultiCheckTrueT.advanceRow()) {
 
-			VoltTable vtCheckPathForMultiChecksT = vtCheckPathForMultiChecks[0];
-
-			 while (vtCheckPathForMultiChecksT.advanceRow()) {
-
-				 relevantFirstLevelMultiChecks.put(vtCheckPathForMultiChecksT.getString("CHECKPATHID"), vtCheckPathForMultiChecksT.getString("MULTICHECKID"));
+				 validFirstLevelMultiChecks.add(vtIsMultiCheckTrueT.getString("MULTICHECKID"));
 				 // System.out.println(validFirstLevelMultiChecks.get(vtCheckPathForMultiChecksT.getString("CHECKPATHID")));
 			}
 
 		}
 
-
-		HashMap<String,String> trueFirstLevelMultiChecks = new HashMap<String,String>();
+		// System.out.println("FL " + validFirstLevelMultiChecks);
+				
 		
-		Iterator<String> itVFLMC = relevantFirstLevelMultiChecks.values().iterator();
+		// evaluate all other multichecks (connected to multichecks)
+		
+		List<String> validHighLevelMultiChecks = new ArrayList<String>();
+		
+		Iterator<String> itVFLMC = validFirstLevelMultiChecks.iterator();
+		
 		while (itVFLMC.hasNext())
 		{
+						
 			String sTR = itVFLMC.next();
-			
 			//System.out.println(sTR);
-			final ClientResponse IsMultiCheckTrue = Imdb.montanaClient.callProcedure(
-					"BLE_IsMultiCheckTrue", sTR);
 
-			if (IsMultiCheckTrue.getStatus() != ClientResponse.SUCCESS) {
+			final ClientResponse bleMultiCheckParentForMultiCheck = Imdb.montanaClient.callProcedure(
+					"BLE_MultiCheckParentForMultiCheck", sTR);
+
+			if (bleChecksForExpression.getStatus() != ClientResponse.SUCCESS) {
 				System.err.println(bleChecksForExpression.getStatusString());
 
 			}
 
-			final VoltTable vtIsMultiCheckTrue[] = IsMultiCheckTrue.getResults();
+			final VoltTable vtMultiCheckParentForMultiCheck[] = bleMultiCheckParentForMultiCheck.getResults();
 
-			if (vtIsMultiCheckTrue.length != 0) {
+			VoltTable vtMultiCheckParentForMultiCheckT = vtMultiCheckParentForMultiCheck[0];
 
-			VoltTable vtCheckPathForMultiChecksT = vtIsMultiCheckTrue[0];
+			 while (vtMultiCheckParentForMultiCheckT.advanceRow()) {
 
-			 while (vtCheckPathForMultiChecksT.advanceRow()) {
+				 
+				 final ClientResponse bleIsCycleMultiCheckTrue = Imdb.montanaClient.callProcedure(
+							"BLE_IsCycleMultiCheckTrue", sTR);
 
-				 trueFirstLevelMultiChecks.put(vtCheckPathForMultiChecksT.getString("CHECKPATHID"), vtCheckPathForMultiChecksT.getString("MULTICHECKID"));
-								
+					if (bleChecksForExpression.getStatus() != ClientResponse.SUCCESS) {
+						System.err.println(bleChecksForExpression.getStatusString());
+
+					}
+
+					final VoltTable vtIsCycleMultiCheckTrue[] = bleIsCycleMultiCheckTrue.getResults();
+
+					VoltTable vtIsCycleMultiCheckTrueT = vtIsCycleMultiCheckTrue[0];
+
+					 while (vtIsCycleMultiCheckTrueT.advanceRow()) {
+
+						 validHighLevelMultiChecks.add(vtMultiCheckParentForMultiCheckT.getString("MULTICHECKLID"));
+						 // System.out.println(validFirstLevelMultiChecks.get(vtCheckPathForMultiChecksT.getString("CHECKPATHID")));
+					}
+
+				 
+				 // System.out.println(validFirstLevelMultiChecks.get(vtCheckPathForMultiChecksT.getString("CHECKPATHID")));
 			}
-			}
-
 		}
-
 		
-		
-		// evaluate all other multichecks (connected to multichecks) in relevant checkpaths
+		// System.out.println("HL "+validHighLevelMultiChecks);
 		
 		
 		
