@@ -136,14 +136,17 @@ public class BusinessLogicEngine {
 		}
 		
 		
+		
 		// lookup relevant checkpaths that contain the check
 		
 		HashMap<String,String> checkPathMembers = new HashMap<String,String>();
 
 		Iterator<String> itVCI = validCheckIDs.iterator();
+
 		while (itVCI.hasNext())
 		{
 			String sTR = itVCI.next();
+						
 			final ClientResponse bleCheckPathForChecks = Imdb.montanaClient.callProcedure(
 					"BLE_CheckPathForChecks", sTR);
 
@@ -153,24 +156,34 @@ public class BusinessLogicEngine {
 			}
 
 			final VoltTable vtCheckPathForChecks[] = bleCheckPathForChecks.getResults();
-
-
-
+												
 			VoltTable vtCheckPathForChecksT = vtCheckPathForChecks[0];
 
 			 while (vtCheckPathForChecksT.advanceRow()) {
 
-				checkPathMembers.put(vtCheckPathForChecksT.getString("CHECKPATHID"), vtCheckPathForChecksT.getString("CHECKID"));
-								
+				String key = vtCheckPathForChecksT.getString("CHECKPATHID");
+				String value = vtCheckPathForChecksT.getString("CHECKID");
+				System.out.println(vtCheckPathForChecksT.getString("CHECKPATHID"));
+				checkPathMembers.put(key, value);	
+				
+				 
+				// System.out.println(vtCheckPathForChecksT.getString("CHECKPATHID") + " --- " + vtCheckPathForChecksT.getString("CHECKID"));
+			
 			}
+			
 
 		}
 		
+		
+		
 		// lookup MultiChecks contained in the checkpaths
 
-		HashMap<String,String> checkPathMultiCheckMembers = new HashMap<String,String>();
 
-		Iterator<String> itCPM = checkPathMembers.keySet().iterator();
+		HashMap<String,String> checkPathMultiCheckMembers = new HashMap<String,String>();
+		Iterator<String> itCPM = checkPathMembers.keySet().iterator();		
+		if (checkPathMembers.isEmpty() == false){
+		
+
 		while (itCPM.hasNext())
 		{
 			String sTR = itCPM.next();
@@ -191,14 +204,82 @@ public class BusinessLogicEngine {
 			 while (vtCheckPathForMultiChecksT.advanceRow()) {
 
 				checkPathMultiCheckMembers.put(vtCheckPathForMultiChecksT.getString("CHECKPATHID"), vtCheckPathForMultiChecksT.getString("MULTICHECKID"));
+				//System.out.println(checkPathMultiCheckMembers.get(vtCheckPathForMultiChecksT.getString("CHECKPATHID")));
+				
+			}
+					 
+		}
+		}
+		
+		System.out.println(checkPathMultiCheckMembers);
+		
+		// evaluate first level multichecks (connected to checks) in relevant checkpaths
+		
+		HashMap<String,String> relevantFirstLevelMultiChecks = new HashMap<String,String>();
+				
+		Iterator<String> itCPMCM = checkPathMultiCheckMembers.keySet().iterator();
+		while (itCPMCM.hasNext())
+		{
+						
+			String sTR = itCPMCM.next();
+			
+			final ClientResponse bleCheckPathForMultiChecks = Imdb.montanaClient.callProcedure(
+					"BLE_CheckPathForMultiChecks", sTR);
+
+			if (bleChecksForExpression.getStatus() != ClientResponse.SUCCESS) {
+				System.err.println(bleChecksForExpression.getStatusString());
+
+			}
+
+			final VoltTable vtCheckPathForMultiChecks[] = bleCheckPathForMultiChecks.getResults();
+
+
+
+			VoltTable vtCheckPathForMultiChecksT = vtCheckPathForMultiChecks[0];
+
+			 while (vtCheckPathForMultiChecksT.advanceRow()) {
+
+				 relevantFirstLevelMultiChecks.put(vtCheckPathForMultiChecksT.getString("CHECKPATHID"), vtCheckPathForMultiChecksT.getString("MULTICHECKID"));
+				 // System.out.println(validFirstLevelMultiChecks.get(vtCheckPathForMultiChecksT.getString("CHECKPATHID")));
+			}
+
+		}
+
+
+		HashMap<String,String> trueFirstLevelMultiChecks = new HashMap<String,String>();
+		
+		Iterator<String> itVFLMC = relevantFirstLevelMultiChecks.values().iterator();
+		while (itVFLMC.hasNext())
+		{
+			String sTR = itVFLMC.next();
+			
+			//System.out.println(sTR);
+			final ClientResponse IsMultiCheckTrue = Imdb.montanaClient.callProcedure(
+					"BLE_IsMultiCheckTrue", sTR);
+
+			if (IsMultiCheckTrue.getStatus() != ClientResponse.SUCCESS) {
+				System.err.println(bleChecksForExpression.getStatusString());
+
+			}
+
+			final VoltTable vtIsMultiCheckTrue[] = IsMultiCheckTrue.getResults();
+
+			if (vtIsMultiCheckTrue.length != 0) {
+
+			VoltTable vtCheckPathForMultiChecksT = vtIsMultiCheckTrue[0];
+
+			 while (vtCheckPathForMultiChecksT.advanceRow()) {
+
+				 trueFirstLevelMultiChecks.put(vtCheckPathForMultiChecksT.getString("CHECKPATHID"), vtCheckPathForMultiChecksT.getString("MULTICHECKID"));
 								
+			}
 			}
 
 		}
 
 		
 		
-		
+		// evaluate all other multichecks (connected to multichecks) in relevant checkpaths
 		
 		
 		
