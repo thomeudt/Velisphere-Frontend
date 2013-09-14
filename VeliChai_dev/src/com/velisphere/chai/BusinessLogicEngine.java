@@ -135,6 +135,8 @@ public class BusinessLogicEngine {
 
 		HashSet<String> triggerRules = new HashSet<String>();
 		
+
+		
 		// find checks that match the incoming expression 
 
 		final ClientResponse bleAllChecksForExpression = Imdb.montanaClient
@@ -154,6 +156,7 @@ public class BusinessLogicEngine {
 			
 		}
 
+		
 		
 		// find checks that match the incoming expression and mark as true
 
@@ -179,7 +182,7 @@ public class BusinessLogicEngine {
 		// lookup relevant checkpaths that contain the check
 
 			
-		HashMap<String, String> checkPathMembers = new HashMap<String, String>();
+		HashSet<String> checkPathMembers = new HashSet<String>();
 
 		Iterator<String> itACI = allCheckIDs.iterator();
 
@@ -199,7 +202,7 @@ public class BusinessLogicEngine {
 
 				String key = vtCheckPathForChecksT.getString("CHECKPATHID");
 				String value = vtCheckPathForChecksT.getString("CHECKID");
-				checkPathMembers.put(key, value);
+				checkPathMembers.add(key);
 			}
 
 		}
@@ -210,7 +213,7 @@ public class BusinessLogicEngine {
 
 		HashSet<String> checkPathMultiCheckMembers = new HashSet<String>();
 
-		Iterator<String> itCPM = checkPathMembers.keySet().iterator();
+		Iterator<String> itCPM = checkPathMembers.iterator();
 				
 		if (checkPathMembers.isEmpty() == false) {
 
@@ -238,7 +241,7 @@ public class BusinessLogicEngine {
 			}
 		}
 
-		// System.out.println("CPM:"+checkPathMultiCheckMembers);
+		System.out.println("CPM:"+checkPathMultiCheckMembers);
 		
 		// evaluate first level multichecks (connected to checks) in relevant
 		// checkpaths
@@ -274,6 +277,7 @@ public class BusinessLogicEngine {
 		}
 
 
+		System.out.println("Valid First Level: " + validFirstLevelMultiChecks);
 
 		// evaluate all other multichecks
 
@@ -322,9 +326,9 @@ public class BusinessLogicEngine {
 								.getString("MULTICHECKID")));
 					}
 				}	
-				System.out.println("-----------------------------------------");
-				System.out.println("Valid: " + validFirstLevelMultiChecks);
-				System.out.println("More: " + highLevelMultiChecks);
+				// System.out.println("-----------------------------------------");
+				// System.out.println("Valid: " + validFirstLevelMultiChecks);
+				// System.out.println("More: " + highLevelMultiChecks);
 				highLevelMultiChecks = moreHighLevelMultiChecks;	
 			}
 			
