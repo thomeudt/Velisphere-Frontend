@@ -31,11 +31,12 @@ public class Bombarder implements Runnable {
 		while (i<1000) {
 			try {
 				HashMap<String, String> messageHash = new HashMap<String, String>();
-				messageHash.put("1004", "1");
-				messageHash.put("1001", "1");
-	        	messageHash.put("1000", "1");
-	        	//messageHash.put("1005", "1");
-	        	//messageHash.put("1006", "1");
+				messageHash.put("PR1", "1");
+				messageHash.put("PR2", "1");
+	        	//messageHash.put("PR3", "1");
+	        	//messageHash.put("PR4", "1");
+	        	//messageHash.put("PR5", "1");
+	        	
 	        	Send.sendHashTable(messageHash, "controller");
 	        	//Send.sendHashTable(messageHash, "controller");
 

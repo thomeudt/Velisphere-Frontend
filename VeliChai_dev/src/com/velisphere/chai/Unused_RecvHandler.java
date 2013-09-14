@@ -20,7 +20,7 @@ package com.velisphere.chai;
  * UNUSED - REMOVE LATER!
  */
 
-public class RecvHandler {
+public class Unused_RecvHandler {
 	public void handleMessage(String text) {
         System.out.println("Received: " + text);
     }

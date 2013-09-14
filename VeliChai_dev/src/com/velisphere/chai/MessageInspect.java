@@ -79,7 +79,7 @@ public class MessageInspect implements Runnable {
 
 				String EPID = forEvaluation.get("EPID");
 
-				Imdb.resetChecksForEndpoint(EPID);
+				BusinessLogicEngine.resetChecksForEndpoint(EPID);
 
 				// System.out.println("**************************** IMDB CHECK INITIATED ************************************");
 

@@ -28,7 +28,7 @@ import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 
-public class ChaiWorkerOLD {
+public class Unused_ChaiWorkerOLD {
 
 	public static ExecutorService receiver;
 
@@ -72,7 +72,7 @@ public class ChaiWorkerOLD {
 
 		System.out
 				.println(" [IN] Selected VoltDB: " + ServerParameters.volt_ip);
-		Imdb.openDatabase();
+		Unused_Imdb.openDatabase();
 
 		System.out.println(" [OK] Connection Successful.");
 		System.out.println(" [OK] Waiting for messages on queue: "

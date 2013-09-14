@@ -23,7 +23,7 @@ public class stresstest {
 
 	public static void main(String[] args) throws Exception {
 
-		ServerParameters.my_queue_name = "1003";
+		ServerParameters.my_queue_name = "E1";
 		
 		int numworkers = 64;
 		

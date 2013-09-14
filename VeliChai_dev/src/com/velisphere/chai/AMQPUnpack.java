@@ -95,7 +95,7 @@ public class AMQPUnpack implements Runnable {
 						Thread inspectionThread;
 						inspectionThread = new Thread(new MessageInspect(message), "inspector");
 						inspector.execute(inspectionThread);
-						Imdb.writeLog("null", message, ServerParameters.controllerQueueName, "null");
+						BusinessLogicEngine.writeLog("null", message, ServerParameters.controllerQueueName, "null");
 						channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
 					 
 					}

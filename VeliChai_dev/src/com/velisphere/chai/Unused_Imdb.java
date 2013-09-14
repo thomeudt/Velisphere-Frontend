@@ -37,7 +37,7 @@ import java.util.UUID;
 
 
 
-public class Imdb {
+public class Unused_Imdb {
 
 	public static org.voltdb.client.Client montanaClient;
 
@@ -46,8 +46,8 @@ public class Imdb {
 		 * Instantiate a client and connect to the database.
 		 */
 
-		Imdb.montanaClient = ClientFactory.createClient();
-		Imdb.montanaClient.createConnection(ServerParameters.volt_ip);
+		Unused_Imdb.montanaClient = ClientFactory.createClient();
+		Unused_Imdb.montanaClient.createConnection(ServerParameters.volt_ip);
 		// System.out.println(" [IN] Connected to VoltDB on address: "
 		// + ServerParameters.volt_ip);
 	}
@@ -64,7 +64,7 @@ public class Imdb {
 
 		// TODO: change to a meaningful log table!
 
-		Imdb.montanaClient.callProcedure("Insert", "1", message, queueName,
+		Unused_Imdb.montanaClient.callProcedure("Insert", "1", message, queueName,
 				"1", identifierString);
 
 	}
@@ -77,7 +77,7 @@ public class Imdb {
 		 * for new incoming data
 		 */
 
-		final ClientResponse resetResponse = Imdb.montanaClient.callProcedure(
+		final ClientResponse resetResponse = Unused_Imdb.montanaClient.callProcedure(
 				"ResetChecks", endpointID);
 		if (resetResponse.getStatus() != ClientResponse.SUCCESS) {
 			System.err.println(resetResponse.getStatusString());
@@ -97,7 +97,7 @@ public class Imdb {
 
 		List<String> ruleIDs = new ArrayList<String>();
 
-		final ClientResponse selectResponse = Imdb.montanaClient.callProcedure(
+		final ClientResponse selectResponse = Unused_Imdb.montanaClient.callProcedure(
 				"FindMatchingChecksEqual", endpointID, propertyID, checkValue,
 				operator, expired);
 
@@ -153,7 +153,7 @@ public class Imdb {
 
 		List<String> ruleIDs = new ArrayList<String>();
 
-		final ClientResponse selectResponse = Imdb.montanaClient.callProcedure(
+		final ClientResponse selectResponse = Unused_Imdb.montanaClient.callProcedure(
 				"ImprovedFindMatchingChecksEqual", endpointID, propertyID, checkValue,
 				operator, expired);
 
@@ -219,7 +219,7 @@ public class Imdb {
 		for (String checkID : validCheckIDs) {
 		
 		
-			final ClientResponse findMulticheckResponse = Imdb.montanaClient
+			final ClientResponse findMulticheckResponse = Unused_Imdb.montanaClient
 					.callProcedure("ImprovedFindAllMultichecksForCheck", checkID);
 			if (findMulticheckResponse.getStatus() != ClientResponse.SUCCESS) {
 				System.err.println(findMulticheckResponse.getStatusString());
@@ -267,7 +267,7 @@ public class Imdb {
 
 			// Query the Multichecks
 
-			final ClientResponse findCheckForMulticheckResponse = Imdb.montanaClient
+			final ClientResponse findCheckForMulticheckResponse = Unused_Imdb.montanaClient
 					.callProcedure("FindChecksForMultiCheckID", multicheckID);
 
 			if (findCheckForMulticheckResponse.getStatus() != ClientResponse.SUCCESS) {
@@ -297,7 +297,7 @@ public class Imdb {
 				// evaluate each check linked to the multicheck whether
 				// it is true or not
 
-				final ClientResponse findCheckStateResponse = Imdb.montanaClient
+				final ClientResponse findCheckStateResponse = Unused_Imdb.montanaClient
 						.callProcedure("FindChecksForCheckID",
 								findCheckForMulticheckResult
 										.getString("CHECKID"));
@@ -326,7 +326,7 @@ public class Imdb {
 			boolean multiCheckState = false;
 
 			// first, we look up the operator
-			final ClientResponse findMultiCheckOperatorResponse = Imdb.montanaClient
+			final ClientResponse findMultiCheckOperatorResponse = Unused_Imdb.montanaClient
 					.callProcedure("FindMultiChecksForMultiCheckID",
 							multicheckID);
 			final VoltTable findMultiCheckOperatorResults[] = findMultiCheckOperatorResponse
@@ -342,7 +342,7 @@ public class Imdb {
 				// lookup rules and get ID for return
 				ruleIDs = lookupRulesForMultiCheckID(multicheckID);
 
-				Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
+				Unused_Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
 						multicheckID);
 
 				// System.out.println("*** Multicheck Eval OR Result: "
@@ -356,7 +356,7 @@ public class Imdb {
 
 				// lookup rules and get ID for return
 				ruleIDs = lookupRulesForMultiCheckID(multicheckID);
-				Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
+				Unused_Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
 						multicheckID);
 
 				// System.out
@@ -383,7 +383,7 @@ public class Imdb {
 		for (String multiCheckID : validMultiCheckIDs) {
 			// System.out.println("Cycling for Multicheck: " + multiCheckID);
 
-			final ClientResponse findMulticheckResponse = Imdb.montanaClient
+			final ClientResponse findMulticheckResponse = Unused_Imdb.montanaClient
 					.callProcedure("FindParentMultiChecksForMultiCheckID",
 							multiCheckID);
 			if (findMulticheckResponse.getStatus() != ClientResponse.SUCCESS) {
@@ -409,7 +409,7 @@ public class Imdb {
 						// System.out.println("CYCLICAL MULTICHECK FOUND: "
 						// + row.getString("MULTICHECKLID"));
 						// reset the multicheck state
-						Imdb.montanaClient.callProcedure("UpdateMultiChecks",
+						Unused_Imdb.montanaClient.callProcedure("UpdateMultiChecks",
 								0, findMulticheckResult.getString("MULTICHECKLID"));
 					}
 				
@@ -439,7 +439,7 @@ public class Imdb {
 			// entry is true, a logical OR is met
 			List<Boolean> multiCheckStates = new ArrayList<Boolean>();
 
-			final ClientResponse findMultiCheckForMulticheckResponse = Imdb.montanaClient
+			final ClientResponse findMultiCheckForMulticheckResponse = Unused_Imdb.montanaClient
 					.callProcedure("FindLinkedMultiChecksForMultiCheckID",
 							multicheckID);
 
@@ -469,7 +469,7 @@ public class Imdb {
 						// evaluate each check linked to the multicheck whether
 						// it is true or not
 
-						final ClientResponse findMultiCheckStateResponse = Imdb.montanaClient
+						final ClientResponse findMultiCheckStateResponse = Unused_Imdb.montanaClient
 								.callProcedure(
 										"FindMultiChecksForMultiCheckID",
 										findMultiCheckForMulticheckResult.getString("MULTICHECKRID"));
@@ -499,7 +499,7 @@ public class Imdb {
 				// here we do the evaluation based on the operator
 
 				// first, we look up the operator
-				final ClientResponse findMultiCheckOperatorResponse = Imdb.montanaClient
+				final ClientResponse findMultiCheckOperatorResponse = Unused_Imdb.montanaClient
 						.callProcedure("FindMultiChecksForMultiCheckID",
 								multicheckID);
 				final VoltTable findMultiCheckOperatorResults[] = findMultiCheckOperatorResponse
@@ -515,7 +515,7 @@ public class Imdb {
 					// status "true"
 
 					ruleIDs = lookupRulesForMultiCheckID(multicheckID);
-					Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
+					Unused_Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
 							multicheckID);
 
 					// System.out.println("*** Cyclical Multicheck Eval OR Result: "
@@ -528,7 +528,7 @@ public class Imdb {
 					// lookup matching rules and update multicheck with new
 					// status "true"
 					ruleIDs = lookupRulesForMultiCheckID(multicheckID);
-					Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
+					Unused_Imdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
 							multicheckID);
 
 					// System.out
@@ -546,7 +546,7 @@ public class Imdb {
 
 		List<String> ruleIDs = new ArrayList<String>();
 
-		final ClientResponse findRulesForCheckIDResponse = Imdb.montanaClient
+		final ClientResponse findRulesForCheckIDResponse = Unused_Imdb.montanaClient
 				.callProcedure("FindRulesForCheckID", checkID);
 		if (findRulesForCheckIDResponse.getStatus() != ClientResponse.SUCCESS) {
 			System.err.println(findRulesForCheckIDResponse.getStatusString());
@@ -577,7 +577,7 @@ public class Imdb {
 
 		List<String> ruleIDs = new ArrayList<String>();
 
-		final ClientResponse findRulesForMultiCheckIDResponse = Imdb.montanaClient
+		final ClientResponse findRulesForMultiCheckIDResponse = Unused_Imdb.montanaClient
 				.callProcedure("FindRulesForMultiCheckID", multiCheckID);
 		if (findRulesForMultiCheckIDResponse.getStatus() != ClientResponse.SUCCESS) {
 			System.err.println(findRulesForMultiCheckIDResponse

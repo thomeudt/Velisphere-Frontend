@@ -26,7 +26,7 @@ import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.QueueingConsumer.Delivery;
 import com.rabbitmq.client.ShutdownSignalException;
 
-public class Recv  {
+public class Unused_Recv  {
 
 	
 	// depracted in this version 0.0.4
@@ -34,7 +34,7 @@ public class Recv  {
 	private Channel passedChannel;
 	private QueueingConsumer passedConsumer; 
 
-    Recv(Channel channel, QueueingConsumer consumer) {
+    Unused_Recv(Channel channel, QueueingConsumer consumer) {
         passedChannel = channel;
         passedConsumer = consumer;
     }

@@ -20,6 +20,8 @@ package com.velisphere.chai;
 /**
  * TODO
  * Here we need to
+ * - put various steps into proper methods
+ * - cycle last two steps as long as they continues to yield results (more parent multichecks found)
  * - lookup rules in every evaluation step - rules can be attached to a check or any multicheck * 
  */
 
@@ -30,13 +32,10 @@ import org.voltdb.client.*;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-public class BrokenImdb {
+public class Unused_Imdb_verbose {
 
 	public static org.voltdb.client.Client montanaClient;
 
@@ -45,10 +44,10 @@ public class BrokenImdb {
 		 * Instantiate a client and connect to the database.
 		 */
 
-		BrokenImdb.montanaClient = ClientFactory.createClient();
-		BrokenImdb.montanaClient.createConnection(ServerParameters.volt_ip);
-		// System.out.println(" [IN] Connected to VoltDB on address: "
-		// + ServerParameters.volt_ip);
+		Unused_Imdb_verbose.montanaClient = ClientFactory.createClient();
+		Unused_Imdb_verbose.montanaClient.createConnection(ServerParameters.volt_ip);
+		System.out.println(" [IN] Connected to VoltDB on address: "
+				+ ServerParameters.volt_ip);
 	}
 
 	public static void writeLog(String exchangeName, String message,
@@ -63,7 +62,7 @@ public class BrokenImdb {
 
 		// TODO: change to a meaningful log table!
 
-		BrokenImdb.montanaClient.callProcedure("Insert", "1", message, queueName,
+		Unused_Imdb_verbose.montanaClient.callProcedure("Insert", "1", message, queueName,
 				"1", identifierString);
 
 	}
@@ -76,7 +75,7 @@ public class BrokenImdb {
 		 * for new incoming data
 		 */
 
-		final ClientResponse resetResponse = BrokenImdb.montanaClient.callProcedure(
+		final ClientResponse resetResponse = Unused_Imdb_verbose.montanaClient.callProcedure(
 				"ResetChecks", endpointID);
 		if (resetResponse.getStatus() != ClientResponse.SUCCESS) {
 			System.err.println(resetResponse.getStatusString());
@@ -85,8 +84,8 @@ public class BrokenImdb {
 
 	}
 
-	static HashMap<String, List<String>> findChecks(String endpointID,
-			String propertyID, String checkValue, String operator, byte expired)
+	static List<String> findChecks(String endpointID, String propertyID,
+			String checkValue, String operator, byte expired)
 			throws NoConnectionsException, IOException, ProcCallException {
 
 		/*
@@ -94,9 +93,7 @@ public class BrokenImdb {
 		 * propertyID, CheckValue etc.
 		 */
 
-		List<String> ruleIDs = new ArrayList<String>();
-
-		final ClientResponse selectResponse = BrokenImdb.montanaClient.callProcedure(
+		final ClientResponse selectResponse = Unused_Imdb_verbose.montanaClient.callProcedure(
 				"FindMatchingChecksEqual", endpointID, propertyID, checkValue,
 				operator, expired);
 
@@ -112,7 +109,7 @@ public class BrokenImdb {
 
 		final VoltTable results[] = selectResponse.getResults();
 		if (results.length == 0) {
-			// System.out.printf("Not valid match found!\n");
+			System.out.printf("Not valid match found!\n");
 		}
 
 		List<String> validCheckIDs = new ArrayList<String>();
@@ -120,34 +117,25 @@ public class BrokenImdb {
 		// now all checkids that met the search criteria get filled into an
 		// array list for later use
 
-		
-				
-		
-		VoltTable result = results[0]; 
+		for (VoltTable result : results) {
 			// check if any rows have been returned
-			// if (result.getRowCount() > 0)
-						
-				// for (int i = 0; i < result.getRowCount(); i++) {
-				while (result.advanceRow())
+			if (result.getRowCount() > 0)
+				for (int i = 0; i < result.getRowCount(); i++) {
 					{
 
 						// get the row
-						// VoltTableRow row = result.fetchRow(i);
+						VoltTableRow row = result.fetchRow(i);
 						// extract the value in column checkid
-						validCheckIDs.add(result.getString("CHECKID"));
-
-						// find the rules attached to the check and trigger them
-						ruleIDs = lookupRulesForCheckID(result.getString("CHECKID"));
-						// System.out.println("*** VALID CHECK FOUND: "
-						// + row.getString("CHECKID"));
+						validCheckIDs.add(row.getString("CHECKID"));
+						System.out.println("*** VALID CHECK FOUND: "
+								+ row.getString("CHECKID"));
 					}
-				
-		
+				}
+		}
 
-		HashMap<String, List<String>> returnRulesAndCheckIDs = new HashMap<String, List<String>>();
-		returnRulesAndCheckIDs.put("validCheckIDs", validCheckIDs);
-		returnRulesAndCheckIDs.put("ruleIDs", ruleIDs);
-		return returnRulesAndCheckIDs;
+		return validCheckIDs;
+
+		// ADD CHECK IF CHECK IS REFERENCED IN A RULE --> TRIGGER ACTION
 
 	}
 
@@ -165,12 +153,12 @@ public class BrokenImdb {
 		List<String> validMultiCheckIDs = new ArrayList<String>();
 
 		for (String checkID : validCheckIDs) {
-			final ClientResponse updateResponse = BrokenImdb.montanaClient
+			final ClientResponse updateResponse = Unused_Imdb_verbose.montanaClient
 					.callProcedure("UpdateChecks", 1, checkID);
 			if (updateResponse.getStatus() != ClientResponse.SUCCESS) {
 				System.err.println(updateResponse.getStatusString());
 			}
-			final ClientResponse findMulticheckResponse = BrokenImdb.montanaClient
+			final ClientResponse findMulticheckResponse = Unused_Imdb_verbose.montanaClient
 					.callProcedure("FindAllMultichecksForCheck", checkID);
 			if (findMulticheckResponse.getStatus() != ClientResponse.SUCCESS) {
 				System.err.println(findMulticheckResponse.getStatusString());
@@ -178,39 +166,38 @@ public class BrokenImdb {
 			final VoltTable findMulticheckResults[] = findMulticheckResponse
 					.getResults();
 			if (findMulticheckResults.length == 0) {
-				// System.out.printf("Not valid match found!\n");
+				System.out.printf("Not valid match found!\n");
 			}
 
-			VoltTable findMulticheckResult = findMulticheckResults[0]; 
+			for (VoltTable findMulticheckResult : findMulticheckResults) {
 				// check if any rows have been returned
-				
-					while(findMulticheckResult.advanceRow())
-						
+				if (findMulticheckResult.getRowCount() > 0) {
+					for (int i = 0; i < findMulticheckResult.getRowCount(); i++) {
+						// get the row
+						VoltTableRow row = findMulticheckResult.fetchRow(i);
 						// extract the value in column checkid
-						validMultiCheckIDs.add(findMulticheckResult.getString("MULTICHECKID"));
-						// System.out.println("MULTICHECK FOUND: "
-						// + row.getString("MULTICHECKID"));
+						validMultiCheckIDs.add(row.getString("MULTICHECKID"));
+						System.out.println("MULTICHECK FOUND: "
+								+ row.getString("MULTICHECKID"));
 						// reset the multicheck state
-						BrokenImdb.montanaClient.callProcedure("UpdateMultiChecks",
-								0, findMulticheckResult.getString("MULTICHECKID"));
+						Unused_Imdb_verbose.montanaClient.callProcedure("UpdateMultiChecks",
+								0, row.getString("MULTICHECKID"));
 					}
-				
-			
+				}
+			}
 
-		
+		}
 		return validMultiCheckIDs;
 
 	}
 
-	static List<String> evaluateMultiChecks(List<String> validMultiCheckIDs)
+	static void evaluateMultiChecks(List<String> validMultiCheckIDs)
 			throws NoConnectionsException, IOException, ProcCallException {
 
 		/*
 		 * Evaluate if these Multichecks are true and update multicheck state
 		 * accordingly
 		 */
-
-		List<String> ruleIDs = new ArrayList<String>();
 
 		for (String multicheckID : validMultiCheckIDs) {
 
@@ -221,7 +208,7 @@ public class BrokenImdb {
 
 			// Query the Multichecks
 
-			final ClientResponse findCheckForMulticheckResponse = BrokenImdb.montanaClient
+			final ClientResponse findCheckForMulticheckResponse = Unused_Imdb_verbose.montanaClient
 					.callProcedure("FindChecksForMultiCheckID", multicheckID);
 
 			if (findCheckForMulticheckResponse.getStatus() != ClientResponse.SUCCESS) {
@@ -232,55 +219,62 @@ public class BrokenImdb {
 			final VoltTable findCheckForMulticheckResults[] = findCheckForMulticheckResponse
 					.getResults();
 			if (findCheckForMulticheckResults.length == 0) {
-				// System.out.printf("Not valid match found!\n");
+				System.out.printf("Not valid match found!\n");
 			}
 
 			// Query all the checks that define the Multichecks
 
 			List<String> checkIDsMatchingMultiCheck = new ArrayList<String>();
 
-			VoltTable findCheckForMulticheckResult = findCheckForMulticheckResults[0]; 
-				
-					while(findCheckForMulticheckResult.advanceRow()) {
+			for (VoltTable findCheckForMulticheckResult : findCheckForMulticheckResults) {
+				// check if any rows have been returned
+				if (findCheckForMulticheckResult.getRowCount() > 0) {
+					for (int i = 0; i < findCheckForMulticheckResult
+							.getRowCount(); i++) {
+						// get the row
+						VoltTableRow row = findCheckForMulticheckResult
+								.fetchRow(i);
 						// extract the value in column checkid
 						checkIDsMatchingMultiCheck
-								.add(findCheckForMulticheckResult.getString("CHECKID"));
-						// System.out.println("ATTCHED CHECKS FOUND: "
-						// + row.getString("CHECKID"));
+								.add(row.getString("CHECKID"));
+						System.out.println("ATTCHED CHECKS FOUND: "
+								+ row.getString("CHECKID"));
 
 						// evaluate each check linked to the multicheck whether
 						// it is true or not
 
-						final ClientResponse findCheckStateResponse = BrokenImdb.montanaClient
+						final ClientResponse findCheckStateResponse = Unused_Imdb_verbose.montanaClient
 								.callProcedure("FindChecksForCheckID",
-										findCheckForMulticheckResult.getString("CHECKID"));
+										row.getString("CHECKID"));
 						final VoltTable findCheckStateResults[] = findCheckStateResponse
 								.getResults();
 
-						
 						for (VoltTable findCheckStateResult : findCheckStateResults) {
-							
-								while (findCheckStateResult.advanceRow()) {
-									
-									if (findCheckStateResult.getLong("STATE") == 1) {
-										// System.out.println("STATE: TRUE");
+							// check if any rows have been returned
+							if (findCheckStateResult.getRowCount() > 0) {
+								for (int j = 0; j < findCheckStateResult
+										.getRowCount(); j++) {
+									VoltTableRow checkRow = findCheckStateResult
+											.fetchRow(j);
+									if (checkRow.getLong("STATE") == 1) {
+										System.out.println("STATE: TRUE");
 										checkStates.add(true);
 									} else {
-										// System.out.println("STATE: FALSE");
+										System.out.println("STATE: FALSE");
 										checkStates.add(false);
 									}
 								}
-							
+							}
 						}
-					
-				
+					}
+				}
 
 				// here we do the evaluation based on the operator
 
 				boolean multiCheckState = false;
 
 				// first, we look up the operator
-				final ClientResponse findMultiCheckOperatorResponse = BrokenImdb.montanaClient
+				final ClientResponse findMultiCheckOperatorResponse = Unused_Imdb_verbose.montanaClient
 						.callProcedure("FindMultiChecksForMultiCheckID",
 								multicheckID);
 				final VoltTable findMultiCheckOperatorResults[] = findMultiCheckOperatorResponse
@@ -293,35 +287,27 @@ public class BrokenImdb {
 				if (checkStates.contains(true)
 						&& multiCheckOperator.equals("OR")) {
 					multiCheckState = true;
-
-					// lookup rules and get ID for return
-					ruleIDs = lookupRulesForMultiCheckID(multicheckID);
-
-					BrokenImdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
+					Unused_Imdb_verbose.montanaClient.callProcedure("UpdateMultiChecks", 1,
 							multicheckID);
-
 					System.out.println("*** Multicheck Eval OR Result: "
-					 + multiCheckState);
+							+ multiCheckState);
 				}
 
 				if ((checkStates.contains(true) == true && checkStates
 						.contains(false) == false)
 						&& multiCheckOperator.equals("AND")) {
 					multiCheckState = true;
-
-					// lookup rules and get ID for return
-					ruleIDs = lookupRulesForMultiCheckID(multicheckID);
-					BrokenImdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
+					Unused_Imdb_verbose.montanaClient.callProcedure("UpdateMultiChecks", 1,
 							multicheckID);
-
-					 System.out
-					.println("*** Multicheck Eval AND Result for MultiCheck "
-					 + multicheckID + ": " + multiCheckState);
+					System.out
+							.println("*** Multicheck Eval AND Result for MultiCheck "
+									+ multicheckID + ": " + multiCheckState);
 				}
 
 			}
 		}
-		return ruleIDs;
+
+		// ADD CHECK IF MULTICHECK IS REFERENCED IN A RULE --> TRIGGER ACTION
 
 	}
 
@@ -336,9 +322,9 @@ public class BrokenImdb {
 		List<String> validCycleMultiCheckIDs = new ArrayList<String>();
 
 		for (String multiCheckID : validMultiCheckIDs) {
-			// System.out.println("Cycling for Multicheck: " + multiCheckID);
+			System.out.println("Cycling for Multicheck: " + multiCheckID);
 
-			final ClientResponse findMulticheckResponse = BrokenImdb.montanaClient
+			final ClientResponse findMulticheckResponse = Unused_Imdb_verbose.montanaClient
 					.callProcedure("FindParentMultiChecksForMultiCheckID",
 							multiCheckID);
 			if (findMulticheckResponse.getStatus() != ClientResponse.SUCCESS) {
@@ -347,40 +333,38 @@ public class BrokenImdb {
 			final VoltTable findMulticheckResults[] = findMulticheckResponse
 					.getResults();
 			if (findMulticheckResults.length == 0) {
-				// System.out.printf("Not valid match found!\n");
+				System.out.printf("Not valid match found!\n");
 			}
 
-			VoltTable findMulticheckResult = findMulticheckResults[0]; 
+			for (VoltTable findMulticheckResult : findMulticheckResults) {
 				// check if any rows have been returned
-				while (findMulticheckResult.advanceRow()) {
+				if (findMulticheckResult.getRowCount() > 0) {
+					for (int i = 0; i < findMulticheckResult.getRowCount(); i++) {
 						// get the row
-						
+						VoltTableRow row = findMulticheckResult.fetchRow(i);
 						// extract the value in column checkid
-						validCycleMultiCheckIDs.add(findMulticheckResult
+						validCycleMultiCheckIDs.add(row
 								.getString("MULTICHECKLID"));
 						System.out.println("CYCLICAL MULTICHECK FOUND: "
-						+ findMulticheckResult.getString("MULTICHECKLID"));
+								+ row.getString("MULTICHECKLID"));
 						// reset the multicheck state
-						BrokenImdb.montanaClient.callProcedure("UpdateMultiChecks",
-								0, findMulticheckResult.getString("MULTICHECKLID"));
+						Unused_Imdb_verbose.montanaClient.callProcedure("UpdateMultiChecks",
+								0, row.getString("MULTICHECKLID"));
 					}
-				
-			
+				}
+			}
 
 		}
 		return validCycleMultiCheckIDs;
 	}
 
-	static List<String> evaluateCycleMultiChecks(
-			List<String> validCycleMultiCheckIDs)
+	static void evaluateCycleMultiChecks(List<String> validCycleMultiCheckIDs)
 			throws NoConnectionsException, IOException, ProcCallException {
 
 		/*
 		 * Evaluate if these Multichecks are true and update multicheck state
 		 * accordingly
 		 */
-
-		List<String> ruleIDs = new ArrayList<String>();
 
 		for (String multicheckID : validCycleMultiCheckIDs) {
 
@@ -389,7 +373,7 @@ public class BrokenImdb {
 			// entry is true, a logical OR is met
 			List<Boolean> multiCheckStates = new ArrayList<Boolean>();
 
-			final ClientResponse findMultiCheckForMulticheckResponse = BrokenImdb.montanaClient
+			final ClientResponse findMultiCheckForMulticheckResponse = Unused_Imdb_verbose.montanaClient
 					.callProcedure("FindLinkedMultiChecksForMultiCheckID",
 							multicheckID);
 
@@ -408,23 +392,27 @@ public class BrokenImdb {
 
 			List<String> multiCheckIDsMatchingMultiCheck = new ArrayList<String>();
 
-			VoltTable findMultiCheckForMulticheckResult = findMultiCheckForMulticheckResults[0];
+			for (VoltTable findMultiCheckForMulticheckResult : findMultiCheckForMulticheckResults) {
 				// check if any rows have been returned
-				while(findMultiCheckForMulticheckResult.advanceRow()) {
-						
+				if (findMultiCheckForMulticheckResult.getRowCount() > 0) {
+					for (int i = 0; i < findMultiCheckForMulticheckResult
+							.getRowCount(); i++) {
+						// get the row
+						VoltTableRow row = findMultiCheckForMulticheckResult
+								.fetchRow(i);
 						// extract the value in column checkid
-						multiCheckIDsMatchingMultiCheck.add(findMultiCheckForMulticheckResult
+						multiCheckIDsMatchingMultiCheck.add(row
 								.getString("MULTICHECKRID"));
 						System.out.println("ATTCHED MULTICHECKS FOUND: "
-						+ findMultiCheckForMulticheckResult.getString("MULTICHECKRID"));
+								+ row.getString("MULTICHECKRID"));
 
 						// evaluate each check linked to the multicheck whether
 						// it is true or not
 
-						final ClientResponse findMultiCheckStateResponse = BrokenImdb.montanaClient
+						final ClientResponse findMultiCheckStateResponse = Unused_Imdb_verbose.montanaClient
 								.callProcedure(
 										"FindMultiChecksForMultiCheckID",
-										findMultiCheckForMulticheckResult.getString("MULTICHECKRID"));
+										row.getString("MULTICHECKRID"));
 						final VoltTable findMultiCheckStateResults[] = findMultiCheckStateResponse
 								.getResults();
 
@@ -437,23 +425,25 @@ public class BrokenImdb {
 											.fetchRow(j);
 									if (checkRow.getLong("STATE") == 1) {
 										System.out
-										.println("MULTICHECKSTATE: TRUE");
+												.println("MULTICHECKSTATE: TRUE");
 										multiCheckStates.add(true);
 									} else {
 										System.out
-										.println("MULTICHECKSTATE: FALSE");
+												.println("MULTICHECKSTATE: FALSE");
 										multiCheckStates.add(false);
 									}
 								}
 							}
 						}
-					
-				
+					}
+				}
 
 				// here we do the evaluation based on the operator
 
+				boolean multiCheckState = false;
+
 				// first, we look up the operator
-				final ClientResponse findMultiCheckOperatorResponse = BrokenImdb.montanaClient
+				final ClientResponse findMultiCheckOperatorResponse = Unused_Imdb_verbose.montanaClient
 						.callProcedure("FindMultiChecksForMultiCheckID",
 								multicheckID);
 				final VoltTable findMultiCheckOperatorResults[] = findMultiCheckOperatorResponse
@@ -465,132 +455,48 @@ public class BrokenImdb {
 
 				if (multiCheckStates.contains(true)
 						&& multiCheckOperator.equals("OR")) {
-					// lookup matching rules and update multicheck with new
-					// status "true"
-
-					ruleIDs = lookupRulesForMultiCheckID(multicheckID);
-					BrokenImdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
+					multiCheckState = true;
+					Unused_Imdb_verbose.montanaClient.callProcedure("UpdateMultiChecks", 1,
 							multicheckID);
-
-					// System.out.println("*** Cyclical Multicheck Eval OR Result: "
-					// + multiCheckState);
+					System.out.println("*** Cyclical Multicheck Eval OR Result: "
+							+ multiCheckState);
 				}
 
 				if ((multiCheckStates.contains(true) == true && multiCheckStates
 						.contains(false) == false)
 						&& multiCheckOperator.equals("AND")) {
-					// lookup matching rules and update multicheck with new
-					// status "true"
-					ruleIDs = lookupRulesForMultiCheckID(multicheckID);
-					BrokenImdb.montanaClient.callProcedure("UpdateMultiChecks", 1,
+					multiCheckState = true;
+					Unused_Imdb_verbose.montanaClient.callProcedure("UpdateMultiChecks", 1,
 							multicheckID);
-
-					// System.out
-					// .println("*** Cyclical Multicheck Eval AND Result for MultiCheck "
-					// + multicheckID + ": " + multiCheckState);
+					System.out
+							.println("*** Cyclical Multicheck Eval AND Result for MultiCheck "
+									+ multicheckID + ": " + multiCheckState);
 				}
 
 			}
 		}
-		return ruleIDs;
 	}
 
-	public static List<String> lookupRulesForCheckID(String checkID)
-			throws NoConnectionsException, IOException, ProcCallException {
-
-		List<String> ruleIDs = new ArrayList<String>();
-
-		final ClientResponse findRulesForCheckIDResponse = BrokenImdb.montanaClient
-				.callProcedure("FindRulesForCheckID", checkID);
-		if (findRulesForCheckIDResponse.getStatus() != ClientResponse.SUCCESS) {
-			System.err.println(findRulesForCheckIDResponse.getStatusString());
-		}
-		final VoltTable findRulesForCheckIDResults[] = findRulesForCheckIDResponse
-				.getResults();
-		if (findRulesForCheckIDResults.length == 0) {
-			// System.out.printf("Not valid match found!\n");
-		}
-
-		VoltTable result = findRulesForCheckIDResults[0]; 
-			// check if any rows have been returned
-			while (result.advanceRow()) {
-					{
-
-						
-						
-						// extract the value in column checkid
-						ruleIDs.add(result.getString("RULEID"));
-						// System.out.println(row.getString("RULEID"));
-					}
-				}
-		
-
-		return ruleIDs;
-	}
-
-	public static List<String> lookupRulesForMultiCheckID(String multiCheckID)
-			throws NoConnectionsException, IOException, ProcCallException {
-
-		List<String> ruleIDs = new ArrayList<String>();
-
-		final ClientResponse findRulesForMultiCheckIDResponse = BrokenImdb.montanaClient
-				.callProcedure("FindRulesForMultiCheckID", multiCheckID);
-		if (findRulesForMultiCheckIDResponse.getStatus() != ClientResponse.SUCCESS) {
-			System.err.println(findRulesForMultiCheckIDResponse
-					.getStatusString());
-		}
-		final VoltTable findRulesForMultiCheckIDResults[] = findRulesForMultiCheckIDResponse
-				.getResults();
-		if (findRulesForMultiCheckIDResults.length == 0) {
-			// System.out.printf("Not valid match found!\n");
-		}
-
-		VoltTable result = findRulesForMultiCheckIDResults[0]; 
-			// check if any rows have been returned
-			
-			while (result.advanceRow()) {
-					{
-
-						
-						// extract the value in column checkid
-						ruleIDs.add(result.getString("RULEID"));
-						// System.out.println(row.getString("RULEID"));
-					}
-				}
-		
-
-		return ruleIDs;
-
-	}
-
-	public static List<String> runChecks(String endpointID, String propertyID,
+	public static void runChecks(String endpointID, String propertyID,
 			String checkValue, String operator, byte expired) throws Exception {
 
 		/*
 		 * Run the lowest level check engine
 		 */
 
-		// Initialize list of rules to be triggered after evaluation
-
 		/*
 		 * Step 1: Query all checks matching the data in terms of endPointID,
 		 * propertyID, CheckValue etc.
 		 */
 
-		// System.out.println("------------------NEW IMDB CHECK---------------------------");
-		// System.out.println("Endpoint:    " + endpointID);
-		// System.out.println("Property:    " + propertyID);
-		// System.out.println("Checkvalue   " + checkValue);
-		// System.out.println("-----------------------------------------------------------");
-
-		HashMap<String, List<String>> validChecksContainer = findChecks(
-				endpointID, propertyID, checkValue, operator, expired);
-
-		List<String> triggerRules = new ArrayList<String>();
+		System.out.println("------------------NEW IMDB CHECK---------------------------");
+		System.out.println("Endpoint:    " + endpointID);
+		System.out.println("Property:    " + propertyID);
+		System.out.println("Checkvalue   " + checkValue);
+		System.out.println("-----------------------------------------------------------");
 		
-		
-		List<String> validCheckIDs = validChecksContainer.get("validCheckIDs");
-		triggerRules.addAll(validChecksContainer.get("ruleIDs"));
+		List<String> validCheckIDs = findChecks(endpointID, propertyID,
+				checkValue, operator, expired);
 
 		/*
 		 * Step 2: Update all check entries in VoltDB with the new state "1" for
@@ -599,17 +505,16 @@ public class BrokenImdb {
 		 * false as a basis for the next round of checks
 		 */
 
-		
-		
-			List<String> validMultiCheckIDs = markChecksTrueAndGetParentMultiChecks(validCheckIDs);
-		
+		List<String> validMultiCheckIDs = markChecksTrueAndGetParentMultiChecks(validCheckIDs);
 
 		/*
 		 * Step 3: Evaluate if these Multichecks are true and update multicheck
 		 * state accordingly
 		 */
 
-		
+		if (validMultiCheckIDs.isEmpty() == false)
+			evaluateMultiChecks(validMultiCheckIDs);
+
 		/*
 		 * Step 4: Find all MultiChecks that are parents to the MultiChecks that
 		 * were just evaluated, return a List Also, reset the state of the
@@ -624,23 +529,21 @@ public class BrokenImdb {
 		 * multichecks can be found
 		 */
 
-		//TODO THIS IS THE AREA OF ISSUES!
-		
-		
-
 		evaluateCycleMultiChecks(validCycleMultiCheckIDs);
 
-        while (validCycleMultiCheckIDs.isEmpty() == false) {
-                triggerRules
-                                .addAll(evaluateCycleMultiChecks(validCycleMultiCheckIDs));
-                validCycleMultiCheckIDs = getMultiCheckParents(validCycleMultiCheckIDs);
-        }
-    
-		
-
-
-		return triggerRules;
+		while (validCycleMultiCheckIDs.isEmpty() == false) {
+			evaluateCycleMultiChecks(validCycleMultiCheckIDs);
+			validCycleMultiCheckIDs = getMultiCheckParents(validCycleMultiCheckIDs);
 		}
-    
+
 	}
-	
+
+	public static void runCheckParentMulticheck(String checkID) {
+		// Evaluate first in line Multicheck
+	}
+
+	public static void runMultiCheckParentMulticheck(String checkID) {
+		// Evaluate subsequent Multichecks
+	}
+
+}

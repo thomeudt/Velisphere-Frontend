@@ -46,7 +46,7 @@ public class ChaiWorker {
 		 */
 
 		System.out.println();
-		System.out.println("*     * VeliChai v0.0.4 - VeliSphere Controller");
+		System.out.println("*     * VeliChai v0.0.5 - VeliSphere Controller");
 		System.out
 				.println(" *   *  Copyright (C) 2013 Thorsten Meudt. All rights reserved.");
 		System.out.println("  * *   ");
@@ -72,7 +72,7 @@ public class ChaiWorker {
 
 		System.out
 				.println(" [IN] Selected VoltDB: " + ServerParameters.volt_ip);
-		Imdb.openDatabase();
+		BusinessLogicEngine.openDatabase();
 
 		System.out.println(" [OK] Connection Successful.");
 		System.out.println(" [OK] Waiting for messages on queue: "
