@@ -27,7 +27,7 @@ public class HomeController {
 	 */
 	public static void main(String[] args) {
 		
-		ServerParameters.my_queue_name="1003";
+		ServerParameters.my_queue_name="E1";
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -147,11 +147,11 @@ public class HomeController {
 				try {
 					
 		        	HashMap<String, String> messageHash = new HashMap<String, String>();
-		        	messageHash.put("1000", b1);
-		        	messageHash.put("1001", b2);
-		        	messageHash.put("1004", b3);
-		        	messageHash.put("1005", b4);
-		        	messageHash.put("1006", b5);
+		        	messageHash.put("PR1", b1);
+		        	messageHash.put("PR2", b2);
+		        	messageHash.put("PR3", b3);
+		        	messageHash.put("PR4", b4);
+		        	messageHash.put("PR5", b5);
 		        	
 		        	Send.sendHashTable(messageHash, "controller");
 
