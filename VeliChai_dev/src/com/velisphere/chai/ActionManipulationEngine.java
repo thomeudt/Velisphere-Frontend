@@ -49,10 +49,30 @@ public class ActionManipulationEngine {
 		HashMap<String,String> outboundMessageMap = new HashMap<String, String>();
 		while (actionDetails.advanceRow()) {
 			{
-				System.out.println(actionDetails.toFormattedString());
-				outboundMessageMap.put(actionDetails.getString("OUTBOUNDPROPERTYID"), inboundMessageMap.get(actionDetails.getString("INBOUNDPROPERTYID")));
-				System.out.println("Outboundmap: " + outboundMessageMap);
-				Send.sendHashTable(outboundMessageMap, inboundMessageMap.get(actionDetails.getString("TGTEPIDFROMINBOUNDPROP")), inboundMessageMap.get("EPID"));
+				// System.out.println(actionDetails.toFormattedString());
+				String targetEPID = new String();
+				String payload = new String();
+				if (actionDetails.getString("TGTEPIDFROMINBOUNDPROP").isEmpty() == false){
+					targetEPID = inboundMessageMap.get(actionDetails.getString("TGTEPIDFROMINBOUNDPROP"));
+				} else
+				{
+					targetEPID = actionDetails.getString("TARGETENDPOINTID");
+				}
+				
+				
+				if (actionDetails.getString("INBOUNDPROPERTYID").isEmpty() == false){
+					payload = inboundMessageMap.get(actionDetails.getString("INBOUNDPROPERTYID"));
+				}
+				else
+					if (actionDetails.getString("CURRENTSTATEPROPERTYID").isEmpty() == false){
+						//TODO This is still to be implemented in version 1.0!
+					}
+					else
+						payload = actionDetails.getString("CUSTOMPAYLOAD");
+				
+				outboundMessageMap.put(actionDetails.getString("OUTBOUNDPROPERTYID"), payload);
+				// System.out.println("Outboundmap: " + outboundMessageMap);
+				Send.sendHashTable(outboundMessageMap, targetEPID, inboundMessageMap.get("EPID"));
 
 			}
 		}

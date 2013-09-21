@@ -72,7 +72,7 @@ public class Send implements Runnable {
 		channel.basicPublish("", targetQueueName, null,
 				writer.toString().getBytes());
 
-		System.out.println(" [x] Sent '" + writer.toString() + "' from " + senderQueueName + " to " + targetQueueName);
+		// System.out.println(" [x] Sent '" + writer.toString() + "' from " + senderQueueName + " to " + targetQueueName);
 
 		channel.close();
 		

@@ -144,7 +144,7 @@ public class MainScreen {
 					
 					HashMap<String, String> messageHash = new HashMap<String, String>();
 					messageHash.put("PR6", txtSendToQueue.getText());
-					messageHash.put("PR7", txtMessageToSend.getText());
+					messageHash.put("PR7", "["+ ServerParameters.my_queue_name + "]" + txtMessageToSend.getText());
 					messageHash.put("PR8", "1");
 		        	Send.sendHashTable(messageHash, "controller");
 					

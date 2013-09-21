@@ -113,12 +113,11 @@ public class MessageInspect implements Runnable {
 					rIT.remove();
 				}
 				
-				System.out.println("Aktionen: " + actionItems);
+				// System.out.println("Aktionen: " + actionItems);
 				
 				for (Iterator<String> aIT = actionItems.iterator(); aIT
 						.hasNext();) {
 					ActionManipulationEngine.executeActionItems(aIT.next(), forEvaluation);
-					//actionItems.addAll(ActionManipulationEngine.getActionItems( aIT.next()));
 					aIT.remove();
 				}
 
