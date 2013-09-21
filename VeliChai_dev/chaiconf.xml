@@ -24,5 +24,5 @@
 <entry key="VeliBunny AMPQ Broker IP">h2209363.stratoserver.net</entry>
 <entry key="LDAP Principal">cn=Manager,dc=velisphere-dir,dc=com</entry>
 <entry key="LDAP URL">ldap://16.1.1.180:389/dc=velisphere-dir,dc=com</entry>
-<entry key="Threadpool Size">50</entry>
+<entry key="Threadpool Size">256</entry>
 </properties>

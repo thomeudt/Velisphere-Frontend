@@ -39,7 +39,7 @@ public class Send {
 		// System.out.println("QUEUE DEFINED AS....."+queue_name+"...");
 		if (queue_name.equals("controller")) {
 			boolean durable = true;
-			channel.queueDeclare(queue_name, durable, false, false, null);
+			channel.queueDeclare(queue_name, false, false, false, null);
 		} else {
 			channel.queueDeclare(queue_name, false, false, false, null);
 		}

@@ -15,12 +15,13 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.chai;
+
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -38,7 +39,9 @@ public class MessagePack {
 	public static String extractProperty(String jsonInput, String propertyID) throws JsonProcessingException, IOException 
 	{
 
-		JsonParser jp = ChaiWorker.factory.createParser(jsonInput);
+		ObjectMapper mapper = new ObjectMapper();
+		JsonFactory factory = mapper.getFactory();
+		JsonParser jp = factory.createParser(jsonInput);
 		String foundValue = new String();
 
 		while (jp.nextToken() != JsonToken.END_OBJECT) {
@@ -55,23 +58,7 @@ public class MessagePack {
 		return foundValue;  
 	}
 
-	public static HashMap<String, String> extractKeyPropertyPair(String jsonInput) throws JsonProcessingException, IOException 
-	{
-
-		JsonParser jp = ChaiWorker.factory.createParser(jsonInput);
-		HashMap<String, String> foundMap = new HashMap<String, String>();
-
-		while (jp.nextToken() != JsonToken.END_OBJECT) {
-
-			String fieldname = jp.getCurrentName();
-			foundMap.put(jp.getCurrentName(), jp.getText());
-		}
-
-		jp.close();		 
-
-		return foundMap;  
-	}
-	
+		
 	public static String buildMessagePack(Object object)
 	{
 	

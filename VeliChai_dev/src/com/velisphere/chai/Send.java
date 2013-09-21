@@ -18,9 +18,17 @@
 package com.velisphere.chai;
 
 import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.simple.JSONObject;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.AMQP.BasicProperties;
 
 public class Send implements Runnable {
 
@@ -40,6 +48,36 @@ public class Send implements Runnable {
 		channel.basicPublish("", queue_name, null, message.getBytes());
 		channel.close();
 	}
+	
+	
+	public static void sendHashTable(HashMap<String, String> message,
+			String targetQueueName, String senderQueueName) throws Exception {
+
+		BrokerConnection bc = new BrokerConnection();
+		Channel channel = bc.establishTxChannel();
+		channel.queueDeclare(senderQueueName, false, false, false, null);
+
+
+		ObjectMapper mapper = new ObjectMapper();
+		StringWriter writer = new StringWriter();
+		HashMap<String, String> messageMap = new HashMap<String, String>();
+		messageMap.put("SECTOK", null);
+		messageMap.put("TIMESTAMP", null);
+		messageMap.put("TYPE", "REG");
+		messageMap.put("EPID", senderQueueName);
+		messageMap.putAll(message);
+		mapper.writeValue(writer, messageMap);
+		
+
+		channel.basicPublish("", targetQueueName, null,
+				writer.toString().getBytes());
+
+		// System.out.println(" [x] Sent '" + writer.toString() + "' from " + senderQueueName + " to " + targetQueueName);
+
+		channel.close();
+		
+	}
+	
 
 	public static void sendJson(String jsonContainer, String queue_name)
 			throws Exception {

@@ -19,17 +19,24 @@ package com.velisphere.chai;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
+import com.rabbitmq.client.QueueingConsumer.Delivery;
 import com.rabbitmq.client.ShutdownSignalException;
 
-public class Recv implements Runnable {
+public class Unused_Recv  {
 
-	private int workerNumber;
+	
+	// depracted in this version 0.0.4
+	
+	private Channel passedChannel;
+	private QueueingConsumer passedConsumer; 
 
-    Recv(int number) {
-        workerNumber = number;
+    Unused_Recv(Channel channel, QueueingConsumer consumer) {
+        passedChannel = channel;
+        passedConsumer = consumer;
     }
 
 	
@@ -47,50 +54,38 @@ public class Recv implements Runnable {
 		 *  
 		 */
 
-		ExecutorService unpacker = Executors.newFixedThreadPool(ServerParameters.threadpoolSize); // create thread pool for message unpacking
-
+		ExecutorService unpacker = Executors.newCachedThreadPool(); // create thread pool for message unpacking
+		//ExecutorService unpacker = Executors.newFixedThreadPool(1); // create thread pool for message unpacking
+		
 		try {
 
-			BrokerConnection bc = new BrokerConnection();
-			Channel channel = bc.establishRxChannel();
-
-			// Prefetch of 100 has proven to be a good choice for performance reasons, but this needs further evaluation
-
-
-			int prefetchCount = 100;
-			channel.basicQos(prefetchCount);
-
-			System.out.println(" [OK] Connection Successful.");
-			System.out.println(" [OK] Waiting for messages on queue: " + ServerParameters.controllerQueueName + ". To exit press CTRL+C");
-
-			QueueingConsumer consumer = new QueueingConsumer(channel);
-
-			// Message acknowledgment is needed to make sure no messages are lost
-			
-			boolean autoAck = false;
-			channel.basicConsume(ServerParameters.controllerQueueName, autoAck, consumer);
-
+			QueueingConsumer.Delivery delivery;
+					
 			while (!Thread.currentThread().isInterrupted()){
-
-				QueueingConsumer.Delivery delivery;
 				try{
-					delivery = consumer.nextDelivery();
+					delivery = passedConsumer.nextDelivery();
 					Thread unpackingThread;
-					unpackingThread = new Thread(new AMQPUnpack(delivery), "unpacker");
-					unpacker.execute(unpackingThread);
-					channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false); // here we ack receipt of the message
+				//	unpackingThread = new Thread(new AMQPUnpack(delivery), "unpacker");
+				//	unpacker.execute(unpackingThread);
+					// unpacker.execute(unpackingThread);
+					// AMQPUnpack uP = new AMQPUnpack(delivery);
+					// uP.run();
+					
+					passedChannel.basicAck(delivery.getEnvelope().getDeliveryTag(), false); // here we ack receipt of the message
 					
 				} catch (ShutdownSignalException | ConsumerCancelledException
 						| InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+
 			}
-			channel.close(); // close channel
+			
+			passedChannel.close(); // close channel
 
 			unpacker.shutdown(); // close thread pool for message unpacking
 		}
-		catch (IOException | ShutdownSignalException | ConsumerCancelledException e) {
+		catch ( ShutdownSignalException | ConsumerCancelledException e) {
 			// TODO Auto-generated catch block
 			System.out.println("*** Connection error. Conntection to Broker could not be established.");
 			e.printStackTrace();

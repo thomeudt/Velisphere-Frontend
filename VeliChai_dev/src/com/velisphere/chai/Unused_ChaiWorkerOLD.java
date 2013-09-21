@@ -28,7 +28,7 @@ import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 
-public class ChaiWorker {
+public class Unused_ChaiWorkerOLD {
 
 	public static ExecutorService receiver;
 
@@ -46,7 +46,7 @@ public class ChaiWorker {
 		 */
 
 		System.out.println();
-		System.out.println("*     * VeliChai v0.1.0 - VeliSphere Controller");
+		System.out.println("*     * VeliChai v0.0.4 - VeliSphere Controller");
 		System.out
 				.println(" *   *  Copyright (C) 2013 Thorsten Meudt. All rights reserved.");
 		System.out.println("  * *   ");
@@ -67,30 +67,62 @@ public class ChaiWorker {
 		 */
 
 		BrokerConnection.establishConnection();
-		System.out.println(" [OK] Connection to AMQP Broker successful.");
-		
+
 		// Open the IMDB Database
 
 		System.out
 				.println(" [IN] Selected VoltDB: " + ServerParameters.volt_ip);
-		BusinessLogicEngine.openDatabase();
+		Unused_Imdb.openDatabase();
 
 		System.out.println(" [OK] Connection Successful.");
 		System.out.println(" [OK] Waiting for messages on queue: "
 				+ ServerParameters.controllerQueueName
 				+ ". To exit press CTRL+C");
 
-		
-		ExecutorService unpacker = Executors
-				.newFixedThreadPool(ServerParameters.threadpoolSize);
+		BrokerConnection bc = new BrokerConnection();
+		Channel channel = bc.establishRxChannel();
 
-		for(int i = 0; i<ServerParameters.threadpoolSize; i++){
+		// Prefetch of 100 has proven to be a good choice for performance
+		// reasons, but this needs further evaluation
+
+		int prefetchCount = 1;
+		channel.basicQos(prefetchCount);
+		QueueingConsumer consumer = new QueueingConsumer(channel);
+
+		// Message acknowledgment is needed to make sure no messages are lost
+
+		boolean autoAck = false;
+		channel.basicConsume(ServerParameters.controllerQueueName, autoAck,
+				consumer);
+
+		/*
+		 * Start the listening service
+		 */
+
+		QueueingConsumer.Delivery delivery;
+
+		ExecutorService unpacker = Executors
+				.newFixedThreadPool(ServerParameters.threadpoolSize/16);
+
+		while (true) {
+			try {
+				delivery = consumer.nextDelivery();
 				Thread unpackingThread;
-				unpackingThread = new Thread(new AMQPUnpack(),
-						"unpacker");
-			    unpacker.execute(unpackingThread);
+			//	unpackingThread = new Thread(new AMQPUnpack(delivery),
+				//		"unpacker");
+				// unpacker.execute(unpackingThread);
+				
+				// AMQPUnpack unPacker = new AMQPUnpack(delivery);
+				// unPacker.run();
+				
+				channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false); 
+			} catch (ShutdownSignalException | ConsumerCancelledException
+					| InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
-		
-		
+
 	}
 }

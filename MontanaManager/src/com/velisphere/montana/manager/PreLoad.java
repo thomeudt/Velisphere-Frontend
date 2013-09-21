@@ -83,8 +83,8 @@ public class PreLoad {
 	        preLoader.callProcedure("MULTICHECK_CHECK_LINK.insert", "1000", "1000", "1001");
 	        preLoader.callProcedure("MULTICHECK_CHECK_LINK.insert", "1001", "1000", "1002");
 	        preLoader.callProcedure("MULTICHECK_CHECK_LINK.insert", "1002", "1001", "1001");
-	        preLoader.callProcedure("MULTICHECK_CHECK_LINK.insert", "1003", "1001", "1003");
-	        preLoader.callProcedure("MULTICHECK_CHECK_LINK.insert", "1004", "1001", "1004");
+	        preLoader.callProcedure("MULTICHECK_CHECK_LINK.insert", "1003", "1001", "1002");
+	        preLoader.callProcedure("MULTICHECK_CHECK_LINK.insert", "1004", "1003", "1002");
 	        preLoader.callProcedure("MULTICHECK_CHECK_LINK.insert", "1005", "1003", "1004");
 	        preLoader.callProcedure("MULTICHECK_CHECK_LINK.insert", "1006", "1003", "1005");
 	        
@@ -92,8 +92,8 @@ public class PreLoad {
 	        
 	        preLoader.callProcedure("MULTICHECK_MULTICHECK_LINK.insert", "1000", "1002", "1000");
 	        preLoader.callProcedure("MULTICHECK_MULTICHECK_LINK.insert", "1001", "1002", "1001");
-	        preLoader.callProcedure("MULTICHECK_MULTICHECK_LINK.insert", "1002", "1004", "1001");
-	        preLoader.callProcedure("MULTICHECK_MULTICHECK_LINK.insert", "1003", "1004", "1003");
+	        preLoader.callProcedure("MULTICHECK_MULTICHECK_LINK.insert", "1002", "1004", "1000");
+	        preLoader.callProcedure("MULTICHECK_MULTICHECK_LINK.insert", "1003", "1004", "1001");
 	        
 	        System.out.println("Multichecks and Multichecks linked");
 	        
@@ -101,6 +101,31 @@ public class PreLoad {
 	        preLoader.callProcedure("RULE.insert", "1001", "Licht im Arbeitszimmer AUS", "", "1000"); // Button 1 und 2 gedrückt
 	        
 	        System.out.println("Rules loaded");
+	        
+	        preLoader.callProcedure("CHECKPATH.insert", "1000"); // Checpath für Button 1 gedrückt
+	        preLoader.callProcedure("CHECKPATH.insert", "1001"); // Checkpath Button 1 und 2 gedrückt
+	        
+	        System.out.println("Checkpaths loaded");
+
+	        preLoader.callProcedure("CHECKPATH_CHECK_LINK.insert", "1000", "1000", "1001"); 
+	        preLoader.callProcedure("CHECKPATH_CHECK_LINK.insert", "1001", "1001", "1002");
+	        preLoader.callProcedure("CHECKPATH_CHECK_LINK.insert", "1002", "1001", "1003");
+	        preLoader.callProcedure("CHECKPATH_CHECK_LINK.insert", "1003", "1001", "1004");
+	        preLoader.callProcedure("CHECKPATH_CHECK_LINK.insert", "1004", "1001", "1005");
+	        preLoader.callProcedure("CHECKPATH_CHECK_LINK.insert", "1005", "1001", "1001");
+	        preLoader.callProcedure("CHECKPATH_CHECK_LINK.insert", "1006", "1001", "1002"); 
+	        
+	        System.out.println("Checkpaths and Checks linked");
+
+	        preLoader.callProcedure("CHECKPATH_MULTICHECK_LINK.insert", "1000", "1000", "1000");
+	        preLoader.callProcedure("CHECKPATH_MULTICHECK_LINK.insert", "1001", "1001", "1000"); 
+	        preLoader.callProcedure("CHECKPATH_MULTICHECK_LINK.insert", "1002", "1001", "1001"); 
+	        preLoader.callProcedure("CHECKPATH_MULTICHECK_LINK.insert", "1003", "1001", "1002");
+	        preLoader.callProcedure("CHECKPATH_MULTICHECK_LINK.insert", "1004", "1001", "1003");
+	        preLoader.callProcedure("CHECKPATH_MULTICHECK_LINK.insert", "1005", "1001", "1004");
+	        	        
+	        System.out.println("Checkpaths and MultiChecks linked");
+	        
 	        
 	        System.out.println("Done!");
 	        

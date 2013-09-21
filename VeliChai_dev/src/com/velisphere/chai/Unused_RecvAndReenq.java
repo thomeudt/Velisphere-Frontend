@@ -16,34 +16,38 @@
  *  from Thorsten Meudt.
  ******************************************************************************/
 package com.velisphere.chai;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.QueueingConsumer;
 
 /*
  * UNUSED - REMOVE LATER!
  */
 
 
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-
-public class Route {
+public class Unused_RecvAndReenq {
 
 
-	public static void sendToDirectExchange(String message, String exchange_name, String routingKey) throws Exception {
-
+	public static void main(String[] argv) throws Exception {
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(ServerParameters.bunny_ip);
+		
 		Connection connection = factory.newConnection();
+		
 		Channel channel = connection.createChannel();
 
-		channel.exchangeDeclare(exchange_name, "direct");
+		channel.queueDeclare(ServerParameters.controllerQueueName, false, false, false, null);
+		System.out.println(" [*] VeliChai Controller is waiting for messages. To exit press CTRL+C");
 
-		channel.basicPublish(exchange_name, routingKey, null, message.getBytes());
-		System.out.println(" [x] Sent '" + message + "'");
+		QueueingConsumer consumer = new QueueingConsumer(channel);
+		channel.basicConsume(ServerParameters.controllerQueueName, true, consumer);
 
-		channel.close();
-		connection.close();
+		while (true) {
+			QueueingConsumer.Delivery delivery = consumer.nextDelivery();
+			String message = new String(delivery.getBody());
+			System.out.println(" [x] Received '" + message + "'");
+			Send.main(message, ServerParameters.DestinationQueue);
+		}
 	}
-
-
 }
