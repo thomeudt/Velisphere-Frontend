@@ -67,7 +67,8 @@ public class ChaiWorker {
 		 */
 
 		BrokerConnection.establishConnection();
-
+		System.out.println(" [OK] Connection to AMQP Broker successful.");
+		
 		// Open the IMDB Database
 
 		System.out

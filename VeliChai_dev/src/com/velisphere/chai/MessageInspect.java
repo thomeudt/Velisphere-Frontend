@@ -20,6 +20,7 @@ package com.velisphere.chai;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -83,7 +84,7 @@ public class MessageInspect implements Runnable {
 
 				// System.out.println("**************************** IMDB CHECK INITIATED ************************************");
 
-				List<String> triggeredRules = new ArrayList<String>();
+				HashSet<String> triggeredRules = new HashSet<String>();
 
 				Iterator<Map.Entry<String, String>> it = forEvaluation
 						.entrySet().iterator();
@@ -100,26 +101,28 @@ public class MessageInspect implements Runnable {
 							&& e.getKey() != "SECTOK"
 							&& e.getKey() != "TIMESTAMP"
 							&& e.getKey() != "TYPE") {
-						// System.out.println("EPID: " + EPID);
-						// System.out.println("KEY:  " + e.getKey());
-						// System.out.println("VALUE:" + e.getValue());
-						//triggeredRules.addAll(Imdb.runChecks(EPID, e.getKey(), e.getValue(), "=", (byte) 0));
-						triggeredRules.addAll(BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), "=", (byte) 0));
+							triggeredRules.addAll(BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), "=", (byte) 0));
 					}
-					it.remove();
 				}
 
-				// for(int i=0; i < triggeredRules.size(); i++)
+				HashSet<String> actionItems = new HashSet<String>();
+				
 				for (Iterator<String> rIT = triggeredRules.iterator(); rIT
 						.hasNext();) {
-					// System.out.println("Rule found: " +
-					// triggeredRules.get(i));
-					Send.main((String) rIT.next(), "adam");
+					actionItems.addAll(ActionManipulationEngine.getActionItems( rIT.next()));
 					rIT.remove();
 				}
+				
+				System.out.println("Aktionen: " + actionItems);
+				
+				for (Iterator<String> aIT = actionItems.iterator(); aIT
+						.hasNext();) {
+					ActionManipulationEngine.executeActionItems(aIT.next(), forEvaluation);
+					//actionItems.addAll(ActionManipulationEngine.getActionItems( aIT.next()));
+					aIT.remove();
+				}
 
-				// Send.main("A", "ludwig");
-
+	
 			} catch (JsonProcessingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

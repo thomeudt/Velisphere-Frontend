@@ -20,7 +20,7 @@ package com.velisphere.chai;
 /**
  * TODO
  * Here we need to
- * - lookup rules in every evaluation step - rules can be attached to a check or any multicheck * 
+ * 
  */
 
 import org.voltdb.VoltTable;
@@ -210,8 +210,10 @@ public class BusinessLogicEngine {
 				// String value = vtCheckPathForChecksT.getString("CHECKID");
 				checkPathMembers.add(key);
 			}
-
+			
 		}
+		
+
 
 		// lookup MultiChecks contained in the checkpaths
 
@@ -245,6 +247,8 @@ public class BusinessLogicEngine {
 				}
 			}
 		}
+		
+		
 
 		// evaluate first level multichecks (connected to checks) in relevant
 		// checkpaths
@@ -279,6 +283,8 @@ public class BusinessLogicEngine {
 			}
 
 		}
+		
+		
 
 		// evaluate all other multichecks
 

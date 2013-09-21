@@ -30,19 +30,24 @@ public class PreLoadNeu {
 	        System.out.println("Endpointclasses loaded");
 	        
 	        preLoader.callProcedure("ENDPOINT.insert", "E1", "Homecontroller App", "EPC2");
+	        preLoader.callProcedure("ENDPOINT.insert", "E2", "Blubber Thorsten", "EPC1");
+	        preLoader.callProcedure("ENDPOINT.insert", "E3", "Blubber Ute", "EPC1");
+
 	        
 	        System.out.println("Endpoints loaded");
 	        
 	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1000", "E1", "1000");
+	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1001", "E2", "1000");
+	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1002", "E3", "1001");
 	        
 	        System.out.println("Endpoints and Users linked");
 	        
-	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC1", "Text Message", "String", "");
+	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC1", "Text", "String", "");
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC2", "Generic Digital Port", "Byte", "");
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC3", "Brightness", "Double", "lux");
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC4", "On Off Switch", "Byte", "");
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC5", "On Off Indicator", "Byte", "");
-	        
+	        	        
 	        System.out.println("Property Classes loaded");
 	        
 	        preLoader.callProcedure("PROPERTY.insert", "PR1", "Switch 1", "PC4", "EPC3");
@@ -50,8 +55,11 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("PROPERTY.insert", "PR3", "Switch 3", "PC4", "EPC3");
 	        preLoader.callProcedure("PROPERTY.insert", "PR4", "Switch 4", "PC4", "EPC3");
 	        preLoader.callProcedure("PROPERTY.insert", "PR5", "Switch 5", "PC4", "EPC3");
-	        
-	        
+	        preLoader.callProcedure("PROPERTY.insert", "PR6", "To Field", "PC1", "EPC1");
+	        preLoader.callProcedure("PROPERTY.insert", "PR7", "Send Content", "PC1", "EPC1");
+	        preLoader.callProcedure("PROPERTY.insert", "PR8", "Send Request", "PC1", "EPC1");
+	        preLoader.callProcedure("PROPERTY.insert", "PR9", "Receive Content", "PC1", "EPC1");
+	        	        	        
 	        System.out.println("Properties loaded");
 	        
 	        preLoader.callProcedure("CHECK.insert", "C1", "E1", "PR1", "1", "=", "0", "0"); // Checks if switch 1 is on
@@ -59,6 +67,9 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("CHECK.insert", "C3", "E1", "PR3", "1", "=", "0", "0"); // Checks if switch 3 is on
 	        preLoader.callProcedure("CHECK.insert", "C4", "E1", "PR4", "1", "=", "0", "0"); // Checks if switch 4 is on
 	        preLoader.callProcedure("CHECK.insert", "C5", "E1", "PR5", "1", "=", "0", "0"); // Checks if switch 5 is on
+	        preLoader.callProcedure("CHECK.insert", "C6", "E2", "PR8", "1", "=", "0", "0"); // Checks if Send Request is Set
+	        preLoader.callProcedure("CHECK.insert", "C7", "E3", "PR8", "1", "=", "0", "0"); // Checks if Send Request is Set
+
 	        
 	        System.out.println("Checks loaded");
 	        
@@ -85,14 +96,7 @@ public class PreLoadNeu {
 	        
 	        System.out.println("Multichecks and Multichecks linked");
 	        
-	        preLoader.callProcedure("RULE.insert", "R1", "Button 1 gedrückt", "C1", ""); 
-	        preLoader.callProcedure("RULE.insert", "R2", "Button 1 und 2 gedrückt", "", "MC1");
-	        preLoader.callProcedure("RULE.insert", "R3", "Button 3 und 4 gedrückt", "", "MC2");
-	        preLoader.callProcedure("RULE.insert", "R4", "Button 1,2, 3 und 4 gedrückt", "", "MC3");
-	           
-	        
-	        System.out.println("Rules loaded");
-	        
+        
 	        preLoader.callProcedure("CHECKPATH.insert", "CP1"); // Checpath für Button 1 und 2gedrückt
 	        preLoader.callProcedure("CHECKPATH.insert", "CP2"); // Checkpath Button 3 und 4 gedrückt
 	        preLoader.callProcedure("CHECKPATH.insert", "CP3"); // Checkpath Button 5 gedrückt
@@ -137,10 +141,30 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("CHECKPATH_MULTICHECK_LINK.insert", "1011", "CP6", "MC3");
 	        preLoader.callProcedure("CHECKPATH_MULTICHECK_LINK.insert", "1012", "CP6", "MC4");
 	        preLoader.callProcedure("CHECKPATH_MULTICHECK_LINK.insert", "1013", "CP6", "MC5");
-	        
-	        
 	        	        
 	        System.out.println("Checkpaths and MultiChecks linked");
+	        
+	        preLoader.callProcedure("RULE.insert", "R1", "Button 1 gedrückt", "C1", ""); 
+	        preLoader.callProcedure("RULE.insert", "R2", "Button 1 und 2 gedrückt", "", "MC1");
+	        preLoader.callProcedure("RULE.insert", "R3", "Button 3 und 4 gedrückt", "", "MC2");
+	        preLoader.callProcedure("RULE.insert", "R4", "Button 1,2, 3 und 4 gedrückt", "", "MC3");
+	        preLoader.callProcedure("RULE.insert", "R5", "Chat von Thorsten", "C6", "");	           
+	        preLoader.callProcedure("RULE.insert", "R6", "Chat von Ute", "C7", "");
+	        
+	        System.out.println("Rules loaded");
+	 	        
+	        preLoader.callProcedure("ACTION.insert", "A1", "Forward Chat to Zielendpoint", "", "PR6", 0); 
+	        
+	        System.out.println("Actions loaded");
+	        	        	        
+	        preLoader.callProcedure("OUTBOUNDPROPERTYACTION.insert", "OPA1", "PR9", "PR7", "", "", "A1");
+	        
+	        System.out.println("Outbound Property Actions loaded");
+	        	        
+	        preLoader.callProcedure("RULE_ACTION_LINK.insert", "1000", "R5", "A1");
+	        
+	        System.out.println("Outbound Rules and Actions linked");
+	        
 	        
 	        
 	        System.out.println("Done!");
@@ -148,6 +172,7 @@ public class PreLoadNeu {
 	        /*
 	         * Retrieve the message.
 	         */
+	
 	 }
 	
 }
