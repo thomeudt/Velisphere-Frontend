@@ -46,7 +46,7 @@ public class ChaiWorker {
 		 */
 
 		System.out.println();
-		System.out.println("*     * VeliChai v0.0.5 - VeliSphere Controller");
+		System.out.println("*     * VeliChai v0.1.0 - VeliSphere Controller");
 		System.out
 				.println(" *   *  Copyright (C) 2013 Thorsten Meudt. All rights reserved.");
 		System.out.println("  * *   ");
