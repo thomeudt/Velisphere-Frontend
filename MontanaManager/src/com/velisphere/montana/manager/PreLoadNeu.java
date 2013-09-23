@@ -12,7 +12,7 @@ public class PreLoadNeu {
 	         */
 	        org.voltdb.client.Client preLoader;
 	        preLoader = ClientFactory.createClient();
-	        preLoader.createConnection("16.1.1.149");
+	        preLoader.createConnection("ec2-54-200-71-184.us-west-2.compute.amazonaws.com");
 
 	        /*
 	         * Load the database.

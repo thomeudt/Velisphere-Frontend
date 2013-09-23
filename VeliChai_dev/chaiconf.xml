@@ -21,7 +21,7 @@
 <comment>This file contains LDAP login information. Do not overwrite!</comment>
 <entry key="LDAP PW">1Suplies!</entry>
 <entry key="Controller Queue Name">controller</entry>
-<entry key="VeliBunny AMPQ Broker IP">h2209363.stratoserver.net</entry>
+<entry key="VeliBunny AMPQ Broker IP">ec2-54-200-23-48.us-west-2.compute.amazonaws.com</entry>
 <entry key="LDAP Principal">cn=Manager,dc=velisphere-dir,dc=com</entry>
 <entry key="LDAP URL">ldap://16.1.1.180:389/dc=velisphere-dir,dc=com</entry>
 <entry key="Threadpool Size">256</entry>
