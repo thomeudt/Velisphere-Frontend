@@ -9,7 +9,7 @@
 	<g:HTMLPanel>
 				<div class="hero-unit">
 				<h1>
-					Welcome to VeliSphere Perspectives
+					Discover VeliSphere Perspectives!
 				</h1>
 				
 				<p>
@@ -17,7 +17,7 @@
 				</p>
 				
 				<p>
-					<g:Button styleName="btn btn-primary btn-large" text="Login »" />
+					<g:Button styleName="btn btn-primary btn-large" text="Login »" ui:field="btnLogin" />
 				</p>
 			</div>
 

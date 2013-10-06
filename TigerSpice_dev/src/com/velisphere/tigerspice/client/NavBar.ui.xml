@@ -8,9 +8,16 @@
 		}
 	</ui:style>
 	
+	
 		 <g:FlowPanel>
+    
+		   
+    
+         
      <b:Navbar>
+         
          <b:Brand><img alt="" src="./images/logo_perspectives_trim.png" /></b:Brand>
+    
          <b:Nav>
              <b:NavLink>Home</b:NavLink>
              <b:NavLink>Spheres</b:NavLink>
@@ -24,8 +31,17 @@
              <b:NavLink>Shop</b:NavLink>
              <b:NavLink>Account</b:NavLink>
          </b:Nav>
+       
      </b:Navbar>
+          
     
+     
+     
+
+     
+     
+     
+     
  </g:FlowPanel>
 	
 		 

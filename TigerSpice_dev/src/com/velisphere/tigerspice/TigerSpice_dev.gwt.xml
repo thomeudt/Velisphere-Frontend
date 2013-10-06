@@ -27,4 +27,5 @@
 	<source path='client' />
 	<source path='shared' />
 	<entry-point class="com.velisphere.tigerspice.client.Login" />
+	<set-property name="bootstrap.responsiveDesign" value="true"/>
 </module>
