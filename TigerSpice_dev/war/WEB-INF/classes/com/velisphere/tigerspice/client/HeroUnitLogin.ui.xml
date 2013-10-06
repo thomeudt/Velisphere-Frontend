@@ -1,0 +1,25 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.important {
+			font-weight: bold;
+		}
+	</ui:style>
+	<g:HTMLPanel>
+				<div class="hero-unit">
+				<h1>
+					Welcome to VeliSphere Perspectives
+				</h1>
+				
+				<p>
+					Perspectives is a flexible tool to manage the VeliSphere network of things and services.
+				</p>
+				
+				<p>
+					<g:Button styleName="btn btn-primary btn-large" text="Login »" />
+				</p>
+			</div>
+
+	</g:HTMLPanel>
+</ui:UiBinder> 
