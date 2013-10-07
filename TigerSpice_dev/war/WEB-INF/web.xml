@@ -8,27 +8,17 @@
   <!-- Servlets -->
 
 <servlet>
-    <servlet-name>requestFactoryServlet</servlet-name>
-    <servlet-class>com.google.web.bindery.requestfactory.server.RequestFactoryServlet</servlet-class>
+    <servlet-name>userdataServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.UserServiceImpl</servlet-class>
     
 </servlet>
 
 <servlet-mapping>
-    <servlet-name>requestFactoryServlet</servlet-name>
-    <url-pattern>/gwtRequest</url-pattern>
+    <servlet-name>userdataServlet</servlet-name>
+    <url-pattern>tigerspice_dev/voltUser</url-pattern>
   </servlet-mapping>
-  
 
-  <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>com.velisphere.tigerspice.server.GreetingServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/tigerspice_dev/greet</url-pattern>
-  </servlet-mapping>
-  
+
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>TigerSpice_dev.html</welcome-file>
