@@ -17,7 +17,10 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
             <label class="checkbox">
              <g:CheckBox name="remember" value="true" /> Remember Me
             </label>
-            <g:Button styleName="btn-info btn" text="Login" />      
+
+            <label>Don't have an account? Sign up now!</label>
+            
+            <g:Button styleName="btn-info btn" text="Login" ui:field="btnLogin" />      
         </div>    
       </div>
     </div>
