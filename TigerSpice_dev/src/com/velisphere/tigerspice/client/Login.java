@@ -2,6 +2,7 @@ package com.velisphere.tigerspice.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.dom.client.Document;
@@ -10,17 +11,21 @@ import com.velisphere.tigerspice.client.HeroUnitLogin.HeroUnitLoginUiBinder;
 
 public class Login implements EntryPoint {
 
-	
+	RootPanel rootPanel;
+	VerticalPanel mainPanel;
+	NavBar navBar;
 	
 	public void onModuleLoad() {
 
-	RootPanel rootPanel = RootPanel.get("stockList");
+	History.newItem("home");
+		
+	rootPanel = RootPanel.get("stockList");
 	rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 	
-	VerticalPanel mainPanel = new VerticalPanel();
+	mainPanel = new VerticalPanel();
 	rootPanel.add(mainPanel);
 			
-	NavBar navBar = new NavBar();
+	navBar = new NavBar();
 	mainPanel.add(navBar);
 	
 		
@@ -29,12 +34,9 @@ public class Login implements EntryPoint {
 		
 	HeroUnitLogin heroUnitLogin = new HeroUnitLogin();
 	mainPanel.add(heroUnitLogin);
-	
-	
+		
 	
 	// LoginDialogBox loginDialogBox = new LoginDialogBox();
 	// mainPanel.add(loginDialogBox);
-	
-
 	}
 }

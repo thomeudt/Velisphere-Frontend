@@ -19,7 +19,7 @@
 	<!--   <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
 	<!-- Other module inherits                                      -->
-
+	<inherits name='com.google.web.bindery.requestfactory.RequestFactory' />
 	<!-- Specify the app entry point class.                         -->
 <!-- 	<entry-point class='com.velisphere.tigerspice.client.TigerSpice_dev' /> -->
 

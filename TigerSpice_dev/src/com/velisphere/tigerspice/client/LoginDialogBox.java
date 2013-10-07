@@ -2,6 +2,11 @@
 
 package com.velisphere.tigerspice.client;
 
+import java.io.IOException;
+
+import org.voltdb.client.NoConnectionsException;
+import org.voltdb.client.ProcCallException;
+
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -23,8 +28,11 @@ public class LoginDialogBox extends PopupPanel{
 	}
 	
 	@UiHandler("btnLogin")
-	void submitLoginForm (ClickEvent event) {
-		Window.alert("Logging In");
+	void submitLoginForm (ClickEvent event)  {
+		// Window.alert("Logging In");
+		EndpointClassEditor endpointClassEditor = new EndpointClassEditor();
+		endpointClassEditor.open();
+	
 	}
 	
 
