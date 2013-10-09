@@ -21,11 +21,26 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class UserData implements IsSerializable
+public class UserData implements IsSerializable, Comparable <UserData>
 {
 	public String userID;
 	public String userEmail;
 	public String userName;
+	@Override
+	public int compareTo(UserData arg0) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
+	public String getEmail(){
+		return userEmail;
+	}
 	
+	public String getName(){
+		return userName;
+	}
+	
+	public String getId(){
+		return userID;
+	}
 }

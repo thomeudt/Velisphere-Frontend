@@ -23,9 +23,9 @@ import java.net.UnknownHostException;
 import org.voltdb.client.ClientFactory;
 
 public class VoltConnector {
-	public static org.voltdb.client.Client montanaClient;
+	public org.voltdb.client.Client montanaClient;
 	
-		public static void openDatabase() throws UnknownHostException, IOException {
+		public void openDatabase() throws UnknownHostException, IOException {
 			/*
 			 * Instantiate a client and connect to the database.
 			 */
@@ -36,13 +36,11 @@ public class VoltConnector {
 			+ ServerParameters.volt_ip);
 		}
 		
-		public static void closeDatabase() throws UnknownHostException, IOException, InterruptedException {
+		public void closeDatabase() throws UnknownHostException, IOException, InterruptedException {
 			/*
 			 * Instantiate a client and connect to the database.
 			 */
-	
-			montanaClient.close();
-			
+			montanaClient.close();			
 		}
 	
 }

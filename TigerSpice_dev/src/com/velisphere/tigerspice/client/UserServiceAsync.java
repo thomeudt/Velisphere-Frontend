@@ -18,10 +18,13 @@
 package com.velisphere.tigerspice.client;
 
 import java.util.HashSet;
+import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.velisphere.tigerspice.shared.UserData;
 
 public interface UserServiceAsync {
-	void getAllUserDetails(AsyncCallback<HashSet<UserData>> callback);
+	void getAllUserDetails(AsyncCallback<Vector<UserData>> callback);
+
+	
 }

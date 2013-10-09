@@ -22,6 +22,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Vector;
 
 import org.voltdb.VoltTable;
 import org.voltdb.client.ClientResponse;
@@ -34,26 +35,35 @@ import com.velisphere.tigerspice.shared.UserData;
 
 public class UserServiceImpl extends RemoteServiceServlet implements
 		UserService {
-	
-	 /** The Constant serialVersionUID. */
-	  private static final long serialVersionUID = -8892989521623692797L;
 
-	public HashSet<UserData> getAllUserDetails() 
+	/** The Constant serialVersionUID. */
+	private static final long serialVersionUID = -8892989521623692797L;
+
+	public Vector<UserData> getAllUserDetails()
 
 	{
-		HashSet<UserData> allUsers = new HashSet<UserData>();
-		try {
-			VoltConnector.openDatabase();
+		VoltConnector voltCon = new VoltConnector();
 
-			final ClientResponse findAllUsers = VoltConnector.montanaClient
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		Vector<UserData> allUsers = new Vector<UserData>();
+		try {
+
+			final ClientResponse findAllUsers = voltCon.montanaClient
 					.callProcedure("SelectAllUsers");
 
 			final VoltTable findAllUsersResults[] = findAllUsers.getResults();
 
 			VoltTable result = findAllUsersResults[0];
 			// check if any rows have been returned
-
-			
 
 			while (result.advanceRow()) {
 				{
@@ -63,20 +73,24 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 					userData.userName = result.getString("USERNAME");
 					userData.userID = result.getString("USERID");
 					allUsers.add(userData);
-				
 
 				}
 			}
 
 			System.out.println(allUsers);
 
-			VoltConnector.closeDatabase();
-
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return allUsers;
 	}
 

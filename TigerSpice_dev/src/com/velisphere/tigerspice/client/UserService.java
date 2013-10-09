@@ -25,13 +25,15 @@ import java.util.HashSet;
 
 
 
+import java.util.Vector;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.velisphere.tigerspice.shared.UserData;
 
 @RemoteServiceRelativePath("voltUser")
 public interface UserService extends RemoteService {
-	HashSet<UserData> getAllUserDetails();
+	Vector<UserData> getAllUserDetails();
 }
 
 

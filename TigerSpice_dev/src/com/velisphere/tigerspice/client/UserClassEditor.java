@@ -55,8 +55,9 @@ public class UserClassEditor {
 	mainPanel.add(navBar);
 	
 	UserClassList endpointClassList = new UserClassList();
-	
 	mainPanel.add(endpointClassList);
+	
+	
 		
 	HeroUnitLogin heroUnitLogin = new HeroUnitLogin();
 	heroUnitLogin.setWidth(defaultWidth.toString()+"px");

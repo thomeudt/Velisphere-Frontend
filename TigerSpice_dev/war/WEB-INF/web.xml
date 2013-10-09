@@ -10,13 +10,33 @@
 <servlet>
     <servlet-name>userdataServlet</servlet-name>
     <servlet-class>com.velisphere.tigerspice.server.UserServiceImpl</servlet-class>
-    
 </servlet>
 
 <servlet-mapping>
     <servlet-name>userdataServlet</servlet-name>
     <url-pattern>tigerspice_dev/voltUser</url-pattern>
   </servlet-mapping>
+
+<servlet>
+    <servlet-name>logdataServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.LogServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>logdataServlet</servlet-name>
+    <url-pattern>tigerspice_dev/voltLog</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>requestFactoryServlet</servlet-name>
+    <servlet-class>com.google.web.bindery.requestfactory.server.RequestFactoryServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>requestFactoryServlet</servlet-name>
+    <url-pattern>tigerspice_dev/voltRequests</url-pattern>
+  </servlet-mapping>
+
 
 
   <!-- Default page to serve -->
