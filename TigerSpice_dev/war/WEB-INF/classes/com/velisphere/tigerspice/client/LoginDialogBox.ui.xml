@@ -37,7 +37,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 
             <label>Don't have an account? Sign up now!</label>
             
-            <g:Button styleName="btn-info btn" text="Login" ui:field="btnLogin" />      
+            <b:Button styleName="btn-info btn" text="Login" ui:field="btnLogin" />      
         </div>    
       </div>
     </div>

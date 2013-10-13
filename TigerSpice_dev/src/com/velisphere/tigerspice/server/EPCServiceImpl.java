@@ -30,73 +30,20 @@ import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.velisphere.tigerspice.client.EPCService;
 import com.velisphere.tigerspice.client.UserService;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.UserData;
 
-public class UserServiceImpl extends RemoteServiceServlet implements
-		UserService {
+public class EPCServiceImpl extends RemoteServiceServlet implements
+		EPCService {
 
 	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = -8892989521623692797L;
+	private static final long serialVersionUID = -8872989521623692797L;
 
-	public Vector<UserData> getAllUserDetails()
-
-	{
-		VoltConnector voltCon = new VoltConnector();
-
-		try {
-			voltCon.openDatabase();
-		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		Vector<UserData> allUsers = new Vector<UserData>();
-		try {
-
-			final ClientResponse findAllUsers = voltCon.montanaClient
-					.callProcedure("SelectAllUsers");
-
-			final VoltTable findAllUsersResults[] = findAllUsers.getResults();
-
-			VoltTable result = findAllUsersResults[0];
-			// check if any rows have been returned
-
-			while (result.advanceRow()) {
-				{
-					// extract the value in column checkid
-					UserData userData = new UserData();
-					userData.userEmail = result.getString("USEREMAIL");
-					userData.userName = result.getString("USERNAME");
-					userData.userID = result.getString("USERID");
-					allUsers.add(userData);
-
-				}
-			}
-
-			System.out.println(allUsers);
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		try {
-			voltCon.closeDatabase();
-		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
-		return allUsers;
-	}
 	
-	
-	public Vector<EPCData> getAllEPCDetails()
+	public Vector<EPCData> getAllEndpointClassDetails()
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -149,6 +96,13 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 		
 		return allEndPointClasses;
 	}
+
+
+
+
+
+
+
 
 
 }

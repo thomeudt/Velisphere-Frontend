@@ -30,17 +30,22 @@ import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.velisphere.tigerspice.client.EPCService;
+import com.velisphere.tigerspice.client.EndpointService;
 import com.velisphere.tigerspice.client.UserService;
 import com.velisphere.tigerspice.shared.EPCData;
+import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.UserData;
 
-public class UserServiceImpl extends RemoteServiceServlet implements
-		UserService {
+public class EndpointServiceImpl extends RemoteServiceServlet implements
+		EndpointService {
 
 	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = -8892989521623692797L;
+	private static final long serialVersionUID = -8872989521623692797L;
 
-	public Vector<UserData> getAllUserDetails()
+		
+	
+	public Vector<EndpointData> getAllEndpointDetails()
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -55,11 +60,11 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 			e1.printStackTrace();
 		}
 
-		Vector<UserData> allUsers = new Vector<UserData>();
+		Vector<EndpointData> allEndPoints = new Vector<EndpointData>();
 		try {
 
 			final ClientResponse findAllUsers = voltCon.montanaClient
-					.callProcedure("SelectAllUsers");
+					.callProcedure("UI_SelectAllEndpoints");
 
 			final VoltTable findAllUsersResults[] = findAllUsers.getResults();
 
@@ -69,16 +74,16 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 			while (result.advanceRow()) {
 				{
 					// extract the value in column checkid
-					UserData userData = new UserData();
-					userData.userEmail = result.getString("USEREMAIL");
-					userData.userName = result.getString("USERNAME");
-					userData.userID = result.getString("USERID");
-					allUsers.add(userData);
+					EndpointData endpointData = new EndpointData();
+					endpointData.endpointId = result.getString("ENDPOINTID");
+					endpointData.endpointName = result.getString("ENDPOINTNAME");
+					endpointData.endpointclassId = result.getString("ENDPOINTCLASSID");
+					allEndPoints.add(endpointData);
 
 				}
 			}
 
-			System.out.println(allUsers);
+			System.out.println(allEndPoints);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -92,63 +97,15 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 			e.printStackTrace();
 		}
 		
-		return allUsers;
+		return allEndPoints;
 	}
-	
-	
-	public Vector<EPCData> getAllEPCDetails()
 
-	{
-		VoltConnector voltCon = new VoltConnector();
 
-		try {
-			voltCon.openDatabase();
-		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 
-		Vector<EPCData> allEndPointClasses = new Vector<EPCData>();
-		try {
 
-			final ClientResponse findAllUsers = voltCon.montanaClient
-					.callProcedure("UI_SelectAllEndpointClasses");
 
-			final VoltTable findAllUsersResults[] = findAllUsers.getResults();
 
-			VoltTable result = findAllUsersResults[0];
-			// check if any rows have been returned
 
-			while (result.advanceRow()) {
-				{
-					// extract the value in column checkid
-					EPCData epcData = new EPCData();
-					epcData.endpointclassName = result.getString("ENDPOINTCLASSNAME");
-					epcData.endpointclassID = result.getString("ENDPOINTCLASSID");
-					allEndPointClasses.add(epcData);
-
-				}
-			}
-
-			System.out.println(allEndPointClasses);
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		try {
-			voltCon.closeDatabase();
-		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return allEndPointClasses;
-	}
 
 
 }

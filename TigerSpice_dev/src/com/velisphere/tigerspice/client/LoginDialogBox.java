@@ -45,7 +45,7 @@ public class LoginDialogBox extends PopupPanel{
 	@UiHandler("btnLogin")
 	void submitLoginForm (ClickEvent event)  {
 		// Window.alert("Logging In");
-		UserClassEditor endpointClassEditor = new UserClassEditor();
+		Overviewer endpointClassEditor = new Overviewer();
 		endpointClassEditor.open();
 	
 	}

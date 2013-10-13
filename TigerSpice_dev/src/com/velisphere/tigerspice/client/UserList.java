@@ -55,7 +55,7 @@ import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.view.client.HasData;
 
-public class UserClassList extends Composite {
+public class UserList extends Composite {
 
 	private final UserServiceAsync userService = GWT
 			.create(UserService.class);
@@ -130,7 +130,7 @@ public class UserClassList extends Composite {
 
 	
 	
-	public UserClassList()  {
+	public UserList()  {
 			
 		final VerticalPanel verticalPanel = new VerticalPanel();
 		//RootPanel.get().add(verticalPanel);

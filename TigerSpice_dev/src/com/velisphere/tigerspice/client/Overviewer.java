@@ -32,7 +32,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.HeroUnitLogin.HeroUnitLoginUiBinder;
 
 
-public class UserClassEditor {
+public class Overviewer {
 
 	RootPanel rootPanel;
 	VerticalPanel mainPanel;
@@ -54,10 +54,15 @@ public class UserClassEditor {
 	navBar.setWidth(defaultWidth.toString()+"px");
 	mainPanel.add(navBar);
 	
-	UserClassList endpointClassList = new UserClassList();
-	mainPanel.add(endpointClassList);
+	UserList userClassList = new UserList();
+	mainPanel.add(userClassList);
+
+	EPCList epcList = new EPCList();
+	mainPanel.add(epcList);
 	
-	
+
+	EndpointList endpointList = new EndpointList();
+	mainPanel.add(endpointList);
 		
 	HeroUnitLogin heroUnitLogin = new HeroUnitLogin();
 	heroUnitLogin.setWidth(defaultWidth.toString()+"px");
