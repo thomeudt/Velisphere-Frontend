@@ -21,7 +21,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 		xmlns:ct="urn:import:com.google.gwt.user.cellview.client">
 	<g:HTMLPanel>
-            <label>Don't have an account? Sign up now!</label>
+            <label>Endpoint List</label>
 	  		<ct:CellTable ui:field="cellTable" />            
 	</g:HTMLPanel>
 </ui:UiBinder> 

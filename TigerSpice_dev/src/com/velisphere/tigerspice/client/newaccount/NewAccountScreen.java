@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client;
+package com.velisphere.tigerspice.client.newaccount;
 
 import java.io.IOException;
 
@@ -25,18 +25,22 @@ import org.voltdb.client.ProcCallException;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.velisphere.tigerspice.client.HeroUnitLogin.HeroUnitLoginUiBinder;
+import com.velisphere.tigerspice.client.NavBar;
 
 
-public class Overviewer {
+
+public class NewAccountScreen {
 
 	RootPanel rootPanel;
 	VerticalPanel mainPanel;
 	NavBar navBar;
+	NewAccountDialogbox newAccount;
 	
 	public void open(){
 
@@ -48,23 +52,15 @@ public class Overviewer {
 	
 	mainPanel = new VerticalPanel();
 	rootPanel.add(mainPanel);
-	
-			
+				
 	navBar = new NavBar();
 	navBar.setWidth(defaultWidth.toString()+"px");
 	mainPanel.add(navBar);
 	
-	UserList userClassList = new UserList();
-	mainPanel.add(userClassList);
-
-	EPCList epcList = new EPCList();
-	mainPanel.add(epcList);
+	newAccount = new NewAccountDialogbox();
+	rootPanel.add(newAccount);
 	
-
-	EndpointList endpointList = new EndpointList();
-	mainPanel.add(endpointList);
-
-			
+		
 	}
 
 }

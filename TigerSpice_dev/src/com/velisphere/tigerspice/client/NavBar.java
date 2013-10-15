@@ -18,6 +18,7 @@
 package com.velisphere.tigerspice.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -26,7 +27,9 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.newaccount.NewAccountScreen;
 
 public class NavBar extends Composite implements HasText {
 
@@ -45,6 +48,28 @@ public class NavBar extends Composite implements HasText {
 	
 	}
 
+	@UiHandler("btnAccount")
+	void openNewAccountScreen (ClickEvent event) {
+		// Window.alert("Logging In");
+		NewAccountScreen newAccountScreen = new NewAccountScreen();
+		newAccountScreen.open();
+		
+		// loginDialogBox.setVisible(false);
+		
+		
+	}
+	
+	@UiHandler("btnHome")
+	void openHome (ClickEvent event) {
+		// Window.alert("Logging In");
+		Login loginScreen = new Login();
+		
+		loginScreen.onModuleLoad();
+		
+		// loginDialogBox.setVisible(false);
+		
+		
+	}
 	
 	public void setText(String text) {
 	

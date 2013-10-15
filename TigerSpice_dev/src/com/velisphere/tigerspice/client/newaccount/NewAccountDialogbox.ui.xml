@@ -1,0 +1,29 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<g:HTMLPanel>
+
+<div class="row">
+    <div class="span4 offset4">
+      <div class="well">
+        <legend>Sign up for VeliSphere</legend>
+          <div id="login-form">
+            <div class="alert alert-error">
+                <a class="close" data-dismiss="alert" href="#">x</a>Incorrect Username or Password!
+            </div>      
+            <g:TextBox styleName="span3" name="username" />
+            <g:TextBox styleName="span3" name="password" /> 
+            <label class="checkbox">
+             <g:CheckBox name="remember" value="true" /> Remember Me
+            </label>
+
+            <label>Don't have an account? Sign up now!</label>
+            
+            <b:Button styleName="btn-info btn" text="Login" ui:field="btnLogin" />      
+        </div>    
+      </div>
+    </div>
+</div>
+	</g:HTMLPanel>
+</ui:UiBinder> 

@@ -36,7 +36,7 @@
          <b:Brand><img alt="" src="./images/logo_perspectives_trim.png" /></b:Brand>
     
          <b:Nav>
-             <b:NavLink>Home</b:NavLink>
+             <b:NavLink ui:field="btnHome">Home</b:NavLink>
              <b:NavLink>Spheres</b:NavLink>
              <b:NavLink>Map</b:NavLink>
          </b:Nav>
@@ -46,7 +46,7 @@
          </b:Nav>
          <b:Nav alignment="RIGHT">
              <b:NavLink>Shop</b:NavLink>
-             <b:NavLink>Account</b:NavLink>
+             <b:NavLink ui:field="btnAccount">Account</b:NavLink>
          </b:Nav>
        
      </b:Navbar>
