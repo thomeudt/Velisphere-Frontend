@@ -40,14 +40,13 @@ public class HeroUnitLogin extends Composite implements HasText {
 
 	public HeroUnitLogin() {
 		initWidget(uiBinder.createAndBindUi(this));
-		
-			
+					
 	}
 	
 	@UiHandler("btnLogin")
 	void openLoginForm (ClickEvent event) {
 		// Window.alert("Logging In");
-		RootPanel rootPanel = RootPanel.get("stockList");
+		RootPanel rootPanel = RootPanel.get("main");
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 		LoginDialogBox loginDialogBox = new LoginDialogBox();
 		rootPanel.add(loginDialogBox, 250, 250);

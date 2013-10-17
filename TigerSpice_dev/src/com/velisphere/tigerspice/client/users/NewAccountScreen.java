@@ -45,17 +45,13 @@ public class NewAccountScreen {
 	public void open(){
 
 	History.newItem("epce");
-	rootPanel = RootPanel.get("stockList");
+	rootPanel = RootPanel.get("main");
 	rootPanel.clear();
 	rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 	Integer defaultWidth = rootPanel.getOffsetWidth()-60;
 	
 	mainPanel = new VerticalPanel();
 	rootPanel.add(mainPanel);
-				
-	navBar = new NavBar();
-	navBar.setWidth(defaultWidth.toString()+"px");
-	mainPanel.add(navBar);
 	
 	newAccount = new NewAccountDialogbox();
 	rootPanel.add(newAccount);

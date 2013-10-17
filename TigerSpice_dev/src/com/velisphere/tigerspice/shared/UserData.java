@@ -19,6 +19,8 @@ package com.velisphere.tigerspice.shared;
 
 import java.util.List;
 
+import org.mindrot.BCrypt;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class UserData implements IsSerializable, Comparable <UserData>
@@ -26,6 +28,7 @@ public class UserData implements IsSerializable, Comparable <UserData>
 	public String userID;
 	public String userEmail;
 	public String userName;
+	public String userPassword;
 	@Override
 	public int compareTo(UserData arg0) {
 		// TODO Auto-generated method stub
@@ -43,4 +46,9 @@ public class UserData implements IsSerializable, Comparable <UserData>
 	public String getId(){
 		return userID;
 	}
+	
+	public void setUserPwHash(String password){
+		this.userPassword = password;
+	}
+	
 }

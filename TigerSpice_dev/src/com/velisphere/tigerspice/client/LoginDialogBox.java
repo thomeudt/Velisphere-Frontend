@@ -22,31 +22,37 @@ import java.io.IOException;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
+import com.github.gwtbootstrap.client.ui.Alert;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 
 public class LoginDialogBox extends PopupPanel{
 	
+	@UiField Alert aleError;
+		
 	interface MyBinder extends UiBinder<Widget, LoginDialogBox>{}
-	
+			
 	private static MyBinder uiBinder = GWT.create(MyBinder.class);
 	
 	public LoginDialogBox() {
+		aleError = new Alert();
 		setStyleName("");
 		add(uiBinder.createAndBindUi(this));
+		aleError.setVisible(false);
 		
 	}
 	
 	@UiHandler("btnLogin")
 	void submitLoginForm (ClickEvent event)  {
 		// Window.alert("Logging In");
-		Overviewer endpointClassEditor = new Overviewer();
-		endpointClassEditor.open();
+		Overviewer overviewer = new Overviewer();
+		overviewer.open();
 	
 	}
 	

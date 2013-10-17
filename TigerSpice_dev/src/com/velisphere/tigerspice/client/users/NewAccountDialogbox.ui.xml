@@ -14,38 +14,47 @@
 
 				<b:Form type="HORIZONTAL">
 
-					<b:Alert type="ERROR" close="true">
-						Alert Dummy
+					<b:Alert type="ERROR" close="true" ui:field="aleError" >
+						
 					</b:Alert>
 
 <b:Fieldset>
     <b:ControlGroup>
-					<b:ControlLabel>User Name</b:ControlLabel>
+					<b:ControlLabel>Name</b:ControlLabel>
 
 					<b:Controls>
-					<b:TextBox b:id="username" />
+					<b:TextBox b:id="txtUsername" ui:field="txtUsername" />
 
 					</b:Controls>
 	</b:ControlGroup>
   
-	
+<b:ControlGroup>
+					<b:ControlLabel>E-Mail Address</b:ControlLabel>
+
+					<b:Controls>
+					<b:TextBox b:id="txtEmail" ui:field="txtEmail" />
+
+					</b:Controls>
+	</b:ControlGroup>
+    
+    	
 	<b:ControlGroup>			
 					<b:ControlLabel>Password</b:ControlLabel>
 						<b:Controls>
-						<b:TextBox b:id="password" />
+						<b:TextBox b:id="txtPassword" ui:field="txtPassword" />
 					</b:Controls>
 	</b:ControlGroup>
   				
 <b:ControlGroup>
     		<b:Controls>
 				
-					<b:CheckBox>I agree with the Terms of Use</b:CheckBox>
+					<b:CheckBox ui:field="cbxAgreeTandC">I agree with the Terms of Use</b:CheckBox>
 	</b:Controls>
 	</b:ControlGroup>
 <b:ControlGroup>
     		<b:Controls>
 
-					<b:Button styleName="btn-info btn" text="Login" ui:field="btnLogin" />
+					<b:Button styleName="btn-info btn" text="Create Account" ui:field="btnLogin" />
 						</b:Controls>
 	</b:ControlGroup>
   				

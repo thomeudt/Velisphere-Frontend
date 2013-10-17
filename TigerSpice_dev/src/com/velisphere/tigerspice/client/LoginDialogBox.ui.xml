@@ -26,16 +26,14 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
       <div class="well">
         <legend>Sign in to Perspectives</legend>
           <div id="login-form">
-            <div class="alert alert-error">
-                <a class="close" data-dismiss="alert" href="#">x</a>Incorrect Username or Password!
-            </div>      
-            <g:TextBox styleName="span3" name="username" />
-            <g:TextBox styleName="span3" name="password" /> 
+            <b:Alert type="ERROR" close="true" ui:field="aleError" />      
+            <b:TextBox styleName="span3" name="username" />
+            <b:TextBox styleName="span3" name="password" /> 
             <label class="checkbox">
-             <g:CheckBox name="remember" value="true" /> Remember Me
+            <b:CheckBox name="remember" value="true"> Remember Me </b:CheckBox>
             </label>
 
-            <label>Don't have an account? Sign up now!</label>
+            <label>Don't have an account?</label><a>Sign up now!</a>
             
             <b:Button styleName="btn-info btn" text="Login" ui:field="btnLogin" />      
         </div>    

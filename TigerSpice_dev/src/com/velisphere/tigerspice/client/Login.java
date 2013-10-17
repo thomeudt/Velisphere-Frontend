@@ -32,7 +32,9 @@ import com.velisphere.tigerspice.server.VoltConnector;
 
 public class Login implements EntryPoint {
 
-	RootPanel rootPanel;
+	RootPanel rootPanelHeader;
+	RootPanel rootPanelMain;
+	VerticalPanel headerPanel;
 	VerticalPanel mainPanel;
 	NavBar navBar;
 	
@@ -40,16 +42,24 @@ public class Login implements EntryPoint {
 
 	History.newItem("home");
 		
-	rootPanel = RootPanel.get("stockList");
-	rootPanel.clear();
-	rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
+	rootPanelHeader = RootPanel.get("stockList");
+	rootPanelHeader.clear();
+	rootPanelHeader.getElement().getStyle().setPosition(Position.RELATIVE);
 	
-	mainPanel = new VerticalPanel();
-	rootPanel.add(mainPanel);
+	rootPanelMain = RootPanel.get("main");
+	rootPanelMain.clear();
+	rootPanelMain.getElement().getStyle().setPosition(Position.RELATIVE);
+	
+	headerPanel = new VerticalPanel();
+	
+	headerPanel.setPixelSize(rootPanelHeader.getOffsetWidth()-60, 50);
+	rootPanelHeader.add(headerPanel);
 			
 	navBar = new NavBar();
-	mainPanel.add(navBar);
+	headerPanel.add(navBar);
 	
+	mainPanel = new VerticalPanel();
+	rootPanelMain.add(mainPanel);
 		
 	SplashCarouselWidget splashCarouselWidget = new SplashCarouselWidget();
 	mainPanel.add(splashCarouselWidget);
