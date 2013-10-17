@@ -32,10 +32,12 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
             <label class="checkbox">
             <b:CheckBox name="remember" value="true"> Remember Me </b:CheckBox>
             </label>
-
-            <label>Don't have an account?</label><a>Sign up now!</a>
-            
-            <b:Button styleName="btn-info btn" text="Login" ui:field="btnLogin" />      
+            <br></br>
+            <br></br>
+            <g:Anchor href="#" ui:field="ancSignup">No Account? Sign up now!</g:Anchor>
+            <br></br>
+            <br></br>
+            <b:Button styleName="btn-success btn" text="Login" ui:field="btnLogin" />      
         </div>    
       </div>
     </div>

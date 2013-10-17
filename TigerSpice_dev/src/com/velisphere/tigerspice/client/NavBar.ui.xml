@@ -31,7 +31,7 @@
 		   
     
          
-     <b:Navbar>
+     <b:Navbar ui:field="navbar">
          
          <b:Brand><img alt="" src="./images/logo_perspectives_trim.png" /></b:Brand>
     

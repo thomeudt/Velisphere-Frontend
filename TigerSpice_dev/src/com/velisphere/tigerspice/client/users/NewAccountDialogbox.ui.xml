@@ -14,7 +14,7 @@
 
 				<b:Form type="HORIZONTAL">
 
-					<b:Alert type="ERROR" close="true" ui:field="aleError" >
+					<b:Alert type="ERROR" close="false" ui:field="aleError" >
 						
 					</b:Alert>
 
@@ -54,7 +54,7 @@
 <b:ControlGroup>
     		<b:Controls>
 
-					<b:Button styleName="btn-info btn" text="Create Account" ui:field="btnLogin" />
+					<b:Button styleName="btn btn-success" text="Create Account" ui:field="btnLogin" />
 						</b:Controls>
 	</b:ControlGroup>
   				

@@ -31,10 +31,12 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
+import com.velisphere.tigerspice.client.users.NewAccountDialogbox;
 
 public class LoginDialogBox extends PopupPanel{
 	
 	@UiField Alert aleError;
+	@UiField Anchor ancSignup;
 		
 	interface MyBinder extends UiBinder<Widget, LoginDialogBox>{}
 			
@@ -42,9 +44,11 @@ public class LoginDialogBox extends PopupPanel{
 	
 	public LoginDialogBox() {
 		aleError = new Alert();
+		ancSignup = new Anchor();
 		setStyleName("");
 		add(uiBinder.createAndBindUi(this));
 		aleError.setVisible(false);
+		
 		
 	}
 	
@@ -56,5 +60,13 @@ public class LoginDialogBox extends PopupPanel{
 	
 	}
 	
+	@UiHandler("ancSignup")
+	void redirectSignup (ClickEvent event)  {
+		// Window.alert("Logging In");
+		RootPanel.get("main").clear();
+		NewAccountDialogbox newAccount = new NewAccountDialogbox();
+		RootPanel.get("main").add(newAccount);
+	
+	}
 
 }

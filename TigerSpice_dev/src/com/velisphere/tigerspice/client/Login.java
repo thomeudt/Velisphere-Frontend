@@ -52,11 +52,12 @@ public class Login implements EntryPoint {
 	
 	headerPanel = new VerticalPanel();
 	
-	headerPanel.setPixelSize(rootPanelHeader.getOffsetWidth()-60, 50);
+	
 	rootPanelHeader.add(headerPanel);
 			
 	navBar = new NavBar();
 	headerPanel.add(navBar);
+	
 	
 	mainPanel = new VerticalPanel();
 	rootPanelMain.add(mainPanel);

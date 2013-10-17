@@ -17,6 +17,9 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client;
 
+import com.github.gwtbootstrap.client.ui.Alert;
+import com.github.gwtbootstrap.client.ui.Navbar;
+import com.github.gwtbootstrap.client.ui.constants.NavbarPosition;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -33,13 +36,18 @@ import com.velisphere.tigerspice.client.users.NewAccountScreen;
 
 public class NavBar extends Composite implements HasText {
 
+	@UiField Navbar navbar;
+	
 	private static NavBarUiBinder uiBinder = GWT.create(NavBarUiBinder.class);
 
 	interface NavBarUiBinder extends UiBinder<Widget, NavBar> {
 	}
 
 	public NavBar() {
+		navbar = new Navbar();
 		initWidget(uiBinder.createAndBindUi(this));
+		navbar.setPosition(NavbarPosition.TOP);
+		
 	}
 
 	
