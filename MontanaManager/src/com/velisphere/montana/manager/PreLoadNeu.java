@@ -17,9 +17,9 @@ public class PreLoadNeu {
 	        /*
 	         * Load the database.
 	         */
-	        preLoader.callProcedure("USER.insert", "1000", "thmeu", "thorsten@thorsten-meudt.de");
-	        preLoader.callProcedure("USER.insert", "1001", "utmeu", "ute_lechner@yahoo.de");
-	        preLoader.callProcedure("USER.insert", "1002", "lcmeu", "charlotte@thorsten-meudt.de");
+	        preLoader.callProcedure("USER.insert", "1000", "thmeu", "thorsten@thorsten-meudt.de", "");
+	        preLoader.callProcedure("USER.insert", "1001", "utmeu", "ute_lechner@yahoo.de", "");
+	        preLoader.callProcedure("USER.insert", "1002", "lcmeu", "charlotte@thorsten-meudt.de", "");
 	        
 	        System.out.println("Users loaded");
 	        

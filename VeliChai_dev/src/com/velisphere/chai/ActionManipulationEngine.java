@@ -44,6 +44,7 @@ public class ActionManipulationEngine {
 		while (actionsForRuleID.advanceRow()) {
 			{
 				actionsFound.add(actionsForRuleID.getString("ACTIONID"));
+				// System.out.println(actionsFound);
 			}
 		}
 		

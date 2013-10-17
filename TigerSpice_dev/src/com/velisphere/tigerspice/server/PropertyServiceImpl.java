@@ -30,17 +30,24 @@ import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.velisphere.tigerspice.client.endpointclasses.EPCService;
+import com.velisphere.tigerspice.client.endpoints.EndpointService;
+import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.users.UserService;
 import com.velisphere.tigerspice.shared.EPCData;
+import com.velisphere.tigerspice.shared.EndpointData;
+import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.UserData;
 
-public class UserServiceImpl extends RemoteServiceServlet implements
-		UserService {
+public class PropertyServiceImpl extends RemoteServiceServlet implements
+		PropertyService {
 
 	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = -8892989521623692797L;
+	private static final long serialVersionUID = -8872989521623692797L;
 
-	public Vector<UserData> getAllUserDetails()
+		
+	
+	public Vector<PropertyData> getAllPropertyDetails()
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -55,30 +62,31 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 			e1.printStackTrace();
 		}
 
-		Vector<UserData> allUsers = new Vector<UserData>();
+		Vector<PropertyData> allProperties = new Vector<PropertyData>();
 		try {
 
-			final ClientResponse findAllUsers = voltCon.montanaClient
-					.callProcedure("SelectAllUsers");
+			final ClientResponse findAllProperties = voltCon.montanaClient
+					.callProcedure("UI_SelectAllProperties");
 
-			final VoltTable findAllUsersResults[] = findAllUsers.getResults();
+			final VoltTable findAllPropertiesResults[] = findAllProperties.getResults();
 
-			VoltTable result = findAllUsersResults[0];
+			VoltTable result = findAllPropertiesResults[0];
 			// check if any rows have been returned
 
 			while (result.advanceRow()) {
 				{
 					// extract the value in column checkid
-					UserData userData = new UserData();
-					userData.userEmail = result.getString("USEREMAIL");
-					userData.userName = result.getString("USERNAME");
-					userData.userID = result.getString("USERID");
-					allUsers.add(userData);
+					PropertyData propertyData = new PropertyData();
+					propertyData.propertyId = result.getString("PROPERTYID");
+					propertyData.propertyName = result.getString("PROPERTYNAME");
+					propertyData.propertyclassId = result.getString("PROPERTYCLASSID");
+					propertyData.endpointclassId = result.getString("ENDPOINTCLASSID");
+					allProperties.add(propertyData);
 
 				}
 			}
 
-			System.out.println(allUsers);
+			System.out.println(allProperties);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -92,63 +100,19 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 			e.printStackTrace();
 		}
 		
-		return allUsers;
+		return allProperties;
 	}
-	
-	
-	public Vector<EPCData> getAllEPCDetails()
 
-	{
-		VoltConnector voltCon = new VoltConnector();
 
-		try {
-			voltCon.openDatabase();
-		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 
-		Vector<EPCData> allEndPointClasses = new Vector<EPCData>();
-		try {
 
-			final ClientResponse findAllUsers = voltCon.montanaClient
-					.callProcedure("UI_SelectAllEndpointClasses");
 
-			final VoltTable findAllUsersResults[] = findAllUsers.getResults();
 
-			VoltTable result = findAllUsersResults[0];
-			// check if any rows have been returned
 
-			while (result.advanceRow()) {
-				{
-					// extract the value in column checkid
-					EPCData epcData = new EPCData();
-					epcData.endpointclassName = result.getString("ENDPOINTCLASSNAME");
-					epcData.endpointclassID = result.getString("ENDPOINTCLASSID");
-					allEndPointClasses.add(epcData);
 
-				}
-			}
 
-			System.out.println(allEndPointClasses);
 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-		try {
-			voltCon.closeDatabase();
-		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return allEndPointClasses;
-	}
 
 
 }

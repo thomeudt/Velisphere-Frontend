@@ -14,7 +14,7 @@
 
 <servlet-mapping>
     <servlet-name>userdataServlet</servlet-name>
-    <url-pattern>tigerspice_dev/voltUser</url-pattern>
+    <url-pattern>/tigerspice_dev/voltUser</url-pattern>
   </servlet-mapping>
 
 <servlet>
@@ -24,7 +24,7 @@
 
 <servlet-mapping>
     <servlet-name>logdataServlet</servlet-name>
-    <url-pattern>tigerspice_dev/voltLog</url-pattern>
+    <url-pattern>/tigerspice_dev/voltLog</url-pattern>
   </servlet-mapping>
 
 <servlet>
@@ -34,7 +34,7 @@
 
 <servlet-mapping>
     <servlet-name>epcdataServlet</servlet-name>
-    <url-pattern>tigerspice_dev/voltEPC</url-pattern>
+    <url-pattern>/tigerspice_dev/voltEPC</url-pattern>
   </servlet-mapping>
 
 <servlet>
@@ -44,7 +44,17 @@
 
 <servlet-mapping>
     <servlet-name>endpoindataServlet</servlet-name>
-    <url-pattern>tigerspice_dev/voltEndpoint</url-pattern>
+    <url-pattern>/tigerspice_dev/voltEndpoint</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>propertydataServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.PropertyServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>propertydataServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltProperty</url-pattern>
   </servlet-mapping>
 
 
@@ -55,7 +65,7 @@
 
 <servlet-mapping>
     <servlet-name>requestFactoryServlet</servlet-name>
-    <url-pattern>tigerspice_dev/voltRequests</url-pattern>
+    <url-pattern>/tigerspice_dev/voltRequests</url-pattern>
   </servlet-mapping>
 
 

@@ -12,10 +12,10 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.Range;
 import com.google.gwt.user.cellview.client.AbstractCellTable;
 import com.google.gwt.user.cellview.client.ColumnSortList;
-import com.velisphere.tigerspice.client.EPCService;
-import com.velisphere.tigerspice.client.EPCServiceAsync;
-import com.velisphere.tigerspice.client.UserService;
-import com.velisphere.tigerspice.client.UserServiceAsync;
+import com.velisphere.tigerspice.client.endpointclasses.EPCService;
+import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
+import com.velisphere.tigerspice.client.users.UserService;
+import com.velisphere.tigerspice.client.users.UserServiceAsync;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.UserData;
 

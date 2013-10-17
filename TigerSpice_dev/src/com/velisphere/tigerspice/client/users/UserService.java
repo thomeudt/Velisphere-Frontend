@@ -1,5 +1,3 @@
-import java.util.HashMap;
-
 /*******************************************************************************
  * CONFIDENTIAL INFORMATION
  *  __________________
@@ -17,38 +15,25 @@ import java.util.HashMap;
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-public class Bombarder implements Runnable {
+package com.velisphere.tigerspice.client.users;
 
-	
-	 private int workerNumber;
 
-	    Bombarder(int number) {
-	        workerNumber = number;
-	    }
-	public void run() {
-		int i = 0;
-		
-		while (i<1000) {
-			try {
-				HashMap<String, String> messageHash = new HashMap<String, String>();
-				messageHash.put("PR1", "1");
-				messageHash.put("PR2", "1");
-	        	messageHash.put("PR3", "1");
-	        	messageHash.put("PR4", "1");
-	        	messageHash.put("PR5", "1");
-	        	
-	        	Send.sendHashTable(messageHash, "controller");
-	        	//Send.sendHashTable(messageHash, "controller");
+import java.util.HashSet;
 
-	        	
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			i++;
-		}
-		
-		System.out.println("Done!");
-	}
 
+
+
+
+
+import java.util.Vector;
+
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.velisphere.tigerspice.shared.UserData;
+
+@RemoteServiceRelativePath("voltUser")
+public interface UserService extends RemoteService {
+	Vector<UserData> getAllUserDetails();
 }
+
+

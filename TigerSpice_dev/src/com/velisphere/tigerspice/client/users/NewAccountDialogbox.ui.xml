@@ -1,0 +1,61 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<g:HTMLPanel>
+
+		<b:Row>
+			<b:Column size="8" offset="0">
+				<b:PageHeader>Create a new VeliSphere Account</b:PageHeader>
+			</b:Column>
+		</b:Row>
+
+		<b:Row>
+			<b:Column size="8" offset="0">
+
+				<b:Form type="HORIZONTAL">
+
+					<b:Alert type="ERROR" close="true">
+						Alert Dummy
+					</b:Alert>
+
+<b:Fieldset>
+    <b:ControlGroup>
+					<b:ControlLabel>User Name</b:ControlLabel>
+
+					<b:Controls>
+					<b:TextBox b:id="username" />
+
+					</b:Controls>
+	</b:ControlGroup>
+  
+	
+	<b:ControlGroup>			
+					<b:ControlLabel>Password</b:ControlLabel>
+						<b:Controls>
+						<b:TextBox b:id="password" />
+					</b:Controls>
+	</b:ControlGroup>
+  				
+<b:ControlGroup>
+    		<b:Controls>
+				
+					<b:CheckBox>I agree with the Terms of Use</b:CheckBox>
+	</b:Controls>
+	</b:ControlGroup>
+<b:ControlGroup>
+    		<b:Controls>
+
+					<b:Button styleName="btn-info btn" text="Login" ui:field="btnLogin" />
+						</b:Controls>
+	</b:ControlGroup>
+  				
+</b:Fieldset>
+  			</b:Form>
+
+			</b:Column>
+		</b:Row>
+
+
+
+	</g:HTMLPanel>
+</ui:UiBinder> 

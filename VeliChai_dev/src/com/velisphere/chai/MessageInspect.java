@@ -102,6 +102,7 @@ public class MessageInspect implements Runnable {
 							&& e.getKey() != "TIMESTAMP"
 							&& e.getKey() != "TYPE") {
 							triggeredRules.addAll(BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), "=", (byte) 0));
+							
 					}
 				}
 
@@ -118,6 +119,7 @@ public class MessageInspect implements Runnable {
 				for (Iterator<String> aIT = actionItems.iterator(); aIT
 						.hasNext();) {
 					ActionManipulationEngine.executeActionItems(aIT.next(), forEvaluation);
+					
 					aIT.remove();
 				}
 

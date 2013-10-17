@@ -30,8 +30,8 @@ import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.velisphere.tigerspice.client.EPCService;
-import com.velisphere.tigerspice.client.UserService;
+import com.velisphere.tigerspice.client.endpointclasses.EPCService;
+import com.velisphere.tigerspice.client.users.UserService;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.UserData;
 

@@ -30,7 +30,7 @@ import org.voltdb.client.ProcCallException;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.LogService;
-import com.velisphere.tigerspice.client.UserService;
+import com.velisphere.tigerspice.client.users.UserService;
 import com.velisphere.tigerspice.shared.LogData;
 import com.velisphere.tigerspice.shared.UserData;
 

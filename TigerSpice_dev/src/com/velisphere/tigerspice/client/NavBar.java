@@ -29,7 +29,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.velisphere.tigerspice.client.newaccount.NewAccountScreen;
+import com.velisphere.tigerspice.client.users.NewAccountScreen;
 
 public class NavBar extends Composite implements HasText {
 
@@ -62,8 +62,9 @@ public class NavBar extends Composite implements HasText {
 	@UiHandler("btnHome")
 	void openHome (ClickEvent event) {
 		// Window.alert("Logging In");
+	
+		// RootPanel.get().clear();
 		Login loginScreen = new Login();
-		
 		loginScreen.onModuleLoad();
 		
 		// loginDialogBox.setVisible(false);

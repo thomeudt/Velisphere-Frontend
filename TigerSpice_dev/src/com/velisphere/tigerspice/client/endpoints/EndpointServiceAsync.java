@@ -1,5 +1,3 @@
-import java.util.HashMap;
-
 /*******************************************************************************
  * CONFIDENTIAL INFORMATION
  *  __________________
@@ -17,38 +15,19 @@ import java.util.HashMap;
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-public class Bombarder implements Runnable {
+package com.velisphere.tigerspice.client.endpoints;
+
+import java.util.HashSet;
+import java.util.Vector;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.velisphere.tigerspice.shared.EPCData;
+import com.velisphere.tigerspice.shared.EndpointData;
+import com.velisphere.tigerspice.shared.PropertyData;
+import com.velisphere.tigerspice.shared.UserData;
+
+public interface EndpointServiceAsync {
+	void getAllEndpointDetails(AsyncCallback<Vector<EndpointData>> callback);
 
 	
-	 private int workerNumber;
-
-	    Bombarder(int number) {
-	        workerNumber = number;
-	    }
-	public void run() {
-		int i = 0;
-		
-		while (i<1000) {
-			try {
-				HashMap<String, String> messageHash = new HashMap<String, String>();
-				messageHash.put("PR1", "1");
-				messageHash.put("PR2", "1");
-	        	messageHash.put("PR3", "1");
-	        	messageHash.put("PR4", "1");
-	        	messageHash.put("PR5", "1");
-	        	
-	        	Send.sendHashTable(messageHash, "controller");
-	        	//Send.sendHashTable(messageHash, "controller");
-
-	        	
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			i++;
-		}
-		
-		System.out.println("Done!");
-	}
-
 }

@@ -15,50 +15,57 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client;
+package com.velisphere.tigerspice.client.users;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
+
+import org.voltdb.client.NoConnectionsException;
+import org.voltdb.client.ProcCallException;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.velisphere.tigerspice.client.HeroUnitLogin.HeroUnitLoginUiBinder;
-import com.velisphere.tigerspice.server.VoltConnector;
+import com.velisphere.tigerspice.client.NavBar;
 
-public class Login implements EntryPoint {
+
+
+public class NewAccountScreen {
 
 	RootPanel rootPanel;
 	VerticalPanel mainPanel;
 	NavBar navBar;
+	NewAccountDialogbox newAccount;
 	
-	public void onModuleLoad() {
+	public void open(){
 
-	History.newItem("home");
-		
+	History.newItem("epce");
 	rootPanel = RootPanel.get("stockList");
 	rootPanel.clear();
 	rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
+	Integer defaultWidth = rootPanel.getOffsetWidth()-60;
 	
 	mainPanel = new VerticalPanel();
 	rootPanel.add(mainPanel);
-			
+				
 	navBar = new NavBar();
+	navBar.setWidth(defaultWidth.toString()+"px");
 	mainPanel.add(navBar);
 	
-		
-	SplashCarouselWidget splashCarouselWidget = new SplashCarouselWidget();
-	mainPanel.add(splashCarouselWidget);
-		
-	HeroUnitLogin heroUnitLogin = new HeroUnitLogin();
-	mainPanel.add(heroUnitLogin);
-		
+	newAccount = new NewAccountDialogbox();
+	rootPanel.add(newAccount);
 	
-	// LoginDialogBox loginDialogBox = new LoginDialogBox();
-	// mainPanel.add(loginDialogBox);
+		
 	}
+
 }
+
+
+
+
+

@@ -1,5 +1,3 @@
-import java.util.HashMap;
-
 /*******************************************************************************
  * CONFIDENTIAL INFORMATION
  *  __________________
@@ -17,38 +15,38 @@ import java.util.HashMap;
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-public class Bombarder implements Runnable {
+package com.velisphere.tigerspice.shared;
 
+import java.util.List;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class PropertyData implements IsSerializable, Comparable <PropertyData>
+{
+	public String propertyId;
+	public String propertyName;
+	public String propertyclassId;
+	public String endpointclassId;
 	
-	 private int workerNumber;
-
-	    Bombarder(int number) {
-	        workerNumber = number;
-	    }
-	public void run() {
-		int i = 0;
-		
-		while (i<1000) {
-			try {
-				HashMap<String, String> messageHash = new HashMap<String, String>();
-				messageHash.put("PR1", "1");
-				messageHash.put("PR2", "1");
-	        	messageHash.put("PR3", "1");
-	        	messageHash.put("PR4", "1");
-	        	messageHash.put("PR5", "1");
-	        	
-	        	Send.sendHashTable(messageHash, "controller");
-	        	//Send.sendHashTable(messageHash, "controller");
-
-	        	
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			i++;
-		}
-		
-		System.out.println("Done!");
+	@Override
+	public int compareTo(PropertyData arg0) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
-
+	
+	public String getId(){
+		return propertyId;
+	}
+	
+	public String getName(){
+		return propertyName;
+	}
+	
+	public String getPropertyClassId(){
+		return propertyclassId;
+	}
+	
+	public String getEpcId(){
+		return endpointclassId;
+	}
 }

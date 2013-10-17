@@ -16,6 +16,8 @@ import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
+import com.velisphere.tigerspice.client.properties.PropertyService;
+import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.users.UserService;
 import com.velisphere.tigerspice.client.users.UserServiceAsync;
 import com.velisphere.tigerspice.shared.EPCData;
@@ -28,19 +30,19 @@ import com.velisphere.tigerspice.shared.UserData;
  * server. Used in the GWT in Action 2nd Edition CellList example
  * 
  */
-public class EndpointAsyncDataProvider extends AsyncDataProvider<EndpointData> {
+public class PropertyAsyncDataProvider extends AsyncDataProvider<PropertyData> {
 
 	/**
 	 * Reference to the RPC service this provider will use to get data.
 	 */
-	private EndpointServiceAsync rpcService;
+	private PropertyServiceAsync rpcService;
 
 	/**
 	 * Create a new AllDataAsyncDataProvider instance and set up the RPC
 	 * framework that it will use.
 	 */
-	public EndpointAsyncDataProvider() {
-		rpcService = GWT.create(EndpointService.class);
+	public PropertyAsyncDataProvider() {
+		rpcService = GWT.create(PropertyService.class);
 	}
 
 	/**
@@ -49,14 +51,14 @@ public class EndpointAsyncDataProvider extends AsyncDataProvider<EndpointData> {
 	 * {@link #updateRowData(int, List)}.
 	 */
 	@Override
-	protected void onRangeChanged(HasData<EndpointData> display) {
+	protected void onRangeChanged(HasData<PropertyData> display) {
 
 		// Get the new range required.
 		final Range range = display.getVisibleRange();
 
-		ColumnSortList sortList = ((AbstractCellTable<EndpointData>) display)
+		ColumnSortList sortList = ((AbstractCellTable<PropertyData>) display)
 				.getColumnSortList();
-		String sortOnName = "endpointName";
+		String sortOnName = "propertyName";
 		boolean isAscending = true;
 		if ((sortList != null) && (sortList.size() > 0)) {
 			sortOnName = sortList.get(0).getColumn().getDataStoreName();
@@ -64,7 +66,7 @@ public class EndpointAsyncDataProvider extends AsyncDataProvider<EndpointData> {
 		}
 
 		// Call getPhotoList RPC call
-		rpcService.getAllEndpointDetails(new AsyncCallback<Vector<EndpointData>>() {
+		rpcService.getAllPropertyDetails(new AsyncCallback<Vector<PropertyData>>() {
 
 			// There's been a failure in the RPC call
 			// Normally you would handle that in a good way,
@@ -74,7 +76,7 @@ public class EndpointAsyncDataProvider extends AsyncDataProvider<EndpointData> {
 			}
 
 			@Override
-			public void onSuccess(Vector<EndpointData> result) {
+			public void onSuccess(Vector<PropertyData> result) {
 				updateRowData(range.getStart(), result);
 
 			}

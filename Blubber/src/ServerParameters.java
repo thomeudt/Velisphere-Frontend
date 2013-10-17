@@ -18,7 +18,7 @@
 public class ServerParameters {
 
 	  // public final static String bunny_ip = "h2209363.stratoserver.net";
-	  public final static String bunny_ip = "ec2-54-200-134-132.us-west-2.compute.amazonaws.com";
+	  public final static String bunny_ip = "ec2-54-200-133-173.us-west-2.compute.amazonaws.com";
 	  public static String my_queue_name = "";
 	
 }

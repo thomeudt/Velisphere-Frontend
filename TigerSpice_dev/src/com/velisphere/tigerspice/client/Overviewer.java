@@ -30,6 +30,10 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.HeroUnitLogin.HeroUnitLoginUiBinder;
+import com.velisphere.tigerspice.client.endpointclasses.EPCList;
+import com.velisphere.tigerspice.client.endpoints.EndpointList;
+import com.velisphere.tigerspice.client.properties.PropertyList;
+import com.velisphere.tigerspice.client.users.UserList;
 
 
 public class Overviewer {
@@ -63,6 +67,9 @@ public class Overviewer {
 
 	EndpointList endpointList = new EndpointList();
 	mainPanel.add(endpointList);
+	
+	PropertyList propertyList = new PropertyList();
+	mainPanel.add(propertyList);
 
 			
 	}
