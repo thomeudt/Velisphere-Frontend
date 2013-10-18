@@ -2,17 +2,14 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:HTMLPanel>
-
+<row>
  
- 
-	    	    		<b:Row>
-		    	<b:Column size="8" offset="0">
-				<b:PageHeader>Account successfully created.</b:PageHeader>
-			</b:Column>
-		</b:Row>
-
-		<p>	<b:Button styleName="btn btn-primary btn-large" text="Login »" ui:field="btnLogin" />
-		</p>
-		
+     <b:ListBox ui:field='lbxSelectTable' b:id="ddlListSelector">
+         
+         
+     </b:ListBox>
+         
+ 	
+ 	</row>	
 	</g:HTMLPanel>
 </ui:UiBinder> 

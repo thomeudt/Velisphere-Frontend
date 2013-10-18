@@ -32,6 +32,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.HeroUnitLogin.HeroUnitLoginUiBinder;
 import com.velisphere.tigerspice.client.endpointclasses.EPCList;
 import com.velisphere.tigerspice.client.endpoints.EndpointList;
+import com.velisphere.tigerspice.client.helper.Banderole;
 import com.velisphere.tigerspice.client.properties.PropertyList;
 import com.velisphere.tigerspice.client.users.UserList;
 
@@ -48,11 +49,14 @@ public class Overviewer {
 	rootPanel = RootPanel.get("main");
 	rootPanel.clear();
 	rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-	Integer defaultWidth = rootPanel.getOffsetWidth()-60;
+	
 	
 	mainPanel = new VerticalPanel();
 	rootPanel.add(mainPanel);
 
+	RootPanel banderolePanel = RootPanel.get("banderole");
+	Banderole banderole = new Banderole();
+	banderolePanel.add(banderole);
 
 	UserList userClassList = new UserList();
 	mainPanel.add(userClassList);

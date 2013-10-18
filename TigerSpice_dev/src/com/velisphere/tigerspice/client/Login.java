@@ -51,8 +51,6 @@ public class Login implements EntryPoint {
 	rootPanelMain.getElement().getStyle().setPosition(Position.RELATIVE);
 	
 	headerPanel = new VerticalPanel();
-	
-	
 	rootPanelHeader.add(headerPanel);
 			
 	navBar = new NavBar();
