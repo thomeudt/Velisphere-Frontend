@@ -38,6 +38,7 @@ import com.velisphere.tigerspice.client.NavBar;
 public class NewAccountScreen {
 
 	RootPanel rootPanel;
+	RootPanel rootPanelBanderole;
 	VerticalPanel mainPanel;
 	NavBar navBar;
 	NewAccountDialogbox newAccount;
@@ -48,7 +49,13 @@ public class NewAccountScreen {
 	rootPanel = RootPanel.get("main");
 	rootPanel.clear();
 	rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-	Integer defaultWidth = rootPanel.getOffsetWidth()-60;
+	
+	rootPanelBanderole = RootPanel.get("banderole");
+	rootPanelBanderole.clear();
+	rootPanelBanderole.getElement().getStyle().setPosition(Position.RELATIVE);
+	
+	
+	
 	
 	mainPanel = new VerticalPanel();
 	rootPanel.add(mainPanel);

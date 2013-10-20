@@ -34,6 +34,7 @@ public class Login implements EntryPoint {
 
 	RootPanel rootPanelHeader;
 	RootPanel rootPanelMain;
+	RootPanel rootPanelBanderole;
 	VerticalPanel headerPanel;
 	VerticalPanel mainPanel;
 	NavBar navBar;
@@ -49,6 +50,10 @@ public class Login implements EntryPoint {
 	rootPanelMain = RootPanel.get("main");
 	rootPanelMain.clear();
 	rootPanelMain.getElement().getStyle().setPosition(Position.RELATIVE);
+	
+	rootPanelBanderole = RootPanel.get("banderole");
+	rootPanelBanderole.clear();
+	rootPanelBanderole.getElement().getStyle().setPosition(Position.RELATIVE);
 	
 	headerPanel = new VerticalPanel();
 	rootPanelHeader.add(headerPanel);

@@ -48,7 +48,7 @@ interface MyBinder extends UiBinder<Widget, Banderole>{}
 		rootPanel.clear();
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 	
-		System.out.println(lbxSelectTable.getValue());
+		
 		
 		if(lbxSelectTable.getValue().equals("1")){
 			UserList userClassList = new UserList();
@@ -72,7 +72,7 @@ interface MyBinder extends UiBinder<Widget, Banderole>{}
 		
 		
 		
-		// loginDialogBox.setVisible(false);
+		
 		
 		
 	}

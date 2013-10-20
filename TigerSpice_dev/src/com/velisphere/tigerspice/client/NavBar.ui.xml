@@ -23,6 +23,7 @@
 		.important {
 			font-weight: bold;
 		}
+
 	</ui:style>
 	
 	
@@ -33,7 +34,7 @@
          
      <b:Navbar ui:field="navbar">
          
-         <b:Brand><img alt="" src="./images/logo_perspectives_trim.png" /></b:Brand>
+         <b:Brand><img alt="" src="./images/perspectives_sharp.png" /></b:Brand>
     
          <b:Nav>
              <b:NavLink ui:field="btnHome">Home</b:NavLink>

@@ -1,2 +1,6 @@
 # Module tigerspice_dev
 # RPC service class, partial path of RPC policy file
+com.velisphere.tigerspice.client.users.UserService, CBDE877A03D1DF5E37995ED5EA9A10BE.gwt.rpc
+com.velisphere.tigerspice.client.properties.PropertyService, D33411B27822DFBDD4C67664BDA97FB2.gwt.rpc
+com.velisphere.tigerspice.client.endpoints.EndpointService, 8BB73AFA195965CB454A7F37F2ADFF61.gwt.rpc
+com.velisphere.tigerspice.client.endpointclasses.EPCService, D96874BAA18DABCA5DC9E30E66FD87B5.gwt.rpc
