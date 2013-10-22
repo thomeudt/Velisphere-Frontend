@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client;
+package com.velisphere.tigerspice.client.admin;
 
 import java.io.IOException;
 
@@ -31,7 +31,8 @@ import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.velisphere.tigerspice.client.HeroUnitLogin.HeroUnitLoginUiBinder;
+import com.velisphere.tigerspice.client.Login;
+import com.velisphere.tigerspice.client.NavBar;
 import com.velisphere.tigerspice.client.endpointclasses.EPCList;
 import com.velisphere.tigerspice.client.endpoints.EndpointList;
 import com.velisphere.tigerspice.client.helper.Banderole;
@@ -133,11 +134,4 @@ public class Overviewer {
 	    });
 	}
 
-
-
 }
-
-
-
-
-

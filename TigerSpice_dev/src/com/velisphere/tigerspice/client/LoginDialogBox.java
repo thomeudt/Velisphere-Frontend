@@ -39,7 +39,9 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.admin.Overviewer;
 import com.velisphere.tigerspice.client.users.LoginService;
+import com.velisphere.tigerspice.client.users.LoginSuccess;
 import com.velisphere.tigerspice.client.users.NewAccountDialogbox;
 import com.velisphere.tigerspice.shared.UserData;
 
@@ -95,8 +97,16 @@ public class LoginDialogBox extends PopupPanel{
                         	NavBar navBar = new NavBar();
                         	rootPanelHeader.add(navBar);
                             
-                            Overviewer overviewer = new Overviewer();
-                    		overviewer.onModuleLoad();
+                            // Overviewer overviewer = new Overviewer();
+                    		// overviewer.onModuleLoad();
+                        	
+                        	RootPanel rootPanelMain = RootPanel.get("main");
+                        	rootPanelMain.clear();
+                        	rootPanelMain.getElement().getStyle().setPosition(Position.RELATIVE);
+                        	LoginSuccess loginSuccess = new LoginSuccess();
+                        	rootPanelMain.add(loginSuccess);
+                            
+                        	
                     			
                         } else
                         {

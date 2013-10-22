@@ -39,7 +39,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.admin.Overviewer;
 import com.velisphere.tigerspice.client.users.LoginService;
+import com.velisphere.tigerspice.client.users.LoginSuccess;
 import com.velisphere.tigerspice.client.users.NewAccountScreen;
 import com.velisphere.tigerspice.shared.UserData;
 
@@ -57,6 +59,7 @@ public class NavBar extends Composite implements HasText {
 	@UiField Brand brdHome;
 	@UiField NavText txtUserName;
 	
+	
 	private static NavBarUiBinder uiBinder = GWT.create(NavBarUiBinder.class);
 
 	interface NavBarUiBinder extends UiBinder<Widget, NavBar> {
@@ -68,7 +71,7 @@ public class NavBar extends Composite implements HasText {
 		navbar.setPosition(NavbarPosition.TOP);
 		
 		  String sessionID = Cookies.getCookie("sid");
-		     System.out.println("Session ID: " +sessionID);
+		     
 		     if (sessionID == null)
 		     {
 		    	 btnAdmin.setVisible(false);
@@ -80,6 +83,7 @@ public class NavBar extends Composite implements HasText {
 		    	 forSearch.setVisible(false);
 		    	 btnHome.setVisible(false);
 		    	 txtUserName.setText("Not Logged In");
+	 
 		     } else
 		     {
 		         checkWithServerIfSessionIdIsStillLegal(sessionID);
@@ -98,8 +102,12 @@ public class NavBar extends Composite implements HasText {
 	@UiHandler("btnAccount")
 	void openNewAccountScreen (ClickEvent event) {
 		// Window.alert("Logging In");
-		NewAccountScreen newAccountScreen = new NewAccountScreen();
-		newAccountScreen.open();
+		
+	    	 NewAccountScreen newAccountScreen = new NewAccountScreen();
+				newAccountScreen.open();
+			
+		
+		
 		
 		// loginDialogBox.setVisible(false);
 		
@@ -108,13 +116,20 @@ public class NavBar extends Composite implements HasText {
 	
 	@UiHandler("btnHome")
 	void openHome (ClickEvent event) {
-		// Window.alert("Logging In");
-	
-		// RootPanel.get().clear();
-		Login loginScreen = new Login();
-		loginScreen.onModuleLoad();
+		String sessionID = Cookies.getCookie("sid");
 		
-		// loginDialogBox.setVisible(false);
+	     if (sessionID != null){
+			
+			RootPanel.get("main").clear();
+			LoginSuccess loginSuccess = new LoginSuccess();
+			RootPanel.get("main").add(loginSuccess);
+		}
+	     else
+	    	 {
+	    	 NewAccountScreen newAccountScreen = new NewAccountScreen();
+				newAccountScreen.open();
+			
+		}
 	}
 	
 	@UiHandler("brdHome")
