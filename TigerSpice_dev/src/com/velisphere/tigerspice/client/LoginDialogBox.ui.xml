@@ -26,9 +26,9 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
       <div class="well">
         <legend>Sign in to Perspectives</legend>
           <div id="login-form">
-            <b:Alert type="ERROR" close="true" ui:field="aleError" />      
+            <b:Alert type="ERROR" close="false" ui:field="aleError" />      
             <b:TextBox styleName="span3" ui:field="txtUsername" name="username" />
-            <b:TextBox styleName="span3" ui:field="txtPassword" name="password" /> 
+            <b:PasswordTextBox styleName="span3" ui:field="txtPassword" name="password" /> 
             <label class="checkbox">
             <b:CheckBox name="remember" value="true"> Remember Me </b:CheckBox>
             </label>

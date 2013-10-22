@@ -90,3 +90,15 @@ html, body {
   clear:both;
   padding-top:20px;
 } 
+
+.navbar-text {
+  margin-bottom: 0;
+  font-size: x-small;
+  color: gray;
+}
+
+.navbar-greentext {
+  margin-bottom: 0;
+  font-size: x-small;
+  color: greeny;
+}

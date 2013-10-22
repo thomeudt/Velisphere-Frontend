@@ -49,7 +49,7 @@ public class HeroUnitLogin extends Composite implements HasText {
 		RootPanel rootPanel = RootPanel.get("main");
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 		LoginDialogBox loginDialogBox = new LoginDialogBox();
-		rootPanel.add(loginDialogBox, 250, 250);
+		rootPanel.add(loginDialogBox, 25, 40);
 		
 		// loginDialogBox.setVisible(false);
 		

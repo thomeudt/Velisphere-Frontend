@@ -41,7 +41,7 @@
 	<b:ControlGroup>			
 					<b:ControlLabel>Password</b:ControlLabel>
 						<b:Controls>
-						<b:TextBox b:id="txtPassword" ui:field="txtPassword" />
+						<b:PasswordTextBox b:id="txtPassword" ui:field="txtPassword" />
 					</b:Controls>
 	</b:ControlGroup>
   				

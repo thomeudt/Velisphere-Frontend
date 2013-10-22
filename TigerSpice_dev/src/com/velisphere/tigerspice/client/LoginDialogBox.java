@@ -24,6 +24,7 @@ import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
 import com.github.gwtbootstrap.client.ui.Alert;
+import com.github.gwtbootstrap.client.ui.PasswordTextBox;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Position;
@@ -47,7 +48,7 @@ public class LoginDialogBox extends PopupPanel{
 	@UiField Alert aleError;
 	@UiField Anchor ancSignup;
 	@UiField TextBox txtUsername;
-	@UiField TextBox txtPassword; 
+	@UiField PasswordTextBox txtPassword; 
 		
 	interface MyBinder extends UiBinder<Widget, LoginDialogBox>{}
 			
@@ -57,7 +58,7 @@ public class LoginDialogBox extends PopupPanel{
 		aleError = new Alert();
 		ancSignup = new Anchor();
 		txtUsername = new TextBox();
-		txtPassword = new TextBox();
+		txtPassword = new PasswordTextBox();
 		
 		setStyleName("");
 		add(uiBinder.createAndBindUi(this));
@@ -99,7 +100,8 @@ public class LoginDialogBox extends PopupPanel{
                     			
                         } else
                         {
-                            Window.alert("Access Denied. Check your user-name and password.");
+                           aleError.setText("Access Denied. Check your user-name and password.");
+                           aleError.setVisible(true);
                         }
  
                     }
@@ -107,7 +109,8 @@ public class LoginDialogBox extends PopupPanel{
                     @Override
                     public void onFailure(Throwable caught)
                     {
-                        Window.alert("Access Denied. Check your user-name and password.");
+                    	  aleError.setText("Access Denied. Check your user-name and password.");
+                          aleError.setVisible(true);
                     }
 
 			

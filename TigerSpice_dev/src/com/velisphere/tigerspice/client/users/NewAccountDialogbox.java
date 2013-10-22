@@ -5,6 +5,7 @@ package com.velisphere.tigerspice.client.users;
 import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.CheckBox;
 import com.github.gwtbootstrap.client.ui.Label;
+import com.github.gwtbootstrap.client.ui.PasswordTextBox;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -38,7 +39,7 @@ interface MyBinder extends UiBinder<Widget, NewAccountDialogbox>{}
 	public NewAccountDialogbox() {
 		txtEmail = new TextBox();
 		txtUsername = new TextBox();
-		txtPassword = new TextBox();
+		txtPassword = new PasswordTextBox();
 		cbxAgreeTandC = new CheckBox();
 		aleError = new Alert();
 		

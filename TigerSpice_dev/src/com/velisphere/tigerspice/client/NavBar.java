@@ -18,7 +18,10 @@
 package com.velisphere.tigerspice.client;
 
 import com.github.gwtbootstrap.client.ui.Alert;
+import com.github.gwtbootstrap.client.ui.Brand;
+import com.github.gwtbootstrap.client.ui.NavForm;
 import com.github.gwtbootstrap.client.ui.NavLink;
+import com.github.gwtbootstrap.client.ui.NavText;
 import com.github.gwtbootstrap.client.ui.Navbar;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.NavbarPosition;
@@ -43,7 +46,16 @@ import com.velisphere.tigerspice.shared.UserData;
 public class NavBar extends Composite implements HasText {
 
 	@UiField Navbar navbar;
-	@UiField NavLink btnAdmin; 
+	@UiField NavLink btnAdmin;
+	@UiField NavLink btnLogout;
+	@UiField NavLink btnAccount;
+	@UiField NavLink btnSearch;
+	@UiField NavLink btnSpheres;
+	@UiField NavLink btnMap;
+	@UiField NavForm forSearch;
+	@UiField NavLink btnHome;
+	@UiField Brand brdHome;
+	@UiField NavText txtUserName;
 	
 	private static NavBarUiBinder uiBinder = GWT.create(NavBarUiBinder.class);
 
@@ -54,11 +66,20 @@ public class NavBar extends Composite implements HasText {
 		navbar = new Navbar();
 		initWidget(uiBinder.createAndBindUi(this));
 		navbar.setPosition(NavbarPosition.TOP);
+		
 		  String sessionID = Cookies.getCookie("sid");
 		     System.out.println("Session ID: " +sessionID);
 		     if (sessionID == null)
 		     {
 		    	 btnAdmin.setVisible(false);
+		    	 btnLogout.setVisible(false);
+		    	 btnAccount.setVisible(false);
+		    	 btnSearch.setVisible(false);
+		    	 btnSpheres.setVisible(false);
+		    	 btnMap.setVisible(false);
+		    	 forSearch.setVisible(false);
+		    	 btnHome.setVisible(false);
+		    	 txtUserName.setText("Not Logged In");
 		     } else
 		     {
 		         checkWithServerIfSessionIdIsStillLegal(sessionID);
@@ -94,7 +115,12 @@ public class NavBar extends Composite implements HasText {
 		loginScreen.onModuleLoad();
 		
 		// loginDialogBox.setVisible(false);
-		
+	}
+	
+	@UiHandler("brdHome")
+	void openHomeBrand (ClickEvent event) {
+		Login loginScreen = new Login();
+		loginScreen.onModuleLoad();
 		
 	}
 	
@@ -133,6 +159,14 @@ public class NavBar extends Composite implements HasText {
 	        public void onFailure(Throwable caught)
 	        {
 	        	btnAdmin.setVisible(false);
+		    	 btnLogout.setVisible(false);
+		    	 btnAccount.setVisible(false);
+		    	 btnSearch.setVisible(false);
+		    	 btnSpheres.setVisible(false);
+		    	 btnMap.setVisible(false);
+		    	 forSearch.setVisible(false);
+		    	 btnHome.setVisible(false);
+		    	 txtUserName.setText("Not Logged In");
 	        }
 	 
 	        @Override
@@ -141,16 +175,32 @@ public class NavBar extends Composite implements HasText {
 	            if (result == null)
 	            {
 	            	btnAdmin.setVisible(false);
-	            	
+			    	 btnLogout.setVisible(false);
+			    	 btnAccount.setVisible(false);
+			    	 btnSearch.setVisible(false);
+			    	 btnSpheres.setVisible(false);
+			    	 btnMap.setVisible(false);
+			    	 forSearch.setVisible(false);
+			    	 btnHome.setVisible(false);
+			    	 txtUserName.setText("Not Logged In");
 	            	
 	            } else
 	            {
 	                if (result.getLoggedIn())
 	                {
-	                   
+	                	txtUserName.setText(result.userName);
+	                		                   
 	                } else
 	                {
 	                	btnAdmin.setVisible(false);
+	   		    	 btnLogout.setVisible(false);
+	   		    	 btnAccount.setVisible(false);
+	   		    	 btnSearch.setVisible(false);
+	   		    	 btnSpheres.setVisible(false);
+	   		    	 btnMap.setVisible(false);
+	   		    	 forSearch.setVisible(false);
+	   		    	 btnHome.setVisible(false);
+	   		    	 txtUserName.setText("Not Logged In");
 	                }
 	            }
 	        }
