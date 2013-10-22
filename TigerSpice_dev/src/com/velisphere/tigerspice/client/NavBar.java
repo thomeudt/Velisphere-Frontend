@@ -18,7 +18,9 @@
 package com.velisphere.tigerspice.client;
 
 import com.github.gwtbootstrap.client.ui.Alert;
+import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.Navbar;
+import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.NavbarPosition;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
@@ -26,17 +28,22 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.users.LoginService;
 import com.velisphere.tigerspice.client.users.NewAccountScreen;
+import com.velisphere.tigerspice.shared.UserData;
 
 public class NavBar extends Composite implements HasText {
 
 	@UiField Navbar navbar;
+	@UiField NavLink btnAdmin; 
 	
 	private static NavBarUiBinder uiBinder = GWT.create(NavBarUiBinder.class);
 
@@ -47,9 +54,20 @@ public class NavBar extends Composite implements HasText {
 		navbar = new Navbar();
 		initWidget(uiBinder.createAndBindUi(this));
 		navbar.setPosition(NavbarPosition.TOP);
+		  String sessionID = Cookies.getCookie("sid");
+		     System.out.println("Session ID: " +sessionID);
+		     if (sessionID == null)
+		     {
+		    	 btnAdmin.setVisible(false);
+		     } else
+		     {
+		         checkWithServerIfSessionIdIsStillLegal(sessionID);
+		     }
 		
 	}
 
+	
+	 
 	
 	public NavBar(String firstName) {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -80,6 +98,24 @@ public class NavBar extends Composite implements HasText {
 		
 	}
 	
+	@UiHandler("btnAdmin")
+	void openAdmin (ClickEvent event) {
+		Overviewer overviewer = new Overviewer();
+		overviewer.onModuleLoad();
+			
+		
+		
+	}
+	
+	@UiHandler("btnLogout")
+	void logout (ClickEvent event) {
+		Cookies.removeCookie("sid");
+	    Login loginScreen = new Login();
+		loginScreen.onModuleLoad();
+	
+	}
+	
+	
 	public void setText(String text) {
 	
 	}
@@ -88,5 +124,39 @@ public class NavBar extends Composite implements HasText {
 		return null;
 	
 	}
+	
+	private void checkWithServerIfSessionIdIsStillLegal(String sessionID)
+	{
+	    LoginService.Util.getInstance().loginFromSessionServer(new AsyncCallback<UserData>()
+	    {
+	        @Override
+	        public void onFailure(Throwable caught)
+	        {
+	        	btnAdmin.setVisible(false);
+	        }
+	 
+	        @Override
+	        public void onSuccess(UserData result)
+	        {
+	            if (result == null)
+	            {
+	            	btnAdmin.setVisible(false);
+	            	
+	            	
+	            } else
+	            {
+	                if (result.getLoggedIn())
+	                {
+	                   
+	                } else
+	                {
+	                	btnAdmin.setVisible(false);
+	                }
+	            }
+	        }
+	 
+	    });
+	}
+
 
 }

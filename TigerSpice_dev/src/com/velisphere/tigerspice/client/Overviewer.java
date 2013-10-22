@@ -24,7 +24,9 @@ import org.voltdb.client.ProcCallException;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.dom.client.Document;
@@ -34,22 +36,44 @@ import com.velisphere.tigerspice.client.endpointclasses.EPCList;
 import com.velisphere.tigerspice.client.endpoints.EndpointList;
 import com.velisphere.tigerspice.client.helper.Banderole;
 import com.velisphere.tigerspice.client.properties.PropertyList;
+import com.velisphere.tigerspice.client.users.LoginService;
 import com.velisphere.tigerspice.client.users.UserList;
+import com.velisphere.tigerspice.shared.UserData;
 
 
 public class Overviewer {
 
 	RootPanel rootPanel;
+	RootPanel rootPanelHeader;
 	VerticalPanel mainPanel;
 	NavBar navBar;
 	
-	public void open(){
+    public void onModuleLoad()
+{
+    String sessionID = Cookies.getCookie("sid");
+    System.out.println("Session ID: " +sessionID);
+    if (sessionID == null)
+    {
+    	Login loginScreen = new Login();
+		loginScreen.onModuleLoad();
+    } else
+    {
+        checkWithServerIfSessionIdIsStillLegal(sessionID);
+    }
+}
+	
+	public void loadContent(){
 
 	History.newItem("epce");
 	rootPanel = RootPanel.get("main");
 	rootPanel.clear();
 	rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-	
+
+	rootPanelHeader = RootPanel.get("stockList");
+	rootPanelHeader.clear();
+	rootPanelHeader.getElement().getStyle().setPosition(Position.RELATIVE);
+	navBar = new NavBar();
+	rootPanelHeader.add(navBar);
 	
 	mainPanel = new VerticalPanel();
 	rootPanel.add(mainPanel);
@@ -73,6 +97,43 @@ public class Overviewer {
 
 			
 	}
+	
+
+	private void checkWithServerIfSessionIdIsStillLegal(String sessionID)
+	{
+	    LoginService.Util.getInstance().loginFromSessionServer(new AsyncCallback<UserData>()
+	    {
+	        @Override
+	        public void onFailure(Throwable caught)
+	        {
+	        	Login loginScreen = new Login();
+	    		loginScreen.onModuleLoad();
+	        }
+	 
+	        @Override
+	        public void onSuccess(UserData result)
+	        {
+	            if (result == null)
+	            {
+	            	Login loginScreen = new Login();
+	        		loginScreen.onModuleLoad();
+	            } else
+	            {
+	                if (result.getLoggedIn())
+	                {
+	                   loadContent();
+	                } else
+	                {
+	                	Login loginScreen = new Login();
+		        		loginScreen.onModuleLoad();
+	                }
+	            }
+	        }
+	 
+	    });
+	}
+
+
 
 }
 

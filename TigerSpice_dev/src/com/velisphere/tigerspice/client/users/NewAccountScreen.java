@@ -38,6 +38,7 @@ import com.velisphere.tigerspice.client.NavBar;
 public class NewAccountScreen {
 
 	RootPanel rootPanel;
+	RootPanel rootPanelHeader;
 	RootPanel rootPanelBanderole;
 	VerticalPanel mainPanel;
 	NavBar navBar;
@@ -45,7 +46,15 @@ public class NewAccountScreen {
 	
 	public void open(){
 
-	History.newItem("epce");
+	History.newItem("create_new_account");
+	
+	rootPanelHeader = RootPanel.get("stockList");
+	rootPanelHeader.clear();
+	rootPanelHeader.getElement().getStyle().setPosition(Position.RELATIVE);
+	navBar = new NavBar();
+	rootPanelHeader.add(navBar);
+	
+	
 	rootPanel = RootPanel.get("main");
 	rootPanel.clear();
 	rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);

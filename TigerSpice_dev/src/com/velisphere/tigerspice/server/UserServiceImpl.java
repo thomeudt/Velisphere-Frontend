@@ -39,8 +39,20 @@ import com.velisphere.tigerspice.shared.UserData;
 public class UserServiceImpl extends RemoteServiceServlet implements
 		UserService {
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = -8892989521623692797L;
+
+
+
+
+
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6705704565729998384L;
+
+
+
+
 
 	public Vector<UserData> getAllUserDetails()
 
@@ -75,6 +87,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 					userData.userEmail = result.getString("USEREMAIL");
 					userData.userName = result.getString("USERNAME");
 					userData.userID = result.getString("USERID");
+					userData.loggedIn = false;
 					allUsers.add(userData);
 
 				}
@@ -143,60 +156,6 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 	
 	
 	
-	
-	public Vector<EPCData> getAllEPCDetails()
-
-	{
-		VoltConnector voltCon = new VoltConnector();
-
-		try {
-			voltCon.openDatabase();
-		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		Vector<EPCData> allEndPointClasses = new Vector<EPCData>();
-		try {
-
-			final ClientResponse findAllUsers = voltCon.montanaClient
-					.callProcedure("UI_SelectAllEndpointClasses");
-
-			final VoltTable findAllUsersResults[] = findAllUsers.getResults();
-
-			VoltTable result = findAllUsersResults[0];
-			// check if any rows have been returned
-
-			while (result.advanceRow()) {
-				{
-					// extract the value in column checkid
-					EPCData epcData = new EPCData();
-					epcData.endpointclassName = result.getString("ENDPOINTCLASSNAME");
-					epcData.endpointclassID = result.getString("ENDPOINTCLASSID");
-					allEndPointClasses.add(epcData);
-
-				}
-			}
-
-			System.out.println(allEndPointClasses);
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		try {
-			voltCon.closeDatabase();
-		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return allEndPointClasses;
-	}
 
 
 }
