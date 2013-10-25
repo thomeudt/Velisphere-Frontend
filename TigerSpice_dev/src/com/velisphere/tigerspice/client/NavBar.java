@@ -40,6 +40,7 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.admin.Overviewer;
+import com.velisphere.tigerspice.client.spheres.SphereEditor;
 import com.velisphere.tigerspice.client.users.LoginService;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 import com.velisphere.tigerspice.client.users.NewAccountScreen;
@@ -103,8 +104,9 @@ public class NavBar extends Composite implements HasText {
 	void openNewAccountScreen (ClickEvent event) {
 		// Window.alert("Logging In");
 		
-	    	 NewAccountScreen newAccountScreen = new NewAccountScreen();
-				newAccountScreen.open();
+		clearBandarole();
+		NewAccountScreen newAccountScreen = new NewAccountScreen();
+		newAccountScreen.open();
 			
 		
 		
@@ -117,7 +119,7 @@ public class NavBar extends Composite implements HasText {
 	@UiHandler("btnHome")
 	void openHome (ClickEvent event) {
 		String sessionID = Cookies.getCookie("sid");
-		
+		clearBandarole();
 	     if (sessionID != null){
 			
 			RootPanel.get("main").clear();
@@ -135,23 +137,35 @@ public class NavBar extends Composite implements HasText {
 	@UiHandler("brdHome")
 	void openHomeBrand (ClickEvent event) {
 		Login loginScreen = new Login();
+		clearBandarole();
 		loginScreen.onModuleLoad();
+		
+	}
+
+	@UiHandler("btnSpheres")
+	void openSpheres (ClickEvent event) {
+		RootPanel mainPanel = RootPanel.get("main");
+		mainPanel.clear();
+		clearBandarole();
+		SphereEditor sphereOverview = new SphereEditor(); 		
+		
+		mainPanel.add(sphereOverview);
 		
 	}
 	
 	@UiHandler("btnAdmin")
 	void openAdmin (ClickEvent event) {
+		
+		clearBandarole();
 		Overviewer overviewer = new Overviewer();
 		overviewer.onModuleLoad();
-			
-		
-		
 	}
 	
 	@UiHandler("btnLogout")
 	void logout (ClickEvent event) {
 		Cookies.removeCookie("sid");
-	    Login loginScreen = new Login();
+		clearBandarole();
+		Login loginScreen = new Login();
 		loginScreen.onModuleLoad();
 	
 	}
@@ -223,5 +237,10 @@ public class NavBar extends Composite implements HasText {
 	    });
 	}
 
+	
+	private void clearBandarole(){
+		RootPanel banderolePanel = RootPanel.get("banderole");
+		banderolePanel.clear();
+	}
 
 }

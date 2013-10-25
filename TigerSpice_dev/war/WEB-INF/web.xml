@@ -67,7 +67,15 @@
     <url-pattern>/tigerspice_dev/voltLogin</url-pattern>
   </servlet-mapping>
 
+<servlet>
+    <servlet-name>spheredataServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.SphereServiceImpl</servlet-class>
+</servlet>
 
+<servlet-mapping>
+    <servlet-name>spheredataServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltSphere</url-pattern>
+  </servlet-mapping>
 
 <servlet>
     <servlet-name>requestFactoryServlet</servlet-name>

@@ -28,8 +28,7 @@
 	
 	
 		 <g:FlowPanel>
-    
-		   
+       
     
          
      <b:Navbar ui:field="navbar">

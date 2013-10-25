@@ -17,6 +17,14 @@ public class PreLoadNeu {
 	        /*
 	         * Load the database.
 	         */
+	        
+	        preLoader.callProcedure("SPHERE.insert", "1000", "Home Tübingen", "0");
+	        preLoader.callProcedure("SPHERE.insert", "1001", "My Car", "0");
+	       
+	        
+	        System.out.println("Spheres loaded");
+	        
+	        
 	        preLoader.callProcedure("USER.insert", "1000", "thmeu", "thorsten@thorsten-meudt.de", "asa");
 	        preLoader.callProcedure("USER.insert", "1001", "utmeu", "ute_lechner@yahoo.de", "asa");
 	        preLoader.callProcedure("USER.insert", "1002", "lcmeu", "charlotte@thorsten-meudt.de", "asa");

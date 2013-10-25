@@ -80,6 +80,7 @@ public class Overviewer {
 	rootPanel.add(mainPanel);
 
 	RootPanel banderolePanel = RootPanel.get("banderole");
+	banderolePanel.clear();
 	Banderole banderole = new Banderole();
 	banderolePanel.add(banderole);
 

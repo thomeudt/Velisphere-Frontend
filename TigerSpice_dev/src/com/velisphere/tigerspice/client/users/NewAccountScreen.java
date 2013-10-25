@@ -32,6 +32,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.NavBar;
+import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
 
 
 

@@ -29,5 +29,9 @@
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/gxt-3.0.1-GPL/gxt-3.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/gxt-3.0.1-GPL/gxt-chart-3.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/gxt-3.0.1-GPL/gxt-legacy-3.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/gxt-3.0.1-GPL/uibinder-bridge-2.4.0.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
