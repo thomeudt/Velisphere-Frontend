@@ -2,9 +2,11 @@ package com.velisphere.tigerspice.client.users;
 
 
 
+import com.github.gwtbootstrap.client.ui.Bar;
 import com.github.gwtbootstrap.client.ui.Container;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.PageHeader;
+import com.github.gwtbootstrap.client.ui.StackProgressBar;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
@@ -42,6 +44,10 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
 	VerticalPanel mainPanel;
 	NavBar navBar;
 	@UiField PageHeader pageHeader;
+	@UiField Bar pgbGreen;
+	@UiField Bar pgbYellow;
+	@UiField Bar pgbRed;
+	@UiField StackProgressBar pgbUtilization;
 	String userName;
 	
  	
@@ -73,7 +79,7 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
 		rootPanelHeader.getElement().getStyle().setPosition(Position.RELATIVE);
 		navBar = new NavBar();
 		rootPanelHeader.add(navBar);
-		// set page header welcome back message		
+		
 		
 	}
 		
@@ -102,8 +108,16 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
 	            {
 	                if (result.getLoggedIn())
 	                {
+	                	// load all other content
 	                	loadContent();
+	            		// set page header welcome back message
 	                	pageHeader.setText("Welcome Back, " + result.userName);
+	                	pgbGreen.setPercent(30);
+	                	
+	                	pgbRed.setPercent(0);
+	                	pgbYellow.setPercent(0);
+	                	pgbGreen.setText("30/100 endpoints activated");
+	                	
 	                } else
 	                {
 	                	Login loginScreen = new Login();

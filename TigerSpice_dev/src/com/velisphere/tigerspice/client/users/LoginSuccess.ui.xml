@@ -3,15 +3,41 @@
 	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:HTMLPanel>
 
- 
- 
-	    	    		<b:Row>
-		    	<b:Column size="8" offset="0">
+
+
+		<b:Row>
+			<b:Column size="12" offset="0">
 				<b:PageHeader ui:field="pageHeader">Welcome Back.</b:PageHeader>
 			</b:Column>
 		</b:Row>
 
+		<b:Row>
+			<b:Column size="8" offset="0">
+				<b:StackProgressBar ui:field="pgbUtilization">
+					<b:Bar color="SUCCESS" ui:field="pgbGreen" text="green" percent="0" />
+					<b:Bar color="WARNING" ui:field="pgbYellow" text="" percent="0" />
+					<b:Bar color="DANGER" ui:field="pgbRed" text="" percent="0" />
+				</b:StackProgressBar>
+			</b:Column>
+		</b:Row>
 		
-		
+		<b:Row>
+			<b:Column size="2" offset="0">
+				<b:Heading size="5">Active Endpoints:</b:Heading>
+				<b:Paragraph>Sphere X:</b:Paragraph>
+				<b:Paragraph>Endpoint Y</b:Paragraph>
+			</b:Column>
+			<b:Column size="2" offset="0">
+				<b:Heading size="5">Inactive Endpoints:</b:Heading>
+			</b:Column>
+			<b:Column size="2" offset="0">
+				<b:Heading size="5">Critical Endpoints:</b:Heading>
+			</b:Column>
+			<b:Column size="2" offset="0">
+				<b:Heading size="5">Usage Stats:</b:Heading>
+			</b:Column>
+		</b:Row>
+
+
 	</g:HTMLPanel>
 </ui:UiBinder> 

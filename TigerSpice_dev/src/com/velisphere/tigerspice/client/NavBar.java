@@ -136,9 +136,20 @@ public class NavBar extends Composite implements HasText {
 	
 	@UiHandler("brdHome")
 	void openHomeBrand (ClickEvent event) {
-		Login loginScreen = new Login();
+		String sessionID = Cookies.getCookie("sid");
 		clearBandarole();
-		loginScreen.onModuleLoad();
+	     if (sessionID != null){
+			
+			RootPanel.get("main").clear();
+			LoginSuccess loginSuccess = new LoginSuccess();
+			RootPanel.get("main").add(loginSuccess);
+		}
+	     else
+	    	 {
+	    	 Login loginScreen = new Login();
+	 		loginScreen.onModuleLoad();
+			
+		}
 		
 	}
 

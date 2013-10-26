@@ -24,6 +24,7 @@ import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
 import com.github.gwtbootstrap.client.ui.Alert;
+import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.PasswordTextBox;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.shared.GWT;
@@ -65,7 +66,7 @@ public class LoginDialogBox extends PopupPanel{
 		setStyleName("");
 		add(uiBinder.createAndBindUi(this));
 		aleError.setVisible(false);
-		
+	
 		
 	}
 	

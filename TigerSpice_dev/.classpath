@@ -4,7 +4,6 @@
 	<classpathentry kind="src" output="test-classes" path="test"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/gwt-bootstrap-2.2.1.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/commons-cli-1.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/commons-lang3-3.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/guava-12.0.jar"/>
@@ -33,5 +32,6 @@
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/gxt-3.0.1-GPL/gxt-chart-3.0.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/gxt-3.0.1-GPL/gxt-legacy-3.0.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/gxt-3.0.1-GPL/uibinder-bridge-2.4.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/gwt-bootstrap-2.3.2.0-20131023.060834-44.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
