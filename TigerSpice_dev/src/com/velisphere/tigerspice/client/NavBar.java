@@ -40,7 +40,7 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.admin.Overviewer;
-import com.velisphere.tigerspice.client.spheres.SphereEditor;
+import com.velisphere.tigerspice.client.spheres.SphereLister;
 import com.velisphere.tigerspice.client.users.LoginService;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 import com.velisphere.tigerspice.client.users.NewAccountScreen;
@@ -158,7 +158,7 @@ public class NavBar extends Composite implements HasText {
 		RootPanel mainPanel = RootPanel.get("main");
 		mainPanel.clear();
 		clearBandarole();
-		SphereEditor sphereOverview = new SphereEditor(); 		
+		SphereLister sphereOverview = new SphereLister(); 		
 		
 		mainPanel.add(sphereOverview);
 		

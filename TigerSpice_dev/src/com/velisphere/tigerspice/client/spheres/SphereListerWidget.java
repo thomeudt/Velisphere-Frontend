@@ -73,15 +73,17 @@ public class SphereListerWidget extends Composite {
 				
 				while (it.hasNext()){
 
-					SphereData currentItem = it.next();
+					final SphereData currentItem = it.next();
 					final DynamicAnchor ancToEndpoint = new DynamicAnchor(currentItem.sphereName, false, currentItem.sphereId);
 					verticalPanel.add(ancToEndpoint);
 					ancToEndpoint.addClickHandler(
 							new ClickHandler(){
 								public void onClick(ClickEvent event){
-								Label label = new Label();
-								label.setText(ancToEndpoint.getStringQueryFirst());
-								verticalPanel.add(label);
+								// Label label = new Label();
+								// label.setText(ancToEndpoint.getStringQueryFirst());
+								// verticalPanel.add(label);
+									RootPanel.get("main").clear();
+									RootPanel.get("main").add(new SphereOverview(currentItem.sphereId, currentItem.sphereName));
 								}
 							});
 				}

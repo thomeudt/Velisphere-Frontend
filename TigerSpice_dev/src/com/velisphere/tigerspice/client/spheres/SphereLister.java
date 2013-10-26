@@ -20,14 +20,14 @@ import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.info.Info;
  
-public class SphereEditor extends Composite {
+public class SphereLister extends Composite {
  
-  interface MyUiBinder extends UiBinder<Widget, SphereEditor> {
+  interface MyUiBinder extends UiBinder<Widget, SphereLister> {
   }
  
   private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
  
-  public SphereEditor() {
+  public SphereLister() {
     
 	  initWidget(uiBinder.createAndBindUi(this));
 	  
