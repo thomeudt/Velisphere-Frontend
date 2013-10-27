@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import com.github.gwtbootstrap.client.ui.Column;
+import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.Row;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -53,6 +54,7 @@ import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
+import com.velisphere.tigerspice.client.users.NewAccountSuccessMessage;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.google.gwt.user.client.ui.Label;
 
@@ -64,8 +66,10 @@ public class SphereEditorWidget extends Composite {
 	
 	
 	
-	public SphereEditorWidget(String sphereID) {
+	public SphereEditorWidget(final String sphereID) {
 		
+		// widget constructor requires a parameter, thus we need to invoke the no-args constructor of the parent class and then set the value for sphereID
+		// also note that we need to use the @UiFactory notation to instantiate a widget that requires arguments like this, see how it is done in SphereOverview class
 		super(); 
 		this.sphereID = sphereID;
 		
@@ -83,15 +87,49 @@ public class SphereEditorWidget extends Composite {
 			@Override
 			protected void onDragDrop(DndDropEvent event) {
 				super.onDragDrop(event);
-				Anchor anchorUnassigned = (Anchor) event.getData();
 				
+				//do the drag and drop visual action
+				
+				final DynamicAnchor anchorUnassigned = (DynamicAnchor) event.getData();
 				Column column = new Column(2);
 				column.add(anchorUnassigned);
 				Row row = new Row();
 				row.add(column);
-		
 				container.add(row);
 
+				// update the database
+				final AnimationLoading animationLoading = new AnimationLoading();
+				showLoadAnimation(animationLoading);
+				rpcService.addEndpointToSphere(anchorUnassigned.getStringQueryFirst(), sphereID, new AsyncCallback<String>(){
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						removeLoadAnimation(animationLoading);		
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						// TODO Auto-generated method stub
+						removeLoadAnimation(animationLoading);	
+						
+						Label resultMessage = new Label();
+						resultMessage.setText(anchorUnassigned.getText() + " successfully added.");
+						resultMessage.setStyleName("label-success");
+						Column column = new Column(7, 1);
+						column.add(resultMessage);
+						Row row = new Row();
+						row.add(column);
+						if (RootPanel.get("main").getWidgetCount() > 1) RootPanel.get("main").remove(1);
+						RootPanel.get("main").add(row);
+
+						
+						
+					}
+					
+				});
+				
+				
 			}
 
 		};
@@ -112,7 +150,7 @@ public class SphereEditorWidget extends Composite {
 			public void onSelect(SelectEvent event) {
 				container.clear();
 				sourceContainer.clear();
-				refreshEndpoints("1000", sourceContainer);
+				refreshEndpoints(sphereID, sourceContainer);
 
 			}
 		});
@@ -147,9 +185,8 @@ public class SphereEditorWidget extends Composite {
 						while (it.hasNext()) {
 
 							final EndpointData currentItem = it.next();
-							final Anchor anchorUnassigned = new Anchor();
-							anchorUnassigned.setText(currentItem.endpointName);
-							anchorUnassigned.setHref("#");
+							final DynamicAnchor anchorUnassigned = new DynamicAnchor(currentItem.endpointName, true, currentItem.endpointId);
+							
 
 							final SafeHtmlBuilder builder = new SafeHtmlBuilder();
 							builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""

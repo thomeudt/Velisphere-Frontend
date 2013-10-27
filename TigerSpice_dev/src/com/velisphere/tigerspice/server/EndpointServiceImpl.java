@@ -22,8 +22,10 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 import java.util.Vector;
 
+import org.mindrot.BCrypt;
 import org.voltdb.VoltTable;
 import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
@@ -158,13 +160,46 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 	}
 
 
-	
+	public String addEndpointToSphere(String endpointID, String sphereID)
 
+	{
+		VoltConnector voltCon = new VoltConnector();
 
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
-
-
-
+		
+		
+		try {
+			voltCon.montanaClient.callProcedure("ENDPOINT_SPHERE_LINK.insert", UUID.randomUUID().toString(), endpointID, sphereID);
+		} catch (NoConnectionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProcCallException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "OK";
+		
+	}
 
 
 }

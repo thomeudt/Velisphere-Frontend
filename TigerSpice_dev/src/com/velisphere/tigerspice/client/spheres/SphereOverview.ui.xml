@@ -37,6 +37,7 @@
 				<vssp:SphereEditorWidget ui:field="sphereEditor" />
 			</b:Column>
 		</b:Row>
+		
 	
 	</g:HTMLPanel>
 </ui:UiBinder> 
