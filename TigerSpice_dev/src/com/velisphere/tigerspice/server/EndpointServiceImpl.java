@@ -102,6 +102,61 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 	}
 
 
+	public Vector<EndpointData> getEndpointsForSphere(String sphereID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		Vector<EndpointData> endPointsforSphere = new Vector<EndpointData>();
+		try {
+
+			final ClientResponse findAllUsers = voltCon.montanaClient
+					.callProcedure("UI_SelectEndpointsForSphere", sphereID);
+
+			final VoltTable findAllUsersResults[] = findAllUsers.getResults();
+
+			VoltTable result = findAllUsersResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					EndpointData endpointData = new EndpointData();
+					endpointData.endpointId = result.getString("ENDPOINTID");
+					endpointData.endpointName = result.getString("ENDPOINTNAME");
+					endpointData.endpointclassId = result.getString("ENDPOINTCLASSID");
+					endPointsforSphere.add(endpointData);
+
+				}
+			}
+
+			// System.out.println(endPointsforSphere);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return endPointsforSphere;
+	}
+
 
 	
 

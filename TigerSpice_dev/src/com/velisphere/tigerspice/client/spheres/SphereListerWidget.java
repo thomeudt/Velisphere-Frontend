@@ -1,3 +1,20 @@
+/*******************************************************************************
+ * CONFIDENTIAL INFORMATION
+ *  __________________
+ *  
+ *   Copyright (C) 2013 Thorsten Meudt 
+ *   All Rights Reserved.
+ *  
+ *  NOTICE:  All information contained herein is, and remains
+ *  the property of Thorsten Meudt and its suppliers,
+ *  if any.  The intellectual and technical concepts contained
+ *  herein are proprietary to Thorsten Meudt
+ *  and its suppliers and may be covered by Patents,
+ *  patents in process, and are protected by trade secret or copyright law.
+ *  Dissemination of this information or reproduction of this material
+ *  is strictly forbidden unless prior written permission is obtained
+ *  from Thorsten Meudt.
+ ******************************************************************************/
 package com.velisphere.tigerspice.client.spheres;
 
 import java.util.Iterator;
@@ -18,6 +35,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
+import com.velisphere.tigerspice.client.endpoints.EndpointsForSphereListerWidget;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
 import com.velisphere.tigerspice.client.users.NewAccountDialogbox;
@@ -74,7 +92,7 @@ public class SphereListerWidget extends Composite {
 				while (it.hasNext()){
 
 					final SphereData currentItem = it.next();
-					final DynamicAnchor ancToEndpoint = new DynamicAnchor(currentItem.sphereName, false, currentItem.sphereId);
+					final DynamicAnchor ancToEndpoint = new DynamicAnchor(currentItem.sphereName + " (...)", false, currentItem.sphereId);
 					verticalPanel.add(ancToEndpoint);
 					ancToEndpoint.addClickHandler(
 							new ClickHandler(){
@@ -83,7 +101,8 @@ public class SphereListerWidget extends Composite {
 								// label.setText(ancToEndpoint.getStringQueryFirst());
 								// verticalPanel.add(label);
 									RootPanel.get("main").clear();
-									RootPanel.get("main").add(new SphereOverview(currentItem.sphereId, currentItem.sphereName));
+								    RootPanel.get("main").add(new SphereOverview(currentItem.sphereId, currentItem.sphereName));
+									//RootPanel.get("main").add(new EndpointsForSphereListerWidget(currentItem.sphereId));
 								}
 							});
 				}

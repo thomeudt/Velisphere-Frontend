@@ -28,6 +28,6 @@ import com.velisphere.tigerspice.shared.UserData;
 
 public interface EndpointServiceAsync {
 	void getAllEndpointDetails(AsyncCallback<Vector<EndpointData>> callback);
-
+	void getEndpointsForSphere(String sphereID, AsyncCallback<Vector<EndpointData>> callback);
 	
 }
