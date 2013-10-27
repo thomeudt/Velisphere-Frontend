@@ -51,7 +51,7 @@
 				<b:Heading size="5">Critical Endpoints:</b:Heading>
 			</b:Column>
 			<b:Column size="2" offset="0">
-				<b:Heading size="5">Usage Stats:</b:Heading>
+				<b:Heading size="5">Statistics:</b:Heading>
 			</b:Column>
 		</b:Row>
 

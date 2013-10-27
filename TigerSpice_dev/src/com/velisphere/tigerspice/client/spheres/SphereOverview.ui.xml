@@ -34,7 +34,7 @@
 			<b:Column size="7" offset="0">
 				<b:PageHeader ui:field="pghSphereName">Sphere</b:PageHeader>
 				<vsep:EndpointsForSphereListerWidget ui:field="endpointList" />			
-				<vssp:SphereEditorWidget ui:field="sphereeditor" />
+				<vssp:SphereEditorWidget ui:field="sphereEditor" />
 			</b:Column>
 		</b:Row>
 	

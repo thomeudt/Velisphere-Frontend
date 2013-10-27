@@ -25,6 +25,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -40,13 +41,18 @@ public class SphereOverview extends Composite {
 	@UiField Breadcrumbs brdMain;
 	@UiField EndpointsForSphereListerWidget endpointList;
 	
+	String sphereID;
+	
 	
 	interface SphereOverviewUiBinder extends UiBinder<Widget, SphereOverview> {
 	}
 
 	public SphereOverview(final String sphereID, String sphereName) {
+		
+		this.sphereID = sphereID;
 		initWidget(uiBinder.createAndBindUi(this));
 		pghSphereName.setText(sphereName);
+		
 	
 		endpointList.refreshEndpoints(sphereID);
 		NavLink bread1 = new NavLink();
@@ -62,8 +68,8 @@ public class SphereOverview extends Composite {
 			
 						RootPanel mainPanel = RootPanel.get("main");
 						mainPanel.clear();
-						SphereLister sphereOverview = new SphereLister(); 		
-						mainPanel.add(sphereOverview);
+						SphereLister sphereLister = new SphereLister(); 		
+						mainPanel.add(sphereLister);
 						
 					}
 				});
@@ -72,4 +78,9 @@ public class SphereOverview extends Composite {
 	
 	}
 
+	
+	@UiFactory SphereEditorWidget makeSphereEditor() { // method name is insignificant
+	    return new SphereEditorWidget(this.sphereID);
+	  }
+	
 }
