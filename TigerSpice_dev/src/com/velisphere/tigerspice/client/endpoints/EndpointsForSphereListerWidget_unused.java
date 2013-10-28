@@ -19,7 +19,7 @@ import com.velisphere.tigerspice.shared.EndpointData;
 
  
 
-public class EndpointsForSphereListerWidget extends Composite {
+public class EndpointsForSphereListerWidget_unused extends Composite {
 	
 	private EndpointServiceAsync rpcService;
 	
@@ -29,16 +29,13 @@ public class EndpointsForSphereListerWidget extends Composite {
 
 	
 	
-	public EndpointsForSphereListerWidget() {
+	public EndpointsForSphereListerWidget_unused() {
 
-		
-		
+	
 		rpcService = GWT.create(EndpointService.class);
 		refreshEndpoints(this.sphereID);
 		initWidget(verticalPanel);
 		
-		
-			
 	}
 
 

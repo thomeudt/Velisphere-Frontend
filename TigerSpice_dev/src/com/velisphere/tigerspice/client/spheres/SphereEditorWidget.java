@@ -20,9 +20,12 @@ package com.velisphere.tigerspice.client.spheres;
 import java.util.Iterator;
 import java.util.Vector;
 
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.Row;
+import com.github.gwtbootstrap.client.ui.constants.ButtonType;
+import com.github.gwtbootstrap.client.ui.resources.ButtonSize;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
@@ -76,12 +79,17 @@ public class SphereEditorWidget extends Composite {
 		FlowLayoutContainer con = new FlowLayoutContainer();
 		initWidget(con);
 
-		HorizontalPanel hp = new HorizontalPanel();
-		hp.setSpacing(10);
-
-		final FlowLayoutContainer container = new FlowLayoutContainer();
+		HorizontalPanel hpMain = new HorizontalPanel();
+		hpMain.setSpacing(10);
+		
+		HorizontalPanel hpHeader = new HorizontalPanel();
+		hpHeader.setSpacing(10);
+		
+		
+		final VerticalLayoutContainer container = new VerticalLayoutContainer();
 		container.setBorders(true);
-		container.setPixelSize(300, 200);
+		container.setPixelSize(350, 300);
+		
 
 		DropTarget target = new DropTarget(container) {
 			@Override
@@ -129,19 +137,27 @@ public class SphereEditorWidget extends Composite {
 					
 				});
 				
-				
+				refreshTargetEndpoints(sphereID, container);
 			}
 
+			
 		};
 		target.setGroup("test");
 		target.setOverStyle("drag-ok");
 
 		final VerticalLayoutContainer sourceContainer = new VerticalLayoutContainer();
-		sourceContainer.setWidth(100);
+		sourceContainer.setPixelSize(250, 300);
+		sourceContainer.setBorders(true);
+		
+		sourceContainer.setPosition(50, 0);
 
-		// addSources(sourceContainer);
+		// add unassigned endpoint to sourceContainer;
 		rpcService = GWT.create(EndpointService.class);
-		refreshEndpoints(this.sphereID, sourceContainer);
+		refreshSourceEndpoints(this.sphereID, sourceContainer);
+		
+		// add existing endpoints to target container
+		
+		refreshTargetEndpoints(this.sphereID, container);
 
 		TextButton reset = new TextButton("Reset");
 		reset.addSelectHandler(new SelectHandler() {
@@ -150,28 +166,44 @@ public class SphereEditorWidget extends Composite {
 			public void onSelect(SelectEvent event) {
 				container.clear();
 				sourceContainer.clear();
-				refreshEndpoints(sphereID, sourceContainer);
+				refreshSourceEndpoints(sphereID, sourceContainer);
 
 			}
 		});
-
-		hp.add(container);
-		hp.add(sourceContainer);
-		con.add(hp);
+		
+		final VerticalLayoutContainer leftHeader = new VerticalLayoutContainer();
+		leftHeader.setPixelSize(400, 30);
+		Paragraph leftP = new Paragraph();
+		leftP.setText("Currently assigned:");
+		leftHeader.add(leftP);
+		
+		final VerticalLayoutContainer rightHeader = new VerticalLayoutContainer();
+		rightHeader.setPixelSize(350, 30);
+		Paragraph rightP = new Paragraph();
+		rightP.setText("Other endpoints available to you:");
+		rightHeader.add(rightP);
+		
+		hpHeader.add(leftHeader);
+		hpHeader.add(rightHeader);
+		hpMain.add(container);
+		hpMain.add(sourceContainer);
+		con.add(hpHeader);
+		con.add(hpMain);
+		
 		con.add(reset, new MarginData(10));
 
 	}
 
-		public void refreshEndpoints(String sphereID,
+		public void refreshSourceEndpoints(String sphereID,
 			final VerticalLayoutContainer container) {
 
 		final AnimationLoading animationLoading = new AnimationLoading();
 		showLoadAnimation(animationLoading);
 		
+		// query endpoints that are already part of the current sphere
+		
 		rpcService.getEndpointsForSphere(sphereID,
 				new AsyncCallback<Vector<EndpointData>>() {
-
-			
 					public void onFailure(Throwable caught) {
 						Window.alert("Error" + caught.getMessage());
 					}
@@ -184,7 +216,16 @@ public class SphereEditorWidget extends Composite {
 
 						while (it.hasNext()) {
 
+																				
+											
+							
 							final EndpointData currentItem = it.next();
+							
+							// this is the code for the d&d target, i.e. enpoints already part of the sphere
+							
+							
+							// this is the code for the d&d source, needs to be changed to only these endpoints not yet part of the sphere
+							
 							final DynamicAnchor anchorUnassigned = new DynamicAnchor(currentItem.endpointName, true, currentItem.endpointId);
 							
 
@@ -198,7 +239,7 @@ public class SphereEditorWidget extends Composite {
 							// final HTML html = new HTML(builder.toSafeHtml());
 
 							// container.add(html, new MarginData(3));
-							Column column = new Column(2);
+							Column column = new Column(3);
 							column.add(anchorUnassigned);
 							Row row = new Row();
 							row.add(column);
@@ -229,6 +270,84 @@ public class SphereEditorWidget extends Composite {
 
 	}
 
+		public void refreshTargetEndpoints(String sphereID,
+				final VerticalLayoutContainer container) {
+
+			
+			// show animation while rpc is processed
+			
+			final AnimationLoading animationLoading = new AnimationLoading();
+			showLoadAnimation(animationLoading);
+			
+			// clear current list to avoid duplicates
+			
+			container.clear();
+			
+			// query endpoints that are already part of the current sphere
+			
+			rpcService.getEndpointsForSphere(sphereID,
+					new AsyncCallback<Vector<EndpointData>>() {
+						public void onFailure(Throwable caught) {
+							Window.alert("Error" + caught.getMessage());
+						}
+
+						@Override
+						public void onSuccess(Vector<EndpointData> result) {
+
+							Iterator<EndpointData> it = result.iterator();
+							removeLoadAnimation(animationLoading);
+
+							while (it.hasNext()) {
+
+																					
+												
+								
+								final EndpointData currentItem = it.next();
+								
+								// this is the code for the d&d target, i.e. enpoints already part of the sphere
+								
+								
+								// this is the code for the d&d source, needs to be changed to only these endpoints not yet part of the sphere
+								
+								final DynamicAnchor anchorAssigned = new DynamicAnchor(currentItem.endpointName, true, currentItem.endpointId);
+								final Button buttonRemoveAssigned = new Button();
+								buttonRemoveAssigned.setType(ButtonType.DANGER);
+								buttonRemoveAssigned.setSize(ButtonSize.MINI);
+								buttonRemoveAssigned.setText("remove");
+								
+								final SafeHtmlBuilder builder = new SafeHtmlBuilder();
+								builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
+										+ "\">");
+								builder.appendHtmlConstant("Drag "
+										+ anchorAssigned.getText()
+										+ " into a Sphere");
+								builder.appendHtmlConstant("</div>");
+								// final HTML html = new HTML(builder.toSafeHtml());
+
+								// container.add(html, new MarginData(3));
+								Column column = new Column(2);
+								column.add(anchorAssigned);
+								Column buttonColumn = new Column(1);
+								buttonColumn.add(buttonRemoveAssigned);
+								Row row = new Row();
+								row.add(column);
+								row.add(buttonColumn);
+								
+								container.add(row);
+
+								
+							}
+
+						}
+
+				
+
+					});
+
+		}
+
+		
+		
 	private void showLoadAnimation(AnimationLoading animationLoading) {
 		RootPanel rootPanel = RootPanel.get("main");
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);

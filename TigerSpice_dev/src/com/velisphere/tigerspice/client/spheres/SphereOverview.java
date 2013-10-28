@@ -30,7 +30,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.velisphere.tigerspice.client.endpoints.EndpointsForSphereListerWidget;
+import com.velisphere.tigerspice.client.endpoints.EndpointsForSphereListerWidget_unused;
 
 public class SphereOverview extends Composite {
 
@@ -39,7 +39,7 @@ public class SphereOverview extends Composite {
 
 	@UiField PageHeader pghSphereName;
 	@UiField Breadcrumbs brdMain;
-	@UiField EndpointsForSphereListerWidget endpointList;
+	//@UiField EndpointsForSphereListerWidget_unused endpointList;
 	
 	String sphereID;
 	
@@ -54,7 +54,7 @@ public class SphereOverview extends Composite {
 		pghSphereName.setText(sphereName);
 		
 	
-		endpointList.refreshEndpoints(sphereID);
+		
 		NavLink bread1 = new NavLink();
 		bread1.setText("Sphere Overview");
 		brdMain.add(bread1);
