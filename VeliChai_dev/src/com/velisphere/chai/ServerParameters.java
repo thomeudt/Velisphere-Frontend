@@ -27,5 +27,6 @@ public class ServerParameters {
 	public static String controllerQueueName;
 	public static Integer threadpoolSize;
 	public static String msgTypeAdministrativeRequest = "*ADM*";
-	public static String volt_ip = "16.1.1.149";
+	// public static String volt_ip = "16.1.1.149"; // for local db
+	public static String volt_ip = "ec2-54-200-208-195.us-west-2.compute.amazonaws.com"; // for aws db
 }

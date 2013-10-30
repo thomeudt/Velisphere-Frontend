@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import java.util.Vector;
@@ -46,8 +47,6 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -8872989521623692797L;
 
-		
-	
 	public Vector<EndpointData> getAllEndpointDetails()
 
 	{
@@ -79,8 +78,10 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 					// extract the value in column checkid
 					EndpointData endpointData = new EndpointData();
 					endpointData.endpointId = result.getString("ENDPOINTID");
-					endpointData.endpointName = result.getString("ENDPOINTNAME");
-					endpointData.endpointclassId = result.getString("ENDPOINTCLASSID");
+					endpointData.endpointName = result
+							.getString("ENDPOINTNAME");
+					endpointData.endpointclassId = result
+							.getString("ENDPOINTCLASSID");
 					allEndPoints.add(endpointData);
 
 				}
@@ -99,10 +100,9 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return allEndPoints;
 	}
-
 
 	public Vector<EndpointData> getEndpointsForSphere(String sphereID)
 
@@ -122,8 +122,144 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		Vector<EndpointData> endPointsforSphere = new Vector<EndpointData>();
 		try {
 
-			final ClientResponse findAllUsers = voltCon.montanaClient
+			final ClientResponse findAllEndpoints = voltCon.montanaClient
 					.callProcedure("UI_SelectEndpointsForSphere", sphereID);
+
+			final VoltTable findAllEndpointResults[] = findAllEndpoints
+					.getResults();
+
+			VoltTable result = findAllEndpointResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					EndpointData endpointData = new EndpointData();
+					endpointData.endpointId = result.getString("ENDPOINTID");
+					endpointData.endpointName = result
+							.getString("ENDPOINTNAME");
+					endpointData.endpointclassId = result
+							.getString("ENDPOINTCLASSID");
+					endPointsforSphere.add(endpointData);
+
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+			return endPointsforSphere;
+		
+		
+	}
+
+	public String addEndpointToSphere(String endpointID, String sphereID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			voltCon.montanaClient.callProcedure("ENDPOINT_SPHERE_LINK.insert",
+					UUID.randomUUID().toString(), endpointID, sphereID);
+		} catch (NoConnectionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProcCallException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "OK";
+
+	}
+
+	public String removeEndpointFromSphere(String endpointID, String sphereID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			voltCon.montanaClient.callProcedure("UI_DeleteEndpointFromSphere",
+					endpointID, sphereID);
+		} catch (NoConnectionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProcCallException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "OK";
+
+	}
+
+	public Vector<EndpointData> getEndpointsForUser(String userID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		Vector<EndpointData> endPointsforUser = new Vector<EndpointData>();
+		try {
+
+			final ClientResponse findAllUsers = voltCon.montanaClient
+					.callProcedure("UI_SelectEndpointsForUser", userID);
 
 			final VoltTable findAllUsersResults[] = findAllUsers.getResults();
 
@@ -135,9 +271,11 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 					// extract the value in column checkid
 					EndpointData endpointData = new EndpointData();
 					endpointData.endpointId = result.getString("ENDPOINTID");
-					endpointData.endpointName = result.getString("ENDPOINTNAME");
-					endpointData.endpointclassId = result.getString("ENDPOINTCLASSID");
-					endPointsforSphere.add(endpointData);
+					endpointData.endpointName = result
+							.getString("ENDPOINTNAME");
+					endpointData.endpointclassId = result
+							.getString("ENDPOINTCLASSID");
+					endPointsforUser.add(endpointData);
 
 				}
 			}
@@ -155,51 +293,9 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		return endPointsforSphere;
+
+		return endPointsforUser;
 	}
 
-
-	public String addEndpointToSphere(String endpointID, String sphereID)
-
-	{
-		VoltConnector voltCon = new VoltConnector();
-
-		try {
-			voltCon.openDatabase();
-		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		
-		
-		try {
-			voltCon.montanaClient.callProcedure("ENDPOINT_SPHERE_LINK.insert", UUID.randomUUID().toString(), endpointID, sphereID);
-		} catch (NoConnectionsException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ProcCallException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		try {
-			voltCon.closeDatabase();
-		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return "OK";
-		
-	}
-
-
+	
 }
