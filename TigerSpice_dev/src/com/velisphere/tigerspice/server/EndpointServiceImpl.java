@@ -19,33 +19,26 @@ package com.velisphere.tigerspice.server;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.UUID;
 import java.util.Vector;
 
-import org.mindrot.BCrypt;
 import org.voltdb.VoltTable;
 import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
-import com.velisphere.tigerspice.client.users.UserService;
-import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.EndpointData;
-import com.velisphere.tigerspice.shared.PropertyData;
-import com.velisphere.tigerspice.shared.UserData;
 
 public class EndpointServiceImpl extends RemoteServiceServlet implements
 		EndpointService {
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = -8872989521623692797L;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public Vector<EndpointData> getAllEndpointDetails()
 

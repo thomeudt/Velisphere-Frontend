@@ -228,7 +228,7 @@ public class NavBar extends Composite implements HasText {
 	            {
 	                if (result.getLoggedIn())
 	                {
-	                	txtUserName.setText(result.userID);
+	                	txtUserName.setText(result.userName);
 	                		                   
 	                } else
 	                {
