@@ -35,12 +35,11 @@ import com.velisphere.tigerspice.client.users.UserService;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.UserData;
 
+@SuppressWarnings("serial")
 public class EPCServiceImpl extends RemoteServiceServlet implements
 		EPCService {
 
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = -8872989521623692797L;
-
+	
 		
 	
 	public Vector<EPCData> getAllEndpointClassDetails()
@@ -97,6 +96,60 @@ public class EPCServiceImpl extends RemoteServiceServlet implements
 		return allEndPointClasses;
 	}
 
+
+	public EPCData getEndpointClassForEndpointClassID(String endpointClassID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		EPCData endPointClass = new EPCData();
+		try {
+
+			final ClientResponse findEPC = voltCon.montanaClient
+					.callProcedure("UI_SelectEndpointClassForEndpointClassID", endpointClassID);
+
+			final VoltTable findEPCResults[] = findEPC.getResults();
+
+			VoltTable result = findEPCResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					
+					endPointClass.endpointclassName = result.getString("ENDPOINTCLASSNAME");
+					endPointClass.endpointclassID = result.getString("ENDPOINTCLASSID");
+					
+
+				}
+			}
+
+			
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return endPointClass;
+	}
 
 
 

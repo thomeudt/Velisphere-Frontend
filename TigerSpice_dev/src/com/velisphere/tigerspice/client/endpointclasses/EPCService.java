@@ -35,6 +35,7 @@ import com.velisphere.tigerspice.shared.UserData;
 @RemoteServiceRelativePath("voltEPC")
 public interface EPCService extends RemoteService {
 	Vector<EPCData> getAllEndpointClassDetails();
+	EPCData getEndpointClassForEndpointClassID(String endpointClassID);
 }
 
 

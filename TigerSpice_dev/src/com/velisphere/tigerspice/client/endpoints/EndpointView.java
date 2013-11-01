@@ -20,26 +20,32 @@ package com.velisphere.tigerspice.client.endpoints;
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
+import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.dataproviders.EndpointAsyncDataProvider;
+import com.velisphere.tigerspice.client.endpointclasses.EPCService;
+import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
+import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
 import com.velisphere.tigerspice.client.spheres.SphereOverview;
-
+import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 
@@ -57,10 +63,12 @@ public class EndpointView extends Composite {
 
 	@UiField PageHeader pghEndpointName;
 	@UiField Breadcrumbs brdMain;
+	@UiField Paragraph pgpEndpointClassName;
 	//@UiField EndpointsForSphereListerWidget_unused endpointList;
 	
-	String sphereID;
-	String endpointID;
+	
+	private EndpointServiceAsync rpcServiceEndpoint;
+	private EPCServiceAsync rpcServiceEndpointClass;
 	
 	
 	interface SphereOverviewUiBinder extends UiBinder<Widget, SphereOverview> {
@@ -68,12 +76,14 @@ public class EndpointView extends Composite {
 
 	public EndpointView(final String sphereID, final String sphereName, String endpointID, String endpointName) {
 		
-		this.sphereID = sphereID;
+		
+		
+		rpcServiceEndpoint = GWT.create(EndpointService.class);
+		rpcServiceEndpointClass = GWT.create(EPCService.class);
+		
 		initWidget(uiBinder.createAndBindUi(this));
 		pghEndpointName.setText(endpointName);
-		
-	
-		
+				
 		NavLink bread1 = new NavLink();
 		bread1.setText("Sphere Overview");
 		brdMain.add(bread1);
@@ -107,9 +117,83 @@ public class EndpointView extends Composite {
 						
 					}
 				});
+		
+		System.out.println("EPIC: " + endpointID);
+		setEndpointClassName(endpointID);
+		
+		
+		
 	
 	}
 
+	
+	private String setEndpointClassName(String endpointID){
+		
+		final AnimationLoading animationLoading = new AnimationLoading();
+		showLoadAnimation(animationLoading);
+		final EndpointData eD = new EndpointData();
+		
+		System.out.println("EPID " + endpointID);
+
+		rpcServiceEndpoint.getEndpointForEndpointID(
+				endpointID,
+				new AsyncCallback<EndpointData>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						removeLoadAnimation(animationLoading);
+					}
+
+					@Override
+					public void onSuccess(EndpointData result) {
+						// TODO Auto-generated method stub
+						
+		
+						System.out.println("EPCID " + result.getEpcId());
+						
+						rpcServiceEndpointClass.getEndpointClassForEndpointClassID(
+								result.getEpcId(),
+								new AsyncCallback<EPCData>() {
+
+									@Override
+									public void onFailure(Throwable caught) {
+										// TODO Auto-generated method stub
+										removeLoadAnimation(animationLoading);
+									}
+
+									@Override
+									public void onSuccess(EPCData result) {
+										// TODO Auto-generated method stub
+																
+										pgpEndpointClassName.setText(result.endpointclassName);
+										removeLoadAnimation(animationLoading);
+									}
+
+								});
+
+						}
+
+				});
+
+		
+		
+		return eD.endpointclassId;
+	}
+	
+
+	
+	private void showLoadAnimation(AnimationLoading animationLoading) {
+		RootPanel rootPanel = RootPanel.get("main");
+		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
+		rootPanel.add(animationLoading, 25, 40);
+	}
+
+	private void removeLoadAnimation(AnimationLoading animationLoading) {
+		if (animationLoading != null)
+			animationLoading.removeFromParent();
+	}
+	
 	
 	
 	}

@@ -32,5 +32,7 @@ public interface EndpointServiceAsync {
 	void addEndpointToSphere(String endpointID, String sphereID, AsyncCallback<String> callback);
 	void removeEndpointFromSphere(String endpointID, String sphereID, AsyncCallback<String> callback);
 	void getEndpointsForUser(String userID, AsyncCallback<Vector<EndpointData>> callback);
-
+	void getEndpointForEndpointID(String endpointID, AsyncCallback<EndpointData> callback);
+	
+	
 }

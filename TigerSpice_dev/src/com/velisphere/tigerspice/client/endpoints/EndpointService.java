@@ -41,6 +41,7 @@ public interface EndpointService extends RemoteService {
 	String addEndpointToSphere(String endpointID, String sphereID);
 	String removeEndpointFromSphere(String endpointID, String sphereID);
 	Vector<EndpointData> getEndpointsForUser(String userID);
+	EndpointData getEndpointForEndpointID(String endpointID);
 	
 }
 

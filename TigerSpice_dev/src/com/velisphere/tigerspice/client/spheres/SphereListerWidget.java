@@ -70,6 +70,8 @@ public class SphereListerWidget extends Composite {
 	private void refreshPrivateSpheres(){
 		
 		showLoadAnimation();
+		
+		// TODO needs to be changed to show only spheres personal to user
 		rpcService.getAllSpheres(new AsyncCallback<Vector<SphereData>>() {
 			
 			// There's been a failure in the RPC call

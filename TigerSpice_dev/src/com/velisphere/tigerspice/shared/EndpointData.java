@@ -44,4 +44,16 @@ public class EndpointData implements IsSerializable, Comparable <EndpointData>
 	public String getEpcId(){
 		return endpointclassId;
 	}
+	
+	public void setId(String endpointID){
+		this.endpointId = endpointID;
+	}
+	
+	public void setName(String endpointName){
+		this.endpointName = endpointName;
+	}
+	
+	public void  setEpcId(String endpointclassId){
+		this.endpointclassId = endpointclassId;
+	}
 }

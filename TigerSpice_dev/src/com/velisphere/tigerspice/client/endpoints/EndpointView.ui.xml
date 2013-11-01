@@ -29,10 +29,25 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			</b:Column>
 			<b:Column size="7" offset="0">
 				<b:PageHeader ui:field="pghEndpointName">Endpoint</b:PageHeader>
-							
+						
 				
 			</b:Column>
 		</b:Row>
+		
+	    <b:Row>
+			
+			<b:Column size="1" offset="1">
+				<b:Icon type="BRIEFCASE" size="LARGE" />
+				
+						
+				
+			</b:Column>
+			<b:Column size="6" offset="0">
+			<b:Paragraph ui:field="pgpEndpointClassName">Endpointclass</b:Paragraph>
+			</b:Column>
+		</b:Row>
+		
+	    
 		
 	
 	</g:HTMLPanel>

@@ -38,4 +38,8 @@ public class EPCData implements IsSerializable, Comparable <EPCData>
 	public String getId(){
 		return endpointclassID;
 	}
+	
+	public void setName(String endpointclassName){
+		this.endpointclassName = endpointclassName;
+	}
 }
