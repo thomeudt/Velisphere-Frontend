@@ -21,6 +21,7 @@ import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
 import com.github.gwtbootstrap.client.ui.Paragraph;
+import com.github.gwtbootstrap.client.ui.Strong;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -65,7 +66,7 @@ public class EndpointView extends Composite {
 	@UiField
 	Breadcrumbs brdMain;
 	@UiField
-	Paragraph pgpEndpointClassName;
+	Strong pgpEndpointClassName;
 	
 	private String endpointClassID;
 	
@@ -165,6 +166,7 @@ public class EndpointView extends Composite {
 
 												pgpEndpointClassName
 														.setText(result.endpointclassName);
+												
 												removeLoadAnimation(animationLoading);
 												
 												

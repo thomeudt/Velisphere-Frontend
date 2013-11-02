@@ -104,7 +104,7 @@ private static PropertyListUiBinder uiBinder = GWT
 		columnPropertyClassId = new Column<PropertyData, String>(new TextCell()) {
 			@Override
 			public String getValue(PropertyData object) {
-				return object.getPropertyClassId();
+				return object.getPropertyclassId();
 			}
 		};
 	

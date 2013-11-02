@@ -37,14 +37,14 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 		
 	    <b:Row>
 			
-			<b:Column size="1" offset="1">
+			<b:Column size="1" offset="1" addStyleNames="text-center">
 				<b:Icon type="BRIEFCASE" size="LARGE" />
 				
 						
 				
 			</b:Column>
 			<b:Column size="6" offset="0">
-			<b:Paragraph ui:field="pgpEndpointClassName">Endpointclass</b:Paragraph>
+			<b:Strong ui:field="pgpEndpointClassName">Endpointclass</b:Strong>
 			</b:Column>
 		</b:Row>
 		

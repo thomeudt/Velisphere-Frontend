@@ -43,11 +43,23 @@ public class PropertyData implements IsSerializable, Comparable <PropertyData>
 		return propertyName;
 	}
 	
-	public String getPropertyClassId(){
+	public String getPropertyName(){
+		return propertyName;
+	}
+	
+	public String getPropertyId(){
+		return propertyName;
+	}
+	
+	public String getPropertyclassId(){
 		return propertyclassId;
 	}
 	
 	public String getEpcId(){
+		return endpointclassId;
+	}
+	
+	public String getEndpointclassId(){
 		return endpointclassId;
 	}
 	
