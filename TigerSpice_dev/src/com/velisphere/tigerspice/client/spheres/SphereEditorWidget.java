@@ -281,7 +281,7 @@ public class SphereEditorWidget extends Composite {
 																		currentItem.endpointId);
 																
 																anchorUnassigned.addClickHandler(new OpenEndpointClickHandler(
-																		sphereID, sphereName, currentItem.endpointId, currentItem.endpointName));
+																		sphereID, sphereName, currentItem.endpointId, currentItem.endpointName, currentItem.endpointclassId));
 
 
 																final SafeHtmlBuilder builder = new SafeHtmlBuilder();
@@ -393,7 +393,7 @@ public class SphereEditorWidget extends Composite {
 									currentItem.endpointName, true,
 									currentItem.endpointId);
 							anchorAssigned.addClickHandler(new OpenEndpointClickHandler(
-									sphereID, sphereName, currentItem.endpointId, currentItem.endpointName));
+									sphereID, sphereName, currentItem.endpointId, currentItem.endpointName, currentItem.endpointclassId));
 
 							final Button buttonRemoveAssigned = new Button();
 							buttonRemoveAssigned.setType(ButtonType.DANGER);
@@ -494,18 +494,20 @@ public class SphereEditorWidget extends Composite {
 
 	public class OpenEndpointClickHandler implements ClickHandler {
 
-		String sphereID;
-		String sphereName;
-		String endpointID;
-		String endpointName;
+		private String sphereID;
+		private String sphereName;
+		private String endpointID;
+		private String endpointName;
+		private String endpointClassID;
 		
 
-		OpenEndpointClickHandler(String sphereID, String sphereName, String endpointID, String endpointName) {
+		OpenEndpointClickHandler(String sphereID, String sphereName, String endpointID, String endpointName, String endpointClassId) {
 			super();
 			this.sphereID = sphereID;
 			this.endpointID = endpointID;
 			this.sphereName = sphereName;
 			this.endpointName = endpointName;
+			this.endpointClassID = endpointClassId;
 			
 
 		}
@@ -517,7 +519,7 @@ public class SphereEditorWidget extends Composite {
 			showLoadAnimation(animationLoading);
 
 			RootPanel.get("main").clear();
-			EndpointView endpointView = new EndpointView(sphereID, sphereName, endpointID, endpointName);
+			EndpointView endpointView = new EndpointView(sphereID, sphereName, endpointID, endpointName, endpointClassID);
 			RootPanel.get("main").add(endpointView);
 			
 			

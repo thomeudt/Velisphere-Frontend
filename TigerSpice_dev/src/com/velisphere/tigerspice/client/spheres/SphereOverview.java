@@ -17,7 +17,6 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client.spheres;
 
-import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
@@ -43,10 +42,13 @@ public class SphereOverview extends Composite {
 	
 	//@UiField EndpointsForSphereListerWidget_unused endpointList;
 	
+	
 	@UiField PageHeader pghSphereNameHeader;
 	
-	String sphereID;
+	String sphereID; 
 	String sphereName;
+	
+	
 	
 	
 	interface SphereOverviewUiBinder extends UiBinder<Widget, SphereOverview> {
@@ -70,6 +72,7 @@ public class SphereOverview extends Composite {
 
 		bread1.addClickHandler(
 				new ClickHandler(){
+					@Override
 					public void onClick(ClickEvent event){
 			
 						RootPanel mainPanel = RootPanel.get("main");

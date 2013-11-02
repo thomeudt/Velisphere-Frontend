@@ -17,6 +17,7 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.shared;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -49,4 +50,8 @@ public class PropertyData implements IsSerializable, Comparable <PropertyData>
 	public String getEpcId(){
 		return endpointclassId;
 	}
+	
+	
+	 
+	
 }

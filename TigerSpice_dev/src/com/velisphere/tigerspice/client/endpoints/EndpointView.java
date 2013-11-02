@@ -35,6 +35,7 @@ import com.velisphere.tigerspice.client.dataproviders.EndpointAsyncDataProvider;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.properties.PropertyEditorWidget;
 import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
 import com.velisphere.tigerspice.client.spheres.SphereOverview;
@@ -49,41 +50,45 @@ import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 
-
 // THIS WIDGET IS USING UIBINDER!!!
 
 public class EndpointView extends Composite {
-	
-	interface EndpointViewUiBinder extends
-	UiBinder<Widget, EndpointView> {
-}
+
+	interface EndpointViewUiBinder extends UiBinder<Widget, EndpointView> {
+	}
 
 	private static EndpointViewUiBinder uiBinder = GWT
 			.create(EndpointViewUiBinder.class);
 
-	@UiField PageHeader pghEndpointName;
-	@UiField Breadcrumbs brdMain;
-	@UiField Paragraph pgpEndpointClassName;
-	//@UiField EndpointsForSphereListerWidget_unused endpointList;
+	@UiField
+	PageHeader pghEndpointName;
+	@UiField
+	Breadcrumbs brdMain;
+	@UiField
+	Paragraph pgpEndpointClassName;
 	
+	private String endpointClassID;
 	
+	// @UiField EndpointsForSphereListerWidget_unused endpointList;
+
 	private EndpointServiceAsync rpcServiceEndpoint;
 	private EPCServiceAsync rpcServiceEndpointClass;
-	
-	
+
 	interface SphereOverviewUiBinder extends UiBinder<Widget, SphereOverview> {
 	}
 
-	public EndpointView(final String sphereID, final String sphereName, String endpointID, String endpointName) {
-		
-		
-		
+	public EndpointView(final String sphereID, final String sphereName,
+			final String endpointID, String endpointName, final String endpointClassID) {
+
 		rpcServiceEndpoint = GWT.create(EndpointService.class);
 		rpcServiceEndpointClass = GWT.create(EPCService.class);
+		this.endpointClassID = endpointClassID;
+
+		
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		pghEndpointName.setText(endpointName);
-				
+
 		NavLink bread1 = new NavLink();
 		bread1.setText("Sphere Overview");
 		brdMain.add(bread1);
@@ -93,50 +98,41 @@ public class EndpointView extends Composite {
 		NavLink bread3 = new NavLink();
 		bread3.setText(endpointName);
 		brdMain.add(bread3);
-		
-		bread1.addClickHandler(
-				new ClickHandler(){
-					public void onClick(ClickEvent event){
-			
-						RootPanel mainPanel = RootPanel.get("main");
-						mainPanel.clear();
-						SphereLister sphereLister = new SphereLister(); 		
-						mainPanel.add(sphereLister);
-						
-					}
-				});
-		
-		bread2.addClickHandler(
-				new ClickHandler(){
-					public void onClick(ClickEvent event){
-			
-						RootPanel mainPanel = RootPanel.get("main");
-						mainPanel.clear();
-						SphereOverview sphereOverview = new SphereOverview(sphereID, sphereName); 		
-						mainPanel.add(sphereOverview);
-						
-					}
-				});
-		
-		System.out.println("EPIC: " + endpointID);
+
+		bread1.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+
+				RootPanel mainPanel = RootPanel.get("main");
+				mainPanel.clear();
+				SphereLister sphereLister = new SphereLister();
+				mainPanel.add(sphereLister);
+
+			}
+		});
+
+		bread2.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+
+				RootPanel mainPanel = RootPanel.get("main");
+				mainPanel.clear();
+				SphereOverview sphereOverview = new SphereOverview(sphereID,
+						sphereName);
+				mainPanel.add(sphereOverview);
+
+			}
+		});
+
 		setEndpointClassName(endpointID);
-		
-		
-		
-	
+
 	}
 
-	
-	private String setEndpointClassName(String endpointID){
-		
+	private void setEndpointClassName(String endpointID) {
+
 		final AnimationLoading animationLoading = new AnimationLoading();
 		showLoadAnimation(animationLoading);
-		final EndpointData eD = new EndpointData();
-		
-		System.out.println("EPID " + endpointID);
+	
 
-		rpcServiceEndpoint.getEndpointForEndpointID(
-				endpointID,
+		rpcServiceEndpoint.getEndpointForEndpointID(endpointID,
 				new AsyncCallback<EndpointData>() {
 
 					@Override
@@ -148,41 +144,41 @@ public class EndpointView extends Composite {
 					@Override
 					public void onSuccess(EndpointData result) {
 						// TODO Auto-generated method stub
-						
-		
-						System.out.println("EPCID " + result.getEpcId());
-						
-						rpcServiceEndpointClass.getEndpointClassForEndpointClassID(
-								result.getEpcId(),
-								new AsyncCallback<EPCData>() {
 
-									@Override
-									public void onFailure(Throwable caught) {
-										// TODO Auto-generated method stub
-										removeLoadAnimation(animationLoading);
-									}
+						rpcServiceEndpointClass
+								.getEndpointClassForEndpointClassID(
+										result.getEpcId(),
+										new AsyncCallback<EPCData>() {
 
-									@Override
-									public void onSuccess(EPCData result) {
-										// TODO Auto-generated method stub
-																
-										pgpEndpointClassName.setText(result.endpointclassName);
-										removeLoadAnimation(animationLoading);
-									}
+											@Override
+											public void onFailure(
+													Throwable caught) {
+												// TODO Auto-generated method
+												// stub
+												removeLoadAnimation(animationLoading);
+											}
 
-								});
+											@Override
+											public void onSuccess(EPCData result) {
+												// TODO Auto-generated method
+												// stub
 
-						}
+												pgpEndpointClassName
+														.setText(result.endpointclassName);
+												removeLoadAnimation(animationLoading);
+												
+												
+											}
+
+										});
+
+					}
 
 				});
 
-		
-		
-		return eD.endpointclassId;
+	
 	}
-	
 
-	
 	private void showLoadAnimation(AnimationLoading animationLoading) {
 		RootPanel rootPanel = RootPanel.get("main");
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
@@ -194,6 +190,8 @@ public class EndpointView extends Composite {
 			animationLoading.removeFromParent();
 	}
 	
-	
-	
-	}
+	@UiFactory PropertyEditorWidget makePropertyEditor() { // method name is insignificant
+	    return new PropertyEditorWidget(this.endpointClassID);
+	  }
+
+}

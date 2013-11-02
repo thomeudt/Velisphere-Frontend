@@ -36,6 +36,7 @@ import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.users.UserService;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.EndpointData;
+import com.velisphere.tigerspice.shared.UnusedFolderPropertyData;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.UserData;
 
@@ -102,6 +103,73 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 		
 		return allProperties;
 	}
+
+
+
+	@Override
+	public List<PropertyData> getPropertiesForEndpointClass(
+			String endpointClassID) {
+		
+		   
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		List<PropertyData> propertiesForEndpointClass = new ArrayList<PropertyData>();
+		try {
+
+			final ClientResponse findAllProperties = voltCon.montanaClient
+					.callProcedure("UI_SelectPropertyDetailsForEndpointClass", endpointClassID);
+
+			final VoltTable findAllPropertiesResults[] = findAllProperties.getResults();
+
+			VoltTable result = findAllPropertiesResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					PropertyData propertyData = new PropertyData();
+					propertyData.propertyId = result.getString("PROPERTYID");
+					propertyData.propertyName = result.getString("PROPERTYNAME");
+					propertyData.propertyclassId = result.getString("PROPERTYCLASSID");
+					propertyData.endpointclassId = result.getString("ENDPOINTCLASSID");
+					System.out.println("Found PropName " + result.getString("PROPERTYNAME"));
+					propertiesForEndpointClass.add(propertyData);
+
+				}
+			}
+
+			System.out.println(propertiesForEndpointClass);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return propertiesForEndpointClass;
+		
+			  }
+
+	
 
 
 

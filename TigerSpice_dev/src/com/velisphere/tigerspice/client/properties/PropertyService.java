@@ -25,17 +25,22 @@ import java.util.HashSet;
 
 
 
+import java.util.List;
 import java.util.Vector;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.velisphere.tigerspice.shared.EPCData;
+import com.velisphere.tigerspice.shared.UnusedFolderPropertyData;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.UserData;
 
 @RemoteServiceRelativePath("voltProperty")
 public interface PropertyService extends RemoteService {
 	Vector<PropertyData> getAllPropertyDetails();
+	List<PropertyData> getPropertiesForEndpointClass(String endpointClassID);
+	 
 }
 
 

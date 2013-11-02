@@ -19,7 +19,8 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-		xmlns:ct="urn:import:com.google.gwt.user.cellview.client">
+		xmlns:ct="urn:import:com.google.gwt.user.cellview.client"
+		xmlns:vspy="urn:import:com.velisphere.tigerspice.client.properties">
 	<g:HTMLPanel>
             <b:Breadcrumbs divider=">" ui:field="brdMain">
 		</b:Breadcrumbs>
@@ -47,6 +48,13 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			</b:Column>
 		</b:Row>
 		
+	    <b:Row>
+			
+			
+			<b:Column size="8" offset="1">
+			<vspy:PropertyEditorWidget ui:field="vpyPropertyEditor" />
+			</b:Column>
+		</b:Row>
 	    
 		
 	

@@ -18,15 +18,20 @@
 package com.velisphere.tigerspice.client.properties;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.velisphere.tigerspice.shared.EPCData;
+import com.velisphere.tigerspice.shared.UnusedFolderPropertyData;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.UserData;
 
 public interface PropertyServiceAsync {
 	void getAllPropertyDetails(AsyncCallback<Vector<PropertyData>> callback);
+	void getPropertiesForEndpointClass(String endpointClassID, AsyncCallback<List<PropertyData>> callback);
 
+
+	
 	
 }
