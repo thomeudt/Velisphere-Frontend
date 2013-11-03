@@ -69,6 +69,7 @@ public class EndpointView extends Composite {
 	Strong pgpEndpointClassName;
 	
 	private String endpointClassID;
+	private String endpointID;
 	
 	// @UiField EndpointsForSphereListerWidget_unused endpointList;
 
@@ -84,6 +85,7 @@ public class EndpointView extends Composite {
 		rpcServiceEndpoint = GWT.create(EndpointService.class);
 		rpcServiceEndpointClass = GWT.create(EPCService.class);
 		this.endpointClassID = endpointClassID;
+		this.endpointID = endpointID;
 
 		
 		
@@ -193,7 +195,7 @@ public class EndpointView extends Composite {
 	}
 	
 	@UiFactory PropertyEditorWidget makePropertyEditor() { // method name is insignificant
-	    return new PropertyEditorWidget(this.endpointClassID);
+	    return new PropertyEditorWidget(this.endpointClassID, this.endpointID);
 	  }
 
 }

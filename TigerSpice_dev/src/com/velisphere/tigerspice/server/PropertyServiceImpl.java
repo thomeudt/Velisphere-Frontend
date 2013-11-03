@@ -46,8 +46,6 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -8872989521623692797L;
 
-		
-	
 	public Vector<PropertyData> getAllPropertyDetails()
 
 	{
@@ -69,7 +67,8 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 			final ClientResponse findAllProperties = voltCon.montanaClient
 					.callProcedure("UI_SelectAllProperties");
 
-			final VoltTable findAllPropertiesResults[] = findAllProperties.getResults();
+			final VoltTable findAllPropertiesResults[] = findAllProperties
+					.getResults();
 
 			VoltTable result = findAllPropertiesResults[0];
 			// check if any rows have been returned
@@ -79,15 +78,18 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 					// extract the value in column checkid
 					PropertyData propertyData = new PropertyData();
 					propertyData.propertyId = result.getString("PROPERTYID");
-					propertyData.propertyName = result.getString("PROPERTYNAME");
-					propertyData.propertyclassId = result.getString("PROPERTYCLASSID");
-					propertyData.endpointclassId = result.getString("ENDPOINTCLASSID");
+					propertyData.propertyName = result
+							.getString("PROPERTYNAME");
+					propertyData.propertyclassId = result
+							.getString("PROPERTYCLASSID");
+					propertyData.endpointclassId = result
+							.getString("ENDPOINTCLASSID");
 					allProperties.add(propertyData);
 
 				}
 			}
 
-			System.out.println(allProperties);
+			
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -100,17 +102,14 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return allProperties;
 	}
-
-
 
 	@Override
 	public List<PropertyData> getPropertiesForEndpointClass(
 			String endpointClassID) {
-		
-		   
+
 		VoltConnector voltCon = new VoltConnector();
 
 		try {
@@ -122,15 +121,16 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		
+
 		List<PropertyData> propertiesForEndpointClass = new ArrayList<PropertyData>();
 		try {
 
 			final ClientResponse findAllProperties = voltCon.montanaClient
-					.callProcedure("UI_SelectPropertyDetailsForEndpointClass", endpointClassID);
+					.callProcedure("UI_SelectPropertyDetailsForEndpointClass",
+							endpointClassID);
 
-			final VoltTable findAllPropertiesResults[] = findAllProperties.getResults();
+			final VoltTable findAllPropertiesResults[] = findAllProperties
+					.getResults();
 
 			VoltTable result = findAllPropertiesResults[0];
 			// check if any rows have been returned
@@ -140,16 +140,19 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 					// extract the value in column checkid
 					PropertyData propertyData = new PropertyData();
 					propertyData.propertyId = result.getString("PROPERTYID");
-					propertyData.propertyName = result.getString("PROPERTYNAME");
-					propertyData.propertyclassId = result.getString("PROPERTYCLASSID");
-					propertyData.endpointclassId = result.getString("ENDPOINTCLASSID");
-					System.out.println("Found PropName " + result.getString("PROPERTYNAME"));
+					propertyData.propertyName = result
+							.getString("PROPERTYNAME");
+					propertyData.propertyclassId = result
+							.getString("PROPERTYCLASSID");
+					propertyData.endpointclassId = result
+							.getString("ENDPOINTCLASSID");
+					
 					propertiesForEndpointClass.add(propertyData);
 
 				}
 			}
 
-			System.out.println(propertiesForEndpointClass);
+			
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -162,25 +165,66 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
+
 		return propertiesForEndpointClass;
-		
-			  }
 
+	}
 	
+	
+	@Override
+	public String getValueForEndpointProperty(
+			String endpointID, String propertyID) {
 
+		VoltConnector voltCon = new VoltConnector();
 
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
+		String valueForEndpointProperty = new String();
+		try {
 
+			final ClientResponse findValueForEndpointProperty = voltCon.montanaClient
+					.callProcedure("UI_LastLogEntryForEndpointProperty",
+							endpointID, propertyID);
 
+			final VoltTable findValueForEndpointPropertyResults[] = findValueForEndpointProperty
+					.getResults();
 
+			VoltTable result = findValueForEndpointPropertyResults[0];
+			// check if any rows have been returned
 
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					valueForEndpointProperty = result.getString("propertyEntry");
 
+				}
+			}
 
+			
 
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return valueForEndpointProperty;
+
+	}
 
 
 }

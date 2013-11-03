@@ -56,12 +56,28 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class PropertyEditorWidget extends Composite {
 
 	private String endpointClassID;
+	private String endpointID;
 	private PropertyServiceAsync rpcService;
 
-	public PropertyEditorWidget(String endpointClassID) {
+	private class PropContent{
+		String currentValue;
+		
+		public String getCurrentValue(){
+			return currentValue;
+		}
+		
+		public void setCurrentValue(String currentValue){
+			this.currentValue = currentValue;
+		}
+		
+	}
+	
+	public PropertyEditorWidget(String endpointClassID, String endpointID) {
 		super();
 
 		this.endpointClassID = endpointClassID;
+		this.endpointID = endpointID;
+		
 		rpcService = GWT.create(PropertyService.class);
 	
 		Row row = new Row();
@@ -111,28 +127,56 @@ public class PropertyEditorWidget extends Composite {
 
 						Iterator<PropertyData> iT = result.iterator();
 						
-						Accordion accordion = new Accordion();
-					
+						final Accordion accordion = new Accordion();
+												
 						
 						while(iT.hasNext()){
 		
-							PropertyData currentItem = new PropertyData();
-							currentItem = iT.next();
-							AccordionGroup accordionGroup = new AccordionGroup();
+							//PropertyData currentItem = new PropertyData();
+							final PropertyData currentItem = iT.next();
+							
+							final AccordionGroup accordionGroup = new AccordionGroup();
 							accordionGroup.setHeading(currentItem.propertyName);
 							
-							Row row = new Row();
-							row = accordionRowBuilder(Images.INSTANCE.tag(), currentItem, "Name:");					
-							accordionGroup.add(row);
-							row = accordionRowBuilder(Images.INSTANCE.eye(), currentItem, "Currently set to:");
-							accordionGroup.add(row);
-							row = accordionRowBuilder(Images.INSTANCE.clock(), currentItem, "Last update:");
-							accordionGroup.add(row);
-							row = accordionRowBuilder(Images.INSTANCE.fire(), currentItem, "Alerts:");
-							accordionGroup.add(row);
-							row = accordionRowBuilder(Images.INSTANCE.megaphone(), currentItem, "Set new value:");
-							accordionGroup.add(row);
-							accordion.add(accordionGroup);
+							final PropContent pc = new PropContent();
+							
+							rpcService.getValueForEndpointProperty(endpointID, currentItem.propertyId,
+									new AsyncCallback<String>() {
+								
+								
+
+										@Override
+										public void onFailure(Throwable caught) {
+											// TODO Auto-generated method stub
+											removeLoadAnimation(animationLoading);
+										}
+
+										@Override
+										public void onSuccess(String result) {
+											// TODO Auto-generated method stub
+											removeLoadAnimation(animationLoading);
+											pc.setCurrentValue(result);
+											
+											Row row = new Row();
+											row = accordionRowBuilder(Images.INSTANCE.tag(), currentItem.getPropertyName(), "Name:");					
+											accordionGroup.add(row);
+											row = accordionRowBuilder(Images.INSTANCE.eye(), pc.getCurrentValue(), "Currently set to: ");
+											accordionGroup.add(row);
+											row = accordionRowBuilder(Images.INSTANCE.clock(), currentItem.propertyName, "Last update:");
+											accordionGroup.add(row);
+											row = accordionRowBuilder(Images.INSTANCE.fire(), currentItem.propertyName, "Alerts:");
+											accordionGroup.add(row);
+											row = accordionRowBuilder(Images.INSTANCE.megaphone(), currentItem.propertyName, "Set new value:");
+											accordionGroup.add(row);
+																		
+											accordionGroup.setHeading(currentItem.propertyName);
+											
+											accordion.add(accordionGroup);
+											
+										}
+									});
+
+							
 						}
 						con.add(accordion);
 						
@@ -169,7 +213,7 @@ public class PropertyEditorWidget extends Composite {
 			animationLoading.removeFromParent();
 	}
 	
-	private Row accordionRowBuilder(ImageResource imRes, PropertyData propertyItem, String itemDescriptor){
+	private Row accordionRowBuilder(ImageResource imRes, String propertyItem, String itemDescriptor){
 		Column iconColumn = new Column(1);
 		iconColumn.addStyleName("text-center");
 		Image img = new Image();
@@ -178,12 +222,9 @@ public class PropertyEditorWidget extends Composite {
 		
 		
 		Column textColumn = new Column(2);
-		DynamicAnchor propertyLine = new DynamicAnchor(itemDescriptor + " " + propertyItem.getPropertyName(), true, propertyItem.getPropertyId());
+		DynamicAnchor propertyLine = new DynamicAnchor(itemDescriptor + " " + propertyItem, true, null);
 		
-		
-		AccordionGroup accordionGroup = new AccordionGroup();
-		accordionGroup.setHeading(propertyItem.getPropertyName());
-									
+										
 		textColumn.add(propertyLine);
 		Row row = new Row();
 		row.add(iconColumn);
@@ -191,6 +232,7 @@ public class PropertyEditorWidget extends Composite {
 		return row;
 	
 	}
+	
 	
 	
 }
