@@ -21,10 +21,12 @@ public class PreLoadPart {
 	         * Load the database.
 	         */
 	        
+	        String userID = "8fdb8608-bb6d-419d-82c2-4aebb6dae402";
 	        	        
-	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1007", "E1", "6014efca-5d35-45cf-ab87-38e6ec966495");
-	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1006", "E2", "6014efca-5d35-45cf-ab87-38e6ec966495");
-	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1008", "E3", "6014efca-5d35-45cf-ab87-38e6ec966495");
+	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1007", "E1", userID);
+	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1006", "E2", userID);
+	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1008", "E3", userID);
+	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1009", "E4", userID);
 	        
 	        
 	        

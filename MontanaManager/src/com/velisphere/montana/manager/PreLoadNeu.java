@@ -40,10 +40,10 @@ public class PreLoadNeu {
 	        
 	        System.out.println("Endpointclasses loaded");
 	        
-	        preLoader.callProcedure("ENDPOINT.insert", "E1", "Homecontroller App", "EPC2");
+	        preLoader.callProcedure("ENDPOINT.insert", "E1", "PiSwitch Office Lamp", "EPC2");
 	        preLoader.callProcedure("ENDPOINT.insert", "E2", "Blubber Thorsten", "EPC1");
 	        preLoader.callProcedure("ENDPOINT.insert", "E3", "Blubber Ute", "EPC1");
-
+	        preLoader.callProcedure("ENDPOINT.insert", "E4", "Reference Home Controller App", "EPC3");
 	        
 	        System.out.println("Endpoints loaded");
 	        
@@ -79,6 +79,7 @@ public class PreLoadNeu {
 	        	        	        
 	        System.out.println("Properties loaded");
 	        
+	        	        
 	        preLoader.callProcedure("CHECK.insert", "C1", "E1", "PR1", "1", "=", "0", "0"); // Checks if switch 1 is on
 	        preLoader.callProcedure("CHECK.insert", "C2", "E1", "PR2", "1", "=", "0", "0"); // Checks if switch 2 is on
 	        preLoader.callProcedure("CHECK.insert", "C3", "E1", "PR3", "1", "=", "0", "0"); // Checks if switch 3 is on
