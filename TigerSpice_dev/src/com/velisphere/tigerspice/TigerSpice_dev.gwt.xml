@@ -28,4 +28,14 @@
 	<source path='shared' />
 	<entry-point class="com.velisphere.tigerspice.client.Login" />
 	<set-property name="bootstrap.responsiveDesign" value="true"/>
+	
+	<source path='resources'/>
+    <replace-with class="com.velisphere.tigerspice.resources.TigerspiceConfigurator">
+      <when-type-is class="com.github.gwtbootstrap.client.ui.config.Configurator"/>
+    </replace-with>
+    <public path="resources">
+      <exclude name="** /*.java"/>
+      <exclude name="** /*.class"/>
+    </public>
+	
 </module>

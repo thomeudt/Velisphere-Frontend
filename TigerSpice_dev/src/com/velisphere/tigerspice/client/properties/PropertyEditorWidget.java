@@ -65,7 +65,7 @@ public class PropertyEditorWidget extends Composite {
 		rpcService = GWT.create(PropertyService.class);
 	
 		Row row = new Row();
-		Column column = new Column(4, 1);
+		Column column = new Column(4, 0);
 				
 		
 		
@@ -115,24 +115,22 @@ public class PropertyEditorWidget extends Composite {
 					
 						
 						while(iT.hasNext()){
-							PropertyData currentItem = iT.next();
-							
-							DynamicAnchor propertyLabel = new DynamicAnchor(currentItem.getPropertyName(), true, currentItem.getPropertyId());
-							Image img = new Image();
-							img.setResource(Images.INSTANCE.tag());
-							
-							
+		
+							PropertyData currentItem = new PropertyData();
+							currentItem = iT.next();
 							AccordionGroup accordionGroup = new AccordionGroup();
-							accordionGroup.setHeading(currentItem.getPropertyName());
-														
-							Column iconColumn = new Column(1);
-							iconColumn.addStyleName("text-center");
-							iconColumn.add(img);
-							Column textColumn = new Column(2);
-							textColumn.add(propertyLabel);
+							accordionGroup.setHeading(currentItem.propertyName);
+							
 							Row row = new Row();
-							row.add(iconColumn);
-							row.add(textColumn);
+							row = accordionRowBuilder(Images.INSTANCE.tag(), currentItem, "Name:");					
+							accordionGroup.add(row);
+							row = accordionRowBuilder(Images.INSTANCE.eye(), currentItem, "Currently set to:");
+							accordionGroup.add(row);
+							row = accordionRowBuilder(Images.INSTANCE.clock(), currentItem, "Last update:");
+							accordionGroup.add(row);
+							row = accordionRowBuilder(Images.INSTANCE.fire(), currentItem, "Alerts:");
+							accordionGroup.add(row);
+							row = accordionRowBuilder(Images.INSTANCE.megaphone(), currentItem, "Set new value:");
 							accordionGroup.add(row);
 							accordion.add(accordionGroup);
 						}
@@ -170,5 +168,29 @@ public class PropertyEditorWidget extends Composite {
 		if (animationLoading != null)
 			animationLoading.removeFromParent();
 	}
+	
+	private Row accordionRowBuilder(ImageResource imRes, PropertyData propertyItem, String itemDescriptor){
+		Column iconColumn = new Column(1);
+		iconColumn.addStyleName("text-center");
+		Image img = new Image();
+		img.setResource(imRes);
+		iconColumn.add(img);
+		
+		
+		Column textColumn = new Column(2);
+		DynamicAnchor propertyLine = new DynamicAnchor(itemDescriptor + " " + propertyItem.getPropertyName(), true, propertyItem.getPropertyId());
+		
+		
+		AccordionGroup accordionGroup = new AccordionGroup();
+		accordionGroup.setHeading(propertyItem.getPropertyName());
+									
+		textColumn.add(propertyLine);
+		Row row = new Row();
+		row.add(iconColumn);
+		row.add(textColumn);
+		return row;
+	
+	}
+	
 	
 }

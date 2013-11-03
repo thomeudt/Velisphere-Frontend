@@ -14,4 +14,20 @@ public Images INSTANCE = GWT.create(Images.class);
 @Source("tag.png")
 ImageResource tag();
 
+@Source("clock.png")
+ImageResource clock();
+
+@Source("fire.png")
+ImageResource fire();
+
+@Source("eye.png")
+ImageResource eye();
+
+@Source("paperplane.png")
+ImageResource paperplane();
+
+@Source("megaphone.png")
+ImageResource megaphone();
+
+
 }

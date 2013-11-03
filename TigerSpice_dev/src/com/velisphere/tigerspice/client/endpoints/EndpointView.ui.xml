@@ -36,25 +36,46 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 		</b:Row>
 		
 	    <b:Row>
-			
-			<b:Column size="1" offset="1" addStyleNames="text-center">
+				        
+	        <b:Column size="2" offset="0">
+			<b:Well>
+			<b:Strong ui:field="pgpInformHeader">Endpoint Information</b:Strong>
+			<b:Paragraph addStyleNames="smalltext">Last heard of:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Manufacturer:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Update available:</b:Paragraph>
+			<b:Button type="INFO" size="MINI">Apply Update</b:Button>
+			<b:Paragraph addStyleNames="smalltext">Reset:</b:Paragraph>
+			<b:Button type="DANGER" size="MINI">Reboot Now</b:Button>
+			<b:Paragraph addStyleNames="smalltext">Ping:</b:Paragraph>
+			<b:Button type="INFO" size="MINI">Ping Now</b:Button>
+			</b:Well>
+			</b:Column>
+				        
+			<b:Column size="1" offset="0" addStyleNames="text-center">
 				<b:Icon type="BRIEFCASE" size="LARGE" />
-				
-						
+									
 				
 			</b:Column>
-			<b:Column size="6" offset="0">
-			<b:Strong ui:field="pgpEndpointClassName">Endpointclass</b:Strong>
+			<b:Column size="8" offset="0">
+		
+			    	<b:Row>
+				    <b:Column size="6" offset="0">
+				    <b:Strong ui:field="pgpEndpointClassName">Endpointclass</b:Strong>
+				    <b:Paragraph addStyleNames="smalltext">Properties of this Endpoint:</b:Paragraph>
+			
+					</b:Column>
+					</b:Row>
+					<b:Row>
+				    <b:Column size="6" offset="0">
+				    <vspy:PropertyEditorWidget ui:field="vpyPropertyEditor" />
+					</b:Column>
+					</b:Row>		
+				
+			
 			</b:Column>
 		</b:Row>
 		
-	    <b:Row>
-			
-			
-			<b:Column size="8" offset="1">
-			<vspy:PropertyEditorWidget ui:field="vpyPropertyEditor" />
-			</b:Column>
-		</b:Row>
+	    
 	    
 		
 	
