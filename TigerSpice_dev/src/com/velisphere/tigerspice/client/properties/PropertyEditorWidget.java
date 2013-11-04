@@ -1,5 +1,6 @@
 package com.velisphere.tigerspice.client.properties;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -128,7 +129,8 @@ public class PropertyEditorWidget extends Composite {
 						Iterator<PropertyData> iT = result.iterator();
 						
 						final Accordion accordion = new Accordion();
-												
+						
+						Collections.sort(result);
 						
 						while(iT.hasNext()){
 		

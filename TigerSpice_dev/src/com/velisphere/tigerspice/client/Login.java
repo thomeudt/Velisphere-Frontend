@@ -26,6 +26,8 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.HeroUnitLogin.HeroUnitLoginUiBinder;
 import com.velisphere.tigerspice.server.VoltConnector;
@@ -41,38 +43,62 @@ public class Login implements EntryPoint {
 	
 	public void onModuleLoad() {
 
-	History.newItem("home");
+		displayLoginScreen();
 		
-	rootPanelHeader = RootPanel.get("stockList");
-	rootPanelHeader.clear();
-	rootPanelHeader.getElement().getStyle().setPosition(Position.RELATIVE);
-	
-	rootPanelMain = RootPanel.get("main");
-	rootPanelMain.clear();
-	rootPanelMain.getElement().getStyle().setPosition(Position.RELATIVE);
-	
-	rootPanelBanderole = RootPanel.get("banderole");
-	rootPanelBanderole.clear();
-	rootPanelBanderole.getElement().getStyle().setPosition(Position.RELATIVE);
-	
-	headerPanel = new VerticalPanel();
-	rootPanelHeader.add(headerPanel);
-			
-	navBar = new NavBar();
-	headerPanel.add(navBar);
-	
-	
-	mainPanel = new VerticalPanel();
-	rootPanelMain.add(mainPanel);
-		
-	SplashCarouselWidget splashCarouselWidget = new SplashCarouselWidget();
-	mainPanel.add(splashCarouselWidget);
-		
-	HeroUnitLogin heroUnitLogin = new HeroUnitLogin();
-	mainPanel.add(heroUnitLogin);
+	History.addValueChangeHandler(new ValueChangeHandler<String>() {
+		   @Override
+		   public void onValueChange(ValueChangeEvent<String> event) {
+		      String historyToken = event.getValue();
+		      /* parse the history token */
+		      try {
+		         if (historyToken.equals("home")) {
+		        	 displayLoginScreen();          
+		         } else {
+		        	 System.out.println("nix");
+		         }
+		      } catch (IndexOutOfBoundsException e) {
+		    	  System.out.println("nix"); 
+		      }
+		   }
+		});	
 		
 	
 	// LoginDialogBox loginDialogBox = new LoginDialogBox();
 	// mainPanel.add(loginDialogBox);
 	}
+
+
+	private void displayLoginScreen(){
+	
+		History.newItem("home");
+		rootPanelHeader = RootPanel.get("stockList");
+		rootPanelHeader.clear();
+		rootPanelHeader.getElement().getStyle().setPosition(Position.RELATIVE);
+		
+		rootPanelMain = RootPanel.get("main");
+		rootPanelMain.clear();
+		rootPanelMain.getElement().getStyle().setPosition(Position.RELATIVE);
+		
+		rootPanelBanderole = RootPanel.get("banderole");
+		rootPanelBanderole.clear();
+		rootPanelBanderole.getElement().getStyle().setPosition(Position.RELATIVE);
+		
+		headerPanel = new VerticalPanel();
+		rootPanelHeader.add(headerPanel);
+				
+		navBar = new NavBar();
+		headerPanel.add(navBar);
+		
+		
+		mainPanel = new VerticalPanel();
+		rootPanelMain.add(mainPanel);
+			
+		SplashCarouselWidget splashCarouselWidget = new SplashCarouselWidget();
+		mainPanel.add(splashCarouselWidget);
+			
+		HeroUnitLogin heroUnitLogin = new HeroUnitLogin();
+		mainPanel.add(heroUnitLogin);
+
+	}
+
 }

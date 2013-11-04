@@ -20,6 +20,7 @@ package com.velisphere.tigerspice.server;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
@@ -152,7 +153,7 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 				}
 			}
 
-			
+			//Collections.sort(propertiesForEndpointClass);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

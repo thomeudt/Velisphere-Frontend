@@ -349,4 +349,45 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 	}
 
 	
+	public String updateEndpointNameForEndpointID(String endpointID, String endpointName)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			voltCon.montanaClient.callProcedure("UI_UpdateEndpointnameForEndpointID",
+					endpointID, endpointName);
+		} catch (NoConnectionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProcCallException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "OK";
+
+	}
+
+	
 }

@@ -18,20 +18,30 @@
 package com.velisphere.tigerspice.client.endpoints;
 
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
+import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.Strong;
+import com.github.gwtbootstrap.client.ui.TextBox;
+import com.github.gwtbootstrap.client.ui.constants.ButtonType;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.LoginDialogBox;
 import com.velisphere.tigerspice.client.dataproviders.EndpointAsyncDataProvider;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
@@ -50,6 +60,8 @@ import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 
 // THIS WIDGET IS USING UIBINDER!!!
 
@@ -71,6 +83,8 @@ public class EndpointView extends Composite {
 	private String endpointClassID;
 	private String endpointID;
 	
+	private TextBox endpointChangeNameField;
+	
 	// @UiField EndpointsForSphereListerWidget_unused endpointList;
 
 	private EndpointServiceAsync rpcServiceEndpoint;
@@ -78,6 +92,9 @@ public class EndpointView extends Composite {
 
 	interface SphereOverviewUiBinder extends UiBinder<Widget, SphereOverview> {
 	}
+	
+	
+	
 
 	public EndpointView(final String sphereID, final String sphereName,
 			final String endpointID, String endpointName, final String endpointClassID) {
@@ -91,6 +108,84 @@ public class EndpointView extends Composite {
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		pghEndpointName.setText(endpointName);
+		
+		Icon icnEditEndpointName = new Icon();
+		icnEditEndpointName.setType(IconType.EDIT);
+		// RootPanel.get().add(icnEditClassName, pghEndpointName..getAbsoluteLeft(), pghEndpointName.getAbsoluteTop());
+		pghEndpointName.add(icnEditEndpointName);
+		final Anchor ancEditEndpointName = new Anchor();
+		ancEditEndpointName.setText(" Change Name of this Endpoint");
+		ancEditEndpointName.setHref("#");
+	
+		// endpointChangeNameDialogBox = new EndpointChangeNameDialogBox();
+		// endpointChangeNameDialogBox.addValueChangeHandler(new ValueChangeHandler<String>() {
+			
+		endpointChangeNameField = new TextBox();
+		final Button okButton = new Button();
+		okButton.setText("OK");
+		okButton.setType(ButtonType.SUCCESS);
+		final PopupPanel nameChangePopup = new PopupPanel();
+		
+		ancEditEndpointName.addClickHandler(
+				new ClickHandler(){ 
+				public void onClick(ClickEvent event)  {
+					
+					
+					if (nameChangePopup.isShowing()) {
+						
+						nameChangePopup.removeFromParent();
+					} else
+					{						
+						endpointChangeNameField.setText(pghEndpointName.getText());
+						HorizontalPanel horizontalPanel = new HorizontalPanel();
+						horizontalPanel.add(endpointChangeNameField);
+						horizontalPanel.add(okButton.asWidget());
+						nameChangePopup.clear();
+						nameChangePopup.add(horizontalPanel);
+						nameChangePopup.setModal(true);
+						nameChangePopup.setAutoHideEnabled(true);
+						nameChangePopup.showRelativeTo(ancEditEndpointName);
+						endpointChangeNameField.setFocus(true);
+						okButton.addClickHandler(
+								new ClickHandler(){ 
+								public void onClick(ClickEvent event)  {
+									
+									final String newEndpointName = endpointChangeNameField.getText();
+									
+									nameChangePopup.hide();
+									final AnimationLoading animationLoading = new AnimationLoading();
+									showLoadAnimation(animationLoading);
+
+									rpcServiceEndpoint.updateEndpointNameForEndpointID(endpointID, newEndpointName,
+											new AsyncCallback<String>() {
+
+												@Override
+												public void onFailure(Throwable caught) {
+													// TODO Auto-generated method stub
+													removeLoadAnimation(animationLoading);
+												}
+
+												@Override
+												public void onSuccess(String result) {
+													// TODO Auto-generated method stub
+													pghEndpointName.setText(newEndpointName);
+													removeLoadAnimation(animationLoading);
+
+
+												}
+
+											});
+
+								}
+								});
+					}
+				}
+				});
+		pghEndpointName.add(ancEditEndpointName);
+	
+		
+		
+		
 
 		NavLink bread1 = new NavLink();
 		bread1.setText("Sphere Overview");
@@ -169,6 +264,7 @@ public class EndpointView extends Composite {
 												pgpEndpointClassName
 														.setText(result.endpointclassName);
 												
+												
 												removeLoadAnimation(animationLoading);
 												
 												
@@ -197,5 +293,8 @@ public class EndpointView extends Composite {
 	@UiFactory PropertyEditorWidget makePropertyEditor() { // method name is insignificant
 	    return new PropertyEditorWidget(this.endpointClassID, this.endpointID);
 	  }
+	
+	
+	
 
 }
