@@ -80,13 +80,13 @@ public class PreLoadNeu {
 	        System.out.println("Properties loaded");
 	        
 	        	        
-	        preLoader.callProcedure("CHECK.insert", "C1", "E1", "PR1", "1", "=", "0", "0"); // Checks if switch 1 is on
-	        preLoader.callProcedure("CHECK.insert", "C2", "E1", "PR2", "1", "=", "0", "0"); // Checks if switch 2 is on
-	        preLoader.callProcedure("CHECK.insert", "C3", "E1", "PR3", "1", "=", "0", "0"); // Checks if switch 3 is on
-	        preLoader.callProcedure("CHECK.insert", "C4", "E1", "PR4", "1", "=", "0", "0"); // Checks if switch 4 is on
-	        preLoader.callProcedure("CHECK.insert", "C5", "E1", "PR5", "1", "=", "0", "0"); // Checks if switch 5 is on
-	        preLoader.callProcedure("CHECK.insert", "C6", "E2", "PR8", "1", "=", "0", "0"); // Checks if Send Request is Set
-	        preLoader.callProcedure("CHECK.insert", "C7", "E3", "PR8", "1", "=", "0", "0"); // Checks if Send Request is Set
+	        preLoader.callProcedure("CHECK.insert", "C1", "E1", "PR1", "1", "=", "0", "0", "Switch 1 on"); // Checks if switch 1 is on
+	        preLoader.callProcedure("CHECK.insert", "C2", "E1", "PR2", "1", "=", "0", "0", "Switch 2 on"); // Checks if switch 2 is on
+	        preLoader.callProcedure("CHECK.insert", "C3", "E1", "PR3", "1", "=", "0", "0", "Switch 3 on"); // Checks if switch 3 is on
+	        preLoader.callProcedure("CHECK.insert", "C4", "E1", "PR4", "1", "=", "0", "0", "Switch 4 on"); // Checks if switch 4 is on
+	        preLoader.callProcedure("CHECK.insert", "C5", "E1", "PR5", "1", "=", "0", "0", "Switch 5 on"); // Checks if switch 5 is on
+	        preLoader.callProcedure("CHECK.insert", "C6", "E2", "PR8", "1", "=", "0", "0", "Send Request is Triggered"); // Checks if Send Request is Set
+	        preLoader.callProcedure("CHECK.insert", "C7", "E3", "PR8", "1", "=", "0", "0", "Send Request is Triggered"); // Checks if Send Request is Set
 
 	        
 	        System.out.println("Checks loaded");

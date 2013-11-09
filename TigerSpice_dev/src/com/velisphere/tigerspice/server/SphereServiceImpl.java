@@ -107,15 +107,48 @@ public class SphereServiceImpl extends RemoteServiceServlet implements
 		return allSpheres;
 	}
 
+	public String updateSpherenameForSphereID(String sphereID, String sphereName)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		System.out.println("ROTZ");
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			voltCon.montanaClient.callProcedure("UI_UpdateSpherenameForSphereID",
+					sphereID, sphereName);
+		} catch (NoConnectionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProcCallException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		return "OK";
+
+	}
 
 
 	
-
-
-
-
-
-
-
-
 }

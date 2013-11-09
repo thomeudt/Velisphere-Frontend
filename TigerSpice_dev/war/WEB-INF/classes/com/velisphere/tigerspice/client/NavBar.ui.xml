@@ -38,7 +38,7 @@
          <b:Nav>
              <b:NavLink ui:field="btnHome">Home</b:NavLink>
              <b:NavLink ui:field="btnSpheres">Spheres</b:NavLink>
-             <b:NavLink ui:field="btnMap">Map</b:NavLink>
+             <b:NavLink ui:field="btnMap">Rules+Logic</b:NavLink>
              <b:NavLink ui:field="btnAdmin">Admin</b:NavLink>
          </b:Nav>
          <b:NavForm ui:field="forSearch" size="1" />

@@ -49,7 +49,7 @@ import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.properties.PropertyEditorWidget;
 import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
-import com.velisphere.tigerspice.client.spheres.SphereOverview;
+import com.velisphere.tigerspice.client.spheres.SphereView;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.PropertyData;
@@ -82,6 +82,9 @@ public class EndpointView extends Composite {
 	
 	private String endpointClassID;
 	private String endpointID;
+	NavLink bread1;
+	NavLink bread2;
+	NavLink bread3;
 	
 	private TextBox endpointChangeNameField;
 	
@@ -90,7 +93,7 @@ public class EndpointView extends Composite {
 	private EndpointServiceAsync rpcServiceEndpoint;
 	private EPCServiceAsync rpcServiceEndpointClass;
 
-	interface SphereOverviewUiBinder extends UiBinder<Widget, SphereOverview> {
+	interface SphereOverviewUiBinder extends UiBinder<Widget, SphereView> {
 	}
 	
 	
@@ -107,6 +110,43 @@ public class EndpointView extends Composite {
 		
 		
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		bread1 = new NavLink();
+		bread1.setText("Sphere Overview");
+		brdMain.add(bread1);
+		bread2 = new NavLink();
+		bread2.setText(sphereName);
+		brdMain.add(bread2);
+		bread3 = new NavLink();
+		bread3.setText(endpointName);
+		brdMain.add(bread3);
+
+		bread1.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+
+				RootPanel mainPanel = RootPanel.get("main");
+				mainPanel.clear();
+				SphereLister sphereLister = new SphereLister();
+				mainPanel.add(sphereLister);
+
+			}
+		});
+
+		bread2.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+
+				RootPanel mainPanel = RootPanel.get("main");
+				mainPanel.clear();
+				SphereView sphereOverview = new SphereView(sphereID,
+						sphereName);
+				mainPanel.add(sphereOverview);
+
+			}
+		});
+
+		
+		
+		
 		pghEndpointName.setText(endpointName);
 		
 		Icon icnEditEndpointName = new Icon();
@@ -169,6 +209,10 @@ public class EndpointView extends Composite {
 												public void onSuccess(String result) {
 													// TODO Auto-generated method stub
 													pghEndpointName.setText(newEndpointName);
+													brdMain.remove(bread3);
+													bread3.setText(newEndpointName);
+													brdMain.add(bread3);
+													
 													removeLoadAnimation(animationLoading);
 
 
@@ -187,39 +231,7 @@ public class EndpointView extends Composite {
 		
 		
 
-		NavLink bread1 = new NavLink();
-		bread1.setText("Sphere Overview");
-		brdMain.add(bread1);
-		NavLink bread2 = new NavLink();
-		bread2.setText(sphereName);
-		brdMain.add(bread2);
-		NavLink bread3 = new NavLink();
-		bread3.setText(endpointName);
-		brdMain.add(bread3);
-
-		bread1.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-
-				RootPanel mainPanel = RootPanel.get("main");
-				mainPanel.clear();
-				SphereLister sphereLister = new SphereLister();
-				mainPanel.add(sphereLister);
-
-			}
-		});
-
-		bread2.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-
-				RootPanel mainPanel = RootPanel.get("main");
-				mainPanel.clear();
-				SphereOverview sphereOverview = new SphereOverview(sphereID,
-						sphereName);
-				mainPanel.add(sphereOverview);
-
-			}
-		});
-
+		
 		setEndpointClassName(endpointID);
 
 	}

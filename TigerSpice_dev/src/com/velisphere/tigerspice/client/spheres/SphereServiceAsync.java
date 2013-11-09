@@ -29,6 +29,7 @@ import com.velisphere.tigerspice.shared.UserData;
 
 public interface SphereServiceAsync {
 	void getAllSpheres(AsyncCallback<Vector<SphereData>> callback);
+	void updateSpherenameForSphereID(String sphereID, String sphereName, AsyncCallback<String> callback);
 
 	
 }

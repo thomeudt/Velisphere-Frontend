@@ -38,6 +38,7 @@ import com.velisphere.tigerspice.shared.UserData;
 @RemoteServiceRelativePath("voltSphere")
 public interface SphereService extends RemoteService {
 	Vector<SphereData> getAllSpheres();
+	String updateSpherenameForSphereID(String sphereID, String sphereName);
 }
 
 
