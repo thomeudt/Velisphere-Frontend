@@ -112,7 +112,7 @@ public class SphereServiceImpl extends RemoteServiceServlet implements
 	{
 		VoltConnector voltCon = new VoltConnector();
 
-		System.out.println("ROTZ");
+		
 		try {
 			voltCon.openDatabase();
 		} catch (UnknownHostException e1) {

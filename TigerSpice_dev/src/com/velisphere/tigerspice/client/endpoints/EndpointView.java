@@ -42,6 +42,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.LoginDialogBox;
+import com.velisphere.tigerspice.client.checks.CheckEditorWidget;
 import com.velisphere.tigerspice.client.dataproviders.EndpointAsyncDataProvider;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
@@ -306,6 +307,9 @@ public class EndpointView extends Composite {
 	    return new PropertyEditorWidget(this.endpointClassID, this.endpointID);
 	  }
 	
+	@UiFactory CheckEditorWidget makeCheckEditor() { // method name is insignificant
+	    return new CheckEditorWidget(this.endpointID);
+	  }
 	
 	
 

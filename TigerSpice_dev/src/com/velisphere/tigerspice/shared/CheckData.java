@@ -15,29 +15,42 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client.helper;
+package com.velisphere.tigerspice.shared;
 
-import com.github.gwtbootstrap.client.ui.Strong;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Widget;
+import java.util.List;
 
-public class AnimationLoading extends Composite {
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-	@UiField Strong stgLoading;
+public class CheckData implements IsSerializable, Comparable <CheckData>
+{
+	public String checkId;
+	public String endpointId;
+	public String propertyId;
+	public String checkValue;
+	public String operator;
+	public byte state;
+	public Byte expired;
+	public String checkName;
 	
-	private static AnimationLoadingUiBinder uiBinder = GWT
-			.create(AnimationLoadingUiBinder.class);
-
-	interface AnimationLoadingUiBinder extends
-			UiBinder<Widget, AnimationLoading> {
+	@Override
+	public int compareTo(CheckData arg0) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
-
-	public AnimationLoading() {
-		initWidget(uiBinder.createAndBindUi(this));
-		stgLoading.addStyleName("vcenter");
+	
+	public String getId(){
+		return endpointId;
 	}
-
+	
+	public String getName(){
+		return checkName;
+	}
+	
+	
+	
+	public void setName(String checkName){
+		this.checkName = checkName;
+	}
+	
+	
 }

@@ -20,7 +20,8 @@
 xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 		xmlns:ct="urn:import:com.google.gwt.user.cellview.client"
-		xmlns:vspy="urn:import:com.velisphere.tigerspice.client.properties">
+		xmlns:vspy="urn:import:com.velisphere.tigerspice.client.properties"
+		xmlns:vsch="urn:import:com.velisphere.tigerspice.client.checks">
 	<g:HTMLPanel>
             <b:Breadcrumbs divider=">" ui:field="brdMain">
 		</b:Breadcrumbs>
@@ -55,22 +56,40 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 									
 				
 			</b:Column>
-			<b:Column size="8" offset="0">
+			<b:Column size="9" offset="0">
 		
 			    	<b:Row>
-				    <b:Column size="6" offset="0">
+				    <b:Column size="8" offset="0">
 				    <b:Strong ui:field="pgpEndpointClassName">Endpointclass</b:Strong>
+				    </b:Column>
+				    </b:Row>
 				    
-				    <b:Paragraph addStyleNames="smalltext">Properties of this Endpoint:</b:Paragraph>
+			    	<b:Row>
+				    <b:Column size="4" offset="0">
+			    	<b:Paragraph addStyleNames="smalltext">Properties:</b:Paragraph>
 			
 					</b:Column>
+					
+				    <b:Column size="4" offset="0">
+				    			    
+				    <b:Paragraph addStyleNames="smalltext">Checks:</b:Paragraph>
+			
+					</b:Column>
+			
+				    
 					</b:Row>
 					<b:Row>
-				    <b:Column size="6" offset="0">
+				    <b:Column size="4" offset="0">
 				    <vspy:PropertyEditorWidget ui:field="vpyPropertyEditor" />
+					</b:Column>
+					<b:Column size="4" offset="0">
+				    <vsch:CheckEditorWidget />
+				    
 					</b:Column>
 					</b:Row>		
 				
+					
+					
 			
 			</b:Column>
 		</b:Row>

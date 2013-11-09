@@ -1,3 +1,5 @@
+package com.velisphere.tigerspice.client.checks;
+
 /*******************************************************************************
  * CONFIDENTIAL INFORMATION
  *  __________________
@@ -15,29 +17,18 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client.helper;
 
-import com.github.gwtbootstrap.client.ui.Strong;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Widget;
+import java.util.HashSet;
+import java.util.Vector;
 
-public class AnimationLoading extends Composite {
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.velisphere.tigerspice.shared.CheckData;
+import com.velisphere.tigerspice.shared.EPCData;
+import com.velisphere.tigerspice.shared.EndpointData;
+import com.velisphere.tigerspice.shared.PropertyData;
+import com.velisphere.tigerspice.shared.UserData;
 
-	@UiField Strong stgLoading;
+public interface CheckServiceAsync {
+	void getChecksForEndpointID(String endpointID, AsyncCallback<Vector<CheckData>> callback);
 	
-	private static AnimationLoadingUiBinder uiBinder = GWT
-			.create(AnimationLoadingUiBinder.class);
-
-	interface AnimationLoadingUiBinder extends
-			UiBinder<Widget, AnimationLoading> {
-	}
-
-	public AnimationLoading() {
-		initWidget(uiBinder.createAndBindUi(this));
-		stgLoading.addStyleName("vcenter");
-	}
-
 }

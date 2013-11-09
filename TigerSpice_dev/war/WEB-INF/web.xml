@@ -76,6 +76,17 @@
     <servlet-name>spheredataServlet</servlet-name>
     <url-pattern>/tigerspice_dev/voltSphere</url-pattern>
   </servlet-mapping>
+  
+<servlet>
+    <servlet-name>checkdataServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.CheckServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>checkdataServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltCheck</url-pattern>
+  </servlet-mapping>
+
 
 <servlet>
     <servlet-name>requestFactoryServlet</servlet-name>
