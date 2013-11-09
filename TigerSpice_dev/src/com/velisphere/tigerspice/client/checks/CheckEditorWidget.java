@@ -3,14 +3,18 @@ package com.velisphere.tigerspice.client.checks;
 import java.util.Iterator;
 import java.util.Vector;
 
+import com.github.gwtbootstrap.client.ui.Accordion;
+import com.github.gwtbootstrap.client.ui.AccordionGroup;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Column;
+import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.Row;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.resources.ButtonSize;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -18,6 +22,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.helper.DynamicAnchor;
+import com.velisphere.tigerspice.client.images.Images;
 import com.velisphere.tigerspice.shared.CheckData;
 
 public class CheckEditorWidget extends Composite {
@@ -47,13 +53,6 @@ public class CheckEditorWidget extends Composite {
 
 	final VerticalLayoutContainer container = new VerticalLayoutContainer();
 	container.setBorders(true);
-	Row row = new Row();
-	Column column = new Column(4);
-	Paragraph p = new Paragraph();
-	p.setText("Test");
-	column.add(p);
-	row.add(column);
-	container.add(row);
 	
 
 	Button btnAddProvisioned = new Button();
@@ -91,19 +90,39 @@ public class CheckEditorWidget extends Composite {
 
 					@Override
 					public void onSuccess(Vector<CheckData> result) {
-						// TODO Auto-generated method
-						// stub
+						
+
+						final Accordion accordion = new Accordion();
 
 						Iterator<CheckData> it = result.iterator();
 						while (it.hasNext()){
 	
-							Row row = new Row();
-							Column column = new Column(4);
-							Paragraph p = new Paragraph();
-							p.setText(it.next().checkName);
-							column.add(p);
-							row.add(column);
-							container.add(row);
+							CheckData currentItem = it.next();
+							final AccordionGroup accordionGroup = new AccordionGroup();
+							accordionGroup.setHeading(currentItem.getName());
+							Row row = accordionRowBuilder(Images.INSTANCE.tag(), currentItem.getPropertyId(), "Checking on Property: ");	
+							accordionGroup.add(row);
+							
+							Row row2 = accordionRowBuilder(Images.INSTANCE.tag(), currentItem.getOperator(), "Operator: ");	
+							accordionGroup.add(row2);
+							
+							Row row3 = accordionRowBuilder(Images.INSTANCE.tag(), currentItem.getCheckValue(), "Trigger Value: ");	
+							accordionGroup.add(row3);
+							
+							String stateText = new String();
+							if (currentItem.getState()==1){
+								stateText = "True";
+							} else
+							{
+								stateText = "Not True";
+							}
+							Row row4 = accordionRowBuilder(Images.INSTANCE.tag(), stateText, "Current State: ");	
+							accordionGroup.add(row4);
+							
+							
+							
+							accordion.add(accordionGroup);
+							container.add(accordion);
 							
 							
 							
@@ -130,5 +149,24 @@ public class CheckEditorWidget extends Composite {
 	}
 	
 	
+	private Row accordionRowBuilder(ImageResource imRes, String checkItem, String itemDescriptor){
+		Column iconColumn = new Column(1);
+		iconColumn.addStyleName("text-center");
+		Image img = new Image();
+		img.setResource(imRes);
+		iconColumn.add(img);
+		
+		
+		Column textColumn = new Column(2);
+		DynamicAnchor propertyLine = new DynamicAnchor(itemDescriptor + " " + checkItem, true, null);
+		
+										
+		textColumn.add(propertyLine);
+		Row row = new Row();
+		row.add(iconColumn);
+		row.add(textColumn);
+		return row;
+	
+	}
 	
 }

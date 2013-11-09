@@ -28,7 +28,7 @@ public class CheckData implements IsSerializable, Comparable <CheckData>
 	public String propertyId;
 	public String checkValue;
 	public String operator;
-	public byte state;
+	public Byte state;
 	public Byte expired;
 	public String checkName;
 	
@@ -45,6 +45,27 @@ public class CheckData implements IsSerializable, Comparable <CheckData>
 	public String getName(){
 		return checkName;
 	}
+
+	public String getPropertyId(){
+		return propertyId;
+	}
+	
+	public String getOperator(){
+		return operator;
+	}
+	
+	public String getCheckValue(){
+		return checkValue;
+	}
+	
+	public Byte getState(){
+		return state;
+	}
+	
+	public Byte getExpired(){
+		return expired;
+	}
+	
 	
 	
 	

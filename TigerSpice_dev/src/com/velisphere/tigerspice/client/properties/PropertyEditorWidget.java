@@ -102,12 +102,6 @@ public class PropertyEditorWidget extends Composite {
 	public VerticalLayoutContainer buildTree(final String endpointClassID) {
 
 		final VerticalLayoutContainer con = new VerticalLayoutContainer();
-
-		
-		
-		
-			
-	//	loader.addLoadHandler(new ChildTreeStoreBinding<PropertyData>(store));
 		
 		final AnimationLoading animationLoading = new AnimationLoading();
 		showLoadAnimation(animationLoading);

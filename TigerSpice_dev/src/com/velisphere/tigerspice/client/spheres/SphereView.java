@@ -138,8 +138,7 @@ public class SphereView extends Composite {
 								public void onClick(ClickEvent event)  {
 									
 									final String newSphereName = sphereChangeNameField.getText();
-									System.out.println("ROZZID = " + sphereID);
-									System.out.println("ROZZNAME = " + newSphereName);
+								
 									
 									nameChangePopup.hide();
 									final AnimationLoading animationLoading = new AnimationLoading();
