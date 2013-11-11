@@ -7,19 +7,24 @@ import java.util.Vector;
 
 import com.github.gwtbootstrap.client.ui.Accordion;
 import com.github.gwtbootstrap.client.ui.AccordionGroup;
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.Container;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Label;
 import com.github.gwtbootstrap.client.ui.Row;
+import com.github.gwtbootstrap.client.ui.constants.ButtonType;
+import com.github.gwtbootstrap.client.ui.resources.ButtonSize;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.editor.client.Editor.Path;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -31,6 +36,10 @@ import com.sencha.gxt.data.shared.PropertyAccess;
 import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.data.shared.loader.ChildTreeStoreBinding;
 import com.sencha.gxt.data.shared.loader.TreeLoader;
+import com.sencha.gxt.dnd.core.client.DndDragStartEvent;
+import com.sencha.gxt.dnd.core.client.DndDropEvent;
+import com.sencha.gxt.dnd.core.client.DragSource;
+import com.sencha.gxt.dnd.core.client.DropTarget;
 import com.sencha.gxt.state.client.TreeStateHandler;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.button.ButtonBar;
@@ -43,11 +52,14 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 import com.sencha.gxt.widget.core.client.tree.Tree;
+import com.velisphere.tigerspice.client.checks.CheckService;
+import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
 import com.velisphere.tigerspice.client.images.Images;
+import com.velisphere.tigerspice.shared.CheckData;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.UnusedPropertyDataProperties;
 import com.velisphere.tigerspice.shared.UnusedFolderPropertyData;
@@ -59,7 +71,7 @@ public class PropertyEditorWidget extends Composite {
 	private String endpointClassID;
 	private String endpointID;
 	private PropertyServiceAsync rpcService;
-
+	
 	private class PropContent{
 		String currentValue;
 		
@@ -93,6 +105,7 @@ public class PropertyEditorWidget extends Composite {
 		column.add(treeCon);
 		row.add(column);
 		initWidget(row);
+		
 
 	}
 
@@ -169,6 +182,36 @@ public class PropertyEditorWidget extends Composite {
 											
 											accordion.add(accordionGroup);
 											
+											final SafeHtmlBuilder builder = new SafeHtmlBuilder();
+											builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
+													+ "\">");
+											builder.appendHtmlConstant("Drag "
+													+ accordionGroup.getTitle()
+													+ " into a Sphere");
+											builder.appendHtmlConstant("</div>");
+											
+											DragSource source = new DragSource(
+													accordionGroup) {
+												@Override
+												protected void onDragStart(
+														DndDragStartEvent event) {
+													super.onDragStart(event);
+													// by
+													// default
+													// drag
+													// is
+													// allowed
+													
+													event.setData(accordionGroup);
+													event.getStatusProxy()
+															.update(builder
+																	.toSafeHtml());
+												}
+												
+
+											};
+											source.setGroup("check");
+											
 										}
 									});
 
@@ -191,6 +234,9 @@ public class PropertyEditorWidget extends Composite {
 		return con;
 
 	}
+	
+	
+	
 
 	public void onModuleLoad() {
 		// System.out.println("AAAA" + endpointClassID);

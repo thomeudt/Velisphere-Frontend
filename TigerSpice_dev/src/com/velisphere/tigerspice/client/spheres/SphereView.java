@@ -40,6 +40,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.users.LoginSuccess;
 
 
 public class SphereView extends Composite {
@@ -58,6 +59,7 @@ public class SphereView extends Composite {
 	
 	String sphereID;  
 	String sphereName;
+	NavLink bread0;
 	NavLink bread1;
 	NavLink bread2;
 	private TextBox sphereChangeNameField;
@@ -75,6 +77,9 @@ public class SphereView extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		pghSphereNameHeader.setText(sphereName);
 		
+		bread0 = new NavLink();
+		bread0.setText("Home");
+		brdMain.add(bread0);		
 		bread1 = new NavLink();
 		bread1.setText("Sphere Overview");
 		brdMain.add(bread1);
@@ -82,6 +87,16 @@ public class SphereView extends Composite {
 		bread2.setText(sphereName);
 		brdMain.add(bread2);
 
+		bread0.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+
+				RootPanel.get("main").clear();
+				LoginSuccess loginSuccess = new LoginSuccess();
+				RootPanel.get("main").add(loginSuccess);
+
+			}
+		});
+		
 		bread1.addClickHandler(
 				new ClickHandler(){
 					@Override

@@ -29,7 +29,7 @@
 		</b:Row>
 			
 		<b:Row>
-			<b:Column size="12" offset="0">
+			<b:Column size="8" offset="0">
 				<b:Paragraph addStyleNames="smalltext">This is the VeliSphere Dashboard. We recommend that you get started by following our "Getting Started Guide"
 				    - don't forget to take a look at our "Best Practice" tutorial, too. </b:Paragraph>
 				    <b:Paragraph addStyleNames="smalltext">To add new devices to your account, please follow the "Device Provisioning Wizard".
@@ -39,21 +39,8 @@
 		</b:Row>
 
 		<b:Row>
-		<b:Column size="2" offset="0">
-				<b:Heading size="4">Additional Resources</b:Heading>
-				
-			<b:Paragraph addStyleNames="smalltext">Device Provisioning Wizard</b:Paragraph>
-			
-			<b:Paragraph addStyleNames="smalltext">Getting Started</b:Paragraph>
-			
-			<b:Paragraph addStyleNames="smalltext">Best Practices</b:Paragraph>
-			
-			<b:Paragraph addStyleNames="smalltext">Market Place</b:Paragraph>
-			
-			
-			</b:Column>	
 		
-		<b:Column size="10" offset="0">
+		<b:Column size="8" offset="0">
 		    
 		<b:Row>
 		<b:Column size="6" offset="0">
@@ -64,20 +51,30 @@
 		
 		
 		<b:Row>
-			<b:Column size="6" offset="0">
+			<b:Column size="8" offset="0">
 				<b:StackProgressBar ui:field="pgbUtilization">
 					<b:Bar color="SUCCESS" ui:field="pgbGreen" text="green" percent="0" />
 					<b:Bar color="WARNING" ui:field="pgbYellow" text="" percent="0" />
 					<b:Bar color="DANGER" ui:field="pgbRed" text="" percent="0" />
 				</b:StackProgressBar>
 			</b:Column>
-			<b:Column size="4" offset="0">
-			 <b:Paragraph addStyleNames="smalltext">Upgrade your subscription to increase your endpoint limit.</b:Paragraph>
-			</b:Column>
 			
 		</b:Row>
 		
 		<b:Row>
+		<b:Column size="6" offset="0">
+			 <b:Paragraph addStyleNames="smalltext">Upgrade your subscription to increase your endpoint limit.</b:Paragraph>
+			</b:Column>
+		</b:Row>
+		
+		<b:Row>
+			<b:Column size="2" offset="0">
+			    <b:Well>
+				<b:Heading size="5">Spheres:</b:Heading>
+				<b:Paragraph addStyleNames="smalltext">Sphere X:</b:Paragraph>
+				<b:Paragraph addStyleNames="smalltext">Endpoint Y</b:Paragraph>
+				</b:Well>
+			</b:Column>			
 			<b:Column size="2" offset="0">
 			    <b:Well>
 				<b:Heading size="5">Active Endpoints:</b:Heading>
@@ -101,6 +98,13 @@
 			</b:Column>
 			</b:Row>
 			<b:Row>
+			    <b:Column size="2" offset="0">
+				<b:Well>
+				<b:Heading size="5">Rules + Logic</b:Heading>
+				<b:Paragraph addStyleNames="smalltext">Sphere X:</b:Paragraph>
+				<b:Paragraph addStyleNames="smalltext">Endpoint Y</b:Paragraph>
+				</b:Well>
+			</b:Column>
 			<b:Column size="2" offset="0">
 				<b:Well styleName="wellsilver">
 				<b:Heading size="5">Tasklist:</b:Heading>
@@ -124,6 +128,21 @@
 			</b:Column>
 		</b:Row>
 </b:Column>
+
+<b:Column size="2" offset="0">
+				<b:Heading size="4">Additional Resources</b:Heading>
+				
+			<b:Paragraph addStyleNames="smalltext">Device Provisioning Wizard</b:Paragraph>
+			
+			<b:Paragraph addStyleNames="smalltext">Getting Started</b:Paragraph>
+			
+			<b:Paragraph addStyleNames="smalltext">Best Practices</b:Paragraph>
+			
+			<b:Paragraph addStyleNames="smalltext">Market Place</b:Paragraph>
+			
+			
+			</b:Column>	
+		
 </b:Row>
 
 	</g:HTMLPanel>

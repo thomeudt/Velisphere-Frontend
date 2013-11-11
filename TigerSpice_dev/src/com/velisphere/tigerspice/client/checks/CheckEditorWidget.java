@@ -19,6 +19,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.sencha.gxt.dnd.core.client.DndDropEvent;
+import com.sencha.gxt.dnd.core.client.DropTarget;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
@@ -30,7 +32,8 @@ public class CheckEditorWidget extends Composite {
 
 	private String endpointID;
 	private CheckServiceAsync rpcService;
-
+	Accordion accordion = new Accordion();
+	
 	public CheckEditorWidget(final String endpointID) {
 
 		// widget constructor requires a parameter, thus we need to invoke the
@@ -54,7 +57,7 @@ public class CheckEditorWidget extends Composite {
 	final VerticalLayoutContainer container = new VerticalLayoutContainer();
 	container.setBorders(true);
 	
-
+	
 	Button btnAddProvisioned = new Button();
 	btnAddProvisioned.setText("+ New Check");
 	btnAddProvisioned.setType(ButtonType.SUCCESS);
@@ -68,6 +71,28 @@ public class CheckEditorWidget extends Composite {
 	con.add(btnAddProvisioned);
 	rpcService = GWT.create(CheckService.class);
 	updateCheckList(endpointID, container);
+	
+	
+	DropTarget target = new DropTarget(accordion) {
+		@Override
+		protected void onDragDrop(DndDropEvent event) {
+			super.onDragDrop(event);
+
+			// do the drag and drop visual action
+
+			AccordionGroup accordionGroup = (AccordionGroup) event
+					.getData();
+			accordion.add(accordionGroup);
+						
+			
+			
+		}
+
+	};
+	target.setGroup("check");
+	target.setOverStyle("drag-ok");
+
+	
 		
 	}
 	
@@ -92,7 +117,7 @@ public class CheckEditorWidget extends Composite {
 					public void onSuccess(Vector<CheckData> result) {
 						
 
-						final Accordion accordion = new Accordion();
+						
 
 						Iterator<CheckData> it = result.iterator();
 						while (it.hasNext()){

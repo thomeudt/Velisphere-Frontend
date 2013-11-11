@@ -29,5 +29,12 @@ ImageResource paperplane();
 @Source("megaphone.png")
 ImageResource megaphone();
 
+@Source("globe_green.png")
+ImageResource globe_green();
+
+@Source("4spheres.png")
+ImageResource fourSpheres();
+
+
 
 }

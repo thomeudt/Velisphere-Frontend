@@ -22,6 +22,7 @@ import java.util.Vector;
 
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Column;
+import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.Row;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
@@ -177,13 +178,17 @@ public class SphereEditorWidget extends Composite {
 		final VerticalLayoutContainer leftHeader = new VerticalLayoutContainer();
 		leftHeader.setPixelSize(400, 30);
 		Paragraph leftP = new Paragraph();
-		leftP.setText("Currently assigned:");
+		leftP.setText("Endpoints currently assigned to " + this.sphereName + ":");
+		leftP.addStyleName("smalltext");
 		leftHeader.add(leftP);
+		
+		
 
 		final VerticalLayoutContainer rightHeader = new VerticalLayoutContainer();
 		rightHeader.setPixelSize(350, 30);
 		Paragraph rightP = new Paragraph();
 		rightP.setText("Unassigned endpoints available to you:");
+		rightP.addStyleName("smalltext");
 		rightHeader.add(rightP);
 
 		Button btnAddProvisioned = new Button();

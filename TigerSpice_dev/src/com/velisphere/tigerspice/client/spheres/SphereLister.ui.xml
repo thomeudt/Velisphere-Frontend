@@ -1,60 +1,90 @@
-<!--
-  CONFIDENTIAL INFORMATION
-   __________________
-   
-    Copyright (C) 2013 Thorsten Meudt 
-    All Rights Reserved.
-   
-   NOTICE:  All information contained herein is, and remains
-   the property of Thorsten Meudt and its suppliers,
-   if any.  The intellectual and technical concepts contained
-   herein are proprietary to Thorsten Meudt
-   and its suppliers and may be covered by Patents,
-   patents in process, and are protected by trade secret or copyright law.
-   Dissemination of this information or reproduction of this material
-   is strictly forbidden unless prior written permission is obtained
-   from Thorsten Meudt.
--->
+<!-- CONFIDENTIAL INFORMATION __________________ Copyright (C) 2013 Thorsten 
+	Meudt All Rights Reserved. NOTICE: All information contained herein is, and 
+	remains the property of Thorsten Meudt and its suppliers, if any. The intellectual 
+	and technical concepts contained herein are proprietary to Thorsten Meudt 
+	and its suppliers and may be covered by Patents, patents in process, and 
+	are protected by trade secret or copyright law. Dissemination of this information 
+	or reproduction of this material is strictly forbidden unless prior written 
+	permission is obtained from Thorsten Meudt. -->
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
-<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder' xmlns:container="urn:import:com.sencha.gxt.widget.core.client.container"
-  xmlns:gxt="urn:import:com.sencha.gxt.widget.core.client" xmlns:button="urn:import:com.sencha.gxt.widget.core.client.button"
-  xmlns:vs='urn:import:com.velisphere.tigerspice.client.spheres' xmlns:g="urn:import:com.google.gwt.user.client.ui"
-  xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
- 
-    <g:HTMLPanel>
- 	<b:Row>
-			<b:Column size="8" offset="0">
-				<b:PageHeader>Sphere Overview</b:PageHeader>			
-			</b:Column>
-		</b:Row>
-	<b:Row>
-			
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:container="urn:import:com.sencha.gxt.widget.core.client.container"
+	xmlns:gxt="urn:import:com.sencha.gxt.widget.core.client" xmlns:button="urn:import:com.sencha.gxt.widget.core.client.button"
+	xmlns:vs='urn:import:com.velisphere.tigerspice.client.spheres' xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+	<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images'/>
+
+	<g:HTMLPanel>
+	     <b:Breadcrumbs divider=">" ui:field="brdMain">
+		</b:Breadcrumbs>
+		<b:Row>
 			<b:Column size="1" offset="0">
-			    <b:Image url="./images/sphere_green.png" />
+			    <b:Image resource="{res.fourSpheres}" />
 			</b:Column>
-			<b:Column size="8">
-				<b:Heading size="2">Your Spheres</b:Heading>
-				<b:HelpBlock>These are your own Spheres. Click to open and view content and details.</b:HelpBlock>
-				<vs:SphereListerWidget />
-				
-			</b:Column>
-		</b:Row>
-	<b:Row></b:Row>
- 	<b:Row>
-			<b:Column size="1" offset="0">
-			    <b:Image url="./images/sphere_blue.png" />
-			</b:Column>
-			<b:Column size="8">
-				<b:Heading size="2">Shared Spheres</b:Heading>
-				<b:HelpBlock>These are Spheres of users that contain endpoints available to you.</b:HelpBlock>
-				
-				
-			</b:Column>
-		</b:Row>
 		
-   
- 	 
+		   	<b:Column size="7" offset="0">
+				<b:PageHeader>Sphere Overview</b:PageHeader>
+			</b:Column>
+		</b:Row>
+
+		
+		
+		
+		<b:Row>
+
+			<b:Column size="2" offset="0">
+				<b:Well>
+					<b:Strong ui:field="pgpInformHeader">Sphere Tools</b:Strong>
+					<b:Paragraph addStyleNames="smalltext">Provision new Endpoint using the Provisioning Wizard.</b:Paragraph>
+					<b:Paragraph addStyleNames="smalltext">Best practices</b:Paragraph>
+					<b:Paragraph addStyleNames="smalltext">Getting started</b:Paragraph>
+				</b:Well>
+			</b:Column>
 
 
- </g:HTMLPanel>
+			<b:Column size="5" offset="0">
+
+
+				<b:Row>
+					<b:Column size="1" offset="0">
+						<b:Image url="./images/sphere_green.png" />
+					</b:Column>
+					<b:Column size="4">
+						<b:Heading size="2">Your Spheres</b:Heading>
+						<b:HelpBlock addStyleNames="smalltext">These are your own Spheres. Click to open and view
+							content and details.</b:HelpBlock>
+						<vs:SphereListerWidget />
+
+					</b:Column>
+
+
+				</b:Row>
+
+
+			</b:Column>
+
+			<b:Column size="5" offset="0">
+				<b:Row>
+					<b:Column size="1" offset="0">
+						<b:Image url="./images/sphere_blue.png" />
+					</b:Column>
+					<b:Column size="4">
+						<b:Heading size="2">Shared Spheres</b:Heading>
+						<b:HelpBlock addStyleNames="smalltext">These are Spheres of users that contain endpoints
+							available to you.</b:HelpBlock>
+
+
+					</b:Column>
+
+				</b:Row>
+
+			</b:Column>
+
+		</b:Row>
+
+
+
+
+
+	</g:HTMLPanel>
 </ui:UiBinder>

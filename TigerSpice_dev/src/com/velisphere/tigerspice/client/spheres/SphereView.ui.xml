@@ -33,10 +33,36 @@
 			</b:Column>
 			<b:Column size="7" offset="0">
 				<b:PageHeader ui:field="pghSphereNameHeader">Sphere</b:PageHeader>
-							
-				<vssp:SphereEditorWidget ui:field="sphereEditor" />
 			</b:Column>
 		</b:Row>
+		
+	    
+	    <b:Row>
+				        
+	        <b:Column size="2" offset="0">
+			<b:Well>
+			<b:Strong ui:field="pgpInformHeader">Sphere Information</b:Strong>
+			<b:Paragraph addStyleNames="smalltext">Geo location:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Endpoint #:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Critical Endpoints:</b:Paragraph>
+			</b:Well>
+			</b:Column>
+				        
+			
+			<b:Column size="9" offset="0">
+		
+					<b:Row>
+				    <b:Column size="8" offset="0">
+				    <vssp:SphereEditorWidget ui:field="sphereEditor" />
+				    </b:Column>
+					</b:Row>		
+				
+					
+					
+			
+			</b:Column>
+		</b:Row>
+	    
 		
 	
 	</g:HTMLPanel>

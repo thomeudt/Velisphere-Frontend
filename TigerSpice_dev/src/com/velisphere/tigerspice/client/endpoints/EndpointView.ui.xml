@@ -40,6 +40,8 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	        <b:Column size="2" offset="0">
 			<b:Well>
 			<b:Strong ui:field="pgpInformHeader">Endpoint Information</b:Strong>
+			<b:Paragraph addStyleNames="smalltext">Type:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext" ui:field="pgpEndpointClassName">loading...</b:Paragraph>
 			<b:Paragraph addStyleNames="smalltext">Last heard of:</b:Paragraph>
 			<b:Paragraph addStyleNames="smalltext">Manufacturer:</b:Paragraph>
 			<b:Paragraph addStyleNames="smalltext">Update available:</b:Paragraph>
@@ -51,19 +53,9 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			</b:Well>
 			</b:Column>
 				        
-			<b:Column size="1" offset="0" addStyleNames="text-center">
-				<b:Icon type="BRIEFCASE" size="LARGE" />
-									
-				
-			</b:Column>
 			<b:Column size="9" offset="0">
 		
-			    	<b:Row>
-				    <b:Column size="8" offset="0">
-				    <b:Strong ui:field="pgpEndpointClassName">Endpointclass</b:Strong>
-				    </b:Column>
-				    </b:Row>
-				    
+			    	
 			    	<b:Row>
 				    <b:Column size="4" offset="0">
 			    	<b:Paragraph addStyleNames="smalltext">Properties:</b:Paragraph>

@@ -51,6 +51,7 @@ import com.velisphere.tigerspice.client.properties.PropertyEditorWidget;
 import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
 import com.velisphere.tigerspice.client.spheres.SphereView;
+import com.velisphere.tigerspice.client.users.LoginSuccess;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.PropertyData;
@@ -79,10 +80,11 @@ public class EndpointView extends Composite {
 	@UiField
 	Breadcrumbs brdMain;
 	@UiField
-	Strong pgpEndpointClassName;
+	Paragraph pgpEndpointClassName;
 	
 	private String endpointClassID;
 	private String endpointID;
+	NavLink bread0;
 	NavLink bread1;
 	NavLink bread2;
 	NavLink bread3;
@@ -112,6 +114,9 @@ public class EndpointView extends Composite {
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		
+		bread0 = new NavLink();
+		bread0.setText("Home");
+		brdMain.add(bread0);		
 		bread1 = new NavLink();
 		bread1.setText("Sphere Overview");
 		brdMain.add(bread1);
@@ -122,6 +127,18 @@ public class EndpointView extends Composite {
 		bread3.setText(endpointName);
 		brdMain.add(bread3);
 
+
+		bread0.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+
+				RootPanel.get("main").clear();
+				LoginSuccess loginSuccess = new LoginSuccess();
+				RootPanel.get("main").add(loginSuccess);
+
+			}
+		});
+
+		
 		bread1.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 
