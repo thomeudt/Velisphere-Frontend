@@ -27,6 +27,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.ValueProvider;
@@ -100,7 +101,7 @@ public class PropertyEditorWidget extends Composite {
 		
 		
 		
-		VerticalLayoutContainer treeCon = new VerticalLayoutContainer();
+		ScrollPanel treeCon = new ScrollPanel();
 		treeCon = buildTree(this.endpointClassID);
 		column.add(treeCon);
 		row.add(column);
@@ -112,9 +113,9 @@ public class PropertyEditorWidget extends Composite {
 		
 
 
-	public VerticalLayoutContainer buildTree(final String endpointClassID) {
+	public ScrollPanel buildTree(final String endpointClassID) {
 
-		final VerticalLayoutContainer con = new VerticalLayoutContainer();
+		final ScrollPanel con = new ScrollPanel();
 		
 		final AnimationLoading animationLoading = new AnimationLoading();
 		showLoadAnimation(animationLoading);
@@ -187,7 +188,7 @@ public class PropertyEditorWidget extends Composite {
 													+ "\">");
 											builder.appendHtmlConstant("Drag "
 													+ accordionGroup.getTitle()
-													+ " into a Sphere");
+													+ " into Check list to create a new check item");
 											builder.appendHtmlConstant("</div>");
 											
 											DragSource source = new DragSource(

@@ -19,10 +19,13 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.sencha.gxt.core.client.dom.ScrollSupport;
 import com.sencha.gxt.dnd.core.client.DndDropEvent;
 import com.sencha.gxt.dnd.core.client.DropTarget;
+import com.sencha.gxt.fx.client.Draggable;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.velisphere.tigerspice.client.LoginDialogBox;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
 import com.velisphere.tigerspice.client.images.Images;
@@ -56,6 +59,7 @@ public class CheckEditorWidget extends Composite {
 
 	final VerticalLayoutContainer container = new VerticalLayoutContainer();
 	container.setBorders(true);
+	container.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
 	
 	
 	Button btnAddProvisioned = new Button();
@@ -83,6 +87,20 @@ public class CheckEditorWidget extends Composite {
 			AccordionGroup accordionGroup = (AccordionGroup) event
 					.getData();
 			accordion.add(accordionGroup);
+			RootPanel rootPanel = RootPanel.get("main");
+			rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
+			CheckEditorDialogBox checkEditorDialogBox = new CheckEditorDialogBox();
+			
+			checkEditorDialogBox.setModal(true);
+			checkEditorDialogBox.setAutoHideEnabled(true);
+			Draggable dragEditCheck = new Draggable(checkEditorDialogBox);
+			checkEditorDialogBox.setAnimationEnabled(true);
+			
+			checkEditorDialogBox.setPopupPosition((RootPanel.get().getOffsetWidth())/3, (RootPanel.get().getOffsetHeight())/4);
+			checkEditorDialogBox.show();
+			
+			
+			
 						
 			
 			

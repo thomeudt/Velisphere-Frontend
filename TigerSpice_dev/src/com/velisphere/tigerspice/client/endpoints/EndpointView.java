@@ -202,6 +202,7 @@ public class EndpointView extends Composite {
 						nameChangePopup.add(horizontalPanel);
 						nameChangePopup.setModal(true);
 						nameChangePopup.setAutoHideEnabled(true);
+						nameChangePopup.setAnimationEnabled(true);
 						nameChangePopup.showRelativeTo(ancEditEndpointName);
 						endpointChangeNameField.setFocus(true);
 						okButton.addClickHandler(

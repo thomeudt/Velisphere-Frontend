@@ -146,6 +146,7 @@ public class SphereView extends Composite {
 						nameChangePopup.add(horizontalPanel);
 						nameChangePopup.setModal(true);
 						nameChangePopup.setAutoHideEnabled(true);
+						nameChangePopup.setAnimationEnabled(true);
 						nameChangePopup.showRelativeTo(ancEditSphereName);
 						sphereChangeNameField.setFocus(true);
 						okButton.addClickHandler(

@@ -22,7 +22,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	<g:HTMLPanel>
 
 <div class="row">
-    <div class="span4 offset4">
+    <div class="span4 offset0">
       <div class="well" style="background-color: rgba(245, 245, 245, 0.95)">
         <legend>Sign in to Perspectives</legend>
           <div id="login-form">

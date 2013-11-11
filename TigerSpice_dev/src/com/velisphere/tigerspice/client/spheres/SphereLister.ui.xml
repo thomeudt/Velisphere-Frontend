@@ -50,7 +50,7 @@
 						<b:Image url="./images/sphere_green.png" />
 					</b:Column>
 					<b:Column size="4">
-						<b:Heading size="2">Your Spheres</b:Heading>
+						<b:Heading size="2">My Spheres</b:Heading>
 						<b:HelpBlock addStyleNames="smalltext">These are your own Spheres. Click to open and view
 							content and details.</b:HelpBlock>
 						<vs:SphereListerWidget />
@@ -69,7 +69,7 @@
 						<b:Image url="./images/sphere_blue.png" />
 					</b:Column>
 					<b:Column size="4">
-						<b:Heading size="2">Shared Spheres</b:Heading>
+						<b:Heading size="2">Public Spheres</b:Heading>
 						<b:HelpBlock addStyleNames="smalltext">These are Spheres of users that contain endpoints
 							available to you.</b:HelpBlock>
 

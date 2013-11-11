@@ -44,7 +44,9 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.core.client.dom.ScrollSupport;
 import com.sencha.gxt.dnd.core.client.DndDragStartEvent;
 import com.sencha.gxt.dnd.core.client.DndDropEvent;
 import com.sencha.gxt.dnd.core.client.DragSource;
@@ -100,13 +102,41 @@ public class SphereEditorWidget extends Composite {
 		final VerticalLayoutContainer container = new VerticalLayoutContainer();
 		container.setBorders(true);
 		container.setPixelSize(350, 300);
+		container.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
 
 		sourceContainer = new VerticalLayoutContainer();
 		sourceContainer.setPixelSize(250, 300);
 		sourceContainer.setBorders(true);
-
 		sourceContainer.setPosition(50, 0);
+		sourceContainer.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
 
+
+		DropTarget sourceTarget = new DropTarget(sourceContainer) {
+			@Override
+			protected void onDragDrop(DndDropEvent event) {
+				super.onDragDrop(event);
+
+				// do the drag and drop visual action
+
+				final DynamicAnchor anchorAssigned = (DynamicAnchor) event
+						.getData();
+				
+				Column column = new Column(2);
+				column.add(anchorAssigned);
+				Row row = new Row();
+				row.add(column);
+				sourceContainer.add(row);
+
+				// update the database
+			}
+
+		};
+		sourceTarget.setGroup("sphereToEndpoint");
+		sourceTarget.setOverStyle("drag-ok");
+
+		
+		
+		
 		DropTarget target = new DropTarget(container) {
 			@Override
 			protected void onDragDrop(DndDropEvent event) {
@@ -161,7 +191,7 @@ public class SphereEditorWidget extends Composite {
 			}
 
 		};
-		target.setGroup("test");
+		target.setGroup("endpointToSphere");
 		target.setOverStyle("drag-ok");
 
 		// add existing endpoints to target container
@@ -208,7 +238,7 @@ public class SphereEditorWidget extends Composite {
 	}
 
 	public void refreshSourceEndpoints(final String sphereID,
-			final VerticalLayoutContainer container) {
+			final VerticalLayoutContainer sourceContainer) {
 
 		final AnimationLoading animationLoading = new AnimationLoading();
 		showLoadAnimation(animationLoading);
@@ -310,7 +340,7 @@ public class SphereEditorWidget extends Composite {
 																Row row = new Row();
 																row.add(column);
 
-																container
+																sourceContainer
 																		.add(row);
 
 																DragSource source = new DragSource(
@@ -333,7 +363,7 @@ public class SphereEditorWidget extends Composite {
 																};
 																// group is
 																// optional
-																source.setGroup("test");
+																source.setGroup("endpointToSphere");
 															}
 														}
 
@@ -416,9 +446,31 @@ public class SphereEditorWidget extends Composite {
 									+ anchorAssigned.getText()
 									+ " into a Sphere");
 							builder.appendHtmlConstant("</div>");
-							// final HTML html = new HTML(builder.toSafeHtml());
 
-							// container.add(html, new MarginData(3));
+							DragSource source = new DragSource(
+									anchorAssigned) {
+								@Override
+								protected void onDragStart(
+										DndDragStartEvent event) {
+									super.onDragStart(event);
+									// by
+									// default
+									// drag
+									// is
+									// allowed
+									event.setData(anchorAssigned);
+									event.getStatusProxy()
+											.update(builder
+													.toSafeHtml());
+								}
+
+							};
+							// group is
+							// optional
+							source.setGroup("sphereToEndpoint");
+
+							
+							
 							Column column = new Column(2);
 							column.add(anchorAssigned);
 							Column buttonColumn = new Column(1);
