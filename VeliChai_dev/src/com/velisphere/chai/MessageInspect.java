@@ -101,7 +101,7 @@ public class MessageInspect implements Runnable {
 							&& e.getKey() != "SECTOK"
 							&& e.getKey() != "TIMESTAMP"
 							&& e.getKey() != "TYPE") {
-							triggeredRules.addAll(BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), "=", (byte) 0));
+							triggeredRules.addAll(BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), (byte) 0));
 							LoggerEngine.writeEndpointLog(EPID, e.getKey(), e.getValue());
 							
 					}

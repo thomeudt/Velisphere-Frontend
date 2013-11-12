@@ -145,7 +145,7 @@ public class BusinessLogicEngine {
 	}
 
 	public static HashSet<String> runChecks(String endpointID,
-			String propertyID, String checkValue, String operator, byte expired)
+			String propertyID, String checkValue, byte expired)
 			throws Exception {
 
 		HashSet<String> triggerRules = new HashSet<String>();
