@@ -27,6 +27,7 @@ import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.velisphere.tigerspice.client.LoginDialogBox;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.helper.DragobjectAccordion;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
 import com.velisphere.tigerspice.client.images.Images;
 import com.velisphere.tigerspice.shared.CheckData;
@@ -84,12 +85,15 @@ public class CheckEditorWidget extends Composite {
 
 			// do the drag and drop visual action
 
-			AccordionGroup accordionGroup = (AccordionGroup) event
+			DragobjectAccordion dragAccordion = (DragobjectAccordion) event
 					.getData();
-			accordion.add(accordionGroup);
+			accordion.add(dragAccordion.accordionGroup);
+			
+			
+			
 			RootPanel rootPanel = RootPanel.get("main");
 			rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-			CheckEditorDialogBox checkEditorDialogBox = new CheckEditorDialogBox();
+			CheckNewDialogBox checkEditorDialogBox = new CheckNewDialogBox(endpointID, dragAccordion.propertyID, dragAccordion.properyClassID);
 			
 			checkEditorDialogBox.setModal(true);
 			checkEditorDialogBox.setAutoHideEnabled(true);

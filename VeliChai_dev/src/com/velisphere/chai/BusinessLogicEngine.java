@@ -173,7 +173,7 @@ public class BusinessLogicEngine {
 
 		final ClientResponse bleChecksForExpression = BusinessLogicEngine.montanaClient
 				.callProcedure("BLE_ChecksForExpression", endpointID,
-						propertyID, checkValue, operator, expired);
+						propertyID, checkValue, expired);
 
 		final VoltTable vtChecksForExpression[] = bleChecksForExpression
 				.getResults();
