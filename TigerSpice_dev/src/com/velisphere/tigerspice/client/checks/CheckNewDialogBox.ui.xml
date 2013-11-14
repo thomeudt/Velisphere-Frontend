@@ -21,15 +21,15 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:HTMLPanel>
 
-      <b:Well styleName="wellsilver">
-        <legend>Add Check</legend>
-          <b:Form>
+      <b:WellForm styleName="wellsilver">
+        <b:Legend>Add Check</b:Legend>
+        
             <b:Row>
             <b:Column size="2">
             <b:Paragraph addStyleNames="smalltext" text="Title or Description" />
             </b:Column>                   
             <b:Column size="2">                    
-            <b:TextBox styleName="span2" ui:field="txtUsername" name="username" />
+            <b:TextBox styleName="span2" ui:field="txtCheckTitle" />
             </b:Column>
             </b:Row>
             <b:Row>
@@ -46,20 +46,21 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
             <b:Paragraph addStyleNames="smalltext" text="Operator" />
             </b:Column>
             <b:Column size="2">
-            <b:ListBox styleName="span2"/> 
+            <b:ListBox styleName="span2" ui:field="lstOperator"/> 
             </b:Column>
             </b:Row>
+           
             
             <b:Row>
             <b:Column size="2">
             <b:Paragraph addStyleNames="smalltext" text="Trigger Value" />
             </b:Column>
             <b:Column size="2">
-            <b:ListBox styleName="span2"/> 
+            <b:TextBox styleName="span2" ui:field="txtTriggerValue" /> 
             </b:Column>
             </b:Row>
+     
             
-           
             <b:Row>
             <b:Column size="2">
             <b:Button styleName="btn-success btn" text="Save" ui:field="btnLogin" />  
@@ -67,8 +68,11 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
             </b:Row>
             
                 
-        </b:Form>    
-      </b:Well>
+           
+      </b:WellForm>
+      
+     
+           
     
 	</g:HTMLPanel>
 </ui:UiBinder> 

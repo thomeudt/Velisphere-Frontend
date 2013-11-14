@@ -44,6 +44,8 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			<b:Paragraph addStyleNames="smalltext" ui:field="pgpEndpointClassName">loading...</b:Paragraph>
 			<b:Paragraph addStyleNames="smalltext">Last heard of:</b:Paragraph>
 			<b:Paragraph addStyleNames="smalltext">Manufacturer:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Statistics:</b:Paragraph>
+			<b:Button type="INFO" size="MINI">View Usage Stats</b:Button>
 			<b:Paragraph addStyleNames="smalltext">Update available:</b:Paragraph>
 			<b:Button type="INFO" size="MINI">Apply Update</b:Button>
 			<b:Paragraph addStyleNames="smalltext">Reset:</b:Paragraph>

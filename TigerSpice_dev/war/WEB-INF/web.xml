@@ -87,6 +87,16 @@
     <url-pattern>/tigerspice_dev/voltCheck</url-pattern>
   </servlet-mapping>
 
+<servlet>
+    <servlet-name>propertyclassdataServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.PropertyClassServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>propertyclassdataServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltPropertyClass</url-pattern>
+  </servlet-mapping>
+
 
 <servlet>
     <servlet-name>requestFactoryServlet</servlet-name>

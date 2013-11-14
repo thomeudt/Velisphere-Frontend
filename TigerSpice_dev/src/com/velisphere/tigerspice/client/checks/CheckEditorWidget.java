@@ -14,6 +14,8 @@ import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.resources.ButtonSize;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
@@ -67,7 +69,14 @@ public class CheckEditorWidget extends Composite {
 	btnAddProvisioned.setText("+ New Check");
 	btnAddProvisioned.setType(ButtonType.SUCCESS);
 	btnAddProvisioned.setSize(ButtonSize.SMALL);
-
+	btnAddProvisioned.addClickHandler(new ClickHandler() {
+	    public void onClick(ClickEvent event) {
+	        CheckNewDialogBox cnd = new CheckNewDialogBox(endpointID, "PR1", "PC4");
+	        cnd.show();
+	        
+	      }
+	    });
+	
 	
 	hpMain.add(container);
 	
@@ -97,7 +106,7 @@ public class CheckEditorWidget extends Composite {
 			
 			checkEditorDialogBox.setModal(true);
 			checkEditorDialogBox.setAutoHideEnabled(true);
-			Draggable dragEditCheck = new Draggable(checkEditorDialogBox);
+			
 			checkEditorDialogBox.setAnimationEnabled(true);
 			
 			checkEditorDialogBox.setPopupPosition((RootPanel.get().getOffsetWidth())/3, (RootPanel.get().getOffsetHeight())/4);
