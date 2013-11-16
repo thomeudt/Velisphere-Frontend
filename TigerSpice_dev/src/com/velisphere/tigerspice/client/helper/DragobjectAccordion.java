@@ -7,4 +7,5 @@ public class DragobjectAccordion {
 	public AccordionGroup accordionGroup;
 	public String propertyID;
 	public String properyClassID;
+	public String propertyName;
 }

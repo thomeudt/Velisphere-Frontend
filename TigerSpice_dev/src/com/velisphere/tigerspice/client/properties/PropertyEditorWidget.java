@@ -208,6 +208,7 @@ public class PropertyEditorWidget extends Composite {
 													dragAccordion.accordionGroup = accordionGroup;
 													dragAccordion.propertyID = currentItem.propertyId;
 													dragAccordion.properyClassID = currentItem.propertyclassId;
+													dragAccordion.propertyName = currentItem.propertyName;
 													
 													event.setData(dragAccordion);
 													event.getStatusProxy()

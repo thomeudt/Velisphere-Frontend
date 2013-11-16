@@ -77,6 +77,7 @@ public class SphereEditorWidget extends Composite {
 	String userID;
 	Vector<String> assignedEndpointIDs;
 	private VerticalLayoutContainer sourceContainer;
+	private VerticalLayoutContainer container = new VerticalLayoutContainer();
 
 	public SphereEditorWidget(final String sphereID, final String sphereName) {
 
@@ -99,13 +100,14 @@ public class SphereEditorWidget extends Composite {
 		HorizontalPanel hpHeader = new HorizontalPanel();
 		hpHeader.setSpacing(10);
 
-		final VerticalLayoutContainer container = new VerticalLayoutContainer();
 		container.setBorders(true);
-		container.setPixelSize(350, 300);
+		container.setWidth((int)((RootPanel.get().getOffsetWidth())/4));
+		container.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
 		container.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
 
 		sourceContainer = new VerticalLayoutContainer();
-		sourceContainer.setPixelSize(250, 300);
+		sourceContainer.setWidth((int)((RootPanel.get().getOffsetWidth())/4));
+		sourceContainer.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
 		sourceContainer.setBorders(true);
 		sourceContainer.setPosition(50, 0);
 		sourceContainer.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
@@ -126,8 +128,11 @@ public class SphereEditorWidget extends Composite {
 				Row row = new Row();
 				row.add(column);
 				sourceContainer.add(row);
-
+				
 				// update the database
+				removeAssigned(sphereID, anchorAssigned.getStringQueryFirst());
+				
+				
 			}
 
 		};
@@ -206,7 +211,7 @@ public class SphereEditorWidget extends Composite {
 		// refreshSourceEndpoints(this.sphereID, sourceContainer);
 
 		final VerticalLayoutContainer leftHeader = new VerticalLayoutContainer();
-		leftHeader.setPixelSize(400, 30);
+		leftHeader.setPixelSize((int)(RootPanel.get().getOffsetWidth()/4)+50, 30);
 		Paragraph leftP = new Paragraph();
 		leftP.setText("Endpoints currently assigned to " + this.sphereName + ":");
 		leftP.addStyleName("smalltext");
@@ -243,7 +248,10 @@ public class SphereEditorWidget extends Composite {
 		final AnimationLoading animationLoading = new AnimationLoading();
 		showLoadAnimation(animationLoading);
 
+		sourceContainer.clear();
+		
 		// get userID for current session
+		
 
 		LoginService.Util.getInstance().loginFromSessionServer(
 				new AsyncCallback<UserData>() {
@@ -430,6 +438,7 @@ public class SphereEditorWidget extends Composite {
 							anchorAssigned.addClickHandler(new OpenEndpointClickHandler(
 									sphereID, sphereName, currentItem.endpointId, currentItem.endpointName, currentItem.endpointclassId));
 
+							/*
 							final Button buttonRemoveAssigned = new Button();
 							buttonRemoveAssigned.setType(ButtonType.DANGER);
 							buttonRemoveAssigned.setSize(ButtonSize.MINI);
@@ -438,6 +447,7 @@ public class SphereEditorWidget extends Composite {
 									.addClickHandler(new RemoveAssignedClickHandler(
 											currentItem.endpointId, sphereID,
 											container));
+											*/
 
 							final SafeHtmlBuilder builder = new SafeHtmlBuilder();
 							builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
@@ -471,13 +481,13 @@ public class SphereEditorWidget extends Composite {
 
 							
 							
-							Column column = new Column(2);
+							Column column = new Column(4);
 							column.add(anchorAssigned);
-							Column buttonColumn = new Column(1);
-							buttonColumn.add(buttonRemoveAssigned);
+							// Column buttonColumn = new Column(1);
+							//buttonColumn.add(buttonRemoveAssigned);
 							Row row = new Row();
 							row.add(column);
-							row.add(buttonColumn);
+							// row.add(buttonColumn);
 
 							container.add(row);
 
@@ -489,9 +499,11 @@ public class SphereEditorWidget extends Composite {
 
 				});
 
+	
 	}
 
 	private void showLoadAnimation(AnimationLoading animationLoading) {
+		
 		RootPanel rootPanel = RootPanel.get("main");
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 		rootPanel.add(animationLoading, 25, 40);
@@ -500,8 +512,10 @@ public class SphereEditorWidget extends Composite {
 	private void removeLoadAnimation(AnimationLoading animationLoading) {
 		if (animationLoading != null)
 			animationLoading.removeFromParent();
+		
 	}
 
+	/*
 	public class RemoveAssignedClickHandler implements ClickHandler {
 
 		String sphereID;
@@ -548,7 +562,7 @@ public class SphereEditorWidget extends Composite {
 
 	}
 
-
+*/
 	public class OpenEndpointClickHandler implements ClickHandler {
 
 		private String sphereID;
@@ -583,6 +597,43 @@ public class SphereEditorWidget extends Composite {
 		}
 
 	}
+	
+	public void removeAssigned(final String sphereID, String endpointID) {
+	
+		
+			final AnimationLoading animationLoading = new AnimationLoading();
+			showLoadAnimation(animationLoading);
+
+			rpcService.removeEndpointFromSphere(endpointID, sphereID,
+					new AsyncCallback<String>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+							removeLoadAnimation(animationLoading);
+						}
+
+						@Override
+						public void onSuccess(String result) {
+							// TODO Auto-generated method stub
+						
+							// refresh the views
+							// target endpoint list first to ensure proper reflection of drag state
+							
+							refreshTargetEndpoints(sphereID, container);
+								
+							
+							removeLoadAnimation(animationLoading);
+						
+		
+						}
+
+					});
+
+		
+
+	}
+
 
 
 

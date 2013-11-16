@@ -1,10 +1,6 @@
 package com.velisphere.tigerspice.client.checks;
 
-
 import java.util.Iterator;
-
-
-
 
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.google.gwt.core.client.GWT;
@@ -25,12 +21,14 @@ import com.velisphere.tigerspice.shared.PropertyClassData;
 
 public class CheckNewDialogBox extends PopupPanel {
 
-	@UiField ListBox lstPropertyID;
-	@UiField ListBox lstOperator; 
-	
+	@UiField
+	ListBox lstPropertyID;
+	@UiField
+	ListBox lstOperator;
+
 	private PropertyClassServiceAsync rpcServicePropertyClass;
 	private AnimationLoading animationLoading = new AnimationLoading();
-	
+
 	private static CheckEditorDialogBoxUiBinder uiBinder = GWT
 			.create(CheckEditorDialogBoxUiBinder.class);
 
@@ -38,12 +36,13 @@ public class CheckNewDialogBox extends PopupPanel {
 			UiBinder<Widget, CheckNewDialogBox> {
 	}
 
-	public CheckNewDialogBox(String endpointID, String propertyID, String propertyClassID) {
-		
+	public CheckNewDialogBox(String endpointID, String propertyID,
+			String propertyClassID, String propertyName) {
+
 		setWidget(uiBinder.createAndBindUi(this));
 		rpcServicePropertyClass = GWT.create(PropertyClassService.class);
-		rpcServicePropertyClass.getPropertyClassForPropertyClassID(propertyClassID,
-				new AsyncCallback<PropertyClassData>() {
+		rpcServicePropertyClass.getPropertyClassForPropertyClassID(
+				propertyClassID, new AsyncCallback<PropertyClassData>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -54,27 +53,91 @@ public class CheckNewDialogBox extends PopupPanel {
 					@Override
 					public void onSuccess(PropertyClassData result) {
 						// TODO Auto-generated method stub
-						
+
 						DatatypeConfig dataTypeConfig = new DatatypeConfig();
-						
-						
-						
-						if(result.propertyClassName.equalsIgnoreCase("text"))
-						{
-							Iterator<String> it = dataTypeConfig.getTextOperators().iterator();
-							while(it.hasNext()){
+
+						if (result.propertyClassDatatype
+								.equalsIgnoreCase("string")) {
+							Iterator<String> it = dataTypeConfig
+									.getTextOperators().iterator();
+							while (it.hasNext()) {
 								String listItem = it.next();
 								lstOperator.addItem(listItem);
-								
+
+							}
+						}
+
+						else
+
+						if (result.propertyClassDatatype
+								.equalsIgnoreCase("byte")) {
+							Iterator<String> it = dataTypeConfig
+									.getNumberOperators().iterator();
+							while (it.hasNext()) {
+								String listItem = it.next();
+								lstOperator.addItem(listItem);
+
+							}
+						}
+
+						else
+
+						if (result.propertyClassDatatype
+								.equalsIgnoreCase("long")) {
+							Iterator<String> it = dataTypeConfig
+									.getNumberOperators().iterator();
+							while (it.hasNext()) {
+								String listItem = it.next();
+								lstOperator.addItem(listItem);
+
+							}
+						}
+
+						else
+
+						if (result.propertyClassDatatype
+								.equalsIgnoreCase("float")) {
+							Iterator<String> it = dataTypeConfig
+									.getNumberOperators().iterator();
+							while (it.hasNext()) {
+								String listItem = it.next();
+								lstOperator.addItem(listItem);
+
+							}
+						}
+
+						else
+
+						if (result.propertyClassDatatype
+								.equalsIgnoreCase("double")) {
+							Iterator<String> it = dataTypeConfig
+									.getNumberOperators().iterator();
+							while (it.hasNext()) {
+								String listItem = it.next();
+								lstOperator.addItem(listItem);
+
+							}
+						}
+
+						else
+
+						if (result.propertyClassDatatype
+								.equalsIgnoreCase("boolean")) {
+							Iterator<String> it = dataTypeConfig
+									.getBooleanOperators().iterator();
+							while (it.hasNext()) {
+								String listItem = it.next();
+								lstOperator.addItem(listItem);
+
 							}
 						}
 						
-						lstOperator.setVisibleItemCount(1);
-						
-					
-						//lstOperator.addItem(result.propertyClassName);						
-						removeLoadAnimation(animationLoading);
+						else lstOperator.addItem("Invalid Endpoint Configuration");
 
+						lstOperator.setVisibleItemCount(1);
+
+						// lstOperator.addItem(result.propertyClassName);
+						removeLoadAnimation(animationLoading);
 
 					}
 
@@ -82,15 +145,13 @@ public class CheckNewDialogBox extends PopupPanel {
 
 		lstOperator.setEnabled(true);
 		lstOperator.setSelectedIndex(1);
-		
-		lstPropertyID.addItem(propertyID, propertyID);
+
+		lstPropertyID.addItem(propertyName, propertyID);
 		lstPropertyID.setVisibleItemCount(1);
-		
-		
-		
-		
+		lstPropertyID.setEnabled(false);
+
 	}
-	
+
 	private void showLoadAnimation(AnimationLoading animationLoading) {
 		RootPanel rootPanel = RootPanel.get("main");
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);

@@ -63,6 +63,9 @@ public class CheckEditorWidget extends Composite {
 	final VerticalLayoutContainer container = new VerticalLayoutContainer();
 	container.setBorders(true);
 	container.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
+	//container.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
+	container.setWidth((int)((RootPanel.get().getOffsetWidth())/4));
+	
 	
 	
 	Button btnAddProvisioned = new Button();
@@ -71,7 +74,7 @@ public class CheckEditorWidget extends Composite {
 	btnAddProvisioned.setSize(ButtonSize.SMALL);
 	btnAddProvisioned.addClickHandler(new ClickHandler() {
 	    public void onClick(ClickEvent event) {
-	        CheckNewDialogBox cnd = new CheckNewDialogBox(endpointID, "PR1", "PC4");
+	        CheckNewDialogBox cnd = new CheckNewDialogBox(endpointID, "PR1", "PC4", "AA");
 	        cnd.show();
 	        
 	      }
@@ -102,7 +105,7 @@ public class CheckEditorWidget extends Composite {
 			
 			RootPanel rootPanel = RootPanel.get("main");
 			rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-			CheckNewDialogBox checkEditorDialogBox = new CheckNewDialogBox(endpointID, dragAccordion.propertyID, dragAccordion.properyClassID);
+			CheckNewDialogBox checkEditorDialogBox = new CheckNewDialogBox(endpointID, dragAccordion.propertyID, dragAccordion.properyClassID, dragAccordion.propertyName);
 			
 			checkEditorDialogBox.setModal(true);
 			checkEditorDialogBox.setAutoHideEnabled(true);
@@ -151,6 +154,11 @@ public class CheckEditorWidget extends Composite {
 						
 
 						Iterator<CheckData> it = result.iterator();
+	
+						
+							
+						
+						
 						while (it.hasNext()){
 	
 							CheckData currentItem = it.next();
@@ -183,6 +191,12 @@ public class CheckEditorWidget extends Composite {
 							
 							
 						}
+						
+						AccordionGroup accordionGroupTarget = new AccordionGroup();
+						accordionGroupTarget.setHeading("Drag here to add new check");
+						accordion.add(accordionGroupTarget);
+						container.add(accordion);
+					
 						
 						removeLoadAnimation(animationLoading);
 						
