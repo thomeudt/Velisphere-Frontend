@@ -11,6 +11,7 @@ import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.Row;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.resources.ButtonSize;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
@@ -68,24 +69,13 @@ public class CheckEditorWidget extends Composite {
 	
 	
 	
-	Button btnAddProvisioned = new Button();
-	btnAddProvisioned.setText("+ New Check");
-	btnAddProvisioned.setType(ButtonType.SUCCESS);
-	btnAddProvisioned.setSize(ButtonSize.SMALL);
-	btnAddProvisioned.addClickHandler(new ClickHandler() {
-	    public void onClick(ClickEvent event) {
-	        CheckNewDialogBox cnd = new CheckNewDialogBox(endpointID, "PR1", "PC4", "AA");
-	        cnd.show();
-	        
-	      }
-	    });
 	
 	
 	hpMain.add(container);
 	
 	con.add(hpMain);
 
-	con.add(btnAddProvisioned);
+	
 	rpcService = GWT.create(CheckService.class);
 	updateCheckList(endpointID, container);
 	
@@ -176,12 +166,15 @@ public class CheckEditorWidget extends Composite {
 							String stateText = new String();
 							if (currentItem.getState()==1){
 								stateText = "True";
+								accordionGroup.setBaseIcon(IconType.CHECK);
 							} else
 							{
 								stateText = "Not True";
+								accordionGroup.setBaseIcon(IconType.CHECK_EMPTY);
 							}
 							Row row4 = accordionRowBuilder(Images.INSTANCE.tag(), stateText, "Current State: ");	
 							accordionGroup.add(row4);
+							
 							
 							
 							
@@ -194,6 +187,8 @@ public class CheckEditorWidget extends Composite {
 						
 						AccordionGroup accordionGroupTarget = new AccordionGroup();
 						accordionGroupTarget.setHeading("Drag here to add new check");
+						accordionGroupTarget.setBaseIcon(IconType.PLUS);
+						
 						accordion.add(accordionGroupTarget);
 						container.add(accordion);
 					

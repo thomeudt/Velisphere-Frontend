@@ -62,6 +62,7 @@ import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointView;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
+import com.velisphere.tigerspice.client.images.Images;
 import com.velisphere.tigerspice.client.users.LoginService;
 import com.velisphere.tigerspice.client.users.NewAccountSuccessMessage;
 import com.velisphere.tigerspice.shared.EndpointData;
@@ -226,19 +227,18 @@ public class SphereEditorWidget extends Composite {
 		rightP.addStyleName("smalltext");
 		rightHeader.add(rightP);
 
-		Button btnAddProvisioned = new Button();
-		btnAddProvisioned.setText("Add auto provisoned Endpoint");
-		btnAddProvisioned.setType(ButtonType.SUCCESS);
-		btnAddProvisioned.setSize(ButtonSize.SMALL);
-
+		
+		
 		hpHeader.add(leftHeader);
 		hpHeader.add(rightHeader);
+		
 		hpMain.add(container);
+		
 		hpMain.add(sourceContainer);
 		con.add(hpHeader);
 		con.add(hpMain);
 
-		con.add(btnAddProvisioned);
+		
 
 	}
 

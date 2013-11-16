@@ -22,6 +22,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 		xmlns:ct="urn:import:com.google.gwt.user.cellview.client"
 		xmlns:vspy="urn:import:com.velisphere.tigerspice.client.properties"
 		xmlns:vsch="urn:import:com.velisphere.tigerspice.client.checks">
+		<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images'/>
 	<g:HTMLPanel>
             <b:Breadcrumbs divider=">" ui:field="brdMain">
 		</b:Breadcrumbs>
@@ -73,10 +74,17 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 				    
 					</b:Row>
 					<b:Row>
+					    
+					    
+					    
 				    <b:Column size="4" offset="0">
+				        
 				    <vspy:PropertyEditorWidget ui:field="vpyPropertyEditor" />
 					</b:Column>
+					
+				    
 					<b:Column size="4" offset="0">
+				    				    
 				    <vsch:CheckEditorWidget />
 				    
 					</b:Column>

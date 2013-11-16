@@ -35,6 +35,9 @@ ImageResource globe_green();
 @Source("4spheres.png")
 ImageResource fourSpheres();
 
+@Source("big_arrow.png")
+ImageResource big_arrow();
+
 
 
 }

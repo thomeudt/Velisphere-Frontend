@@ -45,6 +45,8 @@
 			<b:Paragraph addStyleNames="smalltext">Geo location:</b:Paragraph>
 			<b:Paragraph addStyleNames="smalltext">Endpoint #:</b:Paragraph>
 			<b:Paragraph addStyleNames="smalltext">Critical Endpoints:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Add Endpoint:</b:Paragraph>
+			<b:Button type="SUCCESS" size="MINI">Autoprovisioned</b:Button>
 			</b:Well>
 			</b:Column>
 				        
@@ -52,7 +54,7 @@
 			<b:Column size="9" offset="0">
 		
 					<b:Row>
-				    <b:Column size="8" offset="0">
+				    <b:Column size="9" offset="0">
 				    <vssp:SphereEditorWidget ui:field="sphereEditor" />
 				    </b:Column>
 					</b:Row>		
