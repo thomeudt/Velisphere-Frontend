@@ -17,10 +17,13 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.sencha.gxt.core.client.dom.ScrollSupport;
 import com.sencha.gxt.dnd.core.client.DndDropEvent;
@@ -95,15 +98,27 @@ public class CheckEditorWidget extends Composite {
 			
 			RootPanel rootPanel = RootPanel.get("main");
 			rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-			CheckNewDialogBox checkEditorDialogBox = new CheckNewDialogBox(endpointID, dragAccordion.propertyID, dragAccordion.properyClassID, dragAccordion.propertyName);
+			CheckNewDialogBox checkNewDialogBox = new CheckNewDialogBox(endpointID, dragAccordion.propertyID, dragAccordion.properyClassID, dragAccordion.propertyName);
 			
-			checkEditorDialogBox.setModal(true);
-			checkEditorDialogBox.setAutoHideEnabled(true);
+			checkNewDialogBox.setModal(true);
+			checkNewDialogBox.setAutoHideEnabled(true);
 			
-			checkEditorDialogBox.setAnimationEnabled(true);
+			checkNewDialogBox.setAnimationEnabled(true);
 			
-			checkEditorDialogBox.setPopupPosition((RootPanel.get().getOffsetWidth())/3, (RootPanel.get().getOffsetHeight())/4);
-			checkEditorDialogBox.show();
+			checkNewDialogBox.setPopupPosition((RootPanel.get().getOffsetWidth())/3, (RootPanel.get().getOffsetHeight())/4);
+			checkNewDialogBox.show();
+			
+			checkNewDialogBox.addCloseHandler(new CloseHandler<PopupPanel>(){
+
+				
+				public void onClose(CloseEvent event) {
+				
+					updateCheckList(endpointID, container);
+				}
+				
+			});
+			
+			
 			
 			
 			
@@ -123,6 +138,9 @@ public class CheckEditorWidget extends Composite {
 	private void updateCheckList(String endpointID, final VerticalLayoutContainer container){
 		final AnimationLoading animationLoading = new AnimationLoading();
 		showLoadAnimation(animationLoading);
+		
+		container.clear();
+		accordion.clear();
 		
 		rpcService.getChecksForEndpointID(
 		

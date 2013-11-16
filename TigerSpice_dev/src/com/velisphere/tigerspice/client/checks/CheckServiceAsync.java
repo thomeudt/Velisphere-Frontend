@@ -30,5 +30,5 @@ import com.velisphere.tigerspice.shared.UserData;
 
 public interface CheckServiceAsync {
 	void getChecksForEndpointID(String endpointID, AsyncCallback<Vector<CheckData>> callback);
-	
+	void addNewCheck(String endpointID, String propertyID, String checkValue, String operator, String name, AsyncCallback<String> callback );
 }
