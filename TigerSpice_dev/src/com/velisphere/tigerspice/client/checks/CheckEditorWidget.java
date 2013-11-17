@@ -7,9 +7,11 @@ import com.github.gwtbootstrap.client.ui.Accordion;
 import com.github.gwtbootstrap.client.ui.AccordionGroup;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Column;
+import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.Row;
+import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.resources.ButtonSize;
@@ -21,6 +23,7 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -135,7 +138,7 @@ public class CheckEditorWidget extends Composite {
 		
 	}
 	
-	private void updateCheckList(String endpointID, final VerticalLayoutContainer container){
+	private void updateCheckList(final String endpointID, final VerticalLayoutContainer container){
 		final AnimationLoading animationLoading = new AnimationLoading();
 		showLoadAnimation(animationLoading);
 		
@@ -159,8 +162,6 @@ public class CheckEditorWidget extends Composite {
 					public void onSuccess(Vector<CheckData> result) {
 						
 
-						
-
 						Iterator<CheckData> it = result.iterator();
 	
 						
@@ -169,7 +170,7 @@ public class CheckEditorWidget extends Composite {
 						
 						while (it.hasNext()){
 	
-							CheckData currentItem = it.next();
+							final CheckData currentItem = it.next();
 							final AccordionGroup accordionGroup = new AccordionGroup();
 							accordionGroup.setHeading(currentItem.getName());
 							Row row = accordionRowBuilder(Images.INSTANCE.tag(), currentItem.getPropertyId(), "Checking on Property: ");	
@@ -181,6 +182,88 @@ public class CheckEditorWidget extends Composite {
 							Row row3 = accordionRowBuilder(Images.INSTANCE.tag(), currentItem.getCheckValue(), "Trigger Value: ");	
 							accordionGroup.add(row3);
 							
+							Icon icnEditTriggerValue = new Icon();
+							icnEditTriggerValue.setType(IconType.EDIT);
+							// RootPanel.get().add(icnEditClassName, pghEndpointName..getAbsoluteLeft(), pghEndpointName.getAbsoluteTop());
+							row3.add(icnEditTriggerValue);
+							final Anchor ancEditTriggerValue = new Anchor();
+							ancEditTriggerValue.setText(" Edit");
+							ancEditTriggerValue.setHref("#");
+							row3.add(ancEditTriggerValue);
+							
+								
+							final TextBox txtEditTriggerValue = new TextBox();
+							final Button okButton = new Button();
+							okButton.setText("OK");
+							okButton.setType(ButtonType.SUCCESS);
+							final PopupPanel editTriggerValuePopup = new PopupPanel();
+							
+							ancEditTriggerValue.addClickHandler(
+									new ClickHandler(){ 
+									public void onClick(ClickEvent event)  {
+										
+										
+										if (editTriggerValuePopup.isShowing()) {
+											
+											editTriggerValuePopup.removeFromParent();
+										} else
+										{						
+											txtEditTriggerValue.setText(currentItem.checkValue);
+											HorizontalPanel horizontalPanel = new HorizontalPanel();
+											horizontalPanel.add(txtEditTriggerValue);
+											horizontalPanel.add(okButton.asWidget());
+											editTriggerValuePopup.clear();
+											editTriggerValuePopup.add(horizontalPanel);
+											editTriggerValuePopup.setModal(true);
+											editTriggerValuePopup.setAutoHideEnabled(true);
+											editTriggerValuePopup.setAnimationEnabled(true);
+											editTriggerValuePopup.showRelativeTo(ancEditTriggerValue);
+											txtEditTriggerValue.setFocus(true);
+											okButton.addClickHandler(
+													new ClickHandler(){ 
+													public void onClick(ClickEvent event)  {
+														
+														final String newTriggerValue = txtEditTriggerValue.getText();
+														
+														editTriggerValuePopup.hide();
+														final AnimationLoading animationLoading = new AnimationLoading();
+														showLoadAnimation(animationLoading);
+
+														rpcService.updateCheck(currentItem.checkId, currentItem.checkName, newTriggerValue, currentItem.operator,
+																new AsyncCallback<String>() {
+
+																	@Override
+																	public void onFailure(Throwable caught) {
+																		// TODO Auto-generated method stub
+																		removeLoadAnimation(animationLoading);
+																	}
+
+																	@Override
+																	public void onSuccess(String result) {
+																		// TODO Auto-generated method stub
+																		
+																		
+																		removeLoadAnimation(animationLoading);
+																		updateCheckList(endpointID, container);	
+																		
+
+
+																	}
+
+																});
+
+													}
+													});
+										}
+									}
+									});
+
+							
+							
+							
+							
+							
+														
 							String stateText = new String();
 							if (currentItem.getState()==1){
 								stateText = "True";
@@ -192,6 +275,53 @@ public class CheckEditorWidget extends Composite {
 							}
 							Row row4 = accordionRowBuilder(Images.INSTANCE.tag(), stateText, "Current State: ");	
 							accordionGroup.add(row4);
+							
+							Row row5 = new Row();
+							Column column1 = new Column(1, 1);
+							Button btnDeleteCheck = new Button();
+							btnDeleteCheck.setText("Delete");
+							btnDeleteCheck.addStyleName("btn-danger");
+							btnDeleteCheck.addStyleName("btn-mini");
+							column1.add(btnDeleteCheck);
+							row5.add(column1);
+							accordionGroup.add(row5);
+							
+							final String currentCheckID = currentItem.getCheckId();
+					
+							btnDeleteCheck.addClickHandler(new ClickHandler(){
+
+								@Override
+								public void onClick(ClickEvent event) {
+									// TODO Auto-generated method stub
+									
+									showLoadAnimation(animationLoading);
+									rpcService.deleteCheck(
+											
+											currentCheckID,
+											new AsyncCallback<String>() {
+
+												@Override
+												public void onFailure(
+														Throwable caught) {
+													// TODO Auto-generated method stub
+													
+												}
+
+												@Override
+												public void onSuccess(
+														String result) {
+													// TODO Auto-generated method stub
+													updateCheckList(endpointID, container);
+													removeLoadAnimation(animationLoading);
+												}
+
+												
+
+									
+								});
+								}	
+								
+							});
 							
 							
 							

@@ -38,7 +38,11 @@ public class CheckData implements IsSerializable, Comparable <CheckData>
 		return 0;
 	}
 	
-	public String getId(){
+	public String getCheckId(){
+		return checkId;
+	}
+	
+	public String getEndpointId(){
 		return endpointId;
 	}
 	

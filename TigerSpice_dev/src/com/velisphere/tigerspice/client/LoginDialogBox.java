@@ -136,6 +136,7 @@ public class LoginDialogBox extends PopupPanel{
 		RootPanel.get("main").clear();
 		NewAccountDialogbox newAccount = new NewAccountDialogbox();
 		RootPanel.get("main").add(newAccount);
+		this.hide();
 	
 	}
 
