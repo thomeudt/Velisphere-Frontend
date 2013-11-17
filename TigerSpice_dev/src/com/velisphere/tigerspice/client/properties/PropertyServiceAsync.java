@@ -31,7 +31,7 @@ public interface PropertyServiceAsync {
 	void getAllPropertyDetails(AsyncCallback<Vector<PropertyData>> callback);
 	void getPropertiesForEndpointClass(String endpointClassID, AsyncCallback<List<PropertyData>> callback);
 	void getValueForEndpointProperty(String endpointID, String propertyID, AsyncCallback<String> callback);
-
+	void getPropertyClass(String propertyID, AsyncCallback<String> callback);
 	
 	
 }

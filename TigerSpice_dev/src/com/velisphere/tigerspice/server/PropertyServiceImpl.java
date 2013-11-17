@@ -227,5 +227,60 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 
 	}
 
+	@Override
+	public String getPropertyClass(
+			String propertyID) {
+
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		String valueForEndpointProperty = new String();
+		try {
+
+			final ClientResponse findPropertyClass = voltCon.montanaClient
+					.callProcedure("UI_SelectPropertyClassForPropertyID",
+							propertyID);
+
+			final VoltTable findPropertyClassResults[] = findPropertyClass
+					.getResults();
+
+			VoltTable result = findPropertyClassResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					valueForEndpointProperty = result.getString("propertyClassID");
+
+				}
+			}
+
+			
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return valueForEndpointProperty;
+
+	}
+
 
 }
