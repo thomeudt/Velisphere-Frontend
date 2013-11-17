@@ -32,6 +32,6 @@ public interface PropertyServiceAsync {
 	void getPropertiesForEndpointClass(String endpointClassID, AsyncCallback<List<PropertyData>> callback);
 	void getValueForEndpointProperty(String endpointID, String propertyID, AsyncCallback<String> callback);
 	void getPropertyClass(String propertyID, AsyncCallback<String> callback);
-	
+	void getPropertyName(String propertyID, AsyncCallback<String> callback);
 	
 }

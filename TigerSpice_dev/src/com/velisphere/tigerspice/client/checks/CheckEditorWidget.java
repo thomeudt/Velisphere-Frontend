@@ -249,231 +249,12 @@ public class CheckEditorWidget extends Composite {
 						}
 					});
 
-					Row row1 = accordionRowBuilder(Images.INSTANCE.tag(),
-							currentItem.getPropertyId(),
-							"Checking on Property: ");
-					accordionGroup.add(row1);
+					final Row row1 = new Row();
 
-					Row row2 = accordionRowBuilder(Images.INSTANCE.tag(),
-							currentItem.getOperator(), "Operator: ");
-					accordionGroup.add(row2);
-
-					Icon icnEditOperator = new Icon();
-					icnEditOperator.setType(IconType.EDIT);
-					row2.add(icnEditOperator);
-					final Anchor ancEditOperator = new Anchor();
-					ancEditOperator.setText(" Edit");
-					ancEditOperator.setHref("#");
-					row2.add(ancEditOperator);
-					final ListBox lstEditOperator = new ListBox();
-					populateOperatorDropdown(currentItem.propertyId,
-							lstEditOperator);
-
-					final Button okButtonOperator = new Button();
-					okButtonOperator.setText("OK");
-					okButtonOperator.setType(ButtonType.SUCCESS);
-					final PopupPanel editCheckOperatorPopup = new PopupPanel();
-
-					ancEditOperator.addClickHandler(new ClickHandler() {
-						public void onClick(ClickEvent event) {
-
-							if (editCheckNamePopup.isShowing()) {
-
-								editCheckNamePopup.removeFromParent();
-							} else {
-								lstEditOperator
-										.setSelectedValue(currentItem.operator);
-								HorizontalPanel horizontalPanel = new HorizontalPanel();
-								horizontalPanel.add(lstEditOperator);
-								horizontalPanel.add(okButtonOperator.asWidget());
-								editCheckOperatorPopup.clear();
-								editCheckOperatorPopup.add(horizontalPanel);
-								editCheckOperatorPopup.setModal(true);
-								editCheckOperatorPopup.setAutoHideEnabled(true);
-								editCheckOperatorPopup
-										.setAnimationEnabled(true);
-								editCheckOperatorPopup
-										.showRelativeTo(ancEditCheckName);
-								lstEditOperator.setFocus(true);
-								okButtonOperator
-										.addClickHandler(new ClickHandler() {
-											public void onClick(ClickEvent event) {
-
-												final String newCheckOperator = lstEditOperator
-														.getValue();
-
-												editCheckOperatorPopup.hide();
-												final AnimationLoading animationLoading = new AnimationLoading();
-												showLoadAnimation(animationLoading);
-
-												rpcService
-														.updateCheck(
-																currentItem.checkId,
-																currentItem.checkName,
-																currentItem.checkValue,
-																newCheckOperator,
-																new AsyncCallback<String>() {
-
-																	@Override
-																	public void onFailure(
-																			Throwable caught) {
-																		// TODO
-																		// Auto-generated
-																		// method
-																		// stub
-																		removeLoadAnimation(animationLoading);
-																	}
-
-																	@Override
-																	public void onSuccess(
-																			String result) {
-																		// TODO
-																		// Auto-generated
-																		// method
-																		// stub
-
-																		removeLoadAnimation(animationLoading);
-																		updateCheckList(
-																				endpointID,
-																				container);
-
-																	}
-
-																});
-
-											}
-										});
-							}
-						}
-					});
-
-					Row row3 = accordionRowBuilder(Images.INSTANCE.tag(),
-							currentItem.getCheckValue(), "Trigger Value: ");
-					accordionGroup.add(row3);
-
-					Icon icnEditTriggerValue = new Icon();
-					icnEditTriggerValue.setType(IconType.EDIT);
-					// RootPanel.get().add(icnEditClassName,
-					// pghEndpointName..getAbsoluteLeft(),
-					// pghEndpointName.getAbsoluteTop());
-					row3.add(icnEditTriggerValue);
-					final Anchor ancEditTriggerValue = new Anchor();
-					ancEditTriggerValue.setText(" Edit");
-					ancEditTriggerValue.setHref("#");
-					row3.add(ancEditTriggerValue);
-					final TextBox txtEditTriggerValue = new TextBox();
-					final Button okButtonCheckValue = new Button();
-					okButtonCheckValue.setText("OK");
-					okButtonCheckValue.setType(ButtonType.SUCCESS);
-					final PopupPanel editTriggerValuePopup = new PopupPanel();
-
-					ancEditTriggerValue.addClickHandler(new ClickHandler() {
-						public void onClick(ClickEvent event) {
-
-							if (editTriggerValuePopup.isShowing()) {
-
-								editTriggerValuePopup.removeFromParent();
-							} else {
-								txtEditTriggerValue
-										.setText(currentItem.checkValue);
-								HorizontalPanel horizontalPanel = new HorizontalPanel();
-								horizontalPanel.add(txtEditTriggerValue);
-								horizontalPanel.add(okButtonCheckValue
-										.asWidget());
-								editTriggerValuePopup.clear();
-								editTriggerValuePopup.add(horizontalPanel);
-								editTriggerValuePopup.setModal(true);
-								editTriggerValuePopup.setAutoHideEnabled(true);
-								editTriggerValuePopup.setAnimationEnabled(true);
-								editTriggerValuePopup
-										.showRelativeTo(ancEditTriggerValue);
-								txtEditTriggerValue.setFocus(true);
-								okButtonCheckValue
-										.addClickHandler(new ClickHandler() {
-											public void onClick(ClickEvent event) {
-
-												final String newTriggerValue = txtEditTriggerValue
-														.getText();
-
-												editTriggerValuePopup.hide();
-												final AnimationLoading animationLoading = new AnimationLoading();
-												showLoadAnimation(animationLoading);
-
-												rpcService
-														.updateCheck(
-																currentItem.checkId,
-																currentItem.checkName,
-																newTriggerValue,
-																currentItem.operator,
-																new AsyncCallback<String>() {
-
-																	@Override
-																	public void onFailure(
-																			Throwable caught) {
-																		// TODO
-																		// Auto-generated
-																		// method
-																		// stub
-																		removeLoadAnimation(animationLoading);
-																	}
-
-																	@Override
-																	public void onSuccess(
-																			String result) {
-																		// TODO
-																		// Auto-generated
-																		// method
-																		// stub
-
-																		removeLoadAnimation(animationLoading);
-																		updateCheckList(
-																				endpointID,
-																				container);
-
-																	}
-
-																});
-
-											}
-										});
-							}
-						}
-					});
-
-					String stateText = new String();
-					if (currentItem.getState() == 1) {
-						stateText = "True";
-						accordionGroup.setBaseIcon(IconType.CHECK);
-					} else {
-						stateText = "Not True";
-						accordionGroup.setBaseIcon(IconType.CHECK_EMPTY);
-					}
-					Row row4 = accordionRowBuilder(Images.INSTANCE.tag(),
-							stateText, "Current State: ");
-					accordionGroup.add(row4);
-
-					Row row5 = new Row();
-					Column column1 = new Column(1, 1);
-					Button btnDeleteCheck = new Button();
-					btnDeleteCheck.setText("Delete");
-					btnDeleteCheck.addStyleName("btn-danger");
-					btnDeleteCheck.addStyleName("btn-mini");
-					column1.add(btnDeleteCheck);
-					row5.add(column1);
-					accordionGroup.add(row5);
-
-					final String currentCheckID = currentItem.getCheckId();
-
-					btnDeleteCheck.addClickHandler(new ClickHandler() {
-
-						@Override
-						public void onClick(ClickEvent event) {
-							// TODO Auto-generated method stub
-
-							showLoadAnimation(animationLoading);
-							rpcService.deleteCheck(
-
-							currentCheckID, new AsyncCallback<String>() {
+					PropertyServiceAsync rpcServiceProperty;
+					rpcServiceProperty = GWT.create(PropertyService.class);
+					rpcServiceProperty.getPropertyName(currentItem.propertyId,
+							new AsyncCallback<String>() {
 
 								@Override
 								public void onFailure(Throwable caught) {
@@ -484,25 +265,340 @@ public class CheckEditorWidget extends Composite {
 								@Override
 								public void onSuccess(String result) {
 									// TODO Auto-generated method stub
-									updateCheckList(endpointID, container);
-									removeLoadAnimation(animationLoading);
+
+									Column iconColumn = new Column(1);
+									// iconColumn.addStyleName("text-center");
+									Image img = new Image();
+									img.setResource(Images.INSTANCE.tag());
+									// iconColumn.add(img);
+
+									Paragraph description = new Paragraph();
+									description.setText("Check on:");
+									description.addStyleName("smalltext");
+									iconColumn.add(description);
+
+									Column textColumn = new Column(2);
+									DynamicAnchor propertyLine = new DynamicAnchor(
+											result, true, null);
+
+									textColumn.add(propertyLine);
+
+									row1.add(iconColumn);
+									row1.add(textColumn);
+									accordionGroup.add(row1);
+
+									Row row2 = accordionRowBuilder(
+											Images.INSTANCE.tag(),
+											currentItem.getOperator(),
+											"Operator: ");
+									accordionGroup.add(row2);
+
+									Icon icnEditOperator = new Icon();
+									icnEditOperator.setType(IconType.EDIT);
+									row2.add(icnEditOperator);
+									final Anchor ancEditOperator = new Anchor();
+									ancEditOperator.setText(" Edit");
+									ancEditOperator.setHref("#");
+									row2.add(ancEditOperator);
+									final ListBox lstEditOperator = new ListBox();
+									populateOperatorDropdown(
+											currentItem.propertyId,
+											lstEditOperator);
+
+									final Button okButtonOperator = new Button();
+									okButtonOperator.setText("OK");
+									okButtonOperator
+											.setType(ButtonType.SUCCESS);
+									final PopupPanel editCheckOperatorPopup = new PopupPanel();
+
+									ancEditOperator
+											.addClickHandler(new ClickHandler() {
+												public void onClick(
+														ClickEvent event) {
+
+													if (editCheckNamePopup
+															.isShowing()) {
+
+														editCheckNamePopup
+																.removeFromParent();
+													} else {
+														lstEditOperator
+																.setSelectedValue(currentItem.operator);
+														HorizontalPanel horizontalPanel = new HorizontalPanel();
+														horizontalPanel
+																.add(lstEditOperator);
+														horizontalPanel
+																.add(okButtonOperator
+																		.asWidget());
+														editCheckOperatorPopup
+																.clear();
+														editCheckOperatorPopup
+																.add(horizontalPanel);
+														editCheckOperatorPopup
+																.setModal(true);
+														editCheckOperatorPopup
+																.setAutoHideEnabled(true);
+														editCheckOperatorPopup
+																.setAnimationEnabled(true);
+														editCheckOperatorPopup
+																.showRelativeTo(ancEditCheckName);
+														lstEditOperator
+																.setFocus(true);
+														okButtonOperator
+																.addClickHandler(new ClickHandler() {
+																	public void onClick(
+																			ClickEvent event) {
+
+																		final String newCheckOperator = lstEditOperator
+																				.getValue();
+
+																		editCheckOperatorPopup
+																				.hide();
+																		final AnimationLoading animationLoading = new AnimationLoading();
+																		showLoadAnimation(animationLoading);
+
+																		rpcService
+																				.updateCheck(
+																						currentItem.checkId,
+																						currentItem.checkName,
+																						currentItem.checkValue,
+																						newCheckOperator,
+																						new AsyncCallback<String>() {
+
+																							@Override
+																							public void onFailure(
+																									Throwable caught) {
+																								// TODO
+																								// Auto-generated
+																								// method
+																								// stub
+																								removeLoadAnimation(animationLoading);
+																							}
+
+																							@Override
+																							public void onSuccess(
+																									String result) {
+																								// TODO
+																								// Auto-generated
+																								// method
+																								// stub
+
+																								removeLoadAnimation(animationLoading);
+																								updateCheckList(
+																										endpointID,
+																										container);
+
+																							}
+
+																						});
+
+																	}
+																});
+													}
+												}
+											});
+
+									Row row3 = accordionRowBuilder(
+											Images.INSTANCE.tag(),
+											currentItem.getCheckValue(),
+											"Triggervalue: ");
+									accordionGroup.add(row3);
+
+									Icon icnEditTriggerValue = new Icon();
+									icnEditTriggerValue.setType(IconType.EDIT);
+
+									row3.add(icnEditTriggerValue);
+									final Anchor ancEditTriggerValue = new Anchor();
+									ancEditTriggerValue.setText(" Edit");
+									ancEditTriggerValue.setHref("#");
+									row3.add(ancEditTriggerValue);
+									final TextBox txtEditTriggerValue = new TextBox();
+									final Button okButtonCheckValue = new Button();
+									okButtonCheckValue.setText("OK");
+									okButtonCheckValue
+											.setType(ButtonType.SUCCESS);
+									final PopupPanel editTriggerValuePopup = new PopupPanel();
+
+									ancEditTriggerValue
+											.addClickHandler(new ClickHandler() {
+												public void onClick(
+														ClickEvent event) {
+
+													if (editTriggerValuePopup
+															.isShowing()) {
+
+														editTriggerValuePopup
+																.removeFromParent();
+													} else {
+														txtEditTriggerValue
+																.setText(currentItem.checkValue);
+														HorizontalPanel horizontalPanel = new HorizontalPanel();
+														horizontalPanel
+																.add(txtEditTriggerValue);
+														horizontalPanel
+																.add(okButtonCheckValue
+																		.asWidget());
+														editTriggerValuePopup
+																.clear();
+														editTriggerValuePopup
+																.add(horizontalPanel);
+														editTriggerValuePopup
+																.setModal(true);
+														editTriggerValuePopup
+																.setAutoHideEnabled(true);
+														editTriggerValuePopup
+																.setAnimationEnabled(true);
+														editTriggerValuePopup
+																.showRelativeTo(ancEditTriggerValue);
+														txtEditTriggerValue
+																.setFocus(true);
+														okButtonCheckValue
+																.addClickHandler(new ClickHandler() {
+																	public void onClick(
+																			ClickEvent event) {
+
+																		final String newTriggerValue = txtEditTriggerValue
+																				.getText();
+
+																		editTriggerValuePopup
+																				.hide();
+																		final AnimationLoading animationLoading = new AnimationLoading();
+																		showLoadAnimation(animationLoading);
+
+																		rpcService
+																				.updateCheck(
+																						currentItem.checkId,
+																						currentItem.checkName,
+																						newTriggerValue,
+																						currentItem.operator,
+																						new AsyncCallback<String>() {
+
+																							@Override
+																							public void onFailure(
+																									Throwable caught) {
+																								// TODO
+																								// Auto-generated
+																								// method
+																								// stub
+																								removeLoadAnimation(animationLoading);
+																							}
+
+																							@Override
+																							public void onSuccess(
+																									String result) {
+																								// TODO
+																								// Auto-generated
+																								// method
+																								// stub
+
+																								removeLoadAnimation(animationLoading);
+																								updateCheckList(
+																										endpointID,
+																										container);
+
+																							}
+
+																						});
+
+																	}
+																});
+													}
+												}
+											});
+
+									String stateText = new String();
+									if (currentItem.getState() == 1) {
+										stateText = "Triggered";
+										accordionGroup
+												.setBaseIcon(IconType.CHECK);
+									} else {
+										stateText = "Not triggered";
+										accordionGroup
+												.setBaseIcon(IconType.CHECK_EMPTY);
+									}
+									Row row4 = accordionRowBuilder(
+											Images.INSTANCE.tag(), stateText,
+											"State: ");
+									accordionGroup.add(row4);
+
+									Row row5 = new Row();
+									Column column1 = new Column(1, 1);
+									Button btnDeleteCheck = new Button();
+									btnDeleteCheck.setText("Delete");
+									btnDeleteCheck.addStyleName("btn-danger");
+									btnDeleteCheck.addStyleName("btn-mini");
+									column1.add(btnDeleteCheck);
+									row5.add(column1);
+									accordionGroup.add(row5);
+
+									final String currentCheckID = currentItem
+											.getCheckId();
+
+									btnDeleteCheck
+											.addClickHandler(new ClickHandler() {
+
+												@Override
+												public void onClick(
+														ClickEvent event) {
+													// TODO Auto-generated
+													// method stub
+
+													showLoadAnimation(animationLoading);
+													rpcService
+															.deleteCheck(
+
+																	currentCheckID,
+																	new AsyncCallback<String>() {
+
+																		@Override
+																		public void onFailure(
+																				Throwable caught) {
+																			// TODO
+																			// Auto-generated
+																			// method
+																			// stub
+
+																		}
+
+																		@Override
+																		public void onSuccess(
+																				String result) {
+																			// TODO
+																			// Auto-generated
+																			// method
+																			// stub
+																			updateCheckList(
+																					endpointID,
+																					container);
+																			removeLoadAnimation(animationLoading);
+																		}
+
+																	});
+												}
+
+											});
+
+									accordion.add(accordionGroup);
+
+									
+									
+									
+									
+
 								}
 
 							});
-						}
-
-					});
-
-					accordion.add(accordionGroup);
-					container.add(accordion);
 
 				}
 
+				//container.add(accordion);
 				AccordionGroup accordionGroupTarget = new AccordionGroup();
-				accordionGroupTarget.setHeading("Drag here to add new check");
-				accordionGroupTarget.setBaseIcon(IconType.PLUS);
-
-				accordion.add(accordionGroupTarget);
+				accordionGroupTarget
+						.setHeading("Drag a property here to create a check.");
+				accordionGroupTarget
+						.setBaseIcon(IconType.PLUS);
+				accordion.add(accordionGroupTarget);	
+			
 				container.add(accordion);
 
 				removeLoadAnimation(animationLoading);
@@ -527,14 +623,18 @@ public class CheckEditorWidget extends Composite {
 	private Row accordionRowBuilder(ImageResource imRes, String checkItem,
 			String itemDescriptor) {
 		Column iconColumn = new Column(1);
-		iconColumn.addStyleName("text-center");
+		// iconColumn.addStyleName("text-center");
 		Image img = new Image();
 		img.setResource(imRes);
-		iconColumn.add(img);
+		// iconColumn.add(img);
+
+		Paragraph description = new Paragraph();
+		description.setText(itemDescriptor);
+		description.addStyleName("smalltext");
+		iconColumn.add(description);
 
 		Column textColumn = new Column(2);
-		DynamicAnchor propertyLine = new DynamicAnchor(itemDescriptor + " "
-				+ checkItem, true, null);
+		DynamicAnchor propertyLine = new DynamicAnchor(checkItem, true, null);
 
 		textColumn.add(propertyLine);
 		Row row = new Row();
@@ -548,25 +648,25 @@ public class CheckEditorWidget extends Composite {
 			final ListBox lstOperator) {
 
 		final AnimationLoading animationLoading = new AnimationLoading();
+		showLoadAnimation(animationLoading);
 
 		PropertyServiceAsync rpcServiceProperty;
 		rpcServiceProperty = GWT.create(PropertyService.class);
 		rpcServiceProperty.getPropertyClass(propertyID,
 				new AsyncCallback<String>() {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
-			}
-			
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+
 					@Override
 					public void onSuccess(String result) {
 						// TODO Auto-generated method stub
 
-			
 						String propertyClassID = result;
-						
+
 						PropertyClassServiceAsync rpcServicePropertyClass;
 						rpcServicePropertyClass = GWT
 								.create(PropertyClassService.class);
@@ -704,7 +804,56 @@ public class CheckEditorWidget extends Composite {
 
 					}
 
-					
 				});
 	}
+
+	private void populatePropertyName(String propertyID, final Row nameRow) {
+
+		final AnimationLoading animationLoading = new AnimationLoading();
+		showLoadAnimation(animationLoading);
+
+		PropertyServiceAsync rpcServiceProperty;
+		rpcServiceProperty = GWT.create(PropertyService.class);
+		rpcServiceProperty.getPropertyName(propertyID,
+				new AsyncCallback<String>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						// TODO Auto-generated method stub
+
+						nameRow.clear();
+
+						Column iconColumn = new Column(1);
+						// iconColumn.addStyleName("text-center");
+						Image img = new Image();
+						img.setResource(Images.INSTANCE.tag());
+						// iconColumn.add(img);
+
+						Paragraph description = new Paragraph();
+						description.setText("Check on:");
+						description.addStyleName("smalltext");
+						iconColumn.add(description);
+
+						Column textColumn = new Column(2);
+						DynamicAnchor propertyLine = new DynamicAnchor(result,
+								true, null);
+
+						textColumn.add(propertyLine);
+						Row row = new Row();
+						row.add(iconColumn);
+						row.add(textColumn);
+
+						removeLoadAnimation(animationLoading);
+
+					}
+
+				});
+	}
+
 }

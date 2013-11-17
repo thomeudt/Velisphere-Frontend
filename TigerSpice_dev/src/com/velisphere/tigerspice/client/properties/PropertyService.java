@@ -42,6 +42,7 @@ public interface PropertyService extends RemoteService {
 	List<PropertyData> getPropertiesForEndpointClass(String endpointClassID);
 	String getValueForEndpointProperty(String endpointID, String propertyID);
 	String getPropertyClass(String propertyID);
+	String getPropertyName(String propertyID);
 }
 
 
