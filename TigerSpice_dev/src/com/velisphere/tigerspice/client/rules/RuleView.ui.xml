@@ -77,8 +77,9 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 					    
 					    
 				    <b:Column size="4" offset="0">
-				        
-				   
+				    
+				   		<vsch:AllCheckListWidget />
+				     
 					</b:Column>
 					
 				    

@@ -53,6 +53,8 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			<b:Button type="DANGER" size="MINI">Reboot Now</b:Button>
 			<b:Paragraph addStyleNames="smalltext">Ping for Status Update:</b:Paragraph>
 			<b:Button type="INFO" size="MINI">Ping Now</b:Button>
+			<b:Paragraph addStyleNames="smalltext">Configuration:</b:Paragraph>
+			<b:Button type="INFO" size="MINI">Configuration Wizard</b:Button>
 			</b:Well>
 			</b:Column>
 				        
