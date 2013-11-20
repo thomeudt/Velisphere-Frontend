@@ -1,0 +1,108 @@
+<!--
+  CONFIDENTIAL INFORMATION
+   __________________
+   
+    Copyright (C) 2013 Thorsten Meudt 
+    All Rights Reserved.
+   
+   NOTICE:  All information contained herein is, and remains
+   the property of Thorsten Meudt and its suppliers,
+   if any.  The intellectual and technical concepts contained
+   herein are proprietary to Thorsten Meudt
+   and its suppliers and may be covered by Patents,
+   patents in process, and are protected by trade secret or copyright law.
+   Dissemination of this information or reproduction of this material
+   is strictly forbidden unless prior written permission is obtained
+   from Thorsten Meudt.
+-->
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+		xmlns:ct="urn:import:com.google.gwt.user.cellview.client"
+		xmlns:vspy="urn:import:com.velisphere.tigerspice.client.properties"
+		xmlns:vsch="urn:import:com.velisphere.tigerspice.client.checks">
+		<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images'/>
+	<g:HTMLPanel>
+            <b:Breadcrumbs divider=">" ui:field="brdMain">
+		</b:Breadcrumbs>
+	    <b:Row>
+			<b:Column size="1" offset="0">
+			    <b:Image url="./images/sphere_green.png" />
+			</b:Column>
+			<b:Column size="7" offset="0">
+				<b:PageHeader ui:field="pghRuleName">Rule</b:PageHeader>				
+			</b:Column>
+			
+		</b:Row>
+		
+	    <b:Row>
+				        
+	        <b:Column size="2" offset="0">
+			<b:Well>
+			<b:Strong ui:field="pgpInformHeader">Rules Information</b:Strong>
+			<b:Paragraph addStyleNames="smalltext">Type:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext" ui:field="pgpEndpointClassName">loading...</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Last triggered:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Total times triggered:</b:Paragraph>
+			</b:Well>
+			</b:Column>
+				        
+			<b:Column size="9" offset="0">
+		
+			    	<b:Row>
+				    <b:Column size="6" offset="0">
+						
+				            	<b:Paragraph addStyleNames="smalltext">Rule configuration: ("what happens")</b:Paragraph>
+						
+					</b:Column>
+			    </b:Row>
+			    	
+			    	<b:Row>
+				    <b:Column size="4" offset="0">
+						      	<b:Paragraph addStyleNames="smalltext">Checks: ("Dragsouce", filter by Sphere or Endpoint)</b:Paragraph>
+						
+					</b:Column>
+					
+				    <b:Column size="4" offset="0">
+				    			    
+				    <b:Paragraph addStyleNames="smalltext">Checkpath: ("when does it happen?")</b:Paragraph>
+			
+					</b:Column>
+			
+				    
+					</b:Row>
+					<b:Row>
+					    
+					    
+					    
+				    <b:Column size="4" offset="0">
+				        
+				   
+					</b:Column>
+					
+				    
+					<b:Column size="4" offset="0">
+				    				    
+				   
+				    
+					</b:Column>
+					</b:Row>		
+				
+					
+					
+			
+			</b:Column>
+		</b:Row>
+		
+	    
+	    
+		
+	
+	</g:HTMLPanel>
+	  		            
+
+</ui:UiBinder> 
+
+
+ 

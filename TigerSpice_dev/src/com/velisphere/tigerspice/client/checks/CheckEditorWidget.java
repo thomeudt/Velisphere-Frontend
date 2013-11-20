@@ -45,6 +45,8 @@ import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
+import com.velisphere.tigerspice.client.rules.RuleView;
+import com.velisphere.tigerspice.client.spheres.SphereView;
 import com.velisphere.tigerspice.shared.CheckData;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 
@@ -528,7 +530,17 @@ public class CheckEditorWidget extends Composite {
 									btnDeleteCheck.addStyleName("btn-danger");
 									btnDeleteCheck.addStyleName("btn-mini");
 									column1.add(btnDeleteCheck);
+
+									Column column2 = new Column(1, 1);
+									Button btnCreateRule = new Button();
+									btnCreateRule.setText("Create Rule");
+									btnCreateRule.addStyleName("btn-success");
+									btnCreateRule.addStyleName("btn-mini");
+									column1.add(btnCreateRule);
+									
+									
 									row5.add(column1);
+									row5.add(column2);
 									accordionGroup.add(row5);
 
 									final String currentCheckID = currentItem
@@ -578,6 +590,21 @@ public class CheckEditorWidget extends Composite {
 
 											});
 
+									
+									btnCreateRule.addClickHandler(
+											new ClickHandler(){
+												public void onClick(ClickEvent event){
+												// Label label = new Label();
+												// label.setText(ancToEndpoint.getStringQueryFirst());
+												// verticalPanel.add(label);
+													RootPanel.get("main").clear();
+												    RootPanel.get("main").add(new RuleView());
+													//RootPanel.get("main").add(new EndpointsForSphereListerWidget(currentItem.sphereId));
+												}
+											});
+									
+									
+									
 									accordion.add(accordionGroup);
 
 									
