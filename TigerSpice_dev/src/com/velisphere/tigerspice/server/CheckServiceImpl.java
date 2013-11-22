@@ -21,6 +21,7 @@ import java.awt.List;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -115,7 +116,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 
 		return checksForEndpointID;
 	}
-
+	
 	public String addNewCheck(String endpointID, String propertyID, String checkValue, String operator, String name)
 
 	{
@@ -234,6 +235,120 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 
 		return "OK";
 
+	}
+
+	
+	public Vector<CheckData> getChecksForUserID(String userID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		Vector<EndpointData> endPointsforUser = new Vector<EndpointData>();
+		try {
+
+			final ClientResponse findAllUsers = voltCon.montanaClient
+					.callProcedure("UI_SelectEndpointsForUser", userID);
+
+			final VoltTable findAllUsersResults[] = findAllUsers.getResults();
+
+			VoltTable result = findAllUsersResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					EndpointData endpointData = new EndpointData();
+					endpointData.endpointId = result.getString("ENDPOINTID");
+					endpointData.endpointName = result
+							.getString("ENDPOINTNAME");
+					endpointData.endpointclassId = result
+							.getString("ENDPOINTCLASSID");
+					endPointsforUser.add(endpointData);
+
+				}
+			}
+
+			// System.out.println(endPointsforSphere);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		Vector<CheckData> checksForEndpointID = new Vector<CheckData>();
+		try {
+
+
+			Iterator<EndpointData> it = endPointsforUser.iterator();
+			
+			while(it.hasNext())
+			{
+			
+			final ClientResponse findCheck= voltCon.montanaClient
+					.callProcedure("UI_SelectChecksForEndpoint", it.next().endpointId);
+
+			final VoltTable findCheckResults[] = findCheck.getResults();
+
+			VoltTable result = findCheckResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					
+					CheckData check = new CheckData();
+					check.checkId = result.getString("CHECKID");
+					check.endpointId = result.getString("ENDPOINTID");
+					check.checkName  = result.getString("NAME");
+					check.checkValue = result.getString("CHECKVALUE");
+										
+					Byte expired;
+					expired = (Byte) result.get("EXPIRED", VoltType.TINYINT);
+					check.expired = expired.byteValue();
+					
+					check.operator = result.getString("OPERATOR");
+					check.propertyId = result.getString("PROPERTYID");
+					
+					Byte state;
+					state = (Byte) result.get("STATE", VoltType.TINYINT);
+					check.state = state.byteValue();
+								
+					
+					checksForEndpointID.add(check);
+
+				}
+			}
+			}
+			
+
+			// System.out.println(endPointsforSphere);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return checksForEndpointID;
 	}
 
 	

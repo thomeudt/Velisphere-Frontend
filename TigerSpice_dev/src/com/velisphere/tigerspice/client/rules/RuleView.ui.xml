@@ -20,7 +20,7 @@
 xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 		xmlns:ct="urn:import:com.google.gwt.user.cellview.client"
-		xmlns:vspy="urn:import:com.velisphere.tigerspice.client.properties"
+		xmlns:vsrl="urn:import:com.velisphere.tigerspice.client.rules"
 		xmlns:vsch="urn:import:com.velisphere.tigerspice.client.checks">
 		<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images'/>
 	<g:HTMLPanel>
@@ -59,7 +59,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			    </b:Row>
 			    	
 			    	<b:Row>
-				    <b:Column size="4" offset="0">
+				    <b:Column size="5" offset="0">
 						      	<b:Paragraph addStyleNames="smalltext">Checks: ("Dragsouce", filter by Sphere or Endpoint)</b:Paragraph>
 						
 					</b:Column>
@@ -76,7 +76,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 					    
 					    
 					    
-				    <b:Column size="4" offset="0">
+				    <b:Column size="5" offset="0">
 				    
 				   		<vsch:AllCheckListWidget />
 				     
@@ -84,7 +84,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 					
 				    
 					<b:Column size="4" offset="0">
-				    				    
+				    	<vsrl:CheckpathEditorWidget />
 				   
 				    
 					</b:Column>
