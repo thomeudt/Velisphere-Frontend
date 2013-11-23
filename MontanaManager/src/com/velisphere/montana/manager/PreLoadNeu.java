@@ -40,7 +40,7 @@ public class PreLoadNeu {
 	        
 	        System.out.println("Endpointclasses loaded");
 	        
-	        preLoader.callProcedure("ENDPOINT.insert", "E1", "PiSwitch Office Lamp", "EPC2");
+	        preLoader.callProcedure("ENDPOINT.insert", "E1", "PiPhidget", "EPC2");
 	        preLoader.callProcedure("ENDPOINT.insert", "E2", "Blubber Thorsten", "EPC1");
 	        preLoader.callProcedure("ENDPOINT.insert", "E3", "Blubber Ute", "EPC1");
 	        preLoader.callProcedure("ENDPOINT.insert", "E4", "Reference Home Controller App", "EPC3");
@@ -64,6 +64,9 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC3", "Brightness", "Double", "lux");
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC4", "On Off Switch", "Byte", "");
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC5", "On Off Indicator", "Byte", "");
+	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC6", "Touch", "Double", "");
+	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC7", "Rotation", "Double", "");
+	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC8", "Pressure", "Double", "");
 	        	        
 	        System.out.println("Property Classes loaded");
 	        
@@ -76,6 +79,10 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("PROPERTY.insert", "PR7", "Send Content", "PC1", "EPC1");
 	        preLoader.callProcedure("PROPERTY.insert", "PR8", "Send Request", "PC1", "EPC1");
 	        preLoader.callProcedure("PROPERTY.insert", "PR9", "Receive Content", "PC1", "EPC1");
+	        preLoader.callProcedure("PROPERTY.insert", "PR10", "Measured Pressure", "PC8", "EPC2");
+	        preLoader.callProcedure("PROPERTY.insert", "PR11", "Measured Rotation", "PC7", "EPC2");
+	        preLoader.callProcedure("PROPERTY.insert", "PR12", "Measured Touch", "PC6", "EPC2");
+	        preLoader.callProcedure("PROPERTY.insert", "PR13", "Measured Brightness", "PC3", "EPC2");
 	        	        	        
 	        System.out.println("Properties loaded");
 	        
@@ -87,7 +94,8 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("CHECK.insert", "C5", "E1", "PR5", "1", "=", "0", "0", "Switch 5 on"); // Checks if switch 5 is on
 	        preLoader.callProcedure("CHECK.insert", "C6", "E2", "PR8", "1", "=", "0", "0", "Send Request is Triggered"); // Checks if Send Request is Set
 	        preLoader.callProcedure("CHECK.insert", "C7", "E3", "PR8", "1", "=", "0", "0", "Send Request is Triggered"); // Checks if Send Request is Set
-
+	        preLoader.callProcedure("CHECK.insert", "C8", "E1", "PR1", "0", ">", "0", "0", "Switch 1 is greater than 0"); // Checks if switch 1 is on
+	        preLoader.callProcedure("CHECK.insert", "C9", "E1", "PR1", "5", "<", "0", "0", "Switch 1 is less than 5"); // Checks if switch 1 is on
 	        
 	        System.out.println("Checks loaded");
 	        

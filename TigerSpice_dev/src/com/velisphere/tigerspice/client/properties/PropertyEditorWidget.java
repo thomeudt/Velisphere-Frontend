@@ -97,6 +97,7 @@ public class PropertyEditorWidget extends Composite {
 	
 		Row row = new Row();
 		Column column = new Column(4, 0);
+		Column buttonColumn = new Column(4, 0);
 				
 		
 		
@@ -104,8 +105,15 @@ public class PropertyEditorWidget extends Composite {
 		
 		ScrollPanel treeCon = new ScrollPanel();
 		treeCon = buildTree(this.endpointClassID);
+		Button refreshButton = new Button();
+		refreshButton.setType(ButtonType.INFO);
+		refreshButton.setSize(ButtonSize.MINI);
+		refreshButton.setText("Refresh Status");
 		column.add(treeCon);
 		row.add(column);
+		
+		buttonColumn.add(refreshButton);
+		row.add(buttonColumn);
 		initWidget(row);
 		
 
