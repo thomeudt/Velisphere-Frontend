@@ -74,7 +74,8 @@ public class ConfigHandler {
 		try {
 			if ( is == null ) {
 				// Try loading from classpath
-				is = getClass().getResourceAsStream("./chaiconf.xml");
+				is = (InputStream) getClass().getClassLoader().getResources("/com/velisphere/tigerspice/server/chaiconf.xml");
+				
 			}
 
 			// Try loading properties from the file (if found)
@@ -82,7 +83,7 @@ public class ConfigHandler {
 		}
 		catch ( Exception e ) { }
 
-		
+		// remove the following for AWS deployments
 		ServerParameters.volt_ip = props.getProperty("Volt IP");
 
 		System.out.println(" [IN] Reading Configuration");
