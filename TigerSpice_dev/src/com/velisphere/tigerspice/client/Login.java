@@ -43,7 +43,8 @@ public class Login implements EntryPoint {
 	
 	public void onModuleLoad() {
 
-		displayLoginScreen();
+	displayLoginScreen();
+	
 		
 	History.addValueChangeHandler(new ValueChangeHandler<String>() {
 		   @Override

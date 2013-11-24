@@ -114,6 +114,10 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 	public String addNewUser(String userName, String eMail, String password)
 
 	{
+		
+		ConfigHandler cfh = new ConfigHandler();
+		cfh.loadParamChangesAsXML();
+		
 		VoltConnector voltCon = new VoltConnector();
 
 		try {
