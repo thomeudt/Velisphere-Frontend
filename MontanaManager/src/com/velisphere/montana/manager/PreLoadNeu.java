@@ -118,7 +118,7 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("MULTICHECK_MULTICHECK_LINK.insert", "1000", "MC3", "MC1");
 	        preLoader.callProcedure("MULTICHECK_MULTICHECK_LINK.insert", "1001", "MC3", "MC2");
 	        preLoader.callProcedure("MULTICHECK_MULTICHECK_LINK.insert", "1002", "MC4", "MC3");
-	        preLoader.callProcedure("MULTICHECK_MULTICHECK_LINK.insert", "1003", "MC5", "MC4");
+	        preLoader.callProcedure("MULTICHECK_MULTICHECK_LINK.insert", "1003", "MC4", "MC2");
 	        
 	        System.out.println("Multichecks and Multichecks linked");
 	        

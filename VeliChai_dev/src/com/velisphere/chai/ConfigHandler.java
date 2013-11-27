@@ -88,9 +88,11 @@ public class ConfigHandler {
 		ServerParameters.controllerQueueName = props.getProperty("Controller Queue Name");
 		ServerParameters.bunny_ip = props.getProperty("VeliBunny AMPQ Broker IP");
 		ServerParameters.threadpoolSize = Integer.parseInt(props.getProperty("Threadpool Size"));
+		ServerParameters.volt_ip = props.getProperty("Volt IP");
 
 		System.out.println(" [IN] Reading Configuration");
 		System.out.println(" [IN] Selected VeliBunny AMQP Broker: "+ ServerParameters.bunny_ip);
+		System.out.println(" [IN] Selected VoltDB: "+ ServerParameters.volt_ip);
 		System.out.println(" [IN] Threadpool Size: "+ ServerParameters.threadpoolSize);
 
 	}

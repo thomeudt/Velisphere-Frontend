@@ -25,4 +25,5 @@
 <entry key="LDAP Principal">cn=Manager,dc=velisphere-dir,dc=com</entry>
 <entry key="LDAP URL">ldap://16.1.1.180:389/dc=velisphere-dir,dc=com</entry>
 <entry key="Threadpool Size">256</entry>
+<entry key="Volt IP">16.1.1.149</entry>
 </properties>

@@ -332,9 +332,11 @@ public class BusinessLogicEngine {
 										.getString("MULTICHECKID")));
 					}
 				}
-				highLevelMultiChecks = moreHighLevelMultiChecks;
+				
 			}
-
+			highLevelMultiChecks.clear();
+			highLevelMultiChecks.addAll(moreHighLevelMultiChecks);
+			
 		}
 
 		return triggerRules;

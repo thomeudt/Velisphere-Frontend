@@ -32,10 +32,10 @@ public class Bombarder implements Runnable {
 			try {
 				HashMap<String, String> messageHash = new HashMap<String, String>();
 				messageHash.put("PR1", "1");
-				//messageHash.put("PR2", "1");
-	        	//messageHash.put("PR3", "1");
-	        	//messageHash.put("PR4", "1");
-	        	//messageHash.put("PR5", "1");
+				messageHash.put("PR2", "1");
+	        	messageHash.put("PR3", "1");
+	        	messageHash.put("PR4", "1");
+	        	messageHash.put("PR5", "1");
 	        	
 	        	Send.sendHashTable(messageHash, "controller");
 	        	//Send.sendHashTable(messageHash, "controller");
