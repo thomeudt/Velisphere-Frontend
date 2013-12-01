@@ -58,7 +58,7 @@ import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
-import com.velisphere.tigerspice.client.helper.DragobjectAccordion;
+import com.velisphere.tigerspice.client.helper.DragobjectContainer;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
 import com.velisphere.tigerspice.client.images.Images;
 import com.velisphere.tigerspice.shared.CheckData;
@@ -212,7 +212,7 @@ public class PropertyEditorWidget extends Composite {
 													// is
 													// allowed
 													
-													DragobjectAccordion dragAccordion = new DragobjectAccordion();
+													DragobjectContainer dragAccordion = new DragobjectContainer();
 													dragAccordion.accordionGroup = accordionGroup;
 													dragAccordion.propertyID = currentItem.propertyId;
 													dragAccordion.properyClassID = currentItem.propertyclassId;

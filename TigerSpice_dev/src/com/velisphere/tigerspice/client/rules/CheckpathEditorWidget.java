@@ -1,6 +1,11 @@
 package com.velisphere.tigerspice.client.rules;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Vector;
 
 import com.github.gwtbootstrap.client.ui.Accordion;
@@ -23,6 +28,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
@@ -30,7 +36,9 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.sencha.gxt.core.client.dom.ScrollSupport;
+import com.sencha.gxt.dnd.core.client.DndDragStartEvent;
 import com.sencha.gxt.dnd.core.client.DndDropEvent;
+import com.sencha.gxt.dnd.core.client.DragSource;
 import com.sencha.gxt.dnd.core.client.DropTarget;
 import com.sencha.gxt.fx.client.Draggable;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
@@ -42,7 +50,7 @@ import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
-import com.velisphere.tigerspice.client.helper.DragobjectAccordion;
+import com.velisphere.tigerspice.client.helper.DragobjectContainer;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
 import com.velisphere.tigerspice.client.images.Images;
 import com.velisphere.tigerspice.client.properties.PropertyService;
@@ -62,6 +70,11 @@ public class CheckpathEditorWidget extends Composite {
 	Paragraph pgpFirstCheck;
 	Paragraph pgpAddSameLevel;
 	HorizontalLayoutContainer firstCheckRow;
+	FlowLayoutContainer con;
+	VerticalLayoutContainer addNextLevelField;
+	VerticalLayoutContainer firstCheckColumn;
+	LinkedHashSet<SameLevelCheckpathObject> checkHashSet;
+	LinkedList<SameLevelCheckpathObject> multicheckLinkedList;
 
 	public CheckpathEditorWidget() {
 
@@ -74,103 +87,235 @@ public class CheckpathEditorWidget extends Composite {
 		super();
 		//this.endpointID = endpointID;
 
-		FlowLayoutContainer con = new FlowLayoutContainer();
+		con = new FlowLayoutContainer();
 		initWidget(con);
 
 		
+		
+		checkHashSet = new LinkedHashSet<SameLevelCheckpathObject>();
+		multicheckLinkedList = new LinkedList<SameLevelCheckpathObject>();
+		// final SameLevelCheckpathObject firstCheckField = new SameLevelCheckpathObject("drag check here", true);
+		// checkHashSet.add(firstCheckField);
+		
+		rebuildCheckpathDiagram();	
+			
+				
+		
+		
+	}
+
+
+	private void rebuildCheckpathDiagram() {
 		final VerticalLayoutContainer container = new VerticalLayoutContainer();
 		container.setBorders(true);
-		container.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
+		container.setScrollMode(ScrollSupport.ScrollMode.AUTO);
 		// container.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
 		container.setWidth((int) ((RootPanel.get().getOffsetWidth()) / 4));
 
-		VerticalLayoutContainer firstCheckColumn = new VerticalLayoutContainer();
-		firstCheckColumn.setBorders(true);
+		firstCheckColumn = new VerticalLayoutContainer();
+		//firstCheckColumn.setBorders(true);
 		firstCheckColumn.setWidth((int) (400));
 		firstCheckColumn.setHeight((int) (400));
 		
 		firstCheckRow = new HorizontalLayoutContainer();
-		firstCheckRow.setBorders(true);
+		firstCheckRow.setBorders(false);
+		//firstCheckRow.setScrollMode(ScrollSupport.ScrollMode.AUTOX);
 		
-		VerticalLayoutContainer firstCheckField = new VerticalLayoutContainer();
-		firstCheckField.setBorders(true);
-		firstCheckField.setWidth((int) (100));
-		
-		pgpFirstCheck = new Paragraph();
-		pgpFirstCheck.setText("1st Check here");
-		firstCheckField.add(pgpFirstCheck);
-		
-		VerticalLayoutContainer addCheckField = new VerticalLayoutContainer();
-		addCheckField.setBorders(true);
-		addCheckField.setWidth((int) (100));
-				
-		pgpAddSameLevel = new Paragraph();
-		pgpAddSameLevel.setText("add same level");
-		addCheckField.add(pgpAddSameLevel);
-		
-		firstCheckRow.add(firstCheckField);
-		firstCheckRow.add(new Icon(IconType.CHEVRON_RIGHT));
-		firstCheckRow.add(addCheckField);
-		
-		
-		VerticalLayoutContainer addNextLevelField = new VerticalLayoutContainer();
-		addCheckField.setBorders(true);
-		addCheckField.setWidth((int) (100));
+		Iterator<SameLevelCheckpathObject> it = checkHashSet.iterator();
 
-		Paragraph pghAddNextLevel = new Paragraph();
-		pghAddNextLevel.setText("add next level");
-		addNextLevelField.add(pghAddNextLevel);
-				
-		firstCheckColumn.add(addNextLevelField);
-		firstCheckColumn.add(new Icon(IconType.CHEVRON_UP));
-		firstCheckColumn.add(firstCheckRow);
+		if (it.hasNext() == false) {
 			
+			final SameLevelCheckpathObject addCheckField = new SameLevelCheckpathObject(null, "drag check here", true, 0);
+			firstCheckRow.add(addCheckField);
+			
+			DropTarget target = new DropTarget(addCheckField) {
+				@Override
+				protected void onDragDrop(DndDropEvent event) {
+					super.onDragDrop(event);
+
+					// do the drag and drop visual action
+
+					DragobjectContainer dragAccordion = (DragobjectContainer) event
+							.getData();
+
+					addCheckField.setText(dragAccordion.checkName);
+					addCheckField.setCheckID(dragAccordion.checkID);
+					checkHashSet.add(addCheckField);
+					
+					SameLevelCheckpathObject addNextLevelField = new SameLevelCheckpathObject(null, "drag check here", true, 1);
+					multicheckLinkedList.add(addNextLevelField);
+										
+					rebuildCheckpathDiagram();
+					
+					
+
+				}
+
+			};
+			target.setGroup("checkpath");
+			target.setOverStyle("drag-ok");
+
+		}
+
+		
+		while (it.hasNext())
+		{		
+			final SameLevelCheckpathObject currentObject = it.next();
+
+			final SafeHtmlBuilder builder = new SafeHtmlBuilder();
+			builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
+					+ "\">");
+			builder.appendHtmlConstant("Drag "
+					+ currentObject.text
+					+ " into next level to build a tree");
+			builder.appendHtmlConstant("</div>");
+			
+			DragSource source = new DragSource(
+					currentObject) {
+				@Override
+				protected void onDragStart(
+						DndDragStartEvent event) {
+					super.onDragStart(event);
+					// by
+					// default
+					// drag
+					// is
+					// allowed
+					
+					DragobjectContainer dragAccordion = new DragobjectContainer();
+					dragAccordion.checkID = currentObject.checkId;
+					dragAccordion.checkName = currentObject.text;
+					
+					
+					event.setData(dragAccordion);
+					event.getStatusProxy()
+							.update(builder
+									.toSafeHtml());
+				}
 				
+
+			};
+			source.setGroup("multicheck");
+			
+			
+			firstCheckRow.add(currentObject);
+			firstCheckRow.add(new Icon(IconType.CHEVRON_RIGHT));
+			if (it.hasNext() == false) {
+				
+				final SameLevelCheckpathObject addCheckField = new SameLevelCheckpathObject(null, "drag check here", true, 0);
+				firstCheckRow.add(addCheckField);
+				
+				DropTarget target = new DropTarget(addCheckField) {
+					@Override
+					protected void onDragDrop(DndDropEvent event) {
+						super.onDragDrop(event);
+
+						// do the drag and drop visual action
+
+						DragobjectContainer dragAccordion = (DragobjectContainer) event
+								.getData();
+
+						addCheckField.setText(dragAccordion.checkName);
+						addCheckField.setCheckID(dragAccordion.checkID);
+						checkHashSet.add(addCheckField);
+												
+						addNextLevelField = new VerticalLayoutContainer();
+						addNextLevelField.setBorders(true);
+						addNextLevelField.setWidth((int) (100));
+
+						Paragraph pghAddNextLevel = new Paragraph();
+						pghAddNextLevel.setText("add next level");
+						addNextLevelField.add(pghAddNextLevel);
+				
+						rebuildCheckpathDiagram();
+
+					}
+
+				};
+				target.setGroup("checkpath");
+				target.setOverStyle("drag-ok");
+	
+			}
+				
+		}
+		
+	
+		
+		
+			//ArrayList<SameLevelCheckpathObject> reverseMulticheckList = new ArrayList<>(multicheckHashSet);
+			//Collections.reverse(reverseMulticheckList);
+
+			Collections.reverse(multicheckLinkedList);
+			Iterator<SameLevelCheckpathObject> mit = multicheckLinkedList.iterator();		
+				
+			
+			while (mit.hasNext())
+			{		
+				final SameLevelCheckpathObject currentObject = mit.next();
+				firstCheckColumn.add(currentObject);
+				firstCheckColumn.add(new Icon(IconType.CHEVRON_UP));
+										
+				if (it.hasNext() == false) {
+									
+					DropTarget target = new DropTarget(currentObject) {
+						@Override
+						protected void onDragDrop(DndDropEvent event) {
+							super.onDragDrop(event);
+
+							// do the drag and drop visual action
+
+							DragobjectContainer dragAccordion = (DragobjectContainer) event
+									.getData();
+
+							multicheckLinkedList.remove(currentObject);
+							currentObject.setText(dragAccordion.checkName);
+							currentObject.setCheckID(dragAccordion.checkID);
+							multicheckLinkedList.add(currentObject);
+
+							if (currentObject.level < 4)
+							{
+								SameLevelCheckpathObject addNextLevelField = new SameLevelCheckpathObject(null, "drag check here", true, currentObject.level+1);
+								multicheckLinkedList.add(addNextLevelField);
+															
+							}
+							
+							
+							rebuildCheckpathDiagram();
+
+						}
+
+					};
+					target.setGroup("multicheck");
+					target.setOverStyle("drag-ok");
+		
+				}
+				
+				
+				
+			}
+	
+		
+		
+						
+	
+		firstCheckColumn.add(firstCheckRow);
+					
 		container.add(firstCheckColumn);
 		
+		con.clear();
 		con.add(container);
-		
-		rpcService = GWT.create(CheckService.class);
-
-		
-		DropTarget firstCheckTarget = new DropTarget(firstCheckField) {
-			@Override
-			protected void onDragDrop(DndDropEvent event) {
-				super.onDragDrop(event);
-
-				// do the drag and drop visual action
-
-				DragobjectAccordion dragAccordion = (DragobjectAccordion) event
-						.getData();
-
-				pgpFirstCheck.setText(dragAccordion.checkName);
-
-			}
-
-		};
-		firstCheckTarget.setGroup("checkpath");
-		firstCheckTarget.setOverStyle("drag-ok");
-		
-		DropTarget addCheckTarget = new DropTarget(addCheckField) {
-			@Override
-			protected void onDragDrop(DndDropEvent event) {
-				super.onDragDrop(event);
-
-				// do the drag and drop visual action
-
-				DragobjectAccordion dragAccordion = (DragobjectAccordion) event
-						.getData();
-
-				pgpAddSameLevel.setText(dragAccordion.checkName);
-				SameLevelCheckpathObject sLCPO = new SameLevelCheckpathObject("add", true);
-				firstCheckRow.add(sLCPO);
-
-			}
-
-		};
-		addCheckTarget.setGroup("checkpath");
-		addCheckTarget.setOverStyle("drag-ok");
+	
+		/*
+		Iterator<SameLevelCheckpathObject> itt = checkHashSet.iterator();
+		while (itt.hasNext())
+		{		
+			SameLevelCheckpathObject currentObject = new SameLevelCheckpathObject(null, null, null);
+			currentObject = itt.next();
+			System.out.println("ID: "+currentObject.checkId +" *** Text: " + currentObject.text);
+		}
+		*/
 
 	}
+
 
 }

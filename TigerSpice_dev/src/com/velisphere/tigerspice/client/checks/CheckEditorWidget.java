@@ -38,7 +38,7 @@ import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.velisphere.tigerspice.client.LoginDialogBox;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
-import com.velisphere.tigerspice.client.helper.DragobjectAccordion;
+import com.velisphere.tigerspice.client.helper.DragobjectContainer;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
 import com.velisphere.tigerspice.client.images.Images;
 import com.velisphere.tigerspice.client.properties.PropertyService;
@@ -93,7 +93,7 @@ public class CheckEditorWidget extends Composite {
 
 				// do the drag and drop visual action
 
-				DragobjectAccordion dragAccordion = (DragobjectAccordion) event
+				DragobjectContainer dragAccordion = (DragobjectContainer) event
 						.getData();
 				accordion.add(dragAccordion.accordionGroup);
 

@@ -2,7 +2,7 @@ package com.velisphere.tigerspice.client.helper;
 
 import com.github.gwtbootstrap.client.ui.AccordionGroup;
 
-public class DragobjectAccordion {
+public class DragobjectContainer {
 
 	public AccordionGroup accordionGroup;
 	public String propertyID;

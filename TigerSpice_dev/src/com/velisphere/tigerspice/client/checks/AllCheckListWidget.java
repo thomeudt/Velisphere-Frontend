@@ -43,7 +43,7 @@ import com.velisphere.tigerspice.client.Login;
 import com.velisphere.tigerspice.client.LoginDialogBox;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
-import com.velisphere.tigerspice.client.helper.DragobjectAccordion;
+import com.velisphere.tigerspice.client.helper.DragobjectContainer;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
 import com.velisphere.tigerspice.client.images.Images;
 import com.velisphere.tigerspice.client.properties.PropertyService;
@@ -117,7 +117,7 @@ public class AllCheckListWidget extends Composite {
 
 				// do the drag and drop visual action
 
-				DragobjectAccordion dragAccordion = (DragobjectAccordion) event
+				DragobjectContainer dragAccordion = (DragobjectContainer) event
 						.getData();
 				accordion.add(dragAccordion.accordionGroup);
 
@@ -646,7 +646,7 @@ public class AllCheckListWidget extends Composite {
 											// is
 											// allowed
 											
-											DragobjectAccordion dragAccordion = new DragobjectAccordion();
+											DragobjectContainer dragAccordion = new DragobjectContainer();
 											dragAccordion.checkID = currentItem.checkId;
 											dragAccordion.checkName = currentItem.checkName;
 											
