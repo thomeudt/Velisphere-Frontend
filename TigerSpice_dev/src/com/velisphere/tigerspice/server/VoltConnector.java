@@ -30,10 +30,13 @@ public class VoltConnector {
 			 * Instantiate a client and connect to the database.
 			 */
 	
+			// System.out.println("Creating factory on ip " + ServerParameters.volt_ip);
 			montanaClient = ClientFactory.createClient();
 			montanaClient.createConnection(ServerParameters.volt_ip);
+			/*
 			System.out.println(" [IN] Connected to VoltDB on address: "
 			+ ServerParameters.volt_ip);
+			*/
 		}
 		
 		public void closeDatabase() throws UnknownHostException, IOException, InterruptedException {

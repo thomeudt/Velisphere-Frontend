@@ -80,7 +80,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 				}
 			}
 
-			System.out.println(allEndPoints);
+			// System.out.println(allEndPoints);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

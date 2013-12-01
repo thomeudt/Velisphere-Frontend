@@ -23,6 +23,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
@@ -31,7 +32,9 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.sencha.gxt.core.client.dom.ScrollSupport;
+import com.sencha.gxt.dnd.core.client.DndDragStartEvent;
 import com.sencha.gxt.dnd.core.client.DndDropEvent;
+import com.sencha.gxt.dnd.core.client.DragSource;
 import com.sencha.gxt.dnd.core.client.DropTarget;
 import com.sencha.gxt.fx.client.Draggable;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
@@ -79,8 +82,8 @@ public class AllCheckListWidget extends Composite {
 	     } else
 	     {
 	         checkWithServerIfSessionIdIsStillLegal(sessionID);
-	         System.out.println("SID " + sessionID);
-	         System.out.println("USERID " + this.userID);
+	         // System.out.println("SID " + sessionID);
+	         // System.out.println("USERID " + this.userID);
 	         
 	         
 	     }
@@ -622,6 +625,41 @@ public class AllCheckListWidget extends Composite {
 									
 									
 									accordion.add(accordionGroup);
+									
+									final SafeHtmlBuilder builder = new SafeHtmlBuilder();
+									builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
+											+ "\">");
+									builder.appendHtmlConstant("Drag "
+											+ accordionGroup.getTitle()
+											+ " into Checkpath");
+									builder.appendHtmlConstant("</div>");
+									
+									DragSource source = new DragSource(
+											accordionGroup) {
+										@Override
+										protected void onDragStart(
+												DndDragStartEvent event) {
+											super.onDragStart(event);
+											// by
+											// default
+											// drag
+											// is
+											// allowed
+											
+											DragobjectAccordion dragAccordion = new DragobjectAccordion();
+											dragAccordion.checkID = currentItem.checkId;
+											dragAccordion.checkName = currentItem.checkName;
+											
+											event.setData(dragAccordion);
+											event.getStatusProxy()
+													.update(builder
+															.toSafeHtml());
+										}
+										
+
+									};
+									source.setGroup("checkpath");
+
 
 									
 									

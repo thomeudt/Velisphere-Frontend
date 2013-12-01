@@ -79,7 +79,7 @@ public class EPCServiceImpl extends RemoteServiceServlet implements
 				}
 			}
 
-			System.out.println(allEndPointClasses);
+			// System.out.println(allEndPointClasses);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

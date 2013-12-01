@@ -37,6 +37,7 @@ import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.velisphere.tigerspice.client.LoginDialogBox;
+import com.velisphere.tigerspice.client.checks.CheckNewDialogBox;
 import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
@@ -58,6 +59,9 @@ public class CheckpathEditorWidget extends Composite {
 	private String endpointID;
 	private CheckServiceAsync rpcService;
 	Accordion accordion = new Accordion();
+	Paragraph pgpFirstCheck;
+	Paragraph pgpAddSameLevel;
+	HorizontalLayoutContainer firstCheckRow;
 
 	public CheckpathEditorWidget() {
 
@@ -85,24 +89,24 @@ public class CheckpathEditorWidget extends Composite {
 		firstCheckColumn.setWidth((int) (400));
 		firstCheckColumn.setHeight((int) (400));
 		
-		HorizontalLayoutContainer firstCheckRow = new HorizontalLayoutContainer();
+		firstCheckRow = new HorizontalLayoutContainer();
 		firstCheckRow.setBorders(true);
 		
 		VerticalLayoutContainer firstCheckField = new VerticalLayoutContainer();
 		firstCheckField.setBorders(true);
 		firstCheckField.setWidth((int) (100));
 		
-		Paragraph pghFirstCheck = new Paragraph();
-		pghFirstCheck.setText("1st Check here");
-		firstCheckField.add(pghFirstCheck);
+		pgpFirstCheck = new Paragraph();
+		pgpFirstCheck.setText("1st Check here");
+		firstCheckField.add(pgpFirstCheck);
 		
 		VerticalLayoutContainer addCheckField = new VerticalLayoutContainer();
 		addCheckField.setBorders(true);
 		addCheckField.setWidth((int) (100));
-		
-		Paragraph pghAddSameLevel = new Paragraph();
-		pghAddSameLevel.setText("add same level");
-		addCheckField.add(pghAddSameLevel);
+				
+		pgpAddSameLevel = new Paragraph();
+		pgpAddSameLevel.setText("add same level");
+		addCheckField.add(pgpAddSameLevel);
 		
 		firstCheckRow.add(firstCheckField);
 		firstCheckRow.add(new Icon(IconType.CHEVRON_RIGHT));
@@ -120,8 +124,7 @@ public class CheckpathEditorWidget extends Composite {
 		firstCheckColumn.add(addNextLevelField);
 		firstCheckColumn.add(new Icon(IconType.CHEVRON_UP));
 		firstCheckColumn.add(firstCheckRow);
-		
-		
+			
 				
 		container.add(firstCheckColumn);
 		
@@ -129,22 +132,45 @@ public class CheckpathEditorWidget extends Composite {
 		
 		rpcService = GWT.create(CheckService.class);
 
-		DropTarget target = new DropTarget(accordion) {
+		
+		DropTarget firstCheckTarget = new DropTarget(firstCheckField) {
 			@Override
 			protected void onDragDrop(DndDropEvent event) {
 				super.onDragDrop(event);
 
 				// do the drag and drop visual action
 
-				
+				DragobjectAccordion dragAccordion = (DragobjectAccordion) event
+						.getData();
+
+				pgpFirstCheck.setText(dragAccordion.checkName);
 
 			}
 
 		};
-		target.setGroup("check");
-		target.setOverStyle("drag-ok");
+		firstCheckTarget.setGroup("checkpath");
+		firstCheckTarget.setOverStyle("drag-ok");
+		
+		DropTarget addCheckTarget = new DropTarget(addCheckField) {
+			@Override
+			protected void onDragDrop(DndDropEvent event) {
+				super.onDragDrop(event);
+
+				// do the drag and drop visual action
+
+				DragobjectAccordion dragAccordion = (DragobjectAccordion) event
+						.getData();
+
+				pgpAddSameLevel.setText(dragAccordion.checkName);
+				SameLevelCheckpathObject sLCPO = new SameLevelCheckpathObject("add", true);
+				firstCheckRow.add(sLCPO);
+
+			}
+
+		};
+		addCheckTarget.setGroup("checkpath");
+		addCheckTarget.setOverStyle("drag-ok");
 
 	}
-
 
 }

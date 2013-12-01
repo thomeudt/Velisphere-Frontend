@@ -93,7 +93,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 				}
 			}
 
-			System.out.println(allUsers);
+			// System.out.println(allUsers);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

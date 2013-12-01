@@ -8,4 +8,6 @@ public class DragobjectAccordion {
 	public String propertyID;
 	public String properyClassID;
 	public String propertyName;
+	public String checkID;
+	public String checkName;
 }
