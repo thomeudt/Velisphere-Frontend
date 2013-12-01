@@ -42,4 +42,9 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer{
 		
 	}
 	
+	public void setEmpty (Boolean empty){
+		this.empty = empty;
+		
+	}
+	
 }
