@@ -658,7 +658,7 @@ public class AllCheckListWidget extends Composite {
 										
 
 									};
-									source.setGroup("checkpath");
+									source.setGroup("firstlevel");
 
 
 									

@@ -42,7 +42,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 import com.velisphere.tigerspice.client.dataproviders.UserAsyncDataProvider;
-import com.velisphere.tigerspice.server.VoltConnector;
+
 import com.velisphere.tigerspice.shared.UserData;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.cellview.client.CellTable;

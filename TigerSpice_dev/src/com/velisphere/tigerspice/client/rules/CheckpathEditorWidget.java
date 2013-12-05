@@ -4,7 +4,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
+
 import com.github.gwtbootstrap.client.ui.Accordion;
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
@@ -25,18 +27,18 @@ import com.velisphere.tigerspice.client.helper.DragobjectContainer;
 
 public class CheckpathEditorWidget extends Composite {
 
-	
 	Accordion accordion = new Accordion();
 	Paragraph pgpFirstCheck;
 	Paragraph pgpAddSameLevel;
 	HorizontalLayoutContainer firstCheckRow;
 	FlowLayoutContainer con;
 	VerticalLayoutContainer addNextLevelField;
-	VerticalLayoutContainer checkColumn;
+	//VerticalLayoutContainer checkColumn;
 	LinkedHashSet<SameLevelCheckpathObject> checkHashSet;
-	LinkedList<SameLevelCheckpathObject> multicheckLinkedList;
+	//LinkedList<SameLevelCheckpathObject> multicheckLinkedList;
 	LinkedList<LinkedList<SameLevelCheckpathObject>> multicheckColumns;
 
+	
 	public CheckpathEditorWidget() {
 
 		// widget constructor requires a parameter, thus we need to invoke the
@@ -52,7 +54,8 @@ public class CheckpathEditorWidget extends Composite {
 		initWidget(con);
 
 		checkHashSet = new LinkedHashSet<SameLevelCheckpathObject>();
-		multicheckLinkedList = new LinkedList<SameLevelCheckpathObject>();
+		//multicheckLinkedList = new LinkedList<SameLevelCheckpathObject>();
+		multicheckColumns = new LinkedList<LinkedList<SameLevelCheckpathObject>>();
 		// final SameLevelCheckpathObject firstCheckField = new
 		// SameLevelCheckpathObject("drag check here", true);
 		// checkHashSet.add(firstCheckField);
@@ -62,16 +65,15 @@ public class CheckpathEditorWidget extends Composite {
 	}
 
 	private void rebuildCheckpathDiagram() {
-	
+
 		// Draw basic layout boxes
-		
+
 		final VerticalLayoutContainer container = new VerticalLayoutContainer();
 		container.setBorders(true);
 		container.setScrollMode(ScrollSupport.ScrollMode.AUTO);
-		container.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
+		container.setHeight((int) ((RootPanel.get().getOffsetHeight()) / 2.5));
 		container.setWidth((int) ((RootPanel.get().getOffsetWidth()) / 4));
 
-		
 		firstCheckRow = new HorizontalLayoutContainer();
 		firstCheckRow.setBorders(false);
 		// firstCheckRow.setScrollMode(ScrollSupport.ScrollMode.AUTOX);
@@ -79,7 +81,7 @@ public class CheckpathEditorWidget extends Composite {
 		Iterator<SameLevelCheckpathObject> it = checkHashSet.iterator();
 
 		// draw first d&d target field if checkHashSet is empty
-		
+
 		if (it.hasNext() == false) {
 
 			final SameLevelCheckpathObject addCheckField = new SameLevelCheckpathObject(
@@ -102,19 +104,23 @@ public class CheckpathEditorWidget extends Composite {
 
 					SameLevelCheckpathObject addNextLevelField = new SameLevelCheckpathObject(
 							null, "drag check here", true, 1);
-					multicheckLinkedList.add(addNextLevelField);
+					
+					LinkedList<SameLevelCheckpathObject> multicheckList = new LinkedList<SameLevelCheckpathObject>();
+					multicheckList.add(addNextLevelField);
+					multicheckColumns.add(multicheckList);
 
 					rebuildCheckpathDiagram();
 
 				}
 
 			};
-			target.setGroup("checkpath");
+			target.setGroup("firstlevel");
 			target.setOverStyle("drag-ok");
 
 		}
-		
-		// draw the first level - "checks" - as the foundation layer by reading the data stored in the checkHashSet
+
+		// draw the first level - "checks" - as the foundation layer by reading
+		// the data stored in the checkHashSet
 
 		while (it.hasNext()) {
 			final SameLevelCheckpathObject currentObject = it.next();
@@ -123,7 +129,7 @@ public class CheckpathEditorWidget extends Composite {
 			builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
 					+ "\">");
 			builder.appendHtmlConstant("Drag " + currentObject.text
-					+ " into next level to build a tree");
+					+ " into next redimarkt to build a tree");
 			builder.appendHtmlConstant("</div>");
 
 			DragSource source = new DragSource(currentObject) {
@@ -149,10 +155,11 @@ public class CheckpathEditorWidget extends Composite {
 
 			firstCheckRow.add(currentObject);
 			firstCheckRow.add(new Icon(IconType.CHEVRON_RIGHT));
-			
-			
-			// if no more items are left in the check hashset, draw a new drag target box as the last step to allow for adding a new check to the checkpath
-			
+
+			// if no more items are left in the check hashset, draw a new drag
+			// target box as the last step to allow for adding a new check to
+			// the checkpath
+
 			if (it.hasNext() == false) {
 
 				final SameLevelCheckpathObject addCheckField = new SameLevelCheckpathObject(
@@ -186,154 +193,36 @@ public class CheckpathEditorWidget extends Composite {
 					}
 
 				};
-				target.setGroup("checkpath");
+				target.setGroup("firstlevel");
 				target.setOverStyle("drag-ok");
 
 			}
 
 		}
 
-	
-		// when the first layer is done, now add the vertical layers containing multichecks, in the reverse order of their addition
+		// when the first layer is done, now add the vertical layers containing
+		// multichecks, in the reverse order of their addition
+
 		
 		
-		checkColumn = new VerticalLayoutContainer();
-		checkColumn.setWidth((int) (400));
-				
+		HorizontalLayoutContainer hLC = new HorizontalLayoutContainer();
+		hLC.setHeight(200);
 		
+		int countOfMulticheckColumns = multicheckColumns.size(); 
 		
-		//LinkedList<SameLevelCheckpathObject> reverseList = new LinkedList<SameLevelCheckpathObject>();
-		//reverseList.addAll(multicheckLinkedList);
-		//Collections.reverse(reverseList);
-		Iterator<SameLevelCheckpathObject> mit = multicheckLinkedList.iterator();
-
-		while (mit.hasNext()) {
-			final SameLevelCheckpathObject currentObject = mit.next();
-			checkColumn.add(currentObject);
-			checkColumn.add(new Icon(IconType.CHEVRON_UP));
-
-			
-			
-			if (it.hasNext() == false) {
-
-				DropTarget target = new DropTarget(currentObject) {
-					@Override
-					protected void onDragDrop(DndDropEvent event) {
-						super.onDragDrop(event);
-
-						// do the drag and drop visual action
-
-										
-						
-						DragobjectContainer dragAccordion = (DragobjectContainer) event
-								.getData();
-
-
-						// action that is triggered if check is dragged into an empty target field
-						if (currentObject.checkId == null)
-						{
-							multicheckLinkedList.remove(currentObject);
-							currentObject.setText(dragAccordion.checkName);
-							currentObject.setCheckID(dragAccordion.checkID);
-							currentObject.setEmpty(false);
-							currentObject.getElement().getStyle()
-									.setBackgroundColor(ColorHelper.randomColor());
-
-							final SafeHtmlBuilder builder = new SafeHtmlBuilder();
-							builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
-									+ "\">");
-							builder.appendHtmlConstant("Drag " + currentObject.text
-									+ " into next level to build a tree");
-							builder.appendHtmlConstant("</div>");
-
-							DragSource source = new DragSource(currentObject) {
-								@Override
-								protected void onDragStart(DndDragStartEvent event) {
-									super.onDragStart(event);
-
-									DragobjectContainer dragAccordion = new DragobjectContainer();
-									dragAccordion.checkID = currentObject.checkId;
-									dragAccordion.checkName = currentObject.text;
-
-									event.setData(dragAccordion);
-									event.getStatusProxy().update(
-											builder.toSafeHtml());
-								}
-
-							};
-							source.setGroup("multicheck");
-
-							multicheckLinkedList.addFirst(currentObject);
-	
-						}
-
-						// action that is triggered if check is dragged into an already used target field (overwriting)
-						if (currentObject.checkId != null)
-						{
-														
-							currentObject.setText(dragAccordion.checkName);
-							currentObject.setCheckID(dragAccordion.checkID);
-							currentObject.setEmpty(false);
-							currentObject.getElement().getStyle()
-									.setBackgroundColor(ColorHelper.randomColor());
-
-							final SafeHtmlBuilder builder = new SafeHtmlBuilder();
-							builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
-									+ "\">");
-							builder.appendHtmlConstant("Drag " + currentObject.text
-									+ " into next level to build a tree");
-							builder.appendHtmlConstant("</div>");
-
-							DragSource source = new DragSource(currentObject) {
-								@Override
-								protected void onDragStart(DndDragStartEvent event) {
-									super.onDragStart(event);
-
-									DragobjectContainer dragAccordion = new DragobjectContainer();
-									dragAccordion.checkID = currentObject.checkId;
-									dragAccordion.checkName = currentObject.text;
-
-									event.setData(dragAccordion);
-									event.getStatusProxy().update(
-											builder.toSafeHtml());
-								}
-
-							};
-							source.setGroup("multicheck");
-
-							multicheckLinkedList.set(multicheckLinkedList.size() - currentObject.level, currentObject);
-							
-	
-						}
-
-						
-						
-						
-						
-						if (currentObject.level == multicheckLinkedList.size() && multicheckLinkedList.size() < 4) {
-							SameLevelCheckpathObject addNextLevelField = new SameLevelCheckpathObject(
-									null, "drag check here", true,
-									currentObject.level + 1);
-							multicheckLinkedList.addFirst(addNextLevelField);
-
-						}
-
-						rebuildCheckpathDiagram();
-
-					}
-
-				};
-				target.setGroup("multicheck");
-				target.setOverStyle("drag-ok");
-
-			}
-
+		for(int i = 1; i <= countOfMulticheckColumns ; i = i+1) 
+		{					
+			hLC.add(drawMulticheckColumn(i-1));
 		}
-
+		
 		// firstCheckColumn.add(firstCheckRow);
-
-		container.add(checkColumn);
+		
+		
+		
+		// container.add(checkColumn);
+		container.add(hLC);
 		container.add(firstCheckRow);
+		
 
 		con.clear();
 		con.add(container);
@@ -347,5 +236,170 @@ public class CheckpathEditorWidget extends Composite {
 		 */
 
 	}
+
+
+	private VerticalLayoutContainer drawMulticheckColumn(final int columnElement){
+		VerticalLayoutContainer checkColumn = new VerticalLayoutContainer();
+		checkColumn.setWidth((int) (100));
+
+		// LinkedList<SameLevelCheckpathObject> reverseList = new
+		// LinkedList<SameLevelCheckpathObject>();
+		// reverseList.addAll(multicheckLinkedList);
+		// Collections.reverse(reverseList);
+		
+		LinkedList<SameLevelCheckpathObject> multicheckLinkedList = multicheckColumns.get(columnElement);
+		
+		Iterator<SameLevelCheckpathObject> mit = multicheckLinkedList
+				.iterator();
+
+		// LinkedList<SameLevelCheckpathObject> mcl = multicheckLinkedList;
+		
+		while (mit.hasNext()) {
+			final SameLevelCheckpathObject currentObject = mit.next();
+			
+			checkColumn.add(currentObject);
+			checkColumn.add(new Icon(IconType.CHEVRON_UP));
+
+
+			//if (mit.hasNext() == false) {
+				
+				DropTarget target = new DropTarget(currentObject) {
+					@Override
+					protected void onDragDrop(DndDropEvent event) {
+						super.onDragDrop(event);
+
+						// do the drag and drop visual action
+
+						DragobjectContainer dragAccordion = (DragobjectContainer) event
+								.getData();
+
+						// action that is triggered if check is dragged into an
+						// empty target field
+						if (currentObject.checkId == null) {
+							multicheckColumns.get(columnElement).remove(currentObject);
+							currentObject.setText(dragAccordion.checkName);
+							currentObject.setCheckID(dragAccordion.checkID);
+							currentObject.setEmpty(false);
+							currentObject
+									.getElement()
+									.getStyle()
+									.setBackgroundColor(
+											ColorHelper.randomColor());
+
+							final SafeHtmlBuilder builder = new SafeHtmlBuilder();
+							builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
+									+ "\">");
+							builder.appendHtmlConstant("Drag "
+									+ currentObject.text
+									+ " into next leibbrand to build a tree");
+							builder.appendHtmlConstant("</div>");
+
+							DragSource source = new DragSource(currentObject) {
+								@Override
+								protected void onDragStart(
+										DndDragStartEvent event) {
+									super.onDragStart(event);
+
+									DragobjectContainer dragAccordion = new DragobjectContainer();
+									dragAccordion.checkID = currentObject.checkId;
+									dragAccordion.checkName = currentObject.text;
+
+									event.setData(dragAccordion);
+									event.getStatusProxy().update(
+											builder.toSafeHtml());
+								}							
+							
+							};
+			
+							source.setGroup("multicheck");
+							multicheckColumns.get(columnElement).addFirst(currentObject);
+							
+							// add new empty field for multicheck
+							
+
+						}
+
+						// action that is triggered if check is dragged into an
+						// already used target field (overwriting)
+						if (currentObject.checkId != null) {
+
+							currentObject.setText(dragAccordion.checkName);
+							currentObject.setCheckID(dragAccordion.checkID);
+							currentObject.setEmpty(false);
+							currentObject
+									.getElement()
+									.getStyle()
+									.setBackgroundColor(
+											ColorHelper.randomColor());
+
+							final SafeHtmlBuilder builder = new SafeHtmlBuilder();
+							builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
+									+ "\">");
+							builder.appendHtmlConstant("Drag "
+									+ currentObject.text
+									+ " into next level to build a tree");
+							builder.appendHtmlConstant("</div>");
+
+							DragSource source = new DragSource(currentObject) {
+								@Override
+								protected void onDragStart(
+										DndDragStartEvent event) {
+									super.onDragStart(event);
+
+									DragobjectContainer dragAccordion = new DragobjectContainer();
+									dragAccordion.checkID = currentObject.checkId;
+									dragAccordion.checkName = currentObject.text;
+
+									event.setData(dragAccordion);
+									event.getStatusProxy().update(
+											builder.toSafeHtml());
+								}
+
+							};
+							source.setGroup("multicheck");
+
+							multicheckColumns.get(columnElement).set(
+									multicheckColumns.get(columnElement).size()
+											- currentObject.level,
+									currentObject);
+
+						}
+
+						if (currentObject.level == multicheckColumns.get(columnElement).size()
+								&& multicheckColumns.get(columnElement).size() < 4) {
+							SameLevelCheckpathObject addNextLevelField = new SameLevelCheckpathObject(
+									null, "drag check here", true,
+									currentObject.level + 1);
+							multicheckColumns.get(columnElement).addFirst(addNextLevelField);
+
+						}
+
+						rebuildCheckpathDiagram();
+
+						
+					}
+
+
+				};
+				target.setGroup("multicheck");
+				target.setOverStyle("drag-ok");
+
+			//}
+
+		
+
+		}
+
+		
+		
+
+
+		return checkColumn;
+
+	}
+	
+	
+
+
 
 }

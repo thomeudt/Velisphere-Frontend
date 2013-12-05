@@ -17,20 +17,13 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.ui.DockPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.velisphere.tigerspice.client.HeroUnitLogin.HeroUnitLoginUiBinder;
-import com.velisphere.tigerspice.server.VoltConnector;
 
 public class Login implements EntryPoint {
 
