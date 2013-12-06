@@ -36,7 +36,7 @@ public class CheckpathEditorWidget extends Composite {
 	// VerticalLayoutContainer checkColumn;
 	LinkedHashSet<SameLevelCheckpathObject> checkHashSet;
 	// LinkedList<SameLevelCheckpathObject> multicheckLinkedList;
-	LinkedList<LinkedList<SameLevelCheckpathObject>> multicheckColumns;
+	MulticheckColumn<LinkedList<SameLevelCheckpathObject>> multicheckColumns;
 
 	public CheckpathEditorWidget() {
 
@@ -54,7 +54,7 @@ public class CheckpathEditorWidget extends Composite {
 
 		checkHashSet = new LinkedHashSet<SameLevelCheckpathObject>();
 		// multicheckLinkedList = new LinkedList<SameLevelCheckpathObject>();
-		multicheckColumns = new LinkedList<LinkedList<SameLevelCheckpathObject>>();
+		multicheckColumns = new MulticheckColumn<LinkedList<SameLevelCheckpathObject>>(true);
 		// final SameLevelCheckpathObject firstCheckField = new
 		// SameLevelCheckpathObject("drag check here", true);
 		// checkHashSet.add(firstCheckField);
@@ -104,10 +104,12 @@ public class CheckpathEditorWidget extends Composite {
 					SameLevelCheckpathObject addNextLevelField = new SameLevelCheckpathObject(
 							null, "drag check here", true, 1);
 
+					
 					LinkedList<SameLevelCheckpathObject> multicheckList = new LinkedList<SameLevelCheckpathObject>();
 					multicheckList.add(addNextLevelField);
 					multicheckColumns.add(multicheckList);
-
+				
+					
 					rebuildCheckpathDiagram();
 
 				}
@@ -159,6 +161,7 @@ public class CheckpathEditorWidget extends Composite {
 			// target box as the last step to allow for adding a new check to
 			// the checkpath
 
+			
 			if (it.hasNext() == false) {
 
 				final SameLevelCheckpathObject addCheckField = new SameLevelCheckpathObject(
@@ -179,6 +182,7 @@ public class CheckpathEditorWidget extends Composite {
 						addCheckField.setCheckID(dragAccordion.checkID);
 						checkHashSet.add(addCheckField);
 
+						/*
 						addNextLevelField = new VerticalLayoutContainer();
 						addNextLevelField.setBorders(true);
 						addNextLevelField.setWidth((int) (100));
@@ -186,6 +190,8 @@ public class CheckpathEditorWidget extends Composite {
 						Paragraph pghAddNextLevel = new Paragraph();
 						pghAddNextLevel.setText("add next level");
 						addNextLevelField.add(pghAddNextLevel);
+						*/
+
 
 						rebuildCheckpathDiagram();
 
@@ -360,16 +366,26 @@ public class CheckpathEditorWidget extends Composite {
 			
 			if (mit.hasNext() == false) {
 
+
 				
+				
+				// create new column if it is the last column				
+				
+				System.out.println("Spaltenzahl:" + multicheckColumns.size());
+				System.out.println("Spaltenelementnummer:" + (columnElement+1));
+				
+				if(multicheckColumns.size() == columnElement+1)
+				{
 				
 				SameLevelCheckpathObject addNextColumnField = new SameLevelCheckpathObject(
 						null, "drag check here", true,
 						currentObject.level + 1);
+				
 
 				LinkedList<SameLevelCheckpathObject> newMulticheckList = new LinkedList<SameLevelCheckpathObject>();
 				newMulticheckList.add(addNextColumnField);
 				multicheckColumns.add(newMulticheckList);
-
+				
 				
 		
 				DropTarget columnTarget = new DropTarget(addNextColumnField) {
@@ -403,6 +419,7 @@ public class CheckpathEditorWidget extends Composite {
 				columnTarget.setOverStyle("drag-ok");
 
 			}
+				}
 			
 			
 			
