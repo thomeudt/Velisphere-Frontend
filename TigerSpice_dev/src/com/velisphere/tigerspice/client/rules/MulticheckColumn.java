@@ -9,6 +9,7 @@ import com.sencha.gxt.dnd.core.client.DropTarget;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.velisphere.tigerspice.client.helper.DragobjectContainer;
 
+@SuppressWarnings("serial")
 public class MulticheckColumn<T> extends LinkedList<T>{
 
 

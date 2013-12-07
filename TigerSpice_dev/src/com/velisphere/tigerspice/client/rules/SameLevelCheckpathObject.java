@@ -1,11 +1,7 @@
 package com.velisphere.tigerspice.client.rules;
 
-import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.google.gwt.user.client.ui.Anchor;
-import com.sencha.gxt.dnd.core.client.DndDropEvent;
-import com.sencha.gxt.dnd.core.client.DropTarget;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.velisphere.tigerspice.client.helper.DragobjectContainer;
 
 public class SameLevelCheckpathObject extends VerticalLayoutContainer{
 
@@ -22,10 +18,19 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer{
 		this.setBorders(true);
 		this.setWidth(100);
 		this.level = level;
+		this.setTitle(text);
 		
 	
 		ancTextField = new Anchor();
-		ancTextField.setText(this.text);
+		
+		if(this.text.length()>11)
+		{
+			ancTextField.setText(this.text.substring(0, 11)+" (...)");
+		}
+		else
+		{
+			ancTextField.setText(this.text);
+		}
 		ancTextField.setHref("#");
 		this.add(ancTextField);
 		
@@ -34,7 +39,15 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer{
 	
 	public void setText (String text){
 		this.text = text;
-		ancTextField.setText(this.text);
+		if(this.text.length()>11)
+		{
+			ancTextField.setText(this.text.substring(0, 11)+" (...)");
+		}
+		else
+		{
+			ancTextField.setText(this.text);
+		}		
+		this.setTitle(text);
 	}
 	
 	public void setCheckID (String checkID){

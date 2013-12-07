@@ -1,13 +1,9 @@
 package com.velisphere.tigerspice.client.rules;
 
-import java.awt.Color;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
-
 import com.github.gwtbootstrap.client.ui.Accordion;
-import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
@@ -19,11 +15,9 @@ import com.sencha.gxt.dnd.core.client.DndDragStartEvent;
 import com.sencha.gxt.dnd.core.client.DndDropEvent;
 import com.sencha.gxt.dnd.core.client.DragSource;
 import com.sencha.gxt.dnd.core.client.DropTarget;
-import com.sencha.gxt.widget.core.client.container.Container;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.helper.ColorHelper;
 import com.velisphere.tigerspice.client.helper.DragobjectContainer;
 
@@ -104,7 +98,7 @@ public class CheckpathEditorWidget extends Composite {
 					checkHashSet.add(addCheckField);
 
 					SameLevelCheckpathObject addNextLevelField = new SameLevelCheckpathObject(
-							null, "drag checker here", true, 1);
+							null, "drag check here", true, 1);
 
 					// also add an entire multicheck column
 					MulticheckColumn<SameLevelCheckpathObject> multicheckList = new MulticheckColumn<SameLevelCheckpathObject>(true);
