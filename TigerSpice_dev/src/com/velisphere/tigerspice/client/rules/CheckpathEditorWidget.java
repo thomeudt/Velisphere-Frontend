@@ -36,7 +36,7 @@ public class CheckpathEditorWidget extends Composite {
 	// VerticalLayoutContainer checkColumn;
 	LinkedHashSet<SameLevelCheckpathObject> checkHashSet;
 	// LinkedList<SameLevelCheckpathObject> multicheckLinkedList;
-	MulticheckColumn<LinkedList<SameLevelCheckpathObject>> multicheckColumns;
+	LinkedList<MulticheckColumn<SameLevelCheckpathObject>> multicheckColumns;
 
 	public CheckpathEditorWidget() {
 
@@ -54,7 +54,7 @@ public class CheckpathEditorWidget extends Composite {
 
 		checkHashSet = new LinkedHashSet<SameLevelCheckpathObject>();
 		// multicheckLinkedList = new LinkedList<SameLevelCheckpathObject>();
-		multicheckColumns = new MulticheckColumn<LinkedList<SameLevelCheckpathObject>>(true);
+		multicheckColumns = new LinkedList<MulticheckColumn<SameLevelCheckpathObject>>();
 		// final SameLevelCheckpathObject firstCheckField = new
 		// SameLevelCheckpathObject("drag check here", true);
 		// checkHashSet.add(firstCheckField);
@@ -102,14 +102,12 @@ public class CheckpathEditorWidget extends Composite {
 					checkHashSet.add(addCheckField);
 
 					SameLevelCheckpathObject addNextLevelField = new SameLevelCheckpathObject(
-							null, "drag check here", true, 1);
+							null, "drag checker here", true, 1);
 
-					
-					LinkedList<SameLevelCheckpathObject> multicheckList = new LinkedList<SameLevelCheckpathObject>();
-					multicheckList.add(addNextLevelField);
-					multicheckColumns.add(multicheckList);
-				
-					
+					// also add an entire multicheck column
+					MulticheckColumn<SameLevelCheckpathObject> multicheckList = new MulticheckColumn<SameLevelCheckpathObject>(true);
+					multicheckList.add(addNextLevelField);					
+					multicheckColumns.add(multicheckList);										
 					rebuildCheckpathDiagram();
 
 				}
@@ -191,20 +189,82 @@ public class CheckpathEditorWidget extends Composite {
 						pghAddNextLevel.setText("add next level");
 						addNextLevelField.add(pghAddNextLevel);
 						*/
-
-
-						rebuildCheckpathDiagram();
+						rebuildCheckpathDiagram();						
 
 					}
 
 				};
 				target.setGroup("firstlevel");
 				target.setOverStyle("drag-ok");
+				
 
 			}
 
 		}
 
+	
+		// check if new column needs to be added
+		
+		
+		if(multicheckColumns.size()>0)
+		{
+		System.out.println("Spaltenzahl:" + multicheckColumns.size());
+		
+		
+		if(multicheckColumns.getLast().getEmpty() == false)
+		{
+		
+		SameLevelCheckpathObject addNextColumnField = new SameLevelCheckpathObject(
+				null, "drag check herer", true,
+				1);
+		
+
+		MulticheckColumn<SameLevelCheckpathObject> newMulticheckList = new MulticheckColumn<SameLevelCheckpathObject>(true);
+		newMulticheckList.add(addNextColumnField);
+		multicheckColumns.add(newMulticheckList);
+		
+		
+
+		DropTarget columnTarget = new DropTarget(addNextColumnField) {
+			@Override
+			protected void onDragDrop(DndDropEvent event) {
+				super.onDragDrop(event);
+
+				// do the drag and drop visual action
+
+				DragobjectContainer dragAccordion = (DragobjectContainer) event
+						.getData();
+
+				//addCheckField.setText(dragAccordion.checkName);
+				//addCheckField.setCheckID(dragAccordion.checkID);
+				//checkHashSet.add(addCheckField);
+
+				addNextLevelField = new VerticalLayoutContainer();
+				addNextLevelField.setBorders(true);
+				addNextLevelField.setWidth((int) (100));
+				
+
+				Paragraph pghAddNextLevel = new Paragraph();
+				pghAddNextLevel.setText("add next level");
+				addNextLevelField.add(pghAddNextLevel);
+
+				multicheckColumns.getLast().setEmpty(false);
+
+				rebuildCheckpathDiagram();
+
+			}
+
+		};
+		columnTarget.setGroup("multicheck");
+		columnTarget.setOverStyle("drag-ok");
+		rebuildCheckpathDiagram();
+
+	}
+		
+		}
+		
+		
+		
 		// when the first layer is done, now add the vertical layers containing
 		// multichecks, in the reverse order of their addition
 
@@ -232,6 +292,11 @@ public class CheckpathEditorWidget extends Composite {
 		VerticalLayoutContainer checkColumn = new VerticalLayoutContainer();
 		checkColumn.setWidth((int) (100));
 
+		
+
+
+		
+		
 		LinkedList<SameLevelCheckpathObject> multicheckLinkedList = multicheckColumns
 				.get(columnElement);
 
@@ -272,6 +337,7 @@ public class CheckpathEditorWidget extends Composite {
 						currentObject.setEmpty(false);
 						currentObject.getElement().getStyle()
 								.setBackgroundColor(ColorHelper.randomColor());
+						multicheckColumns.get(columnElement).setEmpty(false);
 
 						final SafeHtmlBuilder builder = new SafeHtmlBuilder();
 						builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
@@ -297,8 +363,15 @@ public class CheckpathEditorWidget extends Composite {
 						};
 
 						source.setGroup("multicheck");
+						
+
+						
+						
+						
 						multicheckColumns.get(columnElement).addFirst(
 								currentObject);
+
+						
 
 						// add new empty field for multicheck
 
@@ -313,6 +386,7 @@ public class CheckpathEditorWidget extends Composite {
 						currentObject.setEmpty(false);
 						currentObject.getElement().getStyle()
 								.setBackgroundColor(ColorHelper.randomColor());
+						multicheckColumns.get(columnElement).setEmpty(false);
 
 						final SafeHtmlBuilder builder = new SafeHtmlBuilder();
 						builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
@@ -338,6 +412,8 @@ public class CheckpathEditorWidget extends Composite {
 						};
 						source.setGroup("multicheck");
 
+
+						
 						multicheckColumns.get(columnElement).set(
 								multicheckColumns.get(columnElement).size()
 										- currentObject.level, currentObject);
@@ -355,6 +431,7 @@ public class CheckpathEditorWidget extends Composite {
 
 					}
 
+
 					rebuildCheckpathDiagram();
 
 				}
@@ -364,62 +441,14 @@ public class CheckpathEditorWidget extends Composite {
 			target.setOverStyle("drag-ok");
 			
 			
-			if (mit.hasNext() == false) {
+			//if (mit.hasNext() == false) {
 
 
 				
 				
-				// create new column if it is the last column				
+				// create new column if it is the last column and last column ist empty				
 				
-				System.out.println("Spaltenzahl:" + multicheckColumns.size());
-				System.out.println("Spaltenelementnummer:" + (columnElement+1));
-				
-				if(multicheckColumns.size() == columnElement+1)
-				{
-				
-				SameLevelCheckpathObject addNextColumnField = new SameLevelCheckpathObject(
-						null, "drag check here", true,
-						currentObject.level + 1);
-				
-
-				LinkedList<SameLevelCheckpathObject> newMulticheckList = new LinkedList<SameLevelCheckpathObject>();
-				newMulticheckList.add(addNextColumnField);
-				multicheckColumns.add(newMulticheckList);
-				
-				
-		
-				DropTarget columnTarget = new DropTarget(addNextColumnField) {
-					@Override
-					protected void onDragDrop(DndDropEvent event) {
-						super.onDragDrop(event);
-
-						// do the drag and drop visual action
-
-						DragobjectContainer dragAccordion = (DragobjectContainer) event
-								.getData();
-
-						//addCheckField.setText(dragAccordion.checkName);
-						//addCheckField.setCheckID(dragAccordion.checkID);
-						//checkHashSet.add(addCheckField);
-
-						addNextLevelField = new VerticalLayoutContainer();
-						addNextLevelField.setBorders(true);
-						addNextLevelField.setWidth((int) (100));
-
-						Paragraph pghAddNextLevel = new Paragraph();
-						pghAddNextLevel.setText("add next level");
-						addNextLevelField.add(pghAddNextLevel);
-
-						rebuildCheckpathDiagram();
-
-					}
-
-				};
-				columnTarget.setGroup("multicheck");
-				columnTarget.setOverStyle("drag-ok");
-
-			}
-				}
+								//}
 			
 			
 			

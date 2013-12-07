@@ -27,4 +27,9 @@ public class MulticheckColumn<T> extends LinkedList<T>{
 		
 	}
 	
+	public boolean getEmpty(){
+		return this.empty;
+		
+	}
+	
 }
