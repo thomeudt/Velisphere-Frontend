@@ -1,5 +1,6 @@
 package com.velisphere.tigerspice.client.rules;
 
+import java.awt.Color;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -18,6 +19,7 @@ import com.sencha.gxt.dnd.core.client.DndDragStartEvent;
 import com.sencha.gxt.dnd.core.client.DndDropEvent;
 import com.sencha.gxt.dnd.core.client.DragSource;
 import com.sencha.gxt.dnd.core.client.DropTarget;
+import com.sencha.gxt.widget.core.client.container.Container;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
@@ -128,7 +130,7 @@ public class CheckpathEditorWidget extends Composite {
 			builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
 					+ "\">");
 			builder.appendHtmlConstant("Drag " + currentObject.text
-					+ " into next redimarkt to build a tree");
+					+ " into next level to build a tree");
 			builder.appendHtmlConstant("</div>");
 
 			DragSource source = new DragSource(currentObject) {
@@ -153,6 +155,9 @@ public class CheckpathEditorWidget extends Composite {
 			source.setGroup("multicheck");
 
 			firstCheckRow.add(currentObject);
+			VerticalLayoutContainer horizontalSpacer = new VerticalLayoutContainer(); 
+			horizontalSpacer.setBounds(13, 20, 13, 20);
+			firstCheckRow.add(horizontalSpacer);
 			firstCheckRow.add(new Icon(IconType.CHEVRON_RIGHT));
 
 			// if no more items are left in the check hashset, draw a new drag
@@ -215,7 +220,7 @@ public class CheckpathEditorWidget extends Composite {
 		{
 		
 		SameLevelCheckpathObject addNextColumnField = new SameLevelCheckpathObject(
-				null, "drag check herer", true,
+				null, "drag check here", true,
 				1);
 		
 
@@ -269,7 +274,11 @@ public class CheckpathEditorWidget extends Composite {
 		// multichecks, in the reverse order of their addition
 
 		HorizontalLayoutContainer hLC = new HorizontalLayoutContainer();
-		hLC.setHeight(200);
+		
+		if(multicheckColumns.size()>0)
+		{
+		hLC.setHeight((4*45));
+		}
 
 		int countOfMulticheckColumns = multicheckColumns.size();
 
@@ -291,8 +300,7 @@ public class CheckpathEditorWidget extends Composite {
 	private VerticalLayoutContainer drawMulticheckColumn(final int columnElement) {
 		VerticalLayoutContainer checkColumn = new VerticalLayoutContainer();
 		checkColumn.setWidth((int) (100));
-
-		
+		checkColumn.setBounds(100, 20, 120, 20);
 
 
 		
@@ -305,8 +313,12 @@ public class CheckpathEditorWidget extends Composite {
 
 		for(int i = multicheckLinkedList.size(); i < 4; i = i+1)
 			if(multicheckLinkedList.size()<4){
-				checkColumn.add(new SameLevelCheckpathObject(null,"Spacer ", true, i));
-				checkColumn.add(new Icon(IconType.CHEVRON_UP));
+				SameLevelCheckpathObject spacer = new SameLevelCheckpathObject(null,"", true, i);
+				spacer.getElement().getStyle().setBorderColor("#FFFFFF");
+				spacer.setBorders(false);
+				spacer.setHeight(42);
+				checkColumn.add(spacer);
+				//checkColumn.add(new Icon(IconType.CHEVRON_UP));
 			}
 		
 		while (mit.hasNext()) {
@@ -343,7 +355,7 @@ public class CheckpathEditorWidget extends Composite {
 						builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
 								+ "\">");
 						builder.appendHtmlConstant("Drag " + currentObject.text
-								+ " into next leibbrand to build a tree");
+								+ " into next higher level to build a tree");
 						builder.appendHtmlConstant("</div>");
 
 						DragSource source = new DragSource(currentObject) {
