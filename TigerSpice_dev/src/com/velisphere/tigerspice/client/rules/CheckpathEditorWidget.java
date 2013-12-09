@@ -3,6 +3,7 @@ package com.velisphere.tigerspice.client.rules;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
+
 import com.github.gwtbootstrap.client.ui.Accordion;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Paragraph;
@@ -18,6 +19,7 @@ import com.sencha.gxt.dnd.core.client.DropTarget;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.velisphere.tigerspice.client.checks.CheckNewDialogBox;
 import com.velisphere.tigerspice.client.helper.ColorHelper;
 import com.velisphere.tigerspice.client.helper.DragobjectContainer;
 
@@ -271,7 +273,7 @@ public class CheckpathEditorWidget extends Composite {
 		
 		if(multicheckColumns.size()>0)
 		{
-		hLC.setHeight((4*45));
+		hLC.setHeight((4*65));
 		}
 
 		int countOfMulticheckColumns = multicheckColumns.size();
@@ -310,7 +312,7 @@ public class CheckpathEditorWidget extends Composite {
 				SameLevelCheckpathObject spacer = new SameLevelCheckpathObject(null,"", true, i);
 				spacer.getElement().getStyle().setBorderColor("#FFFFFF");
 				spacer.setBorders(false);
-				spacer.setHeight(42);
+				spacer.setHeight(60);
 				checkColumn.add(spacer);
 				//checkColumn.add(new Icon(IconType.CHEVRON_UP));
 			}
@@ -344,6 +346,22 @@ public class CheckpathEditorWidget extends Composite {
 						currentObject.getElement().getStyle()
 								.setBackgroundColor(ColorHelper.randomColor());
 						multicheckColumns.get(columnElement).setEmpty(false);
+						
+						
+						MulticheckNewDialogBox multicheckNewDialogBox = new MulticheckNewDialogBox();
+
+						multicheckNewDialogBox.setModal(true);
+						multicheckNewDialogBox.setAutoHideEnabled(true);
+
+						multicheckNewDialogBox.setAnimationEnabled(true);
+
+						multicheckNewDialogBox.setPopupPosition(
+								(RootPanel.get().getOffsetWidth()) / 3,
+								(RootPanel.get().getOffsetHeight()) / 4);
+						multicheckNewDialogBox.show();
+
+						
+						
 
 						final SafeHtmlBuilder builder = new SafeHtmlBuilder();
 						builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
