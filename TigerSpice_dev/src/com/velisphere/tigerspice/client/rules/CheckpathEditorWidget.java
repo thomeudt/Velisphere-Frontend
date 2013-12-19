@@ -153,6 +153,7 @@ public class CheckpathEditorWidget extends Composite {
 					DragobjectContainer dragAccordion = new DragobjectContainer();
 					dragAccordion.checkID = currentObject.checkId;
 					dragAccordion.checkName = currentObject.text;
+					dragAccordion.isMulticheck = currentObject.isMulticheck;
 
 					event.setData(dragAccordion);
 					event.getStatusProxy().update(builder.toSafeHtml());
@@ -316,6 +317,8 @@ public class CheckpathEditorWidget extends Composite {
 		while (mit.hasNext()) {
 			final SameLevelCheckpathObject currentObject = mit.next();
 
+			System.out.println(currentObject.text + " is multicheck: " + currentObject.isMulticheck);
+			
 			checkColumn.add(currentObject);
 			checkColumn.add(new Icon(IconType.CHEVRON_UP));
 
@@ -337,7 +340,7 @@ public class CheckpathEditorWidget extends Composite {
 						multicheckColumns.get(columnElement).remove(
 								currentObject);
 						currentObject.setText(dragAccordion.checkName);
-
+						currentObject.setIsMulticheck(true);
 						currentObject.setEmpty(false);
 						currentObject.getElement().getStyle()
 								.setBackgroundColor(ColorHelper.randomColor());
@@ -386,8 +389,15 @@ public class CheckpathEditorWidget extends Composite {
 												.setText(multicheckNewDialogBox.multicheckTitle);
 										currentObject
 												.setCombination(multicheckNewDialogBox.combination);
-										currentObject
-												.addChildMulticheck(dragAccordion.checkID);
+									
+										if (dragAccordion.isMulticheck)
+											{
+											currentObject.addChildMulticheck(dragAccordion.checkID);
+											}
+										else
+										{
+											currentObject.addChildCheck(dragAccordion.checkID);
+											}
 										
 										System.out.println("Title: "
 												+ currentObject.text);
@@ -396,6 +406,10 @@ public class CheckpathEditorWidget extends Composite {
 										System.out
 												.println("Child Multichecks: "
 														+ currentObject.childMultichecks);
+										System.out
+										.println("Child Checks: "
+												+ currentObject.childChecks);
+										
 									}
 
 								});
@@ -415,6 +429,7 @@ public class CheckpathEditorWidget extends Composite {
 								DragobjectContainer dragAccordion = new DragobjectContainer();
 								dragAccordion.checkID = currentObject.checkId;
 								dragAccordion.checkName = currentObject.text;
+								dragAccordion.isMulticheck = currentObject.isMulticheck;
 
 								event.setData(dragAccordion);
 								event.getStatusProxy().update(
@@ -458,6 +473,7 @@ public class CheckpathEditorWidget extends Composite {
 								DragobjectContainer dragAccordion = new DragobjectContainer();
 								dragAccordion.checkID = currentObject.checkId;
 								dragAccordion.checkName = currentObject.text;
+								dragAccordion.isMulticheck = currentObject.isMulticheck;
 
 								event.setData(dragAccordion);
 								event.getStatusProxy().update(

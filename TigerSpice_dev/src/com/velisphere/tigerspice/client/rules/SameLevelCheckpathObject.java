@@ -17,6 +17,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer{
 	HashSet<String> childChecks;
 	String combination;
 	String ruleID;
+	Boolean isMulticheck;
 	
 	public SameLevelCheckpathObject (String checkID, String text, Boolean empty, Integer level){
 		super();
@@ -29,6 +30,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer{
 		this.setTitle(text);
 		this.childMultichecks = new HashSet<String>();
 		this.childChecks = new HashSet<String>();
+		this.isMulticheck = false;
 	
 		ancTextField = new Anchor();
 		
@@ -79,8 +81,18 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer{
 		
 	}
 	
+	public void setIsMulticheck (boolean isMulticheck){
+		this.isMulticheck = isMulticheck;
+		
+	}
+	
 	public void addChildMulticheck (String childMulticheck){
-		//this.childMultichecks.add(childMulticheck);
+		this.childMultichecks.add(childMulticheck);
+		
+	}
+	
+	public void addChildCheck (String childCheck){
+		this.childChecks.add(childCheck);
 		
 	}
 	
