@@ -97,6 +97,15 @@
     <url-pattern>/tigerspice_dev/voltPropertyClass</url-pattern>
   </servlet-mapping>
 
+<servlet>
+    <servlet-name>uuidServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.UuidServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>uuidServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltUuid</url-pattern>
+  </servlet-mapping>
 
 <servlet>
     <servlet-name>requestFactoryServlet</servlet-name>

@@ -5,6 +5,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
+import java.util.HashSet;
 import java.util.Iterator;
 
 import com.github.gwtbootstrap.client.ui.Button;
@@ -25,6 +26,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.LoginDialogBox;
 import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.helper.CombinationConfig;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
@@ -33,21 +35,21 @@ import com.velisphere.tigerspice.shared.PropertyClassData;
 public class MulticheckNewDialogBox extends PopupPanel {
 
 	@UiField
-	ListBox lstPropertyID;
+	ListBox lstLinkedChecksID;
 	@UiField
-	ListBox lstOperator;
+	ListBox lstCombination;
 	@UiField
 	Button btnSave;
 	@UiField
-	TextBox txtTriggerValue;
+	TextBox txtRuleTriggered;
 	@UiField
-	TextBox txtCheckTitle;
+	TextBox txtMulticheckTitle;
 	
-	
-	private String endpointID;
-	private String propertyID;
-	private String propertyClassID;
-	private String propertyName;
+		
+	private String multicheckID;
+	public String multicheckTitle;
+	public String combination;
+	public String ruleID;
 
 	private PropertyClassServiceAsync rpcServicePropertyClass;
 	private CheckServiceAsync rpcServiceCheck;
@@ -62,8 +64,13 @@ public class MulticheckNewDialogBox extends PopupPanel {
 	}
 
 	public MulticheckNewDialogBox() {
-
+		
 		setWidget(uiBinder.createAndBindUi(this));
+		HashSet<String> combinations = new CombinationConfig().getCombinations();
+		Iterator<String> it = combinations.iterator();
+		while (it.hasNext()){
+			this.lstCombination.addItem(it.next());
+		}
 		
 
 	}
@@ -71,7 +78,11 @@ public class MulticheckNewDialogBox extends PopupPanel {
 	
 	@UiHandler("btnSave")
 	void saveNewCheck (ClickEvent event) {
-
+		this.multicheckTitle = this.txtMulticheckTitle.getText();
+		this.ruleID = this.txtRuleTriggered.getText();
+		this.combination = this.lstCombination.getValue();
+		this.hide();
+		
 		
 	}
 

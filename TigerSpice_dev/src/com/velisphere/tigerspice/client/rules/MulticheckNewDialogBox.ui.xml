@@ -29,38 +29,38 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
             <b:Paragraph addStyleNames="smalltext" text="Title or Description" />
             </b:Column>                   
             <b:Column size="2">                    
-            <b:TextBox styleName="span2" ui:field="txtCheckTitle" />
+            <b:TextBox styleName="span2" ui:field="txtMulticheckTitle" />
             </b:Column>
             </b:Row>
             <b:Row>
             <b:Column size="2">
-            <b:Paragraph addStyleNames="smalltext" text="Property to be checked" />
+            <b:Paragraph addStyleNames="smalltext" text="Linked checks" />
             </b:Column>
             <b:Column size="2">
-            <b:ListBox styleName="span2" ui:field="lstPropertyID"/> 
+            <b:ListBox styleName="span2" ui:field="lstLinkedChecksID"/> 
             </b:Column>
             </b:Row>
             
             <b:Row>
             <b:Column size="2">
-            <b:Paragraph addStyleNames="smalltext" text="Operator" />
+            <b:Paragraph addStyleNames="smalltext" text="Combination" />
             </b:Column>
             <b:Column size="2">
-            <b:ListBox styleName="span2" ui:field="lstOperator"/> 
+            <b:ListBox styleName="span2" ui:field="lstCombination"/> 
             </b:Column>
             </b:Row>
            
             
+            
             <b:Row>
             <b:Column size="2">
-            <b:Paragraph addStyleNames="smalltext" text="Trigger Value" />
+            <b:Paragraph addStyleNames="smalltext" text="Rule to be fired" />
             </b:Column>
             <b:Column size="2">
-            <b:TextBox styleName="span2" ui:field="txtTriggerValue" /> 
+            <b:TextBox styleName="span2" ui:field="txtRuleTriggered" /> 
             </b:Column>
             </b:Row>
-     
-            
+                 
             <b:Row>
             <b:Column size="2">
             <b:Button styleName="btn-success btn" text="Save" ui:field="btnSave" />  

@@ -84,7 +84,7 @@ public class ConfigHandler {
 		catch ( Exception e ) { }
 
 		// remove the following for AWS deployments
-		ServerParameters.volt_ip = props.getProperty("Volt IP");
+		// ServerParameters.volt_ip = props.getProperty("Volt IP");
 
 		System.out.println(" [IN] Reading Configuration");
 		System.out.println(" [IN] Selected VoltDB: "+ ServerParameters.volt_ip);

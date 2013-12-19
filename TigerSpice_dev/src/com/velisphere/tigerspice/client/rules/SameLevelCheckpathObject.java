@@ -12,10 +12,12 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer{
 	Anchor ancTextField;
 	String checkId;
 	Integer level;
-	HashSet<String> parentMultichecks;
+	//HashSet<String> parentMultichecks;
 	HashSet<String> childMultichecks;
 	HashSet<String> childChecks;
-		
+	String combination;
+	String ruleID;
+	
 	public SameLevelCheckpathObject (String checkID, String text, Boolean empty, Integer level){
 		super();
 		this.text = text;
@@ -25,7 +27,8 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer{
 		this.setHeight(40);
 		this.level = level;
 		this.setTitle(text);
-		
+		this.childMultichecks = new HashSet<String>();
+		this.childChecks = new HashSet<String>();
 	
 		ancTextField = new Anchor();
 		
@@ -63,6 +66,21 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer{
 	
 	public void setEmpty (Boolean empty){
 		this.empty = empty;
+		
+	}
+	
+	public void setRuleID (String ruleID){
+		this.ruleID = ruleID;
+		
+	}
+	
+	public void setCombination (String combination){
+		this.combination = combination;
+		
+	}
+	
+	public void addChildMulticheck (String childMulticheck){
+		//this.childMultichecks.add(childMulticheck);
 		
 	}
 	
