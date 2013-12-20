@@ -1,3 +1,20 @@
+/*******************************************************************************
+ * CONFIDENTIAL INFORMATION
+ *  __________________
+ *  
+ *   Copyright (C) 2013 Thorsten Meudt 
+ *   All Rights Reserved.
+ *  
+ *  NOTICE:  All information contained herein is, and remains
+ *  the property of Thorsten Meudt and its suppliers,
+ *  if any.  The intellectual and technical concepts contained
+ *  herein are proprietary to Thorsten Meudt
+ *  and its suppliers and may be covered by Patents,
+ *  patents in process, and are protected by trade secret or copyright law.
+ *  Dissemination of this information or reproduction of this material
+ *  is strictly forbidden unless prior written permission is obtained
+ *  from Thorsten Meudt.
+ ******************************************************************************/
 package com.velisphere.tigerspice.client.rules;
 
 import java.util.HashMap;
@@ -5,13 +22,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.UUID;
-
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.github.gwtbootstrap.client.ui.Accordion;
 import com.github.gwtbootstrap.client.ui.Icon;
-import com.github.gwtbootstrap.client.ui.Label;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.shared.GWT;
@@ -26,11 +39,6 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.orange.links.client.DiagramController;
 import com.orange.links.client.connection.Connection;
-import com.sencha.gxt.chart.client.draw.Color;
-import com.sencha.gxt.chart.client.draw.DrawComponent;
-import com.sencha.gxt.chart.client.draw.path.CurveTo;
-import com.sencha.gxt.chart.client.draw.path.MoveTo;
-import com.sencha.gxt.chart.client.draw.path.PathSprite;
 import com.sencha.gxt.core.client.dom.ScrollSupport;
 import com.sencha.gxt.dnd.core.client.DndDragStartEvent;
 import com.sencha.gxt.dnd.core.client.DndDropEvent;
@@ -39,9 +47,6 @@ import com.sencha.gxt.dnd.core.client.DropTarget;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.velisphere.tigerspice.client.checks.CheckNewDialogBox;
-import com.velisphere.tigerspice.client.endpoints.EndpointService;
-import com.velisphere.tigerspice.client.helper.ColorHelper;
 import com.velisphere.tigerspice.client.helper.DragobjectContainer;
 import com.velisphere.tigerspice.client.helper.UuidService;
 import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
@@ -51,7 +56,7 @@ public class CheckpathEditorWidget extends Composite {
 	Accordion accordion = new Accordion();
 	Paragraph pgpFirstCheck;
 	Paragraph pgpAddSameLevel;
-	HorizontalLayoutContainer firstCheckRow;
+	//HorizontalLayoutContainer firstCheckRow;
 	FlowLayoutContainer con;
 	VerticalLayoutContainer addNextLevelField;
 	// VerticalLayoutContainer checkColumn;
@@ -104,8 +109,8 @@ public class CheckpathEditorWidget extends Composite {
 		container.add(controller.getView());
 
 
-		firstCheckRow = new HorizontalLayoutContainer();
-		firstCheckRow.setBorders(false);
+		// firstCheckRow = new HorizontalLayoutContainer();
+		// firstCheckRow.setBorders(false);
 		// firstCheckRow.setScrollMode(ScrollSupport.ScrollMode.AUTOX);
 
 		Iterator<SameLevelCheckpathObject> it = checkHashSet.iterator();
@@ -188,12 +193,13 @@ public class CheckpathEditorWidget extends Composite {
 			};
 			source.setGroup("multicheck");
 
-			firstCheckRow.add(currentObject);
-			VerticalLayoutContainer horizontalSpacer = new VerticalLayoutContainer();
-			horizontalSpacer.setBounds(13, 20, 13, 20);
-			firstCheckRow.add(horizontalSpacer);
-			firstCheckRow.add(new Icon(IconType.CHEVRON_RIGHT));
-			controller.addWidget(currentObject, xpos, 300);
+			//firstCheckRow.add(currentObject);
+			//VerticalLayoutContainer horizontalSpacer = new VerticalLayoutContainer();
+			//horizontalSpacer.setBounds(13, 20, 13, 20);
+			//firstCheckRow.add(horizontalSpacer);
+			//firstCheckRow.add(new Icon(IconType.CHEVRON_RIGHT));
+			
+			controller.addWidget(currentObject, xpos, 320);
 			xpos = xpos + 120;
 
 			// if no more items are left in the check hashset, draw a new drag
@@ -204,8 +210,8 @@ public class CheckpathEditorWidget extends Composite {
 
 				final SameLevelCheckpathObject addCheckField = new SameLevelCheckpathObject(
 						null, "drag check here", true, 0);
-				firstCheckRow.add(addCheckField);
-				controller.addWidget(addCheckField, xpos, 300);
+				// firstCheckRow.add(addCheckField);
+				controller.addWidget(addCheckField, xpos, 320);
 
 				DropTarget target = new DropTarget(addCheckField) {
 					@Override
@@ -259,6 +265,7 @@ public class CheckpathEditorWidget extends Composite {
 				multicheckColumns.add(newMulticheckList);
 				controller.addWidget(addNextColumnField, 10 + multicheckColumns.size()*120, 250);
 
+				/*
 				DropTarget columnTarget = new DropTarget(addNextColumnField) {
 					@Override
 					protected void onDragDrop(DndDropEvent event) {
@@ -291,7 +298,7 @@ public class CheckpathEditorWidget extends Composite {
 				columnTarget.setGroup("multicheck");
 				columnTarget.setOverStyle("drag-ok");
 				// rebuildCheckpathDiagram();ent
-
+				*/
 			}
 
 		}
@@ -308,14 +315,14 @@ public class CheckpathEditorWidget extends Composite {
 		int countOfMulticheckColumns = multicheckColumns.size();
 
 		for (int i = 1; i <= countOfMulticheckColumns; i = i + 1) {
-			hLC.add(drawMulticheckColumn(i - 1, controller));
+			drawMulticheckColumn(i - 1, controller);
 		}
 
 		// firstCheckColumn.add(firstCheckRow);
 
 		// container.add(checkColumn);
-		container.add(hLC);
-		container.add(firstCheckRow);
+		// container.add(hLC);
+		// container.add(firstCheckRow);
 
 		con.clear();
 		con.add(container);
@@ -344,7 +351,7 @@ public class CheckpathEditorWidget extends Composite {
 
 			System.out.println(currentObject.text + " is multicheck: " + currentObject.isMulticheck);
 			controller.addWidget(currentObject, 10 + columnElement * 120, 250-yposdelta);
-			yposdelta = yposdelta + 50;
+			yposdelta = yposdelta + 70;
 			//checkColumn.add(currentObject);
 			//checkColumn.add(new Icon(IconType.CHEVRON_UP));
 			
@@ -372,8 +379,7 @@ public class CheckpathEditorWidget extends Composite {
 						currentObject.setText(dragAccordion.checkName);
 						currentObject.setIsMulticheck(true);
 						currentObject.setEmpty(false);
-						currentObject.getElement().getStyle()
-								.setBackgroundColor(ColorHelper.randomColor());
+						// currentObject.getElement().getStyle().setBackgroundColor(ColorHelper.randomColor());
 						multicheckColumns.get(columnElement).setEmpty(false);
 
 						
@@ -530,7 +536,7 @@ public class CheckpathEditorWidget extends Composite {
 								dragAccordion.checkID = currentObject.checkId;
 								dragAccordion.checkName = currentObject.text;
 								dragAccordion.isMulticheck = currentObject.isMulticheck;
-
+								dragAccordion.checkpathObject = currentObject;
 								event.setData(dragAccordion);
 								event.getStatusProxy().update(
 										builder.toSafeHtml());
@@ -539,9 +545,7 @@ public class CheckpathEditorWidget extends Composite {
 						};
 						source.setGroup("multicheck");
 
-						multicheckColumns.get(columnElement).set(
-								multicheckColumns.get(columnElement).size()
-										- currentObject.level, currentObject);
+						//multicheckColumns.get(columnElement).set(multicheckColumns.get(columnElement).size() - currentObject.level, currentObject);
 
 					}
 
@@ -636,6 +640,7 @@ public class CheckpathEditorWidget extends Composite {
 					        dragController.makeDraggable(child);
 					        controller.registerDragController(dragController);
 					        Connection con = controller.drawStraightArrowConnection(parent, child);
+					        
 						}
 						
 						Iterator<SameLevelCheckpathObject> cmit = parent.childMultichecks.iterator();
@@ -646,16 +651,12 @@ public class CheckpathEditorWidget extends Composite {
 					        dragController.makeDraggable(child);
 					        controller.registerDragController(dragController);
 					        Connection con = controller.drawStraightArrowConnection(parent, child);
+					        
 						}
 						
 						
 					}
-						
-				
-					
-					
-				
-				
+			
 				}
 
 				i = i + 1;
