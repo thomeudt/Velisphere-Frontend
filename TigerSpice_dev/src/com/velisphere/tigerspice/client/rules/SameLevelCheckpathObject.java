@@ -14,8 +14,8 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer{
 	String checkId;
 	Integer level;
 	//HashSet<String> parentMultichecks;
-	HashMap<String, String> childMultichecks;
-	HashMap<String, String> childChecks;
+	HashSet<SameLevelCheckpathObject> childMultichecks;
+	HashSet<SameLevelCheckpathObject> childChecks;
 	String combination;
 	String ruleID;
 	Boolean isMulticheck;
@@ -29,8 +29,8 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer{
 		this.setHeight(40);
 		this.level = level;
 		this.setTitle(text);
-		this.childMultichecks = new HashMap<String, String>();
-		this.childChecks = new HashMap<String, String>();
+		this.childMultichecks = new HashSet<SameLevelCheckpathObject>();
+		this.childChecks = new HashSet<SameLevelCheckpathObject>();
 		this.isMulticheck = false;
 	
 		ancTextField = new Anchor();
@@ -87,13 +87,13 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer{
 		
 	}
 	
-	public void addChildMulticheck (String childMulticheckID, String childMulticheckName){
-		this.childMultichecks.put(childMulticheckID, childMulticheckName);
+	public void addChildMulticheck (SameLevelCheckpathObject childMulticheck){
+		this.childMultichecks.add(childMulticheck);
 		
 	}
 	
-	public void addChildCheck (String childCheckID, String childCheckName){
-		this.childChecks.put(childCheckID, childCheckName);
+	public void addChildCheck (SameLevelCheckpathObject childCheck){
+		this.childChecks.add(childCheck);
 		
 	}
 	
