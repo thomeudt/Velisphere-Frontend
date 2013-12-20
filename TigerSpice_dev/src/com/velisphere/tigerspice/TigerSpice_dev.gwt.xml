@@ -8,6 +8,7 @@
 <module rename-to='tigerspice_dev'>
 	<!-- Inherit the core Web Toolkit stuff.                        -->
 	<inherits name='com.google.gwt.user.User' />
+	
 
 	<!-- Inherit the default GWT style sheet.  You can change       -->
 	<!-- the theme of your GWT application by uncommenting          -->
@@ -20,6 +21,10 @@
     <inherits name='com.sencha.gxt.ui.GXT'/>
 	<!-- Other module inherits                                      -->
 	<inherits name='com.google.web.bindery.requestfactory.RequestFactory' />
+	<inherits name='com.orange.links.Links' />
+    <inherits name='com.google.gwt.widgetideas.WidgetIdeas' />   
+    <inherits name='com.google.gwt.libideas.LibIdeas' />
+	
 	<!-- Specify the app entry point class.                         -->
 <!-- 	<entry-point class='com.velisphere.tigerspice.client.TigerSpice_dev' /> -->
 

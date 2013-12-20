@@ -6,8 +6,10 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.UUID;
 
+import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.github.gwtbootstrap.client.ui.Accordion;
 import com.github.gwtbootstrap.client.ui.Icon;
+import com.github.gwtbootstrap.client.ui.Label;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.shared.GWT;
@@ -20,6 +22,13 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.orange.links.client.DiagramController;
+import com.orange.links.client.connection.Connection;
+import com.sencha.gxt.chart.client.draw.Color;
+import com.sencha.gxt.chart.client.draw.DrawComponent;
+import com.sencha.gxt.chart.client.draw.path.CurveTo;
+import com.sencha.gxt.chart.client.draw.path.MoveTo;
+import com.sencha.gxt.chart.client.draw.path.PathSprite;
 import com.sencha.gxt.core.client.dom.ScrollSupport;
 import com.sencha.gxt.dnd.core.client.DndDragStartEvent;
 import com.sencha.gxt.dnd.core.client.DndDropEvent;
@@ -410,6 +419,32 @@ public class CheckpathEditorWidget extends Composite {
 										{
 											currentObject.addChildCheck(dragAccordion.checkID, dragAccordion.checkName);
 											}
+										
+										
+										DiagramController controller = new DiagramController(400,400);
+										controller.showGrid(true); // Display a background grid
+
+										RootPanel.get().add(controller.getView());
+										controller.addWidget(currentObject,100,5);
+
+										Iterator<SameLevelCheckpathObject> it = checkHashSet.iterator();
+										while (it.hasNext())
+										{
+										
+											SameLevelCheckpathObject check = it.next();
+											controller.addWidget(check,100,150);											
+											
+											PickupDragController dragController = new PickupDragController(controller.getView(), true);
+							                dragController.makeDraggable(currentObject);
+							                dragController.makeDraggable(check);
+							        
+							                controller.registerDragController(dragController);
+											
+											Connection c1 = controller.drawStraightArrowConnection(currentObject, check);
+											
+										}
+			
+																													
 										
 										System.out.println("Title: "
 												+ currentObject.text);
