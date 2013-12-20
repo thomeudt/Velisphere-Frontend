@@ -1,5 +1,6 @@
 package com.velisphere.tigerspice.client.rules;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 import com.google.gwt.user.client.ui.Anchor;
@@ -13,8 +14,8 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer{
 	String checkId;
 	Integer level;
 	//HashSet<String> parentMultichecks;
-	HashSet<String> childMultichecks;
-	HashSet<String> childChecks;
+	HashMap<String, String> childMultichecks;
+	HashMap<String, String> childChecks;
 	String combination;
 	String ruleID;
 	Boolean isMulticheck;
@@ -28,8 +29,8 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer{
 		this.setHeight(40);
 		this.level = level;
 		this.setTitle(text);
-		this.childMultichecks = new HashSet<String>();
-		this.childChecks = new HashSet<String>();
+		this.childMultichecks = new HashMap<String, String>();
+		this.childChecks = new HashMap<String, String>();
 		this.isMulticheck = false;
 	
 		ancTextField = new Anchor();
@@ -86,13 +87,13 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer{
 		
 	}
 	
-	public void addChildMulticheck (String childMulticheck){
-		this.childMultichecks.add(childMulticheck);
+	public void addChildMulticheck (String childMulticheckID, String childMulticheckName){
+		this.childMultichecks.put(childMulticheckID, childMulticheckName);
 		
 	}
 	
-	public void addChildCheck (String childCheck){
-		this.childChecks.add(childCheck);
+	public void addChildCheck (String childCheckID, String childCheckName){
+		this.childChecks.put(childCheckID, childCheckName);
 		
 	}
 	

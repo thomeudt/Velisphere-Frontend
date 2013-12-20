@@ -1,5 +1,6 @@
 package com.velisphere.tigerspice.client.rules;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -10,6 +11,8 @@ import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -347,7 +350,7 @@ public class CheckpathEditorWidget extends Composite {
 						multicheckColumns.get(columnElement).setEmpty(false);
 
 						
-						final MulticheckNewDialogBox multicheckNewDialogBox = new MulticheckNewDialogBox();
+						final MulticheckDialogBox multicheckNewDialogBox = new MulticheckDialogBox();
 
 						multicheckNewDialogBox.setModal(true);
 						multicheckNewDialogBox.setAutoHideEnabled(true);
@@ -386,17 +389,26 @@ public class CheckpathEditorWidget extends Composite {
 										
 
 										currentObject
-												.setText(multicheckNewDialogBox.multicheckTitle);
+												.setText(multicheckNewDialogBox.multicheckTitle + " (" + multicheckNewDialogBox.combination + ")");
 										currentObject
 												.setCombination(multicheckNewDialogBox.combination);
+										currentObject.ancTextField.addClickHandler(new ClickHandler() {
+											@Override
+											public void onClick(ClickEvent event) {
+
+												showUpdateMulticheckDialog(currentObject.text, currentObject.combination, currentObject.childChecks, currentObject.childMultichecks);
+												
+											}
+									          
+									      });
 									
 										if (dragAccordion.isMulticheck)
 											{
-											currentObject.addChildMulticheck(dragAccordion.checkID);
+											currentObject.addChildMulticheck(dragAccordion.checkID, dragAccordion.checkName);
 											}
 										else
 										{
-											currentObject.addChildCheck(dragAccordion.checkID);
+											currentObject.addChildCheck(dragAccordion.checkID, dragAccordion.checkName);
 											}
 										
 										System.out.println("Title: "
@@ -451,12 +463,19 @@ public class CheckpathEditorWidget extends Composite {
 					// already used target field (overwriting)
 					if (currentObject.checkId != null) {
 
-						currentObject.setText(dragAccordion.checkName);
-						currentObject.setCheckID(dragAccordion.checkID);
 						currentObject.setEmpty(false);
-						currentObject.getElement().getStyle()
-								.setBackgroundColor(ColorHelper.randomColor());
 						multicheckColumns.get(columnElement).setEmpty(false);
+						
+						if (dragAccordion.isMulticheck)
+						{
+						currentObject.addChildMulticheck(dragAccordion.checkID, dragAccordion.checkName);
+						}
+						else
+						{
+						currentObject.addChildCheck(dragAccordion.checkID, dragAccordion.checkName);
+						}
+					
+						
 
 						final SafeHtmlBuilder builder = new SafeHtmlBuilder();
 						builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
@@ -521,4 +540,28 @@ public class CheckpathEditorWidget extends Composite {
 
 	}
 
+	
+
+	private void showUpdateMulticheckDialog(String title, String combination, HashMap<String, String> childChecks, HashMap<String, String> childMultichecks){
+	
+		final MulticheckDialogBox multicheckDialogBox = new MulticheckDialogBox();
+
+		multicheckDialogBox.setModal(true);
+		multicheckDialogBox.setAutoHideEnabled(true);
+
+		multicheckDialogBox.setAnimationEnabled(true);
+
+		multicheckDialogBox.setPopupPosition(
+				(RootPanel.get().getOffsetWidth()) / 3,
+				(RootPanel.get().getOffsetHeight()) / 4);
+		multicheckDialogBox.show();
+		childChecks.putAll(childMultichecks);
+		multicheckDialogBox.setParameters("1", title, combination, "1", childChecks);
+
+	}
+	
+	
+	
+	
+	
 }

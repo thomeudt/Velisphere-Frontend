@@ -22,7 +22,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	<g:HTMLPanel>
 
       <b:WellForm styleName="wellsilver">
-        <b:Legend>Add Multicheck</b:Legend>
+        <b:Legend ui:field="lgdHeader">Add or Update Multicheck</b:Legend>
         
             <b:Row>
             <b:Column size="2">

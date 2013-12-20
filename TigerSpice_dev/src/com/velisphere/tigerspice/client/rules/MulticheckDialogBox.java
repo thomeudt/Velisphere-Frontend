@@ -5,10 +5,14 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.Legend;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
@@ -32,7 +36,7 @@ import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 
-public class MulticheckNewDialogBox extends PopupPanel {
+public class MulticheckDialogBox extends PopupPanel {
 
 	@UiField
 	ListBox lstLinkedChecksID;
@@ -44,12 +48,15 @@ public class MulticheckNewDialogBox extends PopupPanel {
 	TextBox txtRuleTriggered;
 	@UiField
 	TextBox txtMulticheckTitle;
-	
+	@UiField
+	Legend lgdHeader;
 		
 	private String multicheckID;
 	public String multicheckTitle;
 	public String combination;
 	public String ruleID;
+	public HashMap<String, String> linkedChecks;
+	
 
 	private PropertyClassServiceAsync rpcServicePropertyClass;
 	private CheckServiceAsync rpcServiceCheck;
@@ -60,10 +67,11 @@ public class MulticheckNewDialogBox extends PopupPanel {
 			.create(CheckEditorDialogBoxUiBinder.class);
 
 	interface CheckEditorDialogBoxUiBinder extends
-			UiBinder<Widget, MulticheckNewDialogBox> {
+			UiBinder<Widget, MulticheckDialogBox> {
 	}
 
-	public MulticheckNewDialogBox() {
+	public MulticheckDialogBox() {
+		
 		
 		setWidget(uiBinder.createAndBindUi(this));
 		HashSet<String> combinations = new CombinationConfig().getCombinations();
@@ -71,8 +79,26 @@ public class MulticheckNewDialogBox extends PopupPanel {
 		while (it.hasNext()){
 			this.lstCombination.addItem(it.next());
 		}
+	
+	}
+	
+	public void setParameters (String multicheckID, String multicheckTitle, String combination, String ruleID, HashMap<String, String> linkedChecks){
+		this.multicheckID = multicheckID;
+		this.multicheckTitle = multicheckTitle;
+		this.combination = combination;
+		this.ruleID = ruleID;
+		this.linkedChecks = linkedChecks;
 		
-
+		
+		lstCombination.setSelectedValue(combination);
+		txtMulticheckTitle.setText(multicheckTitle);
+		Iterator<Entry<String, String>> it = linkedChecks.entrySet().iterator();
+		while (it.hasNext()){
+			Map.Entry<String, String> checkPair = (Map.Entry<String, String>)it.next();
+			lstLinkedChecksID.addItem(checkPair.getValue(), checkPair.getKey());
+		}
+		lstLinkedChecksID.setVisibleItemCount(5);
+		
 	}
 
 	
