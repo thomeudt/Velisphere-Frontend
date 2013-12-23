@@ -50,14 +50,24 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 				        
 			<b:Column size="9" offset="0">
 		
-			    	<b:Row>
-				    <b:Column size="6" offset="0">
-						
-				            	<b:Paragraph addStyleNames="smalltext">Rule configuration: ("what happens")</b:Paragraph>
-						
-					</b:Column>
-			    </b:Row>
 			    	
+			    
+			    	 <b:Row>
+            			<b:Column size="3">
+            			<b:Paragraph addStyleNames="smalltext" text="Title or name of this logic design" />
+            			</b:Column>                   
+            			<b:Column size="3">                    
+            			<b:TextBox styleName="span3" ui:field="txtCheckpathTitle" />
+            			</b:Column>
+            		</b:Row>
+		
+			    	 <b:Row>
+	    				<b:Column size="3" offset="0">
+	    				<b:Button type="SUCCESS" ui:field="btnSaveCheckpath" size="MINI">Save and Activate Checkpath</b:Button>
+	    				</b:Column>
+	    			</b:Row>
+		
+			    	 	    	
 			    	<b:Row>
 				    <b:Column size="5" offset="0">
 						      	<b:Paragraph addStyleNames="smalltext">Checks: ("Dragsouce", filter by Sphere or Endpoint)</b:Paragraph>
@@ -84,7 +94,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 					
 				    
 					<b:Column size="4" offset="0">
-				    	<vsrl:CheckpathEditorWidget />
+				    	<vsrl:CheckpathEditorWidget ui:field="wgtCheckpathEditor"/>
 				   
 				    
 					</b:Column>
@@ -97,8 +107,6 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 		</b:Row>
 		
 	    
-	    
-		
 	
 	</g:HTMLPanel>
 	  		            

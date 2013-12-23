@@ -62,7 +62,7 @@ public class CheckpathEditorWidget extends Composite {
 	// VerticalLayoutContainer checkColumn;
 	LinkedHashSet<SameLevelCheckpathObject> checkHashSet;
 	// LinkedList<SameLevelCheckpathObject> multicheckLinkedList;
-	LinkedList<MulticheckColumn<SameLevelCheckpathObject>> multicheckColumns;
+	public LinkedList<MulticheckColumn<SameLevelCheckpathObject>> multicheckColumns;
 
 	private UuidServiceAsync rpcServiceUuid;
 
@@ -264,6 +264,7 @@ public class CheckpathEditorWidget extends Composite {
 		con.clear();
 		con.add(container);
 		drawConnectorLines(controller);
+		
 
 	}
 
@@ -537,6 +538,8 @@ public class CheckpathEditorWidget extends Composite {
 
 	private void drawConnectorLines(DiagramController controller) {
 
+		
+		//System.out.println("Multicheck Columns: " + multicheckColumns);
 		if (multicheckColumns.size() > 0) {
 
 			int i = 0;
