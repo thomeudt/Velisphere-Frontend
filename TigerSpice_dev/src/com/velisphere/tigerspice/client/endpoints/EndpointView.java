@@ -118,7 +118,7 @@ public class EndpointView extends Composite {
 		bread0.setText("Home");
 		brdMain.add(bread0);		
 		bread1 = new NavLink();
-		bread1.setText("Sphere Overview");
+		bread1.setText("Endpoint Manager");
 		brdMain.add(bread1);
 		bread2 = new NavLink();
 		bread2.setText(sphereName);

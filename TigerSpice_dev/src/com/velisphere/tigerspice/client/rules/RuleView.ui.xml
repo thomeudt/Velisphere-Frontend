@@ -45,6 +45,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			<b:Paragraph addStyleNames="smalltext" ui:field="pgpEndpointClassName">loading...</b:Paragraph>
 			<b:Paragraph addStyleNames="smalltext">Last triggered:</b:Paragraph>
 			<b:Paragraph addStyleNames="smalltext">Total times triggered:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Logic Simulator:</b:Paragraph>
 			</b:Well>
 			</b:Column>
 				        
@@ -64,6 +65,9 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			    	 <b:Row>
 	    				<b:Column size="3" offset="0">
 	    				<b:Button type="SUCCESS" ui:field="btnSaveCheckpath" size="MINI">Save and Activate Checkpath</b:Button>
+	    				</b:Column>
+	    				<b:Column size="3" offset="0">
+	    				<b:Paragraph addStyleNames="smalltext" ui:field="txtSaveStatus"></b:Paragraph>
 	    				</b:Column>
 	    			</b:Row>
 		

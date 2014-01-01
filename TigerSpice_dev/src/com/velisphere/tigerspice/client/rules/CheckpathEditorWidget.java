@@ -415,7 +415,7 @@ public class CheckpathEditorWidget extends Composite {
 										System.out.println("Child Checks: "
 												+ currentObject.childChecks);
 
-										// new json starts here
+										// new json for storing visual diagram starts here
 										
 										CheckPathObjectData currentObjectData = new CheckPathObjectData(currentObject.checkId, currentObject.text, currentObject.empty, currentObject.level);
 										

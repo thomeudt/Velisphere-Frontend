@@ -22,11 +22,11 @@
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-	public class CheckPathData implements IsSerializable, Comparable <CheckPathData>
+	public class CheckPathDataOLD implements IsSerializable, Comparable <CheckPathDataOLD>
 	{
 
 		@Override
-		public int compareTo(CheckPathData arg0) {
+		public int compareTo(CheckPathDataOLD arg0) {
 			// TODO Auto-generated method stub
 			return 0;
 		}

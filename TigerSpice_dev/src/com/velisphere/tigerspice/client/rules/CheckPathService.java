@@ -13,6 +13,7 @@ import com.velisphere.tigerspice.shared.CheckPathObjectData;
 public interface CheckPathService extends RemoteService {
 		
 		String addNewUiObject(CheckPathObjectData uiObject);
-		
-
+		String addNewMulticheck(String checkId, String operator, String multicheckName);
+		String addNewMulticheckCheckLink(String multiCheckId, String checkId);
+		String addNewMulticheckMulticheckLink(String multicheckLId, String multicheckRId);
 }
