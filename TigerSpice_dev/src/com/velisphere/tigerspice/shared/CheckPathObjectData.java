@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.rules;
+package com.velisphere.tigerspice.shared;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,7 +7,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Anchor;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 
-public class SameLevelCheckpathObject extends VerticalLayoutContainer implements IsSerializable {
+public class CheckPathObjectData extends VerticalLayoutContainer implements IsSerializable {
 
 	public String text;
 	public Boolean empty;
@@ -15,15 +15,15 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 	public String checkId;
 	public Integer level;
 	//HashSet<String> parentMultichecks;
-	public HashSet<SameLevelCheckpathObject> childMultichecks;
-	public HashSet<SameLevelCheckpathObject> childChecks;
+	public HashSet<CheckPathObjectData> childMultichecks;
+	public HashSet<CheckPathObjectData> childChecks;
 	public String combination;
 	public String ruleID;
 	public Boolean isMulticheck;
 	
-	private SameLevelCheckpathObject(){}
+	private CheckPathObjectData(){}
 	
-	public SameLevelCheckpathObject (String checkID, String text, Boolean empty, Integer level)  {
+	public CheckPathObjectData (String checkID, String text, Boolean empty, Integer level)  {
 		super();
 		this.text = text;
 		this.empty = empty;
@@ -32,8 +32,8 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		this.setHeight(40);
 		this.level = level;
 		this.setTitle(text);
-		this.childMultichecks = new HashSet<SameLevelCheckpathObject>();
-		this.childChecks = new HashSet<SameLevelCheckpathObject>();
+		this.childMultichecks = new HashSet<CheckPathObjectData>();
+		this.childChecks = new HashSet<CheckPathObjectData>();
 		this.isMulticheck = false;
 	
 		ancTextField = new Anchor();
@@ -90,12 +90,12 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		
 	}
 	
-	public void addChildMulticheck (SameLevelCheckpathObject childMulticheck){
+	public void addChildMulticheck (CheckPathObjectData childMulticheck){
 		this.childMultichecks.add(childMulticheck);
 		
 	}
 	
-	public void addChildCheck (SameLevelCheckpathObject childCheck){
+	public void addChildCheck (CheckPathObjectData childCheck){
 		this.childChecks.add(childCheck);
 		
 	}

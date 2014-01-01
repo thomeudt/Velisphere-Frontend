@@ -23,6 +23,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class CheckData implements IsSerializable, Comparable <CheckData>
 {
+	
 	public String checkId;
 	public String endpointId;
 	public String propertyId;
@@ -76,6 +77,6 @@ public class CheckData implements IsSerializable, Comparable <CheckData>
 	public void setName(String checkName){
 		this.checkName = checkName;
 	}
-	
+		
 	
 }
