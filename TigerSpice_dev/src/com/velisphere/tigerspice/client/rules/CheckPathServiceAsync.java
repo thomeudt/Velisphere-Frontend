@@ -9,6 +9,6 @@ import com.velisphere.tigerspice.shared.CheckPathObjectData;
 
 public interface CheckPathServiceAsync {
 	
-	void addNewCheckPath(CheckPathObjectData uiObject, AsyncCallback<String> callback );
+	void addNewUiObject(CheckPathObjectData uiObject, AsyncCallback<String> callback );
 		
 }

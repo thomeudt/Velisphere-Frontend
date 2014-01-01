@@ -420,7 +420,7 @@ public class CheckpathEditorWidget extends Composite {
 										CheckPathObjectData currentObjectData = new CheckPathObjectData(currentObject.checkId, currentObject.text, currentObject.empty, currentObject.level);
 										
 										
-										rpcServiceCheckPath.addNewCheckPath(currentObjectData, 
+										rpcServiceCheckPath.addNewUiObject(currentObjectData, 
 												new AsyncCallback<String>() {
 
 													@Override

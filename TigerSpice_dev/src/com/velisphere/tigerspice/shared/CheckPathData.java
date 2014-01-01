@@ -1,8 +1,4 @@
 
-
-
-
-
 	/*******************************************************************************
 	 * CONFIDENTIAL INFORMATION
 	 *  __________________
@@ -28,31 +24,12 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 	public class CheckPathData implements IsSerializable, Comparable <CheckPathData>
 	{
-		public String checkPathId;
-		public CheckPathObjectData uiObject;
 
-		public String getCheckPathId(){
-			return checkPathId;
-		}
-		
-		public CheckPathObjectData getUiObject(){
-			return uiObject;
-		}
-			
-		public void setCheckpathId(String checkPathId){
-			this.checkPathId = checkPathId;
-		}
-		
-		public void setUiObject(CheckPathObjectData uiObject){
-			this.uiObject = uiObject;
-		}
-
-		
 		@Override
 		public int compareTo(CheckPathData arg0) {
 			// TODO Auto-generated method stub
 			return 0;
 		}
-
+		
 	}
 

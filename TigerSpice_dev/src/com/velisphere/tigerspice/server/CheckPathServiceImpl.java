@@ -38,6 +38,7 @@ import org.voltdb.client.ProcCallException;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.checks.CheckService;
@@ -59,11 +60,13 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 
 
 	
-	public String addNewCheckPath(CheckPathObjectData uiObject)
+	public String addNewUiObject(CheckPathObjectData uiObject)
 
 	{
 				
 		ObjectMapper mapper = new ObjectMapper();
+		
+		
 	 
 		String jsonCheckpathObject = "E0"; 
 		

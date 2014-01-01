@@ -1,5 +1,7 @@
 package com.velisphere.tigerspice.client.rules;
 
+import java.util.Iterator;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -38,6 +40,15 @@ public class RuleView extends Composite {
 	void saveCheckpath (ClickEvent event) {
 		System.out.println("Save checkpath data: " + wgtCheckpathEditor);
 	
+		Iterator<MulticheckColumn<SameLevelCheckpathObject>> it =  wgtCheckpathEditor.multicheckColumns.iterator();
+		while(it.hasNext()){
+			MulticheckColumn<SameLevelCheckpathObject> multicheckColumn = it.next();
+			Iterator<SameLevelCheckpathObject> checkIt = multicheckColumn.iterator();
+			while(checkIt.hasNext()){
+				
+				System.out.println("Name:" +checkIt.next().text);
+			}
+		}
 		
 		
 	}
