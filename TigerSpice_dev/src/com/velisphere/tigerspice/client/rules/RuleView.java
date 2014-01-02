@@ -1,6 +1,7 @@
 package com.velisphere.tigerspice.client.rules;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.NavLink;
@@ -17,6 +18,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
+import com.velisphere.tigerspice.shared.CheckPathObjectData;
 
 public class RuleView extends Composite {
 
@@ -58,20 +60,38 @@ public class RuleView extends Composite {
 		System.out.println("Save checkpath data: " + wgtCheckpathEditor);
 
 		
+		// creating linked list to contain linked list of json objects representing the entire checkpath chart
+		LinkedList<LinkedList<CheckPathObjectData>> allColumnsObject = new LinkedList<LinkedList<CheckPathObjectData>>();
+		
 		Iterator<MulticheckColumn<SameLevelCheckpathObject>> it = wgtCheckpathEditor.multicheckColumns
 				.iterator();
+		
 		while (it.hasNext()) {
+			
+			// creating linked list to contain json objects representing a column in the checkpath chart
+			LinkedList<CheckPathObjectData> currentColumnObject = new LinkedList<CheckPathObjectData>();
+			
 			MulticheckColumn<SameLevelCheckpathObject> multicheckColumn = it
 					.next();
+		
+			
+			
 			Iterator<SameLevelCheckpathObject> checkIt = multicheckColumn
 					.iterator();
+					
+			
 			while (checkIt.hasNext()) {
 				SameLevelCheckpathObject checkpathObject = checkIt.next();
 				System.out.println("Name:" + checkpathObject.text);
-
-				// discard empty objects
+				
+				// creating a serializable representation of the the current check. children will not be added in constructor to avoid double work
+				
+				CheckPathObjectData currentObjectData = new CheckPathObjectData(checkpathObject.checkId, checkpathObject.text, checkpathObject.empty, checkpathObject.level);
+							
+				
+				// discard empty objects for writing checks to database
 				if (checkpathObject.empty == false) {
-
+									
 					// write multicheck to database
 					showLoadAnimation(loading);
 					
@@ -109,10 +129,17 @@ public class RuleView extends Composite {
 					Iterator<SameLevelCheckpathObject> mccIt = checkpathObject.childChecks
 							.iterator();
 
-					// write link to child checks to database
+					// write link to child checks to database and add children to json 
+
 					while (mccIt.hasNext()) {
 						SameLevelCheckpathObject childCheck = mccIt.next();
 						showLoadAnimation(loading);
+						
+						//json first
+						
+						currentObjectData.childChecks.add(childCheck.checkId);
+						
+						//now write to database
 						
 						rpcServiceCheckPath.addNewMulticheckCheckLink(
 								checkpathObject.checkId, childCheck.checkId,
@@ -151,6 +178,14 @@ public class RuleView extends Composite {
 					while (mcmcIt.hasNext()) {
 						SameLevelCheckpathObject childMulticheck = mcmcIt.next();
 						showLoadAnimation(loading);
+
+						//json first
+						
+						currentObjectData.childMultichecks.add(childMulticheck.checkId);
+						
+						//now write to database
+
+						
 						
 						rpcServiceCheckPath.addNewMulticheckMulticheckLink(
 								checkpathObject.checkId,
@@ -183,9 +218,34 @@ public class RuleView extends Composite {
 					}
 
 				}
-
+				
+				currentColumnObject.add(currentObjectData);
 			}
+			allColumnsObject.add(currentColumnObject);
 		}
+		System.out.println("Gesamtobject:" + allColumnsObject);
+		
+		rpcServiceCheckPath.createJsonCheckpath(allColumnsObject, 
+				new AsyncCallback<String>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						System.out.println("ERROR: " + caught);
+					
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						// TODO Auto-generated method stub
+						
+						System.out.println("JSON CHECKPATH: " + result);
+
+					}
+
+				});
+		
+		
 
 	}
 	

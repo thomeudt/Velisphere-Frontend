@@ -415,36 +415,7 @@ public class CheckpathEditorWidget extends Composite {
 										System.out.println("Child Checks: "
 												+ currentObject.childChecks);
 
-										// new json for storing visual diagram starts here
 										
-										CheckPathObjectData currentObjectData = new CheckPathObjectData(currentObject.checkId, currentObject.text, currentObject.empty, currentObject.level);
-										
-										
-										rpcServiceCheckPath.addNewUiObject(currentObjectData, 
-												new AsyncCallback<String>() {
-
-													@Override
-													public void onFailure(Throwable caught) {
-														// TODO Auto-generated method stub
-														System.out.println("ERROR: " + caught);
-													
-													}
-
-													@Override
-													public void onSuccess(String result) {
-														// TODO Auto-generated method stub
-														
-														System.out.println("Succes: " + result);
-
-													}
-
-												});
-
-										
-										
-										
-										// new json ends here
-
 										
 										rebuildCheckpathDiagram();
 									}

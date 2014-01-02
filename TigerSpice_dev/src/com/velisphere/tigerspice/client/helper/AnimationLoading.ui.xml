@@ -23,10 +23,10 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 
 <b:Container>
 
-    <b:Column size="3" offset="4">
+    <b:Column size="2" offset="5">
       <b:Well size="LARGE">
          
-           <b:Paragraph addStyleNames="text-left"><b:Icon type="COG" size="TWO_TIMES" spin="true" alignment="LEFT"/><b:Strong ui:field="stgLoading">Tranferring Data...</b:Strong></b:Paragraph>
+           <b:Paragraph addStyleNames="text-left"><b:Icon type="COG" size="TWO_TIMES" spin="true" alignment="LEFT"/><b:Strong ui:field="stgLoading">Accessing Data...</b:Strong></b:Paragraph>
             
       </b:Well>
     </b:Column>

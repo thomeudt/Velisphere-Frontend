@@ -17,8 +17,8 @@ public class CheckPathObjectData implements IsSerializable {
 	public String checkId;
 	public Integer level;
 	
-	public HashSet<CheckPathObjectData> childMultichecks;
-	public HashSet<CheckPathObjectData> childChecks;
+	public HashSet<String> childMultichecks;
+	public HashSet<String> childChecks;
 	public String combination;
 	public String ruleID;
 	public Boolean isMulticheck;
@@ -31,8 +31,8 @@ public class CheckPathObjectData implements IsSerializable {
 		this.empty = empty;
 		this.level = level;
 	
-		this.childMultichecks = new HashSet<CheckPathObjectData>();
-		this.childChecks = new HashSet<CheckPathObjectData>();
+		this.childMultichecks = new HashSet<String>();
+		this.childChecks = new HashSet<String>();
 		this.isMulticheck = false;
 	
 				
@@ -68,14 +68,5 @@ public class CheckPathObjectData implements IsSerializable {
 		
 	}
 	
-	public void addChildMulticheck (CheckPathObjectData childMulticheck){
-		this.childMultichecks.add(childMulticheck);
-		
-	}
-	
-	public void addChildCheck (CheckPathObjectData childCheck){
-		this.childChecks.add(childCheck);
-		
-	}
 	
 }

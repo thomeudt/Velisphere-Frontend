@@ -100,6 +100,41 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 	}
 
 	
+	public String createJsonCheckpath(LinkedList<LinkedList<CheckPathObjectData>> uiObject)
+
+	{
+				
+		ObjectMapper mapper = new ObjectMapper();
+		
+		
+	 
+		String jsonCheckpathObject = "E0"; 
+		
+		try {
+	 				 
+			// display to console
+			jsonCheckpathObject = mapper.writeValueAsString(uiObject);
+			System.out.println("JSON generiert: " + jsonCheckpathObject);
+	 
+		} catch (JsonGenerationException e) {
+	 
+			e.printStackTrace();
+	 
+		} catch (JsonMappingException e) {
+	 
+			e.printStackTrace();
+	 
+		} catch (IOException e) {
+	 
+			e.printStackTrace();
+	 
+		}
+	 
+		return jsonCheckpathObject;
+
+	}
+	
+	
 	public String addNewMulticheck(String checkId, String operator, String multicheckName)
 
 	{
