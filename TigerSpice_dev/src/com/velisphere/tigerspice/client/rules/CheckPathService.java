@@ -12,6 +12,8 @@ import com.velisphere.tigerspice.shared.CheckPathObjectData;
 @RemoteServiceRelativePath("voltCheckPath")
 public interface CheckPathService extends RemoteService {
 		
+		String addNewCheckpath();
+		String updateCheckpath(String checkpathId, String uiObject);
 		String addNewUiObject(CheckPathObjectData uiObject);
 		String createJsonCheckpath(LinkedList<LinkedList<CheckPathObjectData>> uiObject);
 		String addNewMulticheck(String checkId, String operator, String multicheckName);
