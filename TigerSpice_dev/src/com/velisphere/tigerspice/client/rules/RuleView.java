@@ -18,7 +18,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
+import com.velisphere.tigerspice.shared.CheckPathObjectColumn;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
+import com.velisphere.tigerspice.shared.CheckPathObjectTree;
 
 public class RuleView extends Composite {
 
@@ -76,10 +78,10 @@ public class RuleView extends Composite {
 				// TODO Auto-generated method stub
 
 				final String checkPathId = result;
-				
+
 				// creating linked list to contain linked list of json objects
 				// representing the entire checkpath chart
-				LinkedList<LinkedList<CheckPathObjectData>> allColumnsObject = new LinkedList<LinkedList<CheckPathObjectData>>();
+				CheckPathObjectTree allColumnsObject = new CheckPathObjectTree();
 
 				Iterator<MulticheckColumn<SameLevelCheckpathObject>> it = wgtCheckpathEditor.multicheckColumns
 						.iterator();
@@ -88,7 +90,7 @@ public class RuleView extends Composite {
 
 					// creating linked list to contain json objects representing
 					// a column in the checkpath chart
-					LinkedList<CheckPathObjectData> currentColumnObject = new LinkedList<CheckPathObjectData>();
+					CheckPathObjectColumn currentColumnObject = new CheckPathObjectColumn();
 
 					MulticheckColumn<SameLevelCheckpathObject> multicheckColumn = it
 							.next();
@@ -108,6 +110,8 @@ public class RuleView extends Composite {
 						CheckPathObjectData currentObjectData = new CheckPathObjectData(
 								checkpathObject.checkId, checkpathObject.text,
 								checkpathObject.empty, checkpathObject.level);
+
+						currentObjectData.combination = checkpathObject.combination;
 
 						// discard empty objects for writing checks to database
 						if (checkpathObject.empty == false) {
@@ -258,9 +262,9 @@ public class RuleView extends Composite {
 
 						}
 
-						currentColumnObject.add(currentObjectData);
+						currentColumnObject.column.add(currentObjectData);
 					}
-					allColumnsObject.add(currentColumnObject);
+					allColumnsObject.tree.add(currentColumnObject);
 				}
 				System.out.println("Gesamtobject:" + allColumnsObject);
 
@@ -279,32 +283,110 @@ public class RuleView extends Composite {
 								// TODO Auto-generated method stub
 
 								System.out.println("JSON CHECKPATH: " + result);
-								
-								rpcServiceCheckPath.updateCheckpath(checkPathId, result,
+
+								rpcServiceCheckPath.updateCheckpath(
+										checkPathId, result,
 										new AsyncCallback<String>() {
 
 											@Override
-											public void onFailure(Throwable caught) {
-												// TODO Auto-generated method stub
-												System.out.println("ERROR SAVING JSON: " + caught);
+											public void onFailure(
+													Throwable caught) {
+												// TODO Auto-generated method
+												// stub
+												System.out
+														.println("ERROR SAVING JSON: "
+																+ caught);
 
 											}
 
 											@Override
 											public void onSuccess(String result) {
-												// TODO Auto-generated method stub
+												// TODO Auto-generated method
+												// stub
 
-												System.out.println("JSON SAVED SUCCESSFULLY: " + result);
-												
-												
-												
-												
+												System.out
+														.println("JSON SAVED SUCCESSFULLY: "
+																+ result);
+
+												// Just validating that it
+												// works, delete later
+
+												rpcServiceCheckPath
+														.getUiObjectJSONForCheckpathID(
+																checkPathId,
+																new AsyncCallback<CheckPathObjectTree>() {
+
+																	@Override
+																	public void onFailure(
+																			Throwable caught) {
+																		// TODO
+																		// Auto-generated
+																		// method
+																		// stub
+																		System.out
+																				.println("ERROR SAVING JSON: "
+																						+ caught);
+
+																	}
+
+																	@Override
+																	public void onSuccess(
+																			CheckPathObjectTree result) {
+																		// TODO
+																		// Auto-generated
+																		// method
+																		// stub
+
+																		System.out
+																				.println("JSON RETRIEVED SUCCESSFULLY: "
+																						+ result.tree);
+																		Iterator<CheckPathObjectColumn> rIT = result.tree
+																				.iterator();
+																		while (rIT
+																				.hasNext()) {
+																			CheckPathObjectColumn columnObject = rIT
+																					.next();
+																			Iterator<CheckPathObjectData> cIT = columnObject.column
+																					.iterator();
+																			while (cIT
+																					.hasNext()) {
+																				CheckPathObjectData field = cIT
+																						.next();
+																				System.out
+																						.println("Field retrieved: "
+																								+ field.text
+																								+ "with combination "
+																								+ field.combination);
+
+																				Iterator<String> ccIT = field.childChecks
+																						.iterator();
+																				while (ccIT
+																						.hasNext()) {
+																					System.out
+																							.println("Child Check found: "
+																									+ ccIT.next());
+																				}
+
+																				Iterator<String> cmcIT = field.childMultichecks
+																						.iterator();
+																				while (cmcIT
+																						.hasNext()) {
+																					System.out
+																							.println("Child Multi Check found: "
+																									+ cmcIT.next());
+																				}
+
+																			}
+
+																		}
+
+																	}
+
+																});
 
 											}
 
 										});
-								
-								
 
 							}
 

@@ -46,6 +46,7 @@ import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.rules.CheckPathService;
 import com.velisphere.tigerspice.client.rules.MulticheckColumn;
 import com.velisphere.tigerspice.shared.CheckData;
+import com.velisphere.tigerspice.shared.CheckPathObjectTree;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
 
@@ -100,7 +101,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 	}
 
 	
-	public String createJsonCheckpath(LinkedList<LinkedList<CheckPathObjectData>> uiObject)
+	public String createJsonCheckpath(CheckPathObjectTree uiObject)
 
 	{
 				
@@ -339,6 +340,74 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 
 		return "OK";
 
+	}
+
+	
+	public CheckPathObjectTree getUiObjectJSONForCheckpathID(String checkpathID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		String uiObjectJSON = new String();
+		CheckPathObjectTree uiObject = new CheckPathObjectTree();
+		try {
+
+			final ClientResponse findCheckpath= voltCon.montanaClient
+					.callProcedure("UI_SelectCheckpathForCheckpathID", checkpathID);
+
+			final VoltTable findCheckpathResults[] = findCheckpath.getResults();
+
+			VoltTable result = findCheckpathResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					
+					uiObjectJSON = result.getString("UIOBJECT");
+					
+				}
+			}
+
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+			        
+				uiObject = mapper.readValue(uiObjectJSON, CheckPathObjectTree.class);
+			        System.out.println(uiObject);
+			    } catch (JsonGenerationException e) {
+			        System.out.println(e);
+			        } catch (JsonMappingException e) {
+			       System.out.println(e);
+			    } catch (IOException e) {
+			    System.out.println(e);
+			    } 
+			
+			
+			// System.out.println(endPointsforSphere);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return uiObject;
 	}
 
 	
