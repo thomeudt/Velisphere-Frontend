@@ -58,27 +58,27 @@ import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.helper.DragobjectContainer;
 import com.velisphere.tigerspice.client.helper.UuidService;
 import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
+import com.velisphere.tigerspice.shared.CheckPathObjectColumn;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
-
+import com.velisphere.tigerspice.shared.CheckPathObjectTree;
 
 public class CheckpathEditorWidget extends Composite {
 
 	Accordion accordion = new Accordion();
 	Paragraph pgpFirstCheck;
 	Paragraph pgpAddSameLevel;
-	// HorizontalLayoutContainer firstCheckRow;
+
 	FlowLayoutContainer con;
 	VerticalLayoutContainer addNextLevelField;
-	// VerticalLayoutContainer checkColumn;
+
 	LinkedHashSet<SameLevelCheckpathObject> checkHashSet;
-	// LinkedList<SameLevelCheckpathObject> multicheckLinkedList;
+
 	public LinkedList<MulticheckColumn<SameLevelCheckpathObject>> multicheckColumns;
 	private CheckPathServiceAsync rpcServiceCheckPath;
-
-	
 	private UuidServiceAsync rpcServiceUuid;
+	private String checkpathID;
 
-	public CheckpathEditorWidget() {
+	public CheckpathEditorWidget(String checkpathID) {
 
 		// widget constructor requires a parameter, thus we need to invoke the
 		// no-args constructor of the parent class and then set the value for
@@ -88,20 +88,24 @@ public class CheckpathEditorWidget extends Composite {
 		// SphereOverview class
 		super();
 
+		this.checkpathID = checkpathID;
+
 		rpcServiceUuid = GWT.create(UuidService.class);
 		rpcServiceCheckPath = GWT.create(CheckPathService.class);
 
-
 		con = new FlowLayoutContainer();
-		
+
 		initWidget(con);
 
-		
-		
 		checkHashSet = new LinkedHashSet<SameLevelCheckpathObject>();
 
 		multicheckColumns = new LinkedList<MulticheckColumn<SameLevelCheckpathObject>>();
-		
+
+		if (this.checkpathID != null) {
+			loadCheckpathJSON(this.checkpathID);
+		}
+
+		System.out.println("MC Columnen: " + multicheckColumns);
 		
 		rebuildCheckpathDiagram();
 
@@ -231,7 +235,7 @@ public class CheckpathEditorWidget extends Composite {
 						addCheckField.setText(dragAccordion.checkName);
 						addCheckField.setCheckID(dragAccordion.checkID);
 						checkHashSet.add(addCheckField);
-						
+
 						rebuildCheckpathDiagram();
 
 					}
@@ -283,7 +287,6 @@ public class CheckpathEditorWidget extends Composite {
 		con.clear();
 		con.add(container);
 		drawConnectorLines(controller);
-		
 
 	}
 
@@ -347,9 +350,6 @@ public class CheckpathEditorWidget extends Composite {
 
 									public void onClose(CloseEvent event) {
 
-							
-																										
-										
 										rpcServiceUuid
 												.getUuid(new AsyncCallback<String>() {
 
@@ -400,12 +400,10 @@ public class CheckpathEditorWidget extends Composite {
 										if (dragAccordion.isMulticheck) {
 											currentObject
 													.addChildMulticheck(dragAccordion.checkpathObject);
-											
 
 										} else {
 											currentObject
 													.addChildCheck(dragAccordion.checkpathObject);
-											
 
 										}
 
@@ -419,8 +417,6 @@ public class CheckpathEditorWidget extends Composite {
 										System.out.println("Child Checks: "
 												+ currentObject.childChecks);
 
-										
-										
 										rebuildCheckpathDiagram();
 									}
 
@@ -564,8 +560,7 @@ public class CheckpathEditorWidget extends Composite {
 
 	private void drawConnectorLines(DiagramController controller) {
 
-		
-		//System.out.println("Multicheck Columns: " + multicheckColumns);
+		// System.out.println("Multicheck Columns: " + multicheckColumns);
 		if (multicheckColumns.size() > 0) {
 
 			int i = 0;
@@ -618,7 +613,69 @@ public class CheckpathEditorWidget extends Composite {
 		}
 
 	}
-	
-	
-	
+
+	private void loadCheckpathJSON(String checkpathId)
+	{
+		
+		rpcServiceCheckPath
+		.getUiObjectJSONForCheckpathID(
+				checkpathId,
+				new AsyncCallback<CheckPathObjectTree>() {
+
+					@Override
+					public void onFailure(
+							Throwable caught) {
+						// TODO
+						// Auto-generated
+						// method
+						// stub
+						System.out
+								.println("ERROR SAVING JSON: "
+										+ caught);
+
+					}
+
+					@Override
+					public void onSuccess(
+							CheckPathObjectTree result) {
+					
+						System.out.println("JSON RETRIEVED SUCCESSFULLY: "+ result.tree);
+						Iterator<CheckPathObjectColumn> rIT = result.tree.iterator();
+					
+						while (rIT.hasNext()) {
+							CheckPathObjectColumn columnObject = rIT.next();
+							Iterator<CheckPathObjectData> cIT = columnObject.column.iterator();
+							MulticheckColumn<SameLevelCheckpathObject> newMulticheckList = new MulticheckColumn<SameLevelCheckpathObject>(true);
+							
+							while (cIT.hasNext()) {
+								CheckPathObjectData field = cIT.next();
+								System.out.println("Field retrieved: "+ field.text+ "with combination "+ field.combination);
+								SameLevelCheckpathObject newMulticheck = new SameLevelCheckpathObject(field.checkId , field.text, field.empty, field.level);
+								
+								Iterator<String> ccIT = field.childChecks.iterator();
+								
+								
+								
+								while (ccIT.hasNext()) {
+									System.out.println("Child Check found: "+ ccIT.next());
+								}
+
+								Iterator<String> cmcIT = field.childMultichecks.iterator();
+								while (cmcIT.hasNext()) {
+									System.out.println("Child Multi Check found: "+ cmcIT.next());
+								}
+								newMulticheckList.add(newMulticheck);
+
+							}
+							
+							System.out.println("MCL: " + newMulticheckList);
+							multicheckColumns.add(newMulticheckList);
+							System.out.println("MCC: " + multicheckColumns);
+							rebuildCheckpathDiagram();
+						}
+
+					}
+
+				});
+	}
 }

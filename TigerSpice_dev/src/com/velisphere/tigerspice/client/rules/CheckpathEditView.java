@@ -11,6 +11,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -18,6 +19,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
 import com.velisphere.tigerspice.shared.CheckPathObjectColumn;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
 import com.velisphere.tigerspice.shared.CheckPathObjectTree;
@@ -45,9 +47,12 @@ public class CheckpathEditView extends Composite {
 	}
 
 	private String userID;
+	
+	private String checkpathID;
 
-	public CheckpathEditView(String checkPathID) {
+	public CheckpathEditView(String checkpathID) {
 
+		this.checkpathID = checkpathID;
 		rpcServiceCheckPath = GWT.create(CheckPathService.class);
 		initWidget(uiBinder.createAndBindUi(this));
 		bread0 = new NavLink();
@@ -56,7 +61,7 @@ public class CheckpathEditView extends Composite {
 		bread1 = new NavLink();
 		bread1.setText("Logic Designer");
 		brdMain.add(bread1);
-		pghCheckpathName.setText("Edit Logic: " + checkPathID);
+		pghCheckpathName.setText("Edit Logic: " + this.checkpathID);
 		
 
 	}
@@ -416,5 +421,10 @@ public class CheckpathEditView extends Composite {
 		if (animationLoading != null)
 			animationLoading.removeFromParent();
 	}
+	
+	@UiFactory CheckpathEditorWidget makeCheckpathEditor() { // method name is insignificant
+	    return new CheckpathEditorWidget(this.checkpathID);
+	  }
+
 
 }

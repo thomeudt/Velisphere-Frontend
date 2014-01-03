@@ -41,7 +41,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.admin.Overviewer;
 import com.velisphere.tigerspice.client.rules.CheckpathList;
-import com.velisphere.tigerspice.client.rules.CheckpathView;
+import com.velisphere.tigerspice.client.rules.CheckpathCreateView;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
 import com.velisphere.tigerspice.client.users.LoginService;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
