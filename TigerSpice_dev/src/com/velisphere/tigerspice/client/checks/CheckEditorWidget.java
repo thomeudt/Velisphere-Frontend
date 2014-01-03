@@ -69,12 +69,13 @@ public class CheckEditorWidget extends Composite {
 
 		FlowLayoutContainer con = new FlowLayoutContainer();
 		initWidget(con);
+	
 
 		HorizontalPanel hpMain = new HorizontalPanel();
 		hpMain.setSpacing(10);
 
 		final VerticalLayoutContainer container = new VerticalLayoutContainer();
-		container.setBorders(true);
+		container.setBorders(false);
 		container.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
 		// container.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
 		container.setWidth((int) ((RootPanel.get().getOffsetWidth()) / 4));

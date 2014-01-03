@@ -91,9 +91,13 @@ public class CheckpathEditorWidget extends Composite {
 		rpcServiceUuid = GWT.create(UuidService.class);
 		rpcServiceCheckPath = GWT.create(CheckPathService.class);
 
+
 		con = new FlowLayoutContainer();
+		
 		initWidget(con);
 
+		
+		
 		checkHashSet = new LinkedHashSet<SameLevelCheckpathObject>();
 
 		multicheckColumns = new LinkedList<MulticheckColumn<SameLevelCheckpathObject>>();
@@ -109,7 +113,7 @@ public class CheckpathEditorWidget extends Composite {
 
 		final VerticalLayoutContainer container = new VerticalLayoutContainer();
 
-		container.setBorders(true);
+		container.setBorders(false);
 		container.setScrollMode(ScrollSupport.ScrollMode.AUTO);
 		container.setHeight((int) ((RootPanel.get().getOffsetHeight()) / 2.5));
 		container.setWidth((int) ((RootPanel.get().getOffsetWidth()) / 4));

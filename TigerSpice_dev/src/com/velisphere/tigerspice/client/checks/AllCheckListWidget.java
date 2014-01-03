@@ -98,7 +98,7 @@ public class AllCheckListWidget extends Composite {
 		hpMain.setSpacing(10);
 
 
-		container.setBorders(true);
+		container.setBorders(false);
 		container.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
 		// container.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
 		container.setWidth((int) ((RootPanel.get().getOffsetWidth()) / 4));

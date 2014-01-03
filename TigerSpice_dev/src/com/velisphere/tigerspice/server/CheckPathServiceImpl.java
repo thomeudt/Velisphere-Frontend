@@ -259,7 +259,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 	}
 
 
-	public String addNewCheckpath()
+	public String addNewCheckpath(String checkpathName)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -278,7 +278,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 		
 		try {
 			voltCon.montanaClient.callProcedure("CHECKPATH.insert",
-					checkPathId, null);
+					checkPathId, checkpathName, null);
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

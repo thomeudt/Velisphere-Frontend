@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.Paragraph;
+import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -30,6 +31,8 @@ public class RuleView extends Composite {
 	Paragraph txtSaveStatus;
 	@UiField
 	Breadcrumbs brdMain;
+	@UiField
+	TextBox txtCheckpathTitle;
 	NavLink bread0;
 	NavLink bread1;
 
@@ -61,10 +64,13 @@ public class RuleView extends Composite {
 		final AnimationLoading loading = new AnimationLoading();
 
 		System.out.println("Save checkpath data: " + wgtCheckpathEditor);
+				
 
-		// create a new checkpath and get UUID
+		// create a new checkpath and get UUID. Checkpath UI Object will be added as a last step as we generate the JSON string as we iterate through the list objects
+		
+		
 
-		rpcServiceCheckPath.addNewCheckpath(new AsyncCallback<String>() {
+		rpcServiceCheckPath.addNewCheckpath(txtCheckpathTitle.getText(), new AsyncCallback<String>() {
 
 			@Override
 			public void onFailure(Throwable caught) {

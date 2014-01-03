@@ -12,7 +12,7 @@ public interface CheckPathServiceAsync {
 	
 	void addNewUiObject(CheckPathObjectData uiObject, AsyncCallback<String> callback );
 	void updateCheckpath(String checkpathId, String uiObject, AsyncCallback<String> callback );
-	void addNewCheckpath(AsyncCallback<String> callback);
+	void addNewCheckpath(String checkpathName, AsyncCallback<String> callback);
 	void getUiObjectJSONForCheckpathID(String checkpathID, AsyncCallback<CheckPathObjectTree> callback);
 	void createJsonCheckpath(CheckPathObjectTree uiObject, AsyncCallback<String> callback );
 	void addNewMulticheck(String checkId, String operator, String multicheckName, AsyncCallback<String> callback );

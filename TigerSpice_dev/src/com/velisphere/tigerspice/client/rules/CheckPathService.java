@@ -13,7 +13,7 @@ import com.velisphere.tigerspice.shared.CheckPathObjectTree;
 @RemoteServiceRelativePath("voltCheckPath")
 public interface CheckPathService extends RemoteService {
 		
-		String addNewCheckpath();
+		String addNewCheckpath(String checkpathName);
 		String updateCheckpath(String checkpathId, String uiObject);
 		String addNewUiObject(CheckPathObjectData uiObject);
 		String createJsonCheckpath(CheckPathObjectTree uiObject);

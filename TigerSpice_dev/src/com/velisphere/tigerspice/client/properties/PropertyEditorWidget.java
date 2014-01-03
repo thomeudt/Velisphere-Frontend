@@ -98,9 +98,6 @@ public class PropertyEditorWidget extends Composite {
 		Row row = new Row();
 		Column column = new Column(4, 0);
 		Column buttonColumn = new Column(4, 0);
-				
-		
-		
 		
 		
 		ScrollPanel treeCon = new ScrollPanel();
