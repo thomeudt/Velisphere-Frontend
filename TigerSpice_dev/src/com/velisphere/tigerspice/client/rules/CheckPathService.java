@@ -8,6 +8,7 @@ import java.util.Vector;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.velisphere.tigerspice.shared.CheckData;
+import com.velisphere.tigerspice.shared.CheckPathData;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
 import com.velisphere.tigerspice.shared.CheckPathObjectTree;
 
@@ -24,4 +25,5 @@ public interface CheckPathService extends RemoteService {
 		String addNewMulticheckCheckLink(String multiCheckId, String checkId);
 		String addNewMulticheckMulticheckLink(String multicheckLId, String multicheckRId);
 		LinkedHashMap<String, String> getAllCheckpaths();
+		CheckPathData getCheckpathDetails(String checkpathId);
 }

@@ -77,7 +77,7 @@ public class CheckpathList extends Composite {
 							Map.Entry<String, String> checkPair = (Map.Entry<String, String>)it.next();
 							lstCheckpath.addItem(checkPair.getValue(), checkPair.getKey());
 						}
-						lstCheckpath.setVisibleItemCount(5);
+						lstCheckpath.setVisibleItemCount(7);
 
 					}
 				});

@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
+import com.velisphere.tigerspice.shared.CheckPathData;
 import com.velisphere.tigerspice.shared.CheckPathObjectColumn;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
 import com.velisphere.tigerspice.shared.CheckPathObjectTree;
@@ -37,6 +38,7 @@ public class CheckpathEditView extends Composite {
 	PageHeader pghCheckpathName;
 	NavLink bread0;
 	NavLink bread1;
+	NavLink bread2;
 
 	private CheckPathServiceAsync rpcServiceCheckPath;
 
@@ -61,7 +63,30 @@ public class CheckpathEditView extends Composite {
 		bread1 = new NavLink();
 		bread1.setText("Logic Designer");
 		brdMain.add(bread1);
-		pghCheckpathName.setText("Edit Logic: " + this.checkpathID);
+		
+		
+		rpcServiceCheckPath.getCheckpathDetails(this.checkpathID, new AsyncCallback<CheckPathData>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				System.out.println("ERROR CREATING CHECKPATH: " + caught);
+
+			}
+
+			@Override
+			public void onSuccess(CheckPathData result) {
+				// TODO Auto-generated method stub
+
+				pghCheckpathName.setText("Edit Logic: " + result.checkpathName);
+				bread2 = new NavLink();
+				bread2.setText(result.checkpathName);
+				brdMain.add(bread2);
+			}
+		});
+
+		
+		
 		
 
 	}

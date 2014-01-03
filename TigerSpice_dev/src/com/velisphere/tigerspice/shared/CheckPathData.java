@@ -22,14 +22,32 @@
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-	public class CheckPathDataOLD implements IsSerializable, Comparable <CheckPathDataOLD>
+	public class CheckPathData implements IsSerializable, Comparable <CheckPathData>
 	{
+		
 
+		public String checkpathId;
+		public String checkpathName;
+		public String uiObjectJSON;
+		
 		@Override
-		public int compareTo(CheckPathDataOLD arg0) {
+		public int compareTo(CheckPathData arg0) {
 			// TODO Auto-generated method stub
 			return 0;
 		}
+		
+		public String getCheckpathId(){
+			return this.checkpathId;
+		}
+		
+		public String getCheckpathName(){
+			return this.checkpathName;
+		}
+		
+		public String getUiObjectJSON(){
+			return this.uiObjectJSON;
+		}
+		
 		
 	}
 

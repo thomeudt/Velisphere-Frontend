@@ -30,7 +30,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			<b:Column size="1" offset="0">
 			    <b:Image url="./images/sphere_green.png" />
 			</b:Column>
-			<b:Column size="7" offset="0">
+			<b:Column size="11" offset="0">
 				<b:PageHeader ui:field="pghRuleName">Create Logic Design</b:PageHeader>				
 			</b:Column>
 			
@@ -54,33 +54,39 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			    	
 			    
 			    	 <b:Row>
-            			<b:Column size="3">
-            			<b:Paragraph addStyleNames="smalltext" text="Title or name of this logic design" />
-            			</b:Column>                   
-            			<b:Column size="3">                    
-            			<b:TextBox styleName="span3" ui:field="txtCheckpathTitle" />
+            			<b:Column size="1">
+            			<b:Paragraph addStyleNames="smalltext" text="Logic Name:" />
             			</b:Column>
-            		</b:Row>
-		
-			    	 <b:Row>
-	    				<b:Column size="3" offset="0">
-	    				<b:Button type="SUCCESS" ui:field="btnSaveCheckpath" size="SMALL">Save and Activate this Logic</b:Button>
+            			<b:Column size="2">                  
+            			<b:TextBox styleName="span2" ui:field="txtCheckpathTitle" />
+            			</b:Column>
+            			<b:Column size="2" offset="0">
+	    				<b:Button type="SUCCESS" ui:field="btnSaveCheckpath" size="SMALL">Save and Activate</b:Button>
 	    				</b:Column>
-	    				<b:Column size="3" offset="0">
+	    				
+            		</b:Row>
+            		<b:Row>
+            			<b:Column size="3" offset="3">
 	    				<b:Paragraph addStyleNames="smalltext" ui:field="txtSaveStatus"></b:Paragraph>
 	    				</b:Column>
-	    			</b:Row>
-		
+					</b:Row>
+			    	 
+			    	 <b:Row>
+	    				<b:Column size="3" offset="0">
+	    				<b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
+	    				</b:Column>
+	    				
+	    		</b:Row>
 			    	 	    	
 			    	<b:Row>
 				    <b:Column size="5" offset="0">
-						      	<b:Paragraph addStyleNames="smalltext">Checks: ("Dragsouce", filter by Sphere or Endpoint)</b:Paragraph>
+						      	<b:Paragraph addStyleNames="smalltext">Checks</b:Paragraph>
 						
 					</b:Column>
 					
 				    <b:Column size="4" offset="0">
 				    			    
-				    <b:Paragraph addStyleNames="smalltext">Checkpath: ("when does it happen?")</b:Paragraph>
+				    <b:Paragraph addStyleNames="smalltext">Drag your checks here to build your logic</b:Paragraph>
 			
 					</b:Column>
 			

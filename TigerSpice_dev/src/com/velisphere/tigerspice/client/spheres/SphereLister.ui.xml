@@ -22,7 +22,7 @@
 			    <b:Image resource="{res.fourSpheres}" />
 			</b:Column>
 		
-		   	<b:Column size="7" offset="0">
+		   	<b:Column size="11" offset="0">
 				<b:PageHeader>Endpoint Manager</b:PageHeader>
 			</b:Column>
 		</b:Row>
@@ -42,43 +42,40 @@
 			</b:Column>
 
 
-			<b:Column size="5" offset="0">
+			<b:Column size="4" offset="0">
 
 
-				<b:Row>
-					<b:Column size="1" offset="0">
-						<b:Image url="./images/sphere_green.png" />
-					</b:Column>
-					<b:Column size="4">
 						<b:Heading size="2">My Spheres</b:Heading>
 						<b:HelpBlock addStyleNames="smalltext">These are your own Spheres. Click to open and view
 							content and details.</b:HelpBlock>
 						<vs:SphereListerWidget />
 
-					</b:Column>
-
-
-				</b:Row>
-
+				
 
 			</b:Column>
 
-			<b:Column size="5" offset="0">
-				<b:Row>
-					<b:Column size="1" offset="0">
-						<b:Image url="./images/sphere_blue.png" />
-					</b:Column>
-					<b:Column size="4">
+			<b:Column size="4" offset="0">
 						<b:Heading size="2">Public Spheres</b:Heading>
 						<b:HelpBlock addStyleNames="smalltext">These are Spheres of users that contain endpoints
 							available to you.</b:HelpBlock>
 
 
-					</b:Column>
-
-				</b:Row>
-
 			</b:Column>
+			
+			<b:Column size="2" offset="0">
+				<b:Heading size="4">Additional Resources</b:Heading>
+				
+			<b:Paragraph addStyleNames="smalltext">Device Provisioning Wizard</b:Paragraph>
+			
+			<b:Paragraph addStyleNames="smalltext">Getting Started</b:Paragraph>
+			
+			<b:Paragraph addStyleNames="smalltext">Best Practices</b:Paragraph>
+			
+			<b:Paragraph addStyleNames="smalltext">Market Place</b:Paragraph>
+			
+			
+			</b:Column>	
+			
 
 		</b:Row>
 

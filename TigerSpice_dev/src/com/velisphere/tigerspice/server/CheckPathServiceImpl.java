@@ -48,6 +48,7 @@ import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.rules.CheckPathService;
 import com.velisphere.tigerspice.client.rules.MulticheckColumn;
 import com.velisphere.tigerspice.shared.CheckData;
+import com.velisphere.tigerspice.shared.CheckPathData;
 import com.velisphere.tigerspice.shared.CheckPathObjectTree;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
@@ -466,6 +467,63 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 			
 			return allCheckPaths;
 				
+	}
+
+
+	@Override
+	public CheckPathData getCheckpathDetails(String checkpathId) 
+
+		{
+			VoltConnector voltCon = new VoltConnector();
+
+			try {
+				voltCon.openDatabase();
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			CheckPathData checkPath = new CheckPathData();
+			
+			try {
+
+				final ClientResponse findCheckpath= voltCon.montanaClient
+						.callProcedure("UI_SelectCheckpathForCheckpathID", checkpathId);
+
+				final VoltTable findCheckpathResults[] = findCheckpath.getResults();
+
+				VoltTable result = findCheckpathResults[0];
+				// check if any rows have been returned
+
+				while (result.advanceRow()) {
+					{
+						// extract the value in column checkid
+						
+						checkPath.checkpathId = result.getString("CHECKPATHID");
+						checkPath.checkpathName = result.getString("CHECKPATHNAME");
+						checkPath.uiObjectJSON = result.getString("UIOBJECT");
+						
+					}
+				}
+
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			try {
+				voltCon.closeDatabase();
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return checkPath;
+	
 	}
 
 	

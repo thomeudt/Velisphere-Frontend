@@ -21,19 +21,22 @@ public class CheckPathObjectData implements IsSerializable {
 	public HashSet<String> childChecks;
 	public String combination;
 	public String ruleID;
+	
 	public Boolean isMulticheck;
 	
 	public CheckPathObjectData(){}
 	
-	public CheckPathObjectData (String checkID, String text, Boolean empty, Integer level)  {
+	public CheckPathObjectData (String checkId, String text, Boolean empty, Integer level)  {
 		super();
 		this.text = text;
 		this.empty = empty;
 		this.level = level;
-	
+		this.checkId = checkId;
+		
 		this.childMultichecks = new HashSet<String>();
 		this.childChecks = new HashSet<String>();
 		this.isMulticheck = false;
+		
 	
 				
 	}

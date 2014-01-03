@@ -118,10 +118,12 @@ public class CheckpathCreateView extends Composite {
 						// current check. children will not be added in
 						// constructor to avoid double work
 
+						
+						
 						CheckPathObjectData currentObjectData = new CheckPathObjectData(
 								checkpathObject.checkId, checkpathObject.text,
 								checkpathObject.empty, checkpathObject.level);
-
+						
 						currentObjectData.combination = checkpathObject.combination;
 
 						// discard empty objects for writing checks to database

@@ -8,6 +8,16 @@
   <!-- Servlets -->
 
 <servlet>
+  <servlet-name>remoteLoggingServiceImpl</servlet-name>
+  <servlet-class>com.google.gwt.libideas.logging.server.RemoteLoggingServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+  <servlet-name>remoteLoggingServiceImpl</servlet-name>
+  <url-pattern>/tigerspice_dev/logging</url-pattern>
+</servlet-mapping>
+
+<servlet>
     <servlet-name>userdataServlet</servlet-name>
     <servlet-class>com.velisphere.tigerspice.server.UserServiceImpl</servlet-class>
 </servlet>

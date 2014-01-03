@@ -22,11 +22,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.github.gwtbootstrap.client.ui.Accordion;
@@ -630,7 +634,7 @@ public class CheckpathEditorWidget extends Composite {
 						// method
 						// stub
 						System.out
-								.println("ERROR SAVING JSON: "
+								.println("ERROR LOADING JSON: "
 										+ caught);
 
 					}
@@ -640,8 +644,15 @@ public class CheckpathEditorWidget extends Composite {
 							CheckPathObjectTree result) {
 					
 						System.out.println("JSON RETRIEVED SUCCESSFULLY: "+ result.tree);
+			
+						// first round - fill objects without relationship information to populate the entire graph and create all necessary objects
+						// child check ids are added to a hashmap for later use
+						
+						HashMap<String, List<String>> childChecksForMulticheck = new HashMap<String, List<String>>();
+						HashMap<String, List<String>> childMultichecksForMulticheck = new HashMap<String, List<String>>();
+						
 						Iterator<CheckPathObjectColumn> rIT = result.tree.iterator();
-					
+											
 						while (rIT.hasNext()) {
 							CheckPathObjectColumn columnObject = rIT.next();
 							Iterator<CheckPathObjectData> cIT = columnObject.column.iterator();
@@ -649,31 +660,105 @@ public class CheckpathEditorWidget extends Composite {
 							
 							while (cIT.hasNext()) {
 								CheckPathObjectData field = cIT.next();
-								System.out.println("Field retrieved: "+ field.text+ "with combination "+ field.combination);
+								System.out.println("Field retrieved: "+ field.text+ "with ID "+ field.checkId);
 								SameLevelCheckpathObject newMulticheck = new SameLevelCheckpathObject(field.checkId , field.text, field.empty, field.level);
+								newMulticheck.isMulticheck = true;
 								
+								List<String> foundChildChecks = new ArrayList<String>();								
 								Iterator<String> ccIT = field.childChecks.iterator();
-								
-								
-								
+																
 								while (ccIT.hasNext()) {
-									System.out.println("Child Check found: "+ ccIT.next());
+									String foundChildCheck = ccIT.next();
+									System.out.println("Child Check found: "+ foundChildCheck);
+									foundChildChecks.add(foundChildCheck);								
 								}
+								
+								childChecksForMulticheck.put(field.checkId, foundChildChecks);
+								
 
+								List<String> foundChildMultichecks = new ArrayList<String>();
 								Iterator<String> cmcIT = field.childMultichecks.iterator();
 								while (cmcIT.hasNext()) {
-									System.out.println("Child Multi Check found: "+ cmcIT.next());
+									String foundChildMulticheck = cmcIT.next();
+									System.out.println("Child Multi Check found: "+ foundChildMulticheck);
+									foundChildMultichecks.add(foundChildMulticheck);
 								}
+								childMultichecksForMulticheck.put(field.checkId, foundChildMultichecks);
+								
+								
 								newMulticheckList.add(newMulticheck);
 
 							}
-							
-							System.out.println("MCL: " + newMulticheckList);
+						
 							multicheckColumns.add(newMulticheckList);
-							System.out.println("MCC: " + multicheckColumns);
-							rebuildCheckpathDiagram();
+							
 						}
+							
+											
+						System.out.println("MCC: " + multicheckColumns);
+						System.out.println("*/*" + childMultichecksForMulticheck +" / " + childChecksForMulticheck);
+						
+						// reverse allocation of child checks - assign parents to children
+						
+						HashMap<String, List<String>> ParentMultichecksForCheck = new HashMap<String, List<String>>();
+						HashMap<String, List<String>> ParentMultichecksForMulticheck = new HashMap<String, List<String>>();
+						
+						Iterator<Entry<String, List<String>>> mcIT = childMultichecksForMulticheck.entrySet().iterator();
+					    while (mcIT.hasNext()) {
+					        Map.Entry<String, List<String>> pairs = (Map.Entry)mcIT.next();
+					       
+					        String parent = pairs.getKey();
+					        List<String> children = pairs.getValue();
+					        //
+					        Iterator<String> cIT = children.iterator();
+					        while (cIT.hasNext())
+					        {
+					        	String child = cIT.next();
+					        	if(ParentMultichecksForMulticheck.containsKey(child)){
+					        		List<String> parents = ParentMultichecksForMulticheck.get(child);
+					        		parents.add(parent);
+					        		ParentMultichecksForMulticheck.put(child, parents);					        		
+					        	} 
+					        	else {
+					        		List<String> parents = new ArrayList<String>();
+					        		parents.add(parent);
+					        		ParentMultichecksForMulticheck.put(child, parents);
+					        	}
+					        	
+					        }
+					    }
+					    
+					    System.out.println("Reverse Construct MC: " + ParentMultichecksForMulticheck);
+						
+					    Iterator<Entry<String, List<String>>> ckIT = childChecksForMulticheck.entrySet().iterator();
+					    while (ckIT.hasNext()) {
+					        Map.Entry<String, List<String>> pairs = (Map.Entry)ckIT.next();
+					       
+					        String parent = pairs.getKey();
+					        List<String> children = pairs.getValue();
+					        //
+					        Iterator<String> cIT = children.iterator();
+					        while (cIT.hasNext())
+					        {
+					        	String child = cIT.next();
+					        	if(ParentMultichecksForCheck.containsKey(child)){
+					        		List<String> parents = ParentMultichecksForCheck.get(child);
+					        		parents.add(parent);
+					        		ParentMultichecksForCheck.put(child, parents);					        		
+					        	} 
+					        	else {
+					        		List<String> parents = new ArrayList<String>();
+					        		parents.add(parent);
+					        		ParentMultichecksForCheck.put(child, parents);
+					        	}
+					        	
+					        }
+					    }
+					    
+					    System.out.println("Reverse Construct C: " + ParentMultichecksForCheck);
 
+					    
+						rebuildCheckpathDiagram();
 					}
 
 				});
