@@ -64,7 +64,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 		
 			    	 <b:Row>
 	    				<b:Column size="3" offset="0">
-	    				<b:Button type="SUCCESS" ui:field="btnSaveCheckpath" size="MINI">Save and Activate Checkpath</b:Button>
+	    				<b:Button type="SUCCESS" ui:field="btnSaveCheckpath" size="SMALL">Save and Activate Checkpath</b:Button>
 	    				</b:Column>
 	    				<b:Column size="3" offset="0">
 	    				<b:Paragraph addStyleNames="smalltext" ui:field="txtSaveStatus"></b:Paragraph>

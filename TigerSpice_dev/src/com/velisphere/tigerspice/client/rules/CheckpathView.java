@@ -23,7 +23,7 @@ import com.velisphere.tigerspice.shared.CheckPathObjectColumn;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
 import com.velisphere.tigerspice.shared.CheckPathObjectTree;
 
-public class RuleView extends Composite {
+public class CheckpathView extends Composite {
 
 	@UiField
 	CheckpathEditorWidget wgtCheckpathEditor;
@@ -41,12 +41,12 @@ public class RuleView extends Composite {
 	private static RuleViewUiBinder uiBinder = GWT
 			.create(RuleViewUiBinder.class);
 
-	interface RuleViewUiBinder extends UiBinder<Widget, RuleView> {
+	interface RuleViewUiBinder extends UiBinder<Widget, CheckpathView> {
 	}
 
 	private String userID;
 
-	public RuleView() {
+	public CheckpathView() {
 
 		rpcServiceCheckPath = GWT.create(CheckPathService.class);
 		initWidget(uiBinder.createAndBindUi(this));

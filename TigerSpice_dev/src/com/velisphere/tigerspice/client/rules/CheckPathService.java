@@ -1,5 +1,7 @@
 package com.velisphere.tigerspice.client.rules;
 
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Vector;
 
@@ -21,4 +23,5 @@ public interface CheckPathService extends RemoteService {
 		String addNewMulticheck(String checkId, String operator, String multicheckName);
 		String addNewMulticheckCheckLink(String multiCheckId, String checkId);
 		String addNewMulticheckMulticheckLink(String multicheckLId, String multicheckRId);
+		LinkedHashMap<String, String> getAllCheckpaths();
 }

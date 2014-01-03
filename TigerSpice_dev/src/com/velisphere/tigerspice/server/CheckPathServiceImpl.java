@@ -26,7 +26,9 @@ import java.io.ObjectOutputStream;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -49,6 +51,7 @@ import com.velisphere.tigerspice.shared.CheckData;
 import com.velisphere.tigerspice.shared.CheckPathObjectTree;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
+import com.velisphere.tigerspice.shared.SphereData;
 
 @SuppressWarnings("serial")
 public class CheckPathServiceImpl extends RemoteServiceServlet implements
@@ -410,7 +413,60 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 		return uiObject;
 	}
 
-	
+
+	@Override
+	public LinkedHashMap<String, String> getAllCheckpaths() {
+		
+		
+			VoltConnector voltCon = new VoltConnector();
+
+			try {
+				voltCon.openDatabase();
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			LinkedHashMap<String, String> allCheckPaths = new LinkedHashMap<String, String>();
+			try {
+
+				final ClientResponse findAllCheckpaths = voltCon.montanaClient
+						.callProcedure("UI_SelectAllCheckpaths");
+
+				final VoltTable findAllCheckpathsResults[] = findAllCheckpaths.getResults();
+
+				VoltTable result = findAllCheckpathsResults[0];
+				// check if any rows have been returned
+
+				while (result.advanceRow()) {
+					{
+						// extract the value in column checkid
+						
+						allCheckPaths.put(result.getString("CHECKPATHID"), result.getString("CHECKPATHNAME"));
+
+					}
+				}
+
+				
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			try {
+				voltCon.closeDatabase();
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return allCheckPaths;
+				
+	}
 
 	
 }

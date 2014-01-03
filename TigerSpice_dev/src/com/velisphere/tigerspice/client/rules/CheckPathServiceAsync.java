@@ -1,5 +1,6 @@
 package com.velisphere.tigerspice.client.rules;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Vector;
 
@@ -18,4 +19,5 @@ public interface CheckPathServiceAsync {
 	void addNewMulticheck(String checkId, String operator, String multicheckName, AsyncCallback<String> callback );
 	void addNewMulticheckCheckLink(String multiCheckId, String checkId, AsyncCallback<String> callback );
 	void addNewMulticheckMulticheckLink(String multicheckLId, String multicheckRId, AsyncCallback<String> callback );
+	void getAllCheckpaths(AsyncCallback<LinkedHashMap<String, String>> callback);
 }

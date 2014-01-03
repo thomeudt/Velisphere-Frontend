@@ -50,7 +50,7 @@ import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
-import com.velisphere.tigerspice.client.rules.RuleView;
+import com.velisphere.tigerspice.client.rules.CheckpathView;
 import com.velisphere.tigerspice.client.spheres.SphereView;
 import com.velisphere.tigerspice.client.users.LoginService;
 import com.velisphere.tigerspice.shared.CheckData;
@@ -617,7 +617,7 @@ public class AllCheckListWidget extends Composite {
 												// label.setText(ancToEndpoint.getStringQueryFirst());
 												// verticalPanel.add(label);
 													RootPanel.get("main").clear();
-												    RootPanel.get("main").add(new RuleView());
+												    RootPanel.get("main").add(new CheckpathView());
 													//RootPanel.get("main").add(new EndpointsForSphereListerWidget(currentItem.sphereId));
 												}
 											});
