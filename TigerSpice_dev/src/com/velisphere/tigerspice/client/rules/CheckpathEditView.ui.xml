@@ -30,8 +30,8 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			<b:Column size="1" offset="0">
 			    <b:Image url="./images/sphere_green.png" />
 			</b:Column>
-			<b:Column size="7" offset="0">
-				<b:PageHeader ui:field="pghRuleName">Logic Designer</b:PageHeader>				
+			<b:Column size="9" offset="0">
+				<b:PageHeader ui:field="pghCheckpathName">Edit Logic Design</b:PageHeader>				
 			</b:Column>
 			
 		</b:Row>
@@ -53,15 +53,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 		
 			    	
 			    
-			    	 <b:Row>
-            			<b:Column size="3">
-            			<b:Paragraph addStyleNames="smalltext" text="Title or name of this logic design" />
-            			</b:Column>                   
-            			<b:Column size="3">                    
-            			<b:TextBox styleName="span3" ui:field="txtCheckpathTitle" />
-            			</b:Column>
-            		</b:Row>
-		
+			   
 			    	 <b:Row>
 	    				<b:Column size="3" offset="0">
 	    				<b:Button type="SUCCESS" ui:field="btnSaveCheckpath" size="SMALL">Save and Activate Checkpath</b:Button>
@@ -118,4 +110,4 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 </ui:UiBinder> 
 
 
- 
+  

@@ -1,10 +1,10 @@
 package com.velisphere.tigerspice.client.rules;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.NavLink;
+import com.github.gwtbootstrap.client.ui.PageHeader;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
@@ -18,12 +18,12 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
-import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
 import com.velisphere.tigerspice.shared.CheckPathObjectColumn;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
 import com.velisphere.tigerspice.shared.CheckPathObjectTree;
 
-public class CheckpathView extends Composite {
+public class CheckpathEditView extends Composite {
+
 
 	@UiField
 	CheckpathEditorWidget wgtCheckpathEditor;
@@ -32,21 +32,21 @@ public class CheckpathView extends Composite {
 	@UiField
 	Breadcrumbs brdMain;
 	@UiField
-	TextBox txtCheckpathTitle;
+	PageHeader pghCheckpathName;
 	NavLink bread0;
 	NavLink bread1;
 
 	private CheckPathServiceAsync rpcServiceCheckPath;
 
-	private static RuleViewUiBinder uiBinder = GWT
-			.create(RuleViewUiBinder.class);
+	private static CheckpathEditViewUiBinder uiBinder = GWT
+			.create(CheckpathEditViewUiBinder.class);
 
-	interface RuleViewUiBinder extends UiBinder<Widget, CheckpathView> {
+	interface CheckpathEditViewUiBinder extends UiBinder<Widget, CheckpathEditView> {
 	}
 
 	private String userID;
 
-	public CheckpathView() {
+	public CheckpathEditView(String checkPathID) {
 
 		rpcServiceCheckPath = GWT.create(CheckPathService.class);
 		initWidget(uiBinder.createAndBindUi(this));
@@ -56,6 +56,8 @@ public class CheckpathView extends Composite {
 		bread1 = new NavLink();
 		bread1.setText("Logic Designer");
 		brdMain.add(bread1);
+		pghCheckpathName.setText("Edit Logic: " + checkPathID);
+		
 
 	}
 
@@ -70,7 +72,7 @@ public class CheckpathView extends Composite {
 		
 		
 
-		rpcServiceCheckPath.addNewCheckpath(txtCheckpathTitle.getText(), new AsyncCallback<String>() {
+		rpcServiceCheckPath.addNewCheckpath(pghCheckpathName.getText(), new AsyncCallback<String>() {
 
 			@Override
 			public void onFailure(Throwable caught) {

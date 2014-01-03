@@ -45,7 +45,7 @@ public class CheckpathList extends Composite {
 		bread0.setText("Home");
 		brdMain.add(bread0);
 		bread1 = new NavLink();
-		bread1.setText("Logic Designer Overview");
+		bread1.setText("Logic Designer");
 		brdMain.add(bread1);
 		rpcServiceCheckPath = GWT.create(CheckPathService.class);
 		
@@ -93,11 +93,22 @@ public class CheckpathList extends Composite {
 		RootPanel mainPanel = RootPanel.get("main");
 		mainPanel.clear();
 		
-		CheckpathView checkpathView = new CheckpathView(); 		
+		CheckpathCreateView checkpathView = new CheckpathCreateView(); 		
 		mainPanel.add(checkpathView);
 
 		
 	}
 
+	@UiHandler("btnOpenCheckpath")
+	void openCheckpath(ClickEvent event) {
+	
+		RootPanel mainPanel = RootPanel.get("main");
+		mainPanel.clear();
+		
+		CheckpathEditView checkpathView = new CheckpathEditView(lstCheckpath.getValue()); 		
+		mainPanel.add(checkpathView);
+
+		
+	}
 
 }

@@ -31,7 +31,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			    <b:Image url="./images/sphere_green.png" />
 			</b:Column>
 			<b:Column size="7" offset="0">
-				<b:PageHeader ui:field="pghRuleName">Logic Designer</b:PageHeader>				
+				<b:PageHeader ui:field="pghRuleName">Create Logic Design</b:PageHeader>				
 			</b:Column>
 			
 		</b:Row>
@@ -40,7 +40,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 				        
 	        <b:Column size="2" offset="0">
 			<b:Well>
-			<b:Strong ui:field="pgpInformHeader">Logic Designer Tasks</b:Strong>
+			<b:Strong ui:field="pgpInformHeader">Rules Information</b:Strong>
 			<b:Paragraph addStyleNames="smalltext">Type:</b:Paragraph>
 			<b:Paragraph addStyleNames="smalltext" ui:field="pgpEndpointClassName">loading...</b:Paragraph>
 			<b:Paragraph addStyleNames="smalltext">Last triggered:</b:Paragraph>
@@ -51,40 +51,64 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 				        
 			<b:Column size="9" offset="0">
 		
-				<b:Row>
-            	<b:Column size="2">
-            	<b:Paragraph addStyleNames="smalltext" text="Open existing Logic Design" />
-            	</b:Column>
-            	<b:Column size="4">
-            	<b:ListBox styleName="span4" ui:field="lstCheckpath"/> 
-            	</b:Column>
-            	</b:Row>
-
-				<b:Row>
-	    				<b:Column size="3" offset="2">
-	    				<b:Button type="INFO" ui:field="btnOpenCheckpath" size="SMALL">Open Selected Logic Design</b:Button>
+			    	
+			    
+			    	 <b:Row>
+            			<b:Column size="3">
+            			<b:Paragraph addStyleNames="smalltext" text="Title or name of this logic design" />
+            			</b:Column>                   
+            			<b:Column size="3">                    
+            			<b:TextBox styleName="span3" ui:field="txtCheckpathTitle" />
+            			</b:Column>
+            		</b:Row>
+		
+			    	 <b:Row>
+	    				<b:Column size="3" offset="0">
+	    				<b:Button type="SUCCESS" ui:field="btnSaveCheckpath" size="SMALL">Save and Activate this Logic</b:Button>
 	    				</b:Column>
 	    				<b:Column size="3" offset="0">
-	    				<b:Paragraph addStyleNames="smalltext" ui:field="txtOpenStatus"></b:Paragraph>
+	    				<b:Paragraph addStyleNames="smalltext" ui:field="txtSaveStatus"></b:Paragraph>
 	    				</b:Column>
-	    				
-	    		</b:Row>
+	    			</b:Row>
+		
+			    	 	    	
+			    	<b:Row>
+				    <b:Column size="5" offset="0">
+						      	<b:Paragraph addStyleNames="smalltext">Checks: ("Dragsouce", filter by Sphere or Endpoint)</b:Paragraph>
+						
+					</b:Column>
+					
+				    <b:Column size="4" offset="0">
+				    			    
+				    <b:Paragraph addStyleNames="smalltext">Checkpath: ("when does it happen?")</b:Paragraph>
+			
+					</b:Column>
+			
+				    
+					</b:Row>
+					<b:Row>
+					    
+					    
+					    
+				    <b:Column size="5" offset="0">
+				    
+				   		<vsch:AllCheckListWidget />
+				     
+					</b:Column>
+					
+				    
+					<b:Column size="4" offset="0">
+				    	<vsrl:CheckpathEditorWidget ui:field="wgtCheckpathEditor"/>
+				   
+				    
+					</b:Column>
+					</b:Row>		
 				
-				
-				<b:Row>
-	    				<b:Column size="3" offset="2">
-	    				<b:Button type="SUCCESS" ui:field="btnCreateCheckpath" size="SMALL">Create New Logic Design</b:Button>
-	    				</b:Column>
-	    				
-	    		</b:Row>
-			    
-			  			
+					
 					
 			
 			</b:Column>
 		</b:Row>
-		
-	    
 		
 	    
 	
@@ -92,3 +116,6 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	  		            
 
 </ui:UiBinder> 
+
+
+ 
