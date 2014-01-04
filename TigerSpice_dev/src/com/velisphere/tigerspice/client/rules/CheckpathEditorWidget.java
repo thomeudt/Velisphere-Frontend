@@ -17,11 +17,6 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client.rules;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,12 +26,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.github.gwtbootstrap.client.ui.Accordion;
-import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Paragraph;
-import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -47,7 +39,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.orange.links.client.DiagramController;
 import com.orange.links.client.connection.Connection;
 import com.sencha.gxt.core.client.dom.ScrollSupport;
@@ -58,8 +49,6 @@ import com.sencha.gxt.dnd.core.client.DropTarget;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.velisphere.tigerspice.client.checks.CheckService;
-import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.helper.DragobjectContainer;
 import com.velisphere.tigerspice.client.helper.UuidService;
 import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
@@ -653,7 +642,7 @@ public class CheckpathEditorWidget extends Composite {
 						
 						HashMap<String, List<String>> childChecksForMulticheck = new HashMap<String, List<String>>();
 						HashMap<String, List<String>> childMultichecksForMulticheck = new HashMap<String, List<String>>();
-						HashMap<String, List<SameLevelCheckpathObject>> multicheckLookup = new HashMap<String, List<SameLevelCheckpathObject>>();
+						HashMap<String, SameLevelCheckpathObject> multicheckLookup = new HashMap<String, SameLevelCheckpathObject>();
 						
 						Iterator<CheckPathObjectColumn> rIT = result.tree.iterator();
 											
@@ -669,23 +658,15 @@ public class CheckpathEditorWidget extends Composite {
 								System.out.println("Checkpathobject created: "+  newMulticheck.text + "with ID "+ newMulticheck.checkId);
 								newMulticheck.isMulticheck = true;
 								
-								
-								// add check to lookup table
-								if(multicheckLookup.containsKey(field.checkId)){
-					        		List<SameLevelCheckpathObject> check = multicheckLookup.get(field.checkId);
-					        		check.add(newMulticheck);
-					        		multicheckLookup.put(field.checkId, check);					        		
-					        	} 
-					        	else {
-					        		List<SameLevelCheckpathObject> check = new ArrayList<SameLevelCheckpathObject>();
-					        		check.add(newMulticheck);
-					        		multicheckLookup.put(field.checkId, check);
-					        	}
+								// add multicheck to lookup table
+								multicheckLookup.put(field.checkId, newMulticheck);
 					        								
 								
 								List<String> foundChildChecks = new ArrayList<String>();								
 								Iterator<String> ccIT = field.childChecks.iterator();
-																
+								
+								
+								// find child checks and store in lookup list;
 								while (ccIT.hasNext()) {
 									String foundChildCheck = ccIT.next();
 									System.out.println("Child Check found: "+ foundChildCheck);
@@ -695,6 +676,7 @@ public class CheckpathEditorWidget extends Composite {
 								childChecksForMulticheck.put(field.checkId, foundChildChecks);
 								
 
+								// find child multichecks and store in lookup list;
 								List<String> foundChildMultichecks = new ArrayList<String>();
 								Iterator<String> cmcIT = field.childMultichecks.iterator();
 								while (cmcIT.hasNext()) {
@@ -720,7 +702,36 @@ public class CheckpathEditorWidget extends Composite {
 
 						// second round - add relationship data from lookup table
 						
+						
+						Iterator<CheckPathObjectColumn> relIT = result.tree.iterator();
+						
+						while (relIT.hasNext()) {
+							CheckPathObjectColumn columnObject = relIT.next();
+							Iterator<CheckPathObjectData> cIT = columnObject.column.iterator();
+														
+							while (cIT.hasNext()) {
+								CheckPathObjectData field = cIT.next();
+								System.out.println("Field retrieved for relationship update: "+ field.text+ "with ID "+ field.checkId);
+								
+								SameLevelCheckpathObject objectToUpdate = multicheckLookup.get(field.checkId);
+								
+								Iterator<String> childMultichecksIT = field.childMultichecks.iterator();
+								while(childMultichecksIT.hasNext()){
+									String childMulticheckID = 	childMultichecksIT.next();
+									SameLevelCheckpathObject childMulticheckObject = multicheckLookup.get(childMulticheckID);
+									objectToUpdate.childMultichecks.add(childMulticheckObject);
+																	
+									System.out.println("Adding children for " + field.checkId + ": " + childMulticheckObject);
+									
+								}
+							}
+						}
+								
+								
+														
+						
 												
+						/*
 						Iterator<MulticheckColumn<SameLevelCheckpathObject>> lIT = multicheckColumns.iterator();
 											
 						while (lIT.hasNext()) {
@@ -730,11 +741,25 @@ public class CheckpathEditorWidget extends Composite {
 							while (cIT.hasNext()) {
 								SameLevelCheckpathObject field = cIT.next();
 								System.out.println("Field retrieved for relationship update: "+ field.text+ "with ID "+ field.checkId);
-								
-								List<SameLevelCheckpathObject> fieldLookup = multicheckLookup.get(field.checkId);
-								field.childMultichecks.addAll(fieldLookup);								
+								if (field.checkId != null) {
+						
+									Iterator<Entry<String, List<String>>> childIT = childMultichecksForMulticheck.entrySet().iterator();
+								    while (mcIT.hasNext()) {
+								        Map.Entry<String, List<String>> pairs = (Map.Entry)mcIT.next();
+								       
+								        String parent = pairs.getKey();
+								        List<String> children = pairs.getValue();
+								    								
+									
+									
+									List<SameLevelCheckpathObject> fieldLookup = multicheckLookup.get(field.checkId);
+									System.out.println("Adding children for " + field.checkId + ": " + fieldLookup);
+									field.childMultichecks.addAll(fieldLookup);
+								}
 							}
 						}
+						*/
+
 
 						
 						
