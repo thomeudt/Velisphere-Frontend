@@ -20,8 +20,10 @@ package com.velisphere.tigerspice.client.users;
 
 
 import com.github.gwtbootstrap.client.ui.Bar;
+import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.Container;
 import com.github.gwtbootstrap.client.ui.Image;
+import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
 import com.github.gwtbootstrap.client.ui.StackProgressBar;
 import com.github.gwtbootstrap.client.ui.TextBox;
@@ -65,6 +67,9 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
 	@UiField Bar pgbYellow;
 	@UiField Bar pgbRed;
 	@UiField StackProgressBar pgbUtilization;
+	@UiField
+	Breadcrumbs brdMain;
+	NavLink bread0;
 	String userName;
 	
  	
@@ -80,7 +85,13 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
 	       {
 	           checkWithServerIfSessionIdIsStillLegal(sessionID);
 	       }
+	       
 		initWidget(uiBinder.createAndBindUi(this));	
+		bread0 = new NavLink();
+		bread0.setText("Home");
+		brdMain.add(bread0);
+		
+
 		
 	}	
 

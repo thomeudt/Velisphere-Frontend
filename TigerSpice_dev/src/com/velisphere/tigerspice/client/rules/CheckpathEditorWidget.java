@@ -24,16 +24,21 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.github.gwtbootstrap.client.ui.Accordion;
+import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Paragraph;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -49,6 +54,7 @@ import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
+import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DragobjectContainer;
 import com.velisphere.tigerspice.client.helper.UuidService;
 import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
@@ -93,6 +99,7 @@ public class CheckpathEditorWidget extends Composite {
 
 		initWidget(con);
 
+				
 		checkHashSet = new LinkedHashSet<SameLevelCheckpathObject>();
 
 		multicheckColumns = new LinkedList<MulticheckColumn<SameLevelCheckpathObject>>();
@@ -527,6 +534,9 @@ public class CheckpathEditorWidget extends Composite {
 	private void loadCheckpathJSON(String checkpathId)
 	{
 		
+		final AnimationLoading loading = new AnimationLoading();
+		showLoadAnimation(loading);
+		
 		rpcServiceCheckPath
 		.getUiObjectJSONForCheckpathID(
 				checkpathId,
@@ -688,21 +698,19 @@ public class CheckpathEditorWidget extends Composite {
 														// add child
 														objectToUpdate.childMultichecks.add(childCheckObject);
 														System.out.println("Adding check children for " + field.checkId + ": " + childCheckObject);
+														removeLoadAnimation(loading);
+														rebuildCheckpathDiagram();
 
 													}
 													
-													
-													
-													
-													
-													rebuildCheckpathDiagram();
-													
+														
 												}
 											});
 								}
 							}
 						}
-						rebuildCheckpathDiagram();
+						// removeLoadAnimation(loading);
+						// rebuildCheckpathDiagram();
 					}
 
 				});
@@ -762,6 +770,17 @@ public class CheckpathEditorWidget extends Composite {
 			
 		}
 		}
+
+	private void showLoadAnimation(AnimationLoading animationLoading) {
+		RootPanel rootPanel = RootPanel.get("main");
+		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
+		rootPanel.add(animationLoading, 25, 40);
+	}
+
+	private void removeLoadAnimation(AnimationLoading animationLoading) {
+		if (animationLoading != null)
+			animationLoading.removeFromParent();
+	}
 
 	
 }

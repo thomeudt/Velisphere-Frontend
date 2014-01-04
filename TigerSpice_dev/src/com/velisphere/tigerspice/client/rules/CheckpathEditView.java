@@ -3,10 +3,12 @@ package com.velisphere.tigerspice.client.rules;
 import java.util.Iterator;
 
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
+import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.TextBox;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -15,6 +17,7 @@ import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -65,6 +68,7 @@ public class CheckpathEditView extends Composite {
 		brdMain.add(bread1);
 		
 		
+		
 		rpcServiceCheckPath.getCheckpathDetails(this.checkpathID, new AsyncCallback<CheckPathData>() {
 
 			@Override
@@ -78,13 +82,22 @@ public class CheckpathEditView extends Composite {
 			public void onSuccess(CheckPathData result) {
 				// TODO Auto-generated method stub
 
-				pghCheckpathName.setText("Edit Logic: " + result.checkpathName);
+				pghCheckpathName.setText(result.checkpathName);
 				bread2 = new NavLink();
 				bread2.setText(result.checkpathName);
 				brdMain.add(bread2);
 			}
 		});
 
+		// name change popup
+		
+		Icon icnCheckpathName = new Icon();
+		icnCheckpathName.setType(IconType.EDIT);
+		pghCheckpathName.add(icnCheckpathName);
+		final Anchor ancEditCheckpathName = new Anchor();
+		ancEditCheckpathName.setText(" Change Name of this Logic");
+		ancEditCheckpathName.setHref("#");
+		pghCheckpathName.add(ancEditCheckpathName);
 		
 		
 		

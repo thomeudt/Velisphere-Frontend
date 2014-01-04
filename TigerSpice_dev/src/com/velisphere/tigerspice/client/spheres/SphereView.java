@@ -110,18 +110,15 @@ public class SphereView extends Composite {
 					}
 				});
 
+	
+		// Change button for header
 		
 		Icon icnEditEndpointName = new Icon();
 		icnEditEndpointName.setType(IconType.EDIT);
-		// RootPanel.get().add(icnEditClassName, pghEndpointName..getAbsoluteLeft(), pghEndpointName.getAbsoluteTop());
 		pghSphereNameHeader.add(icnEditEndpointName);
 		final Anchor ancEditSphereName = new Anchor();
 		ancEditSphereName.setText(" Change Name of this Sphere");
 		ancEditSphereName.setHref("#");
-	
-		// endpointChangeNameDialogBox = new EndpointChangeNameDialogBox();
-		// endpointChangeNameDialogBox.addValueChangeHandler(new ValueChangeHandler<String>() {
-			
 		sphereChangeNameField = new TextBox();
 		final Button okButton = new Button();
 		okButton.setText("OK");
