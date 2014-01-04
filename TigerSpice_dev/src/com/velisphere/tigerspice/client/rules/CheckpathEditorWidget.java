@@ -47,6 +47,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.orange.links.client.DiagramController;
 import com.orange.links.client.connection.Connection;
 import com.sencha.gxt.core.client.dom.ScrollSupport;
@@ -646,10 +647,13 @@ public class CheckpathEditorWidget extends Composite {
 						System.out.println("JSON RETRIEVED SUCCESSFULLY: "+ result.tree);
 			
 						// first round - fill objects without relationship information to populate the entire graph and create all necessary objects
-						// child check ids are added to a hashmap for later use
+						// child check ids are added to a hashmap for later use (currently unused)
+						// Multichecklookup is created to easily lookup multichecks in round two
+						
 						
 						HashMap<String, List<String>> childChecksForMulticheck = new HashMap<String, List<String>>();
 						HashMap<String, List<String>> childMultichecksForMulticheck = new HashMap<String, List<String>>();
+						HashMap<String, List<SameLevelCheckpathObject>> multicheckLookup = new HashMap<String, List<SameLevelCheckpathObject>>();
 						
 						Iterator<CheckPathObjectColumn> rIT = result.tree.iterator();
 											
@@ -662,7 +666,22 @@ public class CheckpathEditorWidget extends Composite {
 								CheckPathObjectData field = cIT.next();
 								System.out.println("Field retrieved: "+ field.text+ "with ID "+ field.checkId);
 								SameLevelCheckpathObject newMulticheck = new SameLevelCheckpathObject(field.checkId , field.text, field.empty, field.level);
+								System.out.println("Checkpathobject created: "+  newMulticheck.text + "with ID "+ newMulticheck.checkId);
 								newMulticheck.isMulticheck = true;
+								
+								
+								// add check to lookup table
+								if(multicheckLookup.containsKey(field.checkId)){
+					        		List<SameLevelCheckpathObject> check = multicheckLookup.get(field.checkId);
+					        		check.add(newMulticheck);
+					        		multicheckLookup.put(field.checkId, check);					        		
+					        	} 
+					        	else {
+					        		List<SameLevelCheckpathObject> check = new ArrayList<SameLevelCheckpathObject>();
+					        		check.add(newMulticheck);
+					        		multicheckLookup.put(field.checkId, check);
+					        	}
+					        								
 								
 								List<String> foundChildChecks = new ArrayList<String>();								
 								Iterator<String> ccIT = field.childChecks.iterator();
@@ -698,7 +717,29 @@ public class CheckpathEditorWidget extends Composite {
 						System.out.println("MCC: " + multicheckColumns);
 						System.out.println("*/*" + childMultichecksForMulticheck +" / " + childChecksForMulticheck);
 						
-						// reverse allocation of child checks - assign parents to children
+
+						// second round - add relationship data from lookup table
+						
+												
+						Iterator<MulticheckColumn<SameLevelCheckpathObject>> lIT = multicheckColumns.iterator();
+											
+						while (lIT.hasNext()) {
+							MulticheckColumn<SameLevelCheckpathObject> column = lIT.next();
+							Iterator<SameLevelCheckpathObject> cIT = column.iterator();
+														
+							while (cIT.hasNext()) {
+								SameLevelCheckpathObject field = cIT.next();
+								System.out.println("Field retrieved for relationship update: "+ field.text+ "with ID "+ field.checkId);
+								
+								List<SameLevelCheckpathObject> fieldLookup = multicheckLookup.get(field.checkId);
+								field.childMultichecks.addAll(fieldLookup);								
+							}
+						}
+
+						
+						
+						
+						// UNUSED reverse allocation of child checks - assign parents to children
 						
 						HashMap<String, List<String>> ParentMultichecksForCheck = new HashMap<String, List<String>>();
 						HashMap<String, List<String>> ParentMultichecksForMulticheck = new HashMap<String, List<String>>();

@@ -35,6 +35,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		this.childMultichecks = new HashSet<SameLevelCheckpathObject>();
 		this.childChecks = new HashSet<SameLevelCheckpathObject>();
 		this.isMulticheck = false;
+		this.setCheckID(checkID);
 	
 		ancTextField = new Anchor();
 		
