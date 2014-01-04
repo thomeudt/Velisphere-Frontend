@@ -24,9 +24,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.github.gwtbootstrap.client.ui.Accordion;
 import com.github.gwtbootstrap.client.ui.Paragraph;
@@ -119,7 +116,7 @@ public class CheckpathEditorWidget extends Composite {
 		container.setBorders(false);
 		container.setScrollMode(ScrollSupport.ScrollMode.AUTO);
 		container.setHeight((int) ((RootPanel.get().getOffsetHeight()) / 2.5));
-		container.setWidth((int) ((RootPanel.get().getOffsetWidth()) / 4));
+		container.setWidth((RootPanel.get().getOffsetWidth()) / 4);
 
 		DiagramController controller = new DiagramController(800,
 				(int) ((RootPanel.get().getOffsetHeight()) / 2.5) - 25);
@@ -177,36 +174,9 @@ public class CheckpathEditorWidget extends Composite {
 		while (it.hasNext()) {
 			final SameLevelCheckpathObject currentObject = it.next();
 
-			final SafeHtmlBuilder builder = new SafeHtmlBuilder();
-			builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
-					+ "\">");
-			builder.appendHtmlConstant("Drag " + currentObject.text
-					+ " into next level to build a tree");
-			builder.appendHtmlConstant("</div>");
-
-			DragSource source = new DragSource(currentObject) {
-				@Override
-				protected void onDragStart(DndDragStartEvent event) {
-					super.onDragStart(event);
-					// by
-					// default
-					// drag
-					// is
-					// allowed
-
-					DragobjectContainer dragAccordion = new DragobjectContainer();
-					dragAccordion.checkID = currentObject.checkId;
-					dragAccordion.checkName = currentObject.text;
-					dragAccordion.isMulticheck = currentObject.isMulticheck;
-					dragAccordion.checkpathObject = currentObject;
-
-					event.setData(dragAccordion);
-					event.getStatusProxy().update(builder.toSafeHtml());
-				}
-
-			};
-			source.setGroup("multicheck");
-
+			addDragSource(currentObject);
+			
+			
 			controller.addWidget(currentObject, xpos, 320);
 			xpos = xpos + 120;
 
@@ -347,6 +317,7 @@ public class CheckpathEditorWidget extends Composite {
 						multicheckNewDialogBox
 								.addCloseHandler(new CloseHandler<PopupPanel>() {
 
+									@Override
 									public void onClose(CloseEvent event) {
 
 										rpcServiceUuid
@@ -380,22 +351,9 @@ public class CheckpathEditorWidget extends Composite {
 														+ ")");
 										currentObject
 												.setCombination(multicheckNewDialogBox.combination);
-										currentObject.ancTextField
-												.addClickHandler(new ClickHandler() {
-													@Override
-													public void onClick(
-															ClickEvent event) {
-
-														showUpdateMulticheckDialog(
-																currentObject.text,
-																currentObject.combination,
-																currentObject.childChecks,
-																currentObject.childMultichecks);
-
-													}
-
-												});
-
+										
+										setEditClickHandler(currentObject);
+										
 										if (dragAccordion.isMulticheck) {
 											currentObject
 													.addChildMulticheck(dragAccordion.checkpathObject);
@@ -421,33 +379,9 @@ public class CheckpathEditorWidget extends Composite {
 
 								});
 
-						final SafeHtmlBuilder builder = new SafeHtmlBuilder();
-						builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
-								+ "\">");
-						builder.appendHtmlConstant("Drag " + currentObject.text
-								+ " into next higher level to build a tree");
-						builder.appendHtmlConstant("</div>");
-
-						DragSource source = new DragSource(currentObject) {
-							@Override
-							protected void onDragStart(DndDragStartEvent event) {
-								super.onDragStart(event);
-
-								DragobjectContainer dragAccordion = new DragobjectContainer();
-								dragAccordion.checkID = currentObject.checkId;
-								dragAccordion.checkName = currentObject.text;
-								dragAccordion.isMulticheck = currentObject.isMulticheck;
-								dragAccordion.checkpathObject = currentObject;
-
-								event.setData(dragAccordion);
-								event.getStatusProxy().update(
-										builder.toSafeHtml());
-							}
-
-						};
-
-						source.setGroup("multicheck");
-
+						addDragSource(currentObject);
+						
+						
 						multicheckColumns.get(columnElement).add(currentObject);
 						rebuildCheckpathDiagram();
 
@@ -470,31 +404,8 @@ public class CheckpathEditorWidget extends Composite {
 									.addChildCheck(dragAccordion.checkpathObject);
 						}
 
-						final SafeHtmlBuilder builder = new SafeHtmlBuilder();
-						builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
-								+ "\">");
-						builder.appendHtmlConstant("Drag " + currentObject.text
-								+ " into next level to build a tree");
-						builder.appendHtmlConstant("</div>");
-
-						DragSource source = new DragSource(currentObject) {
-							@Override
-							protected void onDragStart(DndDragStartEvent event) {
-								super.onDragStart(event);
-
-								DragobjectContainer dragAccordion = new DragobjectContainer();
-								dragAccordion.checkID = currentObject.checkId;
-								dragAccordion.checkName = currentObject.text;
-								dragAccordion.isMulticheck = currentObject.isMulticheck;
-								dragAccordion.checkpathObject = currentObject;
-								event.setData(dragAccordion);
-								event.getStatusProxy().update(
-										builder.toSafeHtml());
-							}
-
-						};
-						source.setGroup("multicheck");
-
+						addDragSource(currentObject);
+						
 					}
 
 					if (currentObject.level == multicheckColumns.get(
@@ -663,6 +574,15 @@ public class CheckpathEditorWidget extends Composite {
 								System.out.println("Checkpathobject created: "+  newMulticheck.text + "with ID "+ newMulticheck.checkId);
 								newMulticheck.isMulticheck = true;
 								
+								// add dragability
+								addDragSource(newMulticheck);
+								
+								// add clickhandler for opening editing box
+								
+								
+								
+								setEditClickHandler(newMulticheck);
+																
 								// add multicheck to lookup table
 								multicheckLookup.put(field.checkId, newMulticheck);
 					        								
@@ -688,6 +608,7 @@ public class CheckpathEditorWidget extends Composite {
 									String foundChildMulticheck = cmcIT.next();
 									System.out.println("Child Multi Check found: "+ foundChildMulticheck);
 									foundChildMultichecks.add(foundChildMulticheck);
+									
 								}
 								childMultichecksForMulticheck.put(field.checkId, foundChildMultichecks);
 								
@@ -709,6 +630,7 @@ public class CheckpathEditorWidget extends Composite {
 						
 						
 						Iterator<CheckPathObjectColumn> relIT = result.tree.iterator();
+						final List<String> childrenAlreadyAdded = new ArrayList<String>();
 						
 						while (relIT.hasNext()) {
 							CheckPathObjectColumn columnObject = relIT.next();
@@ -733,6 +655,7 @@ public class CheckpathEditorWidget extends Composite {
 								
 								// for baselayer checks
 								Iterator<String> childChecksIT = field.childChecks.iterator();
+								
 								while(childChecksIT.hasNext()){
 									final String childCheckID = childChecksIT.next();
 									
@@ -755,26 +678,28 @@ public class CheckpathEditorWidget extends Composite {
 														String result) {
 													// add to chart
 													
-													SameLevelCheckpathObject childCheckObject = new SameLevelCheckpathObject(childCheckID, result, true, 0);
+													System.out.println("Already contains: " + childrenAlreadyAdded);
 													
-													checkHashSet.add(childCheckObject);
+													if (childrenAlreadyAdded.contains(childCheckID) == false)
+													{
+														SameLevelCheckpathObject childCheckObject = new SameLevelCheckpathObject(childCheckID, result, true, 0);
+														checkHashSet.add(childCheckObject);
+														childrenAlreadyAdded.add(childCheckID);
+														// add child
+														objectToUpdate.childMultichecks.add(childCheckObject);
+														System.out.println("Adding check children for " + field.checkId + ": " + childCheckObject);
+
+													}
 													
-													// add child
-													objectToUpdate.childMultichecks.add(childCheckObject);
 													
 													
-													System.out.println("Adding check children for " + field.checkId + ": " + childCheckObject);
+													
+													
 													rebuildCheckpathDiagram();
 													
 												}
 											});
-
-									
-									
-									
 								}
-								
-								
 							}
 						}
 						rebuildCheckpathDiagram();
@@ -782,4 +707,61 @@ public class CheckpathEditorWidget extends Composite {
 
 				});
 	}
+	
+	
+	
+	private void addDragSource(final SameLevelCheckpathObject currentObject){
+		// add drag source to multicheck
+		
+		final SafeHtmlBuilder builder = new SafeHtmlBuilder();
+		builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
+				+ "\">");
+		builder.appendHtmlConstant("Drag " + currentObject.text
+				+ " into next level to build a tree");
+		builder.appendHtmlConstant("</div>");
+
+		DragSource source = new DragSource(currentObject) {
+			@Override
+			protected void onDragStart(DndDragStartEvent event) {
+				super.onDragStart(event);
+
+				DragobjectContainer dragAccordion = new DragobjectContainer();
+				dragAccordion.checkID = currentObject.checkId;
+				dragAccordion.checkName = currentObject.text;
+				dragAccordion.isMulticheck = currentObject.isMulticheck;
+				dragAccordion.checkpathObject = currentObject;
+				event.setData(dragAccordion);
+				event.getStatusProxy().update(
+						builder.toSafeHtml());
+			}
+
+		};
+		source.setGroup("multicheck");
+
+	}
+
+	private void setEditClickHandler(final SameLevelCheckpathObject currentObject){
+
+		if (currentObject.empty == false)
+		{
+			currentObject.ancTextField
+			.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(
+						ClickEvent event) {
+
+					showUpdateMulticheckDialog(
+							currentObject.text,
+							currentObject.combination,
+							currentObject.childChecks,
+							currentObject.childMultichecks);
+
+				}
+
+			});
+			
+		}
+		}
+
+	
 }
