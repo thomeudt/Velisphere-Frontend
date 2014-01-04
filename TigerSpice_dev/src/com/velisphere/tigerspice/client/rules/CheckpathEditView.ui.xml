@@ -63,17 +63,21 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	    				</b:Column>
 	    			</b:Row>
 		
+			    	  <b:Row>
+	    				<b:Column size="3" offset="0">
+	    				<b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
+	    				</b:Column>
+	    				</b:Row>
 			    	 	    	
 			    	<b:Row>
 				    <b:Column size="5" offset="0">
-						      	<b:Paragraph addStyleNames="smalltext">Checks: ("Dragsouce", filter by Sphere or Endpoint)</b:Paragraph>
+						      	<b:Paragraph addStyleNames="smalltext">Checks</b:Paragraph>
 						
 					</b:Column>
 					
 				    <b:Column size="4" offset="0">
 				    			    
-				    <b:Paragraph addStyleNames="smalltext">Checkpath: ("when does it happen?")</b:Paragraph>
-			
+				  <b:Paragraph addStyleNames="smalltext">Drag your checks here to build your logic</b:Paragraph>
 					</b:Column>
 			
 				    

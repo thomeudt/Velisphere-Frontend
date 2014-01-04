@@ -35,6 +35,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.shared.CheckData;
+import com.velisphere.tigerspice.shared.CheckPathData;
 import com.velisphere.tigerspice.shared.EndpointData;
 
 @SuppressWarnings("serial")
@@ -349,6 +350,61 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 		}
 
 		return checksForEndpointID;
+	}
+
+	@Override
+	public String getCheckNameForCheckID(String checkID) {
+
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		String checkName = new String();
+		
+		try {
+
+			final ClientResponse findCheck= voltCon.montanaClient
+					.callProcedure("UI_SelectCheckForCheckID", checkID);
+
+			final VoltTable findCheckResults[] = findCheck.getResults();
+
+			VoltTable result = findCheckResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					
+					checkName = result.getString("NAME");
+					
+				}
+			}
+
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return checkName;
+
+	
+	
 	}
 
 	

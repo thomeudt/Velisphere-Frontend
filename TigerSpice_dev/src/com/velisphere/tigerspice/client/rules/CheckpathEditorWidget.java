@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.github.gwtbootstrap.client.ui.Accordion;
 import com.github.gwtbootstrap.client.ui.Paragraph;
@@ -49,6 +50,8 @@ import com.sencha.gxt.dnd.core.client.DropTarget;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.velisphere.tigerspice.client.checks.CheckService;
+import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.helper.DragobjectContainer;
 import com.velisphere.tigerspice.client.helper.UuidService;
 import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
@@ -70,6 +73,7 @@ public class CheckpathEditorWidget extends Composite {
 	public LinkedList<MulticheckColumn<SameLevelCheckpathObject>> multicheckColumns;
 	private CheckPathServiceAsync rpcServiceCheckPath;
 	private UuidServiceAsync rpcServiceUuid;
+	private CheckServiceAsync rpcServiceCheck;
 	private String checkpathID;
 
 	public CheckpathEditorWidget(String checkpathID) {
@@ -86,6 +90,7 @@ public class CheckpathEditorWidget extends Composite {
 
 		rpcServiceUuid = GWT.create(UuidService.class);
 		rpcServiceCheckPath = GWT.create(CheckPathService.class);
+		rpcServiceCheck = GWT.create(CheckService.class);
 
 		con = new FlowLayoutContainer();
 
@@ -710,120 +715,68 @@ public class CheckpathEditorWidget extends Composite {
 							Iterator<CheckPathObjectData> cIT = columnObject.column.iterator();
 														
 							while (cIT.hasNext()) {
-								CheckPathObjectData field = cIT.next();
+								final CheckPathObjectData field = cIT.next();
 								System.out.println("Field retrieved for relationship update: "+ field.text+ "with ID "+ field.checkId);
 								
-								SameLevelCheckpathObject objectToUpdate = multicheckLookup.get(field.checkId);
+								final SameLevelCheckpathObject objectToUpdate = multicheckLookup.get(field.checkId);
 								
+								// for multichecks
 								Iterator<String> childMultichecksIT = field.childMultichecks.iterator();
 								while(childMultichecksIT.hasNext()){
 									String childMulticheckID = 	childMultichecksIT.next();
 									SameLevelCheckpathObject childMulticheckObject = multicheckLookup.get(childMulticheckID);
 									objectToUpdate.childMultichecks.add(childMulticheckObject);
-																	
-									System.out.println("Adding children for " + field.checkId + ": " + childMulticheckObject);
+									System.out.println("Adding multicheck children for " + field.checkId + ": " + childMulticheckObject);
 									
 								}
-							}
-						}
 								
 								
-														
-						
-												
-						/*
-						Iterator<MulticheckColumn<SameLevelCheckpathObject>> lIT = multicheckColumns.iterator();
-											
-						while (lIT.hasNext()) {
-							MulticheckColumn<SameLevelCheckpathObject> column = lIT.next();
-							Iterator<SameLevelCheckpathObject> cIT = column.iterator();
-														
-							while (cIT.hasNext()) {
-								SameLevelCheckpathObject field = cIT.next();
-								System.out.println("Field retrieved for relationship update: "+ field.text+ "with ID "+ field.checkId);
-								if (field.checkId != null) {
-						
-									Iterator<Entry<String, List<String>>> childIT = childMultichecksForMulticheck.entrySet().iterator();
-								    while (mcIT.hasNext()) {
-								        Map.Entry<String, List<String>> pairs = (Map.Entry)mcIT.next();
-								       
-								        String parent = pairs.getKey();
-								        List<String> children = pairs.getValue();
-								    								
+								// for baselayer checks
+								Iterator<String> childChecksIT = field.childChecks.iterator();
+								while(childChecksIT.hasNext()){
+									final String childCheckID = childChecksIT.next();
+									
+									rpcServiceCheck.getCheckNameForCheckID(childCheckID, 
+											new AsyncCallback<String>() {
+
+												@Override
+												public void onFailure(
+														Throwable caught) {
+													// TODO
+													// Auto-generated
+													// method
+													// stub
+													System.out.println("ERROR RETRIEVING CHECK NAME: " + caught);
+
+												}
+
+												@Override
+												public void onSuccess(
+														String result) {
+													// add to chart
+													
+													SameLevelCheckpathObject childCheckObject = new SameLevelCheckpathObject(childCheckID, result, true, 0);
+													
+													checkHashSet.add(childCheckObject);
+													
+													// add child
+													objectToUpdate.childMultichecks.add(childCheckObject);
+													
+													
+													System.out.println("Adding check children for " + field.checkId + ": " + childCheckObject);
+													rebuildCheckpathDiagram();
+													
+												}
+											});
+
 									
 									
-									List<SameLevelCheckpathObject> fieldLookup = multicheckLookup.get(field.checkId);
-									System.out.println("Adding children for " + field.checkId + ": " + fieldLookup);
-									field.childMultichecks.addAll(fieldLookup);
+									
 								}
+								
+								
 							}
 						}
-						*/
-
-
-						
-						
-						
-						// UNUSED reverse allocation of child checks - assign parents to children
-						
-						HashMap<String, List<String>> ParentMultichecksForCheck = new HashMap<String, List<String>>();
-						HashMap<String, List<String>> ParentMultichecksForMulticheck = new HashMap<String, List<String>>();
-						
-						Iterator<Entry<String, List<String>>> mcIT = childMultichecksForMulticheck.entrySet().iterator();
-					    while (mcIT.hasNext()) {
-					        Map.Entry<String, List<String>> pairs = (Map.Entry)mcIT.next();
-					       
-					        String parent = pairs.getKey();
-					        List<String> children = pairs.getValue();
-					        //
-					        Iterator<String> cIT = children.iterator();
-					        while (cIT.hasNext())
-					        {
-					        	String child = cIT.next();
-					        	if(ParentMultichecksForMulticheck.containsKey(child)){
-					        		List<String> parents = ParentMultichecksForMulticheck.get(child);
-					        		parents.add(parent);
-					        		ParentMultichecksForMulticheck.put(child, parents);					        		
-					        	} 
-					        	else {
-					        		List<String> parents = new ArrayList<String>();
-					        		parents.add(parent);
-					        		ParentMultichecksForMulticheck.put(child, parents);
-					        	}
-					        	
-					        }
-					    }
-					    
-					    System.out.println("Reverse Construct MC: " + ParentMultichecksForMulticheck);
-						
-					    Iterator<Entry<String, List<String>>> ckIT = childChecksForMulticheck.entrySet().iterator();
-					    while (ckIT.hasNext()) {
-					        Map.Entry<String, List<String>> pairs = (Map.Entry)ckIT.next();
-					       
-					        String parent = pairs.getKey();
-					        List<String> children = pairs.getValue();
-					        //
-					        Iterator<String> cIT = children.iterator();
-					        while (cIT.hasNext())
-					        {
-					        	String child = cIT.next();
-					        	if(ParentMultichecksForCheck.containsKey(child)){
-					        		List<String> parents = ParentMultichecksForCheck.get(child);
-					        		parents.add(parent);
-					        		ParentMultichecksForCheck.put(child, parents);					        		
-					        	} 
-					        	else {
-					        		List<String> parents = new ArrayList<String>();
-					        		parents.add(parent);
-					        		ParentMultichecksForCheck.put(child, parents);
-					        	}
-					        	
-					        }
-					    }
-					    
-					    System.out.println("Reverse Construct C: " + ParentMultichecksForCheck);
-
-					    
 						rebuildCheckpathDiagram();
 					}
 

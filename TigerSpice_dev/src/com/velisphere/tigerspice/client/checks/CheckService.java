@@ -15,5 +15,6 @@ public interface CheckService extends RemoteService {
 		String updateCheck(String checkID, String name, String checkValue, String operator);
 		String deleteCheck(String checkID);
 		Vector<CheckData> getChecksForUserID(String userID);
+		String getCheckNameForCheckID(String checkID);
 
 }

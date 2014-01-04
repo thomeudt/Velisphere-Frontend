@@ -34,5 +34,5 @@ public interface CheckServiceAsync {
 	void updateCheck(String checkID, String name, String checkValue, String operator, AsyncCallback<String> callback );
 	void deleteCheck(String checkID, AsyncCallback<String> callback );
 	void getChecksForUserID(String userID, AsyncCallback<Vector<CheckData>> callback);
-	
+	void getCheckNameForCheckID(String userID, AsyncCallback<String> callback);
 }
