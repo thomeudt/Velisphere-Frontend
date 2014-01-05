@@ -122,11 +122,11 @@ public class CheckpathEditorWidget extends Composite {
 
 		container.setBorders(false);
 		container.setScrollMode(ScrollSupport.ScrollMode.AUTO);
-		container.setHeight((int) ((RootPanel.get().getOffsetHeight()) / 2.5));
+		container.setHeight((int) 400);
 		container.setWidth((RootPanel.get().getOffsetWidth()) / 4);
 
 		DiagramController controller = new DiagramController(800,
-				(int) ((RootPanel.get().getOffsetHeight()) / 2.5) - 25);
+				(int) 375);
 		controller.showGrid(true); // Display a background grid
 
 		container.add(controller.getView());
@@ -138,7 +138,7 @@ public class CheckpathEditorWidget extends Composite {
 		if (it.hasNext() == false) {
 
 			final SameLevelCheckpathObject addCheckField = new SameLevelCheckpathObject(
-					null, "drag check here", true, 0);
+					null, "empty status check", true, 0);
 			controller.addWidget(addCheckField, 10, 300);
 
 			DropTarget target = new DropTarget(addCheckField) {
@@ -156,7 +156,7 @@ public class CheckpathEditorWidget extends Composite {
 					checkHashSet.add(addCheckField);
 
 					SameLevelCheckpathObject addNextLevelField = new SameLevelCheckpathObject(
-							null, "drag check here", true, 1);
+							null, "empty logic check", true, 1);
 
 					// also add an entire multicheck column
 					MulticheckColumn<SameLevelCheckpathObject> multicheckList = new MulticheckColumn<SameLevelCheckpathObject>(
@@ -194,7 +194,7 @@ public class CheckpathEditorWidget extends Composite {
 			if (it.hasNext() == false) {
 
 				final SameLevelCheckpathObject addCheckField = new SameLevelCheckpathObject(
-						null, "drag check here", true, 0);
+						null, "empty status check", true, 0);
 				// firstCheckRow.add(addCheckField);
 				controller.addWidget(addCheckField, xpos, 320);
 
@@ -232,7 +232,7 @@ public class CheckpathEditorWidget extends Composite {
 			if (multicheckColumns.getLast().getEmpty() == false) {
 
 				SameLevelCheckpathObject addNextColumnField = new SameLevelCheckpathObject(
-						null, "drag check here", true, 1);
+						null, "empty logic check", true, 1);
 
 				MulticheckColumn<SameLevelCheckpathObject> newMulticheckList = new MulticheckColumn<SameLevelCheckpathObject>(
 						true);
@@ -419,7 +419,7 @@ public class CheckpathEditorWidget extends Composite {
 							columnElement).size()
 							&& multicheckColumns.get(columnElement).size() < 4) {
 						SameLevelCheckpathObject addNextLevelField = new SameLevelCheckpathObject(
-								null, "drag check here", true,
+								null, "empty logic check", true,
 								currentObject.level + 1);
 						multicheckColumns.get(columnElement).add(
 								addNextLevelField);
@@ -440,13 +440,12 @@ public class CheckpathEditorWidget extends Composite {
 
 	}
 
-	private void showUpdateMulticheckDialog(String title, String combination,
-			HashSet<SameLevelCheckpathObject> childChecks,
-			HashSet<SameLevelCheckpathObject> childMultichecks) {
+	private void showUpdateMulticheckDialog(final SameLevelCheckpathObject currentCheck) {
 
 		final MulticheckDialogBox multicheckDialogBox = new MulticheckDialogBox();
 
 		multicheckDialogBox.setModal(true);
+		
 		multicheckDialogBox.setAutoHideEnabled(true);
 
 		multicheckDialogBox.setAnimationEnabled(true);
@@ -455,23 +454,41 @@ public class CheckpathEditorWidget extends Composite {
 				(RootPanel.get().getOffsetWidth()) / 3,
 				(RootPanel.get().getOffsetHeight()) / 4);
 		multicheckDialogBox.show();
+		multicheckDialogBox.addStyleName("ontop");
+		
 
 		HashMap<String, String> allChecks = new HashMap<String, String>();
 
-		Iterator<SameLevelCheckpathObject> it = childChecks.iterator();
+		Iterator<SameLevelCheckpathObject> it = currentCheck.childChecks.iterator();
 		while (it.hasNext()) {
 			SameLevelCheckpathObject check = it.next();
 			allChecks.put(check.checkId, check.text);
 		}
 
-		Iterator<SameLevelCheckpathObject> mit = childMultichecks.iterator();
+		Iterator<SameLevelCheckpathObject> mit = currentCheck.childMultichecks.iterator();
 		while (mit.hasNext()) {
 			SameLevelCheckpathObject multicheck = mit.next();
 			allChecks.put(multicheck.checkId, multicheck.text);
 		}
 
-		multicheckDialogBox.setParameters("1", title, combination, "1",
+		multicheckDialogBox.setParameters(currentCheck.checkId, currentCheck.text, currentCheck.combination, "1",
 				allChecks);
+		
+		multicheckDialogBox
+		.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+			public void onClose(CloseEvent event) {
+
+				currentCheck.text = multicheckDialogBox.multicheckTitle;
+				currentCheck.ancTextField.setText(multicheckDialogBox.multicheckTitle); 
+				currentCheck.combination = multicheckDialogBox.combination;
+				rebuildCheckpathDiagram();
+			}
+
+		});
+
+		
+		
 
 	}
 
@@ -725,7 +742,7 @@ public class CheckpathEditorWidget extends Composite {
 		builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
 				+ "\">");
 		builder.appendHtmlConstant("Drag " + currentObject.text
-				+ " into next level to build a tree");
+				+ " to a logic check field to build your logic");
 		builder.appendHtmlConstant("</div>");
 
 		DragSource source = new DragSource(currentObject) {
@@ -759,10 +776,7 @@ public class CheckpathEditorWidget extends Composite {
 						ClickEvent event) {
 
 					showUpdateMulticheckDialog(
-							currentObject.text,
-							currentObject.combination,
-							currentObject.childChecks,
-							currentObject.childMultichecks);
+							currentObject);
 
 				}
 
