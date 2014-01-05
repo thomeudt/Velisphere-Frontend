@@ -1,6 +1,7 @@
 package com.velisphere.tigerspice.client.rules;
 
 import java.util.Iterator;
+import java.util.List;
 
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.Button;
@@ -275,142 +276,227 @@ public class CheckpathEditView extends Composite {
 					allColumnsObject.tree.add(currentColumnObject);
 				}
 				
+				// write to database
+				
+				
+				// List<SameLevelCheckpathObject> updatedMultichecks;
+				List<SameLevelCheckpathObject> newMultichecks = wgtCheckpathEditor.getNewMultichecks();
+				Iterator<SameLevelCheckpathObject> newMultichecksIt = newMultichecks.iterator();
+				System.out.println("###########NEW MULTICHECKS: " + newMultichecks);
+				while (newMultichecksIt.hasNext()){
+					SameLevelCheckpathObject checkpathObject = newMultichecksIt.next();
+					showLoadAnimation(loading);
+
+					// create check
+					
+					rpcServiceCheckPath.addNewMulticheck(
+							checkpathObject.checkId,
+							checkpathObject.combination,
+							checkpathObject.text,
+							new AsyncCallback<String>() {
+
+								@Override
+								public void onFailure(Throwable caught) {
+									// TODO Auto-generated method stub
+									removeLoadAnimation(loading);
+									System.out
+											.println("ERROR writing multicheck: "
+													+ caught);
+									txtSaveStatus
+											.setText("Error saving logic design. Data not saved.");
+
+								}
+
+								@Override
+								public void onSuccess(String result) {
+									// TODO Auto-generated method stub
+
+									removeLoadAnimation(loading);
+
+									System.out
+											.println("Success writing multicheck: "
+													+ result);
+									txtSaveStatus
+											.setText("Logic design saved successfully.");
+
+								}
+
+							});
+					
+					// now link
+					
+					Iterator<SameLevelCheckpathObject> mccIt = checkpathObject.childChecks
+							.iterator();
+
+					// write link to child checks to database
+					
+
+					while (mccIt.hasNext()) {
+						SameLevelCheckpathObject childCheck = mccIt
+								.next();
+						showLoadAnimation(loading);
+
+						rpcServiceCheckPath.addNewMulticheckCheckLink(
+								checkpathObject.checkId,
+								childCheck.checkId,
+								new AsyncCallback<String>() {
+
+									@Override
+									public void onFailure(
+											Throwable caught) {
+										// TODO Auto-generated method
+										// stub
+										removeLoadAnimation(loading);
+										System.out
+												.println("ERROR writing multicheck_check_link: "
+														+ caught);
+										txtSaveStatus
+												.setText("Error saving logic design. Data not saved.");
+
+									}
+
+									@Override
+									public void onSuccess(String result) {
+										// TODO Auto-generated method
+										// stub
+										removeLoadAnimation(loading);
+										System.out
+												.println("Success writing multicheck_check_link: "
+														+ result);
+										txtSaveStatus
+												.setText("Logic design saved successfully.");
+
+									}
+
+								});
+
+					}
+					
+					Iterator<SameLevelCheckpathObject> mcmcIt = checkpathObject.childMultichecks
+							.iterator();
+
+					
+					// write link to child multichecks to database
+					
+
+					while (mcmcIt.hasNext()) {
+						SameLevelCheckpathObject childMulticheck = mcmcIt
+								.next();
+						showLoadAnimation(loading);
+
+						rpcServiceCheckPath.addNewMulticheckMulticheckLink(
+								checkpathObject.checkId,
+								childMulticheck.checkId,
+								new AsyncCallback<String>() {
+
+									@Override
+									public void onFailure(
+											Throwable caught) {
+										// TODO Auto-generated method
+										// stub
+										removeLoadAnimation(loading);
+										System.out
+												.println("ERROR writing multicheck_check_link: "
+														+ caught);
+										txtSaveStatus
+												.setText("Error saving logic design. Data not saved.");
+
+									}
+
+									@Override
+									public void onSuccess(String result) {
+										// TODO Auto-generated method
+										// stub
+										removeLoadAnimation(loading);
+										System.out
+												.println("Success writing multicheck_check_link: "
+														+ result);
+										txtSaveStatus
+												.setText("Logic design saved successfully.");
+
+									}
+
+								});
+
+					}
+
+
+				}
+				
+				
+				removeLoadAnimation(loading);
+				
 				System.out.println("Updated Multichecks: " + wgtCheckpathEditor.getUpdatedMultichecks());
 
 				System.out.println("Added Multichecks: " + wgtCheckpathEditor.getNewMultichecks());
 
 				System.out.println("Gesamtobject:" + allColumnsObject);
 
-				rpcServiceCheckPath.createJsonCheckpath(allColumnsObject,
-						new AsyncCallback<String>() {
+				createCheckpathJSON(allColumnsObject, checkPathIdUpdate);
+				
+				// reset update/create tracker for checks
+				wgtCheckpathEditor.resetNewMultichecks();
+				wgtCheckpathEditor.resetUpdatedMultichecks();
+				
+				
+	}
 
-							@Override
-							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
-								System.out.println("ERROR: " + caught);
+	private void createCheckpathJSON(CheckPathObjectTree allColumnsObject, final String checkPathIdUpdate){
+		rpcServiceCheckPath.createJsonCheckpath(allColumnsObject,
+				new AsyncCallback<String>() {
 
-							}
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						System.out.println("ERROR: " + caught);
 
-							@Override
-							public void onSuccess(String result) {
-								// TODO Auto-generated method stub
+					}
 
-								System.out.println("JSON CHECKPATH: " + result);
+					@Override
+					public void onSuccess(String result) {
+						// TODO Auto-generated method stub
 
-								rpcServiceCheckPath.updateCheckpath(
-										checkPathIdUpdate, result,
-										new AsyncCallback<String>() {
+						System.out.println("JSON CHECKPATH: " + result);
 
-											@Override
-											public void onFailure(
-													Throwable caught) {
-												// TODO Auto-generated method
-												// stub
-												System.out
-														.println("ERROR SAVING JSON: "
-																+ caught);
+						rpcServiceCheckPath.updateCheckpath(
+								checkPathIdUpdate, result,
+								new AsyncCallback<String>() {
 
-											}
+									@Override
+									public void onFailure(
+											Throwable caught) {
+										// TODO Auto-generated method
+										// stub
+										System.out
+												.println("ERROR SAVING JSON: "
+														+ caught);
 
-											@Override
-											public void onSuccess(String result) {
-												// TODO Auto-generated method
-												// stub
+									}
 
-												System.out
-														.println("JSON SAVED SUCCESSFULLY: "
-																+ result);
+									@Override
+									public void onSuccess(String result) {
+										// TODO Auto-generated method
+										// stub
 
-												// Just validating that it
-												// works, delete later
+										System.out
+												.println("JSON SAVED SUCCESSFULLY: "
+														+ result);
 
-												rpcServiceCheckPath
-														.getUiObjectJSONForCheckpathID(
-																checkPathIdUpdate,
-																new AsyncCallback<CheckPathObjectTree>() {
+										
+									}
 
-																	@Override
-																	public void onFailure(
-																			Throwable caught) {
-																		// TODO
-																		// Auto-generated
-																		// method
-																		// stub
-																		System.out
-																				.println("ERROR SAVING JSON: "
-																						+ caught);
+								});
 
-																	}
-
-																	@Override
-																	public void onSuccess(
-																			CheckPathObjectTree result) {
-																		// TODO
-																		// Auto-generated
-																		// method
-																		// stub
-
-																		System.out
-																				.println("JSON RETRIEVED SUCCESSFULLY: "
-																						+ result.tree);
-																		Iterator<CheckPathObjectColumn> rIT = result.tree
-																				.iterator();
-																		while (rIT
-																				.hasNext()) {
-																			CheckPathObjectColumn columnObject = rIT
-																					.next();
-																			Iterator<CheckPathObjectData> cIT = columnObject.column
-																					.iterator();
-																			while (cIT
-																					.hasNext()) {
-																				CheckPathObjectData field = cIT
-																						.next();
-																				System.out
-																						.println("Field retrieved: "
-																								+ field.text
-																								+ "with combination "
-																								+ field.combination);
-
-																				Iterator<String> ccIT = field.childChecks
-																						.iterator();
-																				while (ccIT
-																						.hasNext()) {
-																					System.out
-																							.println("Child Check found: "
-																									+ ccIT.next());
-																				}
-
-																				Iterator<String> cmcIT = field.childMultichecks
-																						.iterator();
-																				while (cmcIT
-																						.hasNext()) {
-																					System.out
-																							.println("Child Multi Check found: "
-																									+ cmcIT.next());
-																				}
-
-																			}
-
-																		}
-
-																	}
-
-																});
-
-											}
-
-										});
-
-							}
-
-					
+					}
 
 			
 
-		});
+	
+
+});
 
 	}
-
+	
 	private void showLoadAnimation(AnimationLoading animationLoading) {
 		RootPanel rootPanel = RootPanel.get("main");
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);

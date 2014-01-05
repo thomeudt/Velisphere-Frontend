@@ -842,5 +842,12 @@ public class CheckpathEditorWidget extends Composite {
 		return this.newMultichecks;	
 	}
 
+	public void resetUpdatedMultichecks(){
+		this.updatedMultichecks.clear();
+	}
+
+	public void resetNewMultichecks(){
+		this.newMultichecks.clear();
+	}
 	
 }
