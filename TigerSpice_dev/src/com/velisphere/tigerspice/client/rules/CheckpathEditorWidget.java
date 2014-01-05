@@ -594,6 +594,7 @@ public class CheckpathEditorWidget extends Composite {
 						HashMap<String, List<String>> childChecksForMulticheck = new HashMap<String, List<String>>();
 						HashMap<String, List<String>> childMultichecksForMulticheck = new HashMap<String, List<String>>();
 						HashMap<String, SameLevelCheckpathObject> multicheckLookup = new HashMap<String, SameLevelCheckpathObject>();
+						final HashMap<String, SameLevelCheckpathObject> checkLookup = new HashMap<String, SameLevelCheckpathObject>();
 						
 						Iterator<CheckPathObjectColumn> rIT = result.tree.iterator();
 											
@@ -666,6 +667,7 @@ public class CheckpathEditorWidget extends Composite {
 						
 						Iterator<CheckPathObjectColumn> relIT = result.tree.iterator();
 						final List<String> childrenAlreadyAdded = new ArrayList<String>();
+						final List<String> childrenAlreadyLinked = new ArrayList<String>();
 						
 						while (relIT.hasNext()) {
 							CheckPathObjectColumn columnObject = relIT.next();
@@ -689,7 +691,16 @@ public class CheckpathEditorWidget extends Composite {
 								
 								
 								// for baselayer checks
+								
+								// build hashmap to be able to look up baselayer checks by checkid
+								
+								
+								
+								
+								
 								Iterator<String> childChecksIT = field.childChecks.iterator();
+								
+								
 								
 								while(childChecksIT.hasNext()){
 									final String childCheckID = childChecksIT.next();
@@ -713,16 +724,35 @@ public class CheckpathEditorWidget extends Composite {
 														String result) {
 													// add to chart
 													
-													System.out.println("Already contains: " + childrenAlreadyAdded);
+													System.out.println("Already contains: " + objectToUpdate.checkId+":"+childCheckID);
 													
-													if (childrenAlreadyAdded.contains(childCheckID) == false)
+													if (childrenAlreadyLinked.contains(objectToUpdate.checkId+":"+childCheckID) == false)
 													{
-														SameLevelCheckpathObject childCheckObject = new SameLevelCheckpathObject(childCheckID, result, true, 0);
-														checkHashSet.add(childCheckObject);
-														childrenAlreadyAdded.add(childCheckID);
-														// add child
-														objectToUpdate.childChecks.add(childCheckObject);
-														System.out.println("Adding check children for " + field.checkId + ": " + childCheckObject);
+														
+														
+														// add check element to graph only if it does not already exist
+														if (childrenAlreadyAdded.contains(childCheckID)){
+															
+															System.out.println("LINKING CHILDEN: "+ childCheckID);
+															SameLevelCheckpathObject childCheckObject = checkLookup.get(childCheckID);
+															objectToUpdate.childChecks.add(childCheckObject);
+															childrenAlreadyLinked.add(childCheckID);
+															System.out.println("HASHSET: " + checkHashSet);
+														}
+														else
+														{	
+															
+															SameLevelCheckpathObject childCheckObject = new SameLevelCheckpathObject(childCheckID, result, true, 0);
+															checkLookup.put(childCheckID, childCheckObject);
+															checkHashSet.add(childCheckObject);
+															objectToUpdate.childChecks.add(childCheckObject);
+															childrenAlreadyLinked.add(objectToUpdate.checkId+":"+childCheckID);
+															childrenAlreadyAdded.add(childCheckID);
+															System.out.println("Adding check children for " + field.checkId + ": " + childCheckObject);
+														}
+														// add link between parent and children in all cases
+														
+														
 														removeLoadAnimation(loading);
 														rebuildCheckpathDiagram();
 
