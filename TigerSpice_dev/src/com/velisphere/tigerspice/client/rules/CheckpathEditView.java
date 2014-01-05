@@ -268,10 +268,17 @@ public class CheckpathEditView extends Composite {
 
 						}
 
+						
+						
 						currentColumnObject.column.add(currentObjectData);
 					}
 					allColumnsObject.tree.add(currentColumnObject);
 				}
+				
+				System.out.println("Updated Multichecks: " + wgtCheckpathEditor.getUpdatedMultichecks());
+
+				System.out.println("Added Multichecks: " + wgtCheckpathEditor.getNewMultichecks());
+
 				System.out.println("Gesamtobject:" + allColumnsObject);
 
 				rpcServiceCheckPath.createJsonCheckpath(allColumnsObject,

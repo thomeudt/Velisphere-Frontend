@@ -79,6 +79,7 @@ public class CheckpathEditorWidget extends Composite {
 	private CheckServiceAsync rpcServiceCheck;
 	private String checkpathID;
 	private List<SameLevelCheckpathObject> updatedMultichecks;
+	private List<SameLevelCheckpathObject> newMultichecks;
 
 	public CheckpathEditorWidget(String checkpathID) {
 
@@ -96,6 +97,7 @@ public class CheckpathEditorWidget extends Composite {
 		rpcServiceCheckPath = GWT.create(CheckPathService.class);
 		rpcServiceCheck = GWT.create(CheckService.class);
 		this.updatedMultichecks = new ArrayList<SameLevelCheckpathObject>();
+		this.newMultichecks = new ArrayList<SameLevelCheckpathObject>();
 
 		con = new FlowLayoutContainer();
 
@@ -347,6 +349,7 @@ public class CheckpathEditorWidget extends Composite {
 
 														currentObject
 																.setCheckID(result);
+														newMultichecks.add(currentObject);
 														System.out
 																.println("ID: "
 																		+ currentObject.checkId);
@@ -414,6 +417,7 @@ public class CheckpathEditorWidget extends Composite {
 									.addChildCheck(dragAccordion.checkpathObject);
 						}
 
+						updatedMultichecks.add(currentObject);
 						addDragSource(currentObject);
 						
 					}
@@ -798,6 +802,14 @@ public class CheckpathEditorWidget extends Composite {
 	private void removeLoadAnimation(AnimationLoading animationLoading) {
 		if (animationLoading != null)
 			animationLoading.removeFromParent();
+	}
+	
+	public List<SameLevelCheckpathObject> getUpdatedMultichecks(){
+		return this.updatedMultichecks;	
+	}
+
+	public List<SameLevelCheckpathObject> getNewMultichecks(){
+		return this.newMultichecks;	
 	}
 
 	
