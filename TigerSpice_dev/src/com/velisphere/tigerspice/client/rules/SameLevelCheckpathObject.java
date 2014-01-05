@@ -39,9 +39,9 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 	
 		ancTextField = new Anchor();
 		
-		if(this.text.length()>28)
+		if(this.text.length()>25)
 		{
-			ancTextField.setText(this.text.substring(0, 28)+" (...)");
+			ancTextField.setText(this.text.substring(0, 25)+" (...)");
 		}
 		else
 		{
@@ -55,9 +55,9 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 	
 	public void setText (String text){
 		this.text = text;
-		if(this.text.length()>28)
+		if(this.text.length()>25)
 		{
-			ancTextField.setText(this.text.substring(0, 28)+" (...)");
+			ancTextField.setText(this.text.substring(0, 25)+" (...)");
 		}
 		else
 		{

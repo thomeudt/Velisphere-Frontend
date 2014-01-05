@@ -3,15 +3,18 @@ package com.velisphere.tigerspice.client.rules;
 import java.util.Iterator;
 
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.TextBox;
+import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
@@ -19,6 +22,8 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
@@ -44,6 +49,7 @@ public class CheckpathEditView extends Composite {
 	NavLink bread2;
 
 	private CheckPathServiceAsync rpcServiceCheckPath;
+	private TextBox checkpathChangeNameField;
 
 	private static CheckpathEditViewUiBinder uiBinder = GWT
 			.create(CheckpathEditViewUiBinder.class);
@@ -98,6 +104,51 @@ public class CheckpathEditView extends Composite {
 		ancEditCheckpathName.setText(" Change Name of this Logic");
 		ancEditCheckpathName.setHref("#");
 		pghCheckpathName.add(ancEditCheckpathName);
+		checkpathChangeNameField = new TextBox();
+		final Button okButton = new Button();
+		okButton.setText("OK");
+		okButton.setType(ButtonType.SUCCESS);
+		final PopupPanel nameChangePopup = new PopupPanel();
+		
+		ancEditCheckpathName.addClickHandler(
+				new ClickHandler(){ 
+				public void onClick(ClickEvent event)  {
+					
+					
+					if (nameChangePopup.isShowing()) {
+						
+						nameChangePopup.removeFromParent();
+					} else
+					{						
+						ancEditCheckpathName.setText(pghCheckpathName.getText());
+						HorizontalPanel horizontalPanel = new HorizontalPanel();
+						horizontalPanel.add(checkpathChangeNameField);
+						horizontalPanel.add(okButton.asWidget());
+						nameChangePopup.clear();
+						nameChangePopup.add(horizontalPanel);
+						nameChangePopup.setModal(true);
+						nameChangePopup.setAutoHideEnabled(true);
+						nameChangePopup.setAnimationEnabled(true);
+						nameChangePopup.showRelativeTo(ancEditCheckpathName);
+						checkpathChangeNameField.setFocus(true);
+						okButton.addClickHandler(
+								new ClickHandler(){ 
+								public void onClick(ClickEvent event)  {
+									
+									final String newCheckpathName = checkpathChangeNameField.getText();
+									
+									nameChangePopup.hide();
+									final AnimationLoading animationLoading = new AnimationLoading();
+									showLoadAnimation(animationLoading);
+
+									removeLoadAnimation(animationLoading);
+
+								}
+								});
+					}
+				}
+				});
+
 		
 		
 		

@@ -479,8 +479,8 @@ public class CheckpathEditorWidget extends Composite {
 
 			public void onClose(CloseEvent event) {
 
-				currentCheck.text = multicheckDialogBox.multicheckTitle;
-				currentCheck.ancTextField.setText(multicheckDialogBox.multicheckTitle); 
+				currentCheck.setText(multicheckDialogBox.multicheckTitle);
+				//currentCheck.ancTextField.setText(multicheckDialogBox.multicheckTitle); 
 				currentCheck.combination = multicheckDialogBox.combination;
 				rebuildCheckpathDiagram();
 			}
