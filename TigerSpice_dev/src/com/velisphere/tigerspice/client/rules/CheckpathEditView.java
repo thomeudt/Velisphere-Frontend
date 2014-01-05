@@ -279,10 +279,16 @@ public class CheckpathEditView extends Composite {
 				// write to database
 				
 				
-				// List<SameLevelCheckpathObject> updatedMultichecks;
+				List<SameLevelCheckpathObject> updatedMultichecks = wgtCheckpathEditor.getUpdatedMultichecks();
 				List<SameLevelCheckpathObject> newMultichecks = wgtCheckpathEditor.getNewMultichecks();
+				updatedMultichecks.removeAll(newMultichecks); // remove duplicates if a new multicheck has been updated before saving
+				Iterator<SameLevelCheckpathObject> updatedMultichecksIt = updatedMultichecks.iterator();
 				Iterator<SameLevelCheckpathObject> newMultichecksIt = newMultichecks.iterator();
 				System.out.println("###########NEW MULTICHECKS: " + newMultichecks);
+				System.out.println("###########UPDATED MULTICHECKS: " + updatedMultichecks);
+				
+				// run the new multichecks first
+				
 				while (newMultichecksIt.hasNext()){
 					SameLevelCheckpathObject checkpathObject = newMultichecksIt.next();
 					showLoadAnimation(loading);
@@ -409,7 +415,7 @@ public class CheckpathEditView extends Composite {
 										// stub
 										removeLoadAnimation(loading);
 										System.out
-												.println("Success writing multicheck_check_link: "
+												.println("Success writing multicheck_multicheck_link: "
 														+ result);
 										txtSaveStatus
 												.setText("Logic design saved successfully.");
@@ -423,6 +429,214 @@ public class CheckpathEditView extends Composite {
 
 				}
 				
+				
+				// now run the updated multichecks 
+				
+				while (updatedMultichecksIt.hasNext()){
+					final SameLevelCheckpathObject checkpathObject = updatedMultichecksIt.next();
+					showLoadAnimation(loading);
+
+					// update check
+					
+					rpcServiceCheckPath.updateMulticheck(
+							checkpathObject.checkId,
+							checkpathObject.combination,
+							checkpathObject.text,
+							new AsyncCallback<String>() {
+
+								@Override
+								public void onFailure(Throwable caught) {
+									// TODO Auto-generated method stub
+									removeLoadAnimation(loading);
+									System.out
+											.println("ERROR updating multicheck: "
+													+ caught);
+									txtSaveStatus
+											.setText("Error saving logic design. Data not saved.");
+
+								}
+
+								@Override
+								public void onSuccess(String result) {
+									// TODO Auto-generated method stub
+
+									removeLoadAnimation(loading);
+
+									System.out
+											.println("Success updating multicheck: "
+													+ result);
+									txtSaveStatus
+											.setText("Logic design saved successfully.");
+									
+									
+									// now link
+									
+									
+									
+									// first, delete all multichecklinks for the current multicheck, then re-link with the new links
+									
+									final SameLevelCheckpathObject currentCheckpathObject = checkpathObject;
+									
+									rpcServiceCheckPath.deleteMulticheckMulticheckLink(
+											checkpathObject.checkId,
+											new AsyncCallback<String>() {
+
+												@Override
+												public void onFailure(
+														Throwable caught) {
+													// TODO Auto-generated method
+													// stub
+													removeLoadAnimation(loading);
+													System.out
+															.println("ERROR deleting multicheck_multicheck_link: "
+																	+ caught);
+													txtSaveStatus
+															.setText("Error saving logic design. Data not saved.");
+
+												}
+
+												@Override
+												public void onSuccess(String result) {
+													// TODO Auto-generated method
+													// stub
+													Iterator<SameLevelCheckpathObject> mcmcIt = currentCheckpathObject.childMultichecks
+															.iterator();
+
+													
+													// write link to child multichecks to database
+													
+
+													while (mcmcIt.hasNext()) {
+														SameLevelCheckpathObject childMulticheck = mcmcIt
+																.next();
+														showLoadAnimation(loading);
+
+														rpcServiceCheckPath.addNewMulticheckMulticheckLink(
+																currentCheckpathObject.checkId,
+																childMulticheck.checkId,
+																new AsyncCallback<String>() {
+
+																	@Override
+																	public void onFailure(
+																			Throwable caught) {
+																		// TODO Auto-generated method
+																		// stub
+																		removeLoadAnimation(loading);
+																		System.out
+																				.println("ERROR writing multicheck_multicheck_link: "
+																						+ caught);
+																		txtSaveStatus
+																				.setText("Error saving logic design. Data not saved.");
+
+																	}
+
+																	@Override
+																	public void onSuccess(String result) {
+																		// TODO Auto-generated method
+																		// stub
+																		removeLoadAnimation(loading);
+																		System.out
+																				.println("Success rewriting multicheck_multicheck_link: "
+																						+ result);
+																		txtSaveStatus
+																				.setText("Logic design saved successfully.");
+
+																	}
+
+																});
+
+													}
+
+												}
+
+											});
+
+									
+									// secondly, delete all checklinks for the current multicheck, then re-link with the new links
+									
+									rpcServiceCheckPath.deleteMulticheckCheckLink(
+											checkpathObject.checkId,
+											new AsyncCallback<String>() {
+
+												@Override
+												public void onFailure(
+														Throwable caught) {
+													// TODO Auto-generated method
+													// stub
+													removeLoadAnimation(loading);
+													System.out
+															.println("ERROR deleting multicheck_check_link: "
+																	+ caught);
+													txtSaveStatus
+															.setText("Error saving logic design. Data not saved.");
+
+												}
+
+												@Override
+												public void onSuccess(String result) {
+													// TODO Auto-generated method
+													// stub
+													Iterator<SameLevelCheckpathObject> mccIt = currentCheckpathObject.childChecks
+															.iterator();
+
+													
+													// write link to child multichecks to database
+													
+
+													while (mccIt.hasNext()) {
+														SameLevelCheckpathObject childCheck = mccIt
+																.next();
+														showLoadAnimation(loading);
+
+														rpcServiceCheckPath.addNewMulticheckCheckLink(
+																currentCheckpathObject.checkId,
+																childCheck.checkId,
+																new AsyncCallback<String>() {
+
+																	@Override
+																	public void onFailure(
+																			Throwable caught) {
+																		// TODO Auto-generated method
+																		// stub
+																		removeLoadAnimation(loading);
+																		System.out
+																				.println("ERROR writing multicheck_check_link: "
+																						+ caught);
+																		txtSaveStatus
+																				.setText("Error saving logic design. Data not saved.");
+
+																	}
+
+																	@Override
+																	public void onSuccess(String result) {
+																		// TODO Auto-generated method
+																		// stub
+																		removeLoadAnimation(loading);
+																		System.out
+																				.println("Success rewriting multicheck_check_link: "
+																						+ result);
+																		txtSaveStatus
+																				.setText("Logic design saved successfully.");
+
+																	}
+
+																});
+
+													}
+
+												}
+
+											});
+
+
+								}
+
+							});
+					
+										
+
+				}
+
 				
 				removeLoadAnimation(loading);
 				
