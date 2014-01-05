@@ -109,7 +109,7 @@ public class CheckpathEditView extends Composite {
 		okButton.setText("OK");
 		okButton.setType(ButtonType.SUCCESS);
 		final PopupPanel nameChangePopup = new PopupPanel();
-		
+		final String CheckpathIDforNameChange = checkpathID;
 		ancEditCheckpathName.addClickHandler(
 				new ClickHandler(){ 
 				public void onClick(ClickEvent event)  {
@@ -120,7 +120,7 @@ public class CheckpathEditView extends Composite {
 						nameChangePopup.removeFromParent();
 					} else
 					{						
-						ancEditCheckpathName.setText(pghCheckpathName.getText());
+						
 						HorizontalPanel horizontalPanel = new HorizontalPanel();
 						horizontalPanel.add(checkpathChangeNameField);
 						horizontalPanel.add(okButton.asWidget());
@@ -131,6 +131,8 @@ public class CheckpathEditView extends Composite {
 						nameChangePopup.setAnimationEnabled(true);
 						nameChangePopup.showRelativeTo(ancEditCheckpathName);
 						checkpathChangeNameField.setFocus(true);
+						checkpathChangeNameField.setText(pghCheckpathName.getText());
+						
 						okButton.addClickHandler(
 								new ClickHandler(){ 
 								public void onClick(ClickEvent event)  {
@@ -140,47 +142,49 @@ public class CheckpathEditView extends Composite {
 									nameChangePopup.hide();
 									final AnimationLoading animationLoading = new AnimationLoading();
 									showLoadAnimation(animationLoading);
+									
+									rpcServiceCheckPath.updateCheckpathName(CheckpathIDforNameChange, 
+											newCheckpathName, new AsyncCallback<String>() {
 
-									removeLoadAnimation(animationLoading);
+										@Override
+										public void onFailure(Throwable caught) {
+											// TODO Auto-generated method stub
+											System.out.println("ERROR RENAMING CHECKPATH: " + caught);
 
+										}
+
+										@Override
+										public void onSuccess(String result) {
+											// TODO Auto-generated method stub
+
+											pghCheckpathName.setText(newCheckpathName);
+											removeLoadAnimation(animationLoading);
+
+										}
+									});
 								}
 								});
 					}
 				}
-				});
+			});
+		}
+		
+		
 
-		
-		
-		
-
-	}
+								
 
 	@UiHandler("btnSaveCheckpath")
 	void saveCheckpath(ClickEvent event) {
 		final AnimationLoading loading = new AnimationLoading();
+		
+		// getting current checkpath ID and adding to final variable checkpathIDUpdate
+		
+		final String checkPathIdUpdate = this.checkpathID;
 
-		System.out.println("Save checkpath data: " + wgtCheckpathEditor);
+		System.out.println("Update checkpath data: " + wgtCheckpathEditor);
 				
 
-		// create a new checkpath and get UUID. Checkpath UI Object will be added as a last step as we generate the JSON string as we iterate through the list objects
 		
-		
-
-		rpcServiceCheckPath.addNewCheckpath(pghCheckpathName.getText(), new AsyncCallback<String>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				System.out.println("ERROR CREATING CHECKPATH: " + caught);
-
-			}
-
-			@Override
-			public void onSuccess(String result) {
-				// TODO Auto-generated method stub
-
-				final String checkPathId = result;
-
 				// creating linked list to contain linked list of json objects
 				// representing the entire checkpath chart
 				CheckPathObjectTree allColumnsObject = new CheckPathObjectTree();
@@ -219,41 +223,8 @@ public class CheckpathEditView extends Composite {
 						if (checkpathObject.empty == false) {
 
 							// write multicheck to database
-							showLoadAnimation(loading);
-
-							rpcServiceCheckPath.addNewMulticheck(
-									checkpathObject.checkId,
-									checkpathObject.combination,
-									checkpathObject.text,
-									new AsyncCallback<String>() {
-
-										@Override
-										public void onFailure(Throwable caught) {
-											// TODO Auto-generated method stub
-											removeLoadAnimation(loading);
-											System.out
-													.println("ERROR writing multicheck: "
-															+ caught);
-											txtSaveStatus
-													.setText("Error saving logic design. Data not saved.");
-
-										}
-
-										@Override
-										public void onSuccess(String result) {
-											// TODO Auto-generated method stub
-
-											removeLoadAnimation(loading);
-
-											System.out
-													.println("Success writing multicheck: "
-															+ result);
-											txtSaveStatus
-													.setText("Logic design saved successfully.");
-
-										}
-
-									});
+							
+								// deleted as we are updating here, this will be handled seperately
 
 							Iterator<SameLevelCheckpathObject> mccIt = checkpathObject.childChecks
 									.iterator();
@@ -272,40 +243,7 @@ public class CheckpathEditView extends Composite {
 										.add(childCheck.checkId);
 
 								// now write to database
-
-								rpcServiceCheckPath.addNewMulticheckCheckLink(
-										checkpathObject.checkId,
-										childCheck.checkId,
-										new AsyncCallback<String>() {
-
-											@Override
-											public void onFailure(
-													Throwable caught) {
-												// TODO Auto-generated method
-												// stub
-												removeLoadAnimation(loading);
-												System.out
-														.println("ERROR writing multicheck_check_link: "
-																+ caught);
-												txtSaveStatus
-														.setText("Error saving logic design. Data not saved.");
-
-											}
-
-											@Override
-											public void onSuccess(String result) {
-												// TODO Auto-generated method
-												// stub
-												removeLoadAnimation(loading);
-												System.out
-														.println("Success writing multicheck_check_link: "
-																+ result);
-												txtSaveStatus
-														.setText("Logic design saved successfully.");
-
-											}
-
-										});
+									// skipped as we are updating here
 
 							}
 
@@ -324,42 +262,8 @@ public class CheckpathEditView extends Composite {
 										.add(childMulticheck.checkId);
 
 								// now write to database
+								// skipped as we are updating here
 
-								rpcServiceCheckPath
-										.addNewMulticheckMulticheckLink(
-												checkpathObject.checkId,
-												childMulticheck.checkId,
-												new AsyncCallback<String>() {
-
-													@Override
-													public void onFailure(
-															Throwable caught) {
-														// TODO Auto-generated
-														// method stub
-														removeLoadAnimation(loading);
-														System.out
-																.println("ERROR writing multicheck_multicheck_link: "
-																		+ caught);
-														txtSaveStatus
-																.setText("Error saving logic design. Data not saved.");
-
-													}
-
-													@Override
-													public void onSuccess(
-															String result) {
-														// TODO Auto-generated
-														// method stub
-														removeLoadAnimation(loading);
-														System.out
-																.println("Success writing multicheck_multicheck_link: "
-																		+ result);
-														txtSaveStatus
-																.setText("Logic design saved successfully.");
-
-													}
-
-												});
 							}
 
 						}
@@ -387,7 +291,7 @@ public class CheckpathEditView extends Composite {
 								System.out.println("JSON CHECKPATH: " + result);
 
 								rpcServiceCheckPath.updateCheckpath(
-										checkPathId, result,
+										checkPathIdUpdate, result,
 										new AsyncCallback<String>() {
 
 											@Override
@@ -415,7 +319,7 @@ public class CheckpathEditView extends Composite {
 
 												rpcServiceCheckPath
 														.getUiObjectJSONForCheckpathID(
-																checkPathId,
+																checkPathIdUpdate,
 																new AsyncCallback<CheckPathObjectTree>() {
 
 																	@Override
@@ -492,9 +396,9 @@ public class CheckpathEditView extends Composite {
 
 							}
 
-						});
+					
 
-			}
+			
 
 		});
 

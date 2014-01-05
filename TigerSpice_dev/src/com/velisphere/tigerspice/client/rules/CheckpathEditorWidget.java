@@ -78,6 +78,7 @@ public class CheckpathEditorWidget extends Composite {
 	private UuidServiceAsync rpcServiceUuid;
 	private CheckServiceAsync rpcServiceCheck;
 	private String checkpathID;
+	private List<SameLevelCheckpathObject> updatedMultichecks;
 
 	public CheckpathEditorWidget(String checkpathID) {
 
@@ -94,6 +95,7 @@ public class CheckpathEditorWidget extends Composite {
 		rpcServiceUuid = GWT.create(UuidService.class);
 		rpcServiceCheckPath = GWT.create(CheckPathService.class);
 		rpcServiceCheck = GWT.create(CheckService.class);
+		this.updatedMultichecks = new ArrayList<SameLevelCheckpathObject>();
 
 		con = new FlowLayoutContainer();
 
@@ -320,6 +322,7 @@ public class CheckpathEditorWidget extends Composite {
 								(RootPanel.get().getOffsetWidth()) / 3,
 								(RootPanel.get().getOffsetHeight()) / 4);
 						multicheckNewDialogBox.show();
+						multicheckNewDialogBox.addStyleName("ontop");
 
 						multicheckNewDialogBox
 								.addCloseHandler(new CloseHandler<PopupPanel>() {
@@ -482,6 +485,7 @@ public class CheckpathEditorWidget extends Composite {
 				currentCheck.setText(multicheckDialogBox.multicheckTitle);
 				//currentCheck.ancTextField.setText(multicheckDialogBox.multicheckTitle); 
 				currentCheck.combination = multicheckDialogBox.combination;
+				updatedMultichecks.add(currentCheck);
 				rebuildCheckpathDiagram();
 			}
 
@@ -713,7 +717,7 @@ public class CheckpathEditorWidget extends Composite {
 														checkHashSet.add(childCheckObject);
 														childrenAlreadyAdded.add(childCheckID);
 														// add child
-														objectToUpdate.childMultichecks.add(childCheckObject);
+														objectToUpdate.childChecks.add(childCheckObject);
 														System.out.println("Adding check children for " + field.checkId + ": " + childCheckObject);
 														removeLoadAnimation(loading);
 														rebuildCheckpathDiagram();

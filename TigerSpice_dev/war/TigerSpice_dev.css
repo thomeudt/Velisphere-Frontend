@@ -158,4 +158,8 @@ html, body {
 .vcenter{
     vertical-align: middle;
 }
+
+.ontop{
+    z-index: 10;
+}
  

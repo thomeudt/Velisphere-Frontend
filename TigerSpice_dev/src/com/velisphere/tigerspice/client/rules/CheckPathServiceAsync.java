@@ -22,4 +22,5 @@ public interface CheckPathServiceAsync {
 	void addNewMulticheckMulticheckLink(String multicheckLId, String multicheckRId, AsyncCallback<String> callback );
 	void getAllCheckpaths(AsyncCallback<LinkedHashMap<String, String>> callback);
 	void getCheckpathDetails(String checkpathId, AsyncCallback<CheckPathData> callback);
+	void updateCheckpathName(String checkpathId, String checkpathName, AsyncCallback<String> callback );
 }

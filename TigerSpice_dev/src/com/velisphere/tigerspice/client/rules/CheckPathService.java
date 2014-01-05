@@ -26,4 +26,5 @@ public interface CheckPathService extends RemoteService {
 		String addNewMulticheckMulticheckLink(String multicheckLId, String multicheckRId);
 		LinkedHashMap<String, String> getAllCheckpaths();
 		CheckPathData getCheckpathDetails(String checkpathId);
+		String updateCheckpathName(String checkpathId, String checkpathName);
 }

@@ -305,7 +305,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 
 	}
 	
-	public String updateCheckpath(String checkpathID, String uiObject)
+	public String updateCheckpath(String checkpathID,  String uiObject)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -525,6 +525,48 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 			return checkPath;
 	
 	}
+	
+	public String updateCheckpathName(String checkpathID,  String checkpathName)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		try {
+			voltCon.montanaClient.callProcedure("UI_UpdateCheckpathName",
+					checkpathID, checkpathName);
+		} catch (NoConnectionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProcCallException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "OK";
+
+	}
+
 
 	
 }
