@@ -184,6 +184,7 @@ public class CheckpathEditView extends Composite {
 
 		System.out.println("Update checkpath data: " + wgtCheckpathEditor);
 				
+		
 
 		
 				// creating linked list to contain linked list of json objects
@@ -291,7 +292,7 @@ public class CheckpathEditView extends Composite {
 				
 				while (newMultichecksIt.hasNext()){
 					SameLevelCheckpathObject checkpathObject = newMultichecksIt.next();
-					showLoadAnimation(loading);
+					//showLoadAnimation(loading);
 
 					// create check
 					
@@ -638,19 +639,112 @@ public class CheckpathEditView extends Composite {
 				}
 
 				
+				// now remove all orphan multichecks from deletions and their links
+				
+				Iterator<SameLevelCheckpathObject> deletedMultichecksIT = wgtCheckpathEditor.getDeletedMultichecks().iterator();
+				while(deletedMultichecksIT.hasNext()){
+					SameLevelCheckpathObject checkpathObject = deletedMultichecksIT.next();
+
+					rpcServiceCheckPath.deleteMulticheck(
+							checkpathObject.checkId,
+							new AsyncCallback<String>() {
+
+								@Override
+								public void onFailure(Throwable caught) {
+									// TODO Auto-generated method stub
+									
+									System.out
+											.println("ERROR deleting multicheck: "
+													+ caught);
+								}
+
+								@Override
+								public void onSuccess(String result) {
+									// TODO Auto-generated method stub
+									System.out
+									.println("Success deleting multicheck: "
+											+ result);
+									txtSaveStatus
+									.setText("Logic design saved successfully.");
+
+									
+								}
+							});
+					
+					
+					rpcServiceCheckPath.deleteMulticheckMulticheckLink(
+							checkpathObject.checkId,
+							new AsyncCallback<String>() {
+
+								@Override
+								public void onFailure(Throwable caught) {
+									// TODO Auto-generated method stub
+									
+									System.out
+											.println("ERROR deleting multicheck_multicheck_link: "
+													+ caught);
+								}
+
+								@Override
+								public void onSuccess(String result) {
+									// TODO Auto-generated method stub
+									System.out
+									.println("Success deleting multicheck_multicheck_link: "
+											+ result);
+									txtSaveStatus
+									.setText("Logic design saved successfully.");
+
+									
+								}
+							});
+					
+					rpcServiceCheckPath.deleteMulticheckCheckLink(
+							checkpathObject.checkId,
+							new AsyncCallback<String>() {
+
+								@Override
+								public void onFailure(Throwable caught) {
+									// TODO Auto-generated method stub
+									
+									System.out
+											.println("ERROR deleting multicheck_check_link: "
+													+ caught);
+								}
+
+								@Override
+								public void onSuccess(String result) {
+									// TODO Auto-generated method stub
+									System.out
+									.println("Success deleting multicheck_check_link: "
+											+ result);
+									txtSaveStatus
+									.setText("Logic design saved successfully.");
+
+									
+								}
+							});
+
+
+				}
+				
+				
+				
 				removeLoadAnimation(loading);
 				
 				System.out.println("Updated Multichecks: " + wgtCheckpathEditor.getUpdatedMultichecks());
 
 				System.out.println("Added Multichecks: " + wgtCheckpathEditor.getNewMultichecks());
 
-				System.out.println("Gesamtobject:" + allColumnsObject);
+				System.out.println("Deleted Multichecks: " + wgtCheckpathEditor.getDeletedMultichecks());
 
+				
 				createCheckpathJSON(allColumnsObject, checkPathIdUpdate);
 				
-				// reset update/create tracker for checks
+				// reset create/update/delete (CUD) tracker for checks so that DB actions will not be done again with next save and fail
 				wgtCheckpathEditor.resetNewMultichecks();
 				wgtCheckpathEditor.resetUpdatedMultichecks();
+				wgtCheckpathEditor.resetDeletedMultichecks();
+
 				
 				
 	}

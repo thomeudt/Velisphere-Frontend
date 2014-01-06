@@ -1,6 +1,7 @@
 package com.velisphere.tigerspice.client.rules;
 
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
@@ -90,6 +91,48 @@ public class CheckpathCreateView extends Composite {
 
 				final String checkPathId = result;
 
+				// first, link all contained checks to checkpath
+				
+				// link multicheck to checkpath
+				
+				LinkedHashSet<SameLevelCheckpathObject> checkpathHashset = wgtCheckpathEditor.checkHashSet;
+				
+				Iterator<SameLevelCheckpathObject> checksIT = checkpathHashset.iterator();
+				while (checksIT.hasNext())
+				{
+					SameLevelCheckpathObject checkpathObject = checksIT.next();
+					rpcServiceCheckPath.addNewCheckpathCheckLink(
+							checkPathId,
+							checkpathObject.checkId,
+							new AsyncCallback<String>() {
+
+								@Override
+								public void onFailure(Throwable caught) {
+									// TODO Auto-generated method stub
+									System.out
+											.println("ERROR linking check to checkpaht: "
+													+ caught);
+									txtSaveStatus
+											.setText("Error saving logic design. Data not saved.");
+
+								}
+
+								@Override
+								public void onSuccess(String result) {
+									// TODO Auto-generated method stub
+
+									System.out
+											.println("Success linking check to checkpath: "
+													+ result);
+									
+								}
+
+							});					
+				}
+				
+				
+				
+				
 				// creating linked list to contain linked list of json objects
 				// representing the entire checkpath chart
 				CheckPathObjectTree allColumnsObject = new CheckPathObjectTree();
@@ -166,6 +209,40 @@ public class CheckpathCreateView extends Composite {
 
 									});
 
+							// link multicheck to checkpath
+							rpcServiceCheckPath.addNewCheckpathMulticheckLink(
+									checkPathId,
+									checkpathObject.checkId,
+									new AsyncCallback<String>() {
+
+										@Override
+										public void onFailure(Throwable caught) {
+											// TODO Auto-generated method stub
+											removeLoadAnimation(loading);
+											System.out
+													.println("ERROR writing multicheck: "
+															+ caught);
+											txtSaveStatus
+													.setText("Error saving logic design. Data not saved.");
+
+										}
+
+										@Override
+										public void onSuccess(String result) {
+											// TODO Auto-generated method stub
+
+											removeLoadAnimation(loading);
+
+											System.out
+													.println("Success linking multicheck to checkpath: "
+															+ result);
+											
+										}
+
+									});
+
+							
+							
 							Iterator<SameLevelCheckpathObject> mccIt = checkpathObject.childChecks
 									.iterator();
 

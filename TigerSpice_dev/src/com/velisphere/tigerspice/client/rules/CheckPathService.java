@@ -30,4 +30,7 @@ public interface CheckPathService extends RemoteService {
 		String updateMulticheck(String multicheckID, String multicheckOperator, String multicheckName);
 		String deleteMulticheckCheckLink(String parentMulticheckID);
 		String deleteMulticheckMulticheckLink(String parentMulticheckID);
+		String deleteMulticheck(String multicheckID);
+		String addNewCheckpathCheckLink(String checkpathID, String checkID);
+		String addNewCheckpathMulticheckLink(String checkpathID, String multicheckID);
 }

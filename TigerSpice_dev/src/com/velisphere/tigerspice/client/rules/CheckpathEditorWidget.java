@@ -80,7 +80,9 @@ public class CheckpathEditorWidget extends Composite {
 	private String checkpathID;
 	private List<SameLevelCheckpathObject> updatedMultichecks;
 	private List<SameLevelCheckpathObject> newMultichecks;
+	private List<SameLevelCheckpathObject> deletedMultichecks;
 	private Boolean additionalRebuildNeeded;
+	
 
 	public CheckpathEditorWidget(String checkpathID) {
 
@@ -99,6 +101,7 @@ public class CheckpathEditorWidget extends Composite {
 		rpcServiceCheck = GWT.create(CheckService.class);
 		this.updatedMultichecks = new ArrayList<SameLevelCheckpathObject>();
 		this.newMultichecks = new ArrayList<SameLevelCheckpathObject>();
+		this.deletedMultichecks = new ArrayList<SameLevelCheckpathObject>();
 
 		con = new FlowLayoutContainer();
 
@@ -526,6 +529,7 @@ public class CheckpathEditorWidget extends Composite {
 
 				if (multicheckDialogBox.deleteFlag == true) {
 					//do delete actions
+					deletedMultichecks.add(currentCheck);
 					currentColumn.remove(currentCheck);
 					rebuildCheckpathDiagram();	
 					
@@ -811,11 +815,12 @@ public class CheckpathEditorWidget extends Composite {
 								}
 							}
 						}
-						// removeLoadAnimation(loading);
+						 
 						// rebuildCheckpathDiagram();
 					}
 
 				});
+		removeLoadAnimation(loading);
 	}
 	
 	
@@ -888,6 +893,10 @@ public class CheckpathEditorWidget extends Composite {
 	public List<SameLevelCheckpathObject> getNewMultichecks(){
 		return this.newMultichecks;	
 	}
+	
+	public List<SameLevelCheckpathObject> getDeletedMultichecks(){
+		return this.deletedMultichecks;	
+	}
 
 	public void resetUpdatedMultichecks(){
 		this.updatedMultichecks.clear();
@@ -895,6 +904,9 @@ public class CheckpathEditorWidget extends Composite {
 
 	public void resetNewMultichecks(){
 		this.newMultichecks.clear();
+	}
+	public void resetDeletedMultichecks(){
+		this.deletedMultichecks.clear();
 	}
 	
 }
