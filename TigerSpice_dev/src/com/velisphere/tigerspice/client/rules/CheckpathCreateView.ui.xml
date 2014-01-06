@@ -86,7 +86,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 					
 				    <b:Column size="4" offset="0">
 				    			    
-				    <b:Paragraph addStyleNames="smalltext">Drag your checks here to build your logic</b:Paragraph>
+				    <b:Paragraph addStyleNames="smalltext">Drag your checks here to build your logic (always 1st layer MC!)</b:Paragraph>
 			
 					</b:Column>
 			
