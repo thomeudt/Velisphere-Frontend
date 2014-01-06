@@ -80,6 +80,7 @@ public class CheckpathEditorWidget extends Composite {
 	private String checkpathID;
 	private List<SameLevelCheckpathObject> updatedMultichecks;
 	private List<SameLevelCheckpathObject> newMultichecks;
+	private Boolean additionalRebuildNeeded;
 
 	public CheckpathEditorWidget(String checkpathID) {
 
@@ -113,6 +114,8 @@ public class CheckpathEditorWidget extends Composite {
 		}
 
 		System.out.println("MC Columnen: " + multicheckColumns);
+		
+		additionalRebuildNeeded = false;
 		
 		rebuildCheckpathDiagram();
 
@@ -267,6 +270,11 @@ public class CheckpathEditorWidget extends Composite {
 		con.clear();
 		con.add(container);
 		drawConnectorLines(controller);
+		
+		if (additionalRebuildNeeded == true) {
+			System.out.println("ADDITIONAL REBUILD");
+			rebuildCheckpathDiagram();
+		}
 
 	}
 
@@ -275,7 +283,7 @@ public class CheckpathEditorWidget extends Composite {
 
 		VerticalLayoutContainer checkColumn = new VerticalLayoutContainer();
 
-		LinkedList<SameLevelCheckpathObject> multicheckLinkedList = multicheckColumns
+		final MulticheckColumn<SameLevelCheckpathObject> multicheckLinkedList = multicheckColumns
 				.get(columnElement);
 
 		Iterator<SameLevelCheckpathObject> mit = multicheckLinkedList
@@ -285,6 +293,36 @@ public class CheckpathEditorWidget extends Composite {
 		while (mit.hasNext()) {
 
 			final SameLevelCheckpathObject currentObject = mit.next();
+			
+			// correct level setting of current object within column, might have changed due to child deletions
+			// this can be further optimized in the future to allow moving elements vertically in diagram
+			
+			if (multicheckLinkedList.indexOf(currentObject) != currentObject.level-1){
+				currentObject.level = multicheckLinkedList.indexOf(currentObject) + 1;
+			}
+			
+			//cleanup orphan child multicheck links from prior deletions
+			
+			List<SameLevelCheckpathObject> allMultichecksForInspection = new ArrayList<SameLevelCheckpathObject>();
+			
+			for (int i = 1; i <= multicheckColumns.size(); i = i + 1) {
+				allMultichecksForInspection.addAll(multicheckColumns.get(i-1));	
+			}
+			
+			additionalRebuildNeeded = false;
+			List<SameLevelCheckpathObject> childMultichecksToRemove = new ArrayList<SameLevelCheckpathObject>();
+			Iterator<SameLevelCheckpathObject> linkedMultichecksIT = currentObject.childMultichecks.iterator();
+			while(linkedMultichecksIT.hasNext()){
+				SameLevelCheckpathObject linkedMulticheck = linkedMultichecksIT.next();
+				if (allMultichecksForInspection.contains(linkedMulticheck) == false){
+					childMultichecksToRemove.add(linkedMulticheck);
+					additionalRebuildNeeded = true;
+				}
+			}
+			
+			currentObject.childMultichecks.removeAll(childMultichecksToRemove);
+			
+			//now draw object
 
 			System.out.println(currentObject.text + " is multicheck: "
 					+ currentObject.isMulticheck);
@@ -365,7 +403,7 @@ public class CheckpathEditorWidget extends Composite {
 										currentObject
 												.setCombination(multicheckNewDialogBox.combination);
 										
-										setEditClickHandler(currentObject);
+										setEditClickHandler(currentObject, multicheckLinkedList);
 										
 										if (dragAccordion.isMulticheck) {
 											currentObject
@@ -447,7 +485,7 @@ public class CheckpathEditorWidget extends Composite {
 
 	}
 
-	private void showUpdateMulticheckDialog(final SameLevelCheckpathObject currentCheck) {
+	private void showUpdateMulticheckDialog(final SameLevelCheckpathObject currentCheck, final MulticheckColumn<SameLevelCheckpathObject> currentColumn) {
 
 		final MulticheckDialogBox multicheckDialogBox = new MulticheckDialogBox();
 
@@ -486,11 +524,20 @@ public class CheckpathEditorWidget extends Composite {
 
 			public void onClose(CloseEvent event) {
 
-				currentCheck.setText(multicheckDialogBox.multicheckTitle);
-				//currentCheck.ancTextField.setText(multicheckDialogBox.multicheckTitle); 
-				currentCheck.combination = multicheckDialogBox.combination;
-				updatedMultichecks.add(currentCheck);
-				rebuildCheckpathDiagram();
+				if (multicheckDialogBox.deleteFlag == true) {
+					//do delete actions
+					currentColumn.remove(currentCheck);
+					rebuildCheckpathDiagram();	
+					
+				} else
+				{
+					//do save update actions
+					currentCheck.setText(multicheckDialogBox.multicheckTitle); 
+					currentCheck.combination = multicheckDialogBox.combination;
+					updatedMultichecks.add(currentCheck);
+					rebuildCheckpathDiagram();	
+				}
+				
 			}
 
 		});
@@ -617,7 +664,7 @@ public class CheckpathEditorWidget extends Composite {
 								
 								
 								
-								setEditClickHandler(newMulticheck);
+								setEditClickHandler(newMulticheck, newMulticheckList);
 																
 								// add multicheck to lookup table
 								multicheckLookup.put(field.checkId, newMulticheck);
@@ -803,7 +850,7 @@ public class CheckpathEditorWidget extends Composite {
 
 	}
 
-	private void setEditClickHandler(final SameLevelCheckpathObject currentObject){
+	private void setEditClickHandler(final SameLevelCheckpathObject currentObject, final MulticheckColumn<SameLevelCheckpathObject> currentColumn){
 
 		if (currentObject.empty == false)
 		{
@@ -814,7 +861,7 @@ public class CheckpathEditorWidget extends Composite {
 						ClickEvent event) {
 
 					showUpdateMulticheckDialog(
-							currentObject);
+							currentObject, currentColumn);
 
 				}
 

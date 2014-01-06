@@ -24,18 +24,22 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 		xmlns:vsch="urn:import:com.velisphere.tigerspice.client.checks">
 		<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images'/>
 	<g:HTMLPanel>
-            <b:Breadcrumbs divider=">" ui:field="brdMain">
+           
+	    <b:Breadcrumbs divider=">" ui:field="brdMain">
 		</b:Breadcrumbs>
+	    
 	    <b:Row>
 			<b:Column size="1" offset="0">
 			    <b:Image url="./images/sphere_green.png" />
 			</b:Column>
-			<b:Column size="7" offset="0">
+			<b:Column size="11" offset="0">
 				<b:PageHeader ui:field="pghRuleName">Logic Designer</b:PageHeader>				
 			</b:Column>
 			
 		</b:Row>
 		
+	    
+	    
 	    <b:Row>
 				        
 	        <b:Column size="2" offset="0">
@@ -49,7 +53,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			</b:Well>
 			</b:Column>
 				        
-			<b:Column size="9" offset="0">
+			<b:Column size="7" offset="0">
 		
 				<b:Row>
 				
@@ -98,6 +102,21 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 					
 			
 			</b:Column>
+			
+				<b:Column size="2" offset="0">
+				<b:Heading size="4">Additional Resources</b:Heading>
+				
+			<b:Paragraph addStyleNames="smalltext">Device Provisioning Wizard</b:Paragraph>
+			
+			<b:Paragraph addStyleNames="smalltext">Getting Started</b:Paragraph>
+			
+			<b:Paragraph addStyleNames="smalltext">Best Practices</b:Paragraph>
+			
+			<b:Paragraph addStyleNames="smalltext">Market Place</b:Paragraph>
+			
+			
+			</b:Column>	
+			
 		</b:Row>
 		
 	    

@@ -50,12 +50,15 @@ public class MulticheckDialogBox extends PopupPanel {
 	TextBox txtMulticheckTitle;
 	@UiField
 	Legend lgdHeader;
+	@UiField
+	Button btnDelete;
 		
 	private String multicheckID;
 	public String multicheckTitle;
 	public String combination;
 	public String ruleID;
 	public HashMap<String, String> linkedChecks;
+	public Boolean deleteFlag = false;
 	
 
 	private PropertyClassServiceAsync rpcServicePropertyClass;
@@ -107,6 +110,12 @@ public class MulticheckDialogBox extends PopupPanel {
 		this.multicheckTitle = this.txtMulticheckTitle.getText();
 		this.ruleID = this.txtRuleTriggered.getText();
 		this.combination = this.lstCombination.getValue();
+		this.hide();		
+	}
+	
+	@UiHandler("btnDelete")
+	void deleteCheck (ClickEvent event) {
+		this.deleteFlag = true;
 		this.hide();
 		
 		
