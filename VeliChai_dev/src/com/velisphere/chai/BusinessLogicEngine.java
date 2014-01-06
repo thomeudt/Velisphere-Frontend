@@ -250,8 +250,7 @@ public class BusinessLogicEngine {
 			}
 		}
 		
-		
-
+				
 		// evaluate first level multichecks (connected to checks) in relevant
 		// checkpaths
 
@@ -261,6 +260,8 @@ public class BusinessLogicEngine {
 		while (itCPMCM.hasNext()) {
 
 			String sTR = itCPMCM.next();
+			//System.out.println("Looking up multicheck: " + sTR);
+			
 			final ClientResponse bleIsMultiCheckTrue = BusinessLogicEngine.montanaClient
 					.callProcedure("BLE_IsMultiCheckTrue", sTR);
 
