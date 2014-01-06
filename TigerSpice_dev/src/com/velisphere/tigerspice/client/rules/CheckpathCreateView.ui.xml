@@ -80,7 +80,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			    	 	    	
 			    	<b:Row>
 				    <b:Column size="5" offset="0">
-						      	<b:Paragraph addStyleNames="smalltext">Checks</b:Paragraph>
+						      	<b:Paragraph addStyleNames="smalltext">Check Explorer (incl. create new)</b:Paragraph>
 						
 					</b:Column>
 					
@@ -99,6 +99,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 				    <b:Column size="5" offset="0">
 				    
 				   		<vsch:AllCheckListWidget />
+				   		<b:Paragraph addStyleNames="smalltext">Action Explorer(by Endpoint, DragNDrop like Checks)</b:Paragraph>
 				     
 					</b:Column>
 					
