@@ -485,6 +485,14 @@ public class CheckpathCreateView extends Composite {
 			}
 
 		});
+		
+		
+		// return to checkpath list
+		RootPanel mainPanel = RootPanel.get("main");
+		mainPanel.clear();
+		CheckpathList checkpathList = new CheckpathList();
+		mainPanel.add(checkpathList);
+
 
 	}
 
