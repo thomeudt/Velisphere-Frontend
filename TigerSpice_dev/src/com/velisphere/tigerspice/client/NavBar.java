@@ -28,6 +28,7 @@ import com.github.gwtbootstrap.client.ui.constants.NavbarPosition;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -40,7 +41,10 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.admin.Overviewer;
+import com.velisphere.tigerspice.client.helper.EventUtils;
 import com.velisphere.tigerspice.client.helper.SessionHelper;
+import com.velisphere.tigerspice.client.helper.SessionVerifiedEvent;
+import com.velisphere.tigerspice.client.helper.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.rules.CheckpathList;
 import com.velisphere.tigerspice.client.rules.CheckpathCreateView;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
@@ -65,6 +69,8 @@ public class NavBar extends Composite implements HasText {
 	
 	private static NavBarUiBinder uiBinder = GWT.create(NavBarUiBinder.class);
 
+	private HandlerRegistration sessionHandler;
+	
 	interface NavBarUiBinder extends UiBinder<Widget, NavBar> {
 	}
 
@@ -206,22 +212,35 @@ public class NavBar extends Composite implements HasText {
 	public void checkWithServerIfSessionIdIsStillLegal()
 	{
 		
-		if (SessionHelper.getCurrentUserID() == null)
-		{
-			btnAdmin.setVisible(false);
-	    	 btnLogout.setVisible(false);
-	    	 btnAccount.setVisible(false);
-	    	 btnSearch.setVisible(false);
-	    	 btnSpheres.setVisible(false);
-	    	 btnRules.setVisible(false);
-	    	 forSearch.setVisible(false);
-	    	 btnHome.setVisible(false);
-	    	 txtUserName.setText("Not Logged In");
+
+		btnAdmin.setVisible(false);
+   	 	btnLogout.setVisible(false);
+   	 	btnAccount.setVisible(false);
+   	 	btnSearch.setVisible(false);
+   	 	btnSpheres.setVisible(false);
+   	 	btnRules.setVisible(false);
+   	 	forSearch.setVisible(false);
+   	 	btnHome.setVisible(false);
+   	 	txtUserName.setText("Not Logged In");
+		
+   	 	SessionHelper.validateCurrentSession();		
+		
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		    	
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			
+
+								// get all endpoints for user id in current
+								// session
+								sessionHandler.removeHandler();
+								txtUserName.setText(SessionHelper.getCurrentUserName());
 		}
-		else
-		{
-			 txtUserName.setText(SessionHelper.getCurrentUserName());
-		}
+		});
+
+		
+			 
+		
 	    
 	    
 	}

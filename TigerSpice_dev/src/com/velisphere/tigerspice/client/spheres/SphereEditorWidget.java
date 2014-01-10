@@ -36,6 +36,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.Anchor;
@@ -62,7 +63,10 @@ import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointView;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
+import com.velisphere.tigerspice.client.helper.EventUtils;
 import com.velisphere.tigerspice.client.helper.SessionHelper;
+import com.velisphere.tigerspice.client.helper.SessionVerifiedEvent;
+import com.velisphere.tigerspice.client.helper.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.images.Images;
 import com.velisphere.tigerspice.client.users.LoginService;
 import com.velisphere.tigerspice.client.users.NewAccountSuccessMessage;
@@ -76,7 +80,8 @@ public class SphereEditorWidget extends Composite {
 
 	String sphereID;
 	String sphereName;
-	String userID;
+	private HandlerRegistration sessionHandler; 
+
 	Vector<String> assignedEndpointIDs;
 	private VerticalLayoutContainer sourceContainer;
 	private VerticalLayoutContainer container = new VerticalLayoutContainer();
@@ -251,21 +256,23 @@ public class SphereEditorWidget extends Composite {
 
 		sourceContainer.clear();
 		
-		// get userID for current session
+		// validate and get userID for current session
 		
-		if (SessionHelper.getCurrentUserID() != null)
-		
-		{
-		
-		
-			userID = SessionHelper.getCurrentUserID();
+		SessionHelper.validateCurrentSession();
+	
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		    	
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			
 
 								// get all endpoints for user id in current
 								// session
-
+								sessionHandler.removeHandler();
+			
 								rpcService
 										.getEndpointsForUser(
-												userID,
+												SessionHelper.getCurrentUserID(),
 												new AsyncCallback<Vector<EndpointData>>() {
 													public void onFailure(
 															Throwable caught) {
@@ -367,6 +374,7 @@ public class SphereEditorWidget extends Composite {
 												});
 
 		}
+		});
 	}
 
 	public void refreshTargetEndpoints(final String sphereID,

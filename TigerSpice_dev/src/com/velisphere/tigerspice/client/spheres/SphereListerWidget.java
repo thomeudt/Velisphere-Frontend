@@ -69,7 +69,8 @@ public class SphereListerWidget extends Composite {
 
 	private void refreshPrivateSpheres(){
 		
-		showLoadAnimation();
+		final AnimationLoading animation = new AnimationLoading();
+		animation.showLoadAnimation("Loading endpoints");
 		
 		// TODO needs to be changed to show only spheres personal to user
 		rpcService.getAllSpheres(new AsyncCallback<Vector<SphereData>>() {
@@ -108,7 +109,7 @@ public class SphereListerWidget extends Composite {
 								}
 							});
 				}
-				removeLoadAnimation();
+				animation.removeFromParent();
 				
 			}
 
@@ -121,16 +122,7 @@ public class SphereListerWidget extends Composite {
 		
 	}
 	
-	private void showLoadAnimation() {
-		RootPanel rootPanel = RootPanel.get("main");
-		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-		animationLoading = new AnimationLoading();
-		rootPanel.add(animationLoading, 25, 40);
-	}
-	
-	private void removeLoadAnimation() {
-		if (animationLoading != null) animationLoading.removeFromParent();
-	}
+
 	
 
 	

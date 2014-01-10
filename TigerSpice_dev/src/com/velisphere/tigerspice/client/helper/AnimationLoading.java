@@ -55,5 +55,13 @@ public class AnimationLoading extends Composite {
 		rootPanel.add(this, 25, 40);
 	}
 
+	public void removeLoadAnimation() {
+		
+		RootPanel rootPanel = RootPanel.get("main");
+		
+		rootPanel.remove(this);
+	}
+
+	
 
 }

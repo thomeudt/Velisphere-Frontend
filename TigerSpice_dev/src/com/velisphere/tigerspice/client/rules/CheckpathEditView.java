@@ -141,8 +141,9 @@ public class CheckpathEditView extends Composite {
 									final String newCheckpathName = checkpathChangeNameField.getText();
 									
 									nameChangePopup.hide();
-									final AnimationLoading animationLoading = new AnimationLoading();
-									showLoadAnimation(animationLoading);
+									final AnimationLoading animation = new AnimationLoading();
+									animation.showLoadAnimation("Saving...");
+									
 									
 									rpcServiceCheckPath.updateCheckpathName(CheckpathIDforNameChange, 
 											newCheckpathName, new AsyncCallback<String>() {
@@ -159,7 +160,7 @@ public class CheckpathEditView extends Composite {
 											// TODO Auto-generated method stub
 
 											pghCheckpathName.setText(newCheckpathName);
-											removeLoadAnimation(animationLoading);
+											animation.removeLoadAnimation();
 
 										}
 									});
@@ -237,7 +238,8 @@ public class CheckpathEditView extends Composite {
 							while (mccIt.hasNext()) {
 								SameLevelCheckpathObject childCheck = mccIt
 										.next();
-								showLoadAnimation(loading);
+								final AnimationLoading animation = new AnimationLoading();
+								
 
 								// json first
 
@@ -256,7 +258,7 @@ public class CheckpathEditView extends Composite {
 							while (mcmcIt.hasNext()) {
 								SameLevelCheckpathObject childMulticheck = mcmcIt
 										.next();
-								showLoadAnimation(loading);
+								
 
 								// json first
 
@@ -290,6 +292,9 @@ public class CheckpathEditView extends Composite {
 				
 				// run the new multichecks first
 				
+				final AnimationLoading animation = new AnimationLoading();
+				animation.showLoadAnimation("Saving multichecks...");
+				
 				while (newMultichecksIt.hasNext()){
 					SameLevelCheckpathObject checkpathObject = newMultichecksIt.next();
 					//showLoadAnimation(loading);
@@ -305,7 +310,7 @@ public class CheckpathEditView extends Composite {
 								@Override
 								public void onFailure(Throwable caught) {
 									// TODO Auto-generated method stub
-									removeLoadAnimation(loading);
+									animation.removeLoadAnimation();
 									System.out
 											.println("ERROR writing multicheck: "
 													+ caught);
@@ -318,7 +323,7 @@ public class CheckpathEditView extends Composite {
 								public void onSuccess(String result) {
 									// TODO Auto-generated method stub
 
-									removeLoadAnimation(loading);
+									animation.removeLoadAnimation();
 
 									System.out
 											.println("Success writing multicheck: "
@@ -341,7 +346,8 @@ public class CheckpathEditView extends Composite {
 					while (mccIt.hasNext()) {
 						SameLevelCheckpathObject childCheck = mccIt
 								.next();
-						showLoadAnimation(loading);
+						final AnimationLoading animationChecks = new AnimationLoading();
+						animation.showLoadAnimation("Saving Checks...");
 
 						rpcServiceCheckPath.addNewMulticheckCheckLink(
 								checkpathObject.checkId,
@@ -353,7 +359,7 @@ public class CheckpathEditView extends Composite {
 											Throwable caught) {
 										// TODO Auto-generated method
 										// stub
-										removeLoadAnimation(loading);
+										animationChecks.removeFromParent();
 										System.out
 												.println("ERROR writing multicheck_check_link: "
 														+ caught);
@@ -366,7 +372,7 @@ public class CheckpathEditView extends Composite {
 									public void onSuccess(String result) {
 										// TODO Auto-generated method
 										// stub
-										removeLoadAnimation(loading);
+										animationChecks.removeFromParent();
 										System.out
 												.println("Success writing multicheck_check_link: "
 														+ result);
@@ -389,7 +395,8 @@ public class CheckpathEditView extends Composite {
 					while (mcmcIt.hasNext()) {
 						SameLevelCheckpathObject childMulticheck = mcmcIt
 								.next();
-						showLoadAnimation(loading);
+						
+						animation.showLoadAnimation("Linking...");
 
 						rpcServiceCheckPath.addNewMulticheckMulticheckLink(
 								checkpathObject.checkId,
@@ -401,7 +408,7 @@ public class CheckpathEditView extends Composite {
 											Throwable caught) {
 										// TODO Auto-generated method
 										// stub
-										removeLoadAnimation(loading);
+										animation.removeLoadAnimation();
 										System.out
 												.println("ERROR writing multicheck_check_link: "
 														+ caught);
@@ -414,7 +421,7 @@ public class CheckpathEditView extends Composite {
 									public void onSuccess(String result) {
 										// TODO Auto-generated method
 										// stub
-										removeLoadAnimation(loading);
+										animation.removeLoadAnimation();
 										System.out
 												.println("Success writing multicheck_multicheck_link: "
 														+ result);
@@ -435,7 +442,8 @@ public class CheckpathEditView extends Composite {
 				
 				while (updatedMultichecksIt.hasNext()){
 					final SameLevelCheckpathObject checkpathObject = updatedMultichecksIt.next();
-					showLoadAnimation(loading);
+					
+					animation.showLoadAnimation("Updating Checks...");
 
 					// update check
 					
@@ -448,7 +456,7 @@ public class CheckpathEditView extends Composite {
 								@Override
 								public void onFailure(Throwable caught) {
 									// TODO Auto-generated method stub
-									removeLoadAnimation(loading);
+									animation.removeLoadAnimation();
 									System.out
 											.println("ERROR updating multicheck: "
 													+ caught);
@@ -461,7 +469,7 @@ public class CheckpathEditView extends Composite {
 								public void onSuccess(String result) {
 									// TODO Auto-generated method stub
 
-									removeLoadAnimation(loading);
+									animation.removeLoadAnimation();
 
 									System.out
 											.println("Success updating multicheck: "
@@ -476,6 +484,9 @@ public class CheckpathEditView extends Composite {
 									
 									// first, delete all multichecklinks for the current multicheck, then re-link with the new links
 									
+									
+									animation.showLoadAnimation("Linking...");
+									
 									final SameLevelCheckpathObject currentCheckpathObject = checkpathObject;
 									
 									rpcServiceCheckPath.deleteMulticheckMulticheckLink(
@@ -487,7 +498,7 @@ public class CheckpathEditView extends Composite {
 														Throwable caught) {
 													// TODO Auto-generated method
 													// stub
-													removeLoadAnimation(loading);
+													animation.removeLoadAnimation();
 													System.out
 															.println("ERROR deleting multicheck_multicheck_link: "
 																	+ caught);
@@ -510,7 +521,8 @@ public class CheckpathEditView extends Composite {
 													while (mcmcIt.hasNext()) {
 														SameLevelCheckpathObject childMulticheck = mcmcIt
 																.next();
-														showLoadAnimation(loading);
+														
+														animation.showLoadAnimation("Linking...");
 
 														rpcServiceCheckPath.addNewMulticheckMulticheckLink(
 																currentCheckpathObject.checkId,
@@ -522,7 +534,7 @@ public class CheckpathEditView extends Composite {
 																			Throwable caught) {
 																		// TODO Auto-generated method
 																		// stub
-																		removeLoadAnimation(loading);
+																		animation.removeLoadAnimation();
 																		System.out
 																				.println("ERROR writing multicheck_multicheck_link: "
 																						+ caught);
@@ -535,7 +547,7 @@ public class CheckpathEditView extends Composite {
 																	public void onSuccess(String result) {
 																		// TODO Auto-generated method
 																		// stub
-																		removeLoadAnimation(loading);
+																		animation.removeLoadAnimation();
 																		System.out
 																				.println("Success rewriting multicheck_multicheck_link: "
 																						+ result);
@@ -564,7 +576,7 @@ public class CheckpathEditView extends Composite {
 														Throwable caught) {
 													// TODO Auto-generated method
 													// stub
-													removeLoadAnimation(loading);
+													animation.removeLoadAnimation();
 													System.out
 															.println("ERROR deleting multicheck_check_link: "
 																	+ caught);
@@ -587,7 +599,8 @@ public class CheckpathEditView extends Composite {
 													while (mccIt.hasNext()) {
 														SameLevelCheckpathObject childCheck = mccIt
 																.next();
-														showLoadAnimation(loading);
+														
+														animation.showLoadAnimation("Linking...");
 
 														rpcServiceCheckPath.addNewMulticheckCheckLink(
 																currentCheckpathObject.checkId,
@@ -599,7 +612,7 @@ public class CheckpathEditView extends Composite {
 																			Throwable caught) {
 																		// TODO Auto-generated method
 																		// stub
-																		removeLoadAnimation(loading);
+																		animation.removeLoadAnimation();
 																		System.out
 																				.println("ERROR writing multicheck_check_link: "
 																						+ caught);
@@ -612,7 +625,7 @@ public class CheckpathEditView extends Composite {
 																	public void onSuccess(String result) {
 																		// TODO Auto-generated method
 																		// stub
-																		removeLoadAnimation(loading);
+																		animation.removeLoadAnimation();
 																		System.out
 																				.println("Success rewriting multicheck_check_link: "
 																						+ result);
@@ -729,7 +742,7 @@ public class CheckpathEditView extends Composite {
 				
 				
 				
-				removeLoadAnimation(loading);
+				animation.removeLoadAnimation();
 				
 				System.out.println("Updated Multichecks: " + wgtCheckpathEditor.getUpdatedMultichecks());
 
@@ -805,16 +818,6 @@ public class CheckpathEditView extends Composite {
 
 	}
 	
-	private void showLoadAnimation(AnimationLoading animationLoading) {
-		RootPanel rootPanel = RootPanel.get("main");
-		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-		rootPanel.add(animationLoading, 25, 40);
-	}
-
-	private void removeLoadAnimation(AnimationLoading animationLoading) {
-		if (animationLoading != null)
-			animationLoading.removeFromParent();
-	}
 	
 	@UiFactory CheckpathEditorWidget makeCheckpathEditor() { // method name is insignificant
 	    return new CheckpathEditorWidget(this.checkpathID);

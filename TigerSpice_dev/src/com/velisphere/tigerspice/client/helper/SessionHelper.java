@@ -13,9 +13,9 @@ public class SessionHelper {
 	private static String userID;
 	private static String userName;
 
-	public static String getCurrentUserID() {
+	public static void validateCurrentSession() {
 		String sessionID = Cookies.getCookie("sid");
-		// System.out.println("SID: " + sessionID);
+		System.out.println("SID: " + sessionID);
 		
 
 		if (sessionID == null) {
@@ -47,6 +47,7 @@ public class SessionHelper {
 									userID = result.userID;
 									
 									if (userID != null) EventUtils.EVENT_BUS.fireEvent(new SessionVerifiedEvent());
+									
 
 								} else {
 									userID = null;
@@ -59,13 +60,15 @@ public class SessionHelper {
 					});
 		}
 
-		
-		return userID;
 
 	}
 
 	public static String getCurrentUserName() {
 		return userName;
+	}
+
+	public static String getCurrentUserID() {
+		return userID;
 	}
 
 }

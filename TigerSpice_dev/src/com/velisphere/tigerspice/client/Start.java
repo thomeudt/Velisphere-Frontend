@@ -3,6 +3,7 @@ package com.velisphere.tigerspice.client;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.EventUtils;
@@ -12,6 +13,8 @@ import com.velisphere.tigerspice.client.helper.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 
 public class Start implements EntryPoint{
+	
+	private HandlerRegistration reg;
 
 	public void onModuleLoad() {
     
@@ -20,11 +23,12 @@ public class Start implements EntryPoint{
 		loading.showLoadAnimation("Loading App");
 		   	
 		
-		SessionHelper.getCurrentUserID();
+		SessionHelper.validateCurrentSession();
 		
 	       
-		EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
-	        @Override
+		reg = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+			
+			@Override
 	        public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 	        	RootPanel.get().clear();
 	            RootPanel rootPanelHeader = RootPanel.get("stockList");
@@ -37,9 +41,13 @@ public class Start implements EntryPoint{
 	        	rootPanelMain.clear();
 	        	rootPanelMain.getElement().getStyle().setPosition(Position.RELATIVE);
 	        	
-	        	rootPanelMain.add(new LoginSuccess());
+	        	
+	        	rootPanelMain.add(new LoginSuccess(reg));
+	        	
+	        	
 				}
 	    }); 
-    
+		
+		
    }
 }
