@@ -62,6 +62,7 @@ import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointView;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
+import com.velisphere.tigerspice.client.helper.SessionHelper;
 import com.velisphere.tigerspice.client.images.Images;
 import com.velisphere.tigerspice.client.users.LoginService;
 import com.velisphere.tigerspice.client.users.NewAccountSuccessMessage;
@@ -252,26 +253,12 @@ public class SphereEditorWidget extends Composite {
 		
 		// get userID for current session
 		
-
-		LoginService.Util.getInstance().loginFromSessionServer(
-				new AsyncCallback<UserData>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						userID = null;
-					}
-
-					@Override
-					public void onSuccess(UserData result) {
-						if (result == null) {
-							userID = null;
-
-						} else
-
-						{
-							if (result.getLoggedIn()) {
-
-								userID = result.userID;
+		if (SessionHelper.getCurrentUserID() != null)
+		
+		{
+		
+		
+			userID = SessionHelper.getCurrentUserID();
 
 								// get all endpoints for user id in current
 								// session
@@ -379,14 +366,7 @@ public class SphereEditorWidget extends Composite {
 
 												});
 
-							} else {
-								userID = null;
-							}
-						}
-					}
-
-				});
-
+		}
 	}
 
 	public void refreshTargetEndpoints(final String sphereID,

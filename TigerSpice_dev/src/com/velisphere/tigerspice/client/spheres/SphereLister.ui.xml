@@ -36,6 +36,7 @@
 				<b:Well>
 					<b:Strong ui:field="pgpInformHeader">Endpoint Tasks</b:Strong>
 					<b:Paragraph addStyleNames="smalltext">Provision new Endpoint using the Provisioning Wizard.</b:Paragraph>
+					<b:Paragraph addStyleNames="smalltext">Create and manage Virtual End Points.</b:Paragraph>
 					<b:Paragraph addStyleNames="smalltext">Best practices</b:Paragraph>
 					<b:Paragraph addStyleNames="smalltext">Getting started</b:Paragraph>
 				</b:Well>
@@ -46,10 +47,11 @@
 
 
 						<b:Heading size="2">My Spheres</b:Heading>
-						<b:HelpBlock addStyleNames="smalltext">These are your own Spheres. Click to open and view
-							content and details.</b:HelpBlock>
+						<b:HelpBlock addStyleNames="smalltext">Physical Endpoints:</b:HelpBlock>
 						<vs:SphereListerWidget />
-
+						
+						<b:HelpBlock addStyleNames="smalltext">Virtual Endpoints:</b:HelpBlock>
+						<b:HelpBlock addStyleNames="smalltext">Endpoint Groups:</b:HelpBlock>
 				
 
 			</b:Column>

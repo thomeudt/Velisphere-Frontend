@@ -40,6 +40,7 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.admin.Overviewer;
+import com.velisphere.tigerspice.client.helper.SessionHelper;
 import com.velisphere.tigerspice.client.rules.CheckpathList;
 import com.velisphere.tigerspice.client.rules.CheckpathCreateView;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
@@ -61,7 +62,6 @@ public class NavBar extends Composite implements HasText {
 	@UiField NavLink btnHome;
 	@UiField Brand brdHome;
 	@UiField NavText txtUserName;
-	
 	
 	private static NavBarUiBinder uiBinder = GWT.create(NavBarUiBinder.class);
 
@@ -212,59 +212,25 @@ public class NavBar extends Composite implements HasText {
 	
 	private void checkWithServerIfSessionIdIsStillLegal(String sessionID)
 	{
-	    LoginService.Util.getInstance().loginFromSessionServer(new AsyncCallback<UserData>()
-	    {
-	        @Override
-	        public void onFailure(Throwable caught)
-	        {
-	        	btnAdmin.setVisible(false);
-		    	 btnLogout.setVisible(false);
-		    	 btnAccount.setVisible(false);
-		    	 btnSearch.setVisible(false);
-		    	 btnSpheres.setVisible(false);
-		    	 btnRules.setVisible(false);
-		    	 forSearch.setVisible(false);
-		    	 btnHome.setVisible(false);
-		    	 txtUserName.setText("Not Logged In");
-	        }
-	 
-	        @Override
-	        public void onSuccess(UserData result)
-	        {
-	            if (result == null)
-	            {
-	            	btnAdmin.setVisible(false);
-			    	 btnLogout.setVisible(false);
-			    	 btnAccount.setVisible(false);
-			    	 btnSearch.setVisible(false);
-			    	 btnSpheres.setVisible(false);
-			    	 btnRules.setVisible(false);
-			    	 forSearch.setVisible(false);
-			    	 btnHome.setVisible(false);
-			    	 txtUserName.setText("Not Logged In");
-	            	
-	            } else
-	            {
-	                if (result.getLoggedIn())
-	                {
-	                	txtUserName.setText(result.userName);
-	                		                   
-	                } else
-	                {
-	                	btnAdmin.setVisible(false);
-	   		    	 btnLogout.setVisible(false);
-	   		    	 btnAccount.setVisible(false);
-	   		    	 btnSearch.setVisible(false);
-	   		    	 btnSpheres.setVisible(false);
-	   		    	 btnRules.setVisible(false);
-	   		    	 forSearch.setVisible(false);
-	   		    	 btnHome.setVisible(false);
-	   		    	 txtUserName.setText("Not Logged In");
-	                }
-	            }
-	        }
-	 
-	    });
+		
+		if (SessionHelper.getCurrentUserID() == null)
+		{
+			btnAdmin.setVisible(false);
+	    	 btnLogout.setVisible(false);
+	    	 btnAccount.setVisible(false);
+	    	 btnSearch.setVisible(false);
+	    	 btnSpheres.setVisible(false);
+	    	 btnRules.setVisible(false);
+	    	 forSearch.setVisible(false);
+	    	 btnHome.setVisible(false);
+	    	 txtUserName.setText("Not Logged In");
+		}
+		else
+		{
+			 txtUserName.setText(SessionHelper.getCurrentUserName());
+		}
+	    
+	    
 	}
 
 	
