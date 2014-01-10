@@ -24,6 +24,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.velisphere.tigerspice.client.helper.SessionHelper;
+import com.velisphere.tigerspice.client.users.LoginSuccess;
 
 public class Login implements EntryPoint {
 
@@ -36,7 +38,10 @@ public class Login implements EntryPoint {
 	
 	public void onModuleLoad() {
 
-	displayLoginScreen();
+
+		displayLoginScreen();		
+		
+	
 	
 		
 	History.addValueChangeHandler(new ValueChangeHandler<String>() {
@@ -48,10 +53,10 @@ public class Login implements EntryPoint {
 		         if (historyToken.equals("home")) {
 		        	 displayLoginScreen();          
 		         } else {
-		        	 System.out.println("nix");
+		        	 // System.out.println("nix");
 		         }
 		      } catch (IndexOutOfBoundsException e) {
-		    	  System.out.println("nix"); 
+		    	  // System.out.println("nix"); 
 		      }
 		   }
 		});	

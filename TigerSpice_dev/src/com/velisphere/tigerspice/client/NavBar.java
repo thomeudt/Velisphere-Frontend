@@ -72,25 +72,18 @@ public class NavBar extends Composite implements HasText {
 		navbar = new Navbar();
 		initWidget(uiBinder.createAndBindUi(this));
 		navbar.setPosition(NavbarPosition.TOP);
-		
-		  String sessionID = Cookies.getCookie("sid");
-		     
-		     if (sessionID == null)
-		     {
-		    	 btnAdmin.setVisible(false);
-		    	 btnLogout.setVisible(false);
-		    	 btnAccount.setVisible(false);
-		    	 btnSearch.setVisible(false);
-		    	 btnSpheres.setVisible(false);
-		    	 btnRules.setVisible(false);
-		    	 forSearch.setVisible(false);
-		    	 btnHome.setVisible(false);
-		    	 txtUserName.setText("Not Logged In");
-	 
-		     } else
-		     {
-		         checkWithServerIfSessionIdIsStillLegal(sessionID);
-		     }
+
+		btnAdmin.setVisible(false);
+   	 btnLogout.setVisible(false);
+   	 btnAccount.setVisible(false);
+   	 btnSearch.setVisible(false);
+   	 btnSpheres.setVisible(false);
+   	 btnRules.setVisible(false);
+   	 forSearch.setVisible(false);
+   	 btnHome.setVisible(false);
+   	 txtUserName.setText("Not Logged In");
+	    //checkWithServerIfSessionIdIsStillLegal();
+		   
 		
 	}
 
@@ -210,7 +203,7 @@ public class NavBar extends Composite implements HasText {
 	
 	}
 	
-	private void checkWithServerIfSessionIdIsStillLegal(String sessionID)
+	public void checkWithServerIfSessionIdIsStillLegal()
 	{
 		
 		if (SessionHelper.getCurrentUserID() == null)
@@ -230,6 +223,22 @@ public class NavBar extends Composite implements HasText {
 			 txtUserName.setText(SessionHelper.getCurrentUserName());
 		}
 	    
+	    
+	}
+
+	public void activateForCurrentUser()
+	{
+		
+		
+			btnAdmin.setVisible(true);
+	    	 btnLogout.setVisible(true);
+	    	 btnAccount.setVisible(true);
+	    	 btnSearch.setVisible(true);
+	    	 btnSpheres.setVisible(true);
+	    	 btnRules.setVisible(true);
+	    	 forSearch.setVisible(true);
+	    	 btnHome.setVisible(true);
+			 txtUserName.setText(SessionHelper.getCurrentUserName());
 	    
 	}
 

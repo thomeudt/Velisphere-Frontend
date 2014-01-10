@@ -81,7 +81,10 @@ public class LoginDialogBox extends PopupPanel{
                     {
                         if (result.getLoggedIn())
                         {
-                            RootPanel.get().clear();
+                          
+                        	
+                        
+                        	RootPanel.get().clear();
                             // load the next app page
  
  
@@ -92,22 +95,26 @@ public class LoginDialogBox extends PopupPanel{
                             Cookies.setCookie("sid", sessionID, expires, null, "/", false);
                             // String rSessionID = Cookies.getCookie("sid");
                             // System.out.println("RSession ID: " +rSessionID);
+                        
+                            /*
+                            
                             RootPanel rootPanelHeader = RootPanel.get("stockList");
                         	rootPanelHeader.clear();
                         	rootPanelHeader.getElement().getStyle().setPosition(Position.RELATIVE);
                         	NavBar navBar = new NavBar();
                         	rootPanelHeader.add(navBar);
                             
-                            // Overviewer overviewer = new Overviewer();
-                    		// overviewer.onModuleLoad();
-                        	
+                            
                         	RootPanel rootPanelMain = RootPanel.get("main");
                         	rootPanelMain.clear();
                         	rootPanelMain.getElement().getStyle().setPosition(Position.RELATIVE);
                         	LoginSuccess loginSuccess = new LoginSuccess();
                         	rootPanelMain.add(loginSuccess);
-                            
+                            */
                         	
+                            Start start = new Start();
+                            start.onModuleLoad();
+                            
                     			
                         } else
                         {

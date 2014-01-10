@@ -69,10 +69,7 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
  	
 	public LoginSuccess() {
 	    
-		
-	
-		System.out.println(SessionHelper.getCurrentUserName());
-		
+			
 		initWidget(uiBinder.createAndBindUi(this));
 		loadContent();
 		

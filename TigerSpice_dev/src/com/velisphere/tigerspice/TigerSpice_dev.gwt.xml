@@ -31,7 +31,7 @@
 	<!-- Specify the paths for translatable code                    -->
 	<source path='client' />
 	<source path='shared' />
-	<entry-point class="com.velisphere.tigerspice.client.Login" />
+	<entry-point class="com.velisphere.tigerspice.client.Start" />
 	<set-property name="bootstrap.responsiveDesign" value="true"/>
 	
 	<source path='resources'/>
