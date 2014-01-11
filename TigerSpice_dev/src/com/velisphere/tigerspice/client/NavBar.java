@@ -252,10 +252,10 @@ public class NavBar extends Composite implements HasText {
 			btnAdmin.setVisible(true);
 	    	 btnLogout.setVisible(true);
 	    	 btnAccount.setVisible(true);
-	    	 btnSearch.setVisible(true);
+	    	 btnSearch.setVisible(false);
 	    	 btnSpheres.setVisible(true);
 	    	 btnRules.setVisible(true);
-	    	 forSearch.setVisible(true);
+	    	 forSearch.setVisible(false);
 	    	 btnHome.setVisible(true);
 			 txtUserName.setText(SessionHelper.getCurrentUserName());
 	    
