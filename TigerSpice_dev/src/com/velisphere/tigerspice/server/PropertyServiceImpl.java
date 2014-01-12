@@ -37,7 +37,7 @@ import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.users.UserService;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.EndpointData;
-import com.velisphere.tigerspice.shared.UnusedFolderPropertyData;
+
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.UserData;
 

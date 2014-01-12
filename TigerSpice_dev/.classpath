@@ -4,39 +4,48 @@
 	<classpathentry kind="src" output="test-classes" path="test"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/commons-cli-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/commons-lang3-3.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/guava-12.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/jetty-continuation-7.6.1.v20120215.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/jetty-http-7.6.1.v20120215.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/jetty-io-7.6.1.v20120215.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/jetty-server-7.6.1.v20120215.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/jetty-util-7.6.1.v20120215.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/jline-2.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/jna.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/jsch-0.1.48.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/log4j-1.2.16.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/protobuf-java-2.4.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/servlet-api-2.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/slf4j-api-1.6.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/slf4j-nop-1.6.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/snappy-java-1.0.5-M3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/voltdb-3.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/zmq-2.1.11.jar"/>
 	<classpathentry kind="src" path=".apt_generated">
 		<attributes>
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/gxt-3.0.1-GPL/gxt-3.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/gxt-3.0.1-GPL/gxt-chart-3.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/gxt-3.0.1-GPL/gxt-legacy-3.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/gxt-3.0.1-GPL/uibinder-bridge-2.4.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/gwt-bootstrap-2.3.2.0-20131023.060834-44.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/gwt-links-1.4.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/gwt-incubator-20101117-r1766.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/gwt-dnd-3.2.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/jackson-databind-2.2.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/jackson-core-2.2.3.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/gwt-bootstrap-2.2.1.0.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/gwt-bootstrap-2.3.2.0-20131023.060834-44.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/gwt-dnd-3.2.3.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/gwt-incubator-20101117-r1766.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/gwt-links-1.4.2.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/gxt-3.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/gxt-chart-3.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/gxt-legacy-3.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/jackson-annotations-2.2.3.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/jackson-core-2.2.3.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/jackson-databind-2.2.1.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/java-json.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/uibinder-bridge-2.4.0.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/commons-cli-1.1.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/commons-io-1.2.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/junit.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/rabbitmq-client.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/rabbitmq-client-tests.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/commons-cli-1.2.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/commons-lang3-3.0.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/guava-12.0.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/jetty-continuation-7.6.1.v20120215.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/jetty-http-7.6.1.v20120215.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/jetty-io-7.6.1.v20120215.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/jetty-server-7.6.1.v20120215.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/jetty-util-7.6.1.v20120215.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/jline-2.10.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/jna.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/jsch-0.1.48.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/protobuf-java-2.4.1.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/servlet-api-2.5.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/slf4j-api-1.6.2.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/slf4j-nop-1.6.2.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/snappy-java-1.0.5-M3.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/voltdb-3.0.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/jars/voltdb/zmq-2.1.11.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
