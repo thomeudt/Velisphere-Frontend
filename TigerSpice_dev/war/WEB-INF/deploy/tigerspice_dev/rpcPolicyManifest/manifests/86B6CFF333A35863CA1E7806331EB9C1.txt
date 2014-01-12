@@ -1,0 +1,2 @@
+serviceClass: com.velisphere.tigerspice.client.spheres.SphereService
+path: 94FA9B9B7484BDEE9C068F83E814972A.gwt.rpc

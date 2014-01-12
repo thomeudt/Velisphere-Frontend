@@ -1,0 +1,2 @@
+serviceClass: com.velisphere.tigerspice.client.properties.PropertyService
+path: 587230D43736485B7991E04945018EDB.gwt.rpc

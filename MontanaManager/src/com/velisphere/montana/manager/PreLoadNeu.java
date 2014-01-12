@@ -12,8 +12,8 @@ public class PreLoadNeu {
 	         */
 	        org.voltdb.client.Client preLoader;
 	        preLoader = ClientFactory.createClient();
-	     // public static String volt_ip = "16.1.1.149"; // for local db
-	    	// public static String volt_ip = "ec2-54-200-208-195.us-west-2.compute.amazonaws.com"; // for aws db
+	        //public static String volt_ip = "16.1.1.149"; // for local db
+	    	//public static String volt_ip = "ec2-54-200-17-56.us-west-2.compute.amazonaws.com"; // for aws db
 	        
 	        preLoader.createConnection("16.1.1.149");
 
@@ -99,11 +99,11 @@ public class PreLoadNeu {
 	        
 	        System.out.println("Checks loaded");
 	        
-	        preLoader.callProcedure("MULTICHECK.insert", "MC1", "AND", "0", "0");
-	        preLoader.callProcedure("MULTICHECK.insert", "MC2", "AND", "0", "0");
-	        preLoader.callProcedure("MULTICHECK.insert", "MC3", "AND", "0", "0");
-	        preLoader.callProcedure("MULTICHECK.insert", "MC4", "AND", "0", "0");
-	        preLoader.callProcedure("MULTICHECK.insert", "MC5", "AND", "0", "0");
+	        preLoader.callProcedure("MULTICHECK.insert", "MC1", "AND", "0", "0", "Test 1");
+	        preLoader.callProcedure("MULTICHECK.insert", "MC2", "AND", "0", "0", "Test 2");
+	        preLoader.callProcedure("MULTICHECK.insert", "MC3", "AND", "0", "0", "Test 3");
+	        preLoader.callProcedure("MULTICHECK.insert", "MC4", "AND", "0", "0", "Test 4");
+	        preLoader.callProcedure("MULTICHECK.insert", "MC5", "AND", "0", "0", "Test 5");
 	        	        	        	 
 	        System.out.println("Multichecks loaded");
 	        
@@ -123,12 +123,12 @@ public class PreLoadNeu {
 	        System.out.println("Multichecks and Multichecks linked");
 	        
         
-	        preLoader.callProcedure("CHECKPATH.insert", "CP1"); // Checpath für Button 1 und 2gedrückt
-	        preLoader.callProcedure("CHECKPATH.insert", "CP2"); // Checkpath Button 3 und 4 gedrückt
-	        preLoader.callProcedure("CHECKPATH.insert", "CP3"); // Checkpath Button 5 gedrückt
-	        preLoader.callProcedure("CHECKPATH.insert", "CP4"); // Checkpath Button 1,2,3,4 gedrückt
-	        preLoader.callProcedure("CHECKPATH.insert", "CP5"); // Checkpath Button 1,2,3,4 gedrückt
-	        preLoader.callProcedure("CHECKPATH.insert", "CP6"); // Checkpath Button 1,2,3,4 gedrückt
+	        preLoader.callProcedure("CHECKPATH.insert", "CP1", "Dummy 1", ""); // Checpath für Button 1 und 2gedrückt
+	        preLoader.callProcedure("CHECKPATH.insert", "CP2", "Dummy 2", ""); // Checkpath Button 3 und 4 gedrückt
+	        preLoader.callProcedure("CHECKPATH.insert", "CP3", "Dummy 3", ""); // Checkpath Button 5 gedrückt
+	        preLoader.callProcedure("CHECKPATH.insert", "CP4", "Dummy 4", ""); // Checkpath Button 1,2,3,4 gedrückt
+	        preLoader.callProcedure("CHECKPATH.insert", "CP5", "Dummy 5", ""); // Checkpath Button 1,2,3,4 gedrückt
+	        preLoader.callProcedure("CHECKPATH.insert", "CP6", "Dummy 5", ""); // Checkpath Button 1,2,3,4 gedrückt
 	        
 	        System.out.println("Checkpaths loaded");
 

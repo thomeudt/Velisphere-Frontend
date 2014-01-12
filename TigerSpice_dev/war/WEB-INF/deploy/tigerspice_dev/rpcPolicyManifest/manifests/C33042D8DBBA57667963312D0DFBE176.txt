@@ -1,0 +1,2 @@
+serviceClass: com.velisphere.tigerspice.client.endpoints.EndpointService
+path: 8BB73AFA195965CB454A7F37F2ADFF61.gwt.rpc
