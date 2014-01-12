@@ -9,7 +9,6 @@
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/thorsten/jars/gwt-bootstrap-2.2.1.0.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/jars/gwt-bootstrap-2.3.2.0-20131023.060834-44.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/jars/gwt-dnd-3.2.3.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/jars/gwt-incubator-20101117-r1766.jar"/>
