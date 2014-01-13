@@ -45,9 +45,12 @@ public class CheckpathEditView extends Composite {
 	Breadcrumbs brdMain;
 	@UiField
 	PageHeader pghCheckpathName;
+	@UiField
+	Button btnSaveCheckpath;
 	NavLink bread0;
 	NavLink bread1;
 	NavLink bread2;
+	
 
 	private CheckPathServiceAsync rpcServiceCheckPath;
 	private TextBox checkpathChangeNameField;
@@ -73,7 +76,7 @@ public class CheckpathEditView extends Composite {
 		bread1 = new NavLink();
 		bread1.setText("Logic Designer");
 		brdMain.add(bread1);
-		
+		btnSaveCheckpath.setWidth("160px");
 		
 		
 		rpcServiceCheckPath.getCheckpathDetails(this.checkpathID, new AsyncCallback<CheckPathData>() {
