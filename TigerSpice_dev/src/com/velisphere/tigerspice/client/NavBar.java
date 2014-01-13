@@ -231,8 +231,6 @@ public class NavBar extends Composite implements HasText {
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			
 
-								// get all endpoints for user id in current
-								// session
 								sessionHandler.removeHandler();
 								txtUserName.setText(SessionHelper.getCurrentUserName());
 		}

@@ -49,7 +49,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			</b:Well>
 			</b:Column>
 				        
-			<b:Column size="9" offset="0">
+			<b:Column size="10" offset="0">
 		
 			    	
 			    
@@ -79,14 +79,14 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	    		</b:Row>
 			    	 	    	
 			    	<b:Row>
-				    <b:Column size="5" offset="0">
-						      	<b:Paragraph addStyleNames="smalltext">Check Explorer (incl. create new)</b:Paragraph>
+				    <b:Column size="2" offset="0">
+						      	<b:Paragraph addStyleNames="smalltext">Endpoint Check Explorer</b:Paragraph>
 						
 					</b:Column>
 					
-				    <b:Column size="4" offset="0">
+				    <b:Column size="8" offset="0">
 				    			    
-				    <b:Paragraph addStyleNames="smalltext">Drag your checks here to build your logic (always 1st layer MC!)</b:Paragraph>
+				    <b:Paragraph addStyleNames="smalltext">Logic Tree - Drag your checks here to build your logic (always 1st layer MC!)</b:Paragraph>
 			
 					</b:Column>
 			
@@ -96,15 +96,16 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 					    
 					    
 					    
-				    <b:Column size="5" offset="0">
+				    <b:Column size="2" offset="0">
 				    
-				   		<vsch:AllCheckListWidget />
+				        <vsch:ChecksByEndpointWidget />
+				   	
 				   		<b:Paragraph addStyleNames="smalltext">Action Explorer(by Endpoint, DragNDrop like Checks)</b:Paragraph>
 				     
 					</b:Column>
 					
 				    
-					<b:Column size="4" offset="0">
+					<b:Column size="8" offset="0">
 				    	<vsrl:CheckpathEditorWidget ui:field="wgtCheckpathEditor"/>
 				   
 				    

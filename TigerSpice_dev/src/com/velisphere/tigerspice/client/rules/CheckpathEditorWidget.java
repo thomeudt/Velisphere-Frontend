@@ -133,9 +133,9 @@ public class CheckpathEditorWidget extends Composite {
 		container.setBorders(false);
 		container.setScrollMode(ScrollSupport.ScrollMode.AUTO);
 		container.setHeight((int) 400);
-		container.setWidth((RootPanel.get().getOffsetWidth()) / 4);
+		container.setWidth((int) ((RootPanel.get().getOffsetWidth()) / 1.8));
 
-		DiagramController controller = new DiagramController(800,
+		DiagramController controller = new DiagramController(1200,
 				(int) 375);
 		controller.showGrid(true); // Display a background grid
 
