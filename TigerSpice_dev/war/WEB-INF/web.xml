@@ -127,6 +127,16 @@
     <url-pattern>/tigerspice_dev/voltCheckPath</url-pattern>
   </servlet-mapping>
 
+<servlet>
+    <servlet-name>actionServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.ActionServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>actionServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltAction</url-pattern>
+  </servlet-mapping>
+
 
 <servlet>
     <servlet-name>requestFactoryServlet</servlet-name>

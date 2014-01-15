@@ -18,6 +18,7 @@
 package com.velisphere.tigerspice.client.properties;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -33,5 +34,6 @@ public interface PropertyServiceAsync {
 	void getValueForEndpointProperty(String endpointID, String propertyID, AsyncCallback<String> callback);
 	void getPropertyClass(String propertyID, AsyncCallback<String> callback);
 	void getPropertyName(String propertyID, AsyncCallback<String> callback);
+	void getActorPropertiesForEndpointID(String endpointID, AsyncCallback<LinkedList<PropertyData>> callback);
 	
 }

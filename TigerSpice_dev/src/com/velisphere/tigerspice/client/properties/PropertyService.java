@@ -25,6 +25,7 @@ import java.util.HashSet;
 
 
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -43,6 +44,7 @@ public interface PropertyService extends RemoteService {
 	String getValueForEndpointProperty(String endpointID, String propertyID);
 	String getPropertyClass(String propertyID);
 	String getPropertyName(String propertyID);
+	LinkedList<PropertyData> getActorPropertiesForEndpointID(String endpointID);
 }
 
 

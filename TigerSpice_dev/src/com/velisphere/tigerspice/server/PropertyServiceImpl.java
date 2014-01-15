@@ -22,6 +22,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -336,6 +337,74 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 
 		return valueForEndpointProperty;
 
+	}
+
+	@Override
+	public LinkedList<PropertyData> getActorPropertiesForEndpointID(
+			String endpointID) {
+		
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		LinkedList<PropertyData> actPropertiesForEndpoint = new LinkedList<PropertyData>();
+		try {
+
+			final ClientResponse findAllProperties = voltCon.montanaClient
+					.callProcedure("UI_SelectActPropertiesForEndpoint",
+							endpointID);
+
+			final VoltTable findAllPropertiesResults[] = findAllProperties
+					.getResults();
+
+			VoltTable result = findAllPropertiesResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					PropertyData propertyData = new PropertyData();
+					propertyData.propertyId = result.getString("PROPERTYID");
+					propertyData.propertyName = result
+							.getString("PROPERTYNAME");
+					propertyData.propertyclassId = result
+							.getString("PROPERTYCLASSID");
+					propertyData.endpointclassId = result
+							.getString("ENDPOINTCLASSID");
+					
+					actPropertiesForEndpoint.add(propertyData);
+
+				}
+			}
+
+			//Collections.sort(propertiesForEndpointClass);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return actPropertiesForEndpoint;
+
+
+		
+		
+		
 	}
 
 

@@ -1,6 +1,10 @@
-package com.velisphere.tigerspice.client.actions;
+package com.velisphere.tigerspice.client.properties;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Vector;
 
 import com.github.gwtbootstrap.client.ui.Accordion;
@@ -28,26 +32,26 @@ import com.velisphere.tigerspice.client.helper.EventUtils;
 import com.velisphere.tigerspice.client.helper.SessionHelper;
 import com.velisphere.tigerspice.client.helper.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.helper.SessionVerifiedEventHandler;
-import com.velisphere.tigerspice.shared.CheckData;
+import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.EndpointData;
 
-public class ActionsByEndpointWidget extends Composite {
+public class ActorPropertiesByEndpointWidget extends Composite {
 
-	private CheckServiceAsync rpcServiceCheck;
+	private PropertyServiceAsync rpcServiceProperty;
 	private EndpointServiceAsync rpcServiceEndpoint;
 	private HandlerRegistration sessionHandler;
 	private String userID;
 	private Accordion accordion;
 	private AnimationLoading loadAnimation;
 	
-	public ActionsByEndpointWidget() {
+	public ActorPropertiesByEndpointWidget() {
 	
 		
 		
 	super();
 		
 	rpcServiceEndpoint = GWT.create(EndpointService.class);
-	rpcServiceCheck = GWT.create(CheckService.class);
+	rpcServiceProperty = GWT.create(PropertyService.class);
 	loadAnimation = new AnimationLoading();
 	
 	
@@ -87,7 +91,7 @@ public class ActionsByEndpointWidget extends Composite {
 
 		@Override
 		public void onSuccess(Vector<EndpointData> result) {
-			// TODO Auto-generated method stub
+			
 			loadAnimation.removeLoadAnimation();
 			Iterator<EndpointData> it = result.iterator();
 			while(it.hasNext()){
@@ -104,7 +108,8 @@ public class ActionsByEndpointWidget extends Composite {
 				}
 				endpoint.setHeading(shortName);
 				endpoint.setTitle(current.getName());
-				addChecksToEndpoint(endpoint, current.getId());
+				addActPropertiesToEndpoint(endpoint, current.getId());
+				
 				accordion.add(endpoint);
 			}
 			
@@ -115,10 +120,11 @@ public class ActionsByEndpointWidget extends Composite {
 	});
 	}
 	
-	private void addChecksToEndpoint(final AccordionGroup endpoint, String endpointID){
+	private void addActPropertiesToEndpoint(final AccordionGroup endpoint, String endpointID){
 
+		
 		loadAnimation.showLoadAnimation("Loading checks");
-		rpcServiceCheck.getChecksForEndpointID(endpointID, new AsyncCallback<Vector<CheckData>>(){
+		rpcServiceProperty.getActorPropertiesForEndpointID(endpointID, new AsyncCallback<LinkedList<PropertyData>>(){
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -127,16 +133,17 @@ public class ActionsByEndpointWidget extends Composite {
 			}
 
 			@Override
-			public void onSuccess(Vector<CheckData> result) {
+			public void onSuccess(LinkedList<PropertyData> result) {
 				// TODO Auto-generated method stub
 				loadAnimation.removeLoadAnimation();
-				Iterator<CheckData> it = result.iterator();
+				Iterator<PropertyData> it = result.iterator();
 				if (it.hasNext() == false){
-					endpoint.add(accordionRowBuilder("No checks available"));
+					Row row = accordionRowBuilder("this thing can't do anything");
+					endpoint.add(row);
 				}
 				while(it.hasNext()){
 					
-					CheckData current = it.next();
+					PropertyData current = it.next();
 					String shortName;
 					
 					if (current.getName().length() < 25){
@@ -146,12 +153,11 @@ public class ActionsByEndpointWidget extends Composite {
 						shortName = current.getName().substring(0, 20)+"(...)";
 					}
 					Row row = accordionRowBuilder(shortName);
-					setDragSource(row, current.getCheckId(), current.getName());
+					setDragSource(row, current.getId(), current.getName());
 					endpoint.add(row);
 
 				}
-				endpoint.add(accordionRowBuilder("Add New Check..."));
-				
+								
 			}
 			
 		});	
@@ -173,7 +179,7 @@ public class ActionsByEndpointWidget extends Composite {
 				+ "\">");
 		builder.appendHtmlConstant("Drag "
 				+ checkName
-				+ " into Checkpath");
+				+ " into Checkpath to create an action");
 		builder.appendHtmlConstant("</div>");
 		
 		DragSource source = new DragSource(
@@ -200,7 +206,7 @@ public class ActionsByEndpointWidget extends Composite {
 			
 
 		};
-		source.setGroup("firstlevel");
+		source.setGroup("actors");
 
 	}
 
