@@ -82,7 +82,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			    	 	    	
 			    	<b:Row>
 				    <b:Column size="2" offset="0">
-						      	<b:Paragraph addStyleNames="smalltext">Check Explorer</b:Paragraph>
+						      	<b:Paragraph addStyleNames="smalltext">Sensor Explorer</b:Paragraph>
 						
 					</b:Column>
 					
@@ -102,7 +102,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 				    
 				        <vsch:ChecksByEndpointWidget />
 				   	
-				   		<b:Paragraph addStyleNames="smalltext">Action Explorer</b:Paragraph>
+				   		<b:Paragraph addStyleNames="smalltext">Actor Explorer</b:Paragraph>
 				   		<vspr:ActorPropertiesByEndpointWidget />
 				     
 					</b:Column>

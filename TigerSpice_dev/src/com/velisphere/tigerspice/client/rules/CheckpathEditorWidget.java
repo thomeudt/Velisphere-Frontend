@@ -82,7 +82,8 @@ public class CheckpathEditorWidget extends Composite {
 	private List<SameLevelCheckpathObject> newMultichecks;
 	private List<SameLevelCheckpathObject> deletedMultichecks;
 	private Boolean additionalRebuildNeeded;
-	
+	private DiagramController controller; 
+
 
 	public CheckpathEditorWidget(String checkpathID) {
 
@@ -134,9 +135,7 @@ public class CheckpathEditorWidget extends Composite {
 		container.setScrollMode(ScrollSupport.ScrollMode.AUTO);
 		container.setHeight((int) 400);
 		container.setWidth((int) ((RootPanel.get().getOffsetWidth()) / 1.8));
-
-		DiagramController controller = new DiagramController(1200,
-				(int) 375);
+		controller = new DiagramController(1200,(int) 375);
 		controller.showGrid(true); // Display a background grid
 
 		container.add(controller.getView());
@@ -146,41 +145,7 @@ public class CheckpathEditorWidget extends Composite {
 		// draw first d&d target field if checkHashSet is empty
 
 		if (it.hasNext() == false) {
-
-			final SameLevelCheckpathObject addCheckField = new SameLevelCheckpathObject(
-					null, "empty status check", true, 0);
-			controller.addWidget(addCheckField, 10, 300);
-
-			DropTarget target = new DropTarget(addCheckField) {
-				@Override
-				protected void onDragDrop(DndDropEvent event) {
-					super.onDragDrop(event);
-
-					// do the drag and drop visual action
-
-					DragobjectContainer dragAccordion = (DragobjectContainer) event
-							.getData();
-
-					addCheckField.setText(dragAccordion.checkName);
-					addCheckField.setCheckID(dragAccordion.checkID);
-					checkHashSet.add(addCheckField);
-
-					SameLevelCheckpathObject addNextLevelField = new SameLevelCheckpathObject(
-							null, "empty logic check", true, 1);
-
-					// also add an entire multicheck column
-					MulticheckColumn<SameLevelCheckpathObject> multicheckList = new MulticheckColumn<SameLevelCheckpathObject>(
-							true);
-					multicheckList.add(addNextLevelField);
-					multicheckColumns.add(multicheckList);
-					rebuildCheckpathDiagram();
-
-				}
-
-			};
-			target.setGroup("firstlevel");
-			target.setOverStyle("drag-ok");
-
+			drawInitialCheckTarget();
 		}
 
 		// draw the first level - "checks" - as the foundation layer by reading
@@ -192,6 +157,8 @@ public class CheckpathEditorWidget extends Composite {
 			final SameLevelCheckpathObject currentObject = it.next();
 
 			addDragSource(currentObject);
+			addDndTargetForAction(currentObject);
+			
 			
 			
 			controller.addWidget(currentObject, xpos, 320);
@@ -875,6 +842,93 @@ public class CheckpathEditorWidget extends Composite {
 		}
 		}
 
+	private void drawInitialCheckTarget(){
+
+		final SameLevelCheckpathObject addCheckField = new SameLevelCheckpathObject(
+				null, "empty sensor check", true, 0);
+		controller.addWidget(addCheckField, 10, 300);
+
+		// define dnd target for checks
+		
+		DropTarget checkTarget = new DropTarget(addCheckField) {
+			@Override
+			protected void onDragDrop(DndDropEvent event) {
+				super.onDragDrop(event);
+
+				// do the drag and drop visual action
+
+				DragobjectContainer dragAccordion = (DragobjectContainer) event
+						.getData();
+
+				addCheckField.setText(dragAccordion.checkName);
+				addCheckField.setCheckID(dragAccordion.checkID);
+				addCheckField.empty = false;
+				checkHashSet.add(addCheckField);
+
+				SameLevelCheckpathObject addNextLevelField = new SameLevelCheckpathObject(
+						null, "empty logic check", true, 1);
+
+				// also add an entire multicheck column
+				MulticheckColumn<SameLevelCheckpathObject> multicheckList = new MulticheckColumn<SameLevelCheckpathObject>(
+						true);
+				multicheckList.add(addNextLevelField);
+				multicheckColumns.add(multicheckList);
+				rebuildCheckpathDiagram();
+
+			}
+
+		};
+		checkTarget.setGroup("firstlevel");
+		checkTarget.setOverStyle("drag-ok");
+		
+		
+	}
+	
+
+	private void addDndTargetForAction(SameLevelCheckpathObject currentObject)
+	{
+	
+	// define dnd target for actions, but only if target field is not empty
+		
+	DropTarget actionTarget = new DropTarget(currentObject) {
+		@Override
+		protected void onDragDrop(DndDropEvent event) {
+			super.onDragDrop(event);
+			
+			System.out.println("Dropped action!");
+
+			// do the drag and drop visual action
+
+			/*
+			DragobjectContainer dragAccordion = (DragobjectContainer) event
+					.getData();
+
+			addCheckField.setText(dragAccordion.checkName);
+			addCheckField.setCheckID(dragAccordion.checkID);
+			checkHashSet.add(addCheckField);
+
+			SameLevelCheckpathObject addNextLevelField = new SameLevelCheckpathObject(
+					null, "empty logic check", true, 1);
+
+			
+			// also add an entire multicheck column
+			
+			MulticheckColumn<SameLevelCheckpathObject> multicheckList = new MulticheckColumn<SameLevelCheckpathObject>(
+					true);
+			multicheckList.add(addNextLevelField);
+			multicheckColumns.add(multicheckList);
+			rebuildCheckpathDiagram();
+			*/
+
+		}
+
+	};
+	actionTarget.setGroup("actors");
+	actionTarget.setOverStyle("drag-ok");
+
+	}
+	
+	
 	private void showLoadAnimation(AnimationLoading animationLoading) {
 		RootPanel rootPanel = RootPanel.get("main");
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
