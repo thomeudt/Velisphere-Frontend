@@ -123,7 +123,7 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 	private void addActPropertiesToEndpoint(final AccordionGroup endpoint, String endpointID){
 
 		
-		loadAnimation.showLoadAnimation("Loading checks");
+		loadAnimation.showLoadAnimation("Loading actors");
 		rpcServiceProperty.getActorPropertiesForEndpointID(endpointID, new AsyncCallback<LinkedList<PropertyData>>(){
 
 			@Override

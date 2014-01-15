@@ -119,7 +119,7 @@ public class ChecksByEndpointWidget extends Composite {
 	
 	private void addChecksToEndpoint(final AccordionGroup endpoint, String endpointID){
 
-		loadAnimation.showLoadAnimation("Loading checks");
+		loadAnimation.showLoadAnimation("Loading sensors");
 		rpcServiceCheck.getChecksForEndpointID(endpointID, new AsyncCallback<Vector<CheckData>>(){
 
 			@Override

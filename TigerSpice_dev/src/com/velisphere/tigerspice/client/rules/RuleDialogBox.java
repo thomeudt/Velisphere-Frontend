@@ -36,7 +36,7 @@ import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 
-public class MulticheckDialogBox extends PopupPanel {
+public class RuleDialogBox extends PopupPanel {
 
 	@UiField
 	ListBox lstLinkedChecksID;
@@ -45,7 +45,7 @@ public class MulticheckDialogBox extends PopupPanel {
 	@UiField
 	Button btnSave;
 	@UiField
-	TextBox txtRuleTriggered;
+	TextBox txtManualValue;
 	@UiField
 	TextBox txtMulticheckTitle;
 	@UiField
@@ -70,10 +70,10 @@ public class MulticheckDialogBox extends PopupPanel {
 			.create(CheckEditorDialogBoxUiBinder.class);
 
 	interface CheckEditorDialogBoxUiBinder extends
-			UiBinder<Widget, MulticheckDialogBox> {
+			UiBinder<Widget, RuleDialogBox> {
 	}
 
-	public MulticheckDialogBox() {
+	public RuleDialogBox() {
 		
 		
 		setWidget(uiBinder.createAndBindUi(this));
@@ -108,7 +108,7 @@ public class MulticheckDialogBox extends PopupPanel {
 	@UiHandler("btnSave")
 	void saveNewCheck (ClickEvent event) {
 		this.multicheckTitle = this.txtMulticheckTitle.getText();
-		this.ruleID = this.txtRuleTriggered.getText();
+		this.ruleID = this.txtManualValue.getText();
 		this.combination = this.lstCombination.getValue();
 		this.hide();		
 	}

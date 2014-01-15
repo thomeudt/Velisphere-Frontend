@@ -897,28 +897,22 @@ public class CheckpathEditorWidget extends Composite {
 			
 			System.out.println("Dropped action!");
 
-			// do the drag and drop visual action
+			final RuleDialogBox ruleNewDialogBox = new RuleDialogBox();
 
-			/*
-			DragobjectContainer dragAccordion = (DragobjectContainer) event
-					.getData();
+			ruleNewDialogBox.setModal(true);
+			ruleNewDialogBox.setAutoHideEnabled(true);
 
-			addCheckField.setText(dragAccordion.checkName);
-			addCheckField.setCheckID(dragAccordion.checkID);
-			checkHashSet.add(addCheckField);
+			ruleNewDialogBox.setAnimationEnabled(true);
 
-			SameLevelCheckpathObject addNextLevelField = new SameLevelCheckpathObject(
-					null, "empty logic check", true, 1);
+			ruleNewDialogBox.setPopupPosition(
+					(RootPanel.get().getOffsetWidth()) / 3,
+					(RootPanel.get().getOffsetHeight()) / 4);
+			ruleNewDialogBox.show();
+			ruleNewDialogBox.addStyleName("ontop");
 
 			
-			// also add an entire multicheck column
-			
-			MulticheckColumn<SameLevelCheckpathObject> multicheckList = new MulticheckColumn<SameLevelCheckpathObject>(
-					true);
-			multicheckList.add(addNextLevelField);
-			multicheckColumns.add(multicheckList);
 			rebuildCheckpathDiagram();
-			*/
+
 
 		}
 
