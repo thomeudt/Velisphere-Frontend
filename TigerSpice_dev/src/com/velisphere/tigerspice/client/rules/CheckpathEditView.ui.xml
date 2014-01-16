@@ -40,18 +40,9 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 		
 	    <b:Row>
 				        
-	        <b:Column size="2" offset="0">
-			<b:Well>
-			<b:Strong ui:field="pgpInformHeader">Rules Information</b:Strong>
-			<b:Paragraph addStyleNames="smalltext">Type:</b:Paragraph>
-			<b:Paragraph addStyleNames="smalltext" ui:field="pgpEndpointClassName">loading...</b:Paragraph>
-			<b:Paragraph addStyleNames="smalltext">Last triggered:</b:Paragraph>
-			<b:Paragraph addStyleNames="smalltext">Total times triggered:</b:Paragraph>
-			<b:Paragraph addStyleNames="smalltext">Logic Simulator:</b:Paragraph>
-			</b:Well>
-			</b:Column>
+	        
 				        
-			<b:Column size="10" offset="0">
+			<b:Column size="12" offset="0">
 		
 			    	
 			    

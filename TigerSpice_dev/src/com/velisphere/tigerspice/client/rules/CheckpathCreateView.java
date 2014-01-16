@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.TextBox;
@@ -35,6 +36,8 @@ public class CheckpathCreateView extends Composite {
 	Breadcrumbs brdMain;
 	@UiField
 	TextBox txtCheckpathTitle;
+	@UiField
+	Button btnSaveCheckpath;
 	NavLink bread0;
 	NavLink bread1;
 	NavLink bread2;
@@ -62,6 +65,7 @@ public class CheckpathCreateView extends Composite {
 		bread2 = new NavLink();
 		bread2.setText("Create New Logic Design");
 		brdMain.add(bread2);
+		btnSaveCheckpath.setWidth("160px");
 
 	}
 

@@ -136,9 +136,11 @@ public class CheckpathEditorWidget extends Composite {
 		container.setBorders(false);
 		container.setScrollMode(ScrollSupport.ScrollMode.AUTO);
 		container.setHeight((int) 400);
-		container.setWidth((int) ((RootPanel.get().getOffsetWidth()) / 1.8));
+		container.setWidth((int) ((RootPanel.get().getOffsetWidth()) / 1.74));
 		controller = new DiagramController(1200,(int) 375);
 		controller.showGrid(true); // Display a background grid
+		controller.setAllowingUserInteractions(false); // prevent user from dragging the lines manually
+		
 
 		container.add(controller.getView());
 
@@ -759,10 +761,9 @@ public class CheckpathEditorWidget extends Composite {
 								// for baselayer checks
 								
 								// build hashmap to be able to look up baselayer checks by checkid
+						
 								
-								
-								
-								
+				
 								
 								Iterator<String> childChecksIT = field.childChecks.iterator();
 								
