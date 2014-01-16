@@ -11,11 +11,15 @@ import com.github.gwtbootstrap.client.ui.Accordion;
 import com.github.gwtbootstrap.client.ui.AccordionGroup;
 import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.Row;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.dom.ScrollSupport;
 import com.sencha.gxt.dnd.core.client.DndDragStartEvent;
 import com.sencha.gxt.dnd.core.client.DragSource;
@@ -32,6 +36,7 @@ import com.velisphere.tigerspice.client.helper.EventUtils;
 import com.velisphere.tigerspice.client.helper.SessionHelper;
 import com.velisphere.tigerspice.client.helper.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.helper.SessionVerifiedEventHandler;
+import com.velisphere.tigerspice.client.images.Images;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.EndpointData;
 
@@ -140,6 +145,10 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 				if (it.hasNext() == false){
 					Row row = accordionRowBuilder("this thing can't do anything");
 					endpoint.add(row);
+					endpoint.setBaseIcon(IconType.BAN_CIRCLE);
+					// hide endpoints that do not contain actors
+					endpoint.setVisible(false);
+					
 				}
 				while(it.hasNext()){
 					

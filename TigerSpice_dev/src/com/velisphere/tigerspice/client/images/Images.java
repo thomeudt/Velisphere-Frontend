@@ -47,4 +47,7 @@ ImageResource or();
 @Source("action.png")
 ImageResource action();
 
+@Source("blocked.png")
+ImageResource blocked();
+
 }
