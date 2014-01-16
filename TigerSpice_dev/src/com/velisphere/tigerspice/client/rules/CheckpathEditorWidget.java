@@ -28,6 +28,7 @@ import java.util.List;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.github.gwtbootstrap.client.ui.Accordion;
 import com.github.gwtbootstrap.client.ui.Icon;
+import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.shared.GWT;
@@ -58,6 +59,7 @@ import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DragobjectContainer;
 import com.velisphere.tigerspice.client.helper.UuidService;
 import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
+import com.velisphere.tigerspice.client.images.Images;
 import com.velisphere.tigerspice.shared.CheckPathObjectColumn;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
 import com.velisphere.tigerspice.shared.CheckPathObjectTree;
@@ -291,14 +293,35 @@ public class CheckpathEditorWidget extends Composite {
 			}
 			
 			currentObject.childMultichecks.removeAll(childMultichecksToRemove);
-			
+						
 			//now draw object
-
+			
+			
+			
+			
+			
+			
 			System.out.println(currentObject.text + " is multicheck: "
 					+ currentObject.isMulticheck);
+
 			controller.addWidget(currentObject, 10 + columnElement * 120,
 					250 - yposdelta);
+			
+			// add icon for combination type
+			
+			if (currentObject.combination.equals("AND")){
+				currentObject.showAndIcon();
+				controller.addWidget(currentObject.andIcon, 10 + columnElement * 120, 250 - yposdelta - 17);	
+			}
+			
+			if (currentObject.combination.equals("OR")){
+				currentObject.showOrIcon();
+				controller.addWidget(currentObject.orIcon, 10 + columnElement * 120, 250 - yposdelta - 17);	
+			}
+					
+			
 			yposdelta = yposdelta + 70;
+			
 
 			DropTarget target = new DropTarget(currentObject) {
 				@Override
@@ -373,6 +396,9 @@ public class CheckpathEditorWidget extends Composite {
 										currentObject
 												.setCombination(multicheckNewDialogBox.combination);
 										
+										 
+										
+										
 										setEditClickHandler(currentObject, multicheckLinkedList);
 										
 										if (dragAccordion.isMulticheck) {
@@ -394,7 +420,8 @@ public class CheckpathEditorWidget extends Composite {
 														+ currentObject.childMultichecks);
 										System.out.println("Child Checks: "
 												+ currentObject.childChecks);
-
+										
+										
 										rebuildCheckpathDiagram();
 									}
 
@@ -449,7 +476,14 @@ public class CheckpathEditorWidget extends Composite {
 			target.setGroup("multicheck");
 			target.setOverStyle("drag-ok");
 
+			// determine if AND or OR icons need to be displayed, does not work yet
+		
+
+						
+
 		}
+		
+		
 
 		return checkColumn;
 
@@ -505,6 +539,9 @@ public class CheckpathEditorWidget extends Composite {
 					//do save update actions
 					currentCheck.setText(multicheckDialogBox.multicheckTitle); 
 					currentCheck.combination = multicheckDialogBox.combination;
+					
+					
+					
 					updatedMultichecks.add(currentCheck);
 					rebuildCheckpathDiagram();	
 				}
@@ -885,7 +922,7 @@ public class CheckpathEditorWidget extends Composite {
 	}
 	
 
-	private void addDndTargetForAction(SameLevelCheckpathObject currentObject)
+	private void addDndTargetForAction(final SameLevelCheckpathObject currentObject)
 	{
 	
 	// define dnd target for actions, but only if target field is not empty
@@ -910,6 +947,7 @@ public class CheckpathEditorWidget extends Composite {
 			ruleNewDialogBox.show();
 			ruleNewDialogBox.addStyleName("ontop");
 
+			currentObject.showActionIcon();
 			
 			rebuildCheckpathDiagram();
 

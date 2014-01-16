@@ -3,9 +3,12 @@ package com.velisphere.tigerspice.client.rules;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.github.gwtbootstrap.client.ui.Image;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.velisphere.tigerspice.client.images.Images;
 
 public class SameLevelCheckpathObject extends VerticalLayoutContainer implements IsSerializable {
 
@@ -17,9 +20,13 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 	//HashSet<String> parentMultichecks;
 	public HashSet<SameLevelCheckpathObject> childMultichecks;
 	public HashSet<SameLevelCheckpathObject> childChecks;
-	public String combination;
+	public String combination = "notSet";
 	public String ruleID;
 	public Boolean isMulticheck;
+	public Image actionIcon;
+	public Image andIcon;
+	public Image orIcon;
+	public Hyperlink linkActionIcon;
 	
 	private SameLevelCheckpathObject(){}
 	
@@ -49,7 +56,23 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		}
 		ancTextField.setHref("#");
 		this.add(ancTextField);
+		actionIcon = new Image();
+		actionIcon.setResource(Images.INSTANCE.paperplane());
+		this.add(actionIcon);
+		actionIcon.setVisible(false);
+		linkActionIcon = new Hyperlink();
+		linkActionIcon.getElement().appendChild(actionIcon.getElement());
+		this.add(linkActionIcon);
 		
+		andIcon = new Image();
+		andIcon.setResource(Images.INSTANCE.clock());
+		this.add(andIcon);
+		andIcon.setVisible(false);
+
+		orIcon = new Image();
+		orIcon.setResource(Images.INSTANCE.eye());
+		this.add(andIcon);
+		orIcon.setVisible(false);
 				
 	}
 	
@@ -98,6 +121,43 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 	
 	public void addChildCheck (SameLevelCheckpathObject childCheck){
 		this.childChecks.add(childCheck);
+		
+	}
+	
+	public void showActionIcon (){
+		this.actionIcon.setVisible(true);
+		
+	}
+	
+	public void hideActionIcon (){
+		this.actionIcon.setVisible(false);
+		
+	}
+	
+	public void showAndIcon (){
+		this.andIcon.setVisible(true);
+		
+		
+	}
+	
+	public void showOrIcon (){
+		this.orIcon.setVisible(true);
+		
+		
+	}
+	
+	public void hideAndIcon (){
+		this.andIcon.setVisible(false);
+		
+	}
+	
+	public void hideOrIcon (){
+		this.orIcon.setVisible(false);
+		
+	}
+	
+	public Image getAndIcon (){
+		return this.andIcon;
 		
 	}
 	
