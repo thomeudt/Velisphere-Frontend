@@ -154,6 +154,7 @@ public class CheckpathEditorWidget extends Composite {
 		// the data stored in the checkHashSet
 
 		int xpos = 10;
+		int ypos = 320;
 
 		while (it.hasNext()) {
 			final SameLevelCheckpathObject currentObject = it.next();
@@ -161,10 +162,19 @@ public class CheckpathEditorWidget extends Composite {
 			addDragSource(currentObject);
 			addDndTargetForAction(currentObject);
 			
+			controller.addWidget(currentObject, xpos, ypos);
 			
+			// add icon for action loaded checks, for now just move into position
 			
-			controller.addWidget(currentObject, xpos, 320);
+			controller.addWidget(currentObject.actionIcon, xpos+83 , ypos - 17);
+			
+			// increment horizontal positon
+			
 			xpos = xpos + 120;
+			
+				
+			
+
 
 			// if no more items are left in the check hashset, draw a new drag
 			// target box as the last step to allow for adding a new check to
@@ -662,6 +672,7 @@ public class CheckpathEditorWidget extends Composite {
 								CheckPathObjectData field = cIT.next();
 								System.out.println("Field retrieved: "+ field.text+ "with ID "+ field.checkId);
 								SameLevelCheckpathObject newMulticheck = new SameLevelCheckpathObject(field.checkId , field.text, field.empty, field.level);
+								newMulticheck.combination = field.combination;
 								System.out.println("Checkpathobject created: "+  newMulticheck.text + "with ID "+ newMulticheck.checkId);
 								newMulticheck.isMulticheck = true;
 								

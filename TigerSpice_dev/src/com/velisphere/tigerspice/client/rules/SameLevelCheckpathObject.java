@@ -57,7 +57,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		ancTextField.setHref("#");
 		this.add(ancTextField);
 		actionIcon = new Image();
-		actionIcon.setResource(Images.INSTANCE.paperplane());
+		actionIcon.setResource(Images.INSTANCE.action());
 		this.add(actionIcon);
 		actionIcon.setVisible(false);
 		linkActionIcon = new Hyperlink();
@@ -65,12 +65,12 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		this.add(linkActionIcon);
 		
 		andIcon = new Image();
-		andIcon.setResource(Images.INSTANCE.clock());
+		andIcon.setResource(Images.INSTANCE.and());
 		this.add(andIcon);
 		andIcon.setVisible(false);
 
 		orIcon = new Image();
-		orIcon.setResource(Images.INSTANCE.eye());
+		orIcon.setResource(Images.INSTANCE.or());
 		this.add(andIcon);
 		orIcon.setVisible(false);
 				

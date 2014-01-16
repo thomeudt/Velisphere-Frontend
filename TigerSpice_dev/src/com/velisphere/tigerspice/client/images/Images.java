@@ -38,6 +38,13 @@ ImageResource fourSpheres();
 @Source("big_arrow.png")
 ImageResource big_arrow();
 
+@Source("and.png")
+ImageResource and();
 
+@Source("or.png")
+ImageResource or();
+
+@Source("action.png")
+ImageResource action();
 
 }
