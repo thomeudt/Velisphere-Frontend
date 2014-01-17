@@ -362,6 +362,26 @@ public class CheckpathCreateView extends Composite {
 				}
 				System.out.println("Gesamtobject:" + allColumnsObject);
 
+				// add baselayer check to checkpath object tree before generating json
+				
+					// first, create a linked list of CheckpathObjectData Objects that contain the data of the base layer
+					
+					LinkedList<CheckPathObjectData> baseLayer = new LinkedList<CheckPathObjectData>();
+					Iterator<SameLevelCheckpathObject> baseIt = checkpathHashset.iterator();
+					while (baseIt.hasNext()){
+						CheckPathObjectData cpdItem = new CheckPathObjectData();
+						SameLevelCheckpathObject cpItem = baseIt.next();
+						cpdItem.checkId = cpItem.checkId;
+						cpdItem.empty = cpItem.empty;
+						cpdItem.text = cpItem.text;
+						baseLayer.add(cpdItem);
+						
+					}
+				
+				allColumnsObject.baseLayer.addAll(baseLayer);
+				
+				
+				
 				rpcServiceCheckPath.createJsonCheckpath(allColumnsObject,
 						new AsyncCallback<String>() {
 
