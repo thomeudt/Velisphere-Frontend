@@ -32,6 +32,7 @@ import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -50,9 +51,11 @@ import com.sencha.gxt.dnd.core.client.DndDragStartEvent;
 import com.sencha.gxt.dnd.core.client.DndDropEvent;
 import com.sencha.gxt.dnd.core.client.DragSource;
 import com.sencha.gxt.dnd.core.client.DropTarget;
+import com.sencha.gxt.fx.client.Draggable;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.velisphere.tigerspice.client.checks.CheckNewDialogBox;
 import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
@@ -164,6 +167,30 @@ public class CheckpathEditorWidget extends Composite {
 			addDragSource(currentObject);
 			addDndTargetForAction(currentObject);
 			
+			currentObject.ancTextField.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+
+					// rework this to show checkEditDialog
+					
+				CheckNewDialogBox checkNewDialogBox = new CheckNewDialogBox(
+						"", "",
+						"",
+						"");
+
+				checkNewDialogBox.setModal(true);
+				checkNewDialogBox.setAutoHideEnabled(true);
+
+				checkNewDialogBox.setAnimationEnabled(true);
+
+				checkNewDialogBox.setPopupPosition(
+						(RootPanel.get().getOffsetWidth()) / 3,
+						(RootPanel.get().getOffsetHeight()) / 4);
+				checkNewDialogBox.show();
+				checkNewDialogBox.addStyleName("ontop");
+			}
+				
+				});
+			
 			controller.addWidget(currentObject, xpos, ypos);
 			
 			// add icon for action loaded checks, for now just move into position
@@ -202,6 +229,28 @@ public class CheckpathEditorWidget extends Composite {
 						addCheckField.setText(dragAccordion.checkName);
 						addCheckField.setCheckID(dragAccordion.checkID);
 						checkHashSet.add(addCheckField);
+						
+						
+						// new and to be reworked - define the check parameters in checknewdialog
+						
+						CheckNewDialogBox checkNewDialogBox = new CheckNewDialogBox(
+								"", "",
+								"",
+								"");
+
+						checkNewDialogBox.setModal(true);
+						checkNewDialogBox.setAutoHideEnabled(true);
+
+						checkNewDialogBox.setAnimationEnabled(true);
+
+						checkNewDialogBox.setPopupPosition(
+								(RootPanel.get().getOffsetWidth()) / 3,
+								(RootPanel.get().getOffsetHeight()) / 4);
+						checkNewDialogBox.show();
+						checkNewDialogBox.addStyleName("ontop");
+						
+						
+
 
 						rebuildCheckpathDiagram();
 
@@ -516,6 +565,7 @@ public class CheckpathEditorWidget extends Composite {
 				(RootPanel.get().getOffsetHeight()) / 4);
 		multicheckDialogBox.show();
 		multicheckDialogBox.addStyleName("ontop");
+		
 		
 
 		HashMap<String, String> allChecks = new HashMap<String, String>();

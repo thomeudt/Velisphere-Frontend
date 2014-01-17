@@ -119,6 +119,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 	 				 
 			// display to console
 			jsonCheckpathObject = mapper.writeValueAsString(uiObject);
+			
 			System.out.println("JSON generiert: " + jsonCheckpathObject);
 	 
 		} catch (JsonGenerationException e) {
@@ -387,6 +388,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 			try {
 			        
 				uiObject = mapper.readValue(uiObjectJSON, CheckPathObjectTree.class);
+				
 			        System.out.println(uiObject);
 			    } catch (JsonGenerationException e) {
 			        System.out.println(e);
