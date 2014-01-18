@@ -70,19 +70,19 @@ public class PreLoadNeu {
 	        	        
 	        System.out.println("Property Classes loaded");
 	        
-	        preLoader.callProcedure("PROPERTY.insert", "PR1", "Switch 1", "PC4", "EPC3");
-	        preLoader.callProcedure("PROPERTY.insert", "PR2", "Switch 2", "PC4", "EPC3");
-	        preLoader.callProcedure("PROPERTY.insert", "PR3", "Switch 3", "PC4", "EPC3");
-	        preLoader.callProcedure("PROPERTY.insert", "PR4", "Switch 4", "PC4", "EPC3");
-	        preLoader.callProcedure("PROPERTY.insert", "PR5", "Switch 5", "PC4", "EPC3");
-	        preLoader.callProcedure("PROPERTY.insert", "PR6", "To Field", "PC1", "EPC1");
-	        preLoader.callProcedure("PROPERTY.insert", "PR7", "Send Content", "PC1", "EPC1");
-	        preLoader.callProcedure("PROPERTY.insert", "PR8", "Send Request", "PC1", "EPC1");
-	        preLoader.callProcedure("PROPERTY.insert", "PR9", "Receive Content", "PC1", "EPC1");
-	        preLoader.callProcedure("PROPERTY.insert", "PR10", "Measured Pressure", "PC8", "EPC2");
-	        preLoader.callProcedure("PROPERTY.insert", "PR11", "Measured Rotation", "PC7", "EPC2");
-	        preLoader.callProcedure("PROPERTY.insert", "PR12", "Measured Touch", "PC6", "EPC2");
-	        preLoader.callProcedure("PROPERTY.insert", "PR13", "Measured Brightness", "PC3", "EPC2");
+	        preLoader.callProcedure("PROPERTY.insert", "PR1", "Switch 1", "PC4", "EPC3", 0, 1, 0);
+	        preLoader.callProcedure("PROPERTY.insert", "PR2", "Switch 2", "PC4", "EPC3", 0, 1, 0);
+	        preLoader.callProcedure("PROPERTY.insert", "PR3", "Switch 3", "PC4", "EPC3", 0, 1, 0);
+	        preLoader.callProcedure("PROPERTY.insert", "PR4", "Switch 4", "PC4", "EPC3", 0, 1, 0);
+	        preLoader.callProcedure("PROPERTY.insert", "PR5", "Switch 5", "PC4", "EPC3", 0, 1, 0);
+	        preLoader.callProcedure("PROPERTY.insert", "PR6", "To Field", "PC1", "EPC1", 0, 1, 0);
+	        preLoader.callProcedure("PROPERTY.insert", "PR7", "Send Content", "PC1", "EPC1", 1, 0, 0);
+	        preLoader.callProcedure("PROPERTY.insert", "PR8", "Send Request", "PC1", "EPC1", 1, 0, 0);
+	        preLoader.callProcedure("PROPERTY.insert", "PR9", "Receive Content", "PC1", "EPC1", 1, 0, 0);
+	        preLoader.callProcedure("PROPERTY.insert", "PR10", "Measured Pressure", "PC8", "EPC2", 1, 0, 0);
+	        preLoader.callProcedure("PROPERTY.insert", "PR11", "Measured Rotation", "PC7", "EPC2", 1, 0, 0);
+	        preLoader.callProcedure("PROPERTY.insert", "PR12", "Measured Touch", "PC6", "EPC2", 1, 0, 0);
+	        preLoader.callProcedure("PROPERTY.insert", "PR13", "Measured Brightness", "PC3", "EPC2", 1, 0, 0);
 	        	        	        
 	        System.out.println("Properties loaded");
 	        
