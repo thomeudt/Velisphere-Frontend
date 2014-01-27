@@ -118,6 +118,8 @@ public class CheckpathEditorWidget extends Composite {
 
 		multicheckColumns = new LinkedList<MulticheckColumn<SameLevelCheckpathObject>>();
 
+		// load checkpath from database if a checkpath id is provided (open existing)
+		
 		if (this.checkpathID != null) {
 			loadCheckpathJSON(this.checkpathID);
 		}
@@ -673,7 +675,7 @@ public class CheckpathEditorWidget extends Composite {
 
 	}
 
-	private void loadCheckpathJSON(String checkpathId)
+	private void loadCheckpathJSON(final String checkpathId)
 	{
 		
 		final AnimationLoading loading = new AnimationLoading();
@@ -725,6 +727,7 @@ public class CheckpathEditorWidget extends Composite {
 								System.out.println("Field retrieved: "+ field.text+ "with ID "+ field.checkId);
 								SameLevelCheckpathObject newMulticheck = new SameLevelCheckpathObject(field.checkId , field.text, field.empty, field.level);
 								newMulticheck.combination = field.combination;
+								newMulticheck.checkpathID = checkpathId;
 								System.out.println("Checkpathobject created: "+  newMulticheck.text + "with ID "+ newMulticheck.checkId);
 								newMulticheck.isMulticheck = true;
 								
@@ -852,6 +855,7 @@ public class CheckpathEditorWidget extends Composite {
 															
 															System.out.println("LINKING CHILDEN: "+ childCheckID);
 															SameLevelCheckpathObject childCheckObject = checkLookup.get(childCheckID);
+															
 															objectToUpdate.childChecks.add(childCheckObject);
 															childrenAlreadyLinked.add(childCheckID);
 															System.out.println("HASHSET: " + checkHashSet);
@@ -861,6 +865,7 @@ public class CheckpathEditorWidget extends Composite {
 															
 															SameLevelCheckpathObject childCheckObject = new SameLevelCheckpathObject(childCheckID, result, true, 0);
 															checkLookup.put(childCheckID, childCheckObject);
+															childCheckObject.checkpathID = checkpathId;
 															checkHashSet.add(childCheckObject);
 															objectToUpdate.childChecks.add(childCheckObject);
 															childrenAlreadyLinked.add(objectToUpdate.checkId+":"+childCheckID);

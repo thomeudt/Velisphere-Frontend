@@ -27,6 +27,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 	public Image andIcon;
 	public Image orIcon;
 	public Hyperlink linkActionIcon;
+	public String checkpathID;
 	
 	private SameLevelCheckpathObject(){}
 	
@@ -96,6 +97,11 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 	
 	public void setEmpty (Boolean empty){
 		this.empty = empty;
+		
+	}
+	
+	public void setCheckpathID (String checkpathID){
+		this.checkpathID = checkpathID;
 		
 	}
 	

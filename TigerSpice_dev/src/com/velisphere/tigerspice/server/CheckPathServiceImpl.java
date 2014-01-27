@@ -141,7 +141,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	
-	public String addNewMulticheck(String checkId, String operator, String multicheckName)
+	public String addNewMulticheck(String checkId, String operator, String multicheckName, String checkpathID)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -158,7 +158,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 
 		try {
 			voltCon.montanaClient.callProcedure("MULTICHECK.insert",
-					checkId, operator, 0, 0, multicheckName);
+					checkId, operator, 0, 0, multicheckName, checkpathID);
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

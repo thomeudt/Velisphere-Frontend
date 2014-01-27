@@ -97,10 +97,17 @@ public class CheckpathCreateView extends Composite {
 
 				// first, link all contained checks to checkpath
 				
-				// link multicheck to checkpath
+				
 				
 				LinkedHashSet<SameLevelCheckpathObject> checkpathHashset = wgtCheckpathEditor.checkHashSet;
 				
+				
+				/**
+				 * 
+				 * Not needed anymore, checkpath id now added to check itself
+				 * but this needs to be implemented with the addition of checks in the checkpath editor
+				 * 
+				 * */
 				Iterator<SameLevelCheckpathObject> checksIT = checkpathHashset.iterator();
 				while (checksIT.hasNext())
 				{
@@ -183,6 +190,7 @@ public class CheckpathCreateView extends Composite {
 									checkpathObject.checkId,
 									checkpathObject.combination,
 									checkpathObject.text,
+									checkPathId,
 									new AsyncCallback<String>() {
 
 										@Override
@@ -214,6 +222,11 @@ public class CheckpathCreateView extends Composite {
 									});
 
 							// link multicheck to checkpath
+			
+							/**
+							 * 
+							 * Not needed anymore, checkpathid added to multicheck itself
+							 * 
 							rpcServiceCheckPath.addNewCheckpathMulticheckLink(
 									checkPathId,
 									checkpathObject.checkId,
@@ -245,7 +258,7 @@ public class CheckpathCreateView extends Composite {
 
 									});
 
-							
+							*/
 							
 							Iterator<SameLevelCheckpathObject> mccIt = checkpathObject.childChecks
 									.iterator();
@@ -304,7 +317,9 @@ public class CheckpathCreateView extends Composite {
 							Iterator<SameLevelCheckpathObject> mcmcIt = checkpathObject.childMultichecks
 									.iterator();
 
+							
 							// write link to child multichecks to database
+														
 							while (mcmcIt.hasNext()) {
 								SameLevelCheckpathObject childMulticheck = mcmcIt
 										.next();
@@ -353,9 +368,11 @@ public class CheckpathCreateView extends Composite {
 
 												});
 							}
+							
 
 						}
 
+						
 						currentColumnObject.column.add(currentObjectData);
 					}
 					allColumnsObject.tree.add(currentColumnObject);

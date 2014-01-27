@@ -308,6 +308,7 @@ public class CheckpathEditView extends Composite {
 							checkpathObject.checkId,
 							checkpathObject.combination,
 							checkpathObject.text,
+							checkpathID,
 							new AsyncCallback<String>() {
 
 								@Override

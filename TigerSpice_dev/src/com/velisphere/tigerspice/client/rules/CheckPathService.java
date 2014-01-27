@@ -21,7 +21,7 @@ public interface CheckPathService extends RemoteService {
 		String addNewUiObject(CheckPathObjectData uiObject);
 		String createJsonCheckpath(CheckPathObjectTree uiObject);
 		CheckPathObjectTree getUiObjectJSONForCheckpathID(String checkpathID);
-		String addNewMulticheck(String checkId, String operator, String multicheckName);
+		String addNewMulticheck(String checkId, String operator, String multicheckName, String checkpathID);
 		String addNewMulticheckCheckLink(String multiCheckId, String checkId);
 		String addNewMulticheckMulticheckLink(String multicheckLId, String multicheckRId);
 		LinkedHashMap<String, String> getAllCheckpaths();

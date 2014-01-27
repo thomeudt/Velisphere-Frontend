@@ -114,6 +114,7 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 				endpoint.setHeading(shortName);
 				endpoint.setTitle(current.getName());
 				addActPropertiesToEndpoint(endpoint, current.getId());
+				System.out.println("momentane ID: " + current.getId());
 				
 				accordion.add(endpoint);
 			}
