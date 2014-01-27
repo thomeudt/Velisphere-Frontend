@@ -80,7 +80,8 @@ public class MessageInspect implements Runnable {
 
 				String EPID = forEvaluation.get("EPID");
 
-				BusinessLogicEngine.resetChecksForEndpoint(EPID);
+				// TODO RESETTING HAS BEEN MOVED TO MONTANA AND IS DONE ON CHECK LEVEL, NOT ENDPOINT LEVEL
+				// BusinessLogicEngine.resetChecksForEndpoint(EPID);
 
 				// System.out.println("**************************** IMDB CHECK INITIATED ************************************");
 
@@ -102,6 +103,9 @@ public class MessageInspect implements Runnable {
 							&& e.getKey() != "TIMESTAMP"
 							&& e.getKey() != "TYPE") {
 							triggeredRules.addAll(BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), (byte) 0));
+						
+							//BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), (byte) 0);
+						
 							LoggerEngine.writeEndpointLog(EPID, e.getKey(), e.getValue());
 							
 					}

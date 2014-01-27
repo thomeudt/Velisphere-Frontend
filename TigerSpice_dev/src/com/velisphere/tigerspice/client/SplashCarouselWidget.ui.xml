@@ -30,14 +30,17 @@
 				<img alt="" src="./images/canvas_hotel.png" />
 				<div class="carousel-caption">
 					<h4>
-						Automate and Manage your Real Estate Infrastructure. Powered by
-						VeliSphere.
+						VeliSphere Makes the Internet of Things Interactive.
 					</h4>
 					
 					<p>
-						VeliSphere allows to manage the technology aspect in your real estate
-						portfolio, improving efficiency, control and incredibly low
-						running cost.
+						The true inherent value of the internet of things
+						will only materialize once the 1:1 relationship 
+						between a device and the controlling app is overcome.
+					    Our objective is to drive user value by defining a direct link between connected devices to
+						allow for direct exchange of data and firing
+						of actions based on a universal, user defined logic.
+
 					</p>
 				</div>
 			</div>
@@ -45,13 +48,16 @@
 				<img alt="" src="http://lorempixel.com/1600/500/transport/1" />
 				<div class="carousel-caption">
 					<h4>
-						Ease Up Your Life and Protect the Environment with Traffic Management
-						Solutions. Powered by VeliSphere.
+						VeliSphere is Multi Protocol Capable.
 					</h4>
 					<p>
-						Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id
-						elit non mi porta gravida at eget metus. Nullam id dolor id nibh
-						ultricies vehicula ut id elit.
+						While the Internet of Things currently is in an 
+						early, pre-standard phase, it will also require
+						solutions for the integration of other, legacy
+						connectivity methods such as various bus-architectures.
+						Our goal is to provide gateways to various protocols and 
+						legacy systems whereever possible through web services (HTTP/ReST or MQ) or physical gateway devices.
+
 					</p>
 				</div>
 			</div>
@@ -59,13 +65,15 @@
 				<img alt="" src="http://lorempixel.com/1600/500/sports/3" />
 				<div class="carousel-caption">
 					<h4>
-						Turn your Supply Chain into a Real Time Growth Engine. Powered by
-						VeliSphere.
+						VeliSphere Enables Devices Virtualization.
 					</h4>
 					<p>
-						Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id
-						elit non mi porta gravida at eget metus. Nullam id dolor id nibh
-						ultricies vehicula ut id elit.
+						We will implement a virtualization layer on top of the physical device layer. Every physical device will have a virtual equivalent assigned, to
+						which all configuration and logic will be applied.
+
+						This principle will allow for easy replacement of failed devices just by reasigning the spare to the existing virtual 
+						device as well as for easy batch configuration of entire fleets of devices of the same device class.
+
 					</p>
 				</div>
 			</div>
