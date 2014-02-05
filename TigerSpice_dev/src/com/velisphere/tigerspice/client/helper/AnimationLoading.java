@@ -17,6 +17,7 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client.helper;
 
+import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.Strong;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
@@ -28,7 +29,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class AnimationLoading extends Composite {
 
-	@UiField Strong stgLoading;
+	@UiField Paragraph stgLoading;
 	
 	private static AnimationLoadingUiBinder uiBinder = GWT
 			.create(AnimationLoadingUiBinder.class);

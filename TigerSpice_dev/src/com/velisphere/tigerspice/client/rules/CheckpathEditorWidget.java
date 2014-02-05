@@ -710,10 +710,27 @@ public class CheckpathEditorWidget extends Composite {
 						// Multichecklookup is created to easily lookup multichecks in round two
 						
 						
+						// get baselayer
+						
+						final HashMap<String, SameLevelCheckpathObject> baseLayerMap = new HashMap<String, SameLevelCheckpathObject>();
+						
+						Iterator<CheckPathObjectData> bIT = result.baseLayer.iterator();
+						
+						while (bIT.hasNext()){
+							CheckPathObjectData baseElementData = bIT.next();
+							SameLevelCheckpathObject baseElement = new SameLevelCheckpathObject(baseElementData.checkId, baseElementData.text, baseElementData.empty, baseElementData.level);
+							baseLayerMap.put(baseElementData.checkId, baseElement);
+							checkHashSet.add(baseElement);
+							
+						}
+						
+						
+						// get columns
+						
 						HashMap<String, List<String>> childChecksForMulticheck = new HashMap<String, List<String>>();
 						HashMap<String, List<String>> childMultichecksForMulticheck = new HashMap<String, List<String>>();
 						HashMap<String, SameLevelCheckpathObject> multicheckLookup = new HashMap<String, SameLevelCheckpathObject>();
-						final HashMap<String, SameLevelCheckpathObject> checkLookup = new HashMap<String, SameLevelCheckpathObject>();
+						//final HashMap<String, SameLevelCheckpathObject> checkLookup = new HashMap<String, SameLevelCheckpathObject>();
 						
 						Iterator<CheckPathObjectColumn> rIT = result.tree.iterator();
 											
@@ -813,10 +830,8 @@ public class CheckpathEditorWidget extends Composite {
 								
 								// for baselayer checks
 								
-								// build hashmap to be able to look up baselayer checks by checkid
 						
-								
-				
+																
 								
 								Iterator<String> childChecksIT = field.childChecks.iterator();
 								
@@ -842,7 +857,7 @@ public class CheckpathEditorWidget extends Composite {
 												@Override
 												public void onSuccess(
 														String result) {
-													// add to chart
+												
 													
 													System.out.println("Already contains: " + objectToUpdate.checkId+":"+childCheckID);
 													
@@ -850,29 +865,16 @@ public class CheckpathEditorWidget extends Composite {
 													{
 														
 														
-														// add check element to graph only if it does not already exist
-														if (childrenAlreadyAdded.contains(childCheckID)){
+														// link to children
+														
 															
 															System.out.println("LINKING CHILDEN: "+ childCheckID);
-															SameLevelCheckpathObject childCheckObject = checkLookup.get(childCheckID);
+															SameLevelCheckpathObject childCheckObject = baseLayerMap.get(childCheckID);
 															
 															objectToUpdate.childChecks.add(childCheckObject);
 															childrenAlreadyLinked.add(childCheckID);
 															System.out.println("HASHSET: " + checkHashSet);
-														}
-														else
-														{	
-															
-															SameLevelCheckpathObject childCheckObject = new SameLevelCheckpathObject(childCheckID, result, true, 0);
-															checkLookup.put(childCheckID, childCheckObject);
-															childCheckObject.checkpathID = checkpathId;
-															checkHashSet.add(childCheckObject);
-															objectToUpdate.childChecks.add(childCheckObject);
-															childrenAlreadyLinked.add(objectToUpdate.checkId+":"+childCheckID);
-															childrenAlreadyAdded.add(childCheckID);
-															System.out.println("Adding check children for " + field.checkId + ": " + childCheckObject);
-														}
-														// add link between parent and children in all cases
+														
 														
 														
 														removeLoadAnimation(loading);
@@ -887,7 +889,7 @@ public class CheckpathEditorWidget extends Composite {
 							}
 						}
 						 
-						// rebuildCheckpathDiagram();
+						rebuildCheckpathDiagram();
 					}
 
 				});

@@ -12,6 +12,6 @@ public class TigerspiceConfigurator implements Configurator {
   }
 
   public boolean hasResponsiveDesign() {
-    return false;
+    return true;
   }
 }
