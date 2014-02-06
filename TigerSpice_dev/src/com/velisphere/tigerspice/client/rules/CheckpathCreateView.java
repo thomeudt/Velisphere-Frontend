@@ -281,6 +281,7 @@ public class CheckpathCreateView extends Composite {
 								rpcServiceCheckPath.addNewMulticheckCheckLink(
 										checkpathObject.checkId,
 										childCheck.checkId,
+										checkPathId,
 										new AsyncCallback<String>() {
 
 											@Override
@@ -336,6 +337,7 @@ public class CheckpathCreateView extends Composite {
 										.addNewMulticheckMulticheckLink(
 												checkpathObject.checkId,
 												childMulticheck.checkId,
+												checkPathId,
 												new AsyncCallback<String>() {
 
 													@Override

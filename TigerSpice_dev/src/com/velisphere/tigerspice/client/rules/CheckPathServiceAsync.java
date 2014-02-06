@@ -18,8 +18,8 @@ public interface CheckPathServiceAsync {
 	void getUiObjectJSONForCheckpathID(String checkpathID, AsyncCallback<CheckPathObjectTree> callback);
 	void createJsonCheckpath(CheckPathObjectTree uiObject, AsyncCallback<String> callback );
 	void addNewMulticheck(String checkId, String operator, String multicheckName, String checkpathID, AsyncCallback<String> callback );
-	void addNewMulticheckCheckLink(String multiCheckId, String checkId, AsyncCallback<String> callback );
-	void addNewMulticheckMulticheckLink(String multicheckLId, String multicheckRId, AsyncCallback<String> callback );
+	void addNewMulticheckCheckLink(String multiCheckId, String checkId, String checkPathId, AsyncCallback<String> callback );
+	void addNewMulticheckMulticheckLink(String multicheckLId, String multicheckRId, String checkPathId, AsyncCallback<String> callback );
 	void getAllCheckpaths(AsyncCallback<LinkedHashMap<String, String>> callback);
 	void getCheckpathDetails(String checkpathId, AsyncCallback<CheckPathData> callback);
 	void updateCheckpathName(String checkpathId, String checkpathName, AsyncCallback<String> callback );

@@ -1,6 +1,8 @@
 package com.velisphere.tigerspice.client.rules;
 
 import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
@@ -282,6 +284,26 @@ public class CheckpathEditView extends Composite {
 					allColumnsObject.tree.add(currentColumnObject);
 				}
 				
+				// add baselayer check to checkpath object tree before generating json
+				
+				// first, create a linked list of CheckpathObjectData Objects that contain the data of the base layer
+				LinkedHashSet<SameLevelCheckpathObject> checkpathHashset = wgtCheckpathEditor.checkHashSet;
+				
+				LinkedList<CheckPathObjectData> baseLayer = new LinkedList<CheckPathObjectData>();
+				Iterator<SameLevelCheckpathObject> baseIt = checkpathHashset.iterator();
+				while (baseIt.hasNext()){
+					CheckPathObjectData cpdItem = new CheckPathObjectData();
+					SameLevelCheckpathObject cpItem = baseIt.next();
+					cpdItem.checkId = cpItem.checkId;
+					cpdItem.empty = cpItem.empty;
+					cpdItem.text = cpItem.text;
+					baseLayer.add(cpdItem);
+					
+				}
+			
+			allColumnsObject.baseLayer.addAll(baseLayer);
+			
+				
 				// write to database
 				
 				
@@ -356,6 +378,7 @@ public class CheckpathEditView extends Composite {
 						rpcServiceCheckPath.addNewMulticheckCheckLink(
 								checkpathObject.checkId,
 								childCheck.checkId,
+								checkpathID,
 								new AsyncCallback<String>() {
 
 									@Override
@@ -405,6 +428,7 @@ public class CheckpathEditView extends Composite {
 						rpcServiceCheckPath.addNewMulticheckMulticheckLink(
 								checkpathObject.checkId,
 								childMulticheck.checkId,
+								checkpathID,
 								new AsyncCallback<String>() {
 
 									@Override
@@ -531,6 +555,7 @@ public class CheckpathEditView extends Composite {
 														rpcServiceCheckPath.addNewMulticheckMulticheckLink(
 																currentCheckpathObject.checkId,
 																childMulticheck.checkId,
+																checkpathID,
 																new AsyncCallback<String>() {
 
 																	@Override
@@ -609,6 +634,7 @@ public class CheckpathEditView extends Composite {
 														rpcServiceCheckPath.addNewMulticheckCheckLink(
 																currentCheckpathObject.checkId,
 																childCheck.checkId,
+																checkpathID,
 																new AsyncCallback<String>() {
 
 																	@Override
