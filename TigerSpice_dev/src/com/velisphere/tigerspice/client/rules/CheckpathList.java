@@ -12,6 +12,7 @@ import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -19,6 +20,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.users.LoginSuccess;
 
 public class CheckpathList extends Composite {
 
@@ -48,6 +50,16 @@ public class CheckpathList extends Composite {
 		bread1.setText("Logic Designer");
 		brdMain.add(bread1);
 		rpcServiceCheckPath = GWT.create(CheckPathService.class);
+		
+		bread0.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+
+				RootPanel.get("main").clear();
+				LoginSuccess loginSuccess = new LoginSuccess();
+				RootPanel.get("main").add(loginSuccess);
+
+			}
+		});
 		
 		// load existing checkpaths
 		

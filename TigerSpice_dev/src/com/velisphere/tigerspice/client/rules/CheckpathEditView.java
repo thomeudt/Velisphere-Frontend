@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
+import com.velisphere.tigerspice.client.users.LoginSuccess;
 import com.velisphere.tigerspice.shared.CheckPathData;
 import com.velisphere.tigerspice.shared.CheckPathObjectColumn;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
@@ -79,6 +80,30 @@ public class CheckpathEditView extends Composite {
 		bread1.setText("Logic Designer");
 		brdMain.add(bread1);
 		btnSaveCheckpath.setWidth("160px");
+		
+		
+		bread0.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+
+				RootPanel.get("main").clear();
+				LoginSuccess loginSuccess = new LoginSuccess();
+				RootPanel.get("main").add(loginSuccess);
+
+			}
+		});
+		
+		bread1.addClickHandler(
+				new ClickHandler(){
+					@Override
+					public void onClick(ClickEvent event){
+			
+						RootPanel mainPanel = RootPanel.get("main");
+						mainPanel.clear();
+						CheckpathList checkPathList = new CheckpathList(); 		
+						mainPanel.add(checkPathList);
+						
+					}
+				});
 		
 		
 		rpcServiceCheckPath.getCheckpathDetails(this.checkpathID, new AsyncCallback<CheckPathData>() {
