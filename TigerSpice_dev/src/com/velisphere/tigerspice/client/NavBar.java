@@ -45,6 +45,7 @@ import com.velisphere.tigerspice.client.helper.EventUtils;
 import com.velisphere.tigerspice.client.helper.SessionHelper;
 import com.velisphere.tigerspice.client.helper.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.helper.SessionVerifiedEventHandler;
+import com.velisphere.tigerspice.client.marketplace.MarketPlace;
 import com.velisphere.tigerspice.client.rules.CheckpathList;
 import com.velisphere.tigerspice.client.rules.CheckpathCreateView;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
@@ -178,9 +179,7 @@ public class NavBar extends Composite implements HasText {
 	
 		
 	}
-	
-	
-	
+		
 	
 	@UiHandler("btnAdmin")
 	void openAdmin (ClickEvent event) {
@@ -189,6 +188,22 @@ public class NavBar extends Composite implements HasText {
 		Overviewer overviewer = new Overviewer();
 		overviewer.onModuleLoad();
 	}
+
+	
+	@UiHandler("btnShop")
+	void openMarketplace (ClickEvent event) {
+		RootPanel mainPanel = RootPanel.get("main");
+		mainPanel.clear();
+		clearBandarole();
+		// CheckpathView ruleOverview = new CheckpathView(); 		
+		// mainPanel.add(ruleOverview);
+
+		MarketPlace marketPlace = new MarketPlace();
+		mainPanel.add(marketPlace);
+	
+		
+	}
+
 	
 	@UiHandler("btnLogout")
 	void logout (ClickEvent event) {

@@ -42,6 +42,15 @@ import com.velisphere.tigerspice.client.properties.PropertyList;
 import com.velisphere.tigerspice.client.users.LoginService;
 import com.velisphere.tigerspice.client.users.UserList;
 import com.velisphere.tigerspice.shared.UserData;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.maps.client.InfoWindowContent;
+import com.google.gwt.maps.client.MapWidget;
+import com.google.gwt.maps.client.Maps;
+import com.google.gwt.maps.client.control.LargeMapControl;
+import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.maps.client.overlay.Marker;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 public class Overviewer {
 
@@ -95,6 +104,7 @@ public class Overviewer {
 		PropertyList propertyList = new PropertyList();
 		mainPanel.add(propertyList);
 		
+				
 		removeLoadAnimation();
 
 	}
@@ -140,4 +150,28 @@ public class Overviewer {
 	}
 	
 
+	private void buildUi() {
+	    // Open a map centered on Cawker City, KS USA
+	    LatLng cawkerCity = LatLng.newInstance(39.509, -98.434);
+
+	    final MapWidget map = new MapWidget(cawkerCity, 2);
+	    map.setSize("100%", "100%");
+	    // Add some controls for the zoom level
+	    map.addControl(new LargeMapControl());
+
+	    // Add a marker
+	    map.addOverlay(new Marker(cawkerCity));
+
+	    // Add an info window to highlight a point of interest
+	    map.getInfoWindow().open(map.getCenter(),
+	        new InfoWindowContent("World's Largest Ball of Sisal Twine"));
+
+	    final DockLayoutPanel dock = new DockLayoutPanel(Unit.PX);
+	    dock.addNorth(map, 500);
+
+	    // Add the map to the HTML host page
+	    RootLayoutPanel.get().add(dock);
+	  }
+
+	
 }
