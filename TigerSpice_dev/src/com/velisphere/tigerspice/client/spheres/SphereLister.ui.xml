@@ -18,11 +18,9 @@
 	     <b:Breadcrumbs divider=">" ui:field="brdMain">
 		</b:Breadcrumbs>
 		<b:Row>
-			<b:Column size="1" offset="0">
-			    <b:Image resource="{res.fourSpheres}" />
-			</b:Column>
+			
 		
-		   	<b:Column size="11" offset="0">
+		   	<b:Column size="12" offset="0">
 				<b:PageHeader>Endpoint Manager</b:PageHeader>
 			</b:Column>
 		</b:Row>

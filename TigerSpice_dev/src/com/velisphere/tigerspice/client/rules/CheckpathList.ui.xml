@@ -29,9 +29,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 		</b:Breadcrumbs>
 	    
 	    <b:Row>
-			<b:Column size="1" offset="0">
-			    <b:Image url="./images/sphere_green.png" />
-			</b:Column>
+			
 			<b:Column size="11" offset="0">
 				<b:PageHeader ui:field="pghRuleName">Logic Designer</b:PageHeader>				
 			</b:Column>
@@ -44,7 +42,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 				        
 	       
 				        
-			<b:Column size="8" offset="1">
+			<b:Column size="8" offset="0">
 		
 				<b:Row>
 				
