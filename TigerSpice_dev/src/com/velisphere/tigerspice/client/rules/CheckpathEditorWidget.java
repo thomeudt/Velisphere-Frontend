@@ -86,6 +86,9 @@ public class CheckpathEditorWidget extends Composite {
 	private List<SameLevelCheckpathObject> updatedMultichecks;
 	private List<SameLevelCheckpathObject> newMultichecks;
 	private List<SameLevelCheckpathObject> deletedMultichecks;
+	private List<SameLevelCheckpathObject> updatedChecks;
+	private List<SameLevelCheckpathObject> newChecks;
+	private List<SameLevelCheckpathObject> deletedChecks;
 	private Boolean additionalRebuildNeeded;
 	private DiagramController controller; 
 
@@ -108,7 +111,12 @@ public class CheckpathEditorWidget extends Composite {
 		this.updatedMultichecks = new ArrayList<SameLevelCheckpathObject>();
 		this.newMultichecks = new ArrayList<SameLevelCheckpathObject>();
 		this.deletedMultichecks = new ArrayList<SameLevelCheckpathObject>();
+		this.updatedChecks = new ArrayList<SameLevelCheckpathObject>();
+		this.newChecks = new ArrayList<SameLevelCheckpathObject>();
+		this.deletedChecks = new ArrayList<SameLevelCheckpathObject>();
 
+		
+		
 		con = new FlowLayoutContainer();
 
 		initWidget(con);
@@ -153,15 +161,17 @@ public class CheckpathEditorWidget extends Composite {
 
 		// draw first d&d target field if checkHashSet is empty
 
+		int xpos = 10;
+		int ypos = 320;
+		
 		if (it.hasNext() == false) {
-			drawInitialCheckTarget();
+			drawCheckTarget(xpos, ypos);
 		}
 
 		// draw the first level - "checks" - as the foundation layer by reading
 		// the data stored in the checkHashSet
 
-		int xpos = 10;
-		int ypos = 320;
+		
 
 		while (it.hasNext()) {
 			final SameLevelCheckpathObject currentObject = it.next();
@@ -212,55 +222,7 @@ public class CheckpathEditorWidget extends Composite {
 			// the checkpath
 
 			if (it.hasNext() == false) {
-
-				final SameLevelCheckpathObject addCheckField = new SameLevelCheckpathObject(
-						null, "empty status check", true, 0);
-				// firstCheckRow.add(addCheckField);
-				controller.addWidget(addCheckField, xpos, 320);
-
-				DropTarget target = new DropTarget(addCheckField) {
-					@Override
-					protected void onDragDrop(DndDropEvent event) {
-						super.onDragDrop(event);
-
-						// do the drag and drop visual action
-
-						DragobjectContainer dragAccordion = (DragobjectContainer) event
-								.getData();
-
-						addCheckField.setText(dragAccordion.checkName);
-						addCheckField.setCheckID(dragAccordion.checkID);
-						checkHashSet.add(addCheckField);
-						
-						
-						// new and to be reworked - define the check parameters in checknewdialog
-						
-						CheckNewDialogBox checkNewDialogBox = new CheckNewDialogBox(
-								"", "",
-								"",
-								"");
-
-						checkNewDialogBox.setModal(true);
-						checkNewDialogBox.setAutoHideEnabled(true);
-
-						checkNewDialogBox.setAnimationEnabled(true);
-
-						checkNewDialogBox.setPopupPosition(
-								(RootPanel.get().getOffsetWidth()) / 3,
-								(RootPanel.get().getOffsetHeight()) / 4);
-						checkNewDialogBox.show();
-						checkNewDialogBox.addStyleName("ontop");
-						
-						
-
-
-						rebuildCheckpathDiagram();
-
-					}
-
-				};
-				target.setGroup("firstlevel");
-				target.setOverStyle("drag-ok");
+				drawCheckTarget(xpos, ypos);
 
 			}
 
@@ -948,11 +910,11 @@ public class CheckpathEditorWidget extends Composite {
 		}
 		}
 
-	private void drawInitialCheckTarget(){
+	private void drawCheckTarget(Integer xPos, Integer yPos){
 
 		final SameLevelCheckpathObject addCheckField = new SameLevelCheckpathObject(
 				null, "empty sensor check", true, 0);
-		controller.addWidget(addCheckField, 10, 300);
+		controller.addWidget(addCheckField, xPos, yPos);
 
 		// define dnd target for checks
 		
@@ -963,28 +925,85 @@ public class CheckpathEditorWidget extends Composite {
 
 				// do the drag and drop visual action
 
-				DragobjectContainer dragAccordion = (DragobjectContainer) event
+				final DragobjectContainer dragAccordion = (DragobjectContainer) event
 						.getData();
 
-				addCheckField.setText(dragAccordion.checkName);
-				addCheckField.setCheckID(dragAccordion.checkID);
-				addCheckField.empty = false;
-				checkHashSet.add(addCheckField);
+				addCheckField.setText(dragAccordion.propertyName);
 
-				SameLevelCheckpathObject addNextLevelField = new SameLevelCheckpathObject(
-						null, "empty logic check", true, 1);
+				
+				// create UUID for check
+				rpcServiceUuid
+				.getUuid(new AsyncCallback<String>() {
 
-				// also add an entire multicheck column
-				MulticheckColumn<SameLevelCheckpathObject> multicheckList = new MulticheckColumn<SameLevelCheckpathObject>(
-						true);
-				multicheckList.add(addNextLevelField);
-				multicheckColumns.add(multicheckList);
+					@Override
+					public void onFailure(
+							Throwable caught) {
+						// TODO Auto-generated
+						// method stub
+
+					}
+
+					@Override
+					public void onSuccess(
+							String result) {
+
+						addCheckField.setCheckID(result);
+						
+					}
+
+				});
+				
+				
+				final CheckNewDialogBox checkNewDialogBox = new CheckNewDialogBox(dragAccordion.endpointID, dragAccordion.propertyID, dragAccordion.properyClassID, dragAccordion.propertyName);
+
+				checkNewDialogBox.setModal(true);
+				checkNewDialogBox.setAutoHideEnabled(true);
+
+				checkNewDialogBox.setAnimationEnabled(true);
+
+				checkNewDialogBox.setPopupPosition(
+						(RootPanel.get().getOffsetWidth()) / 3,
+						(RootPanel.get().getOffsetHeight()) / 4);
+				checkNewDialogBox.show();
+				checkNewDialogBox.addStyleName("ontop");
+				
 				rebuildCheckpathDiagram();
+				
+				checkNewDialogBox
+				.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+					public void onClose(CloseEvent event) {
+
+						addCheckField.setText(checkNewDialogBox.getCheckTitle());
+						addCheckField.setPropertyID(dragAccordion.propertyID);
+						addCheckField.setEndpointID(dragAccordion.endpointID);
+						addCheckField.setOperator(checkNewDialogBox.getOperator());
+						addCheckField.setTriggerValue(checkNewDialogBox.getTriggerValue());
+						checkHashSet.add(addCheckField);
+						newChecks.add(addCheckField);
+						addCheckField.empty = false;
+						SameLevelCheckpathObject addNextLevelField = new SameLevelCheckpathObject(
+								null, "empty logic check", true, 1);
+
+						// also add an entire multicheck column
+						MulticheckColumn<SameLevelCheckpathObject> multicheckList = new MulticheckColumn<SameLevelCheckpathObject>(
+								true);
+						multicheckList.add(addNextLevelField);
+						multicheckColumns.add(multicheckList);
+
+						
+						
+						rebuildCheckpathDiagram();
+						
+					}
+
+				});
+
 
 			}
 
 		};
-		checkTarget.setGroup("firstlevel");
+		checkTarget.setGroup("sensors");
 		checkTarget.setOverStyle("drag-ok");
 		
 		
@@ -1051,6 +1070,10 @@ public class CheckpathEditorWidget extends Composite {
 	
 	public List<SameLevelCheckpathObject> getDeletedMultichecks(){
 		return this.deletedMultichecks;	
+	}
+	
+	public List<SameLevelCheckpathObject> getNewChecks(){
+		return this.newChecks;	
 	}
 
 	public void resetUpdatedMultichecks(){

@@ -24,14 +24,27 @@
 	<inherits name='com.orange.links.Links' />
     <inherits name='com.google.gwt.widgetideas.WidgetIdeas' />   
     <inherits name='com.google.gwt.libideas.LibIdeas' />
+    <inherits name='com.google.maps.gwt.GoogleMaps' />
+    
+    <!-- 
+                If you want to deploy this application outside of localhost, 
+                you must obtain a Google Maps API key at: 
+                http://www.google.com/apis/maps/signup.html 
+                Replace the src attribute below with a URL that contains your key. 
+          --> 
+         <!-- script src="http://maps.google.com/maps?gwt=1&amp;file=api&amp;v=2&amp;key=???" /--> 
+
+         <!-- You can usually run under localhost without a key --> 
+         <script src="http://maps.google.com/maps?
+             gwt=1&amp;file=api&amp;v=2&amp;key=ABQIAAAAYoCcpT5eK4RhbA3gS1NPNhT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQnNpBGVHff63uyhRABeY3eVBZaGQ" /> 
 	
 	<!-- Specify the app entry point class.                         -->
-<!-- 	<entry-point class='com.velisphere.tigerspice.client.TigerSpice_dev' /> -->
+	<entry-point class="com.velisphere.tigerspice.client.Start" />
 
 	<!-- Specify the paths for translatable code                    -->
 	<source path='client' />
 	<source path='shared' />
-	<entry-point class="com.velisphere.tigerspice.client.Start" />
+	
 	<set-property name="bootstrap.responsiveDesign" value="true"/>
 	
 	<source path='resources'/>

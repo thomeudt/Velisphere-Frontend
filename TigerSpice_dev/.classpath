@@ -38,5 +38,6 @@
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/gwt-dnd-3.2.3.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/jackson-databind-2.2.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/jackson-core-2.2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/gwt-maps.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

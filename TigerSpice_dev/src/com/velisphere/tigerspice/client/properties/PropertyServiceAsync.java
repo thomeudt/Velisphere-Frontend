@@ -35,5 +35,6 @@ public interface PropertyServiceAsync {
 	void getPropertyClass(String propertyID, AsyncCallback<String> callback);
 	void getPropertyName(String propertyID, AsyncCallback<String> callback);
 	void getActorPropertiesForEndpointID(String endpointID, AsyncCallback<LinkedList<PropertyData>> callback);
+	void getSensorPropertiesForEndpointID(String endpointID, AsyncCallback<LinkedList<PropertyData>> callback);
 	
 }

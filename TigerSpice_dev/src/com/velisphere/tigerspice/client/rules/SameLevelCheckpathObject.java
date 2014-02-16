@@ -28,6 +28,10 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 	public Image orIcon;
 	public Hyperlink linkActionIcon;
 	public String checkpathID;
+	public String propertyID;
+	public String endpointID;
+	public String triggerValue; 
+	public String operator;
 	
 	private SameLevelCheckpathObject(){}
 	
@@ -119,6 +123,51 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		this.isMulticheck = isMulticheck;
 		
 	}
+	
+	
+	public void setPropertyID (String propertyID){
+		this.propertyID = propertyID;
+		
+	}
+	
+	public void setEndpointID (String endpointID){
+		this.endpointID = endpointID;
+		
+	}
+	
+	public void setTriggerValue (String triggerValue){
+		this.triggerValue = triggerValue;
+		
+	}
+
+	public void setOperator (String operator){
+		this.operator = operator;
+		
+	}
+
+	public String getPropertyID (){
+		return this.propertyID;
+		
+	}
+	
+	public String getEndpointID (){
+		return this.endpointID;
+		
+	}
+	
+	public String getTriggerValue (){
+		return this.triggerValue;
+		
+	}
+
+	public String getOperator (){
+		return this.operator;
+		
+	}
+	
+	
+	
+	
 	
 	public void addChildMulticheck (SameLevelCheckpathObject childMulticheck){
 		this.childMultichecks.add(childMulticheck);

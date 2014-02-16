@@ -29,6 +29,8 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.checks.CheckService;
+import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
@@ -56,6 +58,8 @@ public class CheckpathEditView extends Composite {
 	
 
 	private CheckPathServiceAsync rpcServiceCheckPath;
+	private CheckServiceAsync rpcServiceCheck;
+	
 	private TextBox checkpathChangeNameField;
 
 	private static CheckpathEditViewUiBinder uiBinder = GWT
@@ -72,6 +76,7 @@ public class CheckpathEditView extends Composite {
 
 		this.checkpathID = checkpathID;
 		rpcServiceCheckPath = GWT.create(CheckPathService.class);
+		rpcServiceCheck = GWT.create(CheckService.class);
 		initWidget(uiBinder.createAndBindUi(this));
 		bread0 = new NavLink();
 		bread0.setText("Home");
@@ -334,15 +339,58 @@ public class CheckpathEditView extends Composite {
 				
 				List<SameLevelCheckpathObject> updatedMultichecks = wgtCheckpathEditor.getUpdatedMultichecks();
 				List<SameLevelCheckpathObject> newMultichecks = wgtCheckpathEditor.getNewMultichecks();
+				List<SameLevelCheckpathObject> newChecks = wgtCheckpathEditor.getNewChecks();
 				updatedMultichecks.removeAll(newMultichecks); // remove duplicates if a new multicheck has been updated before saving
 				Iterator<SameLevelCheckpathObject> updatedMultichecksIt = updatedMultichecks.iterator();
 				Iterator<SameLevelCheckpathObject> newMultichecksIt = newMultichecks.iterator();
+				Iterator<SameLevelCheckpathObject> newChecksIt = newChecks.iterator();
 				System.out.println("###########NEW MULTICHECKS: " + newMultichecks);
 				System.out.println("###########UPDATED MULTICHECKS: " + updatedMultichecks);
+				System.out.println("###########NEW CHECKS: " + newChecks);
 				
-				// run the new multichecks first
+				// run the new checks first
 				
 				final AnimationLoading animation = new AnimationLoading();
+				animation.showLoadAnimation("Saving checks...");
+				
+				while (newChecksIt.hasNext())
+				{
+					SameLevelCheckpathObject checkpathObject = newChecksIt.next();
+					rpcServiceCheck.addNewCheck(checkpathObject.checkId, checkpathObject.endpointID, checkpathObject.propertyID, checkpathObject.triggerValue, checkpathObject.operator, checkpathObject.text, checkpathID,
+							new AsyncCallback<String>() {
+
+								@Override
+								public void onFailure(Throwable caught) {
+									// TODO Auto-generated method stub
+									System.out
+											.println("ERROR creating check: "
+													+ caught);
+									txtSaveStatus
+											.setText("Error saving logic design. Data not saved.");
+									animation.removeLoadAnimation();
+
+								}
+
+								@Override
+								public void onSuccess(String result) {
+									// TODO Auto-generated method stub
+
+									System.out
+											.println("Success creating check in checkpath: "
+													+ result);
+									animation.removeLoadAnimation();
+									
+								}
+
+							});					
+				}
+
+				
+				
+				// run the new multichecks then
+				
+								
+				
 				animation.showLoadAnimation("Saving multichecks...");
 				
 				while (newMultichecksIt.hasNext()){

@@ -42,6 +42,9 @@ public class CheckNewDialogBox extends PopupPanel {
 	private String propertyID;
 	private String propertyClassID;
 	private String propertyName;
+	private String checkTitle;
+	private String operator;
+	private String triggerValue;
 
 	private PropertyClassServiceAsync rpcServicePropertyClass;
 	private CheckServiceAsync rpcServiceCheck;
@@ -182,7 +185,16 @@ public class CheckNewDialogBox extends PopupPanel {
 	@UiHandler("btnSave")
 	void saveNewCheck (ClickEvent event) {
 
-		final PopupPanel currentWindow = this; 
+		this.checkTitle = txtCheckTitle.getText();
+		this.operator = lstOperator.getValue();
+		this.triggerValue = txtTriggerValue.getText();
+		
+		
+		
+		this.hide();
+		/*
+		 * 
+		 * OLD IMPLEMENTATION / OBSOLETE
 		showLoadAnimation(animationLoading);
 		rpcServiceCheck = GWT.create(CheckService.class);
 		rpcServiceCheck.addNewCheck(endpointID, propertyID, txtTriggerValue.getText(), lstOperator.getValue(), txtCheckTitle.getText(), 
@@ -203,7 +215,7 @@ public class CheckNewDialogBox extends PopupPanel {
 					}
 
 				});
-
+		 */
 		
 		
 		
@@ -219,6 +231,17 @@ public class CheckNewDialogBox extends PopupPanel {
 	private void removeLoadAnimation(AnimationLoading animationLoading) {
 		if (animationLoading != null)
 			animationLoading.removeFromParent();
+	}
+	
+	public String getCheckTitle(){
+		return this.checkTitle;
+	}
+	
+	public String getOperator(){
+		return this.operator;
+	}
+	public String getTriggerValue(){
+		return this.triggerValue;
 	}
 
 }

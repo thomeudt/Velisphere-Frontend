@@ -400,12 +400,73 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 		}
 
 		return actPropertiesForEndpoint;
+	}
 
+	
+	@Override
+	public LinkedList<PropertyData> getSensorPropertiesForEndpointID(
+			String endpointID) {
+		
+		VoltConnector voltCon = new VoltConnector();
 
-		
-		
-		
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		LinkedList<PropertyData> sensePropertiesForEndpoint = new LinkedList<PropertyData>();
+		try {
+
+			final ClientResponse findAllProperties = voltCon.montanaClient
+					.callProcedure("UI_SelectSensePropertiesForEndpoint",
+							endpointID);
+
+			final VoltTable findAllPropertiesResults[] = findAllProperties
+					.getResults();
+
+			VoltTable result = findAllPropertiesResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					PropertyData propertyData = new PropertyData();
+					propertyData.propertyId = result.getString("PROPERTYID");
+					propertyData.propertyName = result
+							.getString("PROPERTYNAME");
+					propertyData.propertyclassId = result
+							.getString("PROPERTYCLASSID");
+					propertyData.endpointclassId = result
+							.getString("ENDPOINTCLASSID");
+					
+					sensePropertiesForEndpoint.add(propertyData);
+
+				}
+			}
+
+			//Collections.sort(propertiesForEndpointClass);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return sensePropertiesForEndpoint;
 	}
 
 
 }
+
+

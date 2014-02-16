@@ -81,7 +81,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 					    
 				    <b:Column size="2" offset="0">
 				    
-				   		<vsch:ChecksByEndpointWidget />
+				   		<vspr:SensorPropertiesByEndpointWidget />
 				   		<b:Paragraph addStyleNames="smalltext">Actor Explorer</b:Paragraph>
 				   		<vspr:ActorPropertiesByEndpointWidget />
 				     

@@ -46,7 +46,7 @@
              <b:NavLink ui:field="btnSearch">Search</b:NavLink>
          </b:Nav>
          <b:Nav alignment="RIGHT">
-             <b:NavLink ui:field="btnShop">Market Place</b:NavLink>
+             <b:NavLink ui:field="btnShop">IoT Market Place</b:NavLink>
              <b:NavLink ui:field="btnAccount">Account</b:NavLink>
              <b:NavLink ui:field="btnLogout">Logout</b:NavLink>
              <b:NavText ui:field="txtUserName">Not Logged In</b:NavText>

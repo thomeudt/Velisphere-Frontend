@@ -21,6 +21,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.checks.CheckService;
+import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
@@ -46,7 +48,8 @@ public class CheckpathCreateView extends Composite {
 	NavLink bread2;
 
 	private CheckPathServiceAsync rpcServiceCheckPath;
-
+	private CheckServiceAsync rpcServiceCheck;
+	
 	private static CheckpathCreateViewUiBinder uiBinder = GWT
 			.create(CheckpathCreateViewUiBinder.class);
 
@@ -58,6 +61,7 @@ public class CheckpathCreateView extends Composite {
 	public CheckpathCreateView() {
 
 		rpcServiceCheckPath = GWT.create(CheckPathService.class);
+		rpcServiceCheck = GWT.create(CheckService.class);
 		initWidget(uiBinder.createAndBindUi(this));
 		bread0 = new NavLink();
 		bread0.setText("Home");
@@ -125,33 +129,23 @@ public class CheckpathCreateView extends Composite {
 
 				final String checkPathId = result;
 
-				// first, link all contained checks to checkpath
-				
-				
+				// first, create all checks
+						
 				
 				LinkedHashSet<SameLevelCheckpathObject> checkpathHashset = wgtCheckpathEditor.checkHashSet;
-				
-				
-				/**
-				 * 
-				 * Not needed anymore, checkpath id now added to check itself
-				 * but this needs to be implemented with the addition of checks in the checkpath editor
-				 * 
-				 * */
+								
 				Iterator<SameLevelCheckpathObject> checksIT = checkpathHashset.iterator();
 				while (checksIT.hasNext())
 				{
 					SameLevelCheckpathObject checkpathObject = checksIT.next();
-					rpcServiceCheckPath.addNewCheckpathCheckLink(
-							checkPathId,
-							checkpathObject.checkId,
+					rpcServiceCheck.addNewCheck(checkpathObject.checkId, checkpathObject.endpointID, checkpathObject.propertyID, checkpathObject.triggerValue, checkpathObject.operator, checkpathObject.text, checkPathId,
 							new AsyncCallback<String>() {
 
 								@Override
 								public void onFailure(Throwable caught) {
 									// TODO Auto-generated method stub
 									System.out
-											.println("ERROR linking check to checkpaht: "
+											.println("ERROR creating check: "
 													+ caught);
 									txtSaveStatus
 											.setText("Error saving logic design. Data not saved.");
@@ -163,7 +157,7 @@ public class CheckpathCreateView extends Composite {
 									// TODO Auto-generated method stub
 
 									System.out
-											.println("Success linking check to checkpath: "
+											.println("Success creating check in checkpath: "
 													+ result);
 									
 								}

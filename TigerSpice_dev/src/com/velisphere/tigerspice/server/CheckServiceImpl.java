@@ -118,7 +118,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 		return checksForEndpointID;
 	}
 	
-	public String addNewCheck(String endpointID, String propertyID, String checkValue, String operator, String name)
+	public String addNewCheck(String checkID, String endpointID, String propertyID, String checkValue, String operator, String name, String checkpathID)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -135,7 +135,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 
 		try {
 			voltCon.montanaClient.callProcedure("CHECK.insert",
-					UUID.randomUUID().toString(), endpointID, propertyID, checkValue, operator, 0, 0, name);
+					checkID, endpointID, propertyID, checkValue, operator, 0, 0, name, checkpathID);
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

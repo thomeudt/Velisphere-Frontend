@@ -7,6 +7,7 @@ import com.velisphere.tigerspice.shared.CheckPathObjectData;
 public class DragobjectContainer {
 
 	public AccordionGroup accordionGroup;
+	public String endpointID;
 	public String propertyID;
 	public String properyClassID;
 	public String propertyName;

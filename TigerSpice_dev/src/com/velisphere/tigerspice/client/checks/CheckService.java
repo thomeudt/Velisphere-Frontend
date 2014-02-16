@@ -11,7 +11,7 @@ import com.velisphere.tigerspice.shared.EndpointData;
 @RemoteServiceRelativePath("voltCheck")
 public interface CheckService extends RemoteService {
 		Vector<CheckData> getChecksForEndpointID(String endpointID);
-		String addNewCheck(String endpointID, String propertyID, String checkValue, String operator, String name);
+		String addNewCheck(String checkID, String endpointID, String propertyID, String checkValue, String operator, String name, String checkpathID);
 		String updateCheck(String checkID, String name, String checkValue, String operator);
 		String deleteCheck(String checkID);
 		Vector<CheckData> getChecksForUserID(String userID);
