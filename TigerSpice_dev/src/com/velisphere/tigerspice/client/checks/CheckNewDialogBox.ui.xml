@@ -22,22 +22,32 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	<g:HTMLPanel>
 
       <b:WellForm styleName="wellsilver">
-        <b:Legend>Add Check</b:Legend>
-        
+        <b:Legend>Sensor Check</b:Legend>
+	        <b:Row>
+            <b:Column size="2">
+            <b:Paragraph addStyleNames="smalltext" text="Endpoint Name" />
+            </b:Column>
+            <b:Column size="2">
+            <b:Paragraph ui:field="txtEndpointName" addStyleNames="smalltext" text="..." />
+            </b:Column>
+            </b:Row>
+            
+	        <b:Row>
+            <b:Column size="2">
+            <b:Paragraph addStyleNames="smalltext" text="Property to be checked" />
+            </b:Column>
+            <b:Column size="2">
+            <b:ListBox styleName="span2" ui:field="lstPropertyID"/> 
+            </b:Column>
+            </b:Row>
+            
+            
             <b:Row>
             <b:Column size="2">
             <b:Paragraph addStyleNames="smalltext" text="Title or Description" />
             </b:Column>                   
             <b:Column size="2">                    
             <b:TextBox styleName="span2" ui:field="txtCheckTitle" />
-            </b:Column>
-            </b:Row>
-            <b:Row>
-            <b:Column size="2">
-            <b:Paragraph addStyleNames="smalltext" text="Property to be checked" />
-            </b:Column>
-            <b:Column size="2">
-            <b:ListBox styleName="span2" ui:field="lstPropertyID"/> 
             </b:Column>
             </b:Row>
             
@@ -61,9 +71,12 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
             </b:Row>
      
             
-            <b:Row>
-            <b:Column size="2">
+           <b:Row>
+            <b:Column size="1">
             <b:Button styleName="btn-success btn" text="Save" ui:field="btnSave" />  
+            </b:Column>
+            <b:Column size="1">
+            <b:Button styleName="btn-danger btn" text="Delete" ui:field="btnDelete" />  
             </b:Column>
             </b:Row>
             

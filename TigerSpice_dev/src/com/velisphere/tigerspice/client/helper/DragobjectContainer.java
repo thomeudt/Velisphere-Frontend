@@ -8,6 +8,7 @@ public class DragobjectContainer {
 
 	public AccordionGroup accordionGroup;
 	public String endpointID;
+	public String endpointName;
 	public String propertyID;
 	public String properyClassID;
 	public String propertyName;

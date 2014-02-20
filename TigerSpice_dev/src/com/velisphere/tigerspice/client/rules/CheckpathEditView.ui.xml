@@ -68,7 +68,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 					
 				    <b:Column size="8" offset="0">
 				    			    
-				  <b:Paragraph addStyleNames="smalltext">Logic Tree - Drag your checks here to build your logic (always 1st layer MC!)</b:Paragraph>
+				  <b:Paragraph addStyleNames="smalltext">Logic Designer - Drag sensors and actors here to build your logic (always 1st layer MC!)</b:Paragraph>
 					</b:Column>
 			
 				    

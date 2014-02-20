@@ -187,7 +187,7 @@ public class CheckpathEditorWidget extends Composite {
 				CheckNewDialogBox checkNewDialogBox = new CheckNewDialogBox(
 						"", "",
 						"",
-						"");
+						"", "");
 
 				checkNewDialogBox.setModal(true);
 				checkNewDialogBox.setAutoHideEnabled(true);
@@ -954,7 +954,7 @@ public class CheckpathEditorWidget extends Composite {
 				});
 				
 				
-				final CheckNewDialogBox checkNewDialogBox = new CheckNewDialogBox(dragAccordion.endpointID, dragAccordion.propertyID, dragAccordion.properyClassID, dragAccordion.propertyName);
+				final CheckNewDialogBox checkNewDialogBox = new CheckNewDialogBox(dragAccordion.endpointID, dragAccordion.propertyID, dragAccordion.properyClassID, dragAccordion.propertyName, dragAccordion.endpointName);
 
 				checkNewDialogBox.setModal(true);
 				checkNewDialogBox.setAutoHideEnabled(true);

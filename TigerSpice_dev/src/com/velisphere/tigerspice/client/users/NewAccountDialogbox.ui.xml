@@ -21,12 +21,28 @@
 	<g:HTMLPanel>
 
 		<b:Row>
-			<b:Column size="8" offset="0">
+			<b:Column size="12" offset="0">
 				<b:PageHeader>Create a new VeliSphere Account</b:PageHeader>
 			</b:Column>
 		</b:Row>
 
-		<b:Row>
+		
+		
+	    <b:Row>
+				        
+	        <b:Column size="2" offset="0">
+			<b:Well>
+			<b:Strong ui:field="pgpInformHeader">New Account Tasks</b:Strong>
+			<b:Paragraph addStyleNames="smalltext">Type:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext" ui:field="pgpEndpointClassName">loading...</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Last heard of:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Manufacturer:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Statistics:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Configuration:</b:Paragraph>
+			</b:Well>
+			</b:Column>
+			
+		
 			<b:Column size="8" offset="0">
 
 				<b:Form type="HORIZONTAL">

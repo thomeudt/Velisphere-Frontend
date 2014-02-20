@@ -113,7 +113,7 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 				}
 				endpoint.setHeading(shortName);
 				endpoint.setTitle(current.getName());
-				addActPropertiesToEndpoint(endpoint, current.getId());
+				addActPropertiesToEndpoint(endpoint, current.getId(), current.getName());
 				System.out.println("momentane ID: " + current.getId());
 				
 				accordion.add(endpoint);
@@ -126,7 +126,7 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 	});
 	}
 	
-	private void addActPropertiesToEndpoint(final AccordionGroup endpoint, final String endpointID){
+	private void addActPropertiesToEndpoint(final AccordionGroup endpoint, final String endpointID, final String endpointName){
 
 		
 		loadAnimation.showLoadAnimation("Loading sensors");
@@ -163,7 +163,7 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 						shortName = current.getName().substring(0, 20)+"(...)";
 					}
 					Row row = accordionRowBuilder(shortName);
-					setDragSource(row, endpointID, current.getId(), current.getName(), current.getPropertyclassId());
+					setDragSource(row, endpointID, current.getId(), current.getName(), current.getPropertyclassId(), endpointName);
 					endpoint.add(row);
 
 				}
@@ -183,7 +183,7 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 		return row;
 	}
 	
-	private void setDragSource(Row accordionRow, final String endpointID, final String propertyID, final String propertyName, final String propertyClassId){
+	private void setDragSource(Row accordionRow, final String endpointID, final String propertyID, final String propertyName, final String propertyClassId, final String endpointName){
 		final SafeHtmlBuilder builder = new SafeHtmlBuilder();
 		builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
 				+ "\">");
@@ -209,6 +209,7 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 				dragAccordion.propertyID = propertyID;
 				dragAccordion.propertyName = propertyName;
 				dragAccordion.properyClassID = propertyClassId;
+				dragAccordion.endpointName = endpointName;
 			
 				event.setData(dragAccordion);
 				event.getStatusProxy()

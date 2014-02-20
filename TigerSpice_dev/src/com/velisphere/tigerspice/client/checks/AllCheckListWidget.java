@@ -127,7 +127,7 @@ public class AllCheckListWidget extends Composite {
 				CheckNewDialogBox checkNewDialogBox = new CheckNewDialogBox(
 						userID, dragAccordion.propertyID,
 						dragAccordion.properyClassID,
-						dragAccordion.propertyName);
+						dragAccordion.propertyName, "");
 
 				checkNewDialogBox.setModal(true);
 				checkNewDialogBox.setAutoHideEnabled(true);

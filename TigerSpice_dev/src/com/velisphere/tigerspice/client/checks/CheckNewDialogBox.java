@@ -3,7 +3,9 @@ package com.velisphere.tigerspice.client.checks;
 import java.util.Iterator;
 
 import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.Legend;
 import com.github.gwtbootstrap.client.ui.ListBox;
+import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
@@ -36,6 +38,8 @@ public class CheckNewDialogBox extends PopupPanel {
 	TextBox txtTriggerValue;
 	@UiField
 	TextBox txtCheckTitle;
+	@UiField
+	Paragraph txtEndpointName;
 	
 	
 	private String endpointID;
@@ -45,6 +49,7 @@ public class CheckNewDialogBox extends PopupPanel {
 	private String checkTitle;
 	private String operator;
 	private String triggerValue;
+	private String endpointName;
 
 	private PropertyClassServiceAsync rpcServicePropertyClass;
 	private CheckServiceAsync rpcServiceCheck;
@@ -59,15 +64,17 @@ public class CheckNewDialogBox extends PopupPanel {
 	}
 
 	public CheckNewDialogBox(String endpointID, String propertyID,
-			String propertyClassID, String propertyName) {
+			String propertyClassID, String propertyName, String endpointName) {
 		
 		this.endpointID = endpointID;
 		this.propertyID = propertyID;
 		this.propertyClassID = propertyClassID;
 		this.propertyName = propertyName;
+		this.endpointName = endpointName;
 
 		setWidget(uiBinder.createAndBindUi(this));
 		
+		txtEndpointName.setText(this.endpointName);
 				
 		rpcServicePropertyClass = GWT.create(PropertyClassService.class);
 		rpcServicePropertyClass.getPropertyClassForPropertyClassID(
