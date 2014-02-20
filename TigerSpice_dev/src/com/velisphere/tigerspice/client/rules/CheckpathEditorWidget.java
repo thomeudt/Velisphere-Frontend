@@ -38,6 +38,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
@@ -55,7 +56,7 @@ import com.sencha.gxt.fx.client.Draggable;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.velisphere.tigerspice.client.checks.CheckNewDialogBox;
+import com.velisphere.tigerspice.client.checks.CheckDialogBox;
 import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
@@ -179,30 +180,9 @@ public class CheckpathEditorWidget extends Composite {
 			addDragSource(currentObject);
 			addDndTargetForAction(currentObject);
 			
-			currentObject.ancTextField.addClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent event) {
-
-					// rework this to show checkEditDialog
-					
-				CheckNewDialogBox checkNewDialogBox = new CheckNewDialogBox(
-						"", "",
-						"",
-						"", "");
-
-				checkNewDialogBox.setModal(true);
-				checkNewDialogBox.setAutoHideEnabled(true);
-
-				checkNewDialogBox.setAnimationEnabled(true);
-
-				checkNewDialogBox.setPopupPosition(
-						(RootPanel.get().getOffsetWidth()) / 3,
-						(RootPanel.get().getOffsetHeight()) / 4);
-				checkNewDialogBox.show();
-				checkNewDialogBox.addStyleName("ontop");
-			}
-				
-				});
 			
+			
+						
 			controller.addWidget(currentObject, xpos, ypos);
 			
 			// add icon for action loaded checks, for now just move into position
@@ -424,7 +404,7 @@ public class CheckpathEditorWidget extends Composite {
 										 
 										
 										
-										setEditClickHandler(currentObject, multicheckLinkedList);
+										setMulticheckEditClickHandler(currentObject, multicheckLinkedList);
 										
 										if (dragAccordion.isMulticheck) {
 											currentObject
@@ -681,8 +661,18 @@ public class CheckpathEditorWidget extends Composite {
 						while (bIT.hasNext()){
 							CheckPathObjectData baseElementData = bIT.next();
 							SameLevelCheckpathObject baseElement = new SameLevelCheckpathObject(baseElementData.checkId, baseElementData.text, baseElementData.empty, baseElementData.level);
+							baseElement.triggerValue = baseElementData.triggerValue;
+							baseElement.propertyID = baseElementData.propertyID;
+							baseElement.operator = baseElementData.operator;
+							baseElement.endpointID = baseElementData.endpointID;
+							
 							baseLayerMap.put(baseElementData.checkId, baseElement);
+						
+							
+							setCheckEditClickHandler(baseElement);
 							checkHashSet.add(baseElement);
+				
+							// triggervalue operator
 							
 						}
 						
@@ -717,7 +707,7 @@ public class CheckpathEditorWidget extends Composite {
 								
 								
 								
-								setEditClickHandler(newMulticheck, newMulticheckList);
+								setMulticheckEditClickHandler(newMulticheck, newMulticheckList);
 																
 								// add multicheck to lookup table
 								multicheckLookup.put(field.checkId, newMulticheck);
@@ -890,7 +880,7 @@ public class CheckpathEditorWidget extends Composite {
 
 	}
 
-	private void setEditClickHandler(final SameLevelCheckpathObject currentObject, final MulticheckColumn<SameLevelCheckpathObject> currentColumn){
+	private void setMulticheckEditClickHandler(final SameLevelCheckpathObject currentObject, final MulticheckColumn<SameLevelCheckpathObject> currentColumn){
 
 		if (currentObject.empty == false)
 		{
@@ -954,7 +944,7 @@ public class CheckpathEditorWidget extends Composite {
 				});
 				
 				
-				final CheckNewDialogBox checkNewDialogBox = new CheckNewDialogBox(dragAccordion.endpointID, dragAccordion.propertyID, dragAccordion.properyClassID, dragAccordion.propertyName, dragAccordion.endpointName);
+				final CheckDialogBox checkNewDialogBox = new CheckDialogBox(dragAccordion.endpointID, dragAccordion.propertyID, dragAccordion.properyClassID, dragAccordion.propertyName, dragAccordion.endpointName, "unnamed check", "", "");
 
 				checkNewDialogBox.setModal(true);
 				checkNewDialogBox.setAutoHideEnabled(true);
@@ -991,7 +981,7 @@ public class CheckpathEditorWidget extends Composite {
 						multicheckList.add(addNextLevelField);
 						multicheckColumns.add(multicheckList);
 
-						
+						setCheckEditClickHandler(addCheckField);
 						
 						rebuildCheckpathDiagram();
 						
@@ -1008,6 +998,58 @@ public class CheckpathEditorWidget extends Composite {
 		
 		
 	}
+	
+	
+	private void setCheckEditClickHandler(final SameLevelCheckpathObject currentObject){
+			
+	
+	currentObject.ancTextField.addClickHandler(new ClickHandler() {
+		public void onClick(ClickEvent event) {
+
+		
+			
+		final CheckDialogBox checkEditDialogBox = new CheckDialogBox(
+				currentObject.endpointID, currentObject.propertyID,
+				"",
+				"", "", currentObject.text, currentObject.triggerValue, currentObject.operator); 
+
+		checkEditDialogBox.setModal(true);
+		checkEditDialogBox.setAutoHideEnabled(true);
+
+		checkEditDialogBox.setAnimationEnabled(true);
+
+		checkEditDialogBox.setPopupPosition(
+				(RootPanel.get().getOffsetWidth()) / 3,
+				(RootPanel.get().getOffsetHeight()) / 4);
+		checkEditDialogBox.show();
+		checkEditDialogBox.addStyleName("ontop");
+		
+		
+		checkEditDialogBox
+		.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+			public void onClose(CloseEvent event) {
+
+								
+				currentObject.setText(checkEditDialogBox.getCheckTitle());
+				currentObject.setOperator(checkEditDialogBox.getOperator());
+				currentObject.setTriggerValue(checkEditDialogBox.getTriggerValue());
+				updatedChecks.add(currentObject);
+				
+				
+				rebuildCheckpathDiagram();
+				
+			}
+		});
+		
+	
+	}
+		
+		});
+	
+	}
+
+	
 	
 
 	private void addDndTargetForAction(final SameLevelCheckpathObject currentObject)
@@ -1075,6 +1117,11 @@ public class CheckpathEditorWidget extends Composite {
 	public List<SameLevelCheckpathObject> getNewChecks(){
 		return this.newChecks;	
 	}
+	
+	public List<SameLevelCheckpathObject> getUpdatedChecks(){
+		return this.updatedChecks;	
+	}
+
 
 	public void resetUpdatedMultichecks(){
 		this.updatedMultichecks.clear();

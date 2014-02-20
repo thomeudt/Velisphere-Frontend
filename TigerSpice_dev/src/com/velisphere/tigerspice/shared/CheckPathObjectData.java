@@ -26,6 +26,11 @@ public class CheckPathObjectData implements IsSerializable {
 	
 	public Boolean isMulticheck;
 	
+	public String endpointID;
+	public String propertyID;
+	public String operator;
+	public String triggerValue;
+	
 	public CheckPathObjectData(){}
 	
 	public CheckPathObjectData (String checkId, String text, Boolean empty, Integer level)  {

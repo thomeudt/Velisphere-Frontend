@@ -417,6 +417,10 @@ public class CheckpathCreateView extends Composite {
 						cpdItem.checkId = cpItem.checkId;
 						cpdItem.empty = cpItem.empty;
 						cpdItem.text = cpItem.text;
+						cpdItem.operator = cpItem.operator;
+						cpdItem.propertyID = cpItem.propertyID;
+						cpdItem.triggerValue = cpItem.triggerValue;
+						cpdItem.endpointID = cpItem.endpointID;
 						baseLayer.add(cpdItem);
 						
 					}

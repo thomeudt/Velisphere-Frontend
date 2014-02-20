@@ -20,13 +20,18 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.LoginDialogBox;
+import com.velisphere.tigerspice.client.endpoints.EndpointService;
+import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
+import com.velisphere.tigerspice.client.properties.PropertyService;
+import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
+import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 
-public class CheckNewDialogBox extends PopupPanel {
+public class CheckDialogBox extends PopupPanel {
 
 	@UiField
 	ListBox lstPropertyID;
@@ -52,7 +57,8 @@ public class CheckNewDialogBox extends PopupPanel {
 	private String endpointName;
 
 	private PropertyClassServiceAsync rpcServicePropertyClass;
-	private CheckServiceAsync rpcServiceCheck;
+	private EndpointServiceAsync rpcServiceEndpoint;
+	private PropertyServiceAsync rpcServiceProperty;
 	
 	private AnimationLoading animationLoading = new AnimationLoading();
 
@@ -60,29 +66,128 @@ public class CheckNewDialogBox extends PopupPanel {
 			.create(CheckEditorDialogBoxUiBinder.class);
 
 	interface CheckEditorDialogBoxUiBinder extends
-			UiBinder<Widget, CheckNewDialogBox> {
+			UiBinder<Widget, CheckDialogBox> {
 	}
 
-	public CheckNewDialogBox(String endpointID, String propertyID,
-			String propertyClassID, String propertyName, String endpointName) {
+	public CheckDialogBox(String endpointID, String propertyID,
+			String propertyClassIDCalled, String propertyNameCalled, String endpointNameCalled, String checkTitle, String triggerValue, String operator) {
 		
 		this.endpointID = endpointID;
 		this.propertyID = propertyID;
-		this.propertyClassID = propertyClassID;
-		this.propertyName = propertyName;
-		this.endpointName = endpointName;
+		this.propertyClassID = propertyClassIDCalled;
+		this.propertyName = propertyNameCalled;
+		this.endpointName = endpointNameCalled;
+		this.checkTitle = checkTitle;
+		this.triggerValue = triggerValue;
+		this.operator = operator;
 
 		setWidget(uiBinder.createAndBindUi(this));
 		
-		txtEndpointName.setText(this.endpointName);
-				
 		rpcServicePropertyClass = GWT.create(PropertyClassService.class);
+		rpcServiceEndpoint = GWT.create(EndpointService.class);
+		rpcServiceProperty = GWT.create(PropertyService.class);
+
+		txtEndpointName.setText(this.endpointName);
+		txtCheckTitle.setText(this.checkTitle);
+		txtTriggerValue.setText(this.triggerValue);
+
+				
+		showLoadAnimation(animationLoading);
+		
+		// fill missing fields if check is re-opened and loaded from a checkpath, because then PCID, PropName and epName will be empty
+		
+		
+		
+		if (endpointName==""){
+			rpcServiceEndpoint.getEndpointForEndpointID(endpointID, new AsyncCallback<EndpointData>(){
+
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onSuccess(EndpointData result) {
+					endpointName = result.endpointName;
+					txtEndpointName.setText(result.endpointName);			
+				}
+			});
+		
+
+		final String localPropId = propertyID;
+		
+		if (propertyClassID==""){
+			showLoadAnimation(animationLoading);
+			rpcServiceProperty.getPropertyClass(propertyID, new AsyncCallback<String>(){
+
+				
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					System.out.println("ERR " +caught);
+					
+				}
+
+				@Override
+				public void onSuccess(String result) {
+					propertyClassID = result;
+
+					
+					rpcServiceProperty.getPropertyName(localPropId, new AsyncCallback<String>(){
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+							System.out.println("ERR " +caught);
+							
+						}
+
+						@Override
+						public void onSuccess(String result) {
+							propertyName = result;
+							fillDialogBox();
+							removeLoadAnimation(animationLoading);
+							
+						}
+					});
+
+					
+
+					
+				}
+			});
+			
+						
+			
+		}
+
+		}
+		
+		else {
+			fillDialogBox();
+		}
+		
+		
+
+		
+		
+		
+	}
+
+	
+	private void fillDialogBox(){
+	
+		
+		System.out.println("FILLER");
+		
 		rpcServicePropertyClass.getPropertyClassForPropertyClassID(
 				propertyClassID, new AsyncCallback<PropertyClassData>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
+						System.out.println("ERR " +caught);
 						removeLoadAnimation(animationLoading);
 					}
 
@@ -171,6 +276,7 @@ public class CheckNewDialogBox extends PopupPanel {
 						else lstOperator.addItem("Invalid Endpoint Configuration");
 
 						lstOperator.setVisibleItemCount(1);
+						lstOperator.setSelectedValue(operator);
 
 						// lstOperator.addItem(result.propertyClassName);
 						removeLoadAnimation(animationLoading);
@@ -180,52 +286,39 @@ public class CheckNewDialogBox extends PopupPanel {
 				});
 
 		lstOperator.setEnabled(true);
-		lstOperator.setSelectedIndex(1);
-
+		 
+		
+		
+		if (this.operator != "") {
+			lstOperator.setSelectedValue(operator);
+		}
+		else
+		{
+			lstOperator.setSelectedIndex(1);	
+		}
+		
+		
+		if (lstPropertyID.getItemCount() != 0)
+		{
+			lstPropertyID.removeItem(0);
+		}
 		lstPropertyID.addItem(propertyName, propertyID);
 		lstPropertyID.setVisibleItemCount(1);
 		lstPropertyID.setEnabled(false);
+		
 
 	}
-
+	
+	
 	
 	@UiHandler("btnSave")
 	void saveNewCheck (ClickEvent event) {
-
+		
 		this.checkTitle = txtCheckTitle.getText();
 		this.operator = lstOperator.getValue();
 		this.triggerValue = txtTriggerValue.getText();
-		
-		
-		
 		this.hide();
-		/*
-		 * 
-		 * OLD IMPLEMENTATION / OBSOLETE
-		showLoadAnimation(animationLoading);
-		rpcServiceCheck = GWT.create(CheckService.class);
-		rpcServiceCheck.addNewCheck(endpointID, propertyID, txtTriggerValue.getText(), lstOperator.getValue(), txtCheckTitle.getText(), 
-				new AsyncCallback<String>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-						removeLoadAnimation(animationLoading);
-					}
-
-					@Override
-					public void onSuccess(String result) {
-						// TODO Auto-generated method stub
-						removeLoadAnimation(animationLoading);
-						currentWindow.hide();
-
-					}
-
-				});
-		 */
-		
-		
-		
+				
 	}
 
 	

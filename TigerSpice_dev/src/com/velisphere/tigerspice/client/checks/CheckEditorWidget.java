@@ -101,10 +101,10 @@ public class CheckEditorWidget extends Composite {
 				RootPanel rootPanel = RootPanel.get("main");
 				rootPanel.getElement().getStyle()
 						.setPosition(Position.RELATIVE);
-				CheckNewDialogBox checkNewDialogBox = new CheckNewDialogBox(
+				CheckDialogBox checkNewDialogBox = new CheckDialogBox(
 						endpointID, dragAccordion.propertyID,
 						dragAccordion.properyClassID,
-						dragAccordion.propertyName, "");
+						dragAccordion.propertyName, "", "", "", "");
 
 				checkNewDialogBox.setModal(true);
 				checkNewDialogBox.setAutoHideEnabled(true);

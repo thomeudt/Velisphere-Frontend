@@ -327,6 +327,10 @@ public class CheckpathEditView extends Composite {
 					cpdItem.checkId = cpItem.checkId;
 					cpdItem.empty = cpItem.empty;
 					cpdItem.text = cpItem.text;
+					cpdItem.operator = cpItem.operator;
+					cpdItem.propertyID = cpItem.propertyID;
+					cpdItem.triggerValue = cpItem.triggerValue;
+					cpdItem.endpointID = cpItem.endpointID;
 					baseLayer.add(cpdItem);
 					
 				}
@@ -340,13 +344,16 @@ public class CheckpathEditView extends Composite {
 				List<SameLevelCheckpathObject> updatedMultichecks = wgtCheckpathEditor.getUpdatedMultichecks();
 				List<SameLevelCheckpathObject> newMultichecks = wgtCheckpathEditor.getNewMultichecks();
 				List<SameLevelCheckpathObject> newChecks = wgtCheckpathEditor.getNewChecks();
+				List<SameLevelCheckpathObject> updatedChecks = wgtCheckpathEditor.getUpdatedChecks();
 				updatedMultichecks.removeAll(newMultichecks); // remove duplicates if a new multicheck has been updated before saving
 				Iterator<SameLevelCheckpathObject> updatedMultichecksIt = updatedMultichecks.iterator();
 				Iterator<SameLevelCheckpathObject> newMultichecksIt = newMultichecks.iterator();
 				Iterator<SameLevelCheckpathObject> newChecksIt = newChecks.iterator();
+				Iterator<SameLevelCheckpathObject> updatedChecksIt = updatedChecks.iterator();
 				System.out.println("###########NEW MULTICHECKS: " + newMultichecks);
 				System.out.println("###########UPDATED MULTICHECKS: " + updatedMultichecks);
 				System.out.println("###########NEW CHECKS: " + newChecks);
+				System.out.println("###########UPDATED CHECKS: " + updatedChecks);
 				
 				// run the new checks first
 				
@@ -375,6 +382,9 @@ public class CheckpathEditView extends Composite {
 								public void onSuccess(String result) {
 									// TODO Auto-generated method stub
 
+									txtSaveStatus
+									.setText("Logic design saved successfully.");
+
 									System.out
 											.println("Success creating check in checkpath: "
 													+ result);
@@ -385,6 +395,47 @@ public class CheckpathEditView extends Composite {
 							});					
 				}
 
+
+				// run the updated checks now
+								
+				animation.showLoadAnimation("Updating checks...");
+				
+				while (updatedChecksIt.hasNext())
+				{
+					SameLevelCheckpathObject checkpathObject = updatedChecksIt.next();
+					rpcServiceCheck.updateCheck(checkpathObject.checkId, checkpathObject.text, checkpathObject.triggerValue, checkpathObject.operator,
+							new AsyncCallback<String>() {
+
+								@Override
+								public void onFailure(Throwable caught) {
+									// TODO Auto-generated method stub
+									System.out
+											.println("ERROR updating check: "
+													+ caught);
+									txtSaveStatus
+											.setText("Error saving logic design. Data not saved.");
+									animation.removeLoadAnimation();
+
+								}
+
+								@Override
+								public void onSuccess(String result) {
+									// TODO Auto-generated method stub
+
+									txtSaveStatus
+									.setText("Logic design saved successfully.");
+
+									System.out
+											.println("Success creating check in checkpath: "
+													+ result);
+									animation.removeLoadAnimation();
+									
+								}
+
+							});					
+				}
+
+				
 				
 				
 				// run the new multichecks then
