@@ -137,7 +137,7 @@ public class CheckpathEditView extends Composite {
 		icnCheckpathName.setType(IconType.EDIT);
 		pghCheckpathName.add(icnCheckpathName);
 		final Anchor ancEditCheckpathName = new Anchor();
-		ancEditCheckpathName.setText(" Change Name of this Logic");
+		ancEditCheckpathName.setText(" Rename Logic Design");
 		ancEditCheckpathName.setHref("#");
 		pghCheckpathName.add(ancEditCheckpathName);
 		checkpathChangeNameField = new TextBox();
@@ -213,6 +213,8 @@ public class CheckpathEditView extends Composite {
 	@UiHandler("btnSaveCheckpath")
 	void saveCheckpath(ClickEvent event) {
 		final AnimationLoading loading = new AnimationLoading();
+		
+		txtSaveStatus.setText("Logic design not changed.");
 		
 		// getting current checkpath ID and adding to final variable checkpathIDUpdate
 		
