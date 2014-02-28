@@ -28,6 +28,8 @@ import org.voltdb.client.*;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.UUID;
@@ -68,14 +70,14 @@ public class BusinessLogicEngine {
 	}
 	
 	
-
+/**
 	public static void resetChecksForEndpoint(String endpointID)
 			throws Exception {
 
 		/*
 		 * Reset all checks for this endpoint type to false to prepare
 		 * for new incoming data
-		 */
+		 *
 		
 		final ClientResponse resetResponse = BusinessLogicEngine.montanaClient.callProcedure(
 				"ResetChecks", endpointID);
@@ -83,15 +85,15 @@ public class BusinessLogicEngine {
 			System.err.println(resetResponse.getStatusString());}
 
 		}
-
+**/
 	
-	public static HashSet<String> lookupRulesForCheckID(String checkID)
+	public static HashSet<String> lookupRulesForCheckID(HashSet<String> checkIDs)
 			throws NoConnectionsException, IOException, ProcCallException {
 
 		HashSet<String> ruleIDs = new HashSet<String>();
-
+		
 		final ClientResponse findRulesForCheckIDResponse = BusinessLogicEngine.montanaClient
-				.callProcedure("FindRulesForCheckID", checkID);
+				.callProcedure("FindRulesForCheckID", (Object) checkIDs.toArray());
 		if (findRulesForCheckIDResponse.getStatus() != ClientResponse.SUCCESS) {
 			System.err.println(findRulesForCheckIDResponse.getStatusString());
 		}
@@ -156,28 +158,12 @@ public class BusinessLogicEngine {
 		
 		HashSet<String> triggerRules = new HashSet<String>();
 
-		// find checks that match the incoming expression
 
-		final ClientResponse bleAllChecksForExpression = BusinessLogicEngine.montanaClient
-				.callProcedure("BLE_AllChecksForExpression", endpointID,
-						propertyID);
+		// find checks that match the incoming expression 
 
-		final VoltTable vtAllChecksForExpression[] = bleAllChecksForExpression
-				.getResults();
-
-		HashSet<String> allCheckIDs = new HashSet<String>();
-
-		VoltTable vtAllChecksForExpressionT = vtAllChecksForExpression[0];
-
-		while (vtAllChecksForExpressionT.advanceRow()) {
-
-			allCheckIDs.add(vtAllChecksForExpressionT.getString("CHECKID"));
-
-		}
-
-		// find checks that match the incoming expression and mark as true
-
-		HashSet<String> checkPathMembers = new HashSet<String>();
+		HashSet<String> checkPathForCheck = new HashSet<String>();
+		HashSet<String> trueCheckIDs = new HashSet<String>();
+		
 		
 		final ClientResponse bleChecksForExpression = BusinessLogicEngine.montanaClient
 				.callProcedure("BLE_ChecksForExpression", endpointID,
@@ -186,25 +172,40 @@ public class BusinessLogicEngine {
 		final VoltTable vtChecksForExpression[] = bleChecksForExpression
 				.getResults();
 
-		//HashSet<String> validCheckIDs = new HashSet<String>();
+		
 
-		VoltTable vtChecksForExpressionT = vtChecksForExpression[0];
-
-		while (vtChecksForExpressionT.advanceRow()) {
-
-			//validCheckIDs.add(vtChecksForExpressionT.getString("CHECKID"));
-			checkPathMembers.add(vtChecksForExpressionT.getString("CHECKPATHID"));
+		// True checks retrieved first
+		VoltTable vtTrueChecksForExpressionT = vtChecksForExpression[0];
+		while (vtTrueChecksForExpressionT.advanceRow()) {
+			trueCheckIDs.add(vtTrueChecksForExpressionT.getString("CHECKID"));
+			ClientResponse bleUpdateCheckState = BusinessLogicEngine.montanaClient
+					.callProcedure("BLE_UpdateCheckState", vtTrueChecksForExpressionT.getString("CHECKPATHID"), vtTrueChecksForExpressionT.getString("CHECKID"), 1);
+			checkPathForCheck.add(vtTrueChecksForExpressionT.getString("CHECKPATHID"));
 			
-			// start multichecks here
-			
-			triggerRules.addAll(lookupRulesForCheckID(vtChecksForExpressionT
-					.getString("CHECKID")));
-						
 		}
-
-		Iterator<String> cpID = checkPathMembers.iterator();
-
-		//System.out.println(checkPathMembers);
+		
+		// Now false checks
+		
+		VoltTable vtFalseChecksForExpressionT = vtChecksForExpression[1];
+		while (vtFalseChecksForExpressionT.advanceRow()) {
+			trueCheckIDs.add(vtFalseChecksForExpressionT.getString("CHECKID"));
+			ClientResponse bleUpdateCheckState = BusinessLogicEngine.montanaClient
+					.callProcedure("BLE_UpdateCheckState", vtTrueChecksForExpressionT.getString("CHECKPATHID"), vtTrueChecksForExpressionT.getString("CHECKID"), 0);
+			checkPathForCheck.add(vtFalseChecksForExpressionT.getString("CHECKPATHID"));
+		}
+		
+		// find rules for all true checks
+		
+		triggerRules.addAll(lookupRulesForCheckID(trueCheckIDs));
+		Iterator<String> cpID = checkPathForCheck.iterator();
+		
+		
+		/**
+		 * from here it should be good
+		 */
+		
+		
+		//System.out.println("CHECKPATH: " + checkPathForCheck);
 		
 		while (cpID.hasNext())
 		{
@@ -259,7 +260,8 @@ private static HashSet<String> firstLevelMultiChecks (String checkpathID) throws
 
 	//System.out.println("CPMCM " + checkPathMultiCheckMembers);
 			
-		
+
+	//System.out.println("MULTICHECKS IN CHECKPATH: " + checkPathMultiCheckMembers);
 	
 	Iterator<String> itCPMCM = checkPathMultiCheckMembers.iterator();
 	while (itCPMCM.hasNext()) {
@@ -327,6 +329,9 @@ private static HashSet<String> firstLevelMultiChecks (String checkpathID) throws
 				moreHighLevelMultiChecks
 						.add(vtMultiCheckParentForMultiCheckT
 								.getString("MULTICHECKLID"));
+				
+				//System.out.println("MORE HIGHLEVEL CHECKS: " + moreHighLevelMultiChecks);
+				
 				recursionMultichecks(checkpathID, moreHighLevelMultiChecks);
 
 				final VoltTable vtIsCycleMultiCheckTrue[] = bleIsCycleMultiCheckTrue

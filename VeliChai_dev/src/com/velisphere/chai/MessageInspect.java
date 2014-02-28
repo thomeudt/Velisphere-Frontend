@@ -98,15 +98,18 @@ public class MessageInspect implements Runnable {
 					Map.Entry<String, String> e = (Map.Entry<String, String>) it
 							.next();
 
+					
+					
 					if (e.getKey() != "EPID" && e.getKey() != null
 							&& e.getKey() != "SECTOK"
 							&& e.getKey() != "TIMESTAMP"
 							&& e.getKey() != "TYPE") {
+							
 							triggeredRules.addAll(BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), (byte) 0));
-						
+							LoggerEngine.writeEndpointLog(EPID, e.getKey(), e.getValue());		
 							//BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), (byte) 0);
 						
-							LoggerEngine.writeEndpointLog(EPID, e.getKey(), e.getValue());
+							
 							
 					}
 				}

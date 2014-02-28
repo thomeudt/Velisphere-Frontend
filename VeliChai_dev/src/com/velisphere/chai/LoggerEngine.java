@@ -21,7 +21,7 @@ public class LoggerEngine {
 
 		
 		BusinessLogicEngine.montanaClient.callProcedure("LGE_InsertEndpointPropertyLog", entryIDString, EPID, property, entry, System.currentTimeMillis());
-		
+		//BusinessLogicEngine.montanaClient.callProcedure("LGE_InsertEndpointPropertyLog", "A", "B", "C", "D", "E");
 	}
 
 	
