@@ -46,9 +46,9 @@ public class ChaiWorker {
 		 */
 
 		System.out.println();
-		System.out.println("*     * VeliSphere Chai v0.6 - VeliSphere Controller");
+		System.out.println("*     * VeliSphere Chai v0.61 - VeliSphere Controller");
 		System.out
-				.println(" *   *  Copyright (C) 2014 Thorsten Meudt, The Connected Things Lab. All rights reserved.");
+				.println(" *   *  Copyright (C) 2014 Thorsten Meudt/Connected Things Lab. All rights reserved.");
 		System.out.println("  * *   ");
 		System.out
 				.println("   *    VeliSphere Chai is part of the VeliSphere IoTS ecosystem.");

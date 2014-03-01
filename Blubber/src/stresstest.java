@@ -24,6 +24,7 @@ public class stresstest {
 	public static void main(String[] args) throws Exception {
 
 		ServerParameters.my_queue_name = "E1";
+		//ServerParameters.my_queue_name = "EX1";
 		
 		int numworkers = 64;
 		
@@ -35,7 +36,6 @@ public class stresstest {
 			B52.execute(bombThread[i]);
             
         }
-		
 		
 	 	B52.shutdown();
 		
