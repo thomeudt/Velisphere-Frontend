@@ -20,7 +20,7 @@ public class LoggerEngine {
 		// TODO: change to a meaningful log table!
 
 		
-		BusinessLogicEngine.montanaClient.callProcedure("LGE_InsertEndpointPropertyLog", entryIDString, EPID, property, entry, System.currentTimeMillis());
+		BusinessLogicEngine.montanaClient.callProcedure("LGE_InsertEndpointPropertyLog", EPID, entryIDString, property, entry, System.currentTimeMillis());
 		//BusinessLogicEngine.montanaClient.callProcedure("LGE_InsertEndpointPropertyLog", "A", "B", "C", "D", "E");
 	}
 
