@@ -71,8 +71,7 @@ public class ChaiWorker {
 		
 		// Open the IMDB Database
 
-		System.out
-				.println(" [IN] Selected VoltDB: " + ServerParameters.volt_ip);
+		//System.out.println(" [IN] Selected VoltDB: " + ServerParameters.volt_ip);
 		BusinessLogicEngine.openDatabase();
 
 		System.out.println(" [IN] Connecting completed.");
