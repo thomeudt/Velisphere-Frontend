@@ -59,6 +59,8 @@ public class MulticheckDialogBox extends PopupPanel {
 	public String ruleID;
 	public HashMap<String, String> linkedChecks;
 	public Boolean deleteFlag = false;
+	public Boolean cancelFlag = false;
+
 	
 
 	private PropertyClassServiceAsync rpcServicePropertyClass;
@@ -77,6 +79,7 @@ public class MulticheckDialogBox extends PopupPanel {
 		
 		
 		setWidget(uiBinder.createAndBindUi(this));
+		btnDelete.setVisible(false);
 		HashSet<String> combinations = new CombinationConfig().getCombinations();
 		Iterator<String> it = combinations.iterator();
 		while (it.hasNext()){
@@ -92,7 +95,8 @@ public class MulticheckDialogBox extends PopupPanel {
 		this.ruleID = ruleID;
 		this.linkedChecks = linkedChecks;
 		
-		
+				
+		if (multicheckTitle != "") btnDelete.setVisible(true);
 		lstCombination.setSelectedValue(combination);
 		txtMulticheckTitle.setText(multicheckTitle);
 		Iterator<Entry<String, String>> it = linkedChecks.entrySet().iterator();
@@ -117,8 +121,12 @@ public class MulticheckDialogBox extends PopupPanel {
 	void deleteCheck (ClickEvent event) {
 		this.deleteFlag = true;
 		this.hide();
-		
-		
+	}
+
+	@UiHandler("btnCancel")
+	void cancelCheck (ClickEvent event) {
+		this.cancelFlag = true;
+		this.hide();
 	}
 
 	

@@ -15,14 +15,14 @@ public class PreLoadPart {
 	     // public static String volt_ip = "16.1.1.149"; // for local db
 	    	// public static String volt_ip = "ec2-54-200-208-195.us-west-2.compute.amazonaws.com"; // for aws db
 	        
-	         preLoader.createConnection("16.1.1.149");
+	         preLoader.createConnection("16.1.1.110");
 	        //preLoader.createConnection("ec2-54-213-118-41.us-west-2.compute.amazonaws.com");
 	        
 	        /*
 	         * Load the database.
 	         */
 	        
-	        String userID = "1445685d-7a3d-412b-921e-313ee1be058a";
+	        String userID = "a1a970d8-baa9-4fe2-bb77-9f5032854928";
 	        	        
 	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1007", "E1", userID);
 	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1006", "E2", userID);

@@ -293,12 +293,31 @@ public class CheckpathEditorWidget extends Composite {
 				SameLevelCheckpathObject linkedMulticheck = linkedMultichecksIT.next();
 				if (allMultichecksForInspection.contains(linkedMulticheck) == false){
 					childMultichecksToRemove.add(linkedMulticheck);
+					updatedMultichecks.add(currentObject);
 					additionalRebuildNeeded = true;
 				}
 			}
 			
 			currentObject.childMultichecks.removeAll(childMultichecksToRemove);
-						
+
+			//cleanup orphan child check links from prior deletions
+					
+			
+			additionalRebuildNeeded = false;
+			List<SameLevelCheckpathObject> childChecksToRemove = new ArrayList<SameLevelCheckpathObject>();
+			Iterator<SameLevelCheckpathObject> linkedChecksIT = currentObject.childChecks.iterator();
+			while(linkedChecksIT.hasNext()){
+				SameLevelCheckpathObject linkedCheck = linkedChecksIT.next();
+				if (checkHashSet.contains(linkedCheck) == false){
+					childChecksToRemove.add(linkedCheck);
+					updatedMultichecks.add(currentObject);
+					additionalRebuildNeeded = true;
+				}
+			}
+			
+			currentObject.childChecks.removeAll(childChecksToRemove);
+			
+			
 			//now draw object
 			
 			
@@ -539,6 +558,9 @@ public class CheckpathEditorWidget extends Composite {
 					deletedMultichecks.add(currentCheck);
 					currentColumn.remove(currentCheck);
 					rebuildCheckpathDiagram();	
+					
+				} else if (multicheckDialogBox.cancelFlag == true) {
+					//do nothing						
 					
 				} else
 				{
@@ -964,6 +986,8 @@ public class CheckpathEditorWidget extends Composite {
 
 					public void onClose(CloseEvent event) {
 
+						
+						
 						addCheckField.setText(checkNewDialogBox.getCheckTitle());
 						addCheckField.setPropertyID(dragAccordion.propertyID);
 						addCheckField.setEndpointID(dragAccordion.endpointID);
@@ -1030,14 +1054,30 @@ public class CheckpathEditorWidget extends Composite {
 
 			public void onClose(CloseEvent event) {
 
+					if (checkEditDialogBox.deleteFlag == true) {
+						//do delete actions
+						deletedChecks.add(currentObject);
+						checkHashSet.remove(currentObject);
+						rebuildCheckpathDiagram();	
+						
+						
+					} else if (checkEditDialogBox.cancelFlag == true) {
+						//do nothing
+							
+						
+					} else
+					{
+						//do save update actions
+						currentObject.setText(checkEditDialogBox.getCheckTitle());
+						currentObject.setOperator(checkEditDialogBox.getOperator());
+						currentObject.setTriggerValue(checkEditDialogBox.getTriggerValue());
+						updatedChecks.add(currentObject);
+						rebuildCheckpathDiagram();
+					}
+
+				
+				
 								
-				currentObject.setText(checkEditDialogBox.getCheckTitle());
-				currentObject.setOperator(checkEditDialogBox.getOperator());
-				currentObject.setTriggerValue(checkEditDialogBox.getTriggerValue());
-				updatedChecks.add(currentObject);
-				
-				
-				rebuildCheckpathDiagram();
 				
 			}
 		});
@@ -1122,6 +1162,9 @@ public class CheckpathEditorWidget extends Composite {
 		return this.updatedChecks;	
 	}
 
+	public List<SameLevelCheckpathObject> getDeletedChecks(){
+		return this.deletedChecks;	
+	}
 
 	public void resetUpdatedMultichecks(){
 		this.updatedMultichecks.clear();

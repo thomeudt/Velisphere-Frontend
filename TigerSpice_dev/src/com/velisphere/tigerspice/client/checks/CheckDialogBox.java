@@ -40,6 +40,8 @@ public class CheckDialogBox extends PopupPanel {
 	@UiField
 	Button btnSave;
 	@UiField
+	Button btnDelete;
+	@UiField
 	TextBox txtTriggerValue;
 	@UiField
 	TextBox txtCheckTitle;
@@ -55,12 +57,12 @@ public class CheckDialogBox extends PopupPanel {
 	private String operator;
 	private String triggerValue;
 	private String endpointName;
-
 	private PropertyClassServiceAsync rpcServicePropertyClass;
 	private EndpointServiceAsync rpcServiceEndpoint;
 	private PropertyServiceAsync rpcServiceProperty;
-	
 	private AnimationLoading animationLoading = new AnimationLoading();
+	public boolean deleteFlag = false;
+	public boolean cancelFlag = false;
 
 	private static CheckEditorDialogBoxUiBinder uiBinder = GWT
 			.create(CheckEditorDialogBoxUiBinder.class);
@@ -81,7 +83,13 @@ public class CheckDialogBox extends PopupPanel {
 		this.triggerValue = triggerValue;
 		this.operator = operator;
 
+		
 		setWidget(uiBinder.createAndBindUi(this));
+		
+		if ( operator == ""){
+			btnDelete.setVisible(false);
+		}
+		
 		
 		rpcServicePropertyClass = GWT.create(PropertyClassService.class);
 		rpcServiceEndpoint = GWT.create(EndpointService.class);
@@ -321,6 +329,19 @@ public class CheckDialogBox extends PopupPanel {
 				
 	}
 
+	@UiHandler("btnDelete")
+	void deleteCheck (ClickEvent event) {
+		
+		this.deleteFlag = true;
+		this.hide();
+				
+	}
+
+	@UiHandler("btnCancel")
+	void cancelCheck (ClickEvent event) {
+		this.cancelFlag = true;
+		this.hide();
+	}	
 	
 	private void showLoadAnimation(AnimationLoading animationLoading) {
 		RootPanel rootPanel = RootPanel.get("main");

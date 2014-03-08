@@ -72,13 +72,13 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			    	 	    	
 			    	<b:Row>
 				    <b:Column size="2" offset="0">
-						      	<b:Paragraph addStyleNames="smalltext">Sensor Explorer</b:Paragraph>
+						      	<b:Paragraph addStyleNames="smalltext">Cost per execution</b:Paragraph>
 						
 					</b:Column>
 					
 				    <b:Column size="8" offset="0">
 				    			    
-				    <b:Paragraph addStyleNames="smalltext">Logic Designer - Drag sensors and actors here to build your logic (always 1st layer MC!). COST: 0 EUR (Complexity Based Costing)</b:Paragraph>
+				    <b:Paragraph addStyleNames="smalltext">Logic Designer - Drag sensors and actors here to build your logic (always 1st layer MC!). </b:Paragraph>
 			
 					</b:Column>
 			
@@ -89,7 +89,8 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 					    
 					    
 				    <b:Column size="2" offset="0">
-				    
+				    	<b:Paragraph addStyleNames="strong">USD 0.00</b:Paragraph>
+				        <b:Paragraph addStyleNames="smalltext">Sensor Explorer</b:Paragraph>
 				        <vspr:SensorPropertiesByEndpointWidget />
 				   	
 				   		<b:Paragraph addStyleNames="smalltext">Actor Explorer</b:Paragraph>

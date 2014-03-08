@@ -214,7 +214,7 @@ public class CheckpathEditView extends Composite {
 	void saveCheckpath(ClickEvent event) {
 		final AnimationLoading loading = new AnimationLoading();
 		
-		txtSaveStatus.setText("Logic design not changed.");
+		txtSaveStatus.setText("No Changes.");
 		
 		// getting current checkpath ID and adding to final variable checkpathIDUpdate
 		
@@ -895,6 +895,41 @@ public class CheckpathEditView extends Composite {
 
 
 				}
+				
+				// now remove all orphan checks from deletions 
+				
+				Iterator<SameLevelCheckpathObject> deletedChecksIT = wgtCheckpathEditor.getDeletedChecks().iterator();
+				while(deletedChecksIT.hasNext()){
+					SameLevelCheckpathObject checkpathObject = deletedChecksIT.next();
+
+					rpcServiceCheck.deleteCheck(
+							checkpathObject.checkId,
+							new AsyncCallback<String>() {
+
+								@Override
+								public void onFailure(Throwable caught) {
+									// TODO Auto-generated method stub
+									
+									System.out
+											.println("ERROR deleting check: "
+													+ caught);
+								}
+
+								@Override
+								public void onSuccess(String result) {
+									// TODO Auto-generated method stub
+									System.out
+									.println("Success deleting check: "
+											+ result);
+									txtSaveStatus
+									.setText("Logic design saved successfully.");
+
+									
+								}
+							});
+					
+				}
+				
 				
 				
 				

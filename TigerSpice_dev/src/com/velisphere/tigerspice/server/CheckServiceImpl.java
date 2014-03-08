@@ -218,7 +218,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 		try {
 			voltCon.montanaClient.callProcedure("UI_DeleteCheck",
 					checkID);
-			voltCon.montanaClient.callProcedure("UI_DeleteStateCheck",
+			voltCon.montanaClient.callProcedure("UI_DeleteCheckState",
 					checkID);
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
