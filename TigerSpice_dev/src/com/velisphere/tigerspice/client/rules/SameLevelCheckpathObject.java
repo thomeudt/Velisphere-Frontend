@@ -22,6 +22,7 @@ import java.util.HashSet;
 
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Image;
+import com.github.gwtbootstrap.client.ui.base.IconAnchor;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Anchor;
@@ -42,7 +43,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 	public String combination = "notSet";
 	public String ruleID;
 	public Boolean isMulticheck;
-	public Icon actionIcon;
+	public IconAnchor actionIcon;
 	public Image andIcon;
 	public Image orIcon;
 	public Icon sensorIcon;
@@ -68,6 +69,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		this.childChecks = new HashSet<SameLevelCheckpathObject>();
 		this.isMulticheck = false;
 		this.setCheckID(checkID);
+		this.getElement().setAttribute("style", "background-color:aliceblue;");
 		
 	
 		ancTextField = new Anchor();
@@ -83,7 +85,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		ancTextField.setHref("#");
 		this.add(ancTextField);
 		
-		actionIcon = new Icon();
+		actionIcon = new IconAnchor();
 		actionIcon.setIcon(IconType.PLAY);
 		actionIcon.getElement().setAttribute("style", "color:orangered;");
 		actionIcon.setTitle("There is at least one action triggered if this check is true");
@@ -221,6 +223,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 	
 	public void showActionIcon (){
 		this.actionIcon.setVisible(true);
+		
 		
 	}
 	

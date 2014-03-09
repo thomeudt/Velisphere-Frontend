@@ -91,8 +91,7 @@ public class CheckpathEditorWidget extends Composite {
 	private List<SameLevelCheckpathObject> newChecks;
 	private List<SameLevelCheckpathObject> deletedChecks;
 	private Boolean additionalRebuildNeeded;
-	private DiagramController controller; 
-
+	private DiagramController controller;
 
 	public CheckpathEditorWidget(String checkpathID) {
 
@@ -116,27 +115,25 @@ public class CheckpathEditorWidget extends Composite {
 		this.newChecks = new ArrayList<SameLevelCheckpathObject>();
 		this.deletedChecks = new ArrayList<SameLevelCheckpathObject>();
 
-		
-		
 		con = new FlowLayoutContainer();
 
 		initWidget(con);
 
-				
 		checkHashSet = new LinkedHashSet<SameLevelCheckpathObject>();
 
 		multicheckColumns = new LinkedList<MulticheckColumn<SameLevelCheckpathObject>>();
 
-		// load checkpath from database if a checkpath id is provided (open existing)
-		
+		// load checkpath from database if a checkpath id is provided (open
+		// existing)
+
 		if (this.checkpathID != null) {
 			loadCheckpathJSON(this.checkpathID);
 		}
 
 		System.out.println("MC Columnen: " + multicheckColumns);
-		
+
 		additionalRebuildNeeded = false;
-		
+
 		rebuildCheckpathDiagram();
 
 	}
@@ -151,10 +148,11 @@ public class CheckpathEditorWidget extends Composite {
 		container.setScrollMode(ScrollSupport.ScrollMode.AUTO);
 		container.setHeight((int) 400);
 		container.setWidth((int) ((RootPanel.get().getOffsetWidth()) / 1.74));
-		controller = new DiagramController(1200,(int) 375);
+		controller = new DiagramController(1200, (int) 375);
 		controller.showGrid(true); // Display a background grid
-		controller.setAllowingUserInteractions(false); // prevent user from dragging the lines manually
-		
+		controller.setAllowingUserInteractions(false); // prevent user from
+														// dragging the lines
+														// manually
 
 		container.add(controller.getView());
 
@@ -164,7 +162,7 @@ public class CheckpathEditorWidget extends Composite {
 
 		int xpos = 10;
 		int ypos = 320;
-		
+
 		if (it.hasNext() == false) {
 			drawCheckTarget(xpos, ypos);
 		}
@@ -172,31 +170,25 @@ public class CheckpathEditorWidget extends Composite {
 		// draw the first level - "checks" - as the foundation layer by reading
 		// the data stored in the checkHashSet
 
-		
-
 		while (it.hasNext()) {
 			final SameLevelCheckpathObject currentObject = it.next();
 
 			addDragSource(currentObject);
 			addDndTargetForAction(currentObject);
-			
-			
-			
-						
+
 			controller.addWidget(currentObject, xpos, ypos);
-			
-			// add icon for action loaded checks, for now just move into position
-			
-			controller.addWidget(currentObject.actionIcon, xpos+83 , ypos - 15);
-			controller.addWidget(currentObject.sensorIcon, xpos , ypos - 15);
+
+			// add icon for action loaded checks, for now just move into
+			// position
+
+			controller
+					.addWidget(currentObject.actionIcon, xpos + 83, ypos - 19);
+			setActionEditClickHandler(currentObject);
+			controller.addWidget(currentObject.sensorIcon, xpos, ypos - 15);
 			currentObject.sensorIcon.setVisible(true);
 			// increment horizontal positon
-			
-			xpos = xpos + 120;
-			
-				
-			
 
+			xpos = xpos + 120;
 
 			// if no more items are left in the check hashset, draw a new drag
 			// target box as the last step to allow for adding a new check to
@@ -248,7 +240,7 @@ public class CheckpathEditorWidget extends Composite {
 		con.clear();
 		con.add(container);
 		drawConnectorLines(controller);
-		
+
 		if (additionalRebuildNeeded == true) {
 			System.out.println("ADDITIONAL REBUILD");
 			rebuildCheckpathDiagram();
@@ -271,82 +263,82 @@ public class CheckpathEditorWidget extends Composite {
 		while (mit.hasNext()) {
 
 			final SameLevelCheckpathObject currentObject = mit.next();
-			
-			// correct level setting of current object within column, might have changed due to child deletions
-			// this can be further optimized in the future to allow moving elements vertically in diagram
-			
-			if (multicheckLinkedList.indexOf(currentObject) != currentObject.level-1){
-				currentObject.level = multicheckLinkedList.indexOf(currentObject) + 1;
+
+			// correct level setting of current object within column, might have
+			// changed due to child deletions
+			// this can be further optimized in the future to allow moving
+			// elements vertically in diagram
+
+			if (multicheckLinkedList.indexOf(currentObject) != currentObject.level - 1) {
+				currentObject.level = multicheckLinkedList
+						.indexOf(currentObject) + 1;
 			}
-			
-			//cleanup orphan child multicheck links from prior deletions
-			
+
+			// cleanup orphan child multicheck links from prior deletions
+
 			List<SameLevelCheckpathObject> allMultichecksForInspection = new ArrayList<SameLevelCheckpathObject>();
-			
+
 			for (int i = 1; i <= multicheckColumns.size(); i = i + 1) {
-				allMultichecksForInspection.addAll(multicheckColumns.get(i-1));	
+				allMultichecksForInspection
+						.addAll(multicheckColumns.get(i - 1));
 			}
-			
+
 			additionalRebuildNeeded = false;
 			List<SameLevelCheckpathObject> childMultichecksToRemove = new ArrayList<SameLevelCheckpathObject>();
-			Iterator<SameLevelCheckpathObject> linkedMultichecksIT = currentObject.childMultichecks.iterator();
-			while(linkedMultichecksIT.hasNext()){
-				SameLevelCheckpathObject linkedMulticheck = linkedMultichecksIT.next();
-				if (allMultichecksForInspection.contains(linkedMulticheck) == false){
+			Iterator<SameLevelCheckpathObject> linkedMultichecksIT = currentObject.childMultichecks
+					.iterator();
+			while (linkedMultichecksIT.hasNext()) {
+				SameLevelCheckpathObject linkedMulticheck = linkedMultichecksIT
+						.next();
+				if (allMultichecksForInspection.contains(linkedMulticheck) == false) {
 					childMultichecksToRemove.add(linkedMulticheck);
 					updatedMultichecks.add(currentObject);
 					additionalRebuildNeeded = true;
 				}
 			}
-			
+
 			currentObject.childMultichecks.removeAll(childMultichecksToRemove);
 
-			//cleanup orphan child check links from prior deletions
-					
-			
+			// cleanup orphan child check links from prior deletions
+
 			additionalRebuildNeeded = false;
 			List<SameLevelCheckpathObject> childChecksToRemove = new ArrayList<SameLevelCheckpathObject>();
-			Iterator<SameLevelCheckpathObject> linkedChecksIT = currentObject.childChecks.iterator();
-			while(linkedChecksIT.hasNext()){
+			Iterator<SameLevelCheckpathObject> linkedChecksIT = currentObject.childChecks
+					.iterator();
+			while (linkedChecksIT.hasNext()) {
 				SameLevelCheckpathObject linkedCheck = linkedChecksIT.next();
-				if (checkHashSet.contains(linkedCheck) == false){
+				if (checkHashSet.contains(linkedCheck) == false) {
 					childChecksToRemove.add(linkedCheck);
 					updatedMultichecks.add(currentObject);
 					additionalRebuildNeeded = true;
 				}
 			}
-			
+
 			currentObject.childChecks.removeAll(childChecksToRemove);
-			
-			
-			//now draw object
-			
-			
-			
-			
-			
-			
+
+			// now draw object
+
 			System.out.println(currentObject.text + " is multicheck: "
 					+ currentObject.isMulticheck);
 
 			controller.addWidget(currentObject, 10 + columnElement * 120,
 					250 - yposdelta);
-			
+
 			// add icon for combination type
-			
-			if (currentObject.combination.equals("AND")){
+
+			if (currentObject.combination.equals("AND")) {
 				currentObject.showAndIcon();
-				controller.addWidget(currentObject.andIcon, 10 + columnElement * 120, 250 - yposdelta - 17);	
+				controller.addWidget(currentObject.andIcon,
+						10 + columnElement * 120, 250 - yposdelta - 17);
 			}
-			
-			if (currentObject.combination.equals("OR")){
+
+			if (currentObject.combination.equals("OR")) {
 				currentObject.showOrIcon();
-				controller.addWidget(currentObject.orIcon, 10 + columnElement * 120, 250 - yposdelta - 17);	
+				controller.addWidget(currentObject.orIcon,
+						10 + columnElement * 120, 250 - yposdelta - 17);
 			}
-					
-			
+
 			yposdelta = yposdelta + 70;
-			
 
 			DropTarget target = new DropTarget(currentObject) {
 				@Override
@@ -405,7 +397,8 @@ public class CheckpathEditorWidget extends Composite {
 
 														currentObject
 																.setCheckID(result);
-														newMultichecks.add(currentObject);
+														newMultichecks
+																.add(currentObject);
 														System.out
 																.println("ID: "
 																		+ currentObject.checkId);
@@ -420,12 +413,11 @@ public class CheckpathEditorWidget extends Composite {
 														+ ")");
 										currentObject
 												.setCombination(multicheckNewDialogBox.combination);
-										
-										 
-										
-										
-										setMulticheckEditClickHandler(currentObject, multicheckLinkedList);
-										
+
+										setMulticheckEditClickHandler(
+												currentObject,
+												multicheckLinkedList);
+
 										if (dragAccordion.isMulticheck) {
 											currentObject
 													.addChildMulticheck(dragAccordion.checkpathObject);
@@ -445,16 +437,14 @@ public class CheckpathEditorWidget extends Composite {
 														+ currentObject.childMultichecks);
 										System.out.println("Child Checks: "
 												+ currentObject.childChecks);
-										
-										
+
 										rebuildCheckpathDiagram();
 									}
 
 								});
 
 						addDragSource(currentObject);
-						
-						
+
 						multicheckColumns.get(columnElement).add(currentObject);
 						rebuildCheckpathDiagram();
 
@@ -479,7 +469,7 @@ public class CheckpathEditorWidget extends Composite {
 
 						updatedMultichecks.add(currentObject);
 						addDragSource(currentObject);
-						
+
 					}
 
 					if (currentObject.level == multicheckColumns.get(
@@ -501,25 +491,23 @@ public class CheckpathEditorWidget extends Composite {
 			target.setGroup("multicheck");
 			target.setOverStyle("drag-ok");
 
-			// determine if AND or OR icons need to be displayed, does not work yet
-		
-
-						
+			// determine if AND or OR icons need to be displayed, does not work
+			// yet
 
 		}
-		
-		
 
 		return checkColumn;
 
 	}
 
-	private void showUpdateMulticheckDialog(final SameLevelCheckpathObject currentCheck, final MulticheckColumn<SameLevelCheckpathObject> currentColumn) {
+	private void showUpdateMulticheckDialog(
+			final SameLevelCheckpathObject currentCheck,
+			final MulticheckColumn<SameLevelCheckpathObject> currentColumn) {
 
 		final MulticheckDialogBox multicheckDialogBox = new MulticheckDialogBox();
 
 		multicheckDialogBox.setModal(true);
-		
+
 		multicheckDialogBox.setAutoHideEnabled(true);
 
 		multicheckDialogBox.setAnimationEnabled(true);
@@ -529,58 +517,51 @@ public class CheckpathEditorWidget extends Composite {
 				(RootPanel.get().getOffsetHeight()) / 4);
 		multicheckDialogBox.show();
 		multicheckDialogBox.addStyleName("ontop");
-		
-		
 
 		HashMap<String, String> allChecks = new HashMap<String, String>();
 
-		Iterator<SameLevelCheckpathObject> it = currentCheck.childChecks.iterator();
+		Iterator<SameLevelCheckpathObject> it = currentCheck.childChecks
+				.iterator();
 		while (it.hasNext()) {
 			SameLevelCheckpathObject check = it.next();
 			allChecks.put(check.checkId, check.text);
 		}
 
-		Iterator<SameLevelCheckpathObject> mit = currentCheck.childMultichecks.iterator();
+		Iterator<SameLevelCheckpathObject> mit = currentCheck.childMultichecks
+				.iterator();
 		while (mit.hasNext()) {
 			SameLevelCheckpathObject multicheck = mit.next();
 			allChecks.put(multicheck.checkId, multicheck.text);
 		}
 
-		multicheckDialogBox.setParameters(currentCheck.checkId, currentCheck.text, currentCheck.combination, "1",
-				allChecks);
-		
-		multicheckDialogBox
-		.addCloseHandler(new CloseHandler<PopupPanel>() {
+		multicheckDialogBox.setParameters(currentCheck.checkId,
+				currentCheck.text, currentCheck.combination, "1", allChecks);
+
+		multicheckDialogBox.addCloseHandler(new CloseHandler<PopupPanel>() {
 
 			public void onClose(CloseEvent event) {
 
 				if (multicheckDialogBox.deleteFlag == true) {
-					//do delete actions
+					// do delete actions
 					deletedMultichecks.add(currentCheck);
 					currentColumn.remove(currentCheck);
-					rebuildCheckpathDiagram();	
-					
+					rebuildCheckpathDiagram();
+
 				} else if (multicheckDialogBox.cancelFlag == true) {
-					//do nothing						
-					
-				} else
-				{
-					//do save update actions
-					currentCheck.setText(multicheckDialogBox.multicheckTitle); 
+					// do nothing
+
+				} else {
+					// do save update actions
+					currentCheck.setText(multicheckDialogBox.multicheckTitle);
 					currentCheck.combination = multicheckDialogBox.combination;
-					
-					
-					
+
 					updatedMultichecks.add(currentCheck);
-					rebuildCheckpathDiagram();	
+					rebuildCheckpathDiagram();
 				}
-				
+
 			}
 
 		});
-
-		
-		
 
 	}
 
@@ -640,182 +621,211 @@ public class CheckpathEditorWidget extends Composite {
 
 	}
 
-	private void loadCheckpathJSON(final String checkpathId)
-	{
-		
+	private void loadCheckpathJSON(final String checkpathId) {
+
 		final AnimationLoading loading = new AnimationLoading();
 		showLoadAnimation(loading);
-		
-		rpcServiceCheckPath
-		.getUiObjectJSONForCheckpathID(
-				checkpathId,
+
+		rpcServiceCheckPath.getUiObjectJSONForCheckpathID(checkpathId,
 				new AsyncCallback<CheckPathObjectTree>() {
 
 					@Override
-					public void onFailure(
-							Throwable caught) {
+					public void onFailure(Throwable caught) {
 						// TODO
 						// Auto-generated
 						// method
 						// stub
-						System.out
-								.println("ERROR LOADING JSON: "
-										+ caught);
+						System.out.println("ERROR LOADING JSON: " + caught);
 
 					}
 
 					@Override
-					public void onSuccess(
-							CheckPathObjectTree result) {
-					
-						System.out.println("JSON RETRIEVED SUCCESSFULLY: "+ result.tree);
-			
-						// first round - fill objects without relationship information to populate the entire graph and create all necessary objects
-						// child check ids are added to a hashmap for later use (currently unused)
-						// Multichecklookup is created to easily lookup multichecks in round two
-						
-						
+					public void onSuccess(CheckPathObjectTree result) {
+
+						System.out.println("JSON RETRIEVED SUCCESSFULLY: "
+								+ result.tree);
+
+						// first round - fill objects without relationship
+						// information to populate the entire graph and create
+						// all necessary objects
+						// child check ids are added to a hashmap for later use
+						// (currently unused)
+						// Multichecklookup is created to easily lookup
+						// multichecks in round two
+
 						// get baselayer
-						
+
 						final HashMap<String, SameLevelCheckpathObject> baseLayerMap = new HashMap<String, SameLevelCheckpathObject>();
-						
-						Iterator<CheckPathObjectData> bIT = result.baseLayer.iterator();
-						
-						while (bIT.hasNext()){
+
+						Iterator<CheckPathObjectData> bIT = result.baseLayer
+								.iterator();
+
+						while (bIT.hasNext()) {
 							CheckPathObjectData baseElementData = bIT.next();
-							SameLevelCheckpathObject baseElement = new SameLevelCheckpathObject(baseElementData.checkId, baseElementData.text, baseElementData.empty, baseElementData.level);
+							SameLevelCheckpathObject baseElement = new SameLevelCheckpathObject(
+									baseElementData.checkId,
+									baseElementData.text,
+									baseElementData.empty,
+									baseElementData.level);
 							baseElement.triggerValue = baseElementData.triggerValue;
 							baseElement.propertyID = baseElementData.propertyID;
 							baseElement.operator = baseElementData.operator;
 							baseElement.endpointID = baseElementData.endpointID;
-							
-							baseLayerMap.put(baseElementData.checkId, baseElement);
-						
-							
+
+							baseLayerMap.put(baseElementData.checkId,
+									baseElement);
+
 							setCheckEditClickHandler(baseElement);
 							checkHashSet.add(baseElement);
-				
+
 							// triggervalue operator
-							
+
 						}
-						
-						
+
 						// get columns
-						
+
 						HashMap<String, List<String>> childChecksForMulticheck = new HashMap<String, List<String>>();
 						HashMap<String, List<String>> childMultichecksForMulticheck = new HashMap<String, List<String>>();
 						HashMap<String, SameLevelCheckpathObject> multicheckLookup = new HashMap<String, SameLevelCheckpathObject>();
-						//final HashMap<String, SameLevelCheckpathObject> checkLookup = new HashMap<String, SameLevelCheckpathObject>();
-						
-						Iterator<CheckPathObjectColumn> rIT = result.tree.iterator();
-											
+						// final HashMap<String, SameLevelCheckpathObject>
+						// checkLookup = new HashMap<String,
+						// SameLevelCheckpathObject>();
+
+						Iterator<CheckPathObjectColumn> rIT = result.tree
+								.iterator();
+
 						while (rIT.hasNext()) {
 							CheckPathObjectColumn columnObject = rIT.next();
-							Iterator<CheckPathObjectData> cIT = columnObject.column.iterator();
-							MulticheckColumn<SameLevelCheckpathObject> newMulticheckList = new MulticheckColumn<SameLevelCheckpathObject>(true);
-							
+							Iterator<CheckPathObjectData> cIT = columnObject.column
+									.iterator();
+							MulticheckColumn<SameLevelCheckpathObject> newMulticheckList = new MulticheckColumn<SameLevelCheckpathObject>(
+									true);
+
 							while (cIT.hasNext()) {
 								CheckPathObjectData field = cIT.next();
-								System.out.println("Field retrieved: "+ field.text+ "with ID "+ field.checkId);
-								SameLevelCheckpathObject newMulticheck = new SameLevelCheckpathObject(field.checkId , field.text, field.empty, field.level);
+								System.out.println("Field retrieved: "
+										+ field.text + "with ID "
+										+ field.checkId);
+								SameLevelCheckpathObject newMulticheck = new SameLevelCheckpathObject(
+										field.checkId, field.text, field.empty,
+										field.level);
 								newMulticheck.combination = field.combination;
 								newMulticheck.checkpathID = checkpathId;
-								System.out.println("Checkpathobject created: "+  newMulticheck.text + "with ID "+ newMulticheck.checkId);
+								System.out.println("Checkpathobject created: "
+										+ newMulticheck.text + "with ID "
+										+ newMulticheck.checkId);
 								newMulticheck.isMulticheck = true;
-								
+
 								// add dragability
 								addDragSource(newMulticheck);
-								
+
 								// add clickhandler for opening editing box
-								
-								
-								
-								setMulticheckEditClickHandler(newMulticheck, newMulticheckList);
-																
+
+								setMulticheckEditClickHandler(newMulticheck,
+										newMulticheckList);
+
 								// add multicheck to lookup table
-								multicheckLookup.put(field.checkId, newMulticheck);
-					        								
-								
-								List<String> foundChildChecks = new ArrayList<String>();								
-								Iterator<String> ccIT = field.childChecks.iterator();
-								
-								
+								multicheckLookup.put(field.checkId,
+										newMulticheck);
+
+								List<String> foundChildChecks = new ArrayList<String>();
+								Iterator<String> ccIT = field.childChecks
+										.iterator();
+
 								// find child checks and store in lookup list;
 								while (ccIT.hasNext()) {
 									String foundChildCheck = ccIT.next();
-									System.out.println("Child Check found: "+ foundChildCheck);
-									foundChildChecks.add(foundChildCheck);								
+									System.out.println("Child Check found: "
+											+ foundChildCheck);
+									foundChildChecks.add(foundChildCheck);
 								}
-								
-								childChecksForMulticheck.put(field.checkId, foundChildChecks);
-								
 
-								// find child multichecks and store in lookup list;
+								childChecksForMulticheck.put(field.checkId,
+										foundChildChecks);
+
+								// find child multichecks and store in lookup
+								// list;
 								List<String> foundChildMultichecks = new ArrayList<String>();
-								Iterator<String> cmcIT = field.childMultichecks.iterator();
+								Iterator<String> cmcIT = field.childMultichecks
+										.iterator();
 								while (cmcIT.hasNext()) {
 									String foundChildMulticheck = cmcIT.next();
-									System.out.println("Child Multi Check found: "+ foundChildMulticheck);
-									foundChildMultichecks.add(foundChildMulticheck);
-									
+									System.out
+											.println("Child Multi Check found: "
+													+ foundChildMulticheck);
+									foundChildMultichecks
+											.add(foundChildMulticheck);
+
 								}
-								childMultichecksForMulticheck.put(field.checkId, foundChildMultichecks);
-								
-								
+								childMultichecksForMulticheck.put(
+										field.checkId, foundChildMultichecks);
+
 								newMulticheckList.add(newMulticheck);
 
 							}
-						
-							multicheckColumns.add(newMulticheckList);
-							
-						}
-							
-											
-						System.out.println("MCC: " + multicheckColumns);
-						System.out.println("*/*" + childMultichecksForMulticheck +" / " + childChecksForMulticheck);
-						
 
-						// second round - add relationship data from lookup table
-						
-						
-						Iterator<CheckPathObjectColumn> relIT = result.tree.iterator();
+							multicheckColumns.add(newMulticheckList);
+
+						}
+
+						System.out.println("MCC: " + multicheckColumns);
+						System.out.println("*/*"
+								+ childMultichecksForMulticheck + " / "
+								+ childChecksForMulticheck);
+
+						// second round - add relationship data from lookup
+						// table
+
+						Iterator<CheckPathObjectColumn> relIT = result.tree
+								.iterator();
 						final List<String> childrenAlreadyAdded = new ArrayList<String>();
 						final List<String> childrenAlreadyLinked = new ArrayList<String>();
-						
+
 						while (relIT.hasNext()) {
 							CheckPathObjectColumn columnObject = relIT.next();
-							Iterator<CheckPathObjectData> cIT = columnObject.column.iterator();
-														
+							Iterator<CheckPathObjectData> cIT = columnObject.column
+									.iterator();
+
 							while (cIT.hasNext()) {
 								final CheckPathObjectData field = cIT.next();
-								System.out.println("Field retrieved for relationship update: "+ field.text+ "with ID "+ field.checkId);
-								
-								final SameLevelCheckpathObject objectToUpdate = multicheckLookup.get(field.checkId);
-								
+								System.out
+										.println("Field retrieved for relationship update: "
+												+ field.text
+												+ "with ID "
+												+ field.checkId);
+
+								final SameLevelCheckpathObject objectToUpdate = multicheckLookup
+										.get(field.checkId);
+
 								// for multichecks
-								Iterator<String> childMultichecksIT = field.childMultichecks.iterator();
-								while(childMultichecksIT.hasNext()){
-									String childMulticheckID = 	childMultichecksIT.next();
-									SameLevelCheckpathObject childMulticheckObject = multicheckLookup.get(childMulticheckID);
-									objectToUpdate.childMultichecks.add(childMulticheckObject);
-									System.out.println("Adding multicheck children for " + field.checkId + ": " + childMulticheckObject);
-									
+								Iterator<String> childMultichecksIT = field.childMultichecks
+										.iterator();
+								while (childMultichecksIT.hasNext()) {
+									String childMulticheckID = childMultichecksIT
+											.next();
+									SameLevelCheckpathObject childMulticheckObject = multicheckLookup
+											.get(childMulticheckID);
+									objectToUpdate.childMultichecks
+											.add(childMulticheckObject);
+									System.out
+											.println("Adding multicheck children for "
+													+ field.checkId
+													+ ": "
+													+ childMulticheckObject);
+
 								}
-								
-								
+
 								// for baselayer checks
-								
-						
-																
-								
-								Iterator<String> childChecksIT = field.childChecks.iterator();
-								
-								
-								
-								while(childChecksIT.hasNext()){
-									final String childCheckID = childChecksIT.next();
-									
-									rpcServiceCheck.getCheckNameForCheckID(childCheckID, 
+
+								Iterator<String> childChecksIT = field.childChecks
+										.iterator();
+
+								while (childChecksIT.hasNext()) {
+									final String childCheckID = childChecksIT
+											.next();
+
+									rpcServiceCheck.getCheckNameForCheckID(
+											childCheckID,
 											new AsyncCallback<String>() {
 
 												@Override
@@ -825,57 +835,64 @@ public class CheckpathEditorWidget extends Composite {
 													// Auto-generated
 													// method
 													// stub
-													System.out.println("ERROR RETRIEVING CHECK NAME: " + caught);
+													System.out
+															.println("ERROR RETRIEVING CHECK NAME: "
+																	+ caught);
 
 												}
 
 												@Override
 												public void onSuccess(
 														String result) {
-												
-													
-													System.out.println("Already contains: " + objectToUpdate.checkId+":"+childCheckID);
-													
-													if (childrenAlreadyLinked.contains(objectToUpdate.checkId+":"+childCheckID) == false)
-													{
-														
-														
+
+													System.out
+															.println("Already contains: "
+																	+ objectToUpdate.checkId
+																	+ ":"
+																	+ childCheckID);
+
+													if (childrenAlreadyLinked
+															.contains(objectToUpdate.checkId
+																	+ ":"
+																	+ childCheckID) == false) {
+
 														// link to children
-														
-															
-															System.out.println("LINKING CHILDEN: "+ childCheckID);
-															SameLevelCheckpathObject childCheckObject = baseLayerMap.get(childCheckID);
-															
-															objectToUpdate.childChecks.add(childCheckObject);
-															childrenAlreadyLinked.add(childCheckID);
-															System.out.println("HASHSET: " + checkHashSet);
-														
-														
-														
+
+														System.out
+																.println("LINKING CHILDEN: "
+																		+ childCheckID);
+														SameLevelCheckpathObject childCheckObject = baseLayerMap
+																.get(childCheckID);
+
+														objectToUpdate.childChecks
+																.add(childCheckObject);
+														childrenAlreadyLinked
+																.add(childCheckID);
+														System.out
+																.println("HASHSET: "
+																		+ checkHashSet);
+
 														removeLoadAnimation(loading);
 														rebuildCheckpathDiagram();
 
 													}
-													
-														
+
 												}
 											});
 								}
 							}
 						}
-						 
+
 						rebuildCheckpathDiagram();
 					}
 
 				});
 		removeLoadAnimation(loading);
 	}
-	
-	
-	
-	private void addDragSource(final SameLevelCheckpathObject currentObject){
+
+	private void addDragSource(final SameLevelCheckpathObject currentObject) {
 		// add drag source to multicheck
-		
+
 		final SafeHtmlBuilder builder = new SafeHtmlBuilder();
 		builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
 				+ "\">");
@@ -894,8 +911,7 @@ public class CheckpathEditorWidget extends Composite {
 				dragAccordion.isMulticheck = currentObject.isMulticheck;
 				dragAccordion.checkpathObject = currentObject;
 				event.setData(dragAccordion);
-				event.getStatusProxy().update(
-						builder.toSafeHtml());
+				event.getStatusProxy().update(builder.toSafeHtml());
 			}
 
 		};
@@ -903,34 +919,32 @@ public class CheckpathEditorWidget extends Composite {
 
 	}
 
-	private void setMulticheckEditClickHandler(final SameLevelCheckpathObject currentObject, final MulticheckColumn<SameLevelCheckpathObject> currentColumn){
+	private void setMulticheckEditClickHandler(
+			final SameLevelCheckpathObject currentObject,
+			final MulticheckColumn<SameLevelCheckpathObject> currentColumn) {
 
-		if (currentObject.empty == false)
-		{
-			currentObject.ancTextField
-			.addClickHandler(new ClickHandler() {
+		if (currentObject.empty == false) {
+			currentObject.ancTextField.addClickHandler(new ClickHandler() {
 				@Override
-				public void onClick(
-						ClickEvent event) {
+				public void onClick(ClickEvent event) {
 
-					showUpdateMulticheckDialog(
-							currentObject, currentColumn);
+					showUpdateMulticheckDialog(currentObject, currentColumn);
 
 				}
 
 			});
-			
-		}
-		}
 
-	private void drawCheckTarget(Integer xPos, Integer yPos){
+		}
+	}
+
+	private void drawCheckTarget(Integer xPos, Integer yPos) {
 
 		final SameLevelCheckpathObject addCheckField = new SameLevelCheckpathObject(
 				null, "empty sensor check", true, 0);
 		controller.addWidget(addCheckField, xPos, yPos);
 
 		// define dnd target for checks
-		
+
 		DropTarget checkTarget = new DropTarget(addCheckField) {
 			@Override
 			protected void onDragDrop(DndDropEvent event) {
@@ -943,31 +957,30 @@ public class CheckpathEditorWidget extends Composite {
 
 				addCheckField.setText(dragAccordion.propertyName);
 
-				
 				// create UUID for check
-				rpcServiceUuid
-				.getUuid(new AsyncCallback<String>() {
+				rpcServiceUuid.getUuid(new AsyncCallback<String>() {
 
 					@Override
-					public void onFailure(
-							Throwable caught) {
+					public void onFailure(Throwable caught) {
 						// TODO Auto-generated
 						// method stub
 
 					}
 
 					@Override
-					public void onSuccess(
-							String result) {
+					public void onSuccess(String result) {
 
 						addCheckField.setCheckID(result);
-						
+
 					}
 
 				});
-				
-				
-				final CheckDialogBox checkNewDialogBox = new CheckDialogBox(dragAccordion.endpointID, dragAccordion.propertyID, dragAccordion.properyClassID, dragAccordion.propertyName, dragAccordion.endpointName, "unnamed check", "", "");
+
+				final CheckDialogBox checkNewDialogBox = new CheckDialogBox(
+						dragAccordion.endpointID, dragAccordion.propertyID,
+						dragAccordion.properyClassID,
+						dragAccordion.propertyName, dragAccordion.endpointName,
+						"unnamed check", "", "");
 
 				checkNewDialogBox.setModal(true);
 				checkNewDialogBox.setAutoHideEnabled(true);
@@ -979,162 +992,189 @@ public class CheckpathEditorWidget extends Composite {
 						(RootPanel.get().getOffsetHeight()) / 4);
 				checkNewDialogBox.show();
 				checkNewDialogBox.addStyleName("ontop");
-				
+
 				rebuildCheckpathDiagram();
-				
+
 				checkNewDialogBox
-				.addCloseHandler(new CloseHandler<PopupPanel>() {
+						.addCloseHandler(new CloseHandler<PopupPanel>() {
 
-					public void onClose(CloseEvent event) {
+							public void onClose(CloseEvent event) {
 
-						
-						
-						addCheckField.setText(checkNewDialogBox.getCheckTitle());
-						addCheckField.setPropertyID(dragAccordion.propertyID);
-						addCheckField.setEndpointID(dragAccordion.endpointID);
-						addCheckField.setOperator(checkNewDialogBox.getOperator());
-						addCheckField.setTriggerValue(checkNewDialogBox.getTriggerValue());
-						
-						
+								addCheckField.setText(checkNewDialogBox
+										.getCheckTitle());
+								addCheckField
+										.setPropertyID(dragAccordion.propertyID);
+								addCheckField
+										.setEndpointID(dragAccordion.endpointID);
+								addCheckField.setOperator(checkNewDialogBox
+										.getOperator());
+								addCheckField.setTriggerValue(checkNewDialogBox
+										.getTriggerValue());
 
-						checkHashSet.add(addCheckField);
-						newChecks.add(addCheckField);
-						addCheckField.empty = false;
-						SameLevelCheckpathObject addNextLevelField = new SameLevelCheckpathObject(
-								null, "empty logic check", true, 1);
+								checkHashSet.add(addCheckField);
+								newChecks.add(addCheckField);
+								addCheckField.empty = false;
+								SameLevelCheckpathObject addNextLevelField = new SameLevelCheckpathObject(
+										null, "empty logic check", true, 1);
 
-						// also add an entire multicheck column
-						MulticheckColumn<SameLevelCheckpathObject> multicheckList = new MulticheckColumn<SameLevelCheckpathObject>(
-								true);
-						multicheckList.add(addNextLevelField);
-						multicheckColumns.add(multicheckList);
+								// also add an entire multicheck column
+								MulticheckColumn<SameLevelCheckpathObject> multicheckList = new MulticheckColumn<SameLevelCheckpathObject>(
+										true);
+								multicheckList.add(addNextLevelField);
+								multicheckColumns.add(multicheckList);
 
-						setCheckEditClickHandler(addCheckField);
-						
-						rebuildCheckpathDiagram();
-						
-					}
+								setCheckEditClickHandler(addCheckField);
 
-				});
+								rebuildCheckpathDiagram();
 
+							}
+
+						});
 
 			}
 
 		};
 		checkTarget.setGroup("sensors");
 		checkTarget.setOverStyle("drag-ok");
-		
-		
+
 	}
-	
-	
-	private void setCheckEditClickHandler(final SameLevelCheckpathObject currentObject){
-			
-	
-	currentObject.ancTextField.addClickHandler(new ClickHandler() {
-		public void onClick(ClickEvent event) {
 
-		
-			
-		final CheckDialogBox checkEditDialogBox = new CheckDialogBox(
-				currentObject.endpointID, currentObject.propertyID,
-				"",
-				"", "", currentObject.text, currentObject.triggerValue, currentObject.operator); 
+	private void setCheckEditClickHandler(
+			final SameLevelCheckpathObject currentObject) {
 
-		checkEditDialogBox.setModal(true);
-		checkEditDialogBox.setAutoHideEnabled(true);
+		currentObject.ancTextField.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
 
-		checkEditDialogBox.setAnimationEnabled(true);
+				final CheckDialogBox checkEditDialogBox = new CheckDialogBox(
+						currentObject.endpointID, currentObject.propertyID, "",
+						"", "", currentObject.text, currentObject.triggerValue,
+						currentObject.operator);
 
-		checkEditDialogBox.setPopupPosition(
-				(RootPanel.get().getOffsetWidth()) / 3,
-				(RootPanel.get().getOffsetHeight()) / 4);
-		checkEditDialogBox.show();
-		checkEditDialogBox.addStyleName("ontop");
-		
-		
-		checkEditDialogBox
-		.addCloseHandler(new CloseHandler<PopupPanel>() {
+				checkEditDialogBox.setModal(true);
+				checkEditDialogBox.setAutoHideEnabled(true);
 
-			public void onClose(CloseEvent event) {
+				checkEditDialogBox.setAnimationEnabled(true);
 
-					if (checkEditDialogBox.deleteFlag == true) {
-						//do delete actions
-						deletedChecks.add(currentObject);
-						checkHashSet.remove(currentObject);
-						rebuildCheckpathDiagram();	
-						
-						
-					} else if (checkEditDialogBox.cancelFlag == true) {
-						//do nothing
-							
-						
-					} else
-					{
-						//do save update actions
-						currentObject.setText(checkEditDialogBox.getCheckTitle());
-						currentObject.setOperator(checkEditDialogBox.getOperator());
-						currentObject.setTriggerValue(checkEditDialogBox.getTriggerValue());
-						updatedChecks.add(currentObject);
-						rebuildCheckpathDiagram();
-					}
+				checkEditDialogBox.setPopupPosition(
+						(RootPanel.get().getOffsetWidth()) / 3,
+						(RootPanel.get().getOffsetHeight()) / 4);
+				checkEditDialogBox.show();
+				checkEditDialogBox.addStyleName("ontop");
 
-				
-				
-								
-				
+				checkEditDialogBox
+						.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+							public void onClose(CloseEvent event) {
+
+								if (checkEditDialogBox.deleteFlag == true) {
+									// do delete actions
+									deletedChecks.add(currentObject);
+									checkHashSet.remove(currentObject);
+									rebuildCheckpathDiagram();
+
+								} else if (checkEditDialogBox.cancelFlag == true) {
+									// do nothing
+
+								} else {
+									// do save update actions
+									currentObject.setText(checkEditDialogBox
+											.getCheckTitle());
+									currentObject
+											.setOperator(checkEditDialogBox
+													.getOperator());
+									currentObject
+											.setTriggerValue(checkEditDialogBox
+													.getTriggerValue());
+									updatedChecks.add(currentObject);
+									rebuildCheckpathDiagram();
+								}
+
+							}
+						});
+
 			}
+
 		});
-		
-	
+
 	}
-		
+
+	private void setActionEditClickHandler(
+			final SameLevelCheckpathObject currentObject) {
+
+		currentObject.actionIcon.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+
+				final RuleDialogBox actionEditDialogBox = new RuleDialogBox();
+
+				actionEditDialogBox.setModal(true);
+				actionEditDialogBox.setAutoHideEnabled(true);
+
+				actionEditDialogBox.setAnimationEnabled(true);
+
+				actionEditDialogBox.setPopupPosition(
+						(RootPanel.get().getOffsetWidth()) / 3,
+						(RootPanel.get().getOffsetHeight()) / 4);
+				actionEditDialogBox.show();
+				actionEditDialogBox.addStyleName("ontop");
+
+				actionEditDialogBox
+						.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+							public void onClose(CloseEvent event) {
+							}
+						});
+
+			}
+
 		});
-	
-	}
-
-	
-	
-
-	private void addDndTargetForAction(final SameLevelCheckpathObject currentObject)
-	{
-	
-	// define dnd target for actions, but only if target field is not empty
-		
-	DropTarget actionTarget = new DropTarget(currentObject) {
-		@Override
-		protected void onDragDrop(DndDropEvent event) {
-			super.onDragDrop(event);
-			
-			System.out.println("Dropped action!");
-
-			final RuleDialogBox ruleNewDialogBox = new RuleDialogBox();
-
-			ruleNewDialogBox.setModal(true);
-			ruleNewDialogBox.setAutoHideEnabled(true);
-
-			ruleNewDialogBox.setAnimationEnabled(true);
-
-			ruleNewDialogBox.setPopupPosition(
-					(RootPanel.get().getOffsetWidth()) / 3,
-					(RootPanel.get().getOffsetHeight()) / 4);
-			ruleNewDialogBox.show();
-			ruleNewDialogBox.addStyleName("ontop");
-
-			currentObject.showActionIcon();
-			
-			rebuildCheckpathDiagram();
-
-
-		}
-
-	};
-	actionTarget.setGroup("actors");
-	actionTarget.setOverStyle("drag-ok");
 
 	}
-	
-	
+
+	private void addDndTargetForAction(
+			final SameLevelCheckpathObject currentObject) {
+
+		// define dnd target for actions, but only if target field is not empty
+
+		DropTarget actionTarget = new DropTarget(currentObject) {
+			@Override
+			protected void onDragDrop(DndDropEvent event) {
+				super.onDragDrop(event);
+
+				System.out.println("Dropped action!");
+
+				final RuleDialogBox actionNewDialogBox = new RuleDialogBox();
+
+				actionNewDialogBox.setModal(true);
+				actionNewDialogBox.setAutoHideEnabled(true);
+
+				actionNewDialogBox.setAnimationEnabled(true);
+
+				actionNewDialogBox.setPopupPosition(
+						(RootPanel.get().getOffsetWidth()) / 3,
+						(RootPanel.get().getOffsetHeight()) / 4);
+				actionNewDialogBox.show();
+				actionNewDialogBox.addStyleName("ontop");
+
+				currentObject.showActionIcon();
+				
+				actionNewDialogBox
+				.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+					public void onClose(CloseEvent event) {
+					}
+				});
+
+
+				rebuildCheckpathDiagram();
+
+			}
+
+		};
+		actionTarget.setGroup("actors");
+		actionTarget.setOverStyle("drag-ok");
+
+	}
+
 	private void showLoadAnimation(AnimationLoading animationLoading) {
 		RootPanel rootPanel = RootPanel.get("main");
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
@@ -1145,40 +1185,41 @@ public class CheckpathEditorWidget extends Composite {
 		if (animationLoading != null)
 			animationLoading.removeFromParent();
 	}
-	
-	public List<SameLevelCheckpathObject> getUpdatedMultichecks(){
-		return this.updatedMultichecks;	
+
+	public List<SameLevelCheckpathObject> getUpdatedMultichecks() {
+		return this.updatedMultichecks;
 	}
 
-	public List<SameLevelCheckpathObject> getNewMultichecks(){
-		return this.newMultichecks;	
-	}
-	
-	public List<SameLevelCheckpathObject> getDeletedMultichecks(){
-		return this.deletedMultichecks;	
-	}
-	
-	public List<SameLevelCheckpathObject> getNewChecks(){
-		return this.newChecks;	
-	}
-	
-	public List<SameLevelCheckpathObject> getUpdatedChecks(){
-		return this.updatedChecks;	
+	public List<SameLevelCheckpathObject> getNewMultichecks() {
+		return this.newMultichecks;
 	}
 
-	public List<SameLevelCheckpathObject> getDeletedChecks(){
-		return this.deletedChecks;	
+	public List<SameLevelCheckpathObject> getDeletedMultichecks() {
+		return this.deletedMultichecks;
 	}
 
-	public void resetUpdatedMultichecks(){
+	public List<SameLevelCheckpathObject> getNewChecks() {
+		return this.newChecks;
+	}
+
+	public List<SameLevelCheckpathObject> getUpdatedChecks() {
+		return this.updatedChecks;
+	}
+
+	public List<SameLevelCheckpathObject> getDeletedChecks() {
+		return this.deletedChecks;
+	}
+
+	public void resetUpdatedMultichecks() {
 		this.updatedMultichecks.clear();
 	}
 
-	public void resetNewMultichecks(){
+	public void resetNewMultichecks() {
 		this.newMultichecks.clear();
 	}
-	public void resetDeletedMultichecks(){
+
+	public void resetDeletedMultichecks() {
 		this.deletedMultichecks.clear();
 	}
-	
+
 }
