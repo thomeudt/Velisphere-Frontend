@@ -102,7 +102,7 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 		sessionHandler.removeHandler();
 		userID = SessionHelper.getCurrentUserID();
 
-	loadAnimation.showLoadAnimation("Loading endpoints");
+	loadAnimation.showLoadAnimation("Loading sensors");
 	rpcServiceEndpoint.getEndpointsForUser(userID, new AsyncCallback<Vector<EndpointData>>(){
 
 		@Override

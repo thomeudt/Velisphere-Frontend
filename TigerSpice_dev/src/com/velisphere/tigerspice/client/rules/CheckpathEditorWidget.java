@@ -33,6 +33,7 @@ import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -915,6 +916,7 @@ public class CheckpathEditorWidget extends Composite {
 			}
 
 		};
+		currentObject.getElement().getStyle().setCursor(Cursor.POINTER); 
 		source.setGroup("multicheck");
 
 	}
