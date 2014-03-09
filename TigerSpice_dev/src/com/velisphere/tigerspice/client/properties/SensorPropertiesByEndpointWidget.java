@@ -105,16 +105,18 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 				EndpointData current = it.next();
 				String shortName;
 				
-				if (current.getName().length() < 25){
+				if (current.getName().length() < 22){
 					shortName = current.getName();	
 				} else
 				{
-					shortName = current.getName().substring(0, 20)+"(...)";
+					shortName = current.getName().substring(0, 17)+"(...)";
 				}
 				endpoint.setHeading(shortName);
 				endpoint.setTitle(current.getName());
+				endpoint.addStyleName("style.icon");
+				endpoint.setBaseIcon(IconType.RSS);
 				addActPropertiesToEndpoint(endpoint, current.getId(), current.getName());
-				System.out.println("momentane ID: " + current.getId());
+				//System.out.println("momentane ID: " + current.getId());
 				
 				accordion.add(endpoint);
 			}

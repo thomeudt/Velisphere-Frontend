@@ -105,16 +105,19 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 				EndpointData current = it.next();
 				String shortName;
 				
-				if (current.getName().length() < 25){
+				if (current.getName().length() < 22){
 					shortName = current.getName();	
 				} else
 				{
-					shortName = current.getName().substring(0, 20)+"(...)";
+					shortName = current.getName().substring(0, 17)+"(...)";
 				}
+				
+				endpoint.addStyleName("style.icon");
+				endpoint.setBaseIcon(IconType.GEARS);
 				endpoint.setHeading(shortName);
 				endpoint.setTitle(current.getName());
 				addActPropertiesToEndpoint(endpoint, current.getId());
-				System.out.println("momentane ID: " + current.getId());
+				//System.out.println("momentane ID: " + current.getId());
 				
 				accordion.add(endpoint);
 			}

@@ -52,14 +52,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
            
             
             
-            <b:Row>
-            <b:Column size="2">
-            <b:Paragraph addStyleNames="smalltext" text="Action to be fired" />
-            </b:Column>
-            <b:Column size="3">
-            <b:TextBox styleName="span3" ui:field="txtRuleTriggered" /> 
-            </b:Column>
-            </b:Row>
+       
                  
             <b:Row>
             <b:Column size="1">

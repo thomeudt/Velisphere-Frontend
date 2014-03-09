@@ -26,7 +26,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
     <b:Column size="2" offset="5">
       <b:Well size="LARGE">
          
-           <b:Paragraph addStyleNames="text-left"><b:Icon type="COG" size="TWO_TIMES" spin="true" alignment="LEFT"/><b:Paragraph ui:field="stgLoading">Accessing Data...</b:Paragraph></b:Paragraph>
+           <b:Paragraph addStyleNames="text-left"><b:Icon type="SPINNER" size="TWO_TIMES" spin="true" alignment="LEFT"/><b:Paragraph ui:field="stgLoading">Accessing Data...</b:Paragraph></b:Paragraph>
             
       </b:Well>
     </b:Column>

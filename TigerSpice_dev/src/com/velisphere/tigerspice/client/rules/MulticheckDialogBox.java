@@ -44,8 +44,7 @@ public class MulticheckDialogBox extends PopupPanel {
 	ListBox lstCombination;
 	@UiField
 	Button btnSave;
-	@UiField
-	TextBox txtRuleTriggered;
+	
 	@UiField
 	TextBox txtMulticheckTitle;
 	@UiField
@@ -112,7 +111,6 @@ public class MulticheckDialogBox extends PopupPanel {
 	@UiHandler("btnSave")
 	void saveNewCheck (ClickEvent event) {
 		this.multicheckTitle = this.txtMulticheckTitle.getText();
-		this.ruleID = this.txtRuleTriggered.getText();
 		this.combination = this.lstCombination.getValue();
 		this.hide();		
 	}

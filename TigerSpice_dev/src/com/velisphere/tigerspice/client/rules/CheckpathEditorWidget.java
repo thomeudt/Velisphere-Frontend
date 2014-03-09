@@ -187,8 +187,9 @@ public class CheckpathEditorWidget extends Composite {
 			
 			// add icon for action loaded checks, for now just move into position
 			
-			controller.addWidget(currentObject.actionIcon, xpos+83 , ypos - 17);
-			
+			controller.addWidget(currentObject.actionIcon, xpos+83 , ypos - 15);
+			controller.addWidget(currentObject.sensorIcon, xpos , ypos - 15);
+			currentObject.sensorIcon.setVisible(true);
 			// increment horizontal positon
 			
 			xpos = xpos + 120;
@@ -993,6 +994,9 @@ public class CheckpathEditorWidget extends Composite {
 						addCheckField.setEndpointID(dragAccordion.endpointID);
 						addCheckField.setOperator(checkNewDialogBox.getOperator());
 						addCheckField.setTriggerValue(checkNewDialogBox.getTriggerValue());
+						
+						
+
 						checkHashSet.add(addCheckField);
 						newChecks.add(addCheckField);
 						addCheckField.empty = false;

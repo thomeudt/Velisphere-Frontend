@@ -3,7 +3,9 @@ package com.velisphere.tigerspice.client.rules;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Image;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Hyperlink;
@@ -23,9 +25,10 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 	public String combination = "notSet";
 	public String ruleID;
 	public Boolean isMulticheck;
-	public Image actionIcon;
+	public Icon actionIcon;
 	public Image andIcon;
 	public Image orIcon;
+	public Icon sensorIcon;
 	public Hyperlink linkActionIcon;
 	public String checkpathID;
 	public String propertyID;
@@ -48,6 +51,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		this.childChecks = new HashSet<SameLevelCheckpathObject>();
 		this.isMulticheck = false;
 		this.setCheckID(checkID);
+		
 	
 		ancTextField = new Anchor();
 		
@@ -61,21 +65,39 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		}
 		ancTextField.setHref("#");
 		this.add(ancTextField);
-		actionIcon = new Image();
-		actionIcon.setResource(Images.INSTANCE.action());
+		
+		actionIcon = new Icon();
+		actionIcon.setIcon(IconType.PLAY);
+		actionIcon.getElement().setAttribute("style", "color:orangered;");
+		actionIcon.setTitle("There is at least one action triggered if this check is true");
 		this.add(actionIcon);
 		actionIcon.setVisible(false);
+		
+		
+		// sensor icon is only used for base layer checks
+		sensorIcon = new Icon();
+		sensorIcon.setIcon(IconType.RSS);
+		this.add(sensorIcon);
+		sensorIcon.getElement().setAttribute("style", "color:cornflowerblue;");
+		sensorIcon.setTitle("This is a sensor check. Click on it for more details.");
+		sensorIcon.setVisible(false);
+		
+
+		
+		
 		linkActionIcon = new Hyperlink();
 		linkActionIcon.getElement().appendChild(actionIcon.getElement());
 		this.add(linkActionIcon);
 		
 		andIcon = new Image();
 		andIcon.setResource(Images.INSTANCE.and());
+		andIcon.setTitle("This logic check is true if all checks linked to this logic check are true");
 		this.add(andIcon);
 		andIcon.setVisible(false);
 
 		orIcon = new Image();
 		orIcon.setResource(Images.INSTANCE.or());
+		orIcon.setTitle("This logic check is true if at least one check linked to this logic check is true");
 		this.add(andIcon);
 		orIcon.setVisible(false);
 				
@@ -121,6 +143,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 	
 	public void setIsMulticheck (boolean isMulticheck){
 		this.isMulticheck = isMulticheck;
+		
 		
 	}
 	
@@ -185,6 +208,16 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 	}
 	
 	public void hideActionIcon (){
+		this.actionIcon.setVisible(false);
+		
+	}
+	
+	public void showSensorIcon (){
+		this.actionIcon.setVisible(true);
+		
+	}
+	
+	public void hideSensorIcon (){
 		this.actionIcon.setVisible(false);
 		
 	}
