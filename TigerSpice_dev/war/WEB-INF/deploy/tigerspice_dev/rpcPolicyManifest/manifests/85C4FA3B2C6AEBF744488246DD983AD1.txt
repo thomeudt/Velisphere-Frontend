@@ -1,0 +1,2 @@
+serviceClass: com.velisphere.tigerspice.client.rules.CheckPathService
+path: 887CE8CC8B758C853493D5D07319ED01.gwt.rpc
