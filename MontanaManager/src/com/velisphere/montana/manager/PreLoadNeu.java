@@ -16,7 +16,7 @@ public class PreLoadNeu {
 	    	//public static String volt_ip = "ec2-54-200-17-56.us-west-2.compute.amazonaws.com"; // for aws db
 	        
 	        preLoader.createConnection("16.1.1.110");
-	        //preLoader.createConnection("ec2-54-186-8-25.us-west-2.compute.amazonaws.com");
+	        //preLoader.createConnection("ec2-54-186-85-248.us-west-2.compute.amazonaws.com");
 	        
 	        /*
 	         * Load the database.
