@@ -23,6 +23,7 @@ import com.github.gwtbootstrap.client.ui.NavForm;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.NavText;
 import com.github.gwtbootstrap.client.ui.Navbar;
+import com.github.gwtbootstrap.client.ui.ResponsiveNavbar;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.NavbarPosition;
 import com.google.gwt.core.client.GWT;
@@ -56,7 +57,7 @@ import com.velisphere.tigerspice.shared.UserData;
 
 public class NavBar extends Composite implements HasText {
 
-	@UiField Navbar navbar;
+	@UiField ResponsiveNavbar navbar;
 	@UiField NavLink btnAdmin;
 	@UiField NavLink btnLogout;
 	@UiField NavLink btnAccount;
@@ -76,9 +77,10 @@ public class NavBar extends Composite implements HasText {
 	}
 
 	public NavBar() {
-		navbar = new Navbar();
+		navbar = new ResponsiveNavbar();
 		initWidget(uiBinder.createAndBindUi(this));
 		navbar.setPosition(NavbarPosition.TOP);
+		
 
 		btnAdmin.setVisible(false);
    	 btnLogout.setVisible(false);

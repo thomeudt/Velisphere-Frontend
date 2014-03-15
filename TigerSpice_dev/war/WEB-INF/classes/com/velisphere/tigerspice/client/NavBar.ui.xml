@@ -31,7 +31,7 @@
        
     
          
-     <b:Navbar ui:field="navbar">
+     <b:ResponsiveNavbar ui:field="navbar">
          
          <b:Brand href="#" ui:field="brdHome"><img alt="" src="./images/logo_alpha.png" /></b:Brand>
     
@@ -52,7 +52,7 @@
              <b:NavText ui:field="txtUserName">Not Logged In</b:NavText>
          </b:Nav>
        
-     </b:Navbar>
+     </b:ResponsiveNavbar>
           
     
      
