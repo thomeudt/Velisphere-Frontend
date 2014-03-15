@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 import com.phidgets.*; 
 import com.phidgets.event.*; 
 public class PhiTest 
@@ -8,7 +10,7 @@ public class PhiTest
 		 
 		
 		// Start AMQP Listener
-		ServerParameters.my_queue_name = "phi";
+		ServerParameters.my_queue_name = "E1";
 		Thread t = new Thread(new RecvPhi(), "listener");
 		t.start();
 		
@@ -44,20 +46,22 @@ public class PhiTest
 				System.out.println(se);
 				String message = "Neuer Wert des Sensors "+se.getIndex() +" ist:" + se.getValue();
 
-				if (se.getIndex() == 6){				
-					System.out.println("Gesendet " + message);
-					try {
-						System.out.println("Status von Digital 6: " + ik.getOutputState(6));
-
-					} catch (PhidgetException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-
-				}
-
+				
 				try {
-					Send.main("PONG:" + message, "adam");
+					// send to controller
+					
+					HashMap<String, String> messageHash = new HashMap<String, String>();
+					
+					messageHash.put("PR10", String.valueOf(ik.getSensorValue(6)));
+					messageHash.put("PR11", String.valueOf(ik.getSensorValue(7)));
+					messageHash.put("PR12", String.valueOf(ik.getSensorValue(5)));
+					messageHash.put("PR13", String.valueOf(ik.getSensorValue(1)));
+					
+					System.out.println("Message Hash Sent to Controller: " + messageHash);
+					
+					Send.sendHashTable(messageHash, "controller");
+					
+					
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

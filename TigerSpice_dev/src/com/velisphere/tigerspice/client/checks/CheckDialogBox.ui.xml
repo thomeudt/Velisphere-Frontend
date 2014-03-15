@@ -1,0 +1,95 @@
+<!--
+  CONFIDENTIAL INFORMATION
+   __________________
+   
+    Copyright (C) 2014 Thorsten Meudt / Connected Things Lab
+    All Rights Reserved.
+   
+   NOTICE:  All information contained herein is, and remains
+   the property of Thorsten Meudt and its suppliers,
+   if any.  The intellectual and technical concepts contained
+   herein are proprietary to Thorsten Meudt
+   and its suppliers and may be covered by Patents,
+   patents in process, and are protected by trade secret or copyright law.
+   Dissemination of this information or reproduction of this material
+   is strictly forbidden unless prior written permission is obtained
+   from Thorsten Meudt.
+-->
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<g:HTMLPanel>
+
+      <b:WellForm styleName="wellsilver">
+        <b:Legend>Sensor Check</b:Legend>
+	        <b:Row>
+            <b:Column size="2">
+            <b:Paragraph addStyleNames="smalltext" text="Endpoint Name" />
+            </b:Column>
+            <b:Column size="2">
+            <b:Paragraph ui:field="txtEndpointName" addStyleNames="smalltext" text="..." />
+            </b:Column>
+            </b:Row>
+            
+	        <b:Row>
+            <b:Column size="2">
+            <b:Paragraph addStyleNames="smalltext" text="Property to be checked" />
+            </b:Column>
+            <b:Column size="2">
+            <b:ListBox styleName="span2" ui:field="lstPropertyID"/> 
+            </b:Column>
+            </b:Row>
+            
+            
+            <b:Row>
+            <b:Column size="2">
+            <b:Paragraph addStyleNames="smalltext" text="Title or Description" />
+            </b:Column>                   
+            <b:Column size="2">                    
+            <b:TextBox styleName="span2" ui:field="txtCheckTitle" />
+            </b:Column>
+            </b:Row>
+            
+            <b:Row>
+            <b:Column size="2">
+            <b:Paragraph addStyleNames="smalltext" text="Operator" />
+            </b:Column>
+            <b:Column size="2">
+            <b:ListBox styleName="span2" ui:field="lstOperator"/> 
+            </b:Column>
+            </b:Row>
+           
+            
+            <b:Row>
+            <b:Column size="2">
+            <b:Paragraph addStyleNames="smalltext" text="Trigger Value" />
+            </b:Column>
+            <b:Column size="2">
+            <b:TextBox styleName="span2" ui:field="txtTriggerValue" /> 
+            </b:Column>
+            </b:Row>
+     
+            
+           <b:Row>
+            <b:Column size="1">
+            <b:Button styleName="btn-success btn" text="Save" ui:field="btnSave" />  
+            </b:Column>
+            <b:Column size="1">
+            <b:Button styleName="btn-danger btn" text="Delete" ui:field="btnDelete" />  
+            </b:Column>
+            <b:Column size="1" offset="1">
+            <b:Button styleName="btn-default btn" text="Cancel" ui:field="btnCancel" />  
+            </b:Column>
+            
+            </b:Row>
+            
+                
+           
+      </b:WellForm>
+      
+     
+           
+    
+	</g:HTMLPanel>
+</ui:UiBinder> 

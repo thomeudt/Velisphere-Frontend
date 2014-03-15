@@ -66,6 +66,8 @@ public class Send implements Runnable {
 		messageMap.put("TYPE", "REG");
 		messageMap.put("EPID", senderQueueName);
 		messageMap.putAll(message);
+
+		
 		mapper.writeValue(writer, messageMap);
 		
 

@@ -24,10 +24,11 @@ public class stresstest {
 	public static void main(String[] args) throws Exception {
 
 		ServerParameters.my_queue_name = "E1";
+		//ServerParameters.my_queue_name = "EX1";
 		
-		int numworkers = 64;
+		int numworkers = 128;
 		
-		ExecutorService B52 = Executors.newFixedThreadPool(1000);
+		ExecutorService B52 = Executors.newFixedThreadPool(128);
 		Bombarder[] bombThread = new Bombarder[numworkers];
 		for (int i = 0; i < numworkers; i++) {
         
@@ -35,7 +36,6 @@ public class stresstest {
 			B52.execute(bombThread[i]);
             
         }
-		
 		
 	 	B52.shutdown();
 		

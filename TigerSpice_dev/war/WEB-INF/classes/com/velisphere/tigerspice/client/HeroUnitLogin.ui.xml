@@ -1,0 +1,42 @@
+<!--
+  CONFIDENTIAL INFORMATION
+   __________________
+   
+    Copyright (C) 2014 Thorsten Meudt / Connected Things Lab
+    All Rights Reserved.
+   
+   NOTICE:  All information contained herein is, and remains
+   the property of Thorsten Meudt and its suppliers,
+   if any.  The intellectual and technical concepts contained
+   herein are proprietary to Thorsten Meudt
+   and its suppliers and may be covered by Patents,
+   patents in process, and are protected by trade secret or copyright law.
+   Dissemination of this information or reproduction of this material
+   is strictly forbidden unless prior written permission is obtained
+   from Thorsten Meudt.
+-->
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.important {
+			font-weight: bold;
+		}
+	</ui:style>
+	<g:HTMLPanel>
+				<div class="hero-unit">
+				<h1>
+					The Smart Internet of Things.
+				</h1>
+				
+				<p>
+					Design your Internet of Things. Securely and privately with Perspectives, the Human Interface to the Internet of Things.
+				</p>
+				
+				<p>
+					<g:Button styleName="btn btn-success btn-large" text="Login »" ui:field="btnLogin" />
+				</p>
+			</div>
+
+	</g:HTMLPanel>
+</ui:UiBinder> 

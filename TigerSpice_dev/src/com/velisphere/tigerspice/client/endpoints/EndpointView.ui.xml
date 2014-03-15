@@ -1,0 +1,121 @@
+<!--
+  CONFIDENTIAL INFORMATION
+   __________________
+   
+    Copyright (C) 2014 Thorsten Meudt / Connected Things Lab
+    All Rights Reserved.
+   
+   NOTICE:  All information contained herein is, and remains
+   the property of Thorsten Meudt and its suppliers,
+   if any.  The intellectual and technical concepts contained
+   herein are proprietary to Thorsten Meudt
+   and its suppliers and may be covered by Patents,
+   patents in process, and are protected by trade secret or copyright law.
+   Dissemination of this information or reproduction of this material
+   is strictly forbidden unless prior written permission is obtained
+   from Thorsten Meudt.
+-->
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+		xmlns:ct="urn:import:com.google.gwt.user.cellview.client"
+		xmlns:vspy="urn:import:com.velisphere.tigerspice.client.properties"
+		xmlns:vsch="urn:import:com.velisphere.tigerspice.client.checks">
+		<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images'/>
+	<g:HTMLPanel>
+            <b:Breadcrumbs divider=">" ui:field="brdMain">
+		</b:Breadcrumbs>
+	    <b:Row>
+			
+			<b:Column size="12" offset="0">
+				<b:PageHeader ui:field="pghEndpointName">Endpoint</b:PageHeader>				
+			</b:Column>
+			
+		</b:Row>
+		
+	    <b:Row>
+				        
+	        <b:Column size="2" offset="0">
+			<b:Well>
+			<b:Strong ui:field="pgpInformHeader">Endpoint Information</b:Strong>
+			<b:Paragraph addStyleNames="smalltext">Type:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext" ui:field="pgpEndpointClassName">loading...</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Last heard of:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Manufacturer:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Statistics:</b:Paragraph>
+			<b:Button type="INFO" size="MINI">View Usage Stats</b:Button>
+			<b:Paragraph addStyleNames="smalltext">Update available:</b:Paragraph>
+			<b:Button type="INFO" size="MINI">Apply Update</b:Button>
+			<b:Paragraph addStyleNames="smalltext">Reset:</b:Paragraph>
+			<b:Button type="DANGER" size="MINI">Reboot Now</b:Button>
+			<b:Paragraph addStyleNames="smalltext">Ping for Status Update:</b:Paragraph>
+			<b:Button type="INFO" size="MINI">Ping Now</b:Button>
+			<b:Paragraph addStyleNames="smalltext">Configuration:</b:Paragraph>
+			<b:Button type="INFO" size="MINI">Configuration Wizard</b:Button>
+			</b:Well>
+			</b:Column>
+				        
+			<b:Column size="9" offset="0">
+		
+			    	
+			    	<b:Row>
+				    <b:Column size="4" offset="0">
+			    	<b:Paragraph addStyleNames="smalltext">Properties:</b:Paragraph>
+			
+					</b:Column>
+					
+				    <b:Column size="4" offset="0">
+				    			    
+				    <b:Paragraph addStyleNames="smalltext">Checks:</b:Paragraph>
+			
+					</b:Column>
+			
+				    
+					</b:Row>
+					<b:Row>
+					    
+					    
+					    
+				    <b:Column size="4" offset="0">
+				        
+				    <vspy:PropertyEditorWidget ui:field="vpyPropertyEditor" />
+					</b:Column>
+					
+				    
+					<b:Column size="4" offset="0">
+				    				    
+				    <vsch:CheckEditorWidget />
+				    
+					</b:Column>
+					</b:Row>		
+				
+					
+					
+			
+			</b:Column>
+			<b:Column size="1" offset="0">
+				<b:Heading size="4">Additional Resources</b:Heading>
+				
+			<b:Paragraph addStyleNames="smalltext">Device Provisioning Wizard</b:Paragraph>
+			
+			<b:Paragraph addStyleNames="smalltext">Getting Started</b:Paragraph>
+			
+			<b:Paragraph addStyleNames="smalltext">Best Practices</b:Paragraph>
+			
+			<b:Paragraph addStyleNames="smalltext">Market Place</b:Paragraph>
+			
+			
+			</b:Column>	
+		</b:Row>
+		
+	    
+	    
+		
+	
+	</g:HTMLPanel>
+	  		            
+
+</ui:UiBinder> 
+
+
