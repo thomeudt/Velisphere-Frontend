@@ -30,6 +30,7 @@ public class ActionSourceConfig {
 		sources.add("Manual entry");
 		sources.add("List of typical entries");
 		sources.add("Incoming value from sensor");
+		sources.add("Value of other sensor (not implemented)");
 	}
 	
 	public HashSet<String> getSources() {
