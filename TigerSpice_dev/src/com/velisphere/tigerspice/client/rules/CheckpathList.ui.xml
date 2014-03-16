@@ -44,29 +44,15 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 				        
 			<b:Column size="8" offset="0">
 		
-				<b:Row>
-				
-            			<b:Column size="2">
-            				<b:Paragraph addStyleNames="smalltext" text="Create a New Logic Design" />
-            			</b:Column>
-	    				<b:Column size="3" offset="0">
-	    				<b:Button type="SUCCESS" ui:field="btnCreateCheckpath" size="SMALL">Create New Logic Design</b:Button>
-	    				</b:Column>
-	    				
-	    		</b:Row>
+			
 			    
 				
-				<b:Row>
-	    				<b:Column size="3" offset="0">
-	    				<b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
-	    				</b:Column>
-	    				
-	    		</b:Row>
+				
 			    
 			    
 			    <b:Row>
             	<b:Column size="2">
-            	<b:Paragraph addStyleNames="smalltext" text="Open existing Logic Design" />
+            	<b:Paragraph addStyleNames="smalltext" text="Existing Logic Designs" />
             	</b:Column>
             	<b:Column size="4">
             	<b:ListBox styleName="span4" ui:field="lstCheckpath"/> 
@@ -75,12 +61,16 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 
 				
 				<b:Row>
-	    				<b:Column size="3" offset="2">
-	    				<b:Button type="INFO" ui:field="btnOpenCheckpath" size="SMALL">Open Selected Logic Design</b:Button>
+	    				<b:Column size="2" offset="2">
+	    				<b:Button type="PRIMARY" ui:field="btnOpenCheckpath" size="SMALL">Open Selected Logic Design</b:Button>
 	    				</b:Column>
-	    				<b:Column size="3" offset="0">
+	    				<b:Column size="2" offset="0">
+	    				<b:Button type="SUCCESS" ui:field="btnCreateCheckpath" size="SMALL">Create New Logic Design</b:Button>
+	    				</b:Column>
+	    				<b:Column size="2" offset="0">
 	    				<b:Paragraph addStyleNames="smalltext" ui:field="txtOpenStatus"></b:Paragraph>
 	    				</b:Column>
+	    				
 	    				
 	    		</b:Row>
 				

@@ -34,7 +34,7 @@
 				</p>
 				
 				<p>
-					<g:Button styleName="btn btn-success btn-large" text="Login »" ui:field="btnLogin" />
+					<g:Button styleName="btn btn-primary btn-large" text="Login »" ui:field="btnLogin" />
 				</p>
 			</div>
 

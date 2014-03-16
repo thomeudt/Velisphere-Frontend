@@ -122,11 +122,11 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 				EndpointData current = it.next();
 				String shortName;
 				
-				if (current.getName().length() < 22){
+				if (current.getName().length() < 21){
 					shortName = current.getName();	
 				} else
 				{
-					shortName = current.getName().substring(0, 17)+"(...)";
+					shortName = current.getName().substring(0, 16)+"(...)";
 				}
 				endpoint.setHeading(shortName);
 				endpoint.setTitle(current.getName());

@@ -52,7 +52,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
            
             <b:Row>
             <b:Column size="2">
-            <b:Paragraph addStyleNames="smalltext" text="Source of new setting - manual, selected value in list or sensor value (dep. on epc)" />
+            <b:Paragraph addStyleNames="smalltext" text="Source of new setting" />
             </b:Column>
             <b:Column size="3">
             <b:ListBox styleName="span3" ui:field="lstSettingSource"/> 
@@ -61,7 +61,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
                          
             <b:Row>
             <b:Column size="2">
-            <b:Paragraph addStyleNames="smalltext" text="Alt 1 - manual value" />
+
             </b:Column>
             <b:Column size="3">
             <b:TextBox styleName="span3" ui:field="txtManualValue" /> 
@@ -70,7 +70,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
             
             <b:Row>
             <b:Column size="2">
-            <b:Paragraph addStyleNames="smalltext" text="Alt 2 - selected value from list of valid values" />
+
             </b:Column>
             <b:Column size="3">
             <b:ListBox styleName="span3" ui:field="lstValidValues"/> 
@@ -79,7 +79,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
             
             <b:Row>
             <b:Column size="2">
-            <b:Paragraph addStyleNames="smalltext" text="Alt 3 - sensor value" />
+
             </b:Column>
             <b:Column size="3">
             <b:ListBox styleName="span3" ui:field="lstSensorValue"/> 

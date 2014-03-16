@@ -34,6 +34,8 @@ import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -46,6 +48,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.LoginDialogBox;
 import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
+import com.velisphere.tigerspice.client.helper.ActionSourceConfig;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.CombinationConfig;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
@@ -64,17 +67,20 @@ public class RuleDialogBox extends PopupPanel {
 	@UiField
 	TextBox txtManualValue;
 	@UiField
+	ListBox lstValidValues;
+	@UiField
+	ListBox lstSensorValue;
+	@UiField
 	TextBox txtMulticheckTitle;
 	@UiField
 	Legend lgdHeader;
 	@UiField
 	Button btnDelete;
+	@UiField
+	ListBox lstSettingSource;
 		
-	private String multicheckID;
-	public String multicheckTitle;
-	public String combination;
 	public String ruleID;
-	public HashMap<String, String> linkedChecks;
+	
 	public Boolean deleteFlag = false;
 	
 
@@ -94,23 +100,59 @@ public class RuleDialogBox extends PopupPanel {
 		
 		
 		setWidget(uiBinder.createAndBindUi(this));
-		HashSet<String> combinations = new CombinationConfig().getCombinations();
-		Iterator<String> it = combinations.iterator();
+		HashSet<String> sources = new ActionSourceConfig().getSources();
+		Iterator<String> it = sources.iterator();
 		while (it.hasNext()){
-			this.lstCombination.addItem(it.next());
+			this.lstSettingSource.addItem(it.next());
 		}
+
+		// set initial state of source of value
+		
+		txtManualValue.setVisible(false);
+		lstSensorValue.setVisible(true);
+		lstValidValues.setVisible(false);
+
+		
+		// change handler to update source of value options
+		
+		lstSettingSource.addChangeHandler(new ChangeHandler() {
+
+				@Override
+				public void onChange(ChangeEvent event) {
+					// TODO Auto-generated method stub
+					
+					System.out.println("Index:" + lstSettingSource.getSelectedIndex());
+					switch(lstSettingSource.getSelectedIndex()){
+					case 0: 
+						txtManualValue.setVisible(false);
+						lstSensorValue.setVisible(true);
+						lstValidValues.setVisible(false);
+						System.out.println("EINSER");
+						break;
+					case 1: 
+						txtManualValue.setVisible(false);
+						lstSensorValue.setVisible(false);
+						lstValidValues.setVisible(true);
+						System.out.println("ZWEIER");
+						break;
+					case 2: 
+						txtManualValue.setVisible(true);
+						lstSensorValue.setVisible(false);
+						lstValidValues.setVisible(false);
+						System.out.println("DREIER");
+						break;
+					}
+					
+				}
+		});
+		
 	
 	}
 	
-	public void setParameters (String multicheckID, String multicheckTitle, String combination, String ruleID, HashMap<String, String> linkedChecks){
-		this.multicheckID = multicheckID;
-		this.multicheckTitle = multicheckTitle;
-		this.combination = combination;
-		this.ruleID = ruleID;
-		this.linkedChecks = linkedChecks;
+	public void setParameters (String ruleID, String ruleName, String endpointID, String endpointClassID, String propertyID, int settingSourceIndex, String manualValue, String validValueIndex, String){
 		
 		
-		lstCombination.setSelectedValue(combination);
+		
 		txtMulticheckTitle.setText(multicheckTitle);
 		Iterator<Entry<String, String>> it = linkedChecks.entrySet().iterator();
 		while (it.hasNext()){
@@ -124,9 +166,10 @@ public class RuleDialogBox extends PopupPanel {
 	
 	@UiHandler("btnSave")
 	void saveNewCheck (ClickEvent event) {
-		this.multicheckTitle = this.txtMulticheckTitle.getText();
+	/**	this.multicheckTitle = this.txtMulticheckTitle.getText();
 		this.ruleID = this.txtManualValue.getText();
 		this.combination = this.lstCombination.getValue();
+		**/
 		this.hide();		
 	}
 	
