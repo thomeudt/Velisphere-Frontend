@@ -44,7 +44,7 @@
 			<b:Paragraph addStyleNames="smalltext">Endpoint #:</b:Paragraph>
 			<b:Paragraph addStyleNames="smalltext">Critical Endpoints:</b:Paragraph>
 			<b:Paragraph addStyleNames="smalltext">Add Endpoint:</b:Paragraph>
-			<b:Button type="SUCCESS" size="MINI">Autoprovisioned</b:Button>
+			<b:Button type="PRIMARY" size="MINI" addStyleNames="btn-block">Start wizard</b:Button>
 			</b:Well>
 			</b:Column>
 				        

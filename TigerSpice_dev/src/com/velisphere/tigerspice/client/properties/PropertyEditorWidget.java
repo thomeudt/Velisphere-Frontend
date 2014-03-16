@@ -120,7 +120,7 @@ public class PropertyEditorWidget extends Composite {
 		ScrollPanel treeCon = new ScrollPanel();
 		treeCon = buildTree(this.endpointClassID);
 		Button refreshButton = new Button();
-		refreshButton.setType(ButtonType.INFO);
+		refreshButton.setType(ButtonType.PRIMARY);
 		refreshButton.setSize(ButtonSize.MINI);
 		refreshButton.setText("Refresh Status");
 		column.add(treeCon);

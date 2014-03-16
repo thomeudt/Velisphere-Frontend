@@ -149,10 +149,10 @@ public class RuleDialogBox extends PopupPanel {
 	
 	}
 	
-	public void setParameters (String ruleID, String ruleName, String endpointID, String endpointClassID, String propertyID, int settingSourceIndex, String manualValue, String validValueIndex, String){
+	public void setParameters (String ruleID, String ruleName, String endpointID, String endpointClassID, String propertyID, int settingSourceIndex, String manualValue, int validValueIndex, int propertyIdIndex){
 		
 		
-		
+		/**
 		txtMulticheckTitle.setText(multicheckTitle);
 		Iterator<Entry<String, String>> it = linkedChecks.entrySet().iterator();
 		while (it.hasNext()){
@@ -160,7 +160,7 @@ public class RuleDialogBox extends PopupPanel {
 			lstLinkedChecksID.addItem(checkPair.getValue(), checkPair.getKey());
 		}
 		lstLinkedChecksID.setVisibleItemCount(5);
-		
+		**/
 	}
 
 	

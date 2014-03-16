@@ -3595,6 +3595,7 @@ input[type="submit"].btn.btn-mini {
   background-color: transparent;
   cursor: default;
 }
+
 .navbar {
   overflow: visible;
   margin-bottom: 20px;
@@ -3605,15 +3606,15 @@ input[type="submit"].btn.btn-mini {
   min-height: 30px;
   padding-left: 20px;
   padding-right: 20px;
-  background-color: #dae3e9;
-  background-image: -moz-linear-gradient(top, #e0e8ed, #d0dce4);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#e0e8ed), to(#d0dce4));
-  background-image: -webkit-linear-gradient(top, #e0e8ed, #d0dce4);
-  background-image: -o-linear-gradient(top, #e0e8ed, #d0dce4);
-  background-image: linear-gradient(to bottom, #e0e8ed, #d0dce4);
+  background-color: #364d74;
+  background-image: -moz-linear-gradient(top, #39527b, #31466a);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#39527b), to(#31466a));
+  background-image: -webkit-linear-gradient(top, #39527b, #31466a);
+  background-image: -o-linear-gradient(top, #39527b, #31466a);
+  background-image: linear-gradient(to bottom, #39527b, #31466a);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe0e8ed', endColorstr='#ffd0dce4', GradientType=0);
-  border: 1px solid #a9bfcd;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff39527b', endColorstr='#ff31466a', GradientType=0);
+  border: 1px solid #1e2b40;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
@@ -3645,8 +3646,8 @@ input[type="submit"].btn.btn-mini {
   margin-left: -20px;
   font-size: 20px;
   font-weight: 200;
-  color: #777777;
-  text-shadow: 0 1px 0 #e0e8ed;
+  color: #ffffff;
+  text-shadow: 0 1px 0 #39527b;
 }
 .navbar .brand:hover {
   text-decoration: none;
@@ -3654,19 +3655,19 @@ input[type="submit"].btn.btn-mini {
 .navbar-text {
   margin-bottom: 0;
   line-height: 30px;
-  color: #777777;
+  color: #ffffff;
 }
 .navbar-link {
-  color: #777777;
+  color: #ffffff;
 }
 .navbar-link:hover {
-  color: #333333;
+  color: #ffffff;
 }
 .navbar .divider-vertical {
   height: 30px;
   margin: 0 9px;
-  border-left: 1px solid #d0dce4;
-  border-right: 1px solid #e0e8ed;
+  border-left: 1px solid #31466a;
+  border-right: 1px solid #39527b;
 }
 .navbar .btn,
 .navbar .btn-group {
@@ -3725,7 +3726,7 @@ input[type="submit"].btn.btn-mini {
 .navbar-search .search-query {
   margin-bottom: 0;
   padding: 4px 14px;
-  font-family: 'Source Sans Pro';
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 13px;
   font-weight: normal;
   line-height: 1;
@@ -3804,25 +3805,25 @@ input[type="submit"].btn.btn-mini {
 .navbar .nav > li > a {
   float: none;
   padding: 5px 15px 5px;
-  color: #777777;
+  color: #ffffff;
   text-decoration: none;
-  text-shadow: 0 1px 0 #e0e8ed;
+  text-shadow: 0 1px 0 #39527b;
 }
 .navbar .nav .dropdown-toggle .caret {
   margin-top: 8px;
 }
 .navbar .nav > li > a:focus,
 .navbar .nav > li > a:hover {
-  background-color: transparent;
-  color: #333333;
+  background-color: #6078a5;
+  color: #ffffff;
   text-decoration: none;
 }
 .navbar .nav > .active > a,
 .navbar .nav > .active > a:hover,
 .navbar .nav > .active > a:focus {
-  color: #555555;
+  color: #ffffff;
   text-decoration: none;
-  background-color: #c0d0da;
+  background-color: #293b58;
   -webkit-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
   -moz-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
   box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
@@ -3835,17 +3836,17 @@ input[type="submit"].btn.btn-mini {
   margin-right: 5px;
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #c9d7e0;
-  background-image: -moz-linear-gradient(top, #d0dce4, #c0d0da);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#d0dce4), to(#c0d0da));
-  background-image: -webkit-linear-gradient(top, #d0dce4, #c0d0da);
-  background-image: -o-linear-gradient(top, #d0dce4, #c0d0da);
-  background-image: linear-gradient(to bottom, #d0dce4, #c0d0da);
+  background-color: #2e4263;
+  background-image: -moz-linear-gradient(top, #31466a, #293b58);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#31466a), to(#293b58));
+  background-image: -webkit-linear-gradient(top, #31466a, #293b58);
+  background-image: -o-linear-gradient(top, #31466a, #293b58);
+  background-image: linear-gradient(to bottom, #31466a, #293b58);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd0dce4', endColorstr='#ffc0d0da', GradientType=0);
-  border-color: #c0d0da #c0d0da #8facbe;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff31466a', endColorstr='#ff293b58', GradientType=0);
+  border-color: #293b58 #293b58 #111824;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #c0d0da;
+  *background-color: #293b58;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
 
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
@@ -3859,12 +3860,12 @@ input[type="submit"].btn.btn-mini {
 .navbar .btn-navbar.disabled,
 .navbar .btn-navbar[disabled] {
   color: #ffffff;
-  background-color: #c0d0da;
-  *background-color: #b0c4d1;
+  background-color: #293b58;
+  *background-color: #212f47;
 }
 .navbar .btn-navbar:active,
 .navbar .btn-navbar.active {
-  background-color: #9fb8c8 \9;
+  background-color: #192435 \9;
 }
 .navbar .btn-navbar .icon-bar {
   display: block;
@@ -3916,24 +3917,24 @@ input[type="submit"].btn.btn-mini {
   top: auto;
 }
 .navbar .nav li.dropdown > a:hover .caret {
-  border-top-color: #555555;
-  border-bottom-color: #555555;
+  border-top-color: #ffffff;
+  border-bottom-color: #ffffff;
 }
 .navbar .nav li.dropdown.open > .dropdown-toggle,
 .navbar .nav li.dropdown.active > .dropdown-toggle,
 .navbar .nav li.dropdown.open.active > .dropdown-toggle {
-  background-color: #c0d0da;
-  color: #555555;
+  background-color: #293b58;
+  color: #ffffff;
 }
 .navbar .nav li.dropdown > .dropdown-toggle .caret {
-  border-top-color: #777777;
-  border-bottom-color: #777777;
+  border-top-color: #ffffff;
+  border-bottom-color: #ffffff;
 }
 .navbar .nav li.dropdown.open > .dropdown-toggle .caret,
 .navbar .nav li.dropdown.active > .dropdown-toggle .caret,
 .navbar .nav li.dropdown.open.active > .dropdown-toggle .caret {
-  border-top-color: #555555;
-  border-bottom-color: #555555;
+  border-top-color: #ffffff;
+  border-bottom-color: #ffffff;
 }
 .navbar .pull-right > li > .dropdown-menu,
 .navbar .nav > li > .dropdown-menu.pull-right {
@@ -4091,6 +4092,7 @@ input[type="submit"].btn.btn-mini {
 .navbar-inverse .btn-navbar.active {
   background-color: #000000 \9;
 }
+
 .breadcrumb {
   padding: 8px 15px;
   margin: 0 0 20px;

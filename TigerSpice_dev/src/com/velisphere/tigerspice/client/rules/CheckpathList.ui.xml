@@ -62,10 +62,10 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 				
 				<b:Row>
 	    				<b:Column size="2" offset="2">
-	    				<b:Button type="PRIMARY" ui:field="btnOpenCheckpath" size="SMALL">Open Selected Logic Design</b:Button>
+	    				<b:Button type="PRIMARY" ui:field="btnOpenCheckpath" addStyleNames="btn-block" size="SMALL">Open Selected Logic Design</b:Button>
 	    				</b:Column>
 	    				<b:Column size="2" offset="0">
-	    				<b:Button type="SUCCESS" ui:field="btnCreateCheckpath" size="SMALL">Create New Logic Design</b:Button>
+	    				<b:Button type="SUCCESS" ui:field="btnCreateCheckpath" addStyleNames="btn-block" size="SMALL">Create New Logic Design</b:Button>
 	    				</b:Column>
 	    				<b:Column size="2" offset="0">
 	    				<b:Paragraph addStyleNames="smalltext" ui:field="txtOpenStatus"></b:Paragraph>

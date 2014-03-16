@@ -33,12 +33,12 @@
 	        <b:Column size="2" offset="0">
 			<b:Well>
 			<b:Strong ui:field="pgpInformHeader">New Account Tasks</b:Strong>
-			<b:Paragraph addStyleNames="smalltext">Type:</b:Paragraph>
-			<b:Paragraph addStyleNames="smalltext" ui:field="pgpEndpointClassName">loading...</b:Paragraph>
-			<b:Paragraph addStyleNames="smalltext">Last heard of:</b:Paragraph>
-			<b:Paragraph addStyleNames="smalltext">Manufacturer:</b:Paragraph>
-			<b:Paragraph addStyleNames="smalltext">Statistics:</b:Paragraph>
-			<b:Paragraph addStyleNames="smalltext">Configuration:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Terms of Service</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Subscription Pkans</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Contact Sales</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Ask for Help</b:Paragraph>
+			
 			</b:Well>
 			</b:Column>
 			
@@ -87,7 +87,7 @@
 <b:ControlGroup>
     		<b:Controls>
 
-					<b:Button styleName="btn btn-success" text="Create Account" ui:field="btnLogin" />
+					<b:Button styleName="btn btn-primary" text="Create Account" ui:field="btnLogin" />
 						</b:Controls>
 	</b:ControlGroup>
   				

@@ -44,15 +44,16 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			<b:Paragraph addStyleNames="smalltext">Last heard of:</b:Paragraph>
 			<b:Paragraph addStyleNames="smalltext">Manufacturer:</b:Paragraph>
 			<b:Paragraph addStyleNames="smalltext">Statistics:</b:Paragraph>
-			<b:Button type="INFO" size="MINI">View Usage Stats</b:Button>
+			<b:Button type="PRIMARY" size="MINI" addStyleNames="btn-block">View Usage Stats</b:Button>
 			<b:Paragraph addStyleNames="smalltext">Update available:</b:Paragraph>
-			<b:Button type="INFO" size="MINI">Apply Update</b:Button>
-			<b:Paragraph addStyleNames="smalltext">Reset:</b:Paragraph>
-			<b:Button type="DANGER" size="MINI">Reboot Now</b:Button>
+			<b:Button type="PRIMARY" size="MINI" addStyleNames="btn-block">Apply Update</b:Button>
 			<b:Paragraph addStyleNames="smalltext">Ping for Status Update:</b:Paragraph>
-			<b:Button type="INFO" size="MINI">Ping Now</b:Button>
+			<b:Button type="PRIMARY" size="MINI" addStyleNames="btn-block">Ping Now</b:Button>
 			<b:Paragraph addStyleNames="smalltext">Configuration:</b:Paragraph>
-			<b:Button type="INFO" size="MINI">Configuration Wizard</b:Button>
+			<b:Button type="PRIMARY" size="MINI" addStyleNames="btn-block">Configuration Wizard</b:Button>
+			<b:Paragraph addStyleNames="smalltext">Reset:</b:Paragraph>
+			<b:Button type="DANGER" size="MINI" addStyleNames="btn-block">Reboot Now</b:Button>
+			
 			</b:Well>
 			</b:Column>
 				        
