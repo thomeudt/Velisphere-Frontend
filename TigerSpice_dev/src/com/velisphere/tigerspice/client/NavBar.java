@@ -94,7 +94,7 @@ public class NavBar extends Composite implements HasText {
    	 forSearch.setVisible(false);
    	 btnHome.setVisible(false);
    	 dpdAccount.setVisible(false);
-   	 txtUserName.setText("Not Logged In");
+   	 txtUserName.setText("");
 	    //checkWithServerIfSessionIdIsStillLegal();
 		   
 		
@@ -242,7 +242,7 @@ public class NavBar extends Composite implements HasText {
    	 	btnRules.setVisible(false);
    	 	forSearch.setVisible(false);
    	 	btnHome.setVisible(false);
-   	 	txtUserName.setText("Not Logged In");
+   	 	txtUserName.setText("");
 		
    	 	SessionHelper.validateCurrentSession();		
 		

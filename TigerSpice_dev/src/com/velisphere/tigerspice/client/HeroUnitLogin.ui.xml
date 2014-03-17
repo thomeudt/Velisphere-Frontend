@@ -24,13 +24,19 @@
 		}
 	</ui:style>
 	<g:HTMLPanel>
-				<div class="hero-unit">
+				<div class="hero-unit" style="height: 330px">
 				<h1>
-					The Smart Internet of Things.
+					Smart Internet of Things.
 				</h1>
+				<p>
+					&nbsp;
+				</p>
 				
 				<p>
-					The Internet of Things. Interactive, fast, and secure with VeliSphere.
+					Interactive, fast, and secure with VeliSphere.
+				</p>
+				<p>
+					&nbsp;
 				</p>
 				
 				<p>

@@ -72,12 +72,12 @@
 		</b:Row>
 		<b:Row>
 		<b:Column size="6" offset="0">
-				<b:Heading size="4">Ecosystem Status</b:Heading>
+				<b:Heading size="4">Ecosystem Monitoring</b:Heading>
 			</b:Column>	
 		</b:Row>
 		<b:Row>
 			<b:Column size="4" offset="0">
-			    <b:Well styleName="wellgreen" >
+			    <b:Well styleName="wellbrand" >
 				<b:Heading size="4" addStyleNames="whitetext">System: OK</b:Heading>
 				</b:Well>
 				<b:Paragraph addStyleNames="smalltext-black">System is up.</b:Paragraph>
@@ -85,7 +85,7 @@
 				
 			</b:Column>
 			<b:Column size="4" offset="0">
-			    <b:Well styleName="wellgreen" >
+			    <b:Well styleName="wellbrand" >
 				<b:Heading size="4" addStyleNames="whitetext">Spheres: OK</b:Heading>
 				</b:Well>
 				<b:Paragraph addStyleNames="smalltext-black">No errors reported in any sphere.</b:Paragraph>
@@ -95,7 +95,7 @@
 		</b:Row>
 		<b:Row>
 			<b:Column size="4" offset="0">
-				<b:Well styleName="wellgreen" >
+				<b:Well styleName="wellbrand" >
 				<b:Heading size="4" addStyleNames="whitetext">Endpoints: OK</b:Heading>
 				</b:Well>
 				<b:Paragraph addStyleNames="smalltext-black">All endpoints are functioning.</b:Paragraph>
@@ -103,8 +103,8 @@
 				
 			</b:Column>
 			<b:Column size="4" offset="0">
-			    <b:Well styleName="wellred" >
-				<b:Heading size="4" addStyleNames="whitetext">Logic Designs: Critical</b:Heading>
+			    <b:Well styleName="wellbrand" >
+				<b:Heading size="4" addStyleNames="whitetext">Logic Designs: OK</b:Heading>
 				</b:Well>
 				<b:Paragraph addStyleNames="smalltext-black">All logic designs function properly.</b:Paragraph>
 				<b:Paragraph addStyleNames="smalltext-black">No failed actions reported.</b:Paragraph>
