@@ -52,7 +52,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			    
 			    <b:Row>
             	<b:Column size="2">
-            	<b:Paragraph addStyleNames="smalltext" text="Existing Logic Designs" />
+            	<b:Paragraph addStyleNames="smalltext" text="Stored Logic Designs" />
             	</b:Column>
             	<b:Column size="4">
             	<b:ListBox styleName="span4" ui:field="lstCheckpath"/> 

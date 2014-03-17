@@ -134,7 +134,7 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 				endpoint.setBaseIcon(IconType.RSS);
 				addActPropertiesToEndpoint(endpoint, current.getId(), current.getName());
 				//System.out.println("momentane ID: " + current.getId());
-				
+				endpoint.addStyleName("bgsilver");
 				accordion.add(endpoint);
 			}
 			

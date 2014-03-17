@@ -116,6 +116,7 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 			
 			loadAnimation.removeLoadAnimation();
 			Iterator<EndpointData> it = result.iterator();
+			
 			while(it.hasNext()){
 				AccordionGroup endpoint = new AccordionGroup();
 				
@@ -135,7 +136,7 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 				endpoint.setTitle(current.getName());
 				addActPropertiesToEndpoint(endpoint, current.getId());
 				//System.out.println("momentane ID: " + current.getId());
-				
+				endpoint.addStyleName("bgsilver");
 				accordion.add(endpoint);
 			}
 			

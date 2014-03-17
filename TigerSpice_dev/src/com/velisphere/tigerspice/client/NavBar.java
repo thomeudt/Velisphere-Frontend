@@ -19,6 +19,7 @@ package com.velisphere.tigerspice.client;
 
 import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Brand;
+import com.github.gwtbootstrap.client.ui.Dropdown;
 import com.github.gwtbootstrap.client.ui.NavForm;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.NavText;
@@ -61,6 +62,7 @@ public class NavBar extends Composite implements HasText {
 	@UiField NavLink btnAdmin;
 	@UiField NavLink btnLogout;
 	@UiField NavLink btnAccount;
+	@UiField Dropdown dpdAccount;
 	@UiField NavLink btnSearch;
 	@UiField NavLink btnSpheres;
 	@UiField NavLink btnRules;
@@ -80,6 +82,7 @@ public class NavBar extends Composite implements HasText {
 		navbar = new ResponsiveNavbar();
 		initWidget(uiBinder.createAndBindUi(this));
 		navbar.setPosition(NavbarPosition.TOP);
+		navbar.setWidth(RootPanel.get("main").getElement().getStyle().getWidth());
 		
 
 		btnAdmin.setVisible(false);
@@ -90,6 +93,7 @@ public class NavBar extends Composite implements HasText {
    	 btnRules.setVisible(false);
    	 forSearch.setVisible(false);
    	 btnHome.setVisible(false);
+   	 dpdAccount.setVisible(false);
    	 txtUserName.setText("Not Logged In");
 	    //checkWithServerIfSessionIdIsStillLegal();
 		   
@@ -272,6 +276,7 @@ public class NavBar extends Composite implements HasText {
 	    	 btnRules.setVisible(true);
 	    	 forSearch.setVisible(false);
 	    	 btnHome.setVisible(true);
+	    	 dpdAccount.setVisible(true);
 			 txtUserName.setText(SessionHelper.getCurrentUserName());
 	    
 	}

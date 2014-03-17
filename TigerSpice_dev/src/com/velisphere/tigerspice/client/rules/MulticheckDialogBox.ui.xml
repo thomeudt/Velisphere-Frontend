@@ -56,7 +56,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
                  
             <b:Row>
             <b:Column size="1">
-            <b:Button styleName="btn-success btn" text="Save" ui:field="btnSave" />  
+            <b:Button styleName="btn-primary btn" text="Save" ui:field="btnSave" />  
             </b:Column>
             <b:Column size="1">
             <b:Button styleName="btn-danger btn" text="Delete" ui:field="btnDelete" />  

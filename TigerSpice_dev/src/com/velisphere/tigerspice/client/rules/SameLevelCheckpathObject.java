@@ -70,6 +70,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		this.isMulticheck = false;
 		this.setCheckID(checkID);
 		this.getElement().setAttribute("style", "background-color:aliceblue;");
+		this.addStyleName("roundborders");
 
 		
 	
