@@ -87,13 +87,13 @@ public class BusinessLogicEngine {
 		}
 **/
 	
-	public static HashSet<String> lookupRulesForCheckID(String checkID, String checkPathID)
+	public static HashMap<String, String> lookupActionsForCheckID(String checkID, String checkPathID)
 			throws NoConnectionsException, IOException, ProcCallException {
 
-		HashSet<String> ruleIDs = new HashSet<String>();
+		HashMap<String, String> actionIDs = new HashMap<String, String>();
 		
 		final ClientResponse findRulesForCheckIDResponse = BusinessLogicEngine.montanaClient
-				.callProcedure("BLE_FindRulesForCheckID", checkPathID, checkID);
+				.callProcedure("BLE_FindActionsForCheckID", checkPathID, checkID);
 		if (findRulesForCheckIDResponse.getStatus() != ClientResponse.SUCCESS) {
 			System.err.println(findRulesForCheckIDResponse.getStatusString());
 		}
@@ -109,21 +109,23 @@ public class BusinessLogicEngine {
 			{
 
 				// extract the value in column checkid
-				ruleIDs.add(result.getString("RULEID"));
+				actionIDs.put(result.getString("ACTIONID"), checkPathID);
+				
+				
 				// System.out.println(result.getString("RULEID"));
 			}
 		}
 
-		return ruleIDs;
+		return actionIDs;
 	}
 
-	public static HashSet<String> lookupRulesForMultiCheckID(String multiCheckID, String checkPathID)
+	public static HashMap<String, String> lookupActionsForMultiCheckID(String multiCheckID, String checkPathID)
 			throws NoConnectionsException, IOException, ProcCallException {
 
-		HashSet<String> ruleIDs = new HashSet<String>();
+		HashMap<String, String> actionIDs = new HashMap<String, String>();
 
 		final ClientResponse findRulesForMultiCheckIDResponse = BusinessLogicEngine.montanaClient
-				.callProcedure("BLE_FindRulesForMultiCheckID", checkPathID, multiCheckID);
+				.callProcedure("BLE_FindActionsForMultiCheckID", checkPathID, multiCheckID);
 		if (findRulesForMultiCheckIDResponse.getStatus() != ClientResponse.SUCCESS) {
 			System.err.println(findRulesForMultiCheckIDResponse
 					.getStatusString());
@@ -139,24 +141,24 @@ public class BusinessLogicEngine {
 		while (result.advanceRow()) {
 			{
 				// extract the value in column checkid
-				ruleIDs.add(result.getString("RULEID"));
+				actionIDs.put(result.getString("ACTIONID"), checkPathID);
 				// System.out.println(result.getString("RULEID"));
 			}
 		}
 
-		return ruleIDs;
+		return actionIDs;
 
 	}
 
 
 	
 	
-	public static HashSet<String> runChecks(String endpointID,
+	public static HashMap<String, String> runChecks(String endpointID,
 			String propertyID, String checkValue, byte expired)
 			throws Exception {
 
 		
-		HashSet<String> triggerRules = new HashSet<String>();
+		HashMap<String, String> triggerActions = new HashMap<String, String>();
 
 
 		// find checks that match the incoming expression 
@@ -181,7 +183,7 @@ public class BusinessLogicEngine {
 			ClientResponse bleUpdateCheckState = BusinessLogicEngine.montanaClient
 					.callProcedure("BLE_UpdateCheckState", vtTrueChecksForExpressionT.getString("CHECKPATHID"), vtTrueChecksForExpressionT.getString("CHECKID"), 1);
 			checkPathForCheck.add(vtTrueChecksForExpressionT.getString("CHECKPATHID"));
-			triggerRules.addAll(lookupRulesForCheckID(vtTrueChecksForExpressionT.getString("CHECKID"), vtTrueChecksForExpressionT.getString("CHECKPATHID")));
+			triggerActions.putAll(lookupActionsForCheckID(vtTrueChecksForExpressionT.getString("CHECKID"), vtTrueChecksForExpressionT.getString("CHECKPATHID")));
 			
 		}
 		
@@ -215,10 +217,10 @@ public class BusinessLogicEngine {
 		
 		while (cpID.hasNext())
 		{
-		triggerRules.addAll(firstLevelMultiChecks(cpID.next()));
+		triggerActions.putAll(firstLevelMultiChecks(cpID.next()));
 		}
 		
-		return triggerRules;
+		return triggerActions;
 
 	}
 	
@@ -229,10 +231,10 @@ public class BusinessLogicEngine {
 		
 	
 
-private static HashSet<String> firstLevelMultiChecks (String checkpathID) throws NoConnectionsException, IOException, ProcCallException
+private static HashMap<String, String> firstLevelMultiChecks (String checkpathID) throws NoConnectionsException, IOException, ProcCallException
 	{
 	
-	HashSet<String> triggerRules = new HashSet<String>();
+	HashMap<String, String> triggerActions = new HashMap<String, String>();
 	
 	HashSet<String> checkPathMultiCheckMembers = new HashSet<String>();
 	
@@ -292,23 +294,23 @@ private static HashSet<String> firstLevelMultiChecks (String checkpathID) throws
 			
 			validFirstLevelMultiChecks.add(vtIsMultiCheckTrueT
 					.getString("MULTICHECKID"));
-			triggerRules
-			.addAll(lookupRulesForMultiCheckID(vtIsMultiCheckTrueT
+			triggerActions
+			.putAll(lookupActionsForMultiCheckID(vtIsMultiCheckTrueT
 					.getString("MULTICHECKID"), checkpathID));
 					
 		}
 				
 	}
 	
-	triggerRules.addAll(recursionMultichecks(checkpathID, validFirstLevelMultiChecks));
+	triggerActions.putAll(recursionMultichecks(checkpathID, validFirstLevelMultiChecks));
 	
-	return triggerRules;
+	return triggerActions;
 }
 	
 
-	private static HashSet<String> recursionMultichecks (String checkpathID, HashSet<String> validMultiChecks) throws NoConnectionsException, IOException, ProcCallException{
+	private static HashMap<String, String> recursionMultichecks (String checkpathID, HashSet<String> validMultiChecks) throws NoConnectionsException, IOException, ProcCallException{
 	
-	HashSet<String> triggerRules = new HashSet<String>();
+	HashMap<String, String> triggerActions = new HashMap<String, String>();
 		
 	HashSet<String> highLevelMultiChecks = new HashSet<String>();
 	HashSet<String> moreHighLevelMultiChecks = new HashSet<String>();
@@ -347,15 +349,15 @@ private static HashSet<String> firstLevelMultiChecks (String checkpathID) throws
 
 				while (vtIsCycleMultiCheckTrueT.advanceRow()) {
 			
-					triggerRules
-							.addAll(lookupRulesForMultiCheckID(vtIsCycleMultiCheckTrueT
+					triggerActions
+							.putAll(lookupActionsForMultiCheckID(vtIsCycleMultiCheckTrueT
 									.getString("MULTICHECKID"), checkpathID));
 				}
 			}
 			
 		}
 	
-	return triggerRules;
+	return triggerActions;
 	}
 
 

@@ -1,12 +1,15 @@
 package com.velisphere.tigerspice.client.rules;
 
+import java.util.HashSet;
+
+import com.velisphere.tigerspice.client.actions.ActionObject;
+
 public class RuleObject {
 	
+	private String ruleID;
 	private String name;
-	private String targetEndpointID;
-	private String targetPropertyID;
-	private String settingSource;
-	private String manualValue;
-	private String sensorValuePropertyID;
+	private String multiCheckID;
+	private String checkID;
+	private HashSet<ActionObject> actions;
 
 }

@@ -77,17 +77,17 @@
 		</b:Row>
 		<b:Row>
 			<b:Column size="4" offset="0">
-			    <b:Well styleName="wellbrand" >
-				<b:Heading size="4" addStyleNames="whitetext">System: OK</b:Heading>
-				</b:Well>
+			    
+				<b:Heading size="4" >System: OK</b:Heading>
+				
 				<b:Paragraph addStyleNames="smalltext-black">System is up.</b:Paragraph>
 				<b:Paragraph addStyleNames="smalltext-black">No issues reported.</b:Paragraph>
 				
 			</b:Column>
 			<b:Column size="4" offset="0">
-			    <b:Well styleName="wellbrand" >
-				<b:Heading size="4" addStyleNames="whitetext">Spheres: OK</b:Heading>
-				</b:Well>
+			    
+				<b:Heading size="4" >Spheres: OK</b:Heading>
+				
 				<b:Paragraph addStyleNames="smalltext-black">No errors reported in any sphere.</b:Paragraph>
 				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
 				
@@ -95,17 +95,17 @@
 		</b:Row>
 		<b:Row>
 			<b:Column size="4" offset="0">
-				<b:Well styleName="wellbrand" >
-				<b:Heading size="4" addStyleNames="whitetext">Endpoints: OK</b:Heading>
-				</b:Well>
+				
+				<b:Heading size="4" >Endpoints: OK</b:Heading>
+				
 				<b:Paragraph addStyleNames="smalltext-black">All endpoints are functioning.</b:Paragraph>
 				<b:Paragraph addStyleNames="smalltext-black">Maximum time out of contact: 14 min for endpoint X</b:Paragraph>
 				
 			</b:Column>
 			<b:Column size="4" offset="0">
-			    <b:Well styleName="wellbrand" >
-				<b:Heading size="4" addStyleNames="whitetext">Logic Designs: OK</b:Heading>
-				</b:Well>
+			   
+				<b:Heading size="4" >Logic Designs: OK</b:Heading>
+				
 				<b:Paragraph addStyleNames="smalltext-black">All logic designs function properly.</b:Paragraph>
 				<b:Paragraph addStyleNames="smalltext-black">No failed actions reported.</b:Paragraph>
 				
@@ -114,17 +114,17 @@
 		</b:Row>
 		<b:Row>
 			<b:Column size="4" offset="0">
-			    <b:Well styleName="wellbrand" >
-				<b:Heading size="4" addStyleNames="whitetext">News</b:Heading>
-				</b:Well>
+			    
+				<b:Heading size="4" >News</b:Heading>
+				
 				<b:Paragraph addStyleNames="smalltext-black">New pricing model available. Click here for more (...)</b:Paragraph>
 				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
 				
 			</b:Column>
 			<b:Column size="4" offset="0">
-			    <b:Well styleName="wellbrand" >
-				<b:Heading size="4" addStyleNames="whitetext">Task list</b:Heading>
-				</b:Well>
+			    
+				<b:Heading size="4">Task list</b:Heading>
+				
 				<b:Paragraph addStyleNames="smalltext-black" >No open tasks.</b:Paragraph>
 				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
 				

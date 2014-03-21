@@ -205,7 +205,8 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("CHECKPATH_MULTICHECK_LINK.insert", "1013", "CP6", "MC5");
 	        	        
 	        System.out.println("Checkpaths and MultiChecks linked");
-	        
+	      
+	        /**
 	        preLoader.callProcedure("RULE.insert", "R1", "Button 1 gedrückt", "C1", "", "CP1"); 
 	        preLoader.callProcedure("RULE.insert", "R2", "Button 1 und 2 gedrückt", "", "MC1", "CP1");
 	        preLoader.callProcedure("RULE.insert", "R3", "Button 3 und 4 gedrückt", "", "MC2", "CP1");
@@ -214,23 +215,27 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("RULE.insert", "R6", "Chat von Ute", "C7", "", "CP2");
 	        
 	        System.out.println("Rules loaded");
+	 	    **/
 	 	        
-	        preLoader.callProcedure("ACTION.insert", "A1", "Forward Chat to Zielendpoint", "", "PR6", 0); 
-	        preLoader.callProcedure("ACTION.insert", "A2", "Licht an im Arbeitszimmer", "E2", "", 0);
+	        preLoader.callProcedure("ACTION.insert", "A1", "Forward Chat to Zielendpoint", "", "PR6", 0, "C6", "", "CP2"); 
+	        preLoader.callProcedure("ACTION.insert", "A2", "Licht an im Arbeitszimmer", "E2", "", 0, "C1", "", "CP1");
+	        preLoader.callProcedure("ACTION.insert", "A3", "Forward Chat to Zielendpoint", "", "PR6", 0, "C7", "", "CP2"); 
 	        
 	        System.out.println("Actions loaded");
 	        	        	        
-	        preLoader.callProcedure("OUTBOUNDPROPERTYACTION.insert", "OPA1", "PR9", "PR7", "", "", "A1");
-	        preLoader.callProcedure("OUTBOUNDPROPERTYACTION.insert", "OPA2", "PR9", "", "", "LICHT AN", "A2");
+	        preLoader.callProcedure("OUTBOUNDPROPERTYACTION.insert", "OPA1", "PR9", "PR7", "", "", "", "A1", "CP2");
+	        preLoader.callProcedure("OUTBOUNDPROPERTYACTION.insert", "OPA2", "PR9", "", "", "", "LICHT AN", "A2", "CP1");
+	        preLoader.callProcedure("OUTBOUNDPROPERTYACTION.insert", "OPA3", "PR9", "PR7", "", "", "", "A3", "CP2");
 	        
 	        System.out.println("Outbound Property Actions loaded");
 	        	        
+	       /**
 	        preLoader.callProcedure("RULE_ACTION_LINK.insert", "1000", "R5", "A1");
 	        preLoader.callProcedure("RULE_ACTION_LINK.insert", "1001", "R1", "A2");
 	        preLoader.callProcedure("RULE_ACTION_LINK.insert", "1002", "R6", "A1");
 	        
 	        System.out.println("Outbound Rules and Actions linked");
-	        
+	        **/
 	        
 	        
 	        System.out.println("Done!");

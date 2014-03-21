@@ -85,7 +85,7 @@ public class MessageInspect implements Runnable {
 
 				// System.out.println("**************************** IMDB CHECK INITIATED ************************************");
 
-				HashSet<String> triggeredRules = new HashSet<String>();
+				HashMap<String, String> triggeredActions = new HashMap<String, String>();
 
 				Iterator<Map.Entry<String, String>> it = forEvaluation
 						.entrySet().iterator();
@@ -105,7 +105,7 @@ public class MessageInspect implements Runnable {
 							&& e.getKey() != "TIMESTAMP"
 							&& e.getKey() != "TYPE") {
 							
-							triggeredRules.addAll(BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), (byte) 0));
+						    triggeredActions.putAll(BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), (byte) 0));
 							LoggerEngine.writeEndpointLog(EPID, e.getKey(), e.getValue());		
 							//BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), (byte) 0);
 						
@@ -114,17 +114,19 @@ public class MessageInspect implements Runnable {
 					}
 				}
 
-				HashSet<String> actionItems = new HashSet<String>();
 				
+				/*
+				HashSet<String> actionItems = new HashSet<String>();
+											
 				for (Iterator<String> rIT = triggeredRules.iterator(); rIT
 						.hasNext();) {
 					actionItems.addAll(ActionManipulationEngine.getActionItems( rIT.next()));
 					rIT.remove();
 				}
+				*/
+				//System.out.println("Aktionen: " + triggeredActions);
 				
-				// System.out.println("Aktionen: " + actionItems);
-				
-				for (Iterator<String> aIT = actionItems.iterator(); aIT
+				for (Iterator<Entry<String, String>> aIT = triggeredActions.entrySet().iterator(); aIT
 						.hasNext();) {
 					ActionManipulationEngine.executeActionItems(aIT.next(), forEvaluation);
 					

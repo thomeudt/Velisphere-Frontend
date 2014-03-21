@@ -1106,7 +1106,7 @@ public class CheckpathEditorWidget extends Composite {
 		currentObject.actionIcon.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 
-				final RuleDialogBox actionEditDialogBox = new RuleDialogBox();
+				final ActionDialogBox actionEditDialogBox = new ActionDialogBox();
 
 				actionEditDialogBox.setModal(true);
 				actionEditDialogBox.setAutoHideEnabled(true);
@@ -1144,7 +1144,7 @@ public class CheckpathEditorWidget extends Composite {
 
 				System.out.println("Dropped action!");
 
-				final RuleDialogBox actionNewDialogBox = new RuleDialogBox();
+				final ActionDialogBox actionNewDialogBox = new ActionDialogBox();
 
 				actionNewDialogBox.setModal(true);
 				actionNewDialogBox.setAutoHideEnabled(true);
@@ -1163,6 +1163,22 @@ public class CheckpathEditorWidget extends Composite {
 				.addCloseHandler(new CloseHandler<PopupPanel>() {
 
 					public void onClose(CloseEvent event) {
+						
+						if (actionNewDialogBox.cancelFlag == true)
+						{
+							
+						} else if (actionNewDialogBox.deleteFlag == true)
+						{
+							
+						}
+						else
+						{
+							//
+						}
+						
+							
+							
+						
 					}
 				});
 

@@ -56,7 +56,7 @@ import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 
-public class RuleDialogBox extends PopupPanel {
+public class ActionDialogBox extends PopupPanel {
 
 	@UiField
 	ListBox lstLinkedChecksID;
@@ -80,7 +80,7 @@ public class RuleDialogBox extends PopupPanel {
 	ListBox lstSettingSource;
 		
 	public String ruleID;
-	
+	public Boolean cancelFlag = false;
 	public Boolean deleteFlag = false;
 	
 
@@ -93,10 +93,10 @@ public class RuleDialogBox extends PopupPanel {
 			.create(CheckEditorDialogBoxUiBinder.class);
 
 	interface CheckEditorDialogBoxUiBinder extends
-			UiBinder<Widget, RuleDialogBox> {
+			UiBinder<Widget, ActionDialogBox> {
 	}
 
-	public RuleDialogBox() {
+	public ActionDialogBox() {
 		
 		
 		setWidget(uiBinder.createAndBindUi(this));
@@ -179,6 +179,12 @@ public class RuleDialogBox extends PopupPanel {
 		this.hide();
 		
 		
+	}
+	
+	@UiHandler("btnCancel")
+	void cancelCheck (ClickEvent event) {
+		this.cancelFlag = true;
+		this.hide();
 	}
 
 	

@@ -20,6 +20,7 @@ package com.velisphere.chai;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map.Entry;
 
 import org.voltdb.VoltTable;
 import org.voltdb.client.ClientResponse;
@@ -28,7 +29,11 @@ import org.voltdb.client.ProcCallException;
 
 public class ActionManipulationEngine {
 
-	
+	/**
+	 * 
+	 * not needed anymore
+	 * 
+	 
 	public static HashSet<String> getActionItems(String ruleID) throws NoConnectionsException, IOException, ProcCallException
 	{
 				
@@ -50,13 +55,14 @@ public class ActionManipulationEngine {
 		
 		return actionsFound;
 	}
+	*/
 	
-	public static void executeActionItems(String actionID, HashMap<String, String> inboundMessageMap) throws Exception
+	public static void executeActionItems(Entry<String, String> actionHash, HashMap<String, String> inboundMessageMap) throws Exception
 	{
 				
 		
 		final ClientResponse findActionDetails = BusinessLogicEngine.montanaClient
-				.callProcedure("AME_DetailsForAction", actionID);
+				.callProcedure("AME_DetailsForAction", actionHash.getValue(), actionHash.getKey());
 		
 		final VoltTable findActionDetailsResults[] = findActionDetails
 				.getResults();
@@ -67,7 +73,7 @@ public class ActionManipulationEngine {
 		HashMap<String,String> outboundMessageMap = new HashMap<String, String>();
 		while (actionDetails.advanceRow()) {
 			{
-				// System.out.println(actionDetails.toFormattedString());
+				//System.out.println(actionDetails.toFormattedString());
 				String targetEPID = new String();
 				String payload = new String();
 				if (actionDetails.getString("TGTEPIDFROMINBOUNDPROP").isEmpty() == false){
