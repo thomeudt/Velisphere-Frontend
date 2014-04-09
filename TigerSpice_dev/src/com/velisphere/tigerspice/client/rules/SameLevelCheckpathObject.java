@@ -70,6 +70,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		this.setTitle(text);
 		this.childMultichecks = new HashSet<SameLevelCheckpathObject>();
 		this.childChecks = new HashSet<SameLevelCheckpathObject>();
+		this.actions = new HashSet<ActionObject>();
 		this.rule = new RuleObject();
 		this.isMulticheck = false;
 		this.setCheckID(checkID);

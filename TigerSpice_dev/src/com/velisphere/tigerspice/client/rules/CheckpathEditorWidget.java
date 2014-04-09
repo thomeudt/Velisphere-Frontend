@@ -184,7 +184,7 @@ public class CheckpathEditorWidget extends Composite {
 
 			controller
 					.addWidget(currentObject.actionIcon, xpos + 83, ypos - 19);
-			setActionEditClickHandler(currentObject);
+			
 			controller.addWidget(currentObject.sensorIcon, xpos, ypos - 15);
 			currentObject.sensorIcon.setVisible(true);
 			// increment horizontal positon
@@ -677,6 +677,9 @@ public class CheckpathEditorWidget extends Composite {
 									baseElement);
 
 							setCheckEditClickHandler(baseElement);
+							
+							setActionEditClickHandler(baseElement);
+							
 							checkHashSet.add(baseElement);
 
 							// triggervalue operator
@@ -1105,9 +1108,6 @@ public class CheckpathEditorWidget extends Composite {
 
 		currentObject.actionIcon.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-
-				
-
 				
 				final ActionDialogBox actionEditDialogBox = new ActionDialogBox();
 
@@ -1154,7 +1154,7 @@ public class CheckpathEditorWidget extends Composite {
 				
 				
 				
-				final ActionDialogBox actionNewDialogBox = new ActionDialogBox();
+				final ActionDialogBoxTabbed actionNewDialogBox = new ActionDialogBoxTabbed();
 
 				actionNewDialogBox.setModal(true);
 				actionNewDialogBox.setAutoHideEnabled(true);
@@ -1187,9 +1187,9 @@ public class CheckpathEditorWidget extends Composite {
 						else
 						{
 							ActionObject action = new ActionObject(actionNewDialogBox.ruleID, actionNewDialogBox.ruleName, actionNewDialogBox.endpointName, actionNewDialogBox.endpointID, actionNewDialogBox.endpointClassID, actionNewDialogBox.propertyName, actionNewDialogBox.propertyID, actionNewDialogBox.settingSourceIndex, actionNewDialogBox.manualValue, actionNewDialogBox.validValueIndex, actionNewDialogBox.propertyIdIndex, actionNewDialogBox.sensorEndpointID);
-							System.out.println(actionNewDialogBox.ruleName);
-							currentObject.actions.add(action);
 							
+							currentObject.actions.add(action);
+							System.out.println("ACT: " + currentObject.actions);
 						}
 						
 							
