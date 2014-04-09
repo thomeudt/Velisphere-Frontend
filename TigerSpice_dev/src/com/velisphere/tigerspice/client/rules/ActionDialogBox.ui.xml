@@ -29,7 +29,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
             <b:Paragraph addStyleNames="smalltext" text="Title or short description" />
             </b:Column>                   
             <b:Column size="3">                    
-            <b:TextBox styleName="span3" ui:field="txtMulticheckTitle" />
+            <b:TextBox styleName="span3" ui:field="txtRuleName" />
             </b:Column>
             </b:Row>
             <b:Row>

@@ -1111,6 +1111,8 @@ public class CheckpathEditorWidget extends Composite {
 				
 				final ActionDialogBox actionEditDialogBox = new ActionDialogBox();
 
+				System.out.println("Actions: " + currentObject.actions);
+				
 				actionEditDialogBox.setModal(true);
 				actionEditDialogBox.setAutoHideEnabled(true);
 
@@ -1165,9 +1167,10 @@ public class CheckpathEditorWidget extends Composite {
 						(RootPanel.get().getOffsetHeight()) / 4);
 				actionNewDialogBox.show();
 				actionNewDialogBox.addStyleName("ontop");
-				actionNewDialogBox.setParameters("", "", dragAccordion.endpointName, dragAccordion.endpointID, "dragAccordion.endpointClassID", dragAccordion.propertyName, dragAccordion.propertyID, 0, "", 0, 0);
+				actionNewDialogBox.setParameters("", "", dragAccordion.endpointName, dragAccordion.endpointID, "dragAccordion.endpointClassID", dragAccordion.propertyName, dragAccordion.propertyID, 0, "", 0, 0, currentObject.endpointID);
 
 				currentObject.showActionIcon();
+				
 				
 				actionNewDialogBox
 				.addCloseHandler(new CloseHandler<PopupPanel>() {
@@ -1176,14 +1179,17 @@ public class CheckpathEditorWidget extends Composite {
 						
 						if (actionNewDialogBox.cancelFlag == true)
 						{
-							
+								
 						} else if (actionNewDialogBox.deleteFlag == true)
 						{
 							
 						}
 						else
 						{
-							//
+							ActionObject action = new ActionObject(actionNewDialogBox.ruleID, actionNewDialogBox.ruleName, actionNewDialogBox.endpointName, actionNewDialogBox.endpointID, actionNewDialogBox.endpointClassID, actionNewDialogBox.propertyName, actionNewDialogBox.propertyID, actionNewDialogBox.settingSourceIndex, actionNewDialogBox.manualValue, actionNewDialogBox.validValueIndex, actionNewDialogBox.propertyIdIndex, actionNewDialogBox.sensorEndpointID);
+							System.out.println(actionNewDialogBox.ruleName);
+							currentObject.actions.add(action);
+							
 						}
 						
 							

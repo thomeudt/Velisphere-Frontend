@@ -55,6 +55,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 	public String triggerValue; 
 	public String operator;
 	public RuleObject rule;
+	public HashSet<ActionObject> actions;
 	
 	private SameLevelCheckpathObject(){}
 	
@@ -91,8 +92,8 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		this.add(ancTextField);
 		
 		actionIcon = new IconAnchor();
-		actionIcon.setIcon(IconType.PLAY);
-		actionIcon.getElement().setAttribute("style", "color:orangered;");
+		actionIcon.setIcon(IconType.GEARS);
+		actionIcon.getElement().setAttribute("style", "color:crimson;");
 		actionIcon.setTitle("There is at least one action triggered if this check is true");
 		this.add(actionIcon);
 		actionIcon.setVisible(false);
@@ -273,5 +274,11 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		return this.andIcon;
 		
 	}
+	
+	public void addAction(ActionObject action) {
+		this.actions.add(action);
+	}
+	
+	
 	
 }

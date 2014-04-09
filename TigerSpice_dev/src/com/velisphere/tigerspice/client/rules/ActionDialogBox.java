@@ -25,13 +25,17 @@ import com.google.gwt.user.client.ui.Widget;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.github.gwtbootstrap.client.ui.AccordionGroup;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Legend;
 import com.github.gwtbootstrap.client.ui.ListBox;
+import com.github.gwtbootstrap.client.ui.Row;
 import com.github.gwtbootstrap.client.ui.TextBox;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -52,9 +56,12 @@ import com.velisphere.tigerspice.client.helper.ActionSourceConfig;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.CombinationConfig;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
+import com.velisphere.tigerspice.client.properties.PropertyService;
+import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
 import com.velisphere.tigerspice.shared.PropertyClassData;
+import com.velisphere.tigerspice.shared.PropertyData;
 
 public class ActionDialogBox extends PopupPanel {
 
@@ -71,7 +78,7 @@ public class ActionDialogBox extends PopupPanel {
 	@UiField
 	ListBox lstSensorValue;
 	@UiField
-	TextBox txtMulticheckTitle;
+	TextBox txtRuleName;
 	@UiField
 	Legend lgdHeader;
 	@UiField
@@ -82,10 +89,27 @@ public class ActionDialogBox extends PopupPanel {
 	public String ruleID;
 	public Boolean cancelFlag = false;
 	public Boolean deleteFlag = false;
+	public String sensorEndpointID;
+	public String ruleName;
+	public String endpointName;
+	public String endpointID;
+	public String endpointClassID;
+	public String propertyName;
+	public String propertyID;
+	public int settingSourceIndex;
+	public String manualValue;
+	public int validValueIndex;
+	public int propertyIdIndex;
 	
 
-	private PropertyClassServiceAsync rpcServicePropertyClass;
-	private CheckServiceAsync rpcServiceCheck;
+	
+		
+	
+	
+
+    private PropertyServiceAsync rpcServiceProperty;
+	
+
 	
 	private AnimationLoading animationLoading = new AnimationLoading();
 
@@ -97,7 +121,8 @@ public class ActionDialogBox extends PopupPanel {
 	}
 
 	public ActionDialogBox() {
-		
+
+		rpcServiceProperty = GWT.create(PropertyService.class);
 		
 		setWidget(uiBinder.createAndBindUi(this));
 		HashSet<String> sources = new ActionSourceConfig().getSources();
@@ -113,7 +138,7 @@ public class ActionDialogBox extends PopupPanel {
 		lstValidValues.setVisible(false);
 		txtTargetEndpointName.setEnabled(false);
 		txtTargetPropertyName.setEnabled(false);
-
+		
 		
 		// change handler to update source of value options
 		
@@ -138,10 +163,16 @@ public class ActionDialogBox extends PopupPanel {
 						System.out.println("ZWEIER");
 						break;
 					case 2: 
-						txtManualValue.setVisible(true);
+						txtManualValue.setVisible(false);
 						lstSensorValue.setVisible(false);
 						lstValidValues.setVisible(false);
 						System.out.println("DREIER");
+						break;
+					case 3: 
+						txtManualValue.setVisible(true);
+						lstSensorValue.setVisible(false);
+						lstValidValues.setVisible(false);
+						System.out.println("VIERER");
 						break;
 					}
 					
@@ -151,11 +182,13 @@ public class ActionDialogBox extends PopupPanel {
 	
 	}
 	
-	public void setParameters (String ruleID, String ruleName, String endpointName, String endpointID, String endpointClassID, String propertyName, String propertyID, int settingSourceIndex, String manualValue, int validValueIndex, int propertyIdIndex){
+	public void setParameters (String ruleID, String ruleName, String endpointName, String endpointID, String endpointClassID, String propertyName, String propertyID, int settingSourceIndex, String manualValue, int validValueIndex, int propertyIdIndex, String sensorEndpointID){
 		
 		
 		txtTargetEndpointName.setText(endpointName);
 		txtTargetPropertyName.setText(propertyName);
+		this.sensorEndpointID = sensorEndpointID;
+		populateSensePropertiesDropDown(sensorEndpointID);
 		
 		/**
 		txtMulticheckTitle.setText(multicheckTitle);
@@ -169,12 +202,43 @@ public class ActionDialogBox extends PopupPanel {
 	}
 
 	
+private void populateSensePropertiesDropDown(final String endpointID){
+
+		
+		rpcServiceProperty.getSensorPropertiesForEndpointID(endpointID, new AsyncCallback<LinkedList<PropertyData>>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(LinkedList<PropertyData> result) {
+				// TODO Auto-generated method stub
+				
+				Iterator<PropertyData> it = result.iterator();
+				
+				while(it.hasNext()){
+				
+					PropertyData sensorProperty = new PropertyData();
+					sensorProperty = it.next();
+					lstSensorValue.addItem(sensorProperty.propertyName, sensorProperty.propertyId);
+									
+				}
+								
+			}
+			
+		});	
+
+	}
+
+	
+	
 	@UiHandler("btnSave")
 	void saveNewCheck (ClickEvent event) {
-	/**	this.multicheckTitle = this.txtMulticheckTitle.getText();
-		this.ruleID = this.txtManualValue.getText();
-		this.combination = this.lstCombination.getValue();
-		**/
+	
+		this.ruleName = this.txtRuleName.getText();
 		this.hide();		
 	}
 	
