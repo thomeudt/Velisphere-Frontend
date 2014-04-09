@@ -387,7 +387,8 @@ public class CheckpathEditorWidget extends Composite {
 
 													@Override
 													public void onFailure(
-															Throwable caught) {
+						
+														Throwable caught) {
 														// TODO Auto-generated
 														// method stub
 
@@ -1160,10 +1161,10 @@ public class CheckpathEditorWidget extends Composite {
 				ActionObject newAction = new ActionObject("", "", dragAccordion.endpointName, dragAccordion.endpointID, dragAccordion.endpointClassID, dragAccordion.propertyName, dragAccordion.propertyID, 0, "", 0, 0, currentObject.endpointID);
 				tempActions.add(newAction);
 				
-				final ActionDialogBoxTabbed actionNewDialogBox = new ActionDialogBoxTabbed(tempActions);
+				final ActionDialogBoxTabbed actionNewDialogBox = new ActionDialogBoxTabbed(tempActions, currentObject.text);
 
 				//actionNewDialogBox.setModal(true);
-				actionNewDialogBox.setAutoHideEnabled(true);
+				//actionNewDialogBox.setAutoHideEnabled(true);
 
 				
 				actionNewDialogBox.setAnimationEnabled(true);

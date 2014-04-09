@@ -2,9 +2,9 @@ package com.velisphere.tigerspice.client.rules;
 
 public class ActionObject {
 
-	public String ruleID;
+	public String actionID;
 	public String sensorEndpointID;
-	public String ruleName;
+	public String actionName;
 	public String endpointName;
 	public String endpointID;
 	public String endpointClassID;
@@ -16,10 +16,10 @@ public class ActionObject {
 	public int propertyIdIndex;
 	
 	
-	public ActionObject(String ruleID, String ruleName, String endpointName, String endpointID, String endpointClassID, String propertyName, String propertyID, int settingSourceIndex, String manualValue, int validValueIndex, int propertyIdIndex, String sensorEndpointID){
+	public ActionObject(String actionID, String actionName, String endpointName, String endpointID, String endpointClassID, String propertyName, String propertyID, int settingSourceIndex, String manualValue, int validValueIndex, int propertyIdIndex, String sensorEndpointID){
 
-		this.ruleID = ruleID;
-		this.ruleName = ruleName;
+		this.actionID = actionID;
+		this.actionName = actionName;
 		this.sensorEndpointID = sensorEndpointID;
 		this.endpointName = endpointName;
 		this.endpointID = endpointID;
