@@ -980,7 +980,7 @@ public class CheckpathEditorWidget extends Composite {
 
 				final CheckDialogBox checkNewDialogBox = new CheckDialogBox(
 						dragAccordion.endpointID, dragAccordion.propertyID,
-						dragAccordion.properyClassID,
+						dragAccordion.propertyClassID,
 						dragAccordion.propertyName, dragAccordion.endpointName,
 						"unnamed check", "", "");
 
@@ -1106,6 +1106,9 @@ public class CheckpathEditorWidget extends Composite {
 		currentObject.actionIcon.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 
+				
+
+				
 				final ActionDialogBox actionEditDialogBox = new ActionDialogBox();
 
 				actionEditDialogBox.setModal(true);
@@ -1141,14 +1144,20 @@ public class CheckpathEditorWidget extends Composite {
 			@Override
 			protected void onDragDrop(DndDropEvent event) {
 				super.onDragDrop(event);
-
+								
 				System.out.println("Dropped action!");
+				
 
+				final DragobjectContainer dragAccordion = (DragobjectContainer) event.getData();
+				
+				
+				
 				final ActionDialogBox actionNewDialogBox = new ActionDialogBox();
 
 				actionNewDialogBox.setModal(true);
 				actionNewDialogBox.setAutoHideEnabled(true);
 
+				
 				actionNewDialogBox.setAnimationEnabled(true);
 
 				actionNewDialogBox.setPopupPosition(
@@ -1156,6 +1165,7 @@ public class CheckpathEditorWidget extends Composite {
 						(RootPanel.get().getOffsetHeight()) / 4);
 				actionNewDialogBox.show();
 				actionNewDialogBox.addStyleName("ontop");
+				actionNewDialogBox.setParameters("", "", dragAccordion.endpointName, dragAccordion.endpointID, "dragAccordion.endpointClassID", dragAccordion.propertyName, dragAccordion.propertyID, 0, "", 0, 0);
 
 				currentObject.showActionIcon();
 				

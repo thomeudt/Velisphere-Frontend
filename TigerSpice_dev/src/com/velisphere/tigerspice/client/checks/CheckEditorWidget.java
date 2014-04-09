@@ -120,7 +120,7 @@ public class CheckEditorWidget extends Composite {
 						.setPosition(Position.RELATIVE);
 				CheckDialogBox checkNewDialogBox = new CheckDialogBox(
 						endpointID, dragAccordion.propertyID,
-						dragAccordion.properyClassID,
+						dragAccordion.propertyClassID,
 						dragAccordion.propertyName, "", "", "", "");
 
 				checkNewDialogBox.setModal(true);

@@ -143,7 +143,7 @@ public class AllCheckListWidget extends Composite {
 						.setPosition(Position.RELATIVE);
 				CheckDialogBox checkNewDialogBox = new CheckDialogBox(
 						userID, dragAccordion.propertyID,
-						dragAccordion.properyClassID,
+						dragAccordion.propertyClassID,
 						dragAccordion.propertyName, "", "", "", "");
 
 				//checkNewDialogBox.setModal(true);

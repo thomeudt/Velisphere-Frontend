@@ -227,7 +227,7 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 				dragAccordion.endpointID = endpointID;
 				dragAccordion.propertyID = propertyID;
 				dragAccordion.propertyName = propertyName;
-				dragAccordion.properyClassID = propertyClassId;
+				dragAccordion.propertyClassID = propertyClassId;
 				dragAccordion.endpointName = endpointName;
 			
 				event.setData(dragAccordion);

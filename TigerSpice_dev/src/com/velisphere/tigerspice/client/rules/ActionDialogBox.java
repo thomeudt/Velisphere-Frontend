@@ -59,9 +59,9 @@ import com.velisphere.tigerspice.shared.PropertyClassData;
 public class ActionDialogBox extends PopupPanel {
 
 	@UiField
-	ListBox lstLinkedChecksID;
+	TextBox txtTargetPropertyName;
 	@UiField
-	ListBox lstCombination;
+	TextBox txtTargetEndpointName;
 	@UiField
 	Button btnSave;
 	@UiField
@@ -111,6 +111,8 @@ public class ActionDialogBox extends PopupPanel {
 		txtManualValue.setVisible(false);
 		lstSensorValue.setVisible(true);
 		lstValidValues.setVisible(false);
+		txtTargetEndpointName.setEnabled(false);
+		txtTargetPropertyName.setEnabled(false);
 
 		
 		// change handler to update source of value options
@@ -149,8 +151,11 @@ public class ActionDialogBox extends PopupPanel {
 	
 	}
 	
-	public void setParameters (String ruleID, String ruleName, String endpointID, String endpointClassID, String propertyID, int settingSourceIndex, String manualValue, int validValueIndex, int propertyIdIndex){
+	public void setParameters (String ruleID, String ruleName, String endpointName, String endpointID, String endpointClassID, String propertyName, String propertyID, int settingSourceIndex, String manualValue, int validValueIndex, int propertyIdIndex){
 		
+		
+		txtTargetEndpointName.setText(endpointName);
+		txtTargetPropertyName.setText(propertyName);
 		
 		/**
 		txtMulticheckTitle.setText(multicheckTitle);

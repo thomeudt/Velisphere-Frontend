@@ -134,7 +134,7 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 				endpoint.setBaseIcon(IconType.GEARS);
 				endpoint.setHeading(shortName);
 				endpoint.setTitle(current.getName());
-				addActPropertiesToEndpoint(endpoint, current.getId());
+				addActPropertiesToEndpoint(endpoint, current.getId(), current.getName(), current.endpointclassId);
 				//System.out.println("momentane ID: " + current.getId());
 				endpoint.addStyleName("bgsilver");
 				accordion.add(endpoint);
@@ -147,7 +147,7 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 	});
 	}
 	
-	private void addActPropertiesToEndpoint(final AccordionGroup endpoint, String endpointID){
+	private void addActPropertiesToEndpoint(final AccordionGroup endpoint, final String endpointID, final String endpointName, final String endpointClassID){
 
 		
 		loadAnimation.showLoadAnimation("Loading actors");
@@ -184,7 +184,7 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 						shortName = current.getName().substring(0, 20)+"(...)";
 					}
 					Row row = accordionRowBuilder(shortName);
-					setDragSource(row, current.getId(), current.getName());
+					setDragSource(row, current.getId(), current.getName(), endpointName, endpointID, endpointClassID);
 					endpoint.add(row);
 
 				}
@@ -204,12 +204,12 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 		return row;
 	}
 	
-	private void setDragSource(Row accordionRow, final String checkID, final String checkName){
+	private void setDragSource(Row accordionRow, final String propertyID, final String propertyName, final String endpointName, final String endpointID, final String endpointClassID){
 		final SafeHtmlBuilder builder = new SafeHtmlBuilder();
 		builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
 				+ "\">");
 		builder.appendHtmlConstant("Drag "
-				+ checkName
+				+ propertyName
 				+ " into Checkpath to create an action");
 		builder.appendHtmlConstant("</div>");
 		
@@ -226,8 +226,12 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 				// allowed
 				
 				DragobjectContainer dragAccordion = new DragobjectContainer();
-				dragAccordion.checkID = checkID;
-				dragAccordion.checkName = checkName;
+				dragAccordion.propertyID = propertyID;
+				dragAccordion.propertyName = propertyName;
+				dragAccordion.endpointName = endpointName;
+				dragAccordion.endpointID = endpointID;
+				dragAccordion.endpointClassID = endpointClassID;
+				
 				
 				event.setData(dragAccordion);
 				event.getStatusProxy()

@@ -27,10 +27,11 @@ public class DragobjectContainer {
 	public String endpointID;
 	public String endpointName;
 	public String propertyID;
-	public String properyClassID;
+	public String propertyClassID;
 	public String propertyName;
 	public String checkID;
 	public String checkName;
 	public Boolean isMulticheck;
 	public SameLevelCheckpathObject checkpathObject;
+	public String endpointClassID;
 }

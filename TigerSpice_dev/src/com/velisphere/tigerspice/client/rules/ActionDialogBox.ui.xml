@@ -37,7 +37,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
             <b:Paragraph addStyleNames="smalltext" text="Target Endpoint on which action is executed" />
             </b:Column>
             <b:Column size="3">
-            <b:ListBox styleName="span3" ui:field="lstLinkedChecksID"/> 
+            <b:TextBox styleName="span3" ui:field="txtTargetEndpointName"/> 
             </b:Column>
             </b:Row>
             
@@ -46,7 +46,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
             <b:Paragraph addStyleNames="smalltext" text="Property of target endpoint that will be set" />
             </b:Column>
             <b:Column size="3">
-            <b:ListBox styleName="span3" ui:field="lstCombination"/> 
+            <b:TextBox styleName="span3" ui:field="txtTargetPropertyName"/> 
             </b:Column>
             </b:Row>
            
