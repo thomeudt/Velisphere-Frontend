@@ -132,7 +132,7 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 				endpoint.setTitle(current.getName());
 				endpoint.addStyleName("style.icon");
 				endpoint.setBaseIcon(IconType.RSS);
-				addActPropertiesToEndpoint(endpoint, current.getId(), current.getName());
+				addSensePropertiesToEndpoint(endpoint, current.getId(), current.getName());
 				//System.out.println("momentane ID: " + current.getId());
 				endpoint.addStyleName("bgsilver");
 				accordion.add(endpoint);
@@ -145,7 +145,7 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 	});
 	}
 	
-	private void addActPropertiesToEndpoint(final AccordionGroup endpoint, final String endpointID, final String endpointName){
+	private void addSensePropertiesToEndpoint(final AccordionGroup endpoint, final String endpointID, final String endpointName){
 
 		
 		loadAnimation.showLoadAnimation("Loading sensors");

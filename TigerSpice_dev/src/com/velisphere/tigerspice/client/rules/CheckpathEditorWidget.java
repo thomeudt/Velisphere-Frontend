@@ -31,6 +31,7 @@ import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Cursor;
@@ -1152,22 +1153,33 @@ public class CheckpathEditorWidget extends Composite {
 
 				final DragobjectContainer dragAccordion = (DragobjectContainer) event.getData();
 				
+							
+				HashSet<ActionObject> tempActions = new HashSet<ActionObject>();
+				tempActions.addAll(currentObject.actions);
 				
+				ActionObject newAction = new ActionObject("", "", dragAccordion.endpointName, dragAccordion.endpointID, dragAccordion.endpointClassID, dragAccordion.propertyName, dragAccordion.propertyID, 0, "", 0, 0, currentObject.endpointID);
+				tempActions.add(newAction);
 				
-				final ActionDialogBoxTabbed actionNewDialogBox = new ActionDialogBoxTabbed();
+				final ActionDialogBoxTabbed actionNewDialogBox = new ActionDialogBoxTabbed(tempActions);
 
-				actionNewDialogBox.setModal(true);
+				//actionNewDialogBox.setModal(true);
 				actionNewDialogBox.setAutoHideEnabled(true);
 
 				
 				actionNewDialogBox.setAnimationEnabled(true);
 
-				actionNewDialogBox.setPopupPosition(
-						(RootPanel.get().getOffsetWidth()) / 3,
-						(RootPanel.get().getOffsetHeight()) / 4);
+				
+				
 				actionNewDialogBox.show();
+				Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+				    public void execute() {
+				    	actionNewDialogBox.center();
+				    }
+				});  
+								
+				
 				actionNewDialogBox.addStyleName("ontop");
-				actionNewDialogBox.setParameters("", "", dragAccordion.endpointName, dragAccordion.endpointID, "dragAccordion.endpointClassID", dragAccordion.propertyName, dragAccordion.propertyID, 0, "", 0, 0, currentObject.endpointID);
+				// actionNewDialogBox.setParameters("", "", dragAccordion.endpointName, dragAccordion.endpointID, "dragAccordion.endpointClassID", dragAccordion.propertyName, dragAccordion.propertyID, 0, "", 0, 0, currentObject.endpointID);
 
 				currentObject.showActionIcon();
 				
@@ -1186,9 +1198,10 @@ public class CheckpathEditorWidget extends Composite {
 						}
 						else
 						{
-							ActionObject action = new ActionObject(actionNewDialogBox.ruleID, actionNewDialogBox.ruleName, actionNewDialogBox.endpointName, actionNewDialogBox.endpointID, actionNewDialogBox.endpointClassID, actionNewDialogBox.propertyName, actionNewDialogBox.propertyID, actionNewDialogBox.settingSourceIndex, actionNewDialogBox.manualValue, actionNewDialogBox.validValueIndex, actionNewDialogBox.propertyIdIndex, actionNewDialogBox.sensorEndpointID);
 							
-							currentObject.actions.add(action);
+							
+							currentObject.actions.clear();
+							currentObject.actions.addAll(actionNewDialogBox.getActions());
 							System.out.println("ACT: " + currentObject.actions);
 						}
 						

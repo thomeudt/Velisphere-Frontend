@@ -39,7 +39,7 @@
              <b:NavLink ui:field="btnHome">Dashboard</b:NavLink>
              <b:NavLink ui:field="btnSpheres">Endpoint Manager</b:NavLink>
              <b:NavLink ui:field="btnRules">Logic Designer</b:NavLink>
-             <b:NavLink ui:field="btnAdmin">Map</b:NavLink>
+             <b:NavLink ui:field="btnAdmin">Maps</b:NavLink>
          </b:Nav>
          <b:NavForm ui:field="forSearch" size="1" />
          <b:Nav>

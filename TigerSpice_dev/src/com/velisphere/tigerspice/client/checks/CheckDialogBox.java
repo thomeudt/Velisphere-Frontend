@@ -51,6 +51,8 @@ import com.velisphere.tigerspice.shared.PropertyClassData;
 public class CheckDialogBox extends PopupPanel {
 
 	@UiField
+	Legend lgdLegend;
+	@UiField
 	ListBox lstPropertyID;
 	@UiField
 	ListBox lstOperator;
@@ -113,6 +115,12 @@ public class CheckDialogBox extends PopupPanel {
 		rpcServiceProperty = GWT.create(PropertyService.class);
 
 		txtEndpointName.setText(this.endpointName);
+		
+		
+		
+		
+		
+		
 		txtCheckTitle.setText(this.checkTitle);
 		txtTriggerValue.setText(this.triggerValue);
 

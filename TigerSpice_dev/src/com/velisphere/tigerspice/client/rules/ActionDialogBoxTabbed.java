@@ -19,6 +19,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -44,20 +45,10 @@ import com.velisphere.tigerspice.shared.PropertyData;
 public class ActionDialogBoxTabbed extends PopupPanel {
 
 	
-	public String ruleID;
+	
 	public Boolean cancelFlag = false;
 	public Boolean deleteFlag = false;
-	public String sensorEndpointID;
-	public String ruleName;
-	public String endpointName;
-	public String endpointID;
-	public String endpointClassID;
-	public String propertyName;
-	public String propertyID;
-	public int settingSourceIndex;
-	public String manualValue;
-	public int validValueIndex;
-	public int propertyIdIndex;
+	private HashSet<ActionObject> actions;
 
 
 
@@ -65,12 +56,17 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 	private AnimationLoading animationLoading = new AnimationLoading();
 
 	
-	  private VerticalPanel vp;
+	  
 	  private TabPanel advanced;
-	  private int index = 0;
+	  
 
-	  public ActionDialogBoxTabbed(){
-		  this.setWidget(tabWidget());
+	  public ActionDialogBoxTabbed(HashSet<ActionObject> actions){
+		 
+		 this.actions = actions;		
+	     this.setWidget(tabWidget());
+
+         
+		  
 	  }
 	 
 	  public Widget tabWidget() {
@@ -85,38 +81,93 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 	 
 	    advanced = new TabPanel();
 	    
+	    Iterator<ActionObject> it = actions.iterator();
+		  while(it.hasNext()){
+		    	addTab(it.next());
+		    }
+		 advanced.selectTab(0);    
+		 
 	    
-	    addTab();
-	    addTab();
-	    advanced.selectTab(0);
 	    well.add(advanced);
-	    
+	    	    
 
-	      return well;
+	    
+      return well;
+      
 	  }
 	 
 	  
 	 
-	  private void addTab() {
+	  
+	  
+	  
+	  private void addTab(ActionObject action) {
 
-		 Tab vpTab = new Tab();
-		 vpTab.setIcon(IconType.GEARS);
-		 vpTab.setHeading("New Action");
+		 Tab tab = new Tab();
+		 tab.setIcon(IconType.GEARS);
+		 tab.setHeading("New Action");
+		 
+		 tab.addClickHandler(new ClickHandler(){
+
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				
+				
+			}
+			 
+		 }	 
+				 );
+		 
+
+		 
+		Row row1 = new Row();
+		Row row2 = new Row();
+		Row row3 = new Row();
+		Row row4 = new Row();
+		Row row5 = new Row();
+		Row row6 = new Row();
 		  
-	    final TextBox txtManualValue = new TextBox();
-		 vpTab.add(txtManualValue);
-	    final ListBox lstSettingSource = new ListBox();
-	    vpTab.add(lstSettingSource);
+	    Column column6B = new Column(3);
+		final TextBox txtManualValue = new TextBox();
+		column6B.add(txtManualValue);
+		row6.add(column6B);
+		
+	    Column column3B = new Column(3);
+		final ListBox lstSettingSource = new ListBox();
+		column3B.add(lstSettingSource);
+		row3.add(column3B);
+		
+		Column column5B = new Column(3);
 	    final ListBox lstSensorValue = new ListBox();
-	    vpTab.add(lstSensorValue);
-	    final ListBox lstValidValues = new ListBox();
-	    vpTab.add(lstValidValues);
-	    final TextBox txtTargetEndpointName = new TextBox();
-	    vpTab.add(txtTargetEndpointName);
-	    final TextBox txtTargetPropertyName = new TextBox();
-	    vpTab.add(txtTargetPropertyName);
+	    column5B.add(lstSensorValue);
+	    row5.add(column5B);
 	    
-	    advanced.add(vpTab);
+		Column column4B = new Column(3);
+	    final ListBox lstValidValues = new ListBox();
+	    column4B.add(lstValidValues);
+	    row4.add(column4B);
+	    
+		Column column1B = new Column(3);
+	    final TextBox txtTargetEndpointName = new TextBox();
+	    column1B.add(txtTargetEndpointName);
+	    txtTargetEndpointName.setText(action.endpointName);
+	    row1.add(column1B);
+	    
+		Column column2B = new Column(3);
+	    final TextBox txtTargetPropertyName = new TextBox();
+	    column2B.add(txtTargetPropertyName);
+	    row2.add(column2B);
+	    
+	    
+	    tab.add(row1);
+	    tab.add(row2);
+	    tab.add(row3);
+	    tab.add(row4);
+	    tab.add(row5);
+	    tab.add(row6);
+	    advanced.add(tab);
 	    
 	    HashSet<String> sources = new ActionSourceConfig().getSources();
 		Iterator<String> it = sources.iterator();
@@ -132,7 +183,7 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 		txtTargetEndpointName.setEnabled(false);
 		txtTargetPropertyName.setEnabled(false);
 		
-		
+	
 		// change handler to update source of value options
 		
 		lstSettingSource.addChangeHandler(new ChangeHandler() {
@@ -148,26 +199,31 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 						lstSensorValue.setVisible(true);
 						lstValidValues.setVisible(false);
 						System.out.println("EINSER");
+						
 						break;
 					case 1: 
 						txtManualValue.setVisible(false);
 						lstSensorValue.setVisible(false);
 						lstValidValues.setVisible(true);
 						System.out.println("ZWEIER");
+						
 						break;
 					case 2: 
 						txtManualValue.setVisible(false);
 						lstSensorValue.setVisible(false);
 						lstValidValues.setVisible(false);
 						System.out.println("DREIER");
+						
 						break;
 					case 3: 
 						txtManualValue.setVisible(true);
 						lstSensorValue.setVisible(false);
 						lstValidValues.setVisible(false);
 						System.out.println("VIERER");
+						
 						break;
 					}
+					
 					
 				}
 		});
@@ -256,6 +312,9 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 			//this.hide();
 		}
 
+		public HashSet<ActionObject> getActions(){
+			return this.actions;
+		}
 	
 	
 	
