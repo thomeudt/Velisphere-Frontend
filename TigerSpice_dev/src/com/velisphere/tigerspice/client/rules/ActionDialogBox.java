@@ -125,7 +125,7 @@ public class ActionDialogBox extends PopupPanel {
 		rpcServiceProperty = GWT.create(PropertyService.class);
 		
 		setWidget(uiBinder.createAndBindUi(this));
-		HashSet<String> sources = new ActionSourceConfig().getSources();
+		LinkedList<String> sources = new ActionSourceConfig().getSources();
 		Iterator<String> it = sources.iterator();
 		while (it.hasNext()){
 			this.lstSettingSource.addItem(it.next());

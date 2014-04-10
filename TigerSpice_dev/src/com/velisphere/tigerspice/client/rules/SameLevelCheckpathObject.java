@@ -20,6 +20,7 @@ package com.velisphere.tigerspice.client.rules;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Image;
@@ -55,7 +56,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 	public String triggerValue; 
 	public String operator;
 	public RuleObject rule;
-	public HashSet<ActionObject> actions;
+	public LinkedList<ActionObject> actions;
 	
 	private SameLevelCheckpathObject(){}
 	
@@ -70,7 +71,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		this.setTitle(text);
 		this.childMultichecks = new HashSet<SameLevelCheckpathObject>();
 		this.childChecks = new HashSet<SameLevelCheckpathObject>();
-		this.actions = new HashSet<ActionObject>();
+		this.actions = new LinkedList<ActionObject>();
 		this.rule = new RuleObject();
 		this.isMulticheck = false;
 		this.setCheckID(checkID);

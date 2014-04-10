@@ -3,6 +3,7 @@ package com.velisphere.tigerspice.client.rules;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 import com.github.gwtbootstrap.client.ui.Button;
@@ -28,6 +29,8 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.DecoratedPopupPanel;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
@@ -51,7 +54,7 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 	
 	public Boolean cancelFlag = false;
 	public Boolean deleteFlag = false;
-	private HashSet<ActionObject> actions;
+	private LinkedList<ActionObject> actions;
 	private UuidServiceAsync rpcServiceUuid;
 	private String checkName;
 	
@@ -65,11 +68,14 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 	  private TabPanel advanced;
 	  
 
-	  public ActionDialogBoxTabbed(HashSet<ActionObject> actions, String checkName){
+	  public ActionDialogBoxTabbed(LinkedList<ActionObject> actions, String checkName){
 		 
 		 
 		 rpcServiceUuid = GWT.create(UuidService.class); 
 		 this.actions = actions;
+		
+		 
+		 
 		 this.checkName = checkName;
 		 this.setWidget(tabWidget());
 
@@ -93,7 +99,7 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 		  while(it.hasNext()){
 		    	addTab(it.next());
 		    }
-		 advanced.selectTab(0);    
+		 advanced.selectTab(actions.size()-1);    
 		 
 	    
 	    well.add(advanced);
@@ -304,7 +310,7 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 	    tab.add(row6);
 	    advanced.add(tab);
 	    
-	    HashSet<String> sources = new ActionSourceConfig().getSources();
+	    LinkedList<String> sources = new ActionSourceConfig().getSources();
 		Iterator<String> it = sources.iterator();
 		while (it.hasNext()){
 			lstSettingSource.addItem(it.next());
@@ -314,6 +320,7 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 		
 		txtManualValue.setVisible(false);
 		lstSensorValue.setVisible(true);
+		populateSensePropertiesDropDown(lstSensorValue, action.sensorEndpointID);
 		lstValidValues.setVisible(false);
 		txtTargetEndpointName.setEnabled(false);
 		txtTargetPropertyName.setEnabled(false);
@@ -333,6 +340,7 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 						txtManualValue.setVisible(false);
 						lstSensorValue.setVisible(true);
 						lstValidValues.setVisible(false);
+						populateSensePropertiesDropDown(lstSensorValue, action.endpointID);
 						System.out.println("EINSER");
 						
 						break;
@@ -349,18 +357,20 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 						lstValidValues.setVisible(false);
 						System.out.println("DREIER");
 						
+						
 						break;
 					case 3: 
 						txtManualValue.setVisible(true);
 						lstSensorValue.setVisible(false);
 						lstValidValues.setVisible(false);
 						System.out.println("VIERER");
-						
+							
 						break;
 					}
 					
 					
 				}
+				
 		});
 
 	    
@@ -393,7 +403,7 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 		}
 
 
-		private void populateSensePropertiesDropDown(final String endpointID){
+		private void populateSensePropertiesDropDown(final ListBox lstSensorValue, final String endpointID){
 
 			
 			rpcServiceProperty.getSensorPropertiesForEndpointID(endpointID, new AsyncCallback<LinkedList<PropertyData>>(){
@@ -413,9 +423,7 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 					while(it.hasNext()){
 					
 						PropertyData sensorProperty = new PropertyData();
-						sensorProperty = it.next();
-						ListBox lstSensorValue = (ListBox) advanced.getWidget(4);
-											
+						sensorProperty = it.next();												
 						lstSensorValue.addItem(sensorProperty.propertyName, sensorProperty.propertyId);
 										
 					}
@@ -429,7 +437,7 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 
 		void saveAction () {
 
-			
+			System.out.println("ACCCT: " + this.actions);
 			this.hide();		
 		}
 
@@ -441,7 +449,8 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 			this.hide();
 		}
 
-		public HashSet<ActionObject> getActions(){
+		public LinkedList<ActionObject> getActions(){
+
 			return this.actions;
 		}
 	

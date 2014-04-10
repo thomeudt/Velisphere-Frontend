@@ -370,11 +370,9 @@ public class CheckpathEditorWidget extends Composite {
 
 						multicheckNewDialogBox.setAnimationEnabled(true);
 
-						multicheckNewDialogBox.setPopupPosition(
-								(RootPanel.get().getOffsetWidth()) / 3,
-								(RootPanel.get().getOffsetHeight()) / 4);
 						multicheckNewDialogBox.show();
 						multicheckNewDialogBox.addStyleName("ontop");
+						multicheckNewDialogBox.center();
 
 						multicheckNewDialogBox
 								.addCloseHandler(new CloseHandler<PopupPanel>() {
@@ -515,11 +513,9 @@ public class CheckpathEditorWidget extends Composite {
 
 		multicheckDialogBox.setAnimationEnabled(true);
 
-		multicheckDialogBox.setPopupPosition(
-				(RootPanel.get().getOffsetWidth()) / 3,
-				(RootPanel.get().getOffsetHeight()) / 4);
 		multicheckDialogBox.show();
 		multicheckDialogBox.addStyleName("ontop");
+		multicheckDialogBox.center();
 
 		HashMap<String, String> allChecks = new HashMap<String, String>();
 
@@ -994,11 +990,10 @@ public class CheckpathEditorWidget extends Composite {
 
 				checkNewDialogBox.setAnimationEnabled(true);
 
-				checkNewDialogBox.setPopupPosition(
-						(RootPanel.get().getOffsetWidth()) / 3,
-						(RootPanel.get().getOffsetHeight()) / 4);
+				
 				checkNewDialogBox.show();
 				checkNewDialogBox.addStyleName("ontop");
+				checkNewDialogBox.center();
 
 				rebuildCheckpathDiagram();
 
@@ -1062,11 +1057,10 @@ public class CheckpathEditorWidget extends Composite {
 
 				checkEditDialogBox.setAnimationEnabled(true);
 
-				checkEditDialogBox.setPopupPosition(
-						(RootPanel.get().getOffsetWidth()) / 3,
-						(RootPanel.get().getOffsetHeight()) / 4);
+				
 				checkEditDialogBox.show();
 				checkEditDialogBox.addStyleName("ontop");
+				checkEditDialogBox.center();
 
 				checkEditDialogBox
 						.addCloseHandler(new CloseHandler<PopupPanel>() {
@@ -1111,28 +1105,60 @@ public class CheckpathEditorWidget extends Composite {
 		currentObject.actionIcon.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				
-				final ActionDialogBox actionEditDialogBox = new ActionDialogBox();
 
 				System.out.println("Actions: " + currentObject.actions);
 				
-				actionEditDialogBox.setModal(true);
-				actionEditDialogBox.setAutoHideEnabled(true);
+				
+				LinkedList<ActionObject> tempActions = new LinkedList<ActionObject>();
+				tempActions.addAll(currentObject.actions);
 
+				
+				final ActionDialogBoxTabbed actionEditDialogBox = new ActionDialogBoxTabbed(tempActions, currentObject.text);
 				actionEditDialogBox.setAnimationEnabled(true);
 
-				actionEditDialogBox.setPopupPosition(
-						(RootPanel.get().getOffsetWidth()) / 3,
-						(RootPanel.get().getOffsetHeight()) / 4);
+				
+				
 				actionEditDialogBox.show();
+				Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+				    public void execute() {
+				    	actionEditDialogBox.center();
+				    }
+				});  
+								
+				
 				actionEditDialogBox.addStyleName("ontop");
-
+				currentObject.showActionIcon();
+				
+				
 				actionEditDialogBox
-						.addCloseHandler(new CloseHandler<PopupPanel>() {
+				.addCloseHandler(new CloseHandler<PopupPanel>() {
 
-							public void onClose(CloseEvent event) {
-							}
-						});
+					public void onClose(CloseEvent event) {
+						
+						if (actionEditDialogBox.cancelFlag == true)
+						{
+								
+						} else if (actionEditDialogBox.deleteFlag == true)
+						{
+							
+						}
+						else
+						{
+							
+							
+							currentObject.actions.clear();
+							currentObject.actions.addAll(actionEditDialogBox.getActions());
+							System.out.println("ACT: " + currentObject.actions);
+						}							
+						
+					}
+				});
 
+				
+
+				
+				
+				
 			}
 
 		});
@@ -1155,7 +1181,7 @@ public class CheckpathEditorWidget extends Composite {
 				final DragobjectContainer dragAccordion = (DragobjectContainer) event.getData();
 				
 							
-				HashSet<ActionObject> tempActions = new HashSet<ActionObject>();
+				LinkedList<ActionObject> tempActions = new LinkedList<ActionObject>();
 				tempActions.addAll(currentObject.actions);
 				
 				ActionObject newAction = new ActionObject("", "", dragAccordion.endpointName, dragAccordion.endpointID, dragAccordion.endpointClassID, dragAccordion.propertyName, dragAccordion.propertyID, 0, "", 0, 0, currentObject.endpointID);
@@ -1168,7 +1194,7 @@ public class CheckpathEditorWidget extends Composite {
 
 				
 				actionNewDialogBox.setAnimationEnabled(true);
-
+				
 				
 				
 				actionNewDialogBox.show();
@@ -1204,10 +1230,7 @@ public class CheckpathEditorWidget extends Composite {
 							currentObject.actions.clear();
 							currentObject.actions.addAll(actionNewDialogBox.getActions());
 							System.out.println("ACT: " + currentObject.actions);
-						}
-						
-							
-							
+						}							
 						
 					}
 				});
