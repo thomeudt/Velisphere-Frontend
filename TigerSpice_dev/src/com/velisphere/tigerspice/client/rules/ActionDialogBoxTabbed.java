@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
+import com.gargoylesoftware.htmlunit.javascript.host.Event;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.Legend;
@@ -18,10 +19,12 @@ import com.github.gwtbootstrap.client.ui.Well;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -57,27 +60,20 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 	private LinkedList<ActionObject> actions;
 	private UuidServiceAsync rpcServiceUuid;
 	private String checkName;
-	
-
-
 	private PropertyServiceAsync rpcServiceProperty;
 	private AnimationLoading animationLoading = new AnimationLoading();
-
-	
-	  
-	  private TabPanel advanced;
+    private TabPanel advanced;
 	  
 
 	  public ActionDialogBoxTabbed(LinkedList<ActionObject> actions, String checkName){
 		 
-		 
-		 rpcServiceUuid = GWT.create(UuidService.class); 
-		 this.actions = actions;
+		
+			rpcServiceUuid = GWT.create(UuidService.class); 
+			 this.actions = actions;
+			 this.checkName = checkName;
+			 this.setWidget(tabWidget());	
 		
 		 
-		 
-		 this.checkName = checkName;
-		 this.setWidget(tabWidget());
 
          
 		  
@@ -87,22 +83,30 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 
    		rpcServiceProperty = GWT.create(PropertyService.class);
 
-   	    Well well = new Well();
-   	    Legend legend = new Legend("Actions for " + checkName);
-   	    well.add(legend);
-   	    well.setStyleName("wellsilver");
+   		
+   	    //Well well = new Well();
+   	    //Legend legend = new Legend("Actions for " + checkName);
+   	    //well.add(legend);
+   	    //well.setStyleName("wellsilver");
    	    
 	 
 	    advanced = new TabPanel();
+	    advanced.setTabPosition("left");
+	    
+	    if (actions != null)
+		{
 	    
 	    Iterator<ActionObject> it = actions.iterator();
 		  while(it.hasNext()){
 		    	addTab(it.next());
 		    }
-		 advanced.selectTab(actions.size()-1);    
+		advanced.selectTab(actions.size()-1);
+		}
+		
+		addEmptyTab();
 		 
 	    
-	    well.add(advanced);
+	    // well.add(advanced);
 	    
 	    Row buttonRow = new Row();
 	    Column buttonColA = new Column(1);
@@ -149,10 +153,10 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 	    buttonRow.add(buttonColA);
 	    buttonRow.add(buttonColB);
 	    
-	    well.add(buttonRow);
+	    advanced.add(buttonRow);
 
 	    
-      return well;
+      return advanced;
       
 	  }
 	 
@@ -164,8 +168,7 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 	  private void addTab(final ActionObject action) {
 
 		 // check if this is a new rule
-		  
-		  
+		  		  
 
 		Row row0 = new Row(); 
 		Row row1 = new Row();
@@ -240,13 +243,14 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 
 	    Column column6B = new Column(3, 2);
 		final TextBox txtManualValue = new TextBox();
+		txtManualValue.setText(action.manualValue);
 		column6B.add(txtManualValue);
 		row6.add(column6B);
 
 	    
 		
 		if(action.actionID == ""){
-			 action.actionName = "New Action";
+			 action.actionName = "Unnamed Action";
 			 rpcServiceUuid
 				.getUuid(new AsyncCallback<String>() {
 
@@ -286,10 +290,44 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 			}
 			 
 		 });
+		 
+		    
 		
-	    
-		 txtActionName.addChangeHandler(new ChangeHandler(){
+		 
+		 lstSettingSource.addChangeHandler(new ChangeHandler(){
+				@Override
+				public void onChange(ChangeEvent event) {
+					// TODO Auto-generated method stub					
+					action.settingSourceIndex = lstSettingSource.getValue();
+				}		    	
+		 });
 
+		 txtManualValue.addChangeHandler(new ChangeHandler(){
+				@Override
+				public void onChange(ChangeEvent event) {
+					// TODO Auto-generated method stub					
+					action.manualValue = txtManualValue.getValue();
+				}		    	
+		 });
+		
+		 lstValidValues.addChangeHandler(new ChangeHandler(){
+				@Override
+				public void onChange(ChangeEvent event) {
+					// TODO Auto-generated method stub					
+					action.validValueIndex = lstValidValues.getValue();
+				}		    	
+		 });
+		
+		 lstSensorValue.addChangeHandler(new ChangeHandler(){
+				@Override
+				public void onChange(ChangeEvent event) {
+					// TODO Auto-generated method stub					
+					action.propertyIdIndex = lstSensorValue.getValue();
+				}		    	
+		 });
+		 
+		 
+		 txtActionName.addChangeHandler(new ChangeHandler(){
 				@Override
 				public void onChange(ChangeEvent event) {
 					// TODO Auto-generated method stub
@@ -297,7 +335,7 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 					action.actionName = txtActionName.getText();
 				}
 		    	
-		    });
+		 });
 
 		 
 	    
@@ -310,14 +348,15 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 	    tab.add(row6);
 	    advanced.add(tab);
 	    
-	    LinkedList<String> sources = new ActionSourceConfig().getSources();
+	    
+		// set initial state of source of value
+
+		LinkedList<String> sources = new ActionSourceConfig().getSources();
 		Iterator<String> it = sources.iterator();
 		while (it.hasNext()){
 			lstSettingSource.addItem(it.next());
 		}
 
-		// set initial state of source of value
-		
 		txtManualValue.setVisible(false);
 		lstSensorValue.setVisible(true);
 		populateSensePropertiesDropDown(lstSensorValue, action.sensorEndpointID);
@@ -340,7 +379,6 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 						txtManualValue.setVisible(false);
 						lstSensorValue.setVisible(true);
 						lstValidValues.setVisible(false);
-						populateSensePropertiesDropDown(lstSensorValue, action.endpointID);
 						System.out.println("EINSER");
 						
 						break;
@@ -373,11 +411,38 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 				
 		});
 
-	    
+		
+		// set settingSource to correct value
+		lstSettingSource.setSelectedValue(action.settingSourceIndex);	
+		DomEvent.fireNativeEvent(Document.get().createChangeEvent(), lstSettingSource);
+		
 	    
 	    
 	  }
 
+
+	  private void addEmptyTab() {
+
+			 // check if this is a new rule
+			  		  
+			  
+			 final Tab tab = new Tab();
+			 tab.setIcon(IconType.PLUS_SIGN);
+			 tab.setHeading("Add new action");
+			 
+			 			 
+		    
+			
+		    advanced.add(tab);
+		    
+		    
+		    
+		    
+		  }
+
+	  
+	  
+	  
 	  
 	  public void setParameters (String ruleID, String ruleName, String endpointName, String endpointID, String endpointClassID, String propertyName, String propertyID, int settingSourceIndex, String manualValue, int validValueIndex, int propertyIdIndex, String sensorEndpointID){
 			
@@ -437,7 +502,7 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 
 		void saveAction () {
 
-			System.out.println("ACCCT: " + this.actions);
+			System.out.println("ACCCT: " + this.actions.getFirst());
 			this.hide();		
 		}
 

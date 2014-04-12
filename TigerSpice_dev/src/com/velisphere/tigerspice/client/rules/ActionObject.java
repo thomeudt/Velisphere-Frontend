@@ -10,13 +10,13 @@ public class ActionObject {
 	public String endpointClassID;
 	public String propertyName;
 	public String propertyID;
-	public int settingSourceIndex;
+	public String settingSourceIndex;
 	public String manualValue;
-	public int validValueIndex;
-	public int propertyIdIndex;
+	public String validValueIndex;
+	public String propertyIdIndex;
 	
 	
-	public ActionObject(String actionID, String actionName, String endpointName, String endpointID, String endpointClassID, String propertyName, String propertyID, int settingSourceIndex, String manualValue, int validValueIndex, int propertyIdIndex, String sensorEndpointID){
+	public ActionObject(String actionID, String actionName, String endpointName, String endpointID, String endpointClassID, String propertyName, String propertyID, String settingSourceIndex, String manualValue, String validValueIndex, String propertyIdIndex, String sensorEndpointID){
 
 		this.actionID = actionID;
 		this.actionName = actionName;

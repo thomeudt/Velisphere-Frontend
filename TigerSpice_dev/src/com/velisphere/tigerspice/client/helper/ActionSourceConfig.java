@@ -18,22 +18,24 @@
 package com.velisphere.tigerspice.client.helper;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 
 public class ActionSourceConfig {
 	
 	// this class defines all possible data sources for values set in an action
 
-	HashSet<String> sources = new HashSet<String>();
+	LinkedList<String> sources = new LinkedList<String>();
 	
 	
 	public ActionSourceConfig() {
-		sources.add("Manual entry");
+		sources.add("Incoming value from sensor device");
 		sources.add("List of typical entries");
-		sources.add("Incoming value from sensor");
-		sources.add("Value of other sensor (not implemented)");
+		sources.add("Current value of other sensor (not implemented)");
+		sources.add("Manual entry");
 	}
 	
-	public HashSet<String> getSources() {
+	public LinkedList<String> getSources() {
 		return this.sources;
 	}
 	

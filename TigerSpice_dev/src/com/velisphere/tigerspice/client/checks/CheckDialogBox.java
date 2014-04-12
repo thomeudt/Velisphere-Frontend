@@ -18,16 +18,19 @@
 package com.velisphere.tigerspice.client.checks;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Legend;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.Paragraph;
+import com.github.gwtbootstrap.client.ui.TabPane;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -41,10 +44,13 @@ import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
+import com.velisphere.tigerspice.client.properties.PropertyEditorWidget;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
+import com.velisphere.tigerspice.client.rules.ActionDialogBoxTabbed;
+import com.velisphere.tigerspice.client.rules.ActionObject;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 
@@ -66,6 +72,12 @@ public class CheckDialogBox extends PopupPanel {
 	TextBox txtCheckTitle;
 	@UiField
 	Paragraph txtEndpointName;
+	@UiField
+	TabPane tbpActions;
+	@UiField
+	TabPane tbpSensor;
+	@UiField
+	ActionDialogBoxTabbed wgtActionDialogBox;
 	
 	
 	private String endpointID;
@@ -82,6 +94,7 @@ public class CheckDialogBox extends PopupPanel {
 	private AnimationLoading animationLoading = new AnimationLoading();
 	public boolean deleteFlag = false;
 	public boolean cancelFlag = false;
+	private LinkedList<ActionObject> actions;
 
 	private static CheckEditorDialogBoxUiBinder uiBinder = GWT
 			.create(CheckEditorDialogBoxUiBinder.class);
@@ -91,7 +104,7 @@ public class CheckDialogBox extends PopupPanel {
 	}
 
 	public CheckDialogBox(String endpointID, String propertyID,
-			String propertyClassIDCalled, String propertyNameCalled, String endpointNameCalled, String checkTitle, String triggerValue, String operator) {
+			String propertyClassIDCalled, String propertyNameCalled, String endpointNameCalled, String checkTitle, String triggerValue, String operator, LinkedList<ActionObject> actions) {
 		
 		this.endpointID = endpointID;
 		this.propertyID = propertyID;
@@ -101,10 +114,15 @@ public class CheckDialogBox extends PopupPanel {
 		this.checkTitle = checkTitle;
 		this.triggerValue = triggerValue;
 		this.operator = operator;
+		this.actions = actions;
 
-		
+
+				
 		setWidget(uiBinder.createAndBindUi(this));
 		
+				
+				
+			
 		if ( operator == ""){
 			btnDelete.setVisible(false);
 		}
@@ -116,15 +134,9 @@ public class CheckDialogBox extends PopupPanel {
 
 		txtEndpointName.setText(this.endpointName);
 		
-		
-		
-		
-		
-		
 		txtCheckTitle.setText(this.checkTitle);
 		txtTriggerValue.setText(this.triggerValue);
-
-				
+						
 		showLoadAnimation(animationLoading);
 		
 		// fill missing fields if check is re-opened and loaded from a checkpath, because then PCID, PropName and epName will be empty
@@ -213,6 +225,8 @@ public class CheckDialogBox extends PopupPanel {
 	
 		
 		System.out.println("FILLER");
+		
+		
 		
 		rpcServicePropertyClass.getPropertyClassForPropertyClassID(
 				propertyClassID, new AsyncCallback<PropertyClassData>() {
@@ -389,5 +403,20 @@ public class CheckDialogBox extends PopupPanel {
 	public String getTriggerValue(){
 		return this.triggerValue;
 	}
+	
+	public LinkedList<ActionObject> getActions(){
+		return this.wgtActionDialogBox.getActions();
+	}
+	
+	public void setActionsTabEnabled(){
+		tbpActions.setActive(true);
+		tbpSensor.setActive(false);
+	}
+	
+	@UiFactory ActionDialogBoxTabbed makeActionEditor() { // method name is insignificant
+				
+		
+		return new ActionDialogBoxTabbed(this.actions, this.checkTitle);
+	  }
 
 }

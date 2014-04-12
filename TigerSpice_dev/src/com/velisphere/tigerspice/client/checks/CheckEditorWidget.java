@@ -121,7 +121,7 @@ public class CheckEditorWidget extends Composite {
 				CheckDialogBox checkNewDialogBox = new CheckDialogBox(
 						endpointID, dragAccordion.propertyID,
 						dragAccordion.propertyClassID,
-						dragAccordion.propertyName, "", "", "", "");
+						dragAccordion.propertyName, "", "", "", "", null);
 
 				checkNewDialogBox.setModal(true);
 				checkNewDialogBox.setAutoHideEnabled(true);

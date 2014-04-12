@@ -978,12 +978,16 @@ public class CheckpathEditorWidget extends Composite {
 					}
 
 				});
+				
+				
+				
+				
 
 				final CheckDialogBox checkNewDialogBox = new CheckDialogBox(
 						dragAccordion.endpointID, dragAccordion.propertyID,
 						dragAccordion.propertyClassID,
 						dragAccordion.propertyName, dragAccordion.endpointName,
-						"unnamed check", "", "");
+						"unnamed check", "", "", null);
 
 				checkNewDialogBox.setModal(true);
 				checkNewDialogBox.setAutoHideEnabled(true);
@@ -1047,11 +1051,22 @@ public class CheckpathEditorWidget extends Composite {
 		currentObject.ancTextField.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 
-				final CheckDialogBox checkEditDialogBox = new CheckDialogBox(
-						currentObject.endpointID, currentObject.propertyID, "",
-						"", "", currentObject.text, currentObject.triggerValue,
-						currentObject.operator);
+				LinkedList<ActionObject> tempActions = new LinkedList<ActionObject>();
+				if (currentObject.actions.size() == 0){
+					tempActions = null;
+				} else
+				{
+					tempActions.addAll(currentObject.actions);
+				}
+				
 
+				
+				final CheckDialogBox checkEditDialogBox = new CheckDialogBox(
+							currentObject.endpointID, currentObject.propertyID, "",
+							"", "", currentObject.text, currentObject.triggerValue,
+							currentObject.operator, tempActions);
+				
+				
 				checkEditDialogBox.setModal(true);
 				checkEditDialogBox.setAutoHideEnabled(true);
 
@@ -1086,7 +1101,10 @@ public class CheckpathEditorWidget extends Composite {
 									currentObject
 											.setTriggerValue(checkEditDialogBox
 													.getTriggerValue());
+									currentObject.actions.clear();
+									currentObject.actions.addAll(checkEditDialogBox.getActions());
 									updatedChecks.add(currentObject);
+									
 									rebuildCheckpathDiagram();
 								}
 
@@ -1184,15 +1202,32 @@ public class CheckpathEditorWidget extends Composite {
 				LinkedList<ActionObject> tempActions = new LinkedList<ActionObject>();
 				tempActions.addAll(currentObject.actions);
 				
-				ActionObject newAction = new ActionObject("", "", dragAccordion.endpointName, dragAccordion.endpointID, dragAccordion.endpointClassID, dragAccordion.propertyName, dragAccordion.propertyID, 0, "", 0, 0, currentObject.endpointID);
+				ActionObject newAction = new ActionObject("", "", dragAccordion.endpointName, dragAccordion.endpointID, dragAccordion.endpointClassID, dragAccordion.propertyName, dragAccordion.propertyID, "", "", "", "", currentObject.endpointID);
 				tempActions.add(newAction);
 				
-				final ActionDialogBoxTabbed actionNewDialogBox = new ActionDialogBoxTabbed(tempActions, currentObject.text);
+				//final ActionDialogBoxTabbed actionNewDialogBox = new ActionDialogBoxTabbed(tempActions, currentObject.text);
 
+				final CheckDialogBox checkEditDialogBox = new CheckDialogBox(
+						currentObject.endpointID, currentObject.propertyID, "",
+						"", "", currentObject.text, currentObject.triggerValue,
+						currentObject.operator, tempActions);
+				
+				checkEditDialogBox.show();
+				Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+				    public void execute() {
+				    	checkEditDialogBox.center();
+				    }
+				});  
+								
+				
+				checkEditDialogBox.addStyleName("ontop");
+				
+				checkEditDialogBox.setActionsTabEnabled();
+				
 				//actionNewDialogBox.setModal(true);
 				//actionNewDialogBox.setAutoHideEnabled(true);
 
-				
+				/**
 				actionNewDialogBox.setAnimationEnabled(true);
 				
 				
@@ -1207,19 +1242,19 @@ public class CheckpathEditorWidget extends Composite {
 				
 				actionNewDialogBox.addStyleName("ontop");
 				// actionNewDialogBox.setParameters("", "", dragAccordion.endpointName, dragAccordion.endpointID, "dragAccordion.endpointClassID", dragAccordion.propertyName, dragAccordion.propertyID, 0, "", 0, 0, currentObject.endpointID);
-
+				 **/
 				currentObject.showActionIcon();
 				
 				
-				actionNewDialogBox
+				checkEditDialogBox
 				.addCloseHandler(new CloseHandler<PopupPanel>() {
 
 					public void onClose(CloseEvent event) {
 						
-						if (actionNewDialogBox.cancelFlag == true)
+						if (checkEditDialogBox.cancelFlag == true)
 						{
 								
-						} else if (actionNewDialogBox.deleteFlag == true)
+						} else if (checkEditDialogBox.deleteFlag == true)
 						{
 							
 						}
@@ -1228,8 +1263,8 @@ public class CheckpathEditorWidget extends Composite {
 							
 							
 							currentObject.actions.clear();
-							currentObject.actions.addAll(actionNewDialogBox.getActions());
-							System.out.println("ACT: " + currentObject.actions);
+							currentObject.actions.addAll(checkEditDialogBox.getActions());
+							System.out.println("ACT: " + currentObject.actions.getFirst().manualValue);
 						}							
 						
 					}
