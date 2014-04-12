@@ -150,7 +150,14 @@ public class CheckpathEditorWidget extends Composite {
 		container.setScrollMode(ScrollSupport.ScrollMode.AUTO);
 		container.setHeight((int) 400);
 		container.setWidth((int) ((RootPanel.get().getOffsetWidth()) / 1.74));
-		controller = new DiagramController(1200, (int) 375);
+		
+		int canvasWidthExpansion = 0;
+		if (checkHashSet.size() > 7){
+			canvasWidthExpansion = (checkHashSet.size()-7)*175;
+		}
+		controller = new DiagramController((int) (RootPanel.get().getOffsetWidth() / 1.74) + canvasWidthExpansion, (int) 375);
+		
+		
 		controller.showGrid(true); // Display a background grid
 		controller.setAllowingUserInteractions(false); // prevent user from
 														// dragging the lines
