@@ -23,6 +23,7 @@ import java.util.HashSet;
 
 
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Anchor;
@@ -40,6 +41,7 @@ public class CheckPathObjectData implements IsSerializable {
 	public HashSet<String> childChecks;
 	public String combination;
 	public String ruleID;
+	
 	
 	public Boolean isMulticheck;
 	
