@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.velisphere.tigerspice.client.images.Images;
+import com.velisphere.tigerspice.shared.ActionObject;
 
 public class SameLevelCheckpathObject extends VerticalLayoutContainer implements IsSerializable {
 
@@ -45,7 +46,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 	public String combination = "notSet";
 	public String ruleID;
 	public Boolean isMulticheck;
-	public IconAnchor actionIcon;
+	public Icon actionIcon;
 	public Image andIcon;
 	public Image orIcon;
 	public Icon sensorIcon;
@@ -93,7 +94,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		ancTextField.setHref("#");
 		this.add(ancTextField);
 		
-		actionIcon = new IconAnchor();
+		actionIcon = new Icon();
 		actionIcon.setIcon(IconType.GEARS);
 		actionIcon.getElement().setAttribute("style", "color:crimson;");
 		actionIcon.setTitle("There is at least one action triggered if this check is true");
@@ -111,10 +112,11 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		
 
 		
-		
+		/**
 		linkActionIcon = new Hyperlink();
 		linkActionIcon.getElement().appendChild(actionIcon.getElement());
 		this.add(linkActionIcon);
+		**/
 		
 		andIcon = new Image();
 		andIcon.setResource(Images.INSTANCE.and());

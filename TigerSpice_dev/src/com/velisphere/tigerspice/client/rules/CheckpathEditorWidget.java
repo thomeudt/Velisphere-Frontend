@@ -66,6 +66,7 @@ import com.velisphere.tigerspice.client.helper.DragobjectContainer;
 import com.velisphere.tigerspice.client.helper.UuidService;
 import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
 import com.velisphere.tigerspice.client.images.Images;
+import com.velisphere.tigerspice.shared.ActionObject;
 import com.velisphere.tigerspice.shared.CheckPathObjectColumn;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
 import com.velisphere.tigerspice.shared.CheckPathObjectTree;
@@ -540,9 +541,18 @@ public class CheckpathEditorWidget extends Composite {
 		}
 
 
+		LinkedList<ActionObject> tempActions = new LinkedList<ActionObject>();
+		if (currentCheck.actions.size() == 0){
+			tempActions = null;
+		} else
+		{
+			tempActions.addAll(currentCheck.actions);
+		}
+		
+
 		
 		final MulticheckDialogBox multicheckDialogBox = new MulticheckDialogBox(currentCheck.checkId,
-				currentCheck.text, currentCheck.combination, "1", allChecks, currentCheck.actions);
+				currentCheck.text, currentCheck.combination, "1", allChecks, tempActions);
 
 		multicheckDialogBox.setModal(true);
 
@@ -695,8 +705,6 @@ public class CheckpathEditorWidget extends Composite {
 									baseElement);
 
 							setCheckEditClickHandler(baseElement);
-							
-							setActionEditClickHandler(baseElement);
 							
 							checkHashSet.add(baseElement);
 
@@ -1139,6 +1147,7 @@ public class CheckpathEditorWidget extends Composite {
 
 	}
 
+	/**
 	private void setActionEditClickHandler(
 			final SameLevelCheckpathObject currentObject) {
 
@@ -1206,6 +1215,8 @@ public class CheckpathEditorWidget extends Composite {
 		});
 
 	}
+	
+	**/
 
 	private void addDndTargetForAction(
 			final SameLevelCheckpathObject currentObject) {

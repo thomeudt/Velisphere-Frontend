@@ -54,6 +54,7 @@ import com.velisphere.tigerspice.client.helper.CombinationConfig;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
+import com.velisphere.tigerspice.shared.ActionObject;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 
 public class MulticheckDialogBox extends PopupPanel {

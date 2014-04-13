@@ -48,6 +48,7 @@ import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.rules.ActionDialogBox.CheckEditorDialogBoxUiBinder;
+import com.velisphere.tigerspice.shared.ActionObject;
 import com.velisphere.tigerspice.shared.PropertyData;
 
 
