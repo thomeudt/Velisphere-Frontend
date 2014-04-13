@@ -226,6 +226,8 @@ public class CheckpathEditorWidget extends Composite {
 				multicheckColumns.add(newMulticheckList);
 				controller.addWidget(addNextColumnField,
 						10 + multicheckColumns.size() * 120, 250);
+				
+		
 
 			}
 
@@ -346,8 +348,15 @@ public class CheckpathEditorWidget extends Composite {
 				controller.addWidget(currentObject.orIcon,
 						10 + columnElement * 120, 250 - yposdelta - 17);
 			}
+			
+			// add action icon
+			
+			controller
+			.addWidget(currentObject.actionIcon, 93 + columnElement * 120, 250 - yposdelta - 19);
 
 			yposdelta = yposdelta + 70;
+			
+			addDndMulticheckTargetForAction(currentObject);
 
 			DropTarget target = new DropTarget(currentObject) {
 				@Override
@@ -370,7 +379,7 @@ public class CheckpathEditorWidget extends Composite {
 						currentObject.setEmpty(false);
 						multicheckColumns.get(columnElement).setEmpty(false);
 
-						final MulticheckDialogBox multicheckNewDialogBox = new MulticheckDialogBox();
+						final MulticheckDialogBox multicheckNewDialogBox = new MulticheckDialogBox(currentObject.checkId,	currentObject.text, currentObject.combination, "1", null, currentObject.actions);
 
 						multicheckNewDialogBox.setModal(true);
 						multicheckNewDialogBox.setAutoHideEnabled(true);
@@ -452,6 +461,7 @@ public class CheckpathEditorWidget extends Composite {
 								});
 
 						addDragSource(currentObject);
+						
 
 						multicheckColumns.get(columnElement).add(currentObject);
 						rebuildCheckpathDiagram();
@@ -477,6 +487,7 @@ public class CheckpathEditorWidget extends Composite {
 
 						updatedMultichecks.add(currentObject);
 						addDragSource(currentObject);
+						
 
 					}
 
@@ -512,18 +523,6 @@ public class CheckpathEditorWidget extends Composite {
 			final SameLevelCheckpathObject currentCheck,
 			final MulticheckColumn<SameLevelCheckpathObject> currentColumn) {
 
-		final MulticheckDialogBox multicheckDialogBox = new MulticheckDialogBox();
-
-		multicheckDialogBox.setModal(true);
-
-		multicheckDialogBox.setAutoHideEnabled(true);
-
-		multicheckDialogBox.setAnimationEnabled(true);
-
-		multicheckDialogBox.show();
-		multicheckDialogBox.addStyleName("ontop");
-		multicheckDialogBox.center();
-
 		HashMap<String, String> allChecks = new HashMap<String, String>();
 
 		Iterator<SameLevelCheckpathObject> it = currentCheck.childChecks
@@ -540,8 +539,22 @@ public class CheckpathEditorWidget extends Composite {
 			allChecks.put(multicheck.checkId, multicheck.text);
 		}
 
-		multicheckDialogBox.setParameters(currentCheck.checkId,
-				currentCheck.text, currentCheck.combination, "1", allChecks);
+
+		
+		final MulticheckDialogBox multicheckDialogBox = new MulticheckDialogBox(currentCheck.checkId,
+				currentCheck.text, currentCheck.combination, "1", allChecks, currentCheck.actions);
+
+		multicheckDialogBox.setModal(true);
+
+		multicheckDialogBox.setAutoHideEnabled(true);
+
+		multicheckDialogBox.setAnimationEnabled(true);
+
+		multicheckDialogBox.show();
+		multicheckDialogBox.addStyleName("ontop");
+		multicheckDialogBox.center();
+
+		//multicheckDialogBox.setParameters(currentCheck.checkId,	currentCheck.text, currentCheck.combination, "1", allChecks, currentCheck.actions);
 
 		multicheckDialogBox.addCloseHandler(new CloseHandler<PopupPanel>() {
 
@@ -727,6 +740,8 @@ public class CheckpathEditorWidget extends Composite {
 
 								// add dragability
 								addDragSource(newMulticheck);
+								
+								
 
 								// add clickhandler for opening editing box
 
@@ -997,7 +1012,7 @@ public class CheckpathEditorWidget extends Composite {
 						"unnamed check", "", "", null);
 
 				checkNewDialogBox.setModal(true);
-				checkNewDialogBox.setAutoHideEnabled(true);
+				//checkNewDialogBox.setAutoHideEnabled(true);
 
 				checkNewDialogBox.setAnimationEnabled(true);
 
@@ -1075,7 +1090,7 @@ public class CheckpathEditorWidget extends Composite {
 				
 				
 				checkEditDialogBox.setModal(true);
-				checkEditDialogBox.setAutoHideEnabled(true);
+				// checkEditDialogBox.setAutoHideEnabled(true);
 
 				checkEditDialogBox.setAnimationEnabled(true);
 
@@ -1173,6 +1188,8 @@ public class CheckpathEditorWidget extends Composite {
 							
 							currentObject.actions.clear();
 							currentObject.actions.addAll(actionEditDialogBox.getActions());
+							if (currentObject.actions.size() > 0) currentObject.showActionIcon();
+							else currentObject.hideActionIcon();
 							System.out.println("ACT: " + currentObject.actions);
 						}							
 						
@@ -1250,7 +1267,7 @@ public class CheckpathEditorWidget extends Composite {
 				actionNewDialogBox.addStyleName("ontop");
 				// actionNewDialogBox.setParameters("", "", dragAccordion.endpointName, dragAccordion.endpointID, "dragAccordion.endpointClassID", dragAccordion.propertyName, dragAccordion.propertyID, 0, "", 0, 0, currentObject.endpointID);
 				 **/
-				currentObject.showActionIcon();
+				
 				
 				
 				checkEditDialogBox
@@ -1271,6 +1288,7 @@ public class CheckpathEditorWidget extends Composite {
 							
 							currentObject.actions.clear();
 							currentObject.actions.addAll(checkEditDialogBox.getActions());
+							if (currentObject.actions.size() > 0) currentObject.showActionIcon();
 							System.out.println("ACT: " + currentObject.actions.getFirst().manualValue);
 						}							
 						
@@ -1288,6 +1306,108 @@ public class CheckpathEditorWidget extends Composite {
 
 	}
 
+	
+	private void addDndMulticheckTargetForAction(
+			final SameLevelCheckpathObject currentObject) {
+
+		// define dnd target for actions, but only if target field is not empty
+
+		DropTarget actionTarget = new DropTarget(currentObject) {
+			@Override
+			protected void onDragDrop(DndDropEvent event) {
+				super.onDragDrop(event);
+								
+				System.out.println("Dropped action!");
+				
+
+				final DragobjectContainer dragAccordion = (DragobjectContainer) event.getData();
+				
+							
+				LinkedList<ActionObject> tempActions = new LinkedList<ActionObject>();
+				tempActions.addAll(currentObject.actions);
+				
+				ActionObject newAction = new ActionObject("", "", dragAccordion.endpointName, dragAccordion.endpointID, dragAccordion.endpointClassID, dragAccordion.propertyName, dragAccordion.propertyID, "", "", "", "", currentObject.endpointID);
+				tempActions.add(newAction);
+				
+
+				HashMap<String, String> allChecks = new HashMap<String, String>();
+
+				Iterator<SameLevelCheckpathObject> it = currentObject.childChecks
+						.iterator();
+				while (it.hasNext()) {
+					SameLevelCheckpathObject check = it.next();
+					allChecks.put(check.checkId, check.text);
+				}
+
+				Iterator<SameLevelCheckpathObject> mit = currentObject.childMultichecks
+						.iterator();
+				while (mit.hasNext()) {
+					SameLevelCheckpathObject multicheck = mit.next();
+					allChecks.put(multicheck.checkId, multicheck.text);
+				}
+				
+				
+				final MulticheckDialogBox multicheckDialogBox = new MulticheckDialogBox(currentObject.checkId,
+						currentObject.text, currentObject.combination, "1", allChecks, tempActions);
+
+				multicheckDialogBox.setModal(true);
+
+				multicheckDialogBox.setAutoHideEnabled(true);
+
+				multicheckDialogBox.setAnimationEnabled(true);
+
+				multicheckDialogBox.show();
+				multicheckDialogBox.addStyleName("ontop");
+				Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+				    public void execute() {
+				    	multicheckDialogBox.center();
+				    }
+				});  
+
+				
+				multicheckDialogBox.setActionsTabEnabled();
+			
+
+				//multicheckDialogBox.setParameters(currentObject.checkId,currentObject.text, currentObject.combination, "1", allChecks, currentObject.actions);
+
+				multicheckDialogBox.addCloseHandler(new CloseHandler<PopupPanel>() {
+
+					public void onClose(CloseEvent event) {
+
+						if (multicheckDialogBox.deleteFlag == true) {
+							// do delete actions
+							deletedMultichecks.add(currentObject);
+							rebuildCheckpathDiagram();
+
+						} else if (multicheckDialogBox.cancelFlag == true) {
+							// do nothing
+
+						} else {
+							// do save update actions
+							currentObject.setText(multicheckDialogBox.multicheckTitle);
+							currentObject.combination = multicheckDialogBox.combination;
+							currentObject.actions.clear();
+							currentObject.actions.addAll(multicheckDialogBox.getActions());
+							if (currentObject.actions.size() > 0) currentObject.showActionIcon();
+							System.out.println("ACT: " + currentObject.actions.getFirst().manualValue);
+			
+							updatedMultichecks.add(currentObject);
+							rebuildCheckpathDiagram();
+						}
+
+					}
+
+				});
+			}
+
+		};
+		actionTarget.setGroup("actors");
+		actionTarget.setOverStyle("drag-ok");
+
+	}
+
+	
+	
 	private void showLoadAnimation(AnimationLoading animationLoading) {
 		RootPanel rootPanel = RootPanel.get("main");
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);

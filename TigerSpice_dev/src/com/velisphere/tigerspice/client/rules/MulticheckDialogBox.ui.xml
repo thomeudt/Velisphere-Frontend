@@ -18,11 +18,16 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:vsrl="urn:import:com.velisphere.tigerspice.client.rules">
 	<g:HTMLPanel>
 
       <b:WellForm styleName="wellsilver">
         <b:Legend ui:field="lgdHeader">Logic Check</b:Legend>
+        
+        	<b:TabPanel tabPosition="above" ui:field="tabPanel">
+				
+			     <b:TabPane heading="Logic" ui:field="tbpLogic" active="true">
         
             <b:Row>
             <b:Column size="2">
@@ -51,7 +56,16 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
             </b:Row>
            
             
-            
+            	</b:TabPane>
+	
+			     <b:TabPane heading="Actions" active="false" ui:field="tbpActions">
+        		
+			         <vsrl:ActionDialogBoxTabbed ui:field="wgtActionDialogBox"/>
+			         
+			     </b:TabPane>
+			     
+				
+			</b:TabPanel>
        
                  
             <b:Row>
