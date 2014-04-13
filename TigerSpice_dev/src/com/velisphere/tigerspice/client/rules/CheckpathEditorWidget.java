@@ -380,7 +380,16 @@ public class CheckpathEditorWidget extends Composite {
 						currentObject.setEmpty(false);
 						multicheckColumns.get(columnElement).setEmpty(false);
 
-						final MulticheckDialogBox multicheckNewDialogBox = new MulticheckDialogBox(currentObject.checkId,	currentObject.text, currentObject.combination, "1", null, currentObject.actions);
+						LinkedList<ActionObject> tempActions = new LinkedList<ActionObject>();
+						if (currentObject.actions.size() == 0){
+							tempActions = null;
+						} else
+						{
+							tempActions.addAll(currentObject.actions);
+						}
+						
+						
+						final MulticheckDialogBox multicheckNewDialogBox = new MulticheckDialogBox(currentObject.checkId,	currentObject.text, currentObject.combination, "1", null, tempActions);
 
 						multicheckNewDialogBox.setModal(true);
 						multicheckNewDialogBox.setAutoHideEnabled(true);

@@ -120,13 +120,16 @@ public class MulticheckDialogBox extends PopupPanel {
 		if (multicheckTitle != "") btnDelete.setVisible(true);
 		lstCombination.setSelectedValue(combination);
 		txtMulticheckTitle.setText(multicheckTitle);
-		Iterator<Entry<String, String>> it = linkedChecks.entrySet().iterator();
-		while (it.hasNext()){
-			Map.Entry<String, String> checkPair = (Map.Entry<String, String>)it.next();
-			lstLinkedChecksID.addItem(checkPair.getValue(), checkPair.getKey());
+		
+		if (linkedChecks != null){
+			Iterator<Entry<String, String>> it = linkedChecks.entrySet().iterator();
+			while (it.hasNext()){
+				Map.Entry<String, String> checkPair = (Map.Entry<String, String>)it.next();
+				lstLinkedChecksID.addItem(checkPair.getValue(), checkPair.getKey());
+			}
+			lstLinkedChecksID.setVisibleItemCount(5);
 		}
-		lstLinkedChecksID.setVisibleItemCount(5);
-
+		
 		
 		HashSet<String> combinations = new CombinationConfig().getCombinations();
 		Iterator<String> cit = combinations.iterator();
