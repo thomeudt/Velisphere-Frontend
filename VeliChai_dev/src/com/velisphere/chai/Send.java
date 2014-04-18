@@ -70,6 +70,7 @@ public class Send implements Runnable {
 		
 		mapper.writeValue(writer, messageMap);
 		
+		System.out.println("Target: " + targetQueueName);
 
 		channel.basicPublish("", targetQueueName, null,
 				writer.toString().getBytes());

@@ -155,7 +155,7 @@ public class CheckpathCreateView extends Composite {
 				while (checksIT.hasNext())
 				{
 					SameLevelCheckpathObject checkpathObject = checksIT.next();
-					rpcServiceCheck.addNewCheck(checkpathObject.checkId, checkpathObject.endpointID, checkpathObject.propertyID, checkpathObject.triggerValue, checkpathObject.operator, checkpathObject.text, checkPathId,
+					rpcServiceCheck.addNewCheck(checkpathObject.checkId, checkpathObject.endpointID, checkpathObject.propertyID, checkpathObject.triggerValue, checkpathObject.operator, checkpathObject.text, checkPathId, checkpathObject.actions,
 							new AsyncCallback<String>() {
 
 								@Override

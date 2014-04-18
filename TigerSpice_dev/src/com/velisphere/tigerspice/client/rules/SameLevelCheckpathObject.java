@@ -56,7 +56,6 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 	public String endpointID;
 	public String triggerValue; 
 	public String operator;
-	public RuleObject rule;
 	public LinkedList<ActionObject> actions;
 	
 	private SameLevelCheckpathObject(){}
@@ -73,7 +72,7 @@ public class SameLevelCheckpathObject extends VerticalLayoutContainer implements
 		this.childMultichecks = new HashSet<SameLevelCheckpathObject>();
 		this.childChecks = new HashSet<SameLevelCheckpathObject>();
 		this.actions = new LinkedList<ActionObject>();
-		this.rule = new RuleObject();
+
 		this.isMulticheck = false;
 		this.setCheckID(checkID);
 		this.getElement().setAttribute("style", "background-color:aliceblue;");

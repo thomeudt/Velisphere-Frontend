@@ -36,9 +36,11 @@ package com.velisphere.tigerspice.client.checks;
  ******************************************************************************/
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.velisphere.tigerspice.shared.ActionObject;
 import com.velisphere.tigerspice.shared.CheckData;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.EndpointData;
@@ -47,7 +49,7 @@ import com.velisphere.tigerspice.shared.UserData;
 
 public interface CheckServiceAsync {
 	void getChecksForEndpointID(String endpointID, AsyncCallback<Vector<CheckData>> callback);
-	void addNewCheck(String checkID, String endpointID, String propertyID, String checkValue, String operator, String name, String checkpathID, AsyncCallback<String> callback );
+	void addNewCheck(String checkID, String endpointID, String propertyID, String checkValue, String operator, String name, String checkpathID, LinkedList<ActionObject> actions, AsyncCallback<String> callback );
 	void updateCheck(String checkID, String name, String checkValue, String operator, AsyncCallback<String> callback );
 	void deleteCheck(String checkID, AsyncCallback<String> callback );
 	void getChecksForUserID(String userID, AsyncCallback<Vector<CheckData>> callback);

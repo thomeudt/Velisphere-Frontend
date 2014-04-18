@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -34,6 +35,7 @@ import org.voltdb.client.ProcCallException;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
+import com.velisphere.tigerspice.shared.ActionObject;
 import com.velisphere.tigerspice.shared.CheckData;
 import com.velisphere.tigerspice.shared.CheckPathData;
 import com.velisphere.tigerspice.shared.EndpointData;
@@ -118,9 +120,11 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 		return checksForEndpointID;
 	}
 	
-	public String addNewCheck(String checkID, String endpointID, String propertyID, String checkValue, String operator, String name, String checkpathID)
+	public String addNewCheck(String checkID, String endpointID, String propertyID, String checkValue, String operator, String name, String checkpathID, LinkedList<ActionObject> actions)
 
 	{
+		
+		
 		VoltConnector voltCon = new VoltConnector();
 
 		try {
@@ -138,6 +142,17 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 					checkID, endpointID, propertyID, checkValue, operator, 0, 0, name, checkpathID);
 			voltCon.montanaClient.callProcedure("CHECKSTATE.insert",
 					checkID, 0, checkpathID);
+			System.out.println("NEW ACTION: " + actions);
+			Iterator<ActionObject> it = actions.iterator();
+			while (it.hasNext()){
+				ActionObject action = it.next();
+				voltCon.montanaClient.callProcedure("ACTION.insert",
+						action.actionID, action.actionName, action.endpointID, "", 0, checkID, "", checkpathID);
+				voltCon.montanaClient.callProcedure("OUTBOUNDPROPERTYACTION.insert",
+						action.actionID, action.propertyID, action.propertyIdIndex, "", "", action.manualValue, action.actionID, checkpathID);
+			}
+			
+			
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

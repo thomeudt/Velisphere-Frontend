@@ -1,6 +1,8 @@
 package com.velisphere.tigerspice.shared;
 
-public class ActionObject {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class ActionObject  implements IsSerializable{
 
 	public String actionID;
 	public String sensorEndpointID;
@@ -15,6 +17,8 @@ public class ActionObject {
 	public String validValueIndex;
 	public String propertyIdIndex;
 	
+	public ActionObject() {
+	}
 	
 	public ActionObject(String actionID, String actionName, String endpointName, String endpointID, String endpointClassID, String propertyName, String propertyID, String settingSourceIndex, String manualValue, String validValueIndex, String propertyIdIndex, String sensorEndpointID){
 
