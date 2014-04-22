@@ -426,6 +426,69 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 	
 	}
 
+	@Override
+	public LinkedList<ActionObject> getActionsForCheckID(String checkID, String checkpathID) {
+
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		LinkedList<ActionObject> actions = new LinkedList<ActionObject>();
+		
+		try {
+
+			final ClientResponse findActions = voltCon.montanaClient
+					.callProcedure("UI_SelectActionsForCheckID", checkpathID, checkID);
+
+			final VoltTable findActionsResults[] = findActions.getResults();
+
+			VoltTable result = findActionsResults[0];
+			// check if any rows have been returned
+
+			
+			
+			
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+			
+					ActionObject action = new ActionObject();
+					action.actionID = result.getString("ACTIONID");
+					action.actionName = result.getString("ACTIONNAME");
+					action.endpointID = result.getString("TARGETENDPOINTID");
+					action.propertyID = result.getString("OUTBOUNDPROPERTYID");
+					action.propertyIdIndex = result.getString("INBOUNDPROPERTYID");
+					action.manualValue = result.getString("CUSTOMPAYLOAD");			
+					actions.add(action);
+				}
+			}
+
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return actions;
+
+	
+	
+	}
 	
 
 	

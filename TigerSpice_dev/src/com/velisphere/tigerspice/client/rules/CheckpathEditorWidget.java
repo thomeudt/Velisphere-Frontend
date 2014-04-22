@@ -700,7 +700,7 @@ public class CheckpathEditorWidget extends Composite {
 
 						while (bIT.hasNext()) {
 							CheckPathObjectData baseElementData = bIT.next();
-							SameLevelCheckpathObject baseElement = new SameLevelCheckpathObject(
+							final SameLevelCheckpathObject baseElement = new SameLevelCheckpathObject(
 									baseElementData.checkId,
 									baseElementData.text,
 									baseElementData.empty,
@@ -709,6 +709,31 @@ public class CheckpathEditorWidget extends Composite {
 							baseElement.propertyID = baseElementData.propertyID;
 							baseElement.operator = baseElementData.operator;
 							baseElement.endpointID = baseElementData.endpointID;
+							
+							rpcServiceCheck.getActionsForCheckID(baseElementData.checkId, checkpathId,
+									new AsyncCallback<LinkedList<ActionObject>>() {
+								
+								@Override
+								public void onFailure(Throwable caught) {
+									// TODO
+									// Auto-generated
+									// method
+									// stub
+									System.out.println("ERROR RETRIEVING ACTIONS FOR CHECK " + caught);
+
+								}
+
+								@Override
+								public void onSuccess(LinkedList<ActionObject> actions){
+									baseElement.actions = actions;
+									
+		
+									if (baseElement.actions.size() != 0) baseElement.showActionIcon();
+								}
+							});
+							
+							
+							
 
 							baseLayerMap.put(baseElementData.checkId,
 									baseElement);
