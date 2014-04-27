@@ -234,6 +234,8 @@ public class CheckEditorWidget extends Composite {
 																newCheckName,
 																currentItem.checkValue,
 																currentItem.operator,
+																null,
+																null,
 																new AsyncCallback<String>() {
 
 																	@Override
@@ -383,6 +385,8 @@ public class CheckEditorWidget extends Composite {
 																						currentItem.checkName,
 																						currentItem.checkValue,
 																						newCheckOperator,
+																						null,
+																						null,
 																						new AsyncCallback<String>() {
 
 																							@Override
@@ -491,6 +495,8 @@ public class CheckEditorWidget extends Composite {
 																						currentItem.checkName,
 																						newTriggerValue,
 																						currentItem.operator,
+																						null,
+																						null,
 																						new AsyncCallback<String>() {
 
 																							@Override

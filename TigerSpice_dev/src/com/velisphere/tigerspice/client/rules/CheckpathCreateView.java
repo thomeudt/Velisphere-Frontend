@@ -27,6 +27,7 @@ import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -66,6 +67,7 @@ public class CheckpathCreateView extends Composite {
 
 	private CheckPathServiceAsync rpcServiceCheckPath;
 	private CheckServiceAsync rpcServiceCheck;
+	private String checkPathId;
 	
 	private static CheckpathCreateViewUiBinder uiBinder = GWT
 			.create(CheckpathCreateViewUiBinder.class);
@@ -144,7 +146,7 @@ public class CheckpathCreateView extends Composite {
 			public void onSuccess(String result) {
 				// TODO Auto-generated method stub
 
-				final String checkPathId = result;
+				checkPathId = result;
 
 				// first, create all checks
 						
@@ -485,6 +487,23 @@ public class CheckpathCreateView extends Composite {
 												System.out
 														.println("JSON SAVED SUCCESSFULLY: "
 																+ result);
+												
+												
+												// open edit view 
+												final RootPanel mainPanel = RootPanel.get("main");
+												mainPanel.clear();
+												final CheckpathEditView checkpathEditView = new CheckpathEditView(checkPathId);
+												
+												Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+												    public void execute() {
+												    	mainPanel.add(checkpathEditView);
+												    }
+												});  
+
+												
+												
+												
+												
 
 												// Just validating that it
 												// works, delete later
@@ -574,14 +593,6 @@ public class CheckpathCreateView extends Composite {
 
 		});
 		
-		
-		// return to checkpath list
-		RootPanel mainPanel = RootPanel.get("main");
-		mainPanel.clear();
-		CheckpathList checkpathList = new CheckpathList();
-		mainPanel.add(checkpathList);
-
-
 	}
 
 	private void showLoadAnimation(AnimationLoading animationLoading) {

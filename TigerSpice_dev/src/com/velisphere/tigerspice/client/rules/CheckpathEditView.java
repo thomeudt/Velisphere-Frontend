@@ -281,7 +281,7 @@ public class CheckpathEditView extends Composite {
 
 							// write multicheck to database
 							
-								// deleted as we are updating here, this will be handled seperately
+							// deleted as we are updating here, this will be handled seperately
 
 							Iterator<SameLevelCheckpathObject> mccIt = checkpathObject.childChecks
 									.iterator();
@@ -422,7 +422,8 @@ public class CheckpathEditView extends Composite {
 				while (updatedChecksIt.hasNext())
 				{
 					SameLevelCheckpathObject checkpathObject = updatedChecksIt.next();
-					rpcServiceCheck.updateCheck(checkpathObject.checkId, checkpathObject.text, checkpathObject.triggerValue, checkpathObject.operator,
+					
+					rpcServiceCheck.updateCheck(checkpathObject.checkId, checkpathObject.text, checkpathObject.triggerValue, checkpathObject.operator, checkpathID, checkpathObject.actions,
 							new AsyncCallback<String>() {
 
 								@Override
@@ -919,6 +920,8 @@ public class CheckpathEditView extends Composite {
 				while(deletedChecksIT.hasNext()){
 					SameLevelCheckpathObject checkpathObject = deletedChecksIT.next();
 
+					
+					// delete checks
 					rpcServiceCheck.deleteCheck(
 							checkpathObject.checkId,
 							new AsyncCallback<String>() {
@@ -944,6 +947,36 @@ public class CheckpathEditView extends Composite {
 									
 								}
 							});
+
+					
+					// delete associated actions
+					
+					rpcServiceCheck.deleteAllActionsForCheckId(
+							checkpathObject.checkId,
+							new AsyncCallback<String>() {
+
+								@Override
+								public void onFailure(Throwable caught) {
+									// TODO Auto-generated method stub
+									
+									System.out
+											.println("ERROR deleting actions for check: "
+													+ caught);
+								}
+
+								@Override
+								public void onSuccess(String result) {
+									// TODO Auto-generated method stub
+									System.out
+									.println("Success deleting actions for check: "
+											+ result);
+									txtSaveStatus
+									.setText("Logic design saved successfully.");
+
+									
+								}
+							});
+
 					
 				}
 				
@@ -965,6 +998,9 @@ public class CheckpathEditView extends Composite {
 				wgtCheckpathEditor.resetNewMultichecks();
 				wgtCheckpathEditor.resetUpdatedMultichecks();
 				wgtCheckpathEditor.resetDeletedMultichecks();
+				wgtCheckpathEditor.resetNewChecks();
+				wgtCheckpathEditor.resetUpdatedChecks();
+				wgtCheckpathEditor.resetDeletedChecks();
 
 				
 				

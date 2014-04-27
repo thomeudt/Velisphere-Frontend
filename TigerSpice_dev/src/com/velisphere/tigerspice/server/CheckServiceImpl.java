@@ -142,7 +142,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 					checkID, endpointID, propertyID, checkValue, operator, 0, 0, name, checkpathID);
 			voltCon.montanaClient.callProcedure("CHECKSTATE.insert",
 					checkID, 0, checkpathID);
-			System.out.println("NEW ACTION: " + actions);
+			System.out.println("Adding Actions: " + actions);
 			Iterator<ActionObject> it = actions.iterator();
 			while (it.hasNext()){
 				ActionObject action = it.next();
@@ -175,7 +175,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 
 	}
 
-	public String updateCheck(String checkID, String name, String checkValue, String operator)
+	public String updateCheck(String checkID, String name, String checkValue, String operator,  String checkpathID, LinkedList<ActionObject> actions)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -204,13 +204,40 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 			e1.printStackTrace();
 		}
 
-		try {
-			voltCon.closeDatabase();
-		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		
+		
+		
+		
+		System.out.println("Adding Actions: " + actions);
+		Iterator<ActionObject> it = actions.iterator();
+		while (it.hasNext()){
+			ActionObject action = it.next();
+			try {
+				/**
+				voltCon.montanaClient.callProcedure("ACTION.insert",
+						action.actionID, action.actionName, action.endpointID, "", 0, checkID, "", checkpathID);
+				voltCon.montanaClient.callProcedure("OUTBOUNDPROPERTYACTION.insert",
+						action.actionID, action.propertyID, action.propertyIdIndex, "", "", action.manualValue, action.actionID, checkpathID);
+						**/
+				voltCon.montanaClient.callProcedure("UI_UpsertActionsForCheckID",
+						action.actionID, action.actionName, action.endpointID, checkID, checkpathID, action.propertyID, action.propertyIdIndex,action.manualValue);
+			
+				
+			} catch (IOException | ProcCallException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			}
+		
+		
+		
+			try {
+				voltCon.closeDatabase();
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
 		return "OK";
 
 	}
@@ -490,6 +517,46 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 	
 	}
 	
+
+	public String deleteAllActionsForCheckId(String checkID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			voltCon.montanaClient.callProcedure("UI_DeleteAllActionsForCheckID",
+					checkID);
+		} catch (NoConnectionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProcCallException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "OK";
+
+	}
 
 	
 }

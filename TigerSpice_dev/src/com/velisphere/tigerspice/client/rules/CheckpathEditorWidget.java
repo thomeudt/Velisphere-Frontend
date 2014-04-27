@@ -582,6 +582,8 @@ public class CheckpathEditorWidget extends Composite {
 				if (multicheckDialogBox.deleteFlag == true) {
 					// do delete actions
 					deletedMultichecks.add(currentCheck);
+					if (newMultichecks.contains(currentCheck)) newMultichecks.remove(currentCheck);
+					if (updatedMultichecks.contains(currentCheck)) updatedMultichecks.remove(currentCheck);
 					currentColumn.remove(currentCheck);
 					rebuildCheckpathDiagram();
 
@@ -593,7 +595,10 @@ public class CheckpathEditorWidget extends Composite {
 					currentCheck.setText(multicheckDialogBox.multicheckTitle);
 					currentCheck.combination = multicheckDialogBox.combination;
 
-					updatedMultichecks.add(currentCheck);
+					
+					if (deletedMultichecks.contains(currentCheck)) deletedMultichecks.remove(currentCheck);
+
+					if (newMultichecks.contains(currentCheck) == false)	updatedMultichecks.add(currentCheck);
 					rebuildCheckpathDiagram();
 				}
 
@@ -1148,6 +1153,8 @@ public class CheckpathEditorWidget extends Composite {
 
 								if (checkEditDialogBox.deleteFlag == true) {
 									// do delete actions
+									if (newChecks.contains(currentObject)) newChecks.remove(currentObject);
+									if (updatedChecks.contains(currentObject)) updatedChecks.remove(currentObject);
 									deletedChecks.add(currentObject);
 									checkHashSet.remove(currentObject);
 									rebuildCheckpathDiagram();
@@ -1167,7 +1174,10 @@ public class CheckpathEditorWidget extends Composite {
 													.getTriggerValue());
 									currentObject.actions.clear();
 									currentObject.actions.addAll(checkEditDialogBox.getActions());
-									updatedChecks.add(currentObject);
+									
+									if (deletedChecks.contains(currentObject)) deletedChecks.remove(currentObject);
+									
+									if (newChecks.contains(currentObject) == false) updatedChecks.add(currentObject);
 									
 									rebuildCheckpathDiagram();
 								}
@@ -1488,6 +1498,10 @@ public class CheckpathEditorWidget extends Composite {
 		return this.deletedChecks;
 	}
 
+	public String getCheckpathID() {
+		return this.checkpathID;
+	}
+
 	public void resetUpdatedMultichecks() {
 		this.updatedMultichecks.clear();
 	}
@@ -1500,4 +1514,17 @@ public class CheckpathEditorWidget extends Composite {
 		this.deletedMultichecks.clear();
 	}
 
+	public void resetUpdatedChecks() {
+		this.updatedChecks.clear();
+	}
+
+	public void resetNewChecks() {
+		this.newChecks.clear();
+	}
+
+	public void resetDeletedChecks() {
+		this.deletedChecks.clear();
+	}
+
+	
 }
