@@ -3603,7 +3603,7 @@ input[type="submit"].btn.btn-mini {
   *z-index: 2;
 }
 .navbar-inner {
-  min-height: 30px;
+  min-height: 35px;
   padding-left: 20px;
   padding-right: 20px;
   background-color: #364d74;
@@ -3654,7 +3654,7 @@ input[type="submit"].btn.btn-mini {
 }
 .navbar-text {
   margin-bottom: 0;
-  line-height: 30px;
+  line-height: 35px;
   color: #ffffff;
 }
 .navbar-link {
@@ -3664,7 +3664,7 @@ input[type="submit"].btn.btn-mini {
   color: #ffffff;
 }
 .navbar .divider-vertical {
-  height: 30px;
+  height: 35px;
   margin: 0 9px;
   border-left: 1px solid #31466a;
   border-right: 1px solid #39527b;
@@ -3793,7 +3793,7 @@ input[type="submit"].btn.btn-mini {
   left: 0;
   display: block;
   float: left;
-  margin: 0 10px 0 0;
+  margin: 0px 10px 0 0;
 }
 .navbar .nav.pull-right {
   float: right;

@@ -17,9 +17,14 @@
 
 
 		<b:WellForm styleName="wellsilver">
-			<b:Legend ui:field="lgdLegend">Sensor Check</b:Legend>
+			<b:Row>
+			<b:Column size="6">
+			<b:Legend ui:field="lgdLegend" styleName="span6">Sensor Check</b:Legend>
+			</b:Column>
+			</b:Row>
 
-
+			<b:Row>
+			<b:Column size="6">
 			<b:TabPanel tabPosition="above" ui:field="tabPanel">
 				
 			     <b:TabPane heading="Sensor" ui:field="tbpSensor" active="true">
@@ -30,7 +35,7 @@
 							<b:Column size="2">
 								<b:Paragraph  text="Endpoint Name" />
 							</b:Column>
-							<b:Column size="2">
+							<b:Column size="4">
 								<b:Paragraph ui:field="txtEndpointName"
 									 text="..." />
 							</b:Column>
@@ -40,8 +45,8 @@
 							<b:Column size="2">
 								<b:Paragraph  text="Property to be checked" />
 							</b:Column>
-							<b:Column size="2">
-								<b:ListBox styleName="span2" ui:field="lstPropertyID" />
+							<b:Column size="4">
+								<b:ListBox styleName="span4" ui:field="lstPropertyID" />
 							</b:Column>
 						</b:Row>
 
@@ -50,8 +55,8 @@
 							<b:Column size="2">
 								<b:Paragraph  text="Title or Description" />
 							</b:Column>
-							<b:Column size="2">
-								<b:TextBox styleName="span2" ui:field="txtCheckTitle" />
+							<b:Column size="4">
+								<b:TextBox styleName="span4" ui:field="txtCheckTitle" />
 							</b:Column>
 						</b:Row>
 
@@ -59,8 +64,8 @@
 							<b:Column size="2">
 								<b:Paragraph  text="Operator" />
 							</b:Column>
-							<b:Column size="2">
-								<b:ListBox styleName="span2" ui:field="lstOperator" />
+							<b:Column size="4">
+								<b:ListBox styleName="span4" ui:field="lstOperator" />
 							</b:Column>
 						</b:Row>
 
@@ -69,8 +74,8 @@
 							<b:Column size="2">
 								<b:Paragraph text="Trigger Value" />
 							</b:Column>
-							<b:Column size="2">
-								<b:TextBox styleName="span2" ui:field="txtTriggerValue" />
+							<b:Column size="4">
+								<b:TextBox styleName="span4" ui:field="txtTriggerValue" />
 							</b:Column>
 						</b:Row>
 
@@ -80,6 +85,7 @@
 
 
 		</b:TabPane>
+		
 	
 			     <b:TabPane heading="Actions" active="false" ui:field="tbpActions">
         		
@@ -89,6 +95,8 @@
 			     
 				
 			</b:TabPanel>
+			</b:Column>
+			</b:Row>
 
 <b:Row>
 							<b:Column size="1">

@@ -53,6 +53,7 @@ public class HeroUnitLogin extends Composite implements HasText {
 		loginDialogBox.setAutoHideEnabled(true);
 		loginDialogBox.setPopupPosition((int) ((RootPanel.get().getOffsetWidth())/2.5), (RootPanel.get().getOffsetHeight())/5);
 		loginDialogBox.show();
+		loginDialogBox.addStyleName("ontop");
 		
 		// loginDialogBox.setVisible(false);
 		

@@ -95,6 +95,8 @@ public class Login implements EntryPoint {
 		
 		
 		// the following is just a temp work around for damn IE
+		
+		/**
 		int rootPanelWidth = RootPanel.get().getOffsetWidth();
 		
 		if (rootPanelWidth < 740) {
@@ -102,15 +104,15 @@ public class Login implements EntryPoint {
 		}else rootPanelWidth = (rootPanelWidth * 33) / 100;
 		
 		String rootPanelWidthPx = rootPanelWidth + "px"; 
-		
-		SplashCarouselWidget splashCarouselWidget = new SplashCarouselWidget();
-		splashCarouselWidget.setWidth("550px");
-		mainPanel.add(splashCarouselWidget);
+		**/
+		//SplashCarouselWidget splashCarouselWidget = new SplashCarouselWidget();
+		//splashCarouselWidget.setWidth("550px");
+		//mainPanel.add(splashCarouselWidget);
 		
 			
 		HeroUnitLogin heroUnitLogin = new HeroUnitLogin();
-		heroUnitLogin.setWidth("550px");
-		heroUnitLogin.setHeight("450px");
+		//heroUnitLogin.setWidth("550px");
+		//heroUnitLogin.setHeight("450px");
 		mainPanel.add(heroUnitLogin);
 
 	}

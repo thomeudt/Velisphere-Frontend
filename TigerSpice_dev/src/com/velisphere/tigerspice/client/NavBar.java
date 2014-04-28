@@ -82,10 +82,11 @@ public class NavBar extends Composite implements HasText {
 		navbar = new ResponsiveNavbar();
 		initWidget(uiBinder.createAndBindUi(this));
 		navbar.setPosition(NavbarPosition.TOP);
-		navbar.setWidth(RootPanel.get("main").getElement().getStyle().getWidth());
+		//navbar.setWidth(RootPanel.get("main").getElement().getStyle().getWidth());
 		
 
 		btnAdmin.setVisible(false);
+	
    	 btnLogout.setVisible(false);
    	 btnAccount.setVisible(false);
    	 btnSearch.setVisible(false);
@@ -95,6 +96,7 @@ public class NavBar extends Composite implements HasText {
    	 btnHome.setVisible(false);
    	 dpdAccount.setVisible(false);
    	 txtUserName.setText("");
+   	 
 	    //checkWithServerIfSessionIdIsStillLegal();
 		   
 		

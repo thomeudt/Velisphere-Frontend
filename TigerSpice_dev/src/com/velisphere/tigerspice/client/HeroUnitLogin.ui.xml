@@ -23,26 +23,30 @@
 			font-weight: bold;
 		}
 	</ui:style>
+	
 	<g:HTMLPanel>
-				<div class="hero-unit" style="height: 330px">
-				<h1>
-					Smart Internet of Things.
-				</h1>
-				<p>
-					&nbsp;
-				</p>
-				
-				<p>
-					Interactive, fast, and secure with VeliSphere.
-				</p>
-				<p>
-					&nbsp;
-				</p>
-				
-				<p>
-					<g:Button styleName="btn btn-primary btn-large" text="Login »" ui:field="btnLogin" />
-				</p>
-			</div>
+	
+	    <div class="container">
+                        <img class="pull-right" src="images/sample/slider/img4.png" alt="" />
+                        <h1>VeliSphere 0.7</h1>
+                        <h2>Gateway to the Internet of Things</h2>
+                        <p><br></br>VeliSphere offers holistic device management, automation, and predictive maintenance 
+                            for the internet of things, based on an open technology stack.
+                        </p>
+                        
+                        <p><br></br>If you're already registered with VeliSphere, please click on the login button below. <br></br> 
+                            New users can test drive VeliSphere using our demo account or sign up here.
+                        </p>
+                        
+                        <br></br><br></br>
+                    <g:Button styleName="btn btn-primary btn-large" text="Login »" ui:field="btnLogin" />
+                    
+                    </div>
 
-	</g:HTMLPanel>
+					
+    
+	
+	</g:HTMLPanel>  	
+
+		
 </ui:UiBinder> 

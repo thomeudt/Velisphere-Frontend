@@ -33,6 +33,8 @@
          
      <b:ResponsiveNavbar ui:field="navbar">
          
+         <g:HorizontalPanel addStyleNames="container">
+         
          <b:Brand href="#" ui:field="brdHome"><img alt="" src="./images/logo_alpha.png" /></b:Brand>
     
          <b:Nav>
@@ -54,6 +56,7 @@
              </b:Dropdown>
              <b:NavText ui:field="txtUserName">Not Logged In</b:NavText>
          </b:Nav>
+         </g:HorizontalPanel>
        
      </b:ResponsiveNavbar>
           

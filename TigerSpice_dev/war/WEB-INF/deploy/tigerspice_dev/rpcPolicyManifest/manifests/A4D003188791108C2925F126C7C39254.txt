@@ -1,2 +1,0 @@
-serviceClass: com.velisphere.tigerspice.client.checks.CheckService
-path: DA6E27B5C31413A1BDEA2C89ED564317.gwt.rpc
