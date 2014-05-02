@@ -18,13 +18,13 @@
 
 		<b:WellForm styleName="wellsilver">
 			<b:Row>
-			<b:Column size="6">
-			<b:Legend ui:field="lgdLegend" styleName="span6">Sensor Check</b:Legend>
+			<b:Column size="7">
+			<b:Legend ui:field="lgdLegend" styleName="span5">Sensor Check</b:Legend>
 			</b:Column>
 			</b:Row>
 
 			<b:Row>
-			<b:Column size="6">
+			<b:Column size="7">
 			<b:TabPanel tabPosition="above" ui:field="tabPanel">
 				
 			     <b:TabPane heading="Sensor" ui:field="tbpSensor" active="true">

@@ -493,7 +493,11 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 					action.endpointID = result.getString("TARGETENDPOINTID");
 					action.propertyID = result.getString("OUTBOUNDPROPERTYID");
 					action.propertyIdIndex = result.getString("INBOUNDPROPERTYID");
-					action.manualValue = result.getString("CUSTOMPAYLOAD");			
+					action.manualValue = result.getString("CUSTOMPAYLOAD");	
+					System.out.println("Inboundlentgh = " + result.getString("INBOUNDPROPERTYID").length());
+					action.settingSourceIndex = "Manual entry"; // this is the default
+					if (result.getString("INBOUNDPROPERTYID").length() > 0) action.settingSourceIndex = "Incoming value from sensor device";
+					
 					actions.add(action);
 				}
 			}

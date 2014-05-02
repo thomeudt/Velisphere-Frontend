@@ -231,7 +231,31 @@ public class CheckpathEditView extends Composite {
 	void saveCheckpath(ClickEvent event) {
 		final AnimationLoading loading = new AnimationLoading();
 		
-		txtSaveStatus.setText("No Changes.");
+		// check if anything has been changed at all!
+		
+		List<SameLevelCheckpathObject> updatedMultichecks = wgtCheckpathEditor.getUpdatedMultichecks();
+		List<SameLevelCheckpathObject> newMultichecks = wgtCheckpathEditor.getNewMultichecks();
+		List<SameLevelCheckpathObject> newChecks = wgtCheckpathEditor.getNewChecks();
+		List<SameLevelCheckpathObject> updatedChecks = wgtCheckpathEditor.getUpdatedChecks();
+		updatedMultichecks.removeAll(newMultichecks); // remove duplicates if a new multicheck has been updated before saving
+		Iterator<SameLevelCheckpathObject> updatedMultichecksIt = updatedMultichecks.iterator();
+		Iterator<SameLevelCheckpathObject> newMultichecksIt = newMultichecks.iterator();
+		Iterator<SameLevelCheckpathObject> newChecksIt = newChecks.iterator();
+		Iterator<SameLevelCheckpathObject> updatedChecksIt = updatedChecks.iterator();
+		System.out.println("###########NEW MULTICHECKS: " + newMultichecks);
+		System.out.println("###########UPDATED MULTICHECKS: " + updatedMultichecks);
+		System.out.println("###########NEW CHECKS: " + newChecks);
+		System.out.println("###########UPDATED CHECKS: " + updatedChecks);
+		
+		if (newMultichecks.isEmpty() && updatedMultichecks.isEmpty() && newChecks.isEmpty() && updatedChecks.isEmpty())
+		{
+			txtSaveStatus.setText("No changes, nothing written to the database.");	
+		}
+		else
+		{
+			txtSaveStatus.setText("Writing changes to database...");
+		
+		
 		
 		// getting current checkpath ID and adding to final variable checkpathIDUpdate
 		
@@ -360,19 +384,7 @@ public class CheckpathEditView extends Composite {
 				// write to database
 				
 				
-				List<SameLevelCheckpathObject> updatedMultichecks = wgtCheckpathEditor.getUpdatedMultichecks();
-				List<SameLevelCheckpathObject> newMultichecks = wgtCheckpathEditor.getNewMultichecks();
-				List<SameLevelCheckpathObject> newChecks = wgtCheckpathEditor.getNewChecks();
-				List<SameLevelCheckpathObject> updatedChecks = wgtCheckpathEditor.getUpdatedChecks();
-				updatedMultichecks.removeAll(newMultichecks); // remove duplicates if a new multicheck has been updated before saving
-				Iterator<SameLevelCheckpathObject> updatedMultichecksIt = updatedMultichecks.iterator();
-				Iterator<SameLevelCheckpathObject> newMultichecksIt = newMultichecks.iterator();
-				Iterator<SameLevelCheckpathObject> newChecksIt = newChecks.iterator();
-				Iterator<SameLevelCheckpathObject> updatedChecksIt = updatedChecks.iterator();
-				System.out.println("###########NEW MULTICHECKS: " + newMultichecks);
-				System.out.println("###########UPDATED MULTICHECKS: " + updatedMultichecks);
-				System.out.println("###########NEW CHECKS: " + newChecks);
-				System.out.println("###########UPDATED CHECKS: " + updatedChecks);
+		
 				
 				// run the new checks first
 				
@@ -1003,7 +1015,7 @@ public class CheckpathEditView extends Composite {
 				wgtCheckpathEditor.resetDeletedChecks();
 
 				
-				
+		}		
 	}
 
 	private void createCheckpathJSON(CheckPathObjectTree allColumnsObject, final String checkPathIdUpdate){

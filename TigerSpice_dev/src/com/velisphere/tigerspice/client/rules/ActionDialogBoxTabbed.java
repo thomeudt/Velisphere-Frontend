@@ -41,6 +41,8 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.endpoints.EndpointService;
+import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.helper.ActionSourceConfig;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.UuidService;
@@ -50,6 +52,7 @@ import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.rules.ActionDialogBox.CheckEditorDialogBoxUiBinder;
 import com.velisphere.tigerspice.shared.ActionObject;
 import com.velisphere.tigerspice.shared.PropertyData;
+import com.velisphere.tigerspice.shared.EndpointData;
 
 
 public class ActionDialogBoxTabbed extends PopupPanel {
@@ -60,16 +63,20 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 	public Boolean deleteFlag = false;
 	private LinkedList<ActionObject> actions;
 	private UuidServiceAsync rpcServiceUuid;
+	private EndpointServiceAsync rpcServiceEndpoint;
 	private String checkName;
 	private PropertyServiceAsync rpcServiceProperty;
 	private AnimationLoading animationLoading = new AnimationLoading();
     private TabPanel advanced;
-	  
+
+    
 
 	  public ActionDialogBoxTabbed(LinkedList<ActionObject> actions, String checkName){
 		 
 		
-			rpcServiceUuid = GWT.create(UuidService.class); 
+  			 rpcServiceUuid = GWT.create(UuidService.class); 
+  			 rpcServiceEndpoint = GWT.create(EndpointService.class);
+  			 rpcServiceProperty = GWT.create(PropertyService.class);
 			 this.actions = actions;
 			 this.checkName = checkName;
 			 this.setWidget(tabWidget());	
@@ -82,7 +89,7 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 	 
 	  public Widget tabWidget() {
 
-   		rpcServiceProperty = GWT.create(PropertyService.class);
+   		
 
    		
    	    //Well well = new Well();
@@ -162,14 +169,10 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 	  }
 	 
 	  
-	 
-	  
+	   
 	  
 	  
 	  private void addTab(final ActionObject action) {
-
-		 // check if this is a new rule
-		  		  
 
 		Row row0 = new Row(); 
 		Row row1 = new Row();
@@ -249,32 +252,7 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 		row6.add(column6B);
 
 	    
-		
-		if(action.actionID == ""){
-			 action.actionName = "Unnamed Action";
-			 rpcServiceUuid
-				.getUuid(new AsyncCallback<String>() {
-
-					@Override
-					public void onFailure(
-
-						Throwable caught) {
-						// TODO Auto-generated
-						// method stub
-
-					}
-
-					@Override
-					public void onSuccess(
-							String result) {
-
-						action.actionID = result;
-					}
-
-				});
-
-		 }
-		 
+		 		 
 		  
 		  
 		 final Tab tab = new Tab();
@@ -360,12 +338,85 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 
 		txtManualValue.setVisible(false);
 		lstSensorValue.setVisible(true);
-		populateSensePropertiesDropDown(lstSensorValue, action.sensorEndpointID);
+		populateSensePropertiesDropDown(lstSensorValue, action);
 		lstValidValues.setVisible(false);
 		txtTargetEndpointName.setEnabled(false);
 		txtTargetPropertyName.setEnabled(false);
 		
 	
+		// check if this is a new rule, if so, give it a new action ID
+		
+				if(action.actionID == ""){
+					 action.actionName = "Unnamed Action";
+					 rpcServiceUuid
+						.getUuid(new AsyncCallback<String>() {
+
+							@Override
+							public void onFailure(
+
+								Throwable caught) {
+								// TODO Auto-generated
+								// method stub
+
+							}
+
+							@Override
+							public void onSuccess(
+									String result) {
+
+								action.actionID = result;
+							}
+
+						});
+
+				 } else
+				 { 
+					 //if not new, set the action source index accordingly
+					 
+					 lstSettingSource.setSelectedValue(action.settingSourceIndex);
+					 
+					//also then get the name of the target endpoint
+					 rpcServiceEndpoint.getEndpointForEndpointID(action.endpointID, new AsyncCallback<EndpointData>(){
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void onSuccess(EndpointData result) {
+							// TODO Auto-generated method stub
+							txtTargetEndpointName.setText(result.endpointName);
+							
+						}
+						
+					 });
+					 
+					//also then get the name of the target property
+					 
+					 rpcServiceProperty.getPropertyName(action.propertyID, new AsyncCallback<String>(){
+
+							@Override
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							@Override
+							public void onSuccess(String result) {
+								
+								txtTargetPropertyName.setText(result);
+								
+							}
+							
+						 });
+					 
+					 
+				 }
+
+		
+		
 		// change handler to update source of value options
 		
 		lstSettingSource.addChangeHandler(new ChangeHandler() {
@@ -453,7 +504,7 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 			TextBox PropName = (TextBox) advanced.getWidget(5);
 			PropName.setText(propertyName);
 			this.sensorEndpointID = sensorEndpointID;
-			populateSensePropertiesDropDown(sensorEndpointID);
+			SensePropertiesDropDown(sensorEndpointID);
 			
 			**/
 			
@@ -469,10 +520,10 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 		}
 
 
-		private void populateSensePropertiesDropDown(final ListBox lstSensorValue, final String endpointID){
+		private void populateSensePropertiesDropDown(final ListBox lstSensorValue, final ActionObject action){
 
 			
-			rpcServiceProperty.getSensorPropertiesForEndpointID(endpointID, new AsyncCallback<LinkedList<PropertyData>>(){
+			rpcServiceProperty.getSensorPropertiesForEndpointID(action.sensorEndpointID, new AsyncCallback<LinkedList<PropertyData>>(){
 
 				@Override
 				public void onFailure(Throwable caught) {
@@ -491,6 +542,8 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 						PropertyData sensorProperty = new PropertyData();
 						sensorProperty = it.next();												
 						lstSensorValue.addItem(sensorProperty.propertyName, sensorProperty.propertyId);
+						lstSensorValue.setSelectedValue(action.propertyIdIndex);
+						
 										
 					}
 									

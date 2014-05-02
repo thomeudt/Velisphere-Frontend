@@ -731,6 +731,10 @@ public class CheckpathEditorWidget extends Composite {
 								@Override
 								public void onSuccess(LinkedList<ActionObject> actions){
 									baseElement.actions = actions;
+									Iterator<ActionObject> it = actions.iterator();
+									while(it.hasNext()){
+										it.next().sensorEndpointID = baseElement.endpointID;
+									}
 									
 		
 									if (baseElement.actions.size() != 0) baseElement.showActionIcon();
