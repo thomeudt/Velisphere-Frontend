@@ -247,7 +247,8 @@ public class CheckpathEditView extends Composite {
 		System.out.println("###########NEW CHECKS: " + newChecks);
 		System.out.println("###########UPDATED CHECKS: " + updatedChecks);
 		
-		if (newMultichecks.isEmpty() && updatedMultichecks.isEmpty() && newChecks.isEmpty() && updatedChecks.isEmpty())
+		if (newMultichecks.isEmpty() && updatedMultichecks.isEmpty() && newChecks.isEmpty() && updatedChecks.isEmpty() && wgtCheckpathEditor.getDeletedMultichecks().isEmpty()
+				&& wgtCheckpathEditor.getDeletedChecks().isEmpty())
 		{
 			txtSaveStatus.setText("No changes, nothing written to the database.");	
 		}

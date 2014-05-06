@@ -377,6 +377,7 @@ public class CheckpathEditorWidget extends Composite {
 								currentObject);
 						currentObject.setText(dragAccordion.checkName);
 						currentObject.setIsMulticheck(true);
+						
 						currentObject.setEmpty(false);
 						multicheckColumns.get(columnElement).setEmpty(false);
 
