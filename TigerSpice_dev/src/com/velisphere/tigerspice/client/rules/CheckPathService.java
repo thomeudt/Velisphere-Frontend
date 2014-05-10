@@ -24,6 +24,7 @@ import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.velisphere.tigerspice.shared.ActionObject;
 import com.velisphere.tigerspice.shared.CheckData;
 import com.velisphere.tigerspice.shared.CheckPathData;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
@@ -38,16 +39,17 @@ public interface CheckPathService extends RemoteService {
 		String addNewUiObject(CheckPathObjectData uiObject);
 		String createJsonCheckpath(CheckPathObjectTree uiObject);
 		CheckPathObjectTree getUiObjectJSONForCheckpathID(String checkpathID);
-		String addNewMulticheck(String checkId, String operator, String multicheckName, String checkpathID);
+		String addNewMulticheck(String checkId, String operator, String multicheckName, String checkpathID, LinkedList<ActionObject> actions);
 		String addNewMulticheckCheckLink(String multiCheckId, String checkId, String checkPathId);
 		String addNewMulticheckMulticheckLink(String multicheckLId, String multicheckRId, String checkPathId);
 		LinkedHashMap<String, String> getAllCheckpaths();
 		CheckPathData getCheckpathDetails(String checkpathId);
 		String updateCheckpathName(String checkpathId, String checkpathName);
-		String updateMulticheck(String multicheckID, String multicheckOperator, String multicheckName);
+		String updateMulticheck(String multicheckID, String multicheckOperator, String multicheckName,String checkpathID, LinkedList<ActionObject> actions);
 		String deleteMulticheckCheckLink(String parentMulticheckID);
 		String deleteMulticheckMulticheckLink(String parentMulticheckID);
 		String deleteMulticheck(String multicheckID);
 		String addNewCheckpathCheckLink(String checkpathID, String checkID);
 		String addNewCheckpathMulticheckLink(String checkpathID, String multicheckID);
+		LinkedList<ActionObject> getActionsForMulticheckID(String multicheckID, String checkpathID);
 }

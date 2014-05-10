@@ -47,6 +47,7 @@ import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.rules.CheckPathService;
 import com.velisphere.tigerspice.client.rules.MulticheckColumn;
+import com.velisphere.tigerspice.shared.ActionObject;
 import com.velisphere.tigerspice.shared.CheckData;
 import com.velisphere.tigerspice.shared.CheckPathData;
 import com.velisphere.tigerspice.shared.CheckPathObjectTree;
@@ -141,7 +142,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	
-	public String addNewMulticheck(String checkId, String operator, String multicheckName, String checkpathID)
+	public String addNewMulticheck(String checkId, String operator, String multicheckName, String checkpathID, LinkedList<ActionObject> actions)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -159,6 +160,19 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 		try {
 			voltCon.montanaClient.callProcedure("MULTICHECK.insert",
 					checkId, operator, 0, 0, multicheckName, checkpathID);
+			
+			System.out.println("Adding Actions: " + actions);
+			Iterator<ActionObject> it = actions.iterator();
+			while (it.hasNext()){
+				ActionObject action = it.next();
+				voltCon.montanaClient.callProcedure("ACTION.insert",
+						action.actionID, action.actionName, action.endpointID, "", 0, "", checkId, checkpathID);
+				voltCon.montanaClient.callProcedure("OUTBOUNDPROPERTYACTION.insert",
+						action.actionID, action.propertyID, action.propertyIdIndex, "", "", action.manualValue, action.actionID, checkpathID);
+			}
+
+			
+			
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -570,7 +584,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 	}
 
 
-	public String updateMulticheck(String multicheckID, String multicheckOperator, String multicheckName)
+	public String updateMulticheck(String multicheckID, String multicheckOperator, String multicheckName, String checkpathID, LinkedList<ActionObject> actions)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -589,6 +603,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 		try {
 			voltCon.montanaClient.callProcedure("UI_UpdateMulticheck",
 					multicheckID, multicheckName, multicheckOperator);
+		
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -599,6 +614,37 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		System.out.println("Updating Actions: " + actions);
+		Iterator<ActionObject> it = actions.iterator();
+		while (it.hasNext()){
+			ActionObject action = it.next();
+			try {
+				/**
+				voltCon.montanaClient.callProcedure("ACTION.insert",
+						action.actionID, action.actionName, action.endpointID, "", 0, checkID, "", checkpathID);
+				voltCon.montanaClient.callProcedure("OUTBOUNDPROPERTYACTION.insert",
+						action.actionID, action.propertyID, action.propertyIdIndex, "", "", action.manualValue, action.actionID, checkpathID);
+						**/
+				voltCon.montanaClient.callProcedure("UI_UpsertActionsForMulticheckID",
+						action.actionID, action.actionName, action.endpointID, multicheckID, checkpathID, action.propertyID, action.propertyIdIndex,action.manualValue);
+			
+				
+			} catch (IOException | ProcCallException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			}
+		
+		
+		
+			try {
+				voltCon.closeDatabase();
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 
 		try {
 			voltCon.closeDatabase();
@@ -814,5 +860,75 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 
 	}
 
+
+	@Override
+	public LinkedList<ActionObject> getActionsForMulticheckID(String multicheckID, String checkpathID) {
+
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		LinkedList<ActionObject> actions = new LinkedList<ActionObject>();
+		
+		try {
+
+			final ClientResponse findActions = voltCon.montanaClient
+					.callProcedure("UI_SelectActionsForMulticheckID", checkpathID, multicheckID);
+
+			final VoltTable findActionsResults[] = findActions.getResults();
+
+			VoltTable result = findActionsResults[0];
+			// check if any rows have been returned
+
+			
+			
+			
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+			
+					ActionObject action = new ActionObject();
+					action.actionID = result.getString("ACTIONID");
+					action.actionName = result.getString("ACTIONNAME");
+					action.endpointID = result.getString("TARGETENDPOINTID");
+					action.propertyID = result.getString("OUTBOUNDPROPERTYID");
+					action.propertyIdIndex = result.getString("INBOUNDPROPERTYID");
+					action.manualValue = result.getString("CUSTOMPAYLOAD");	
+					System.out.println("Inboundlentgh = " + result.getString("INBOUNDPROPERTYID").length());
+					action.settingSourceIndex = "Manual entry"; // this is the default
+					if (result.getString("INBOUNDPROPERTYID").length() > 0) action.settingSourceIndex = "Incoming value from sensor device";
+					
+					actions.add(action);
+				}
+			}
+
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return actions;
+
+	
+	
+	}
+
+	
 	
 }

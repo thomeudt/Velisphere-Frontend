@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.velisphere.tigerspice.shared.ActionObject;
 import com.velisphere.tigerspice.shared.CheckData;
 import com.velisphere.tigerspice.shared.CheckPathData;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
@@ -34,17 +35,17 @@ public interface CheckPathServiceAsync {
 	void addNewCheckpath(String checkpathName, AsyncCallback<String> callback);
 	void getUiObjectJSONForCheckpathID(String checkpathID, AsyncCallback<CheckPathObjectTree> callback);
 	void createJsonCheckpath(CheckPathObjectTree uiObject, AsyncCallback<String> callback );
-	void addNewMulticheck(String checkId, String operator, String multicheckName, String checkpathID, AsyncCallback<String> callback );
+	void addNewMulticheck(String checkId, String operator, String multicheckName, String checkpathID, LinkedList<ActionObject> actions, AsyncCallback<String> callback );
 	void addNewMulticheckCheckLink(String multiCheckId, String checkId, String checkPathId, AsyncCallback<String> callback );
 	void addNewMulticheckMulticheckLink(String multicheckLId, String multicheckRId, String checkPathId, AsyncCallback<String> callback );
 	void getAllCheckpaths(AsyncCallback<LinkedHashMap<String, String>> callback);
 	void getCheckpathDetails(String checkpathId, AsyncCallback<CheckPathData> callback);
 	void updateCheckpathName(String checkpathId, String checkpathName, AsyncCallback<String> callback );
-	void updateMulticheck(String multicheckID,  String multicheckOperator, String multicheckName, AsyncCallback<String> callback);
+	void updateMulticheck(String multicheckID,  String multicheckOperator, String multicheckName, String checkpathID, LinkedList<ActionObject> actions, AsyncCallback<String> callback);
 	void deleteMulticheckCheckLink(String parentMulticheckID, AsyncCallback<String> callback);
 	void deleteMulticheckMulticheckLink(String parentMulticheckID, AsyncCallback<String> callback);
 	void deleteMulticheck(String multicheckID, AsyncCallback<String> callback);
 	void addNewCheckpathCheckLink(String checkpathID, String checkID, AsyncCallback<String> callback);
 	void addNewCheckpathMulticheckLink(String checkpathID, String multicheckID, AsyncCallback<String> callback);
-	
+	void getActionsForMulticheckID(String multicheckID, String checkpathID, AsyncCallback<LinkedList<ActionObject>> callback);
 }

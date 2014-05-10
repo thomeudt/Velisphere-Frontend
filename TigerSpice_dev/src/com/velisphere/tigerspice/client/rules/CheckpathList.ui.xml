@@ -52,7 +52,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			    
 			    <b:Row>
             	<b:Column size="2">
-            	<b:Paragraph addStyleNames="smalltext" text="Stored Logic Designs" />
+            	<b:Paragraph addStyleNames="smalltext" text="Your Stored Logic Designs" />
             	</b:Column>
             	<b:Column size="4">
             	<b:ListBox styleName="span4" ui:field="lstCheckpath"/> 
@@ -74,7 +74,29 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	    				
 	    		</b:Row>
 				
-				
+				 <b:Row>
+            	<b:Column size="2">
+            	<b:Paragraph addStyleNames="smalltext" text="Logic Design Templates by Vendor" />
+            	</b:Column>
+            	<b:Column size="4">
+            		<b:Paragraph addStyleNames="smalltext" text="to be added" />
+            	</b:Column>
+            	</b:Row>
+
+ 				<b:Row>
+            	<b:Column size="2">
+            	<b:Paragraph addStyleNames="smalltext" text="Embedded Logics" />
+            	</b:Column>
+            	<b:Column size="4">
+            		<b:Paragraph addStyleNames="smalltext" text="to be added" />
+            	</b:Column>
+            	</b:Row>
+				 
+				 				
+				<b:Row>
+	    				
+	    				
+	    		</b:Row>
 				
 				
 			  			

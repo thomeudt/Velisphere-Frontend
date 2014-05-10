@@ -148,6 +148,7 @@ public class CheckpathEditorWidget extends Composite {
 		final VerticalLayoutContainer container = new VerticalLayoutContainer();
 
 		container.setBorders(false);
+		
 		container.setScrollMode(ScrollSupport.ScrollMode.AUTO);
 		container.setHeight((int) 400);
 		container.setWidth((int) ((RootPanel.get().getOffsetWidth()) / 1.74));
@@ -160,11 +161,14 @@ public class CheckpathEditorWidget extends Composite {
 		
 		
 		controller.showGrid(true); // Display a background grid
+		
 		controller.setAllowingUserInteractions(false); // prevent user from
 														// dragging the lines
 														// manually
 
 		container.add(controller.getView());
+		container.setTitle("Drag and Drop sensors and actors onto the canvas to build your logic.");
+	
 
 		Iterator<SameLevelCheckpathObject> it = checkHashSet.iterator();
 
@@ -780,7 +784,7 @@ public class CheckpathEditorWidget extends Composite {
 								System.out.println("Field retrieved: "
 										+ field.text + "with ID "
 										+ field.checkId);
-								SameLevelCheckpathObject newMulticheck = new SameLevelCheckpathObject(
+								final SameLevelCheckpathObject newMulticheck = new SameLevelCheckpathObject(
 										field.checkId, field.text, field.empty,
 										field.level);
 								newMulticheck.combination = field.combination;
@@ -789,6 +793,41 @@ public class CheckpathEditorWidget extends Composite {
 										+ newMulticheck.text + "with ID "
 										+ newMulticheck.checkId);
 								newMulticheck.isMulticheck = true;
+								
+								
+								// add actions to newly created multicheck
+								
+								rpcServiceCheckPath.getActionsForMulticheckID(newMulticheck.checkId, checkpathId,
+										new AsyncCallback<LinkedList<ActionObject>>() {
+									
+									@Override
+									public void onFailure(Throwable caught) {
+										// TODO
+										// Auto-generated
+										// method
+										// stub
+										System.out.println("ERROR RETRIEVING ACTIONS FOR CHECK " + caught);
+
+									}
+
+									@Override
+									public void onSuccess(LinkedList<ActionObject> actions){
+										newMulticheck.actions = actions;
+										
+										System.out.println("ADDING MULTICHECK ACTIONS FOR " + newMulticheck.checkId);
+										System.out.println("ACTIONS ARE " + newMulticheck.actions);
+										
+										/** this is not applicable/not implemented for multichecks yet
+										Iterator<ActionObject> it = actions.iterator();
+										while(it.hasNext()){
+											it.next().sensorEndpointID = newMulticheck.endpointID;
+										}
+										**/
+			
+										if (newMulticheck.actions.size() != 0) newMulticheck.showActionIcon();
+									}
+								});
+
 
 								// add dragability
 								addDragSource(newMulticheck);

@@ -51,6 +51,7 @@ import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
+import com.velisphere.tigerspice.shared.ActionObject;
 import com.velisphere.tigerspice.shared.CheckPathData;
 import com.velisphere.tigerspice.shared.CheckPathObjectColumn;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
@@ -488,6 +489,7 @@ public class CheckpathEditView extends Composite {
 							checkpathObject.combination,
 							checkpathObject.text,
 							checkpathID,
+							checkpathObject.actions,
 							new AsyncCallback<String>() {
 
 								@Override
@@ -636,6 +638,8 @@ public class CheckpathEditView extends Composite {
 							checkpathObject.checkId,
 							checkpathObject.combination,
 							checkpathObject.text,
+							checkpathID,
+							checkpathObject.actions,
 							new AsyncCallback<String>() {
 
 								@Override

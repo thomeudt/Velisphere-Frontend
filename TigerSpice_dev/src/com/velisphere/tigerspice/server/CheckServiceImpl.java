@@ -208,7 +208,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 		
 		
 		
-		System.out.println("Adding Actions: " + actions);
+		System.out.println("Updating Actions: " + actions);
 		Iterator<ActionObject> it = actions.iterator();
 		while (it.hasNext()){
 			ActionObject action = it.next();

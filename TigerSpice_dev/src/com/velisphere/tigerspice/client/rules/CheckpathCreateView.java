@@ -234,6 +234,7 @@ public class CheckpathCreateView extends Composite {
 									checkpathObject.combination,
 									checkpathObject.text,
 									checkPathId,
+									checkpathObject.actions,
 									new AsyncCallback<String>() {
 
 										@Override
