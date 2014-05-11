@@ -49,7 +49,7 @@ import com.velisphere.tigerspice.client.helper.UuidService;
 import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
-import com.velisphere.tigerspice.client.rules.ActionDialogBox.CheckEditorDialogBoxUiBinder;
+import com.velisphere.tigerspice.client.rules.ActionDialogBoxUNUSED.CheckEditorDialogBoxUiBinder;
 import com.velisphere.tigerspice.shared.ActionObject;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.EndpointData;
@@ -68,10 +68,11 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 	private PropertyServiceAsync rpcServiceProperty;
 	private AnimationLoading animationLoading = new AnimationLoading();
     private TabPanel advanced;
+    private boolean isMulticheck;
 
     
 
-	  public ActionDialogBoxTabbed(LinkedList<ActionObject> actions, String checkName){
+	  public ActionDialogBoxTabbed(LinkedList<ActionObject> actions, String checkName, boolean isMulticheck){
 		 
 		
   			 rpcServiceUuid = GWT.create(UuidService.class); 
@@ -79,7 +80,9 @@ public class ActionDialogBoxTabbed extends PopupPanel {
   			 rpcServiceProperty = GWT.create(PropertyService.class);
 			 this.actions = actions;
 			 this.checkName = checkName;
-			 this.setWidget(tabWidget());	
+			 this.isMulticheck = isMulticheck;
+			 this.setWidget(tabWidget());
+			 
 		
 		 
 
@@ -328,9 +331,16 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 	    advanced.add(tab);
 	    
 	    
-		// set initial state of source of value
+		// set initial state of source of value based on whether the dialog is called by a check of multicheck edit window
 
-		LinkedList<String> sources = new ActionSourceConfig().getSources();
+	    LinkedList<String> sources;
+	    	    
+		if (this.isMulticheck == true){
+			sources = new ActionSourceConfig().getMulticheckSources();
+		} else
+		{
+			sources = new ActionSourceConfig().getCheckSources();
+		}
 		Iterator<String> it = sources.iterator();
 		while (it.hasNext()){
 			lstSettingSource.addItem(it.next());
@@ -428,34 +438,38 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 					System.out.println("Index:" + lstSettingSource.getSelectedIndex());
 					switch(lstSettingSource.getSelectedIndex()){
 					case 0: 
-						txtManualValue.setVisible(false);
-						lstSensorValue.setVisible(true);
-						lstValidValues.setVisible(false);
-						System.out.println("EINSER");
-						
-						break;
-					case 1: 
-						txtManualValue.setVisible(false);
-						lstSensorValue.setVisible(false);
-						lstValidValues.setVisible(true);
-						System.out.println("ZWEIER");
-						
-						break;
-					case 2: 
-						txtManualValue.setVisible(false);
-						lstSensorValue.setVisible(false);
-						lstValidValues.setVisible(false);
-						System.out.println("DREIER");
-						
-						
-						break;
-					case 3: 
 						txtManualValue.setVisible(true);
 						lstSensorValue.setVisible(false);
 						lstValidValues.setVisible(false);
-						System.out.println("VIERER");
+						System.out.println("EINSER");
+						
+						
+						break;
+					
+					case 1: 
+						txtManualValue.setVisible(false);
+						lstSensorValue.setVisible(false);
+						lstValidValues.setVisible(false);
+						System.out.println("ZWEIER");
 							
 						break;
+					
+					
+					case 2: 
+						txtManualValue.setVisible(false);
+						lstSensorValue.setVisible(true);
+						lstValidValues.setVisible(false);
+						System.out.println("DREIER");
+						
+						break;
+					case 3: 
+						txtManualValue.setVisible(false);
+						lstSensorValue.setVisible(false);
+						lstValidValues.setVisible(true);
+						System.out.println("VIERER");
+						
+						break;
+					
 					}
 					
 					

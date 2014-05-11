@@ -25,18 +25,27 @@ public class ActionSourceConfig {
 	
 	// this class defines all possible data sources for values set in an action
 
-	LinkedList<String> sources = new LinkedList<String>();
-	
+	LinkedList<String> checkSources = new LinkedList<String>();
+	LinkedList<String> multicheckSources = new LinkedList<String>();
 	
 	public ActionSourceConfig() {
-		sources.add("Incoming value from sensor device");
-		sources.add("List of typical entries");
-		sources.add("Current value of other sensor (not implemented)");
-		sources.add("Manual entry");
+		checkSources.add("Manual entry");
+		checkSources.add("Current value of other sensor (not implemented)");
+		checkSources.add("Incoming value from sensor device");
+		checkSources.add("List of typical entries");
+				
+		multicheckSources.add("Manual entry");
+		multicheckSources.add("Current value of other sensor (not implemented)");
+		
 	}
 	
-	public LinkedList<String> getSources() {
-		return this.sources;
+	public LinkedList<String> getCheckSources() {
+		return this.checkSources;
 	}
+	
+	public LinkedList<String> getMulticheckSources() {
+		return this.multicheckSources;
+	}
+	
 	
 }

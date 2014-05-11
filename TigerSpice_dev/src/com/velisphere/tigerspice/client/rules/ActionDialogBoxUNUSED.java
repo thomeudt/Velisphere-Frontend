@@ -63,7 +63,7 @@ import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsyn
 import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.velisphere.tigerspice.shared.PropertyData;
 
-public class ActionDialogBox extends PopupPanel {
+public class ActionDialogBoxUNUSED extends PopupPanel {
 
 	@UiField
 	TextBox txtTargetPropertyName;
@@ -117,15 +117,15 @@ public class ActionDialogBox extends PopupPanel {
 			.create(CheckEditorDialogBoxUiBinder.class);
 
 	interface CheckEditorDialogBoxUiBinder extends
-			UiBinder<Widget, ActionDialogBox> {
+			UiBinder<Widget, ActionDialogBoxUNUSED> {
 	}
 
-	public ActionDialogBox() {
+	public ActionDialogBoxUNUSED() {
 
 		rpcServiceProperty = GWT.create(PropertyService.class);
 		
 		setWidget(uiBinder.createAndBindUi(this));
-		LinkedList<String> sources = new ActionSourceConfig().getSources();
+		LinkedList<String> sources = new ActionSourceConfig().getCheckSources();
 		Iterator<String> it = sources.iterator();
 		while (it.hasNext()){
 			this.lstSettingSource.addItem(it.next());

@@ -48,4 +48,5 @@ public interface CheckPathServiceAsync {
 	void addNewCheckpathCheckLink(String checkpathID, String checkID, AsyncCallback<String> callback);
 	void addNewCheckpathMulticheckLink(String checkpathID, String multicheckID, AsyncCallback<String> callback);
 	void getActionsForMulticheckID(String multicheckID, String checkpathID, AsyncCallback<LinkedList<ActionObject>> callback);
+	void deleteAllActionsForMulticheckId(String multicheckID, AsyncCallback<String> callback );
 }

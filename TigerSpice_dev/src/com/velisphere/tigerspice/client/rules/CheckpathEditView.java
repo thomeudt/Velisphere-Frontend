@@ -849,6 +849,8 @@ public class CheckpathEditView extends Composite {
 				while(deletedMultichecksIT.hasNext()){
 					SameLevelCheckpathObject checkpathObject = deletedMultichecksIT.next();
 
+					// delete multicheck
+					
 					rpcServiceCheckPath.deleteMulticheck(
 							checkpathObject.checkId,
 							new AsyncCallback<String>() {
@@ -876,6 +878,8 @@ public class CheckpathEditView extends Composite {
 							});
 					
 					
+					// delete links to other multichecks
+					
 					rpcServiceCheckPath.deleteMulticheckMulticheckLink(
 							checkpathObject.checkId,
 							new AsyncCallback<String>() {
@@ -902,6 +906,8 @@ public class CheckpathEditView extends Composite {
 								}
 							});
 					
+					//delete links to checks
+					
 					rpcServiceCheckPath.deleteMulticheckCheckLink(
 							checkpathObject.checkId,
 							new AsyncCallback<String>() {
@@ -927,6 +933,33 @@ public class CheckpathEditView extends Composite {
 									
 								}
 							});
+					
+					// delete associated actions
+					
+					rpcServiceCheckPath.deleteAllActionsForMulticheckId(
+							checkpathObject.checkId,
+							new AsyncCallback<String>() {
+
+								@Override
+								public void onFailure(Throwable caught) {
+									// TODO Auto-generated method stub
+									
+									System.out
+											.println("ERROR deleting actions for check: "
+													+ caught);
+								}
+
+								@Override
+								public void onSuccess(String result) {
+									// TODO Auto-generated method stub
+									System.out
+									.println("Success deleting actions for multicheck: "
+											+ result);
+									
+									
+								}
+							});
+
 
 
 				}

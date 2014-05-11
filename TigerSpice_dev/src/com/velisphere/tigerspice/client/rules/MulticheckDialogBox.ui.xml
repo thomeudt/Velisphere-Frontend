@@ -23,23 +23,29 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	<g:HTMLPanel>
 
       <b:WellForm styleName="wellsilver">
-        <b:Legend ui:field="lgdHeader">Logic Check</b:Legend>
+        
+        
+        <b:Row>
+			<b:Column size="7">
+			<b:Legend ui:field="lgdHeader" styleName="span5">Logic Check</b:Legend>
+			</b:Column>
+			</b:Row>
         
         	<b:TabPanel tabPosition="above" ui:field="tabPanel">
 				
 			     <b:TabPane heading="Logic" ui:field="tbpLogic" active="true">
         
             <b:Row>
-            <b:Column size="2">
-            <b:Paragraph addStyleNames="smalltext" text="Title or short description" />
+            <b:Column size="3">
+            <b:Paragraph text="Title or short description" />
             </b:Column>                   
             <b:Column size="3">                    
             <b:TextBox styleName="span3" ui:field="txtMulticheckTitle" />
             </b:Column>
             </b:Row>
             <b:Row>
-            <b:Column size="2">
-            <b:Paragraph addStyleNames="smalltext" text="List of checks connected to this logic check" />
+            <b:Column size="3">
+            <b:Paragraph text="List of checks connected to this logic check" />
             </b:Column>
             <b:Column size="3">
             <b:ListBox styleName="span3" ui:field="lstLinkedChecksID"/> 
@@ -47,8 +53,8 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
             </b:Row>
             
             <b:Row>
-            <b:Column size="2">
-            <b:Paragraph addStyleNames="smalltext" text="Combination type - trigger rule if all connected checks are true (AND) or at least one of them is true (OR)" />
+            <b:Column size="3">
+            <b:Paragraph text="Combination type - trigger rule if all connected checks are true (AND) or at least one of them is true (OR)" />
             </b:Column>
             <b:Column size="3">
             <b:ListBox styleName="span3" ui:field="lstCombination"/> 

@@ -193,7 +193,7 @@ public class MulticheckDialogBox extends PopupPanel {
 @UiFactory ActionDialogBoxTabbed makeActionEditor() { // method name is insignificant
 				
 		
-		return new ActionDialogBoxTabbed(this.actions, this.multicheckTitle);
+		return new ActionDialogBoxTabbed(this.actions, this.multicheckTitle, true);
 	  }
 
 	
