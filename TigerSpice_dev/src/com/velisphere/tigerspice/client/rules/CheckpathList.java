@@ -68,13 +68,15 @@ public class CheckpathList extends Composite {
 
 	public CheckpathList() {
 		initWidget(uiBinder.createAndBindUi(this));
+		rpcServiceCheckPath = GWT.create(CheckPathService.class);
+		
 		bread0 = new NavLink();
 		bread0.setText("Home");
 		brdMain.add(bread0);
 		bread1 = new NavLink();
 		bread1.setText("Logic Designer");
 		brdMain.add(bread1);
-		rpcServiceCheckPath = GWT.create(CheckPathService.class);
+
 		
 		bread0.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {

@@ -43,6 +43,7 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.admin.Overviewer;
+import com.velisphere.tigerspice.client.dashboard.Dashboard;
 import com.velisphere.tigerspice.client.helper.EventUtils;
 import com.velisphere.tigerspice.client.helper.SessionHelper;
 import com.velisphere.tigerspice.client.helper.SessionVerifiedEvent;
@@ -133,11 +134,12 @@ public class NavBar extends Composite implements HasText {
 	     if (sessionID != null){
 			
 			RootPanel.get("main").clear();
-			LoginSuccess loginSuccess = new LoginSuccess();
-			RootPanel.get("main").add(loginSuccess);
+			Dashboard dashboard = new Dashboard();
+			RootPanel.get("main").add(dashboard);
 		}
 	     else
 	    	 {
+	    	 
 	    	 NewAccountScreen newAccountScreen = new NewAccountScreen();
 				newAccountScreen.open();
 			
@@ -156,11 +158,9 @@ public class NavBar extends Composite implements HasText {
 		}
 	     else
 	    	 {
-	    	 Login loginScreen = new Login();
-	 		loginScreen.onModuleLoad();
-			
-		}
-		
+	    	 LoggedOutHome loggedOutHome = new LoggedOutHome();
+	    	 loggedOutHome.open();
+		}		
 	}
 
 	@UiHandler("btnSpheres")

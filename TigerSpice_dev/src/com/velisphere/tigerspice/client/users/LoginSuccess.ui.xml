@@ -39,6 +39,10 @@
 		
 		    <b:Row>
 			<b:Column size="8" offset="0">
+			    	<b:Paragraph>Debug information:</b:Paragraph>
+				    <b:Paragraph>VeliSphere Montana Database Version 0.7.2 or newer required</b:Paragraph>
+				    <b:Paragraph>VoltDB 4.0.2 or newer required</b:Paragraph>
+				    <b:Paragraph>Welcome Message:</b:Paragraph>
 				<b:Paragraph>This is the VeliSphere Dashboard. We recommend that you get started by following our "Getting Started Guide"
 				    - don't forget to take a look at our "Best Practice" tutorial, too.</b:Paragraph> 
 				    <b:Paragraph>To add new devices to your account, please follow the "Device Provisioning Wizard".</b:Paragraph>
@@ -48,86 +52,21 @@
 		</b:Row>
 		    
 		<b:Row>
-		<b:Column size="6" offset="0">
-				<b:Heading size="3">System Monitoring</b:Heading>
-			</b:Column>	
-		</b:Row>
-		
-		<b:TabPanel tabPosition="above" ui:field="tabPanel">
-		
-		    <b:TabPane heading="Subscription" active="true">
-		    <b:Row>
-		<b:Column size="6" offset="0">
-				<b:Heading size="4">Subscription Status</b:Heading>
-			</b:Column>	
-		</b:Row>
-		
-		
-		
-		<b:Row>
-			<b:Column size="8" offset="0">
-				<b:StackProgressBar ui:field="pgbUtilization">
-					<b:Bar color="SUCCESS" ui:field="pgbGreen" text="green" percent="0" />
-					<b:Bar color="WARNING" ui:field="pgbYellow" text="" percent="0" />
-					<b:Bar color="DANGER" ui:field="pgbRed" text="" percent="0" />
-				</b:StackProgressBar>
-			</b:Column>
-			
-		</b:Row>
-		
-		<b:Row>
-		<b:Column size="6" offset="0">
-			 <b:Paragraph addStyleNames="smalltext">Upgrade your subscription to increase your endpoint limit.</b:Paragraph>
-			  <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
-			</b:Column>
-		</b:Row>
-		
-		    </b:TabPane>
-		    
-		    
-		    	<b:TabPane heading="System" active="false">
-			    <b:Heading size="4" >System: OK</b:Heading>
-				
-				<b:Paragraph addStyleNames="smalltext-black">System is up.</b:Paragraph>
-				<b:Paragraph addStyleNames="smalltext-black">No issues reported.</b:Paragraph>
-			</b:TabPane>
-			<b:TabPane heading="Spheres" active="false">
-			    <b:Heading size="4" >Spheres: OK</b:Heading>
-				
-				<b:Paragraph addStyleNames="smalltext-black">No errors reported in any sphere.</b:Paragraph>
-				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
-			</b:TabPane>
-			<b:TabPane heading="Endpoints" active="false">
-			    	<b:Heading size="4" >Endpoints: OK</b:Heading>
-				
-				<b:Paragraph addStyleNames="smalltext-black">All endpoints are functioning.</b:Paragraph>
-				<b:Paragraph addStyleNames="smalltext-black">Maximum time out of contact: 14 min for endpoint X</b:Paragraph>
-				
-			</b:TabPane>
-			<b:TabPane heading="Logic Designs" active="false">
-			    <b:Heading size="4" >Logic Designs: OK</b:Heading>
-				
-				<b:Paragraph addStyleNames="smalltext-black">All logic designs function properly.</b:Paragraph>
-				<b:Paragraph addStyleNames="smalltext-black">No failed actions reported.</b:Paragraph>
-				
-			</b:TabPane>
-			<b:TabPane heading="News" active="false">
-			    <b:Heading size="4" >News</b:Heading>
+		<b:Column size="8" offset="0">
+				<b:Heading size="3" >News</b:Heading>
 				
 				<b:Paragraph addStyleNames="smalltext-black">New pricing model available. Click here for more (...)</b:Paragraph>
 				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
-			</b:TabPane>
-			<b:TabPane heading="Tasks" active="false">
-			    	<b:Heading size="4">Task list</b:Heading>
+				 
+				 	<b:Heading size="3">Task list</b:Heading>
 				
 				<b:Paragraph addStyleNames="smalltext-black" >No open tasks.</b:Paragraph>
 				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
 				
-			</b:TabPane>
-			
+			</b:Column>	
+		</b:Row>
 		
-		</b:TabPanel>
-			    
+					    
 		
 		
 	</b:Column>
