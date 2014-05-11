@@ -1,23 +1,17 @@
 package com.velisphere.tigerspice.client.rules;
 
 
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
-import com.gargoylesoftware.htmlunit.javascript.host.Event;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Column;
-import com.github.gwtbootstrap.client.ui.Legend;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.Row;
 import com.github.gwtbootstrap.client.ui.Tab;
 import com.github.gwtbootstrap.client.ui.TabPanel;
 import com.github.gwtbootstrap.client.ui.TextBox;
-import com.github.gwtbootstrap.client.ui.Well;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
-import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -25,22 +19,9 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DomEvent;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.DecoratedPopupPanel;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.helper.ActionSourceConfig;
@@ -49,13 +30,12 @@ import com.velisphere.tigerspice.client.helper.UuidService;
 import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
-import com.velisphere.tigerspice.client.rules.ActionDialogBoxUNUSED.CheckEditorDialogBoxUiBinder;
 import com.velisphere.tigerspice.shared.ActionObject;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.EndpointData;
 
 
-public class ActionDialogBoxTabbed extends PopupPanel {
+public class ActionDialogBoxTabbed extends SimplePanel {
 
 	
 	
@@ -72,7 +52,7 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 
     
 
-	  public ActionDialogBoxTabbed(LinkedList<ActionObject> actions, String checkName, boolean isMulticheck){
+	  public ActionDialogBoxTabbed(LinkedList<ActionObject> actions, String checkName, Boolean isMulticheck){
 		 
 		
   			 rpcServiceUuid = GWT.create(UuidService.class); 
@@ -81,96 +61,43 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 			 this.actions = actions;
 			 this.checkName = checkName;
 			 this.isMulticheck = isMulticheck;
-			 this.setWidget(tabWidget());
 			 
-		
+			 	 
+			  //Well well = new Well();
+		   	    //Legend legend = new Legend("Actions for " + checkName);
+		   	    //well.add(legend);
+		   	    //well.setStyleName("wellsilver");
+		   	    
+			 
+			    advanced = new TabPanel();
+			    advanced.setTabPosition("left");
+			  
+			    if (actions != null)
+				{
+			    
+			    Iterator<ActionObject> it = actions.iterator();
+				  while(it.hasNext()){
+					  	
+				    	addTab(it.next());
+				    }
+				advanced.selectTab(actions.size()-1);
+				}
+				
+				addEmptyTab();
+							    this.add(advanced);
+
 		 
 
          
 		  
 	  }
 	 
-	  public Widget tabWidget() {
-
+	  
    		
 
    		
-   	    //Well well = new Well();
-   	    //Legend legend = new Legend("Actions for " + checkName);
-   	    //well.add(legend);
-   	    //well.setStyleName("wellsilver");
-   	    
-	 
-	    advanced = new TabPanel();
-	    advanced.setTabPosition("left");
-	    
-	    if (actions != null)
-		{
-	    
-	    Iterator<ActionObject> it = actions.iterator();
-		  while(it.hasNext()){
-		    	addTab(it.next());
-		    }
-		advanced.selectTab(actions.size()-1);
-		}
-		
-		addEmptyTab();
-		 
-	    
-	    // well.add(advanced);
-	    
-	    Row buttonRow = new Row();
-	    Column buttonColA = new Column(1);
-	    Column buttonColB = new Column(1);
-	    
-	    Button btnSave = new Button();
-	    btnSave.setText("Save");
-	    btnSave.addStyleName("btn-primary");
-	    
-	    btnSave.addClickHandler(new ClickHandler(){
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				saveAction();
-							
-			}
-			 
-		 });
-		
-	    
-	    
-	    buttonColA.add(btnSave);
-	    
-	    
-	    Button btnCancel = new Button();
-	    btnCancel.setText("Cancel");
-	    btnCancel.addStyleName("btn-default");
-	    btnCancel.addClickHandler(new ClickHandler(){
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				cancelAction();
-							
-			}
-			 
-		 });
-			    
-	    
-	    buttonColB.add(btnCancel);
-	    
-	    
-	    
-	    
-	    buttonRow.add(buttonColA);
-	    buttonRow.add(buttonColB);
-	    
-	    advanced.add(buttonRow);
-
-	    
-      return advanced;
+   	  	    
       
-	  }
-	 
 	  
 	   
 	  
@@ -571,7 +498,7 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 		void saveAction () {
 
 			System.out.println("ACCCT: " + this.actions.getFirst());
-			this.hide();		
+					
 		}
 
 
@@ -579,7 +506,7 @@ public class ActionDialogBoxTabbed extends PopupPanel {
 
 		void cancelAction () {
 			this.cancelFlag = true;
-			this.hide();
+			
 		}
 
 		public LinkedList<ActionObject> getActions(){

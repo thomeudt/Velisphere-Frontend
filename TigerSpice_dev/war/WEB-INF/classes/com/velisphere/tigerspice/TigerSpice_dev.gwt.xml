@@ -21,6 +21,11 @@
 <module rename-to='tigerspice_dev'>
 	<!-- Inherit the core Web Toolkit stuff.                        -->
 	<inherits name='com.google.gwt.user.User' />
+	<!-- inherits name="com.google.gwt.logging.Logging"/ -->
+	
+	<set-property name="compiler.stackMode" value="emulated"/>
+	<set-configuration-property name="compiler.emulatedStack.recordLineNumbers" value="true"/> 
+	<set-configuration-property name="compiler.emulatedStack.recordFileNames" value="true"/> 
 	
 
 	<!-- Inherit the default GWT style sheet.  You can change       -->

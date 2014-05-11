@@ -414,8 +414,7 @@ public class CheckDialogBox extends PopupPanel {
 	}
 	
 	@UiFactory ActionDialogBoxTabbed makeActionEditor() { // method name is insignificant
-				
-		
+			
 		return new ActionDialogBoxTabbed(this.actions, this.checkTitle, false);
 	  }
 

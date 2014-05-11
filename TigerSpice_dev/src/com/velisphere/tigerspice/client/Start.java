@@ -19,6 +19,7 @@ package com.velisphere.tigerspice.client;
 
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -35,6 +36,7 @@ public class Start implements EntryPoint{
 
 	public void onModuleLoad() {
     
+		
 		
 		AnimationLoading loading = new AnimationLoading();
 		loading.showLoadAnimation("Loading App");
