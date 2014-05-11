@@ -26,6 +26,7 @@ import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.Paragraph;
+import com.github.gwtbootstrap.client.ui.TabPane;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -43,9 +44,16 @@ public class CheckpathList extends Composite {
 
 	@UiField
 	Breadcrumbs brdMain;
-	
 	@UiField
 	ListBox lstCheckpath;
+	@UiField
+	TabPane tbpMyLogic;
+	@UiField
+	TabPane tbpTmplLogic;
+	@UiField
+	TabPane tbpEmbLogic;
+
+	
 	
 	NavLink bread0;
 	NavLink bread1;
@@ -77,6 +85,17 @@ public class CheckpathList extends Composite {
 
 			}
 		});
+		
+		// activate default tab
+		
+		
+			tbpMyLogic.setActive(true);
+			tbpTmplLogic.setActive(false);
+			tbpEmbLogic.setActive(false);
+		
+		
+		
+		
 		
 		// load existing checkpaths
 		

@@ -49,11 +49,17 @@
 				</b:Well>
 			</b:Column>
 
+			<b:Column size="8" offset="0">
+			   
+			<b:TabPanel tabPosition="above" ui:field="tabPanel">
+		
+		    <b:TabPane heading="My Private Spheres" active="true">
 
+		        
 			<b:Column size="4" offset="0">
+		   
 
-
-						<b:Heading size="2">My Spheres</b:Heading>
+						<b:Heading size="3">My Private Spheres</b:Heading>
 						<b:HelpBlock addStyleNames="smalltext">Physical Endpoints:</b:HelpBlock>
 						<vs:SphereListerWidget />
 						
@@ -62,13 +68,20 @@
 				
 
 			</b:Column>
+			</b:TabPane>
+			
 
+			<b:TabPane heading="Public Spheres" active="false">
+		    
 			<b:Column size="4" offset="0">
-						<b:Heading size="2">Public Spheres</b:Heading>
+						<b:Heading size="3">Public Spheres</b:Heading>
 						<b:HelpBlock addStyleNames="smalltext">These are Spheres of users that contain endpoints
 							available to you.</b:HelpBlock>
 
 
+			</b:Column>
+			</b:TabPane>
+			</b:TabPanel>
 			</b:Column>
 			
 			<b:Column size="2" offset="0">

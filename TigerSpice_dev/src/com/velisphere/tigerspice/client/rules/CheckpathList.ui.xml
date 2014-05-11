@@ -1,132 +1,128 @@
-<!--
-  CONFIDENTIAL INFORMATION
-   __________________
-   
-    Copyright (C) 2014 Thorsten Meudt / Connected Things Lab
-    All Rights Reserved.
-   
-   NOTICE:  All information contained herein is, and remains
-   the property of Thorsten Meudt and its suppliers,
-   if any.  The intellectual and technical concepts contained
-   herein are proprietary to Thorsten Meudt
-   and its suppliers and may be covered by Patents,
-   patents in process, and are protected by trade secret or copyright law.
-   Dissemination of this information or reproduction of this material
-   is strictly forbidden unless prior written permission is obtained
-   from Thorsten Meudt.
--->
+<!-- CONFIDENTIAL INFORMATION __________________ Copyright (C) 2014 Thorsten 
+	Meudt / Connected Things Lab All Rights Reserved. NOTICE: All information 
+	contained herein is, and remains the property of Thorsten Meudt and its suppliers, 
+	if any. The intellectual and technical concepts contained herein are proprietary 
+	to Thorsten Meudt and its suppliers and may be covered by Patents, patents 
+	in process, and are protected by trade secret or copyright law. Dissemination 
+	of this information or reproduction of this material is strictly forbidden 
+	unless prior written permission is obtained from Thorsten Meudt. -->
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-		xmlns:ct="urn:import:com.google.gwt.user.cellview.client"
-		xmlns:vsrl="urn:import:com.velisphere.tigerspice.client.rules"
-		xmlns:vsch="urn:import:com.velisphere.tigerspice.client.checks">
-		<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images'/>
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:ct="urn:import:com.google.gwt.user.cellview.client" xmlns:vsrl="urn:import:com.velisphere.tigerspice.client.rules"
+	xmlns:vsch="urn:import:com.velisphere.tigerspice.client.checks">
+	<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images' />
 	<g:HTMLPanel>
-           
-	    <b:Breadcrumbs divider=">" ui:field="brdMain">
+
+		<b:Breadcrumbs divider=">" ui:field="brdMain">
 		</b:Breadcrumbs>
-	    
-	    <b:Row>
-			
+
+		<b:Row>
+
 			<b:Column size="11" offset="0">
-				<b:PageHeader ui:field="pghRuleName">Logic Designer</b:PageHeader>				
+				<b:PageHeader ui:field="pghRuleName">Logic Designer</b:PageHeader>
 			</b:Column>
-			
+
 		</b:Row>
-		
-	    
-	    
-	    <b:Row>
-				        
-	       
-				        
+
+
+
+		<b:Row>
+
+
+
 			<b:Column size="8" offset="0">
-		
-			
-			    
-				
-				
-			    
-			    
-			    <b:Row>
-            	<b:Column size="2">
-            	<b:Paragraph addStyleNames="smalltext" text="Your Stored Logic Designs" />
-            	</b:Column>
-            	<b:Column size="4">
-            	<b:ListBox styleName="span4" ui:field="lstCheckpath"/> 
-            	</b:Column>
-            	</b:Row>
 
-				
-				<b:Row>
-	    				<b:Column size="2" offset="2">
-	    				<b:Button type="PRIMARY" ui:field="btnOpenCheckpath" addStyleNames="btn-block" size="SMALL">Open Selected Logic Design</b:Button>
-	    				</b:Column>
-	    				<b:Column size="2" offset="0">
-	    				<b:Button type="SUCCESS" ui:field="btnCreateCheckpath" addStyleNames="btn-block" size="SMALL">Create New Logic Design</b:Button>
-	    				</b:Column>
-	    				<b:Column size="2" offset="0">
-	    				<b:Paragraph addStyleNames="smalltext" ui:field="txtOpenStatus"></b:Paragraph>
-	    				</b:Column>
-	    				
-	    				
-	    		</b:Row>
-				
-				 <b:Row>
-            	<b:Column size="2">
-            	<b:Paragraph addStyleNames="smalltext" text="Logic Design Templates by Vendor" />
-            	</b:Column>
-            	<b:Column size="4">
-            		<b:Paragraph addStyleNames="smalltext" text="to be added" />
-            	</b:Column>
-            	</b:Row>
 
- 				<b:Row>
-            	<b:Column size="2">
-            	<b:Paragraph addStyleNames="smalltext" text="Embedded Logics" />
-            	</b:Column>
-            	<b:Column size="4">
-            		<b:Paragraph addStyleNames="smalltext" text="to be added" />
-            	</b:Column>
-            	</b:Row>
-				 
-				 				
-				<b:Row>
-	    				
-	    				
-	    		</b:Row>
-				
-				
-			  			
-					
-			
+				<b:TabPanel tabPosition="above" ui:field="tabPanel">
+
+					<b:TabPane heading="My Stored Logic Designs" ui:field="tbpMyLogic"
+						active="true">
+
+						<b:Row>
+							<b:Column size="2">
+								<b:Paragraph addStyleNames="smalltext" text="My Stored Logic Designs" />
+							</b:Column>
+							<b:Column size="4">
+								<b:ListBox styleName="span4" ui:field="lstCheckpath" />
+							</b:Column>
+						</b:Row>
+
+
+						<b:Row>
+							<b:Column size="2" offset="2">
+								<b:Button type="PRIMARY" ui:field="btnOpenCheckpath"
+									addStyleNames="btn-block" size="SMALL">Open Selected Logic Design</b:Button>
+							</b:Column>
+							<b:Column size="2" offset="0">
+								<b:Button type="SUCCESS" ui:field="btnCreateCheckpath"
+									addStyleNames="btn-block" size="SMALL">Create New Logic Design</b:Button>
+							</b:Column>
+							<b:Column size="2" offset="0">
+								<b:Paragraph addStyleNames="smalltext" ui:field="txtOpenStatus"></b:Paragraph>
+							</b:Column>
+
+
+						</b:Row>
+
+					</b:TabPane>
+
+					<b:TabPane heading="Logic Design Templates" ui:field="tbpTmplLogic"
+						active="false">
+						<b:Row>
+							<b:Column size="2">
+								<b:Paragraph addStyleNames="smalltext"
+									text="Logic Design Templates sorted by Vendor" />
+							</b:Column>
+							<b:Column size="4">
+								<b:Paragraph addStyleNames="smalltext" text="to be added" />
+							</b:Column>
+						</b:Row>
+
+					</b:TabPane>
+
+					<b:TabPane heading="Embedded Logic Designs" ui:field="tbpEmbLogic"
+						active="false">
+						<b:Row>
+							<b:Column size="2">
+								<b:Paragraph addStyleNames="smalltext" text="Embedded Logic Designs that are predefined by device class and designed by the device vendor" />
+							</b:Column>
+							<b:Column size="4">
+								<b:Paragraph addStyleNames="smalltext" text="to be added" />
+							</b:Column>
+						</b:Row>
+
+					</b:TabPane>
+
+
+
+				</b:TabPanel>
+
 			</b:Column>
-			
-				<b:Column size="2" offset="0">
+
+			<b:Column size="2" offset="0">
 				<b:Heading size="4">Additional Resources</b:Heading>
-				
-			<b:Paragraph addStyleNames="smalltext">Logic Simulator</b:Paragraph>
-				
-			<b:Paragraph addStyleNames="smalltext">Device Provisioning Wizard</b:Paragraph>
-			
-			<b:Paragraph addStyleNames="smalltext">Getting Started</b:Paragraph>
-			
-			<b:Paragraph addStyleNames="smalltext">Best Practices</b:Paragraph>
-			
-			<b:Paragraph addStyleNames="smalltext">Market Place</b:Paragraph>
-			
-			
-			</b:Column>	
-			
+
+				<b:Paragraph addStyleNames="smalltext">Logic Simulator</b:Paragraph>
+
+				<b:Paragraph addStyleNames="smalltext">Device Provisioning Wizard</b:Paragraph>
+
+				<b:Paragraph addStyleNames="smalltext">Getting Started</b:Paragraph>
+
+				<b:Paragraph addStyleNames="smalltext">Best Practices</b:Paragraph>
+
+				<b:Paragraph addStyleNames="smalltext">Market Place</b:Paragraph>
+
+
+			</b:Column>
+
 		</b:Row>
-		
-	    
-		
-	    
-	
+
+
+
+
+
 	</g:HTMLPanel>
-	  		            
+
 
 </ui:UiBinder> 
