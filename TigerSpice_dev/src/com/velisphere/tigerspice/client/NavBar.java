@@ -43,6 +43,7 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.admin.Overviewer;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.dashboard.Dashboard;
 import com.velisphere.tigerspice.client.helper.EventUtils;
 import com.velisphere.tigerspice.client.helper.SessionHelper;
@@ -129,6 +130,10 @@ public class NavBar extends Composite implements HasText {
 	
 	@UiHandler("btnHome")
 	void openHome (ClickEvent event) {
+		
+		AppController.openDashboard();
+		
+		/**
 		String sessionID = Cookies.getCookie("sid");
 		clearBandarole();
 	     if (sessionID != null){
@@ -144,6 +149,7 @@ public class NavBar extends Composite implements HasText {
 				newAccountScreen.open();
 			
 		}
+		**/
 	}
 	
 	@UiHandler("brdHome")
