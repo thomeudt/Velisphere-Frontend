@@ -91,7 +91,7 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
 		
 		//initWidget(uiBinder.createAndBindUi(this));	
 		// set history for back button support
-		History.newItem("login_success");
+		//History.newItem("login_success");
 		
 		//
 		
@@ -99,9 +99,6 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
 		// set page header welcome back message
     	pageHeader.setText("Welcome Back, " + SessionHelper.getCurrentUserName());
     	
-		NavBar navBar = new NavBar();
-		navBar = (NavBar) RootPanel.get("stockList").getWidget(0);
-		navBar.activateForCurrentUser();
 		
 		bread0 = new NavLink();
 		bread0.setText("Home");

@@ -11,6 +11,8 @@ import com.velisphere.tigerspice.client.helper.EventUtils;
 import com.velisphere.tigerspice.client.helper.SessionHelper;
 import com.velisphere.tigerspice.client.helper.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.helper.SessionVerifiedEventHandler;
+import com.velisphere.tigerspice.client.rules.CheckpathList;
+import com.velisphere.tigerspice.client.users.LoginSuccess;
 
 // this class manages all navigational calls within the application
 
@@ -23,7 +25,7 @@ public class AppController {
 
 	static void openWithHistoryHandler(final String token, final Object screenObject)
 	{
-		History.newItem("dashboard");
+		History.newItem(token);
 		RootPanel.get("main").clear();
 		RootPanel.get("main").add((Widget) screenObject);
 				
@@ -47,8 +49,7 @@ public class AppController {
 	
 	
 	public static void openDashboard()
-	{
-	
+	{	
 		SessionHelper.validateCurrentSession();
 		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
@@ -60,5 +61,36 @@ public class AppController {
 		}		
 	});
 	}
+	
+	public static void openHome()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//userID = SessionHelper.getCurrentUserID();
+			LoginSuccess loginSuccess = new LoginSuccess();
+			openWithHistoryHandler("home", loginSuccess);
+		}		
+	});
+	}
 
+	public static void openLogicDesigner()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//userID = SessionHelper.getCurrentUserID();
+			CheckpathList checkpathList = new CheckpathList();
+			openWithHistoryHandler("logicdesigner", checkpathList);
+		}		
+	});
+	}
+
+	
+	
+	
 }

@@ -60,6 +60,10 @@ public class Start implements EntryPoint{
 	        	rootPanelMain.clear();
 	        	rootPanelMain.getElement().getStyle().setPosition(Position.RELATIVE);
 	        	
+	        	//NavBar navBar = new NavBar();
+	    		//navBar = (NavBar) RootPanel.get("stockList").getWidget(0);
+	    		navBar.activateForCurrentUser();
+	    		
 	        	
 	        	rootPanelMain.add(new LoginSuccess(reg));
 	        	
