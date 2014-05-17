@@ -39,6 +39,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
@@ -64,6 +65,7 @@ public class CheckpathCreateView extends Composite {
 	NavLink bread0;
 	NavLink bread1;
 	NavLink bread2;
+	String userID;
 
 	private CheckPathServiceAsync rpcServiceCheckPath;
 	private CheckServiceAsync rpcServiceCheck;
@@ -75,10 +77,11 @@ public class CheckpathCreateView extends Composite {
 	interface CheckpathCreateViewUiBinder extends UiBinder<Widget, CheckpathCreateView> {
 	}
 
-	private String userID;
+	
 
-	public CheckpathCreateView() {
+	public CheckpathCreateView(String userID) {
 
+		this.userID = userID;
 		rpcServiceCheckPath = GWT.create(CheckPathService.class);
 		rpcServiceCheck = GWT.create(CheckService.class);
 		initWidget(uiBinder.createAndBindUi(this));
@@ -112,7 +115,7 @@ public class CheckpathCreateView extends Composite {
 			
 						RootPanel mainPanel = RootPanel.get("main");
 						mainPanel.clear();
-						CheckpathList checkPathList = new CheckpathList(); 		
+						CheckpathList checkPathList = new CheckpathList("dummy"); 		
 						mainPanel.add(checkPathList);
 						
 					}
@@ -133,7 +136,7 @@ public class CheckpathCreateView extends Composite {
 		
 		
 
-		rpcServiceCheckPath.addNewCheckpath(txtCheckpathTitle.getText(), new AsyncCallback<String>() {
+		rpcServiceCheckPath.addNewCheckpath(txtCheckpathTitle.getText(), userID, new AsyncCallback<String>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -491,6 +494,8 @@ public class CheckpathCreateView extends Composite {
 												
 												
 												// open edit view 
+												
+												/**
 												final RootPanel mainPanel = RootPanel.get("main");
 												mainPanel.clear();
 												final CheckpathEditView checkpathEditView = new CheckpathEditView(checkPathId);
@@ -498,8 +503,12 @@ public class CheckpathCreateView extends Composite {
 												Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
 												    public void execute() {
 												    	mainPanel.add(checkpathEditView);
-												    }
-												});  
+												    }									    
+												 
+												});
+												**/
+												
+												AppController.openLogicDesign(checkPathId);
 
 												
 												

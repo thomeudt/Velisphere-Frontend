@@ -34,7 +34,7 @@ import com.velisphere.tigerspice.shared.CheckPathObjectTree;
 @RemoteServiceRelativePath("voltCheckPath")
 public interface CheckPathService extends RemoteService {
 		
-		String addNewCheckpath(String checkpathName);
+		String addNewCheckpath(String checkpathName, String userID);
 		String updateCheckpath(String checkpathId, String uiObject);
 		String addNewUiObject(CheckPathObjectData uiObject);
 		String createJsonCheckpath(CheckPathObjectTree uiObject);
@@ -42,7 +42,7 @@ public interface CheckPathService extends RemoteService {
 		String addNewMulticheck(String checkId, String operator, String multicheckName, String checkpathID, LinkedList<ActionObject> actions);
 		String addNewMulticheckCheckLink(String multiCheckId, String checkId, String checkPathId);
 		String addNewMulticheckMulticheckLink(String multicheckLId, String multicheckRId, String checkPathId);
-		LinkedHashMap<String, String> getAllCheckpaths();
+		LinkedHashMap<String, String> getAllCheckpaths(String userID);
 		CheckPathData getCheckpathDetails(String checkpathId);
 		String updateCheckpathName(String checkpathId, String checkpathName);
 		String updateMulticheck(String multicheckID, String multicheckOperator, String multicheckName,String checkpathID, LinkedList<ActionObject> actions);

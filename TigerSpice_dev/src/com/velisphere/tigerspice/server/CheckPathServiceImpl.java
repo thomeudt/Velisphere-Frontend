@@ -278,7 +278,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 	}
 
 
-	public String addNewCheckpath(String checkpathName)
+	public String addNewCheckpath(String checkpathName, String userID)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -297,7 +297,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 		
 		try {
 			voltCon.montanaClient.callProcedure("CHECKPATH.insert",
-					checkPathId, checkpathName, null);
+					checkPathId, checkpathName, null, userID);
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -432,7 +432,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 
 
 	@Override
-	public LinkedHashMap<String, String> getAllCheckpaths() {
+	public LinkedHashMap<String, String> getAllCheckpaths(String userID) {
 		
 		
 			VoltConnector voltCon = new VoltConnector();
@@ -451,7 +451,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 			try {
 
 				final ClientResponse findAllCheckpaths = voltCon.montanaClient
-						.callProcedure("UI_SelectAllCheckpaths");
+						.callProcedure("UI_SelectAllCheckpaths", userID);
 
 				final VoltTable findAllCheckpathsResults[] = findAllCheckpaths.getResults();
 

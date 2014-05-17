@@ -39,11 +39,12 @@
 		
 		    <b:Row>
 			<b:Column size="8" offset="0">
-			    	<b:Paragraph>Debug information:</b:Paragraph>
+			    	<b:Heading size="3" >Debug/Version Information</b:Heading>
+				    <b:Paragraph>VeliSphere TigerSprice 0.7.2</b:Paragraph>
 				    <b:Paragraph>VeliSphere Montana Database Version 0.7.2 or newer required</b:Paragraph>
 				    <b:Paragraph>VoltDB 4.0.2 or newer required</b:Paragraph>
-				    <b:Paragraph>Welcome Message:</b:Paragraph>
-				<b:Paragraph>This is the VeliSphere Dashboard. We recommend that you get started by following our "Getting Started Guide"
+				    <b:Heading size="3" >Welcome Message</b:Heading>
+				<b:Paragraph>This is VeliSphere. We recommend that you get started by following our "Getting Started Guide"
 				    - don't forget to take a look at our "Best Practice" tutorial, too.</b:Paragraph> 
 				    <b:Paragraph>To add new devices to your account, please follow the "Device Provisioning Wizard".</b:Paragraph>
 				    

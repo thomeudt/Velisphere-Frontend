@@ -38,6 +38,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 
 public class CheckpathList extends Composite {
@@ -66,7 +67,7 @@ public class CheckpathList extends Composite {
 	interface CheckpathListUiBinder extends UiBinder<Widget, CheckpathList> {
 	}
 
-	public CheckpathList() {
+	public CheckpathList(String userID) {
 		initWidget(uiBinder.createAndBindUi(this));
 		rpcServiceCheckPath = GWT.create(CheckPathService.class);
 		
@@ -103,7 +104,7 @@ public class CheckpathList extends Composite {
 		
 		
 
-		rpcServiceCheckPath.getAllCheckpaths(
+		rpcServiceCheckPath.getAllCheckpaths(userID,
 				new AsyncCallback<LinkedHashMap<String, String>>() {
 
 					@Override
@@ -140,11 +141,15 @@ public class CheckpathList extends Composite {
 	@UiHandler("btnCreateCheckpath")
 	void createCheckpath(ClickEvent event) {
 	
+		/**
+		
 		RootPanel mainPanel = RootPanel.get("main");
 		mainPanel.clear();
 		
 		CheckpathCreateView checkpathView = new CheckpathCreateView(); 		
 		mainPanel.add(checkpathView);
+		**/
+		AppController.createLogicDesign();
 
 		
 	}
@@ -152,12 +157,15 @@ public class CheckpathList extends Composite {
 	@UiHandler("btnOpenCheckpath")
 	void openCheckpath(ClickEvent event) {
 	
+		/**
 		RootPanel mainPanel = RootPanel.get("main");
 		mainPanel.clear();
 		
 		CheckpathEditView checkpathView = new CheckpathEditView(lstCheckpath.getValue()); 		
 		mainPanel.add(checkpathView);
-
+		**/
+		
+		AppController.openLogicDesign(lstCheckpath.getValue());
 		
 	}
 

@@ -176,12 +176,17 @@ public class NavBar extends Composite implements HasText {
 
 	@UiHandler("btnSpheres")
 	void openSpheres (ClickEvent event) {
+		
+		AppController.openEndpointManager();
+		
+		/**
 		RootPanel mainPanel = RootPanel.get("main");
 		mainPanel.clear();
 		clearBandarole();
 		SphereLister sphereOverview = new SphereLister(); 		
 		
 		mainPanel.add(sphereOverview);
+		**/
 		
 	}
 	

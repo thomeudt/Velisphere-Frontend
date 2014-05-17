@@ -90,7 +90,7 @@ public class CheckpathEditView extends Composite {
 	
 	private String checkpathID;
 
-	public CheckpathEditView(String checkpathID) {
+	public CheckpathEditView(String checkpathID, String userID) {
 
 		this.checkpathID = checkpathID;
 		rpcServiceCheckPath = GWT.create(CheckPathService.class);
@@ -122,7 +122,7 @@ public class CheckpathEditView extends Composite {
 			
 						RootPanel mainPanel = RootPanel.get("main");
 						mainPanel.clear();
-						CheckpathList checkPathList = new CheckpathList(); 		
+						CheckpathList checkPathList = new CheckpathList("dummy"); 		
 						mainPanel.add(checkPathList);
 						
 					}

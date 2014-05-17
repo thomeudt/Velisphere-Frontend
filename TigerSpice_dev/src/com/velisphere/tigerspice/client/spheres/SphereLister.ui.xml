@@ -63,9 +63,17 @@
 						<b:HelpBlock addStyleNames="smalltext">Physical Endpoints:</b:HelpBlock>
 						<vs:SphereListerWidget />
 						
+						<b:Row>
+							<b:Column size="2" offset="0">
+								<b:Button type="PRIMARY" ui:field="btnOpenCheckpath"
+									addStyleNames="btn-block" size="SMALL">Create New Sphere</b:Button>
+							</b:Column>						
+
+						</b:Row>
+						
 						<b:HelpBlock addStyleNames="smalltext">Virtual Endpoints:</b:HelpBlock>
 						<b:HelpBlock addStyleNames="smalltext">Endpoint Groups:</b:HelpBlock>
-				
+										
 
 			</b:Column>
 			</b:TabPane>
