@@ -126,6 +126,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 		
 		
 		VoltConnector voltCon = new VoltConnector();
+		
 
 		try {
 			voltCon.openDatabase();

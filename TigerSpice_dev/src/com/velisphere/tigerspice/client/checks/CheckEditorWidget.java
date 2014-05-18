@@ -53,6 +53,7 @@ import com.sencha.gxt.fx.client.Draggable;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.velisphere.tigerspice.client.LoginDialogBox;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
 import com.velisphere.tigerspice.client.helper.DragobjectContainer;
@@ -621,8 +622,10 @@ public class CheckEditorWidget extends Composite {
 												// Label label = new Label();
 												// label.setText(ancToEndpoint.getStringQueryFirst());
 												// verticalPanel.add(label);
-													RootPanel.get("main").clear();
-												    RootPanel.get("main").add(new CheckpathCreateView());
+													//RootPanel.get("main").clear();
+												    //RootPanel.get("main").add(new CheckpathCreateView());
+													
+													AppController.createLogicDesign();
 													//RootPanel.get("main").add(new EndpointsForSphereListerWidget(currentItem.sphereId));
 												}
 											});

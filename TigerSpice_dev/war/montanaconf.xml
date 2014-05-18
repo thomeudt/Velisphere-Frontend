@@ -18,12 +18,6 @@
 -->
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-<comment>This file contains LDAP login information. Do not overwrite!</comment>
-<entry key="LDAP PW">1Suplies!</entry>
-<entry key="Controller Queue Name">controller</entry>
-<entry key="VeliBunny AMPQ Broker IP">h2209363.stratoserver.net</entry>
-<entry key="LDAP Principal">cn=Manager,dc=velisphere-dir,dc=com</entry>
-<entry key="LDAP URL">ldap://16.1.1.180:389/dc=velisphere-dir,dc=com</entry>
-<entry key="Threadpool Size">256</entry>
-<entry key="Volt IP">16.1.1.149</entry>
+<comment>This file contains config information. Do not overwrite!</comment>
+<entry key="Volt IP">16.1.1.110</entry>
 </properties>

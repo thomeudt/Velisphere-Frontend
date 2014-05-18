@@ -139,6 +139,17 @@
 
 
 <servlet>
+    <servlet-name>helperServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.HelperServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>helperServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltHelper</url-pattern>
+  </servlet-mapping>
+
+
+<servlet>
     <servlet-name>requestFactoryServlet</servlet-name>
     <servlet-class>com.google.web.bindery.requestfactory.server.RequestFactoryServlet</servlet-class>
 </servlet>

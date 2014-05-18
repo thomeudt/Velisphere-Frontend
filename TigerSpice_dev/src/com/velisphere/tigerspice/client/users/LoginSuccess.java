@@ -40,9 +40,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.Login;
 import com.velisphere.tigerspice.client.NavBar;
 import com.velisphere.tigerspice.client.helper.EventUtils;
+import com.velisphere.tigerspice.client.helper.HelperService;
+import com.velisphere.tigerspice.client.helper.HelperServiceAsync;
 import com.velisphere.tigerspice.client.helper.SessionHelper;
 import com.velisphere.tigerspice.client.helper.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.helper.SessionVerifiedEventHandler;
+import com.velisphere.tigerspice.shared.MontanaStatsData;
 import com.velisphere.tigerspice.shared.UserData;
 
 
@@ -104,6 +107,33 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
 		bread0.setText("Home");
 		brdMain.add(bread0);
 
+		
+		final HelperServiceAsync helperService = GWT
+				.create(HelperService.class);
+		
+		helperService.getMontanaStats(new AsyncCallback<MontanaStatsData>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				System.out.println("Failed to get Montana Stats Data. Error: " + caught);
+				
+			}
+			
+			@Override
+			public void onSuccess(MontanaStatsData result) {
+				// TODO Auto-generated method stub
+				System.out.println("Successfully retrieved Montana Stats Context " + result);
+				System.out.println("Bytes Read: " + result.readThroughput);
+				System.out.println("Bytes Written: " + result.writeThroughput);
+				System.out.println("Latency: " + result.averageLatency);
+				System.out.println("Hostname: " + result.hostname);
+				System.out.println("Invocation Errors: " + result.invocationErrors);
+				System.out.println("Successful Invocations: " + result.invocationsCompleted);
+			}
+			
+		});
+		
 		
 	}
 		

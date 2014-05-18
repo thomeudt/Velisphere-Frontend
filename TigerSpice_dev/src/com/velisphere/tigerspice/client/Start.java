@@ -22,13 +22,18 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.EventUtils;
+import com.velisphere.tigerspice.client.helper.HelperService;
+import com.velisphere.tigerspice.client.helper.HelperServiceAsync;
 import com.velisphere.tigerspice.client.helper.SessionHelper;
 import com.velisphere.tigerspice.client.helper.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.helper.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
+import com.velisphere.tigerspice.client.users.UserService;
+import com.velisphere.tigerspice.client.users.UserServiceAsync;
 
 public class Start implements EntryPoint{
 	
@@ -40,6 +45,28 @@ public class Start implements EntryPoint{
 		
 		AnimationLoading loading = new AnimationLoading();
 		loading.showLoadAnimation("Loading App");
+		
+
+		final HelperServiceAsync helperService = GWT
+				.create(HelperService.class);
+		
+		helperService.autoConfMontana(new AsyncCallback<String>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				System.out.println("Failed to create Monata Stats Context. Error: " + caught);
+				
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				// TODO Auto-generated method stub
+				System.out.println("Successfully created Monata Stats Context " + result);
+				
+			}
+			
+		});
 		   	
 		
 		SessionHelper.validateCurrentSession();
