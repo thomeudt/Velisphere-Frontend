@@ -15,25 +15,10 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client.helper;
+package com.velisphere.tigerspice.client.event;
 
+import com.google.gwt.event.shared.EventHandler;
 
-import com.google.gwt.core.shared.GWT;
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.ResettableEventBus;
-import com.google.gwt.event.shared.SimpleEventBus;
-
-
-
-
-
-
-
-
-
-public class EventUtils {
-	 
-	public static EventBus EVENT_BUS = GWT.create(SimpleEventBus.class);
-	
-	
-}
+public interface CheckpathCalculatedEventHandler extends EventHandler {
+	    void onCheckpathCalculated(CheckpathCalculatedEvent CheckpathCalculatedEvent);
+	}

@@ -42,12 +42,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.Login;
 import com.velisphere.tigerspice.client.NavBar;
-import com.velisphere.tigerspice.client.helper.EventUtils;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
+import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.helper.HelperService;
 import com.velisphere.tigerspice.client.helper.HelperServiceAsync;
 import com.velisphere.tigerspice.client.helper.SessionHelper;
-import com.velisphere.tigerspice.client.helper.SessionVerifiedEvent;
-import com.velisphere.tigerspice.client.helper.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.shared.MontanaStatsData;
 import com.velisphere.tigerspice.shared.UserData;
 

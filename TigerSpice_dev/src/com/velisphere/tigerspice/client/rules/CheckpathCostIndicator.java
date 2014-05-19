@@ -18,7 +18,7 @@ public class CheckpathCostIndicator extends Composite {
 	
 	public CheckpathCostIndicator(){
 		this.cost = new Paragraph();
-		this.cost.setText("###");
+		this.cost.setText("Not calculated.");
 		HorizontalPanel hp = new HorizontalPanel();
 		hp.add(cost);
 		initWidget(hp);

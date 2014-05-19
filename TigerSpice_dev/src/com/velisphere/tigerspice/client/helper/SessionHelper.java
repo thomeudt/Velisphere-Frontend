@@ -20,6 +20,8 @@ package com.velisphere.tigerspice.client.helper;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.velisphere.tigerspice.client.Login;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.users.LoginService;
 import com.velisphere.tigerspice.shared.UserData;
 

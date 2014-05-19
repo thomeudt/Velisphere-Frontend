@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client.helper;
+package com.velisphere.tigerspice.client.event;
 
 import com.google.common.eventbus.EventBus;
 import com.google.gwt.event.shared.EventHandler;
@@ -24,10 +24,6 @@ import com.google.gwt.event.shared.HandlerRegistration;
 
 public class SessionVerifiedEvent extends GwtEvent<SessionVerifiedEventHandler> {
 
-		
-		
-	
-		
 		
 		public static Type<SessionVerifiedEventHandler> TYPE = new Type<SessionVerifiedEventHandler>();
 

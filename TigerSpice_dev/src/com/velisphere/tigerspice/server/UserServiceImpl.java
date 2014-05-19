@@ -134,7 +134,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 		
 		try {
 			String pwHash =  BCrypt.hashpw(password, BCrypt.gensalt());
-			voltCon.montanaClient.callProcedure("USER.insert", UUID.randomUUID().toString(), userName, eMail, pwHash);
+			voltCon.montanaClient.callProcedure("USER.insert", UUID.randomUUID().toString(), userName, eMail, pwHash, "PAYPERUSE");
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
