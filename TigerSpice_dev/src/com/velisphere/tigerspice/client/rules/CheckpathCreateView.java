@@ -133,7 +133,7 @@ public class CheckpathCreateView extends Composite {
 	void saveCheckpath(ClickEvent event) {
 		final AnimationLoading loading = new AnimationLoading();
 
-		System.out.println("Save checkpath data: " + wgtCheckpathEditor);
+		System.out.println("[IN] Saving checkpath data: " + wgtCheckpathEditor);
 				
 
 		// create a new checkpath and get UUID. Checkpath UI Object will be added as a last step as we generate the JSON string as we iterate through the list objects
@@ -145,7 +145,7 @@ public class CheckpathCreateView extends Composite {
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
-				System.out.println("ERROR CREATING CHECKPATH: " + caught);
+				System.out.println("[ER] ERROR CREATING CHECKPATH: " + caught);
 
 			}
 
@@ -171,7 +171,7 @@ public class CheckpathCreateView extends Composite {
 								public void onFailure(Throwable caught) {
 									// TODO Auto-generated method stub
 									System.out
-											.println("ERROR creating check: "
+											.println("[ER] ERROR creating check: "
 													+ caught);
 									txtSaveStatus
 											.setText("Error saving logic design. Data not saved.");
@@ -183,7 +183,7 @@ public class CheckpathCreateView extends Composite {
 									// TODO Auto-generated method stub
 
 									System.out
-											.println("Success creating check in checkpath: "
+											.println("[IN] Success creating check in checkpath: "
 													+ result);
 									
 								}
@@ -216,7 +216,7 @@ public class CheckpathCreateView extends Composite {
 					while (checkIt.hasNext()) {
 						SameLevelCheckpathObject checkpathObject = checkIt
 								.next();
-						System.out.println("Name:" + checkpathObject.text);
+						System.out.println("[IN] Creating JSON for:" + checkpathObject.text);
 
 						// creating a serializable representation of the the
 						// current check. children will not be added in
@@ -249,7 +249,7 @@ public class CheckpathCreateView extends Composite {
 											// TODO Auto-generated method stub
 											removeLoadAnimation(loading);
 											System.out
-													.println("ERROR writing multicheck: "
+													.println("[ER] ERROR writing multicheck: "
 															+ caught);
 											txtSaveStatus
 													.setText("Error saving logic design. Data not saved.");
@@ -263,7 +263,7 @@ public class CheckpathCreateView extends Composite {
 											removeLoadAnimation(loading);
 
 											System.out
-													.println("Success writing multicheck: "
+													.println("[IN] Success writing multicheck: "
 															+ result);
 											txtSaveStatus
 													.setText("Logic design saved successfully.");
@@ -342,7 +342,7 @@ public class CheckpathCreateView extends Composite {
 												// stub
 												removeLoadAnimation(loading);
 												System.out
-														.println("ERROR writing multicheck_check_link: "
+														.println("[ER] ERROR writing multicheck_check_link: "
 																+ caught);
 												txtSaveStatus
 														.setText("Error saving logic design. Data not saved.");
@@ -355,7 +355,7 @@ public class CheckpathCreateView extends Composite {
 												// stub
 												removeLoadAnimation(loading);
 												System.out
-														.println("Success writing multicheck_check_link: "
+														.println("[IN] Success writing multicheck_check_link: "
 																+ result);
 												txtSaveStatus
 														.setText("Logic design saved successfully.");
@@ -398,7 +398,7 @@ public class CheckpathCreateView extends Composite {
 														// method stub
 														removeLoadAnimation(loading);
 														System.out
-																.println("ERROR writing multicheck_multicheck_link: "
+																.println("[ER] ERROR writing multicheck_multicheck_link: "
 																		+ caught);
 														txtSaveStatus
 																.setText("Error saving logic design. Data not saved.");
@@ -412,7 +412,7 @@ public class CheckpathCreateView extends Composite {
 														// method stub
 														removeLoadAnimation(loading);
 														System.out
-																.println("Success writing multicheck_multicheck_link: "
+																.println("[IN] Success writing multicheck_multicheck_link: "
 																		+ result);
 														txtSaveStatus
 																.setText("Logic design saved successfully.");
@@ -430,7 +430,7 @@ public class CheckpathCreateView extends Composite {
 					}
 					allColumnsObject.tree.add(currentColumnObject);
 				}
-				System.out.println("Gesamtobject:" + allColumnsObject);
+				
 
 				// add baselayer check to checkpath object tree before generating json
 				
@@ -462,7 +462,7 @@ public class CheckpathCreateView extends Composite {
 							@Override
 							public void onFailure(Throwable caught) {
 								// TODO Auto-generated method stub
-								System.out.println("ERROR: " + caught);
+								System.out.println("[ER] ERROR Creating JSON Checkpath: " + caught);
 
 							}
 
@@ -470,7 +470,7 @@ public class CheckpathCreateView extends Composite {
 							public void onSuccess(String result) {
 								// TODO Auto-generated method stub
 
-								System.out.println("JSON CHECKPATH: " + result);
+								System.out.println("[IN] Checkpath successfully converted to JSON: " + result);
 
 								rpcServiceCheckPath.updateCheckpath(
 										checkPathId, result,
@@ -482,7 +482,7 @@ public class CheckpathCreateView extends Composite {
 												// TODO Auto-generated method
 												// stub
 												System.out
-														.println("ERROR SAVING JSON: "
+														.println("[ER] ERROR SAVING JSON: "
 																+ caught);
 
 											}
@@ -493,7 +493,7 @@ public class CheckpathCreateView extends Composite {
 												// stub
 
 												System.out
-														.println("JSON SAVED SUCCESSFULLY: "
+														.println("[IN] JSON SAVED SUCCESSFULLY: "
 																+ result);
 												
 												
@@ -535,7 +535,7 @@ public class CheckpathCreateView extends Composite {
 																		// method
 																		// stub
 																		System.out
-																				.println("ERROR SAVING JSON: "
+																				.println("[ER] ERROR OPENING JSON: "
 																						+ caught);
 
 																	}
@@ -549,7 +549,7 @@ public class CheckpathCreateView extends Composite {
 																		// stub
 
 																		System.out
-																				.println("JSON RETRIEVED SUCCESSFULLY: "
+																				.println("[IN] JSON RETRIEVED SUCCESSFULLY: "
 																						+ result.tree);
 																		Iterator<CheckPathObjectColumn> rIT = result.tree
 																				.iterator();
@@ -564,7 +564,7 @@ public class CheckpathCreateView extends Composite {
 																				CheckPathObjectData field = cIT
 																						.next();
 																				System.out
-																						.println("Field retrieved: "
+																						.println("[IN] Field retrieved: "
 																								+ field.text
 																								+ "with combination "
 																								+ field.combination);
@@ -574,7 +574,7 @@ public class CheckpathCreateView extends Composite {
 																				while (ccIT
 																						.hasNext()) {
 																					System.out
-																							.println("Child Check found: "
+																							.println("[IN] Child Check found: "
 																									+ ccIT.next());
 																				}
 
@@ -583,7 +583,7 @@ public class CheckpathCreateView extends Composite {
 																				while (cmcIT
 																						.hasNext()) {
 																					System.out
-																							.println("Child Multi Check found: "
+																							.println("[IN] Child Multi Check found: "
 																									+ cmcIT.next());
 																				}
 

@@ -24,13 +24,13 @@ import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.HelperService;
 import com.velisphere.tigerspice.client.helper.HelperServiceAsync;
-import com.velisphere.tigerspice.client.helper.SessionHelper;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 import com.velisphere.tigerspice.client.users.UserService;
 import com.velisphere.tigerspice.client.users.UserServiceAsync;
@@ -55,14 +55,14 @@ public class Start implements EntryPoint{
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
-				System.out.println("Failed to create Monata Stats Context. Error: " + caught);
+				System.out.println("[ER] Failed to complete Montana database auto configuration. Error: " + caught);
 				
 			}
 
 			@Override
 			public void onSuccess(String result) {
 				// TODO Auto-generated method stub
-				System.out.println("Successfully created Monata Stats Context " + result);
+				System.out.println("[IN] Successfully completed Montana database auto configuration, stats context: " + result);
 				
 			}
 			

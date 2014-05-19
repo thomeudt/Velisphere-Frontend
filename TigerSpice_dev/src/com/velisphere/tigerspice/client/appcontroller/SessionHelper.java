@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client.helper;
+package com.velisphere.tigerspice.client.appcontroller;
 
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -34,10 +34,12 @@ public class SessionHelper {
 
 	public static void validateCurrentSession() {
 		String sessionID = Cookies.getCookie("sid");
-		System.out.println("SID: " + sessionID);
+		System.out.println("[IN] Session validation started. Current Session ID (sid cookie): " + sessionID);
 		
 
 		if (sessionID == null) {
+			
+			System.out.println("[IN] Session cookie not found. Redirect to login page.");
 			userID = null;
 			Login loginScreen = new Login();
 			loginScreen.onModuleLoad();
@@ -48,6 +50,7 @@ public class SessionHelper {
 					new AsyncCallback<UserData>() {
 						@Override
 						public void onFailure(Throwable caught) {
+							System.out.println("[IN] Session validation request to server failed. Redirect to login page. Error: " + caught);
 							Login loginScreen = new Login();
 							loginScreen.onModuleLoad();
 						}
@@ -55,6 +58,7 @@ public class SessionHelper {
 						@Override
 						public void onSuccess(UserData result) {
 							if (result == null) {
+								System.out.println("[IN] Server declined session cookie, invalid or expired. Redirect to login page.");
 								userID = null;
 								Login loginScreen = new Login();
 								loginScreen.onModuleLoad();
@@ -64,11 +68,12 @@ public class SessionHelper {
 								if (result.getLoggedIn()) {
 									userName = result.userName;
 									userID = result.userID;
-									
+									System.out.println("[IN] Session validation ok.");
 									if (userID != null) EventUtils.EVENT_BUS.fireEvent(new SessionVerifiedEvent());
 									
 
 								} else {
+									System.out.println("[IN] Server declined session cookie, invalid or expired. Redirect to login page.");
 									userID = null;
 									Login loginScreen = new Login();
 									loginScreen.onModuleLoad();

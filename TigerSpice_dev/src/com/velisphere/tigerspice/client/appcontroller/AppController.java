@@ -10,7 +10,6 @@ import com.velisphere.tigerspice.client.dashboard.Dashboard;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
-import com.velisphere.tigerspice.client.helper.SessionHelper;
 import com.velisphere.tigerspice.client.rules.CheckpathCreateView;
 import com.velisphere.tigerspice.client.rules.CheckpathEditView;
 import com.velisphere.tigerspice.client.rules.CheckpathList;

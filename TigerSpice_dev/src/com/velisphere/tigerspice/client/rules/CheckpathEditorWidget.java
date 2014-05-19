@@ -140,7 +140,7 @@ public class CheckpathEditorWidget extends Composite {
 			loadCheckpathJSON(this.checkpathID);
 		}
 
-		System.out.println("MC Columnen: " + multicheckColumns);
+	
 
 		additionalRebuildNeeded = false;
 		
@@ -174,6 +174,9 @@ public class CheckpathEditorWidget extends Composite {
 	
 	private void rebuildCheckpathDiagram() {
 
+		
+		System.out.println("[IN] Rebuilding checkpath.");
+		
 		multicheckCount = 0;
 		checkCount = 0;
 		
@@ -254,7 +257,7 @@ public class CheckpathEditorWidget extends Composite {
 		// check if new column needs to be added
 
 		if (multicheckColumns.size() > 0) {
-			System.out.println("Spaltenzahl:" + multicheckColumns.size());
+			System.out.println("[IN] Processing multi check columns: " + multicheckColumns.size());
 
 			if (multicheckColumns.getLast().getEmpty() == false) {
 
@@ -294,11 +297,11 @@ public class CheckpathEditorWidget extends Composite {
 		drawConnectorLines(controller);
 
 		if (additionalRebuildNeeded == true) {
-			System.out.println("ADDITIONAL REBUILD");
+			System.out.println("[IN] Additional rebuild of checkpath diagram.");
 			rebuildCheckpathDiagram();
 		}
 		
-		System.out.println("Cost for checkpath execution: " +calculateCost());
+		System.out.println("[IN] Cost for checkpath execution: " +calculateCost());
 
 	}
 
@@ -378,9 +381,7 @@ public class CheckpathEditorWidget extends Composite {
 
 			// now draw object
 
-			System.out.println(currentObject.text + " is multicheck: "
-					+ currentObject.isMulticheck);
-
+			
 			controller.addWidget(currentObject, 10 + columnElement * 120,
 					250 - yposdelta);
 
@@ -476,7 +477,7 @@ public class CheckpathEditorWidget extends Composite {
 														newMultichecks
 																.add(currentObject);
 														System.out
-																.println("ID: "
+																.println("[IN] UUID for new Multicheck generated: "
 																		+ currentObject.checkId);
 													}
 
@@ -504,14 +505,14 @@ public class CheckpathEditorWidget extends Composite {
 
 										}
 
-										System.out.println("Title: "
+										System.out.println("[IN] New Multicheck Title: "
 												+ currentObject.text);
-										System.out.println("Combination: "
+										System.out.println("[IN] New Multicheck Combination: "
 												+ currentObject.combination);
 										System.out
-												.println("Child Multichecks: "
+												.println("[IN] Child Multichecks: "
 														+ currentObject.childMultichecks);
-										System.out.println("Child Checks: "
+										System.out.println("[IN] Child Checks: "
 												+ currentObject.childChecks);
 
 										rebuildCheckpathDiagram();
@@ -728,14 +729,14 @@ public class CheckpathEditorWidget extends Composite {
 						// Auto-generated
 						// method
 						// stub
-						System.out.println("ERROR LOADING JSON: " + caught);
+						System.out.println("[ER] ERROR LOADING JSON: " + caught);
 
 					}
 
 					@Override
 					public void onSuccess(CheckPathObjectTree result) {
 
-						System.out.println("JSON RETRIEVED SUCCESSFULLY: "
+						System.out.println("[IN] JSON RETRIEVED SUCCESSFULLY: "
 								+ result.tree);
 
 						// first round - fill objects without relationship
@@ -774,7 +775,7 @@ public class CheckpathEditorWidget extends Composite {
 									// Auto-generated
 									// method
 									// stub
-									System.out.println("ERROR RETRIEVING ACTIONS FOR CHECK " + caught);
+									System.out.println("[ER] ERROR RETRIEVING ACTIONS FOR CHECK " + caught);
 
 								}
 
@@ -826,7 +827,7 @@ public class CheckpathEditorWidget extends Composite {
 
 							while (cIT.hasNext()) {
 								CheckPathObjectData field = cIT.next();
-								System.out.println("Field retrieved: "
+								System.out.println("[IN] Field from JSON checkpath retrieved: "
 										+ field.text + "with ID "
 										+ field.checkId);
 								final SameLevelCheckpathObject newMulticheck = new SameLevelCheckpathObject(
@@ -834,7 +835,7 @@ public class CheckpathEditorWidget extends Composite {
 										field.level);
 								newMulticheck.combination = field.combination;
 								newMulticheck.checkpathID = checkpathId;
-								System.out.println("Checkpathobject created: "
+								System.out.println("[IN] Checkpathobject from JSON checkpath created: "
 										+ newMulticheck.text + "with ID "
 										+ newMulticheck.checkId);
 								newMulticheck.isMulticheck = true;
@@ -851,7 +852,7 @@ public class CheckpathEditorWidget extends Composite {
 										// Auto-generated
 										// method
 										// stub
-										System.out.println("ERROR RETRIEVING ACTIONS FOR CHECK " + caught);
+										System.out.println("[ER] ERROR RETRIEVING ACTIONS FOR CHECK: " + caught);
 
 									}
 
@@ -859,8 +860,8 @@ public class CheckpathEditorWidget extends Composite {
 									public void onSuccess(LinkedList<ActionObject> actions){
 										newMulticheck.actions = actions;
 										
-										System.out.println("ADDING MULTICHECK ACTIONS FOR " + newMulticheck.checkId);
-										System.out.println("ACTIONS ARE " + newMulticheck.actions);
+										System.out.println("[IN] ADDING ACTIONS FOR MULTICHECK: " + newMulticheck.checkId);
+										System.out.println("[IN] ACTIONS ARE: " + newMulticheck.actions);
 										
 										/** this is not applicable/not implemented for multichecks yet
 										Iterator<ActionObject> it = actions.iterator();
@@ -895,7 +896,7 @@ public class CheckpathEditorWidget extends Composite {
 								// find child checks and store in lookup list;
 								while (ccIT.hasNext()) {
 									String foundChildCheck = ccIT.next();
-									System.out.println("Child Check found: "
+									System.out.println("[IN] Child Check for field "+ field.text + " found: "
 											+ foundChildCheck);
 									foundChildChecks.add(foundChildCheck);
 								}
@@ -911,7 +912,7 @@ public class CheckpathEditorWidget extends Composite {
 								while (cmcIT.hasNext()) {
 									String foundChildMulticheck = cmcIT.next();
 									System.out
-											.println("Child Multi Check found: "
+											.println("[IN] Child Multi Check for field "+ field.text + "found: "
 													+ foundChildMulticheck);
 									foundChildMultichecks
 											.add(foundChildMulticheck);
@@ -928,10 +929,13 @@ public class CheckpathEditorWidget extends Composite {
 
 						}
 
-						System.out.println("MCC: " + multicheckColumns);
-						System.out.println("*/*"
+						System.out.println("[IN] Total number of multicheck columns: " + multicheckColumns);
+						
+						/**
+						System.out.println("*"
 								+ childMultichecksForMulticheck + " / "
 								+ childChecksForMulticheck);
+						**/
 
 						// second round - add relationship data from lookup
 						// table
@@ -949,7 +953,7 @@ public class CheckpathEditorWidget extends Composite {
 							while (cIT.hasNext()) {
 								final CheckPathObjectData field = cIT.next();
 								System.out
-										.println("Field retrieved for relationship update: "
+										.println("[IN] Field retrieved for relationship update: "
 												+ field.text
 												+ "with ID "
 												+ field.checkId);
@@ -968,7 +972,7 @@ public class CheckpathEditorWidget extends Composite {
 									objectToUpdate.childMultichecks
 											.add(childMulticheckObject);
 									System.out
-											.println("Adding multicheck children for "
+											.println("[IN] Adding multicheck children for "
 													+ field.checkId
 													+ ": "
 													+ childMulticheckObject);
@@ -996,7 +1000,7 @@ public class CheckpathEditorWidget extends Composite {
 													// method
 													// stub
 													System.out
-															.println("ERROR RETRIEVING CHECK NAME: "
+															.println("[ER] ERROR RETRIEVING CHECK NAME: "
 																	+ caught);
 
 												}
@@ -1006,7 +1010,7 @@ public class CheckpathEditorWidget extends Composite {
 														String result) {
 
 													System.out
-															.println("Already contains: "
+															.println("[IN] Already contains: "
 																	+ objectToUpdate.checkId
 																	+ ":"
 																	+ childCheckID);
@@ -1019,7 +1023,7 @@ public class CheckpathEditorWidget extends Composite {
 														// link to children
 
 														System.out
-																.println("LINKING CHILDEN: "
+																.println("[IN] LINKING CHILDEN: "
 																		+ childCheckID);
 														SameLevelCheckpathObject childCheckObject = baseLayerMap
 																.get(childCheckID);
@@ -1029,7 +1033,7 @@ public class CheckpathEditorWidget extends Composite {
 														childrenAlreadyLinked
 																.add(childCheckID);
 														System.out
-																.println("HASHSET: "
+																.println("[IN] HASHSET: "
 																		+ checkHashSet);
 
 														removeLoadAnimation(loading);
@@ -1361,7 +1365,7 @@ public class CheckpathEditorWidget extends Composite {
 			protected void onDragDrop(DndDropEvent event) {
 				super.onDragDrop(event);
 								
-				System.out.println("Dropped action!");
+				System.out.println("[IN] Dropped action on check");
 				
 
 				final DragobjectContainer dragAccordion = (DragobjectContainer) event.getData();
@@ -1433,7 +1437,7 @@ public class CheckpathEditorWidget extends Composite {
 							currentObject.actions.clear();
 							currentObject.actions.addAll(checkEditDialogBox.getActions());
 							if (currentObject.actions.size() > 0) currentObject.showActionIcon();
-							System.out.println("ACT: " + currentObject.actions.getFirst().manualValue);
+							
 						}							
 						
 					}
@@ -1461,7 +1465,7 @@ public class CheckpathEditorWidget extends Composite {
 			protected void onDragDrop(DndDropEvent event) {
 				super.onDragDrop(event);
 								
-				System.out.println("Dropped action!");
+				System.out.println("[IN] Dropped action into multicheck!");
 				
 
 				final DragobjectContainer dragAccordion = (DragobjectContainer) event.getData();
@@ -1533,7 +1537,7 @@ public class CheckpathEditorWidget extends Composite {
 							currentObject.actions.clear();
 							currentObject.actions.addAll(multicheckDialogBox.getActions());
 							if (currentObject.actions.size() > 0) currentObject.showActionIcon();
-							System.out.println("ACT: " + currentObject.actions.getFirst().manualValue);
+							
 			
 							updatedMultichecks.add(currentObject);
 							rebuildCheckpathDiagram();

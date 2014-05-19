@@ -38,9 +38,9 @@ public class CheckpathCostIndicator extends Composite {
 		calcUpdateHandler = EventUtils.EVENT_BUS.addHandler(CheckpathCalculatedEvent.TYPE, new CheckpathCalculatedEventHandler()     {
 			@Override
 		    public void onCheckpathCalculated(CheckpathCalculatedEvent checkpathCalculatedEvent) {
-				System.out.println("FIRED");
-				//calcUpdateHandler.removeHandler();
-				cost.setText("USD " + wgtCheckpathEditor.getCost());
+				System.out.println("[IN] Checkpath Calculated Event fired.");
+				calcUpdateHandler.removeHandler();
+				cost.setText(wgtCheckpathEditor.getCost() + " credits");
 								
 			}		
 		});

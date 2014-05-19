@@ -42,12 +42,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.Login;
 import com.velisphere.tigerspice.client.NavBar;
+import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.helper.HelperService;
 import com.velisphere.tigerspice.client.helper.HelperServiceAsync;
-import com.velisphere.tigerspice.client.helper.SessionHelper;
 import com.velisphere.tigerspice.shared.MontanaStatsData;
 import com.velisphere.tigerspice.shared.UserData;
 
@@ -130,32 +130,32 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
-				System.out.println("Failed to get Montana Stats Data. Error: " + caught);
+				System.out.println("[ER] Failed to get Montana Stats Data. Error: " + caught);
 				
 			}
 			
 			@Override
 			public void onSuccess(MontanaStatsData result) {
 				// TODO Auto-generated method stub
-				System.out.println("Successfully retrieved Montana Stats " + result);
+				System.out.println("[IN] Successfully retrieved Montana Stats, Stats Object: " + result);
 				voltIP.setText("Connected to VoltIP via montanaconf.xml: " + result.IP);
-				System.out.println("Host ID: " + result.hostId);
+				System.out.println("[IN] Host ID: " + result.hostId);
 				voltHostID.setText("Montana Host ID reported by VoltDB: " + result.hostId);
-				System.out.println("Hostname: " + result.hostname);
+				System.out.println("[IN] Hostname: " + result.hostname);
 				voltHostName.setText("Montana Hostname/IP reported by VoltDB: " + result.hostname);
-				System.out.println("Bytes Read: " + result.bytesRead);
+				System.out.println("[IN] Bytes Read: " + result.bytesRead);
 				voltBytesRead.setText("Bytes read, reported by VoltDB: " + result.bytesRead);
-				System.out.println("Bytes Written: " + result.bytesWritten);
+				System.out.println("[IN] Bytes Written: " + result.bytesWritten);
 				voltBytesWritten.setText("Bytes written, reported by VoltDB: " + result.bytesWritten);
-				System.out.println("Connection Hostname: " + result.connectionHostname);
+				System.out.println("[IN] Connection Hostname: " + result.connectionHostname);
 				voltConnHostName.setText("Name/IP of connecting host, reported by VoltDB: " + result.connectionHostname);
-				System.out.println("Connection ID: " + result.connectionId);
+				System.out.println("[IN] Connection ID: " + result.connectionId);
 				voltConnID.setText("Connection ID, reported by VoltDB: " + result.connectionId);
-				System.out.println("Messages Read: " + result.messagesRead);
+				System.out.println("[IN] Messages Read: " + result.messagesRead);
 				voltMsgRead.setText("Messages read, reported by VoltDB: " + result.messagesRead);
-				System.out.println("Messages Written: " + result.messagesWritten);
+				System.out.println("[IN] Messages Written: " + result.messagesWritten);
 				voltMsgWritten.setText("Messages written, reported by VoltDB: " + result.messagesWritten);
-				System.out.println("Timestamp: " + result.timestamp);
+				System.out.println("[IN] Timestamp: " + result.timestamp);
 				voltTimestamp.setText("Timestamp of VoltDB report: " + result.timestamp);
 				
 				

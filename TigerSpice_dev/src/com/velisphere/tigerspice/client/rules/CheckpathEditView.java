@@ -151,7 +151,7 @@ public class CheckpathEditView extends Composite {
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
-				System.out.println("ERROR CREATING CHECKPATH: " + caught);
+				System.out.println("[ER] ERROR LOADING CHECKPATH: " + caught);
 
 			}
 
@@ -221,7 +221,7 @@ public class CheckpathEditView extends Composite {
 										@Override
 										public void onFailure(Throwable caught) {
 											// TODO Auto-generated method stub
-											System.out.println("ERROR RENAMING CHECKPATH: " + caught);
+											System.out.println("[ER] ERROR RENAMING CHECKPATH: " + caught);
 
 										}
 
@@ -264,10 +264,10 @@ public class CheckpathEditView extends Composite {
 		Iterator<SameLevelCheckpathObject> newMultichecksIt = newMultichecks.iterator();
 		Iterator<SameLevelCheckpathObject> newChecksIt = newChecks.iterator();
 		Iterator<SameLevelCheckpathObject> updatedChecksIt = updatedChecks.iterator();
-		System.out.println("###########NEW MULTICHECKS: " + newMultichecks);
-		System.out.println("###########UPDATED MULTICHECKS: " + updatedMultichecks);
-		System.out.println("###########NEW CHECKS: " + newChecks);
-		System.out.println("###########UPDATED CHECKS: " + updatedChecks);
+		System.out.println("[IN] Added Multichecks to be saved: " + newMultichecks);
+		System.out.println("[IN] Updated Multichecks to be saved: " + updatedMultichecks);
+		System.out.println("[IN] Added Checks to be saved:  " + newChecks);
+		System.out.println("[IN] Updated Multichecks to be saved:  " + updatedChecks);
 		
 		if (newMultichecks.isEmpty() && updatedMultichecks.isEmpty() && newChecks.isEmpty() && updatedChecks.isEmpty() && wgtCheckpathEditor.getDeletedMultichecks().isEmpty()
 				&& wgtCheckpathEditor.getDeletedChecks().isEmpty())
@@ -284,7 +284,7 @@ public class CheckpathEditView extends Composite {
 		
 		final String checkPathIdUpdate = this.checkpathID;
 
-		System.out.println("Update checkpath data: " + wgtCheckpathEditor);
+		System.out.println("[IN] Update checkpath data: " + wgtCheckpathEditor);
 				
 		
 
@@ -311,7 +311,7 @@ public class CheckpathEditView extends Composite {
 					while (checkIt.hasNext()) {
 						SameLevelCheckpathObject checkpathObject = checkIt
 								.next();
-						System.out.println("Name:" + checkpathObject.text);
+						System.out.println("[IN] Processing Checkpath Object:" + checkpathObject.text);
 
 						// creating a serializable representation of the the
 						// current check. children will not be added in
@@ -424,7 +424,7 @@ public class CheckpathEditView extends Composite {
 								public void onFailure(Throwable caught) {
 									// TODO Auto-generated method stub
 									System.out
-											.println("ERROR creating check: "
+											.println("[ER] ERROR creating check: "
 													+ caught);
 									txtSaveStatus
 											.setText("Error saving logic design. Data not saved.");
@@ -440,7 +440,7 @@ public class CheckpathEditView extends Composite {
 									.setText("Logic design saved successfully.");
 
 									System.out
-											.println("Success creating check in checkpath: "
+											.println("[IN]  Success creating check in checkpath: "
 													+ result);
 									animation.removeLoadAnimation();
 									
@@ -465,7 +465,7 @@ public class CheckpathEditView extends Composite {
 								public void onFailure(Throwable caught) {
 									// TODO Auto-generated method stub
 									System.out
-											.println("ERROR updating check: "
+											.println("[ER] ERROR updating check: "
 													+ caught);
 									txtSaveStatus
 											.setText("Error saving logic design. Data not saved.");
@@ -481,7 +481,7 @@ public class CheckpathEditView extends Composite {
 									.setText("Logic design saved successfully.");
 
 									System.out
-											.println("Success creating check in checkpath: "
+											.println("[IN]  Success creating check in checkpath: "
 													+ result);
 									animation.removeLoadAnimation();
 									
@@ -518,7 +518,7 @@ public class CheckpathEditView extends Composite {
 									// TODO Auto-generated method stub
 									animation.removeLoadAnimation();
 									System.out
-											.println("ERROR writing multicheck: "
+											.println("[ER] ERROR writing multicheck: "
 													+ caught);
 									txtSaveStatus
 											.setText("Error saving logic design. Data not saved.");
@@ -532,7 +532,7 @@ public class CheckpathEditView extends Composite {
 									animation.removeLoadAnimation();
 
 									System.out
-											.println("Success writing multicheck: "
+											.println("[IN] Success writing multicheck: "
 													+ result);
 									txtSaveStatus
 											.setText("Logic design saved successfully.");
@@ -568,7 +568,7 @@ public class CheckpathEditView extends Composite {
 										// stub
 										animationChecks.removeFromParent();
 										System.out
-												.println("ERROR writing multicheck_check_link: "
+												.println("[ER] ERROR writing multicheck_check_link: "
 														+ caught);
 										txtSaveStatus
 												.setText("Error saving logic design. Data not saved.");
@@ -581,7 +581,7 @@ public class CheckpathEditView extends Composite {
 										// stub
 										animationChecks.removeFromParent();
 										System.out
-												.println("Success writing multicheck_check_link: "
+												.println("[IN] Success writing multicheck_check_link: "
 														+ result);
 										txtSaveStatus
 												.setText("Logic design saved successfully.");
@@ -618,7 +618,7 @@ public class CheckpathEditView extends Composite {
 										// stub
 										animation.removeLoadAnimation();
 										System.out
-												.println("ERROR writing multicheck_check_link: "
+												.println("[ER] ERROR writing multicheck_check_link: "
 														+ caught);
 										txtSaveStatus
 												.setText("Error saving logic design. Data not saved.");
@@ -631,7 +631,7 @@ public class CheckpathEditView extends Composite {
 										// stub
 										animation.removeLoadAnimation();
 										System.out
-												.println("Success writing multicheck_multicheck_link: "
+												.println("[IN] Success writing multicheck_multicheck_link: "
 														+ result);
 										txtSaveStatus
 												.setText("Logic design saved successfully.");
@@ -668,7 +668,7 @@ public class CheckpathEditView extends Composite {
 									// TODO Auto-generated method stub
 									animation.removeLoadAnimation();
 									System.out
-											.println("ERROR updating multicheck: "
+											.println("[ER] ERROR updating multicheck: "
 													+ caught);
 									txtSaveStatus
 											.setText("Error saving logic design. Data not saved.");
@@ -682,7 +682,7 @@ public class CheckpathEditView extends Composite {
 									animation.removeLoadAnimation();
 
 									System.out
-											.println("Success updating multicheck: "
+											.println("[IN] Success updating multicheck: "
 													+ result);
 									txtSaveStatus
 											.setText("Logic design saved successfully.");
@@ -710,7 +710,7 @@ public class CheckpathEditView extends Composite {
 													// stub
 													animation.removeLoadAnimation();
 													System.out
-															.println("ERROR deleting multicheck_multicheck_link: "
+															.println("[ER] ERROR deleting multicheck_multicheck_link: "
 																	+ caught);
 													txtSaveStatus
 															.setText("Error saving logic design. Data not saved.");
@@ -747,7 +747,7 @@ public class CheckpathEditView extends Composite {
 																		// stub
 																		animation.removeLoadAnimation();
 																		System.out
-																				.println("ERROR writing multicheck_multicheck_link: "
+																				.println("[ER] ERROR writing multicheck_multicheck_link: "
 																						+ caught);
 																		txtSaveStatus
 																				.setText("Error saving logic design. Data not saved.");
@@ -760,7 +760,7 @@ public class CheckpathEditView extends Composite {
 																		// stub
 																		animation.removeLoadAnimation();
 																		System.out
-																				.println("Success rewriting multicheck_multicheck_link: "
+																				.println("[IN] Success rewriting multicheck_multicheck_link: "
 																						+ result);
 																		txtSaveStatus
 																				.setText("Logic design saved successfully.");
@@ -789,7 +789,7 @@ public class CheckpathEditView extends Composite {
 													// stub
 													animation.removeLoadAnimation();
 													System.out
-															.println("ERROR deleting multicheck_check_link: "
+															.println("[ER] ERROR deleting multicheck_check_link: "
 																	+ caught);
 													txtSaveStatus
 															.setText("Error saving logic design. Data not saved.");
@@ -826,7 +826,7 @@ public class CheckpathEditView extends Composite {
 																		// stub
 																		animation.removeLoadAnimation();
 																		System.out
-																				.println("ERROR writing multicheck_check_link: "
+																				.println("[ER] ERROR writing multicheck_check_link: "
 																						+ caught);
 																		txtSaveStatus
 																				.setText("Error saving logic design. Data not saved.");
@@ -839,7 +839,7 @@ public class CheckpathEditView extends Composite {
 																		// stub
 																		animation.removeLoadAnimation();
 																		System.out
-																				.println("Success rewriting multicheck_check_link: "
+																				.println("[IN] Success rewriting multicheck_check_link: "
 																						+ result);
 																		txtSaveStatus
 																				.setText("Logic design saved successfully.");
@@ -881,7 +881,7 @@ public class CheckpathEditView extends Composite {
 									// TODO Auto-generated method stub
 									
 									System.out
-											.println("ERROR deleting multicheck: "
+											.println("[ER] ERROR deleting multicheck: "
 													+ caught);
 								}
 
@@ -889,7 +889,7 @@ public class CheckpathEditView extends Composite {
 								public void onSuccess(String result) {
 									// TODO Auto-generated method stub
 									System.out
-									.println("Success deleting multicheck: "
+									.println("[IN] Success deleting multicheck: "
 											+ result);
 									txtSaveStatus
 									.setText("Logic design saved successfully.");
@@ -910,7 +910,7 @@ public class CheckpathEditView extends Composite {
 									// TODO Auto-generated method stub
 									
 									System.out
-											.println("ERROR deleting multicheck_multicheck_link: "
+											.println("[ER] ERROR deleting multicheck_multicheck_link: "
 													+ caught);
 								}
 
@@ -918,7 +918,7 @@ public class CheckpathEditView extends Composite {
 								public void onSuccess(String result) {
 									// TODO Auto-generated method stub
 									System.out
-									.println("Success deleting multicheck_multicheck_link: "
+									.println("[IN] Success deleting multicheck_multicheck_link: "
 											+ result);
 									txtSaveStatus
 									.setText("Logic design saved successfully.");
@@ -938,7 +938,7 @@ public class CheckpathEditView extends Composite {
 									// TODO Auto-generated method stub
 									
 									System.out
-											.println("ERROR deleting multicheck_check_link: "
+											.println("[ER] ERROR deleting multicheck_check_link: "
 													+ caught);
 								}
 
@@ -946,7 +946,7 @@ public class CheckpathEditView extends Composite {
 								public void onSuccess(String result) {
 									// TODO Auto-generated method stub
 									System.out
-									.println("Success deleting multicheck_check_link: "
+									.println("[IN] Success deleting multicheck_check_link: "
 											+ result);
 									txtSaveStatus
 									.setText("Logic design saved successfully.");
@@ -966,7 +966,7 @@ public class CheckpathEditView extends Composite {
 									// TODO Auto-generated method stub
 									
 									System.out
-											.println("ERROR deleting actions for check: "
+											.println("[ER] ERROR deleting actions for check: "
 													+ caught);
 								}
 
@@ -974,7 +974,7 @@ public class CheckpathEditView extends Composite {
 								public void onSuccess(String result) {
 									// TODO Auto-generated method stub
 									System.out
-									.println("Success deleting actions for multicheck: "
+									.println("[IN] Success deleting actions for multicheck: "
 											+ result);
 									
 									
@@ -1002,7 +1002,7 @@ public class CheckpathEditView extends Composite {
 									// TODO Auto-generated method stub
 									
 									System.out
-											.println("ERROR deleting check: "
+											.println("[ER] ERROR deleting check: "
 													+ caught);
 								}
 
@@ -1010,7 +1010,7 @@ public class CheckpathEditView extends Composite {
 								public void onSuccess(String result) {
 									// TODO Auto-generated method stub
 									System.out
-									.println("Success deleting check: "
+									.println("[IN] Success deleting check: "
 											+ result);
 									txtSaveStatus
 									.setText("Logic design saved successfully.");
@@ -1031,7 +1031,7 @@ public class CheckpathEditView extends Composite {
 									// TODO Auto-generated method stub
 									
 									System.out
-											.println("ERROR deleting actions for check: "
+											.println("[ER] ERROR deleting actions for check: "
 													+ caught);
 								}
 
@@ -1039,7 +1039,7 @@ public class CheckpathEditView extends Composite {
 								public void onSuccess(String result) {
 									// TODO Auto-generated method stub
 									System.out
-									.println("Success deleting actions for check: "
+									.println("[IN] Success deleting actions for check: "
 											+ result);
 									txtSaveStatus
 									.setText("Logic design saved successfully.");
@@ -1056,11 +1056,11 @@ public class CheckpathEditView extends Composite {
 				
 				animation.removeLoadAnimation();
 				
-				System.out.println("Updated Multichecks: " + wgtCheckpathEditor.getUpdatedMultichecks());
+				System.out.println("[IN] Updated Multichecks: " + wgtCheckpathEditor.getUpdatedMultichecks());
 
-				System.out.println("Added Multichecks: " + wgtCheckpathEditor.getNewMultichecks());
+				System.out.println("[IN] Added Multichecks: " + wgtCheckpathEditor.getNewMultichecks());
 
-				System.out.println("Deleted Multichecks: " + wgtCheckpathEditor.getDeletedMultichecks());
+				System.out.println("[IN] Deleted Multichecks: " + wgtCheckpathEditor.getDeletedMultichecks());
 
 				
 				createCheckpathJSON(allColumnsObject, checkPathIdUpdate);
@@ -1084,7 +1084,7 @@ public class CheckpathEditView extends Composite {
 					@Override
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
-						System.out.println("ERROR: " + caught);
+						System.out.println("[ER] ERROR CREATING JSON: " + caught);
 
 					}
 
@@ -1092,7 +1092,7 @@ public class CheckpathEditView extends Composite {
 					public void onSuccess(String result) {
 						// TODO Auto-generated method stub
 
-						System.out.println("JSON CHECKPATH: " + result);
+						System.out.println("[IN] JSON CHECKPATH CREATED: " + result);
 
 						rpcServiceCheckPath.updateCheckpath(
 								checkPathIdUpdate, result,
@@ -1104,7 +1104,7 @@ public class CheckpathEditView extends Composite {
 										// TODO Auto-generated method
 										// stub
 										System.out
-												.println("ERROR SAVING JSON: "
+												.println("[ER] ERROR SAVING JSON: "
 														+ caught);
 
 									}
@@ -1115,7 +1115,7 @@ public class CheckpathEditView extends Composite {
 										// stub
 
 										System.out
-												.println("JSON SAVED SUCCESSFULLY: "
+												.println("[IN] JSON SAVED SUCCESSFULLY: "
 														+ result);
 
 										

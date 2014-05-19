@@ -78,8 +78,8 @@ public class HelperServiceImpl extends RemoteServiceServlet implements HelperSer
 	
 		ServerParameters.volt_ip = props.getProperty("Volt IP");
 
-		System.out.println(" [IN] Reading Configuration");
-		System.out.println(" [IN] Selected VoltDB: "+ ServerParameters.volt_ip);
+		System.out.println("[IN] Reading Configuration");
+		System.out.println("[IN] Selected VoltDB: "+ ServerParameters.volt_ip);
 		
 		
 		VoltConnector voltCon = new VoltConnector();
