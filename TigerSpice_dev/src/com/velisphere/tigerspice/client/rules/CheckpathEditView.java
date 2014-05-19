@@ -35,6 +35,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
@@ -48,6 +49,12 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
+import com.velisphere.tigerspice.client.dashboard.Dashboard;
+import com.velisphere.tigerspice.client.event.CheckpathCalculatedEvent;
+import com.velisphere.tigerspice.client.event.CheckpathCalculatedEventHandler;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
+import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
@@ -73,7 +80,8 @@ public class CheckpathEditView extends Composite {
 	NavLink bread0;
 	NavLink bread1;
 	NavLink bread2;
-	
+	@UiField
+	CheckpathCostIndicator wgtCostIndicator;
 
 	private CheckPathServiceAsync rpcServiceCheckPath;
 	private CheckServiceAsync rpcServiceCheck;
@@ -92,7 +100,16 @@ public class CheckpathEditView extends Composite {
 
 	public CheckpathEditView(String checkpathID, String userID) {
 
+		
+		
+		
 		this.checkpathID = checkpathID;
+		
+		// initalize update mechanism for cost
+		// initCostUpdater();
+		
+		
+		
 		rpcServiceCheckPath = GWT.create(CheckPathService.class);
 		rpcServiceCheck = GWT.create(CheckService.class);
 		initWidget(uiBinder.createAndBindUi(this));
@@ -103,7 +120,7 @@ public class CheckpathEditView extends Composite {
 		bread1.setText("Logic Designer");
 		brdMain.add(bread1);
 		btnSaveCheckpath.setWidth("160px");
-		
+		wgtCostIndicator.setCheckpathEditor(wgtCheckpathEditor);
 		
 		bread0.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -226,6 +243,10 @@ public class CheckpathEditView extends Composite {
 		
 		
 
+	
+	
+	
+	
 								
 
 	@UiHandler("btnSaveCheckpath")
@@ -1116,6 +1137,9 @@ public class CheckpathEditView extends Composite {
 	@UiFactory CheckpathEditorWidget makeCheckpathEditor() { // method name is insignificant
 	    return new CheckpathEditorWidget(this.checkpathID);
 	  }
+	
+
+
 
 
 }

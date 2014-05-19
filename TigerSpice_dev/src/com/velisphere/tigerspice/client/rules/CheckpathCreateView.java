@@ -66,6 +66,9 @@ public class CheckpathCreateView extends Composite {
 	NavLink bread1;
 	NavLink bread2;
 	String userID;
+	@UiField
+	CheckpathCostIndicator wgtCostIndicator;
+
 
 	private CheckPathServiceAsync rpcServiceCheckPath;
 	private CheckServiceAsync rpcServiceCheck;
@@ -85,6 +88,7 @@ public class CheckpathCreateView extends Composite {
 		rpcServiceCheckPath = GWT.create(CheckPathService.class);
 		rpcServiceCheck = GWT.create(CheckService.class);
 		initWidget(uiBinder.createAndBindUi(this));
+		
 		bread0 = new NavLink();
 		bread0.setText("Home");
 		brdMain.add(bread0);
@@ -95,7 +99,7 @@ public class CheckpathCreateView extends Composite {
 		bread2.setText("Create New Logic Design");
 		brdMain.add(bread2);
 		btnSaveCheckpath.setWidth("160px");
-		
+		wgtCostIndicator.setCheckpathEditor(wgtCheckpathEditor);
 		
 		
 		bread0.addClickHandler(new ClickHandler() {

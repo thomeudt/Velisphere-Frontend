@@ -61,6 +61,9 @@ import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.velisphere.tigerspice.client.checks.CheckDialogBox;
 import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
+import com.velisphere.tigerspice.client.event.CheckpathCalculatedEvent;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DragobjectContainer;
 import com.velisphere.tigerspice.client.helper.UuidService;
@@ -95,7 +98,11 @@ public class CheckpathEditorWidget extends Composite {
 	private List<SameLevelCheckpathObject> deletedChecks;
 	private Boolean additionalRebuildNeeded;
 	private DiagramController controller;
-
+	private int checkCount = 0;
+	private int multicheckCount = 0;
+	private float cost;
+	
+	
 	public CheckpathEditorWidget(String checkpathID) {
 
 		// widget constructor requires a parameter, thus we need to invoke the
@@ -136,13 +143,40 @@ public class CheckpathEditorWidget extends Composite {
 		System.out.println("MC Columnen: " + multicheckColumns);
 
 		additionalRebuildNeeded = false;
-
+		
+		int checkCount = 0;
+		int multicheckCount = 0;
+		
+		
 		rebuildCheckpathDiagram();
+		
+		
+		
+		
+		
+		
 
 	}
 
+	private float calculateCost()
+	{		
+		this.cost = checkCount * 1 + multicheckCount * 10;
+		EventUtils.EVENT_BUS.fireEvent(new CheckpathCalculatedEvent());
+		return cost;
+		
+	}
+	
+	public float getCost()
+	{
+		return this.cost;
+	}
+	
+	
 	private void rebuildCheckpathDiagram() {
 
+		multicheckCount = 0;
+		checkCount = 0;
+		
 		// Draw basic layout boxes
 
 		final VerticalLayoutContainer container = new VerticalLayoutContainer();
@@ -186,6 +220,8 @@ public class CheckpathEditorWidget extends Composite {
 
 		while (it.hasNext()) {
 			final SameLevelCheckpathObject currentObject = it.next();
+			
+			++checkCount;
 
 			addDragSource(currentObject);
 			addDndTargetForAction(currentObject);
@@ -261,6 +297,8 @@ public class CheckpathEditorWidget extends Composite {
 			System.out.println("ADDITIONAL REBUILD");
 			rebuildCheckpathDiagram();
 		}
+		
+		System.out.println("Cost for checkpath execution: " +calculateCost());
 
 	}
 
@@ -278,8 +316,14 @@ public class CheckpathEditorWidget extends Composite {
 		int yposdelta = 0;
 		while (mit.hasNext()) {
 
+			
 			final SameLevelCheckpathObject currentObject = mit.next();
 
+			// increment multicheck count for cost calculation, if field is not empty
+			
+			if (currentObject.empty == false) ++multicheckCount;
+			
+			
 			// correct level setting of current object within column, might have
 			// changed due to child deletions
 			// this can be further optimized in the future to allow moving
@@ -490,6 +534,7 @@ public class CheckpathEditorWidget extends Composite {
 					if (currentObject.checkId != null) {
 
 						currentObject.setEmpty(false);
+						
 						multicheckColumns.get(columnElement).setEmpty(false);
 
 						if (dragAccordion.isMulticheck) {

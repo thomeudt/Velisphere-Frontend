@@ -56,7 +56,7 @@
 
 				<b:Row>
 					<b:Column size="2" offset="0">
-						<b:Paragraph addStyleNames="smalltext">Cost per execution</b:Paragraph>
+						<b:Paragraph addStyleNames="smalltext">Maximum cost per execution</b:Paragraph>
 
 					</b:Column>
 
@@ -69,7 +69,8 @@
 
 
 					<b:Column size="2" offset="0">
-						<b:Paragraph addStyleNames="strong">USD 0.00</b:Paragraph>
+					    <vsrl:CheckpathCostIndicator ui:field="wgtCostIndicator"/> 
+						
 						<b:Paragraph addStyleNames="smalltext">Sensor Explorer</b:Paragraph>
 						<vspr:SensorPropertiesByEndpointWidget />
 						<b:Paragraph addStyleNames="smalltext">Actor Explorer</b:Paragraph>
