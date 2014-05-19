@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -47,7 +48,7 @@ public class SphereServiceImpl extends RemoteServiceServlet implements
 
 			
 	
-	public Vector<SphereData> getAllSpheres()
+	public LinkedList<SphereData> getAllSpheres()
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -62,7 +63,7 @@ public class SphereServiceImpl extends RemoteServiceServlet implements
 			e1.printStackTrace();
 		}
 
-		Vector<SphereData> allSpheres = new Vector<SphereData>();
+		LinkedList<SphereData> allSpheres = new LinkedList<SphereData>();
 		try {
 
 			final ClientResponse findAllSpheres = voltCon.montanaClient

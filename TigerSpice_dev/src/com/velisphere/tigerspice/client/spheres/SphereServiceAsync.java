@@ -18,6 +18,7 @@
 package com.velisphere.tigerspice.client.spheres;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -28,7 +29,7 @@ import com.velisphere.tigerspice.shared.SphereData;
 import com.velisphere.tigerspice.shared.UserData;
 
 public interface SphereServiceAsync {
-	void getAllSpheres(AsyncCallback<Vector<SphereData>> callback);
+	void getAllSpheres(AsyncCallback<LinkedList<SphereData>> callback);
 	void updateSpherenameForSphereID(String sphereID, String sphereName, AsyncCallback<String> callback);
 
 	

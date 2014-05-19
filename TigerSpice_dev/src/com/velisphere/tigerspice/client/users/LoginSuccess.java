@@ -19,10 +19,13 @@ package com.velisphere.tigerspice.client.users;
 
 
 
+import org.voltdb.types.TimestampType;
+
 import com.github.gwtbootstrap.client.ui.Bar;
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
+import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.StackProgressBar;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -61,10 +64,21 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
 	VerticalPanel mainPanel;
 	NavBar navBar;
 	@UiField PageHeader pageHeader;
-	@UiField
-	Breadcrumbs brdMain;
+	@UiField Breadcrumbs brdMain;
 	NavLink bread0;
 	String userName;
+	@UiField Paragraph voltIP;
+	@UiField Paragraph voltHostID;
+	@UiField Paragraph voltHostName;
+	@UiField Paragraph voltConnHostName;
+	@UiField Paragraph voltConnID;
+	@UiField Paragraph voltBytesRead;
+	@UiField Paragraph voltBytesWritten;
+	@UiField Paragraph voltMsgRead;
+	@UiField Paragraph voltMsgWritten;
+	@UiField Paragraph voltTimestamp;
+	
+	
 	
  	
 	public LoginSuccess() {
@@ -100,7 +114,7 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
 		
 		
 		// set page header welcome back message
-    	pageHeader.setText("Welcome Back, " + SessionHelper.getCurrentUserName());
+    	pageHeader.setText("Welcome back, " + SessionHelper.getCurrentUserName());
     	
 		
 		bread0 = new NavLink();
@@ -123,13 +137,29 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
 			@Override
 			public void onSuccess(MontanaStatsData result) {
 				// TODO Auto-generated method stub
-				System.out.println("Successfully retrieved Montana Stats Context " + result);
-				System.out.println("Bytes Read: " + result.readThroughput);
-				System.out.println("Bytes Written: " + result.writeThroughput);
-				System.out.println("Latency: " + result.averageLatency);
+				System.out.println("Successfully retrieved Montana Stats " + result);
+				voltIP.setText("Connected to VoltIP via montanaconf.xml: " + result.IP);
+				System.out.println("Host ID: " + result.hostId);
+				voltHostID.setText("Montana Host ID reported by VoltDB: " + result.hostId);
 				System.out.println("Hostname: " + result.hostname);
-				System.out.println("Invocation Errors: " + result.invocationErrors);
-				System.out.println("Successful Invocations: " + result.invocationsCompleted);
+				voltHostName.setText("Montana Hostname/IP reported by VoltDB: " + result.hostname);
+				System.out.println("Bytes Read: " + result.bytesRead);
+				voltBytesRead.setText("Bytes read, reported by VoltDB: " + result.bytesRead);
+				System.out.println("Bytes Written: " + result.bytesWritten);
+				voltBytesWritten.setText("Bytes written, reported by VoltDB: " + result.bytesWritten);
+				System.out.println("Connection Hostname: " + result.connectionHostname);
+				voltConnHostName.setText("Name/IP of connecting host, reported by VoltDB: " + result.connectionHostname);
+				System.out.println("Connection ID: " + result.connectionId);
+				voltConnID.setText("Connection ID, reported by VoltDB: " + result.connectionId);
+				System.out.println("Messages Read: " + result.messagesRead);
+				voltMsgRead.setText("Messages read, reported by VoltDB: " + result.messagesRead);
+				System.out.println("Messages Written: " + result.messagesWritten);
+				voltMsgWritten.setText("Messages written, reported by VoltDB: " + result.messagesWritten);
+				System.out.println("Timestamp: " + result.timestamp);
+				voltTimestamp.setText("Timestamp of VoltDB report: " + result.timestamp);
+				
+				
+				
 			}
 			
 		});

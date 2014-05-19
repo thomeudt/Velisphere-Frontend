@@ -34,6 +34,8 @@ import org.voltdb.VoltTable;
 import org.voltdb.client.ClientResponse;
 import org.voltdb.client.ClientStats;
 import org.voltdb.client.ClientStatsContext;
+import org.voltdb.client.NoConnectionsException;
+import org.voltdb.client.ProcCallException;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.server.ServerParameters;
@@ -105,20 +107,67 @@ public class HelperServiceImpl extends RemoteServiceServlet implements HelperSer
                  
                 //store the user/session id
     	
-    	
+    	MontanaStatsData stats = new MontanaStatsData();
+    	VoltConnector voltCon = new VoltConnector();
 
-    	MontanaStatsData stats = new MontanaStatsData();		
-
-		ClientStats montanaStats = montanaStatsContext.getStats();
-		stats.duration = montanaStats.getDuration();
-		stats.averageLatency = montanaStats.getAverageLatency();
-		stats.hostname = montanaStats.getHostname();
-		stats.invocationErrors = montanaStats.getInvocationErrors();
-		stats.invocationsCompleted = montanaStats.getInvocationsCompleted();
-		stats.readThroughput = montanaStats.getIOReadThroughput();
-		stats.writeThroughput = montanaStats.getIOWriteThroughput();
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	
+	
 		
-		 
+			ClientResponse findCheck;
+			try {
+				findCheck = voltCon.montanaClient
+						.callProcedure("@Statistics",
+				                  "IOSTATS",1);
+				
+				final VoltTable findCheckResults[] = findCheck.getResults();
+
+				VoltTable result = findCheckResults[0];
+				// check if any rows have been returned
+
+				result.advanceRow();
+					
+						// extract the value in column checkid
+						
+						stats.bytesRead = result.getLong("BYTES_READ");
+						stats.bytesWritten = result.getLong("BYTES_WRITTEN");
+						stats.connectionHostname = result.getString("CONNECTION_HOSTNAME");
+						stats.connectionId = result.getLong("CONNECTION_ID");
+						stats.hostId = result.getLong("HOST_ID");
+						stats.hostname = result.getString("HOSTNAME");
+						stats.messagesRead = result.getLong("MESSAGES_READ");
+						stats.messagesWritten = result.getLong("MESSAGES_WRITTEN");
+						stats.timestamp = result.getLong("TIMESTAMP");
+						stats.IP = ServerParameters.volt_ip;
+						
+						
+				
+			} catch (IOException | ProcCallException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			
+					
+				
+		
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+				 
         return stats;
     }
  

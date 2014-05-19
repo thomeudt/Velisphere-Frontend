@@ -24,7 +24,12 @@
  */
 package com.velisphere.tigerspice.client.spheres;
  
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Vector;
+
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
+import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -33,6 +38,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -40,13 +47,21 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.info.Info;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
+import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.helper.DynamicAnchor;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
+import com.velisphere.tigerspice.shared.SphereData;
  
 public class SphereLister extends Composite {
 
 	private NavLink bread1;
 	private NavLink bread0;
-	@UiField Breadcrumbs brdMain;
+	private SphereServiceAsync rpcService;
+	@UiField 
+	Breadcrumbs brdMain;
+	@UiField
+	ListBox lstPrivateSpheres;
 	
   interface MyUiBinder extends UiBinder<Widget, SphereLister> {
   }
@@ -73,9 +88,60 @@ public class SphereLister extends Composite {
 			}
 		});
 	
+		
+		final AnimationLoading animation = new AnimationLoading();
+		animation.showLoadAnimation("Loading endpoints");
+		
+		// TODO needs to be changed to show only spheres personal to user
+		rpcService = GWT.create(SphereService.class);
+		rpcService.getAllSpheres(new AsyncCallback<LinkedList<SphereData>>() {
+			
+			
+			public void onFailure(Throwable caught) {
+				Window.alert("Error" + caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(LinkedList<SphereData> result) {
+				
+								
+				Iterator<SphereData> it = result.iterator();
+					
+				
+				while (it.hasNext()){
+
+					final SphereData currentItem = it.next();
+					lstPrivateSpheres.addItem(currentItem.sphereName, currentItem.sphereId);
+					
+						
+				}
+				lstPrivateSpheres.setVisibleItemCount(7);
+
+				animation.removeFromParent();
+				
+			}
+
+			
+		});
+
 	  
   }
 
+  
+  @UiHandler("btnOpenSphere")
+	void openSphere(ClickEvent event) {
+	
+		/**
+		RootPanel mainPanel = RootPanel.get("main");
+		mainPanel.clear();
+		
+		CheckpathEditView checkpathView = new CheckpathEditView(lstCheckpath.getValue()); 		
+		mainPanel.add(checkpathView);
+		**/
+		
+		AppController.openSphere(lstPrivateSpheres.getValue(), lstPrivateSpheres.getValue());
+		
+	}
  
    
 }

@@ -15,6 +15,7 @@ import com.velisphere.tigerspice.client.rules.CheckpathCreateView;
 import com.velisphere.tigerspice.client.rules.CheckpathEditView;
 import com.velisphere.tigerspice.client.rules.CheckpathList;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
+import com.velisphere.tigerspice.client.spheres.SphereView;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 
 // this class manages all navigational calls within the application
@@ -74,6 +75,31 @@ public class AppController {
 	}
 
 
+	static void openSphereWithHistoryHandler(final String token, final String sphereId, final String sphereName)
+	{
+		History.newItem(token);
+		RootPanel.get("main").clear();
+		RootPanel.get("main").add((Widget) new SphereView(sphereId, sphereName));
+				
+		History.addValueChangeHandler(new ValueChangeHandler<String>() {
+
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+
+				String historyToken = event.getValue();
+				
+		        // Parse the history token
+
+	          if (historyToken.equals(token)) {
+	        	  RootPanel.get("main").clear();
+	        	  RootPanel.get("main").add((Widget) new SphereView(sphereId, sphereName));
+		        }
+			}
+		    });
+	}
+
+	
+	
 
 	public static void openDashboard()
 	{	
@@ -162,7 +188,19 @@ public class AppController {
 	});
 	}
 
-	
+	public static void openSphere(final String sphereID, final String sphereName)
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			String userID = SessionHelper.getCurrentUserID();
+			
+			openSphereWithHistoryHandler("sphere"+sphereID, sphereID, sphereName);
+		}		
+	});
+	}
 	
 	
 	

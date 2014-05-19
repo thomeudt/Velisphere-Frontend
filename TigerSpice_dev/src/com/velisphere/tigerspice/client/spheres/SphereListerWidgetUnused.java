@@ -18,6 +18,7 @@
 package com.velisphere.tigerspice.client.spheres;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Vector;
 
 import com.github.gwtbootstrap.client.ui.Label;
@@ -44,7 +45,7 @@ import com.velisphere.tigerspice.shared.SphereData;
 
  
 
-public class SphereListerWidget extends Composite {
+public class SphereListerWidgetUnused extends Composite {
 	
 	private SphereServiceAsync rpcService;
 	
@@ -54,7 +55,7 @@ public class SphereListerWidget extends Composite {
 
 	
 	
-	public SphereListerWidget() {
+	public SphereListerWidgetUnused() {
 
 		rpcService = GWT.create(SphereService.class);
 		
@@ -73,7 +74,7 @@ public class SphereListerWidget extends Composite {
 		animation.showLoadAnimation("Loading endpoints");
 		
 		// TODO needs to be changed to show only spheres personal to user
-		rpcService.getAllSpheres(new AsyncCallback<Vector<SphereData>>() {
+		rpcService.getAllSpheres(new AsyncCallback<LinkedList<SphereData>>() {
 			
 			// There's been a failure in the RPC call
 			// Normally you would handle that in a good way,
@@ -86,7 +87,7 @@ public class SphereListerWidget extends Composite {
 			}
 
 			@Override
-			public void onSuccess(Vector<SphereData> result) {
+			public void onSuccess(LinkedList<SphereData> result) {
 				
 								
 				Iterator<SphereData> it = result.iterator();
