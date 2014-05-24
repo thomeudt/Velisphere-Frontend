@@ -85,7 +85,7 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 	container.setBorders(false);
 	container.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
 	// container.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
-	container.setWidth(180);
+	//container.setWidth(180);
 	con.add(container);
 	accordion = new Accordion();
 	container.add(accordion);

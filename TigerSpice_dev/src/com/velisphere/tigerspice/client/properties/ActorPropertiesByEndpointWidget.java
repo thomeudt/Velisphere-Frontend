@@ -27,6 +27,7 @@ import java.util.Vector;
 import com.github.gwtbootstrap.client.ui.Accordion;
 import com.github.gwtbootstrap.client.ui.AccordionGroup;
 import com.github.gwtbootstrap.client.ui.Column;
+import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.Row;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.shared.GWT;
@@ -36,6 +37,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.dom.ScrollSupport;
 import com.sencha.gxt.dnd.core.client.DndDragStartEvent;
@@ -79,17 +81,27 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 	
 	FlowLayoutContainer con = new FlowLayoutContainer();
 	initWidget(con);
+	con.setBorders(false);
+	
 
 	VerticalLayoutContainer container = new VerticalLayoutContainer();
 
 	container.setBorders(false);
 	container.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
-	// container.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
-	container.setWidth(180);
+	container.setHeight((int)((RootPanel.get().getOffsetHeight())/3.5));
+	//container.setWidth(180);
 	con.add(container);
 	accordion = new Accordion();
 	container.add(accordion);
-
+	
+	/**
+	ListBox actorList = new ListBox();
+	Row actorRow = new Row();
+	Column actorColumn = new Column(1);
+	actorColumn.add(actorList);
+	actorRow.add(actorColumn);
+	initWidget(actorRow);
+**/
 	
 	SessionHelper.validateCurrentSession();
 
@@ -184,6 +196,7 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 						shortName = current.getName().substring(0, 20)+"(...)";
 					}
 					Row row = accordionRowBuilder(shortName);
+					
 					setDragSource(row, current.getId(), current.getName(), endpointName, endpointID, endpointClassID);
 					endpoint.add(row);
 
