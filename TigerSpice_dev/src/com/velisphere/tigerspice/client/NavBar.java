@@ -68,6 +68,7 @@ public class NavBar extends Composite implements HasText {
 	@UiField NavLink btnSearch;
 	@UiField NavLink btnSpheres;
 	@UiField NavLink btnRules;
+	@UiField NavLink btnAnalytics;
 	@UiField NavForm forSearch;
 	@UiField NavLink btnHome;
 	@UiField Brand brdHome;
@@ -94,6 +95,7 @@ public class NavBar extends Composite implements HasText {
    	 btnSearch.setVisible(false);
    	 btnSpheres.setVisible(false);
    	 btnRules.setVisible(false);
+   	 btnAnalytics.setVisible(false);
    	 forSearch.setVisible(false);
    	 btnHome.setVisible(false);
    	 dpdAccount.setVisible(false);
@@ -263,6 +265,7 @@ public class NavBar extends Composite implements HasText {
    	 	btnSearch.setVisible(false);
    	 	btnSpheres.setVisible(false);
    	 	btnRules.setVisible(false);
+   	    btnAnalytics.setVisible(false);
    	 	forSearch.setVisible(false);
    	 	btnHome.setVisible(false);
    	 	txtUserName.setText("");
@@ -297,6 +300,7 @@ public class NavBar extends Composite implements HasText {
 	    	 btnSearch.setVisible(false);
 	    	 btnSpheres.setVisible(true);
 	    	 btnRules.setVisible(true);
+	    	 btnAnalytics.setVisible(true);
 	    	 forSearch.setVisible(false);
 	    	 btnHome.setVisible(true);
 	    	 dpdAccount.setVisible(true);

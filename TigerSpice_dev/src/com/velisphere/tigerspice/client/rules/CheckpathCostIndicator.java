@@ -39,7 +39,7 @@ public class CheckpathCostIndicator extends Composite {
 			@Override
 		    public void onCheckpathCalculated(CheckpathCalculatedEvent checkpathCalculatedEvent) {
 				System.out.println("[IN] Checkpath Calculated Event fired.");
-				calcUpdateHandler.removeHandler();
+				//calcUpdateHandler.removeHandler();
 				cost.setText(wgtCheckpathEditor.getCost() + " credits");
 								
 			}		

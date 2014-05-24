@@ -42,15 +42,18 @@
              <b:NavLink ui:field="btnSpheres">Endpoint Manager</b:NavLink>
              <b:NavLink ui:field="btnRules">Logic Designer</b:NavLink>
              <b:NavLink ui:field="btnAdmin">Maps</b:NavLink>
+             <b:NavLink ui:field="btnAnalytics">Analytics</b:NavLink>
          </b:Nav>
          <b:NavForm ui:field="forSearch" size="1" />
          <b:Nav>
              <b:NavLink ui:field="btnSearch">Search</b:NavLink>
          </b:Nav>
          <b:Nav alignment="RIGHT">
+             
              <b:NavLink ui:field="btnShop">IoT Market Place</b:NavLink>
              <b:Dropdown ui:field="dpdAccount" text="My Account">
              	<b:NavLink ui:field="btnAccount">Account Data</b:NavLink>    
+             	<b:NavLink ui:field="btnSupport">Request Support</b:NavLink>
              	<b:NavLink ui:field="btnBilling">Billing Statement</b:NavLink>
                 <b:NavLink ui:field="btnLogout">Logout</b:NavLink>
              </b:Dropdown>

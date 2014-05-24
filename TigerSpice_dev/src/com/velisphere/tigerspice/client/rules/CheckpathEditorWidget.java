@@ -1257,6 +1257,7 @@ public class CheckpathEditorWidget extends Composite {
 
 								} else {
 									// do save update actions
+									System.out.println("******************DO UPDATE ACTION");
 									currentObject.setText(checkEditDialogBox
 											.getCheckTitle());
 									currentObject
@@ -1266,7 +1267,7 @@ public class CheckpathEditorWidget extends Composite {
 											.setTriggerValue(checkEditDialogBox
 													.getTriggerValue());
 									currentObject.actions.clear();
-									currentObject.actions.addAll(checkEditDialogBox.getActions());
+									if (checkEditDialogBox.getActions() != null) currentObject.actions.addAll(checkEditDialogBox.getActions());
 									
 									if (deletedChecks.contains(currentObject)) deletedChecks.remove(currentObject);
 									
@@ -1557,14 +1558,20 @@ public class CheckpathEditorWidget extends Composite {
 	
 	
 	private void showLoadAnimation(AnimationLoading animationLoading) {
+		
+		animationLoading.show();
+		/**
 		RootPanel rootPanel = RootPanel.get("main");
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 		rootPanel.add(animationLoading, 25, 40);
+		**/
+		
 	}
 
 	private void removeLoadAnimation(AnimationLoading animationLoading) {
 		if (animationLoading != null)
-			animationLoading.removeFromParent();
+			animationLoading.hide();;
+			//animationLoading.removeFromParent();
 	}
 
 	public List<SameLevelCheckpathObject> getUpdatedMultichecks() {

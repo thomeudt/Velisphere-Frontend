@@ -267,7 +267,7 @@ public class CheckpathEditView extends Composite {
 		System.out.println("[IN] Added Multichecks to be saved: " + newMultichecks);
 		System.out.println("[IN] Updated Multichecks to be saved: " + updatedMultichecks);
 		System.out.println("[IN] Added Checks to be saved:  " + newChecks);
-		System.out.println("[IN] Updated Multichecks to be saved:  " + updatedChecks);
+		System.out.println("[IN] Updated Checks to be saved:  " + updatedChecks);
 		
 		if (newMultichecks.isEmpty() && updatedMultichecks.isEmpty() && newChecks.isEmpty() && updatedChecks.isEmpty() && wgtCheckpathEditor.getDeletedMultichecks().isEmpty()
 				&& wgtCheckpathEditor.getDeletedChecks().isEmpty())
