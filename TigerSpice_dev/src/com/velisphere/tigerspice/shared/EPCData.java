@@ -21,15 +21,11 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class EPCData implements IsSerializable, Comparable <EPCData>
+public class EPCData implements IsSerializable
 {
 	public String endpointclassID;
 	public String endpointclassName;
-	@Override
-	public int compareTo(EPCData arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
 		
 	public String getName(){
 		return endpointclassName;

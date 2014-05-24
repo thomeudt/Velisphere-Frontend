@@ -25,7 +25,7 @@ import org.mindrot.BCrypt;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class UserData implements IsSerializable, Comparable <UserData>
+public class UserData implements IsSerializable
 {
 	public String userID;
 	public String userEmail;
@@ -34,11 +34,7 @@ public class UserData implements IsSerializable, Comparable <UserData>
 	public String sessionID;
 	public Boolean loggedIn = false;
 	
-	@Override
-	public int compareTo(UserData arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
 	
 	public String getEmail(){
 		return userEmail;
