@@ -4962,13 +4962,13 @@ a.badge:hover {
 }
 .accordion-heading .accordion-toggle {
   display: block;
-  padding: 8px 15px;
+  padding: 2px 5px;
 }
 .accordion-toggle {
   cursor: pointer;
 }
 .accordion-inner {
-  padding: 9px 15px;
+  padding: 3px 5px;
   border-top: 1px solid #e5e5e5;
 }
 .carousel {

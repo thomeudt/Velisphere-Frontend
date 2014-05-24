@@ -222,7 +222,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 						**/
 				voltCon.montanaClient.callProcedure("UI_UpsertActionsForCheckID",
 						action.actionID, action.actionName, action.endpointID, checkID, checkpathID, action.propertyID, action.propertyIdIndex,action.manualValue);
-			
+				System.out.println("PROPIDINDEX: " + action.propertyIdIndex);
 				
 			} catch (IOException | ProcCallException e) {
 				// TODO Auto-generated catch block

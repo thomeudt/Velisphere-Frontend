@@ -457,7 +457,7 @@ public class CheckpathEditView extends Composite {
 				while (updatedChecksIt.hasNext())
 				{
 					SameLevelCheckpathObject checkpathObject = updatedChecksIt.next();
-					
+					System.out.println("***** CHECK ACTION PYID: " + checkpathObject.actions.get(0).propertyIdIndex);
 					rpcServiceCheck.updateCheck(checkpathObject.checkId, checkpathObject.text, checkpathObject.triggerValue, checkpathObject.operator, checkpathID, checkpathObject.actions,
 							new AsyncCallback<String>() {
 
