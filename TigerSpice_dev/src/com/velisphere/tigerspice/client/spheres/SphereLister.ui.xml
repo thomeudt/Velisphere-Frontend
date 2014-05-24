@@ -39,17 +39,11 @@
 		
 		<b:Row>
 
-			<b:Column size="2" offset="0">
-				<b:Well>
-					<b:Strong ui:field="pgpInformHeader">Endpoint Tasks</b:Strong>
-					<b:Paragraph addStyleNames="smalltext"><br></br>Provision new Endpoint using the Provisioning Wizard.</b:Paragraph>
-					<b:Paragraph addStyleNames="smalltext"><br></br>Create and manage Virtual End Points.</b:Paragraph>
-					<b:Paragraph addStyleNames="smalltext"><br></br>Best practices</b:Paragraph>
-					<b:Paragraph addStyleNames="smalltext"><br></br>Getting started</b:Paragraph>
-				</b:Well>
-			</b:Column>
+		
+		
+		
 
-			<b:Column size="8" offset="0">
+			<b:Column size="10" offset="0">
 			   
 			<b:TabPanel tabPosition="above" ui:field="tabPanel">
 		
@@ -104,6 +98,16 @@
 			</b:Column>
 			
 			<b:Column size="2" offset="0">
+			    
+			    
+			    <b:Heading size="4">Tasks</b:Heading>
+					<b:Paragraph addStyleNames="smalltext">Provision new Endpoint using the Provisioning Wizard.</b:Paragraph>
+					<b:Paragraph addStyleNames="smalltext">Create and manage Virtual End Points.</b:Paragraph>
+					<b:Paragraph addStyleNames="smalltext">Best practices</b:Paragraph>
+					<b:Paragraph addStyleNames="smalltext">Getting started</b:Paragraph>
+			
+					<b:Paragraph><br></br></b:Paragraph>
+					
 				<b:Heading size="4">Additional Resources</b:Heading>
 				
 			<b:Paragraph addStyleNames="smalltext">Device Provisioning Wizard</b:Paragraph>
@@ -113,7 +117,9 @@
 			<b:Paragraph addStyleNames="smalltext">Best Practices</b:Paragraph>
 			
 			<b:Paragraph addStyleNames="smalltext">Market Place</b:Paragraph>
-			
+		
+					
+					
 			
 			</b:Column>	
 			

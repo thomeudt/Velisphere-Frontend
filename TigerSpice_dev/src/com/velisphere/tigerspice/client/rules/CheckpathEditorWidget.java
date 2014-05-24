@@ -206,54 +206,12 @@ public class CheckpathEditorWidget extends Composite {
 		container.add(controller.getView());
 		container.setTitle("Drag and Drop sensors and actors onto the canvas to build your logic.");
 	
+		// draw checks
 
-		Iterator<SameLevelCheckpathObject> it = checkHashSet.iterator();
+		drawCheckLevel();
 
-		// draw first d&d target field if checkHashSet is empty
-
-		int xpos = 10;
-		int ypos = 320;
-
-		if (it.hasNext() == false) {
-			drawCheckTarget(xpos, ypos);
-		}
-
-		// draw the first level - "checks" - as the foundation layer by reading
-		// the data stored in the checkHashSet
-
-		while (it.hasNext()) {
-			final SameLevelCheckpathObject currentObject = it.next();
-			
-			++checkCount;
-
-			addDragSource(currentObject);
-			addDndTargetForAction(currentObject);
-
-			controller.addWidget(currentObject, xpos, ypos);
-
-			// add icon for action loaded checks, for now just move into
-			// position
-
-			controller
-					.addWidget(currentObject.actionIcon, xpos + 83, ypos - 19);
-			
-			controller.addWidget(currentObject.sensorIcon, xpos, ypos - 15);
-			currentObject.sensorIcon.setVisible(true);
-			// increment horizontal positon
-
-			xpos = xpos + 120;
-
-			// if no more items are left in the check hashset, draw a new drag
-			// target box as the last step to allow for adding a new check to
-			// the checkpath
-
-			if (it.hasNext() == false) {
-				drawCheckTarget(xpos, ypos);
-
-			}
-
-		}
-
+		
+		
 		// check if new column needs to be added
 
 		if (multicheckColumns.size() > 0) {
@@ -304,6 +262,60 @@ public class CheckpathEditorWidget extends Composite {
 		System.out.println("[IN] Cost for checkpath execution: " +calculateCost());
 
 	}
+	
+
+	private void drawCheckLevel(){
+	
+	Iterator<SameLevelCheckpathObject> it = checkHashSet.iterator();
+
+	// draw first d&d target field if checkHashSet is empty
+
+	int xpos = 10;
+	int ypos = 320;
+
+	if (it.hasNext() == false) {
+		drawCheckTarget(xpos, ypos);
+	}
+
+	// draw the first level - "checks" - as the foundation layer by reading
+	// the data stored in the checkHashSet
+
+	while (it.hasNext()) {
+		final SameLevelCheckpathObject currentObject = it.next();
+		
+		++checkCount;
+
+		addDragSource(currentObject);
+		addDndTargetForAction(currentObject);
+
+		controller.addWidget(currentObject, xpos, ypos);
+
+		// add icon for action loaded checks, for now just move into
+		// position
+
+		controller
+				.addWidget(currentObject.actionIcon, xpos + 83, ypos - 19);
+		
+		controller.addWidget(currentObject.sensorIcon, xpos, ypos - 15);
+		currentObject.sensorIcon.setVisible(true);
+		// increment horizontal positon
+
+		xpos = xpos + 120;
+
+		// if no more items are left in the check hashset, draw a new drag
+		// target box as the last step to allow for adding a new check to
+		// the checkpath
+
+		if (it.hasNext() == false) {
+			drawCheckTarget(xpos, ypos);
+
+		}
+
+	}
+}
+	
+	
+	
 
 	private VerticalLayoutContainer drawMulticheckColumn(
 			final int columnElement, final DiagramController controller) {
@@ -444,7 +456,7 @@ public class CheckpathEditorWidget extends Composite {
 						multicheckNewDialogBox.setModal(true);
 						multicheckNewDialogBox.setAutoHideEnabled(true);
 
-						multicheckNewDialogBox.setAnimationEnabled(true);
+						//multicheckNewDialogBox.setAnimationEnabled(true);
 
 						multicheckNewDialogBox.show();
 						multicheckNewDialogBox.addStyleName("ontop");
@@ -618,7 +630,7 @@ public class CheckpathEditorWidget extends Composite {
 
 		multicheckDialogBox.setAutoHideEnabled(true);
 
-		multicheckDialogBox.setAnimationEnabled(true);
+		//multicheckDialogBox.setAnimationEnabled(true);
 
 		multicheckDialogBox.show();
 		multicheckDialogBox.addStyleName("ontop");
@@ -811,9 +823,7 @@ public class CheckpathEditorWidget extends Composite {
 						HashMap<String, List<String>> childChecksForMulticheck = new HashMap<String, List<String>>();
 						HashMap<String, List<String>> childMultichecksForMulticheck = new HashMap<String, List<String>>();
 						HashMap<String, SameLevelCheckpathObject> multicheckLookup = new HashMap<String, SameLevelCheckpathObject>();
-						// final HashMap<String, SameLevelCheckpathObject>
-						// checkLookup = new HashMap<String,
-						// SameLevelCheckpathObject>();
+						
 
 						Iterator<CheckPathObjectColumn> rIT = result.tree
 								.iterator();
@@ -931,11 +941,7 @@ public class CheckpathEditorWidget extends Composite {
 
 						System.out.println("[IN] Total number of multicheck columns: " + multicheckColumns);
 						
-						/**
-						System.out.println("*"
-								+ childMultichecksForMulticheck + " / "
-								+ childChecksForMulticheck);
-						**/
+						
 
 						// second round - add relationship data from lookup
 						// table
@@ -1154,7 +1160,7 @@ public class CheckpathEditorWidget extends Composite {
 				checkNewDialogBox.setModal(true);
 				//checkNewDialogBox.setAutoHideEnabled(true);
 
-				checkNewDialogBox.setAnimationEnabled(true);
+				//checkNewDialogBox.setAnimationEnabled(true);
 
 				
 				checkNewDialogBox.show();
@@ -1232,7 +1238,7 @@ public class CheckpathEditorWidget extends Composite {
 				checkEditDialogBox.setModal(true);
 				// checkEditDialogBox.setAutoHideEnabled(true);
 
-				checkEditDialogBox.setAnimationEnabled(true);
+				//checkEditDialogBox.setAnimationEnabled(true);
 
 				
 				checkEditDialogBox.show();
@@ -1285,77 +1291,7 @@ public class CheckpathEditorWidget extends Composite {
 
 	}
 
-	/**
-	private void setActionEditClickHandler(
-			final SameLevelCheckpathObject currentObject) {
-
-		currentObject.actionIcon.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				
-
-				System.out.println("Actions: " + currentObject.actions);
-				
-				
-				LinkedList<ActionObject> tempActions = new LinkedList<ActionObject>();
-				tempActions.addAll(currentObject.actions);
-
-				
-				final ActionDialogBoxTabbed actionEditDialogBox = new ActionDialogBoxTabbed(tempActions, currentObject.text);
-				actionEditDialogBox.setAnimationEnabled(true);
-
-				
-				
-				actionEditDialogBox.show();
-				Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-				    public void execute() {
-				    	actionEditDialogBox.center();
-				    }
-				});  
-								
-				
-				actionEditDialogBox.addStyleName("ontop");
-				currentObject.showActionIcon();
-				
-				
-				actionEditDialogBox
-				.addCloseHandler(new CloseHandler<PopupPanel>() {
-
-					public void onClose(CloseEvent event) {
-						
-						if (actionEditDialogBox.cancelFlag == true)
-						{
-								
-						} else if (actionEditDialogBox.deleteFlag == true)
-						{
-							
-						}
-						else
-						{
-							
-							
-							currentObject.actions.clear();
-							currentObject.actions.addAll(actionEditDialogBox.getActions());
-							if (currentObject.actions.size() > 0) currentObject.showActionIcon();
-							else currentObject.hideActionIcon();
-							System.out.println("ACT: " + currentObject.actions);
-						}							
-						
-					}
-				});
-
-				
-
-				
-				
-				
-			}
-
-		});
-
-	}
 	
-	**/
-
 	private void addDndTargetForAction(
 			final SameLevelCheckpathObject currentObject) {
 
@@ -1396,27 +1332,6 @@ public class CheckpathEditorWidget extends Composite {
 				checkEditDialogBox.addStyleName("ontop");
 				
 				checkEditDialogBox.setActionsTabEnabled();
-				
-				//actionNewDialogBox.setModal(true);
-				//actionNewDialogBox.setAutoHideEnabled(true);
-
-				/**
-				actionNewDialogBox.setAnimationEnabled(true);
-				
-				
-				
-				actionNewDialogBox.show();
-				Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-				    public void execute() {
-				    	actionNewDialogBox.center();
-				    }
-				});  
-								
-				
-				actionNewDialogBox.addStyleName("ontop");
-				// actionNewDialogBox.setParameters("", "", dragAccordion.endpointName, dragAccordion.endpointID, "dragAccordion.endpointClassID", dragAccordion.propertyName, dragAccordion.propertyID, 0, "", 0, 0, currentObject.endpointID);
-				 **/
-				
 				
 				
 				checkEditDialogBox
@@ -1503,7 +1418,7 @@ public class CheckpathEditorWidget extends Composite {
 
 				multicheckDialogBox.setAutoHideEnabled(true);
 
-				multicheckDialogBox.setAnimationEnabled(true);
+				//multicheckDialogBox.setAnimationEnabled(true);
 
 				multicheckDialogBox.show();
 				multicheckDialogBox.addStyleName("ontop");

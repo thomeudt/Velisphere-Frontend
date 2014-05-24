@@ -31,7 +31,7 @@
 
 
 
-			<b:Column size="8" offset="0">
+			<b:Column size="10" offset="0">
 
 
 				<b:TabPanel tabPosition="above" ui:field="tabPanel">
