@@ -16,13 +16,13 @@ public class PreLoadPart {
 	    	// public static String volt_ip = "ec2-54-200-208-195.us-west-2.compute.amazonaws.com"; // for aws db
 	        
 	         preLoader.createConnection("16.1.1.110");
-	        //preLoader.createConnection("ec2-54-186-33-146.us-west-2.compute.amazonaws.com");
+	        //preLoader.createConnection("54.200.77.57");
 	        
 	        /*
 	         * Load the database.
 	         */
 	        
-	        String userID = "b6c9237d-8f10-4cdc-81a5-aa5a31dc362a";
+	        String userID = "7228d3f8-78d2-4e0a-99d7-80613d98eca5";
 	        	        
 	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1007", "E1", userID);
 	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1006", "E2", userID);

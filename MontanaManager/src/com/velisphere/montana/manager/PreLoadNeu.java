@@ -16,7 +16,7 @@ public class PreLoadNeu {
 	    	//public static String volt_ip = "ec2-54-200-17-56.us-west-2.compute.amazonaws.com"; // for aws db
 	        
 	        preLoader.createConnection("16.1.1.110");
-	        //preLoader.createConnection("ec2-54-186-33-146.us-west-2.compute.amazonaws.com");
+	        //preLoader.createConnection("54.200.77.57");
 	        
 	        /*
 	         * Load the database.
@@ -112,7 +112,7 @@ public class PreLoadNeu {
 	       */
 	        int i = 0;
 	        
-	        while (i<50){
+	        while (i<3){
 	        	preLoader.callProcedure("CHECK.insert", "CA"+i, "E1"+i, "PR1", "1", "=", "0", "0", "Switch 1 on", "CP1"+i); // Checks if switch 1 is on
 	        	preLoader.callProcedure("CHECKPATH.insert", "CP1"+i, "Dummy "+i, "", ""); // Checkpath Button 1,2,3,4 gedrückt UNUSED
 	        	preLoader.callProcedure("CHECKSTATE.insert", "CA"+i, 0, "CP1"+i);
