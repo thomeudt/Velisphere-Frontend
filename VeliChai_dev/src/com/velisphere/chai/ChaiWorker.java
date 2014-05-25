@@ -46,7 +46,7 @@ public class ChaiWorker {
 		 */
 
 		System.out.println();
-		System.out.println("*     * VeliSphere Chai v0.7.0 - VeliSphere Controller");
+		System.out.println("*     * VeliSphere Chai v0.8.0d - VeliSphere Controller");
 		System.out
 				.println(" *   *  Copyright (C) 2014 Thorsten Meudt/Connected Things Lab. All rights reserved.");
 		System.out.println("  * *   ");
@@ -78,6 +78,8 @@ public class ChaiWorker {
 		System.out.println(" [IN] Waiting for messages on queue: "
 				+ ServerParameters.controllerQueueName
 				+ ". To exit press CTRL+C");
+		
+		VelisphereMart.query();
 
 		
 		ExecutorService unpacker = Executors
