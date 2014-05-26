@@ -73,13 +73,14 @@ public class ChaiWorker {
 
 		//System.out.println(" [IN] Selected VoltDB: " + ServerParameters.volt_ip);
 		BusinessLogicEngine.openDatabase();
+		VelisphereMart.connect();
 
 		System.out.println(" [IN] Connecting completed.");
 		System.out.println(" [IN] Waiting for messages on queue: "
 				+ ServerParameters.controllerQueueName
 				+ ". To exit press CTRL+C");
 		
-		VelisphereMart.query();
+		
 
 		
 		ExecutorService unpacker = Executors

@@ -21,7 +21,12 @@ public class LoggerEngine {
 
 		// TODO: Add entry that deletes log entries older than n days for this endpoint before writing new log
 		
-		BusinessLogicEngine.montanaClient.callProcedure("LGE_InsertEndpointPropertyLog", EPID, entryIDString, property, entry);
+
+		//BusinessLogicEngine.montanaClient.callProcedure("LGE_InsertEndpointPropertyLog", EPID, entryIDString, property, entry);
+		// now only logging to VeliSphere Mart
+		
+		
+		VelisphereMart.insertLog(entryIDString, EPID, property, entry);
 		//BusinessLogicEngine.montanaClient.callProcedure("LGE_InsertEndpointPropertyLog", "A", "B", "C", "D", "E");
 	}
 

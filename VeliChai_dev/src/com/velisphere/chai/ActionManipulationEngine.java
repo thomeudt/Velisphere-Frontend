@@ -74,7 +74,7 @@ public class ActionManipulationEngine {
 		while (actionDetails.advanceRow()) {
 			{
 				//System.out.println(actionDetails.toFormattedString());
-				System.out.println("Actiondetails: " + actionDetails);
+				//System.out.println("Actiondetails: " + actionDetails);
 				String targetEPID = new String();
 				String payload = new String();
 				if (actionDetails.getString("TGTEPIDFROMINBOUNDPROP").isEmpty() == false){

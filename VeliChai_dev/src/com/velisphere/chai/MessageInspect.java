@@ -106,7 +106,13 @@ public class MessageInspect implements Runnable {
 							&& e.getKey() != "TYPE") {
 							
 						    triggeredActions.putAll(BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), (byte) 0));
-							LoggerEngine.writeEndpointLog(EPID, e.getKey(), e.getValue());		
+						    for (Iterator<Entry<String, String>> aIT = triggeredActions.entrySet().iterator(); aIT
+									.hasNext();) {
+								ActionManipulationEngine.executeActionItems(aIT.next(), forEvaluation);
+								
+								aIT.remove();
+							}
+						    LoggerEngine.writeEndpointLog(EPID, e.getKey(), e.getValue());		
 							//BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), (byte) 0);
 						
 							
@@ -125,13 +131,14 @@ public class MessageInspect implements Runnable {
 				}
 				*/
 				//System.out.println("Aktionen: " + triggeredActions);
-				
+				/**
 				for (Iterator<Entry<String, String>> aIT = triggeredActions.entrySet().iterator(); aIT
 						.hasNext();) {
 					ActionManipulationEngine.executeActionItems(aIT.next(), forEvaluation);
 					
 					aIT.remove();
 				}
+				**/
 
 	
 			} catch (JsonProcessingException e) {
