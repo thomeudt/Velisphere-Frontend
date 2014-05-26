@@ -161,7 +161,7 @@ public class PropertyEditorWidget extends Composite {
 						
 						final Accordion accordion = new Accordion();
 						
-						Collections.sort(result);
+						
 						
 						while(iT.hasNext()){
 		

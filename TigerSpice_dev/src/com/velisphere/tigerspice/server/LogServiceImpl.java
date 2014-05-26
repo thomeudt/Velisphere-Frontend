@@ -19,9 +19,16 @@ package com.velisphere.tigerspice.server;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.sql.*;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 import org.voltdb.VoltTable;
 import org.voltdb.client.ClientResponse;
@@ -29,7 +36,7 @@ import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.velisphere.tigerspice.client.LogService;
+import com.velisphere.tigerspice.client.analytics.LogService;
 import com.velisphere.tigerspice.client.users.UserService;
 import com.velisphere.tigerspice.shared.LogData;
 import com.velisphere.tigerspice.shared.UserData;
@@ -105,6 +112,73 @@ public class LogServiceImpl extends RemoteServiceServlet implements
 	}
 
 
+	
+	private Connection veliMartConnect()
+    {
+    
+	Connection conn = null;
+		
+    try
+       {
+       Class.forName("com.vertica.jdbc.Driver");
+       } catch (ClassNotFoundException e)
+          {
+          System.err.println("Could not find the JDBC driver class.\n");
+          e.printStackTrace();
+          
+          }
+     try
+        {
+    	 conn = DriverManager.getConnection
+           (
+           "jdbc:vertica://"+ServerParameters.vertica_ip+":5433/VelisphereMart", "vertica", "1Suplies!"
+           
+           );
+        
+        conn.setAutoCommit(true);
+		System.out.println("[IN] Connected to Vertica on address: "
+				+ ServerParameters.vertica_ip);
+        
+        } catch (SQLException e)
+           {
+           System.err.println("Could not connect to the database.\n");
+           e.printStackTrace();
+           
+           }
+     return conn;
+     } 
+
+	public LinkedList<String> getLogCount()
+	  {
+		
+		LinkedList<String> result = new LinkedList<String>();
+	   try
+	      {
+		   
+		  Connection conn = veliMartConnect();
+	      
+	      
+	      Statement mySelect = conn.createStatement();
+          ResultSet myResult = mySelect.executeQuery
+                    ("select * from TotalMessagesPerEndpoint");
+
+          while (myResult.next())
+             {
+             System.out.println(myResult.getString(1));
+             result.add(myResult.getString(1));
+             }
+	      
+          mySelect.close();
+	      
+	      } catch (SQLException e)
+	         {
+	         System.err.println("Could not connect to the database.\n");
+	         e.printStackTrace();
+	         return null;
+	         }
+	   return result;
+	   } 
+	  
 	
 
 }

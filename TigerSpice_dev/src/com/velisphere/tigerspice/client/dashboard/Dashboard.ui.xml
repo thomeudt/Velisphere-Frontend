@@ -78,6 +78,7 @@
 				
 				<b:Paragraph addStyleNames="smalltext-black">System is up.</b:Paragraph>
 				<b:Paragraph addStyleNames="smalltext-black">No issues reported.</b:Paragraph>
+				<b:Paragraph addStyleNames="smalltext-black" ui:field="pgpLogCount">...</b:Paragraph>
 			</b:TabPane>
 			<b:TabPane heading="Spheres" active="false">
 			    <b:Heading size="4" >Spheres: OK</b:Heading>

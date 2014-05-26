@@ -19,10 +19,13 @@ package com.velisphere.tigerspice.client.dashboard;
 
 
 
+import java.util.LinkedList;
+
 import com.github.gwtbootstrap.client.ui.Bar;
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
+import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.StackProgressBar;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -31,13 +34,19 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.NavBar;
+import com.velisphere.tigerspice.client.analytics.LogService;
+import com.velisphere.tigerspice.client.analytics.LogServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
+import com.velisphere.tigerspice.client.helper.HelperService;
+import com.velisphere.tigerspice.client.helper.HelperServiceAsync;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
+import com.velisphere.tigerspice.shared.MontanaStatsData;
 
 
 public class Dashboard extends Composite  {
@@ -56,8 +65,8 @@ interface MyBinder extends UiBinder<Widget, Dashboard>{}
 	@UiField Bar pgbYellow;
 	@UiField Bar pgbRed;
 	@UiField StackProgressBar pgbUtilization;
-	@UiField
-	Breadcrumbs brdMain;
+	@UiField Breadcrumbs brdMain;
+	@UiField Paragraph pgpLogCount;
 	NavLink bread0;
 	NavLink bread1;
 	String userName;
@@ -103,10 +112,38 @@ interface MyBinder extends UiBinder<Widget, Dashboard>{}
     	pgbYellow.setPercent(0);
     	pgbGreen.setText("30/100 endpoints activated");
     	
+    	final LogServiceAsync logService = GWT
+				.create(LogService.class);
+		
+    	    	
+
+    	logService.getLogCount(new AsyncCallback<LinkedList<String>>(){
+    		@Override
+    		public void onFailure(Throwable caught) {
+    			// TODO Auto-generated method stub
+    			
+    		}
+
+    		@Override
+    		public void onSuccess(LinkedList<String> result) {
+    			// TODO Auto-generated method stub
+    	
+    			pgpLogCount.setText("Test: " + result);
+    		}
+    		});
+
+    	
+
+    	
+    	
+    	
+    	
+    	/**
 		NavBar navBar = new NavBar();
 		navBar = (NavBar) RootPanel.get("stockList").getWidget(0);
 		navBar.activateForCurrentUser();
-		
+		**/
+    	
 		bread0 = new NavLink();
 		bread0.setText("Home");
 		brdMain.add(bread0);
@@ -121,10 +158,12 @@ interface MyBinder extends UiBinder<Widget, Dashboard>{}
 				RootPanel.get("main").add(loginSuccess);
 
 			}
-		});
 
-		
+		});
 	}
+}
+		
+	
 		
 
 	
@@ -133,4 +172,3 @@ interface MyBinder extends UiBinder<Widget, Dashboard>{}
 	
 	
 	
-}

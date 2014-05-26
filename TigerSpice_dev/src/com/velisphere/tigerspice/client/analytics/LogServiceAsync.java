@@ -15,9 +15,10 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client;
+package com.velisphere.tigerspice.client.analytics;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.velisphere.tigerspice.shared.LogData;
@@ -25,4 +26,5 @@ import com.velisphere.tigerspice.shared.UserData;
 
 public interface LogServiceAsync {
 	void getAllLogEntries(AsyncCallback<HashSet<LogData>> callback);
+	void getLogCount(AsyncCallback<LinkedList<String>> callback);
 }

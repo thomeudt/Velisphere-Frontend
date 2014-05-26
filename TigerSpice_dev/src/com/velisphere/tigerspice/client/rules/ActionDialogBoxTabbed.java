@@ -1,10 +1,8 @@
 package com.velisphere.tigerspice.client.rules;
 
-
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.Row;
@@ -34,512 +32,399 @@ import com.velisphere.tigerspice.shared.ActionObject;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.EndpointData;
 
-
 public class ActionDialogBoxTabbed extends SimplePanel {
 
-	
-	
 	public Boolean cancelFlag = false;
 	public Boolean deleteFlag = false;
 	private LinkedList<ActionObject> actions;
 	private UuidServiceAsync rpcServiceUuid;
 	private EndpointServiceAsync rpcServiceEndpoint;
-	private String checkName;
 	private PropertyServiceAsync rpcServiceProperty;
-	private AnimationLoading animationLoading = new AnimationLoading();
-    private TabPanel advanced;
-    private boolean isMulticheck;
+	private TabPanel advanced;
+	private boolean isMulticheck;
 
-    
+	public ActionDialogBoxTabbed(LinkedList<ActionObject> actions,
+			String checkName, Boolean isMulticheck) {
 
-	  public ActionDialogBoxTabbed(LinkedList<ActionObject> actions, String checkName, Boolean isMulticheck){
-		 
+		rpcServiceUuid = GWT.create(UuidService.class);
+		rpcServiceEndpoint = GWT.create(EndpointService.class);
+		rpcServiceProperty = GWT.create(PropertyService.class);
+		this.actions = actions;
 		
-  			 rpcServiceUuid = GWT.create(UuidService.class); 
-  			 rpcServiceEndpoint = GWT.create(EndpointService.class);
-  			 rpcServiceProperty = GWT.create(PropertyService.class);
-			 this.actions = actions;
-			 this.checkName = checkName;
-			 this.isMulticheck = isMulticheck;
-			 
-			 	 
-			  //Well well = new Well();
-		   	    //Legend legend = new Legend("Actions for " + checkName);
-		   	    //well.add(legend);
-		   	    //well.setStyleName("wellsilver");
-		   	    
-			 
-			    advanced = new TabPanel();
-			    advanced.setTabPosition("left");
-			  
-			    if (actions != null)
-				{
-			    
-			    Iterator<ActionObject> it = actions.iterator();
-				  while(it.hasNext()){
-					  	
-				    	addTab(it.next());
-				    }
-				advanced.selectTab(actions.size()-1);
-				}
-				
-				addEmptyTab();
-							    this.add(advanced);
+		this.isMulticheck = isMulticheck;
 
-		 
+		advanced = new TabPanel();
+		advanced.setTabPosition("left");
 
-         
-		  
-	  }
-	 
-	  
-   		
+		if (actions != null) {
 
-   		
-   	  	    
-      
-	  
-	   
-	  
-	  
-	  private void addTab(final ActionObject action) {
+			Iterator<ActionObject> it = actions.iterator();
+			while (it.hasNext()) {
+
+				addTab(it.next());
+			}
+			advanced.selectTab(actions.size() - 1);
+		}
+
+		addEmptyTab();
+		this.add(advanced);
+
+	}
+
+	private void addTab(final ActionObject action) {
 
 		String orig = action.propertyIdIndex;
-		System.out.println("AAAAAAAAAAAAAAAAAAAAAA: " + orig);
-		  
-		Row row0 = new Row(); 
+
+		Row row0 = new Row();
 		Row row1 = new Row();
 		Row row2 = new Row();
 		Row row3 = new Row();
 		Row row4 = new Row();
 		Row row5 = new Row();
 		Row row6 = new Row();
-		  
-		
+
 		Column column0A = new Column(2);
-	    final Label lblActionName = new Label();
-	    column0A.add(lblActionName);
-	    lblActionName.setText("Action Name");
-	    row0.add(column0A);
-	    
-	    
+		final Label lblActionName = new Label();
+		column0A.add(lblActionName);
+		lblActionName.setText("Action Name");
+		row0.add(column0A);
+
 		Column column0B = new Column(3);
-	    final TextBox txtActionName = new TextBox();
-	    column0B.add(txtActionName);
-	    txtActionName.setText(action.actionName);
-	    row0.add(column0B);
-	    	    	    
-		
-	    Column column1A = new Column(2);
-	    final Label lblTargetEndpointName = new Label();
-	    column1A.add(lblTargetEndpointName);
-	    lblTargetEndpointName.setText("Endpoint (Actor)");
-	    row1.add(column1A);
-	    
-	    
+		final TextBox txtActionName = new TextBox();
+		column0B.add(txtActionName);
+		txtActionName.setText(action.actionName);
+		row0.add(column0B);
+
+		Column column1A = new Column(2);
+		final Label lblTargetEndpointName = new Label();
+		column1A.add(lblTargetEndpointName);
+		lblTargetEndpointName.setText("Endpoint (Actor)");
+		row1.add(column1A);
+
 		Column column1B = new Column(3);
-	    final TextBox txtTargetEndpointName = new TextBox();
-	    column1B.add(txtTargetEndpointName);
-	    txtTargetEndpointName.setText(action.endpointName);
-	    row1.add(column1B);
-		
-	    Column column2A = new Column(2);
-	    final Label lblTargetPropertyName = new Label();
-	    column2A.add(lblTargetPropertyName);
-	    lblTargetPropertyName.setText("Property on Actor to be set");
-	    row2.add(column2A);
-	    
-	    
-	    Column column2B = new Column(3);
-	    final TextBox txtTargetPropertyName = new TextBox();
-	    txtTargetPropertyName.setText(action.propertyName);
-	    column2B.add(txtTargetPropertyName);
-	    row2.add(column2B);
+		final TextBox txtTargetEndpointName = new TextBox();
+		column1B.add(txtTargetEndpointName);
+		txtTargetEndpointName.setText(action.endpointName);
+		row1.add(column1B);
 
-	    
-	    Column column3A = new Column(2);
-	    final Label lblSettingSource = new Label();
-	    column3A.add(lblSettingSource);
-	    lblSettingSource.setText("New Setting");
-	    row3.add(column3A);
+		Column column2A = new Column(2);
+		final Label lblTargetPropertyName = new Label();
+		column2A.add(lblTargetPropertyName);
+		lblTargetPropertyName.setText("Property on Actor to be set");
+		row2.add(column2A);
 
-	    Column column3B = new Column(3);
+		Column column2B = new Column(3);
+		final TextBox txtTargetPropertyName = new TextBox();
+		txtTargetPropertyName.setText(action.propertyName);
+		column2B.add(txtTargetPropertyName);
+		row2.add(column2B);
+
+		Column column3A = new Column(2);
+		final Label lblSettingSource = new Label();
+		column3A.add(lblSettingSource);
+		lblSettingSource.setText("New Setting");
+		row3.add(column3A);
+
+		Column column3B = new Column(3);
 		final ListBox lstSettingSource = new ListBox();
 		column3B.add(lstSettingSource);
 		row3.add(column3B);
 
 		Column column4B = new Column(3, 2);
-	    final ListBox lstValidValues = new ListBox();
-	    column4B.add(lstValidValues);
-	    row4.add(column4B);
-		
-		Column column5B = new Column(3, 2);
-	    final ListBox lstSensorValue = new ListBox();
-	    column5B.add(lstSensorValue);
-	    row5.add(column5B);
+		final ListBox lstValidValues = new ListBox();
+		column4B.add(lstValidValues);
+		row4.add(column4B);
 
-	    
-	    
-	    Column column6B = new Column(3, 2);
+		Column column5B = new Column(3, 2);
+		final ListBox lstSensorValue = new ListBox();
+		column5B.add(lstSensorValue);
+		row5.add(column5B);
+
+		Column column6B = new Column(3, 2);
 		final TextBox txtManualValue = new TextBox();
 		txtManualValue.setText(action.manualValue);
 		column6B.add(txtManualValue);
 		row6.add(column6B);
 
-	    
-		populateSensePropertiesDropDown(lstSensorValue, action); 		 
-		  
-		  
-		 final Tab tab = new Tab();
-		 tab.setIcon(IconType.GEARS);
-		 tab.setHeading(action.actionName);
-		 
-		 tab.addClickHandler(new ClickHandler(){
-			
+		populateSensePropertiesDropDown(lstSensorValue, action);
+
+		final Tab tab = new Tab();
+		tab.setIcon(IconType.GEARS);
+		tab.setHeading(action.actionName);
+
+		tab.addClickHandler(new ClickHandler() {
+
 			@Override
 			public void onClick(ClickEvent event) {
 				action.actionName = txtActionName.getText();
-			
-				
+
 			}
-			 
-		 });
-		 
-		    
-		
-		 
-		 lstSettingSource.addChangeHandler(new ChangeHandler(){
-				@Override
-				public void onChange(ChangeEvent event) {
-					// TODO Auto-generated method stub					
-					action.settingSourceIndex = lstSettingSource.getValue();
-				}		    	
-		 });
 
-		 txtManualValue.addChangeHandler(new ChangeHandler(){
-				@Override
-				public void onChange(ChangeEvent event) {
-					// TODO Auto-generated method stub					
-					action.manualValue = txtManualValue.getValue();
-				}		    	
-		 });
-		
-		 lstValidValues.addChangeHandler(new ChangeHandler(){
-				@Override
-				public void onChange(ChangeEvent event) {
-					// TODO Auto-generated method stub					
-					action.validValueIndex = lstValidValues.getValue();
-				}		    	
-		 });
-		
-		 lstSensorValue.addChangeHandler(new ChangeHandler(){
-				@Override
-				public void onChange(ChangeEvent event) {
-					// TODO Auto-generated method stub					
-					action.propertyIdIndex = lstSensorValue.getValue();
-					
-					System.out.println("--------------------------VALUE GESETZT " + action.propertyIdIndex);
-				}		    	
-		 });
-		 
-		 
-		 txtActionName.addChangeHandler(new ChangeHandler(){
-				@Override
-				public void onChange(ChangeEvent event) {
-					// TODO Auto-generated method stub
-					tab.setHeading(txtActionName.getText());
-					action.actionName = txtActionName.getText();
-				}
-		    	
-		 });
+		});
 
-		 
-	    
+		lstSettingSource.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+				// TODO Auto-generated method stub
+				action.settingSourceIndex = lstSettingSource.getValue();
+			}
+		});
+
+		txtManualValue.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+				// TODO Auto-generated method stub
+				action.manualValue = txtManualValue.getValue();
+			}
+		});
+
+		lstValidValues.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+				// TODO Auto-generated method stub
+				action.validValueIndex = lstValidValues.getValue();
+			}
+		});
+
+		lstSensorValue.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+				// TODO Auto-generated method stub
+				action.propertyIdIndex = lstSensorValue.getValue();
+
+				System.out.println("--------------------------VALUE GESETZT "
+						+ action.propertyIdIndex);
+			}
+		});
+
+		txtActionName.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+				// TODO Auto-generated method stub
+				tab.setHeading(txtActionName.getText());
+				action.actionName = txtActionName.getText();
+			}
+
+		});
+
 		tab.add(row0);
-	    tab.add(row1);
-	    tab.add(row2);
-	    tab.add(row3);
-	    tab.add(row4);
-	    tab.add(row5);
-	    tab.add(row6);
-	    advanced.add(tab);
-	    
-	    
-		// set initial state of source of value based on whether the dialog is called by a check of multicheck edit window
+		tab.add(row1);
+		tab.add(row2);
+		tab.add(row3);
+		tab.add(row4);
+		tab.add(row5);
+		tab.add(row6);
+		advanced.add(tab);
 
-	    LinkedList<String> sources;
-	    	    
-		if (this.isMulticheck == true){
+		// set initial state of source of value based on whether the dialog is
+		// called by a check of multicheck edit window
+
+		LinkedList<String> sources;
+
+		if (this.isMulticheck == true) {
 			sources = new ActionSourceConfig().getMulticheckSources();
-		} else
-		{
+		} else {
 			sources = new ActionSourceConfig().getCheckSources();
 		}
 		Iterator<String> it = sources.iterator();
-		while (it.hasNext()){
+		while (it.hasNext()) {
 			lstSettingSource.addItem(it.next());
 		}
 
 		txtManualValue.setVisible(false);
 		lstSensorValue.setVisible(true);
-		
+
 		lstValidValues.setVisible(false);
 		txtTargetEndpointName.setEnabled(false);
 		txtTargetPropertyName.setEnabled(false);
-		
-	
+
 		// check if this is a new rule, if so, give it a new action ID
-		
-				if(action.actionID == ""){
-					 action.actionName = "Unnamed Action";
-					 rpcServiceUuid
-						.getUuid(new AsyncCallback<String>() {
 
-							@Override
-							public void onFailure(
+		if (action.actionID == "") {
+			action.actionName = "Unnamed Action";
+			rpcServiceUuid.getUuid(new AsyncCallback<String>() {
 
-								Throwable caught) {
-								// TODO Auto-generated
-								// method stub
+				@Override
+				public void onFailure(
 
-							}
+				Throwable caught) {
+					// TODO Auto-generated
+					// method stub
 
-							@Override
-							public void onSuccess(
-									String result) {
+				}
 
-								action.actionID = result;
-							}
+				@Override
+				public void onSuccess(String result) {
 
-						});
+					action.actionID = result;
+				}
 
-				 } else
-				 { 
-					 //if not new, set the action source index accordingly
-					 
-					 lstSettingSource.setSelectedValue(action.settingSourceIndex);
+			});
 
-										 
-					//also then get the name of the target endpoint
-					 rpcServiceEndpoint.getEndpointForEndpointID(action.endpointID, new AsyncCallback<EndpointData>(){
+		} else {
+			// if not new, set the action source index accordingly
+
+			lstSettingSource.setSelectedValue(action.settingSourceIndex);
+
+			// also then get the name of the target endpoint
+			rpcServiceEndpoint.getEndpointForEndpointID(action.endpointID,
+					new AsyncCallback<EndpointData>() {
 
 						@Override
 						public void onFailure(Throwable caught) {
 							// TODO Auto-generated method stub
-							
+
 						}
 
 						@Override
 						public void onSuccess(EndpointData result) {
 							// TODO Auto-generated method stub
 							txtTargetEndpointName.setText(result.endpointName);
-							
+
 						}
-						
-					 });
-					 
-					//also then get the name of the target property
-					 
-					 rpcServiceProperty.getPropertyName(action.propertyID, new AsyncCallback<String>(){
 
-							@Override
-							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
-								
-							}
-							
-							@Override
-							public void onSuccess(String result) {
-								
-								txtTargetPropertyName.setText(result);
-								
-							}
-							
-						 });
-					 
-					 
-				 }
+					});
 
-		
-		
+			// also then get the name of the target property
+
+			rpcServiceProperty.getPropertyName(action.propertyID,
+					new AsyncCallback<String>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void onSuccess(String result) {
+
+							txtTargetPropertyName.setText(result);
+
+						}
+
+					});
+
+		}
+
 		// change handler to update source of value options
-		
+
 		lstSettingSource.addChangeHandler(new ChangeHandler() {
 
-				@Override
-				public void onChange(ChangeEvent event) {
-					// TODO Auto-generated method stub
-					
-					System.out.println("Index:" + lstSettingSource.getSelectedIndex());
-					switch(lstSettingSource.getSelectedIndex()){
-					case 0: 
-						txtManualValue.setVisible(true);
-						lstSensorValue.setVisible(false);
-						lstValidValues.setVisible(false);
-						System.out.println("EINSER");
-						
-						
-						break;
-					
-					case 1: 
-						txtManualValue.setVisible(false);
-						lstSensorValue.setVisible(false);
-						lstValidValues.setVisible(false);
-						System.out.println("ZWEIER");
-							
-						break;
-					
-					
-					case 2: 
-						txtManualValue.setVisible(false);
-						lstSensorValue.setVisible(true);
-						lstValidValues.setVisible(false);
-						lstSensorValue.setSelectedIndex(0);
-						action.propertyIdIndex = lstSensorValue.getValue();
-						System.out.println("DREIER");
-						
-						break;
-					case 3: 
-						txtManualValue.setVisible(false);
-						lstSensorValue.setVisible(false);
-						lstValidValues.setVisible(true);
-						System.out.println("VIERER");
-						
-						break;
-					
-					}
-					
-					
+			@Override
+			public void onChange(ChangeEvent event) {
+				// TODO Auto-generated method stub
+
+				System.out.println("Index:"
+						+ lstSettingSource.getSelectedIndex());
+				switch (lstSettingSource.getSelectedIndex()) {
+				case 0:
+					txtManualValue.setVisible(true);
+					lstSensorValue.setVisible(false);
+					lstValidValues.setVisible(false);
+					System.out.println("EINSER");
+
+					break;
+
+				case 1:
+					txtManualValue.setVisible(false);
+					lstSensorValue.setVisible(false);
+					lstValidValues.setVisible(false);
+					System.out.println("ZWEIER");
+
+					break;
+
+				case 2:
+					txtManualValue.setVisible(false);
+					lstSensorValue.setVisible(true);
+					lstValidValues.setVisible(false);
+					lstSensorValue.setSelectedIndex(0);
+					action.propertyIdIndex = lstSensorValue.getValue();
+					System.out.println("DREIER");
+
+					break;
+				case 3:
+					txtManualValue.setVisible(false);
+					lstSensorValue.setVisible(false);
+					lstValidValues.setVisible(true);
+					System.out.println("VIERER");
+
+					break;
+
 				}
-				
+
+			}
+
 		});
 
-		
 		// set settingSource to correct value
-		lstSettingSource.setSelectedValue(action.settingSourceIndex);	
-		DomEvent.fireNativeEvent(Document.get().createChangeEvent(), lstSettingSource);
-		//System.out.println("WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAS: " + orig);
-		//populateSensePropertiesDropDown(lstSensorValue, action);
-		
-	    
-	  }
+		lstSettingSource.setSelectedValue(action.settingSourceIndex);
+		DomEvent.fireNativeEvent(Document.get().createChangeEvent(),
+				lstSettingSource);
 
+	}
 
-	  private void addEmptyTab() {
+	private void addEmptyTab() {
 
-			 // check if this is a new rule
-			  		  
-			  
-			 final Tab tab = new Tab();
-			 tab.setIcon(IconType.PLUS_SIGN);
-			 tab.setHeading("Add new action");
-			 
-			 			 
-		    
-			
-		    advanced.add(tab);
-		    
-		    
-		    
-		    
-		  }
+		// check if this is a new rule
 
-	  
-	  
-	  
-	  
-	  public void setParameters (String ruleID, String ruleName, String endpointName, String endpointID, String endpointClassID, String propertyName, String propertyID, int settingSourceIndex, String manualValue, int validValueIndex, int propertyIdIndex, String sensorEndpointID){
-			
-			/**
-			TextBox EPName = (TextBox) advanced.getWidget(4);
-			EPName.setText(endpointName);
-			TextBox PropName = (TextBox) advanced.getWidget(5);
-			PropName.setText(propertyName);
-			this.sensorEndpointID = sensorEndpointID;
-			SensePropertiesDropDown(sensorEndpointID);
-			
-			**/
-			
-			/**
-			txtMulticheckTitle.setText(multicheckTitle);
-			Iterator<Entry<String, String>> it = linkedChecks.entrySet().iterator();
-			while (it.hasNext()){
-				Map.Entry<String, String> checkPair = (Map.Entry<String, String>)it.next();
-				lstLinkedChecksID.addItem(checkPair.getValue(), checkPair.getKey());
-			}
-			lstLinkedChecksID.setVisibleItemCount(5);
-			**/
-		}
+		final Tab tab = new Tab();
+		tab.setIcon(IconType.PLUS_SIGN);
+		tab.setHeading("Add new action");
 
+		advanced.add(tab);
 
-		private void populateSensePropertiesDropDown(final ListBox lstSensorValue, final ActionObject action){
+	}
 
-			
-			
-			final String sensorPropertyID = action.propertyIdIndex;
-			
-			rpcServiceProperty.getSensorPropertiesForEndpointID(action.sensorEndpointID, new AsyncCallback<LinkedList<PropertyData>>(){
+	private void populateSensePropertiesDropDown(final ListBox lstSensorValue,
+			final ActionObject action) {
 
-				@Override
-				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
-					
-				}
+		final String sensorPropertyID = action.propertyIdIndex;
 
-				@Override
-				public void onSuccess(LinkedList<PropertyData> result) {
-					// TODO Auto-generated method stub
-					
-					Iterator<PropertyData> it = result.iterator();
-					
-					while(it.hasNext()){
-					
-						PropertyData sensorProperty = new PropertyData();
-						sensorProperty = it.next();		
-						
-						lstSensorValue.addItem(sensorProperty.propertyName, sensorProperty.propertyId);
-						lstSensorValue.setSelectedValue(sensorPropertyID);
-						DomEvent.fireNativeEvent(Document.get().createChangeEvent(), lstSensorValue);
-										
+		rpcServiceProperty.getSensorPropertiesForEndpointID(
+				action.sensorEndpointID,
+				new AsyncCallback<LinkedList<PropertyData>>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
 					}
-									
-				}
-				
-			});	
 
-		}
+					@Override
+					public void onSuccess(LinkedList<PropertyData> result) {
+						// TODO Auto-generated method stub
+
+						Iterator<PropertyData> it = result.iterator();
+
+						while (it.hasNext()) {
+
+							PropertyData sensorProperty = new PropertyData();
+							sensorProperty = it.next();
+
+							lstSensorValue.addItem(sensorProperty.propertyName,
+									sensorProperty.propertyId);
+							lstSensorValue.setSelectedValue(sensorPropertyID);
+							DomEvent.fireNativeEvent(Document.get()
+									.createChangeEvent(), lstSensorValue);
+
+						}
+
+					}
+
+				});
+
+	}
 
 
-		void saveAction () {
+	void cancelAction() {
+		this.cancelFlag = true;
 
-			System.out.println("ACCCT: " + this.actions.getFirst());
-					
-		}
+	}
 
+	public LinkedList<ActionObject> getActions() {
 
-		
+		return this.actions;
+	}
 
-		void cancelAction () {
-			this.cancelFlag = true;
-			
-		}
-
-		public LinkedList<ActionObject> getActions(){
-
-			return this.actions;
-		}
-	
-	
-	
 }
-
-
-
-
-
-	
-
-
-
-
-
