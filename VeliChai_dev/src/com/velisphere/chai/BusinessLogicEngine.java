@@ -26,12 +26,17 @@ package com.velisphere.chai;
 import org.voltdb.VoltTable;
 import org.voltdb.client.*;
 
+import com.velisphere.chai.dataObjects.BLEResultObject;
+import com.velisphere.chai.dataObjects.CheckObject;
+import com.velisphere.chai.dataObjects.MulticheckObject;
+
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.UUID;
 
 public class BusinessLogicEngine {
@@ -153,12 +158,17 @@ public class BusinessLogicEngine {
 
 	
 	
-	public static HashMap<String, String> runChecks(String endpointID,
+	public static BLEResultObject runChecks(String endpointID,
 			String propertyID, String checkValue, byte expired)
 			throws Exception {
 
 		
+
+		// collect data for later processing and logging
+		
 		HashMap<String, String> triggerActions = new HashMap<String, String>();
+		LinkedList<CheckObject> allChecks = new LinkedList<CheckObject>();
+		LinkedList<MulticheckObject> allMultichecks = new LinkedList<MulticheckObject>();
 
 
 		// find checks that match the incoming expression 
@@ -184,7 +194,8 @@ public class BusinessLogicEngine {
 					.callProcedure("BLE_UpdateCheckState", vtTrueChecksForExpressionT.getString("CHECKPATHID"), vtTrueChecksForExpressionT.getString("CHECKID"), 1);
 			checkPathForCheck.add(vtTrueChecksForExpressionT.getString("CHECKPATHID"));
 			triggerActions.putAll(lookupActionsForCheckID(vtTrueChecksForExpressionT.getString("CHECKID"), vtTrueChecksForExpressionT.getString("CHECKPATHID")));
-			
+			CheckObject check = new CheckObject(vtTrueChecksForExpressionT.getString("CHECKID"), checkValue, true);
+			allChecks.add(check);
 		}
 		
 		
@@ -198,9 +209,12 @@ public class BusinessLogicEngine {
 		//System.out.println(vtFalseChecksForExpressionT);
 		
 		while (vtFalseChecksForExpressionT.advanceRow()) {
+			
 			ClientResponse bleUpdateCheckState = BusinessLogicEngine.montanaClient
 					.callProcedure("BLE_UpdateCheckState", vtFalseChecksForExpressionT.getString("CHECKPATHID"), vtFalseChecksForExpressionT.getString("CHECKID"), 0);
 			checkPathForCheck.add(vtFalseChecksForExpressionT.getString("CHECKPATHID"));
+			CheckObject check = new CheckObject(vtFalseChecksForExpressionT.getString("CHECKID"), checkValue, false);
+			allChecks.add(check);
 		}
 		
 		// find rules for all true checks
@@ -220,7 +234,9 @@ public class BusinessLogicEngine {
 		triggerActions.putAll(firstLevelMultiChecks(cpID.next()));
 		}
 		
-		return triggerActions;
+		BLEResultObject bleResult = new BLEResultObject(triggerActions, allChecks, null);
+		
+		return bleResult;
 
 	}
 	

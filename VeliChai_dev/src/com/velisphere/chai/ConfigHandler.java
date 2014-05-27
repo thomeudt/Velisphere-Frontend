@@ -91,7 +91,7 @@ public class ConfigHandler {
 		ServerParameters.volt_ip = props.getProperty("Volt IP");
 
 		System.out.println(" [IN] Reading Configuration");
-		System.out.println(" [IN] Selected VeliBunny AMQP Broker: "+ ServerParameters.bunny_ip);
+		System.out.println(" [IN] Selected RabbitMQ AMQP Broker: "+ ServerParameters.bunny_ip);
 		System.out.println(" [IN] Selected VoltDB: "+ ServerParameters.volt_ip);
 		System.out.println(" [IN] Threadpool Size: "+ ServerParameters.threadpoolSize);
 

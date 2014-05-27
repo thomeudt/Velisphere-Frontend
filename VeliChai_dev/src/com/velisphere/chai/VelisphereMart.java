@@ -2,7 +2,13 @@ package com.velisphere.chai;
 
 import java.sql.*;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.TimeZone;
+import java.util.UUID;
+
+import com.velisphere.chai.dataObjects.ActionObject;
+import com.velisphere.chai.dataObjects.CheckObject;
 
 public class VelisphereMart {
 
@@ -45,40 +51,54 @@ public class VelisphereMart {
       } 
   
   
-  public static void insertLog(String entryID, String endpointID, String propertyID, String entry)
+  public static void insertTransactionLog(String transactionID, String endpointID, String propertyID, String entry, LinkedList<ActionObject> executedActions,
+		  LinkedList<CheckObject> checks)
   {
    try
       {
       Statement myInsert = conn.createStatement();
       
-      /**
-      PreparedStatement pstmt = conn.prepareStatement(
-              "INSERT INTO VLOGGER.ENDPOINTPROPERTYLOG (ENTRYID, ENDPOINTID, PROPERTYID, PROPERTYENTRY, TIME_STAMP)" +
-              " VALUES(?,?,?,?,?)");
-      pstmt.setString(1, entryID);
-      pstmt.setString(2, endpointID);
-      pstmt.setString(3, propertyID);
-      pstmt.setString(4, entry);
-      pstmt.setTimestamp(5, new java.sql.Timestamp(Calendar.getInstance().getTime().getTime()), Calendar.getInstance(TimeZone.getTimeZone("UTC")));
+      myInsert.addBatch("INSERT INTO VLOGGER.ENDPOINTPROPERTYLOG VALUES ('"+transactionID+"', '"+endpointID+"', '"+propertyID+"', '"+entry+"', STATEMENT_TIMESTAMP())");
       
-      pstmt.addBatch();
+      Iterator<ActionObject> aIT = executedActions.iterator();
       
-      try {
-          // Batch is ready, execute it to insert the data
-          pstmt.executeBatch();
-      } catch (SQLException e) {
-          System.out.println("Error message: " + e.getMessage());
-          return; // Exit if there was an error
+      while (aIT.hasNext()){
+    	  ActionObject executedAction = aIT.next();
+    	  myInsert.addBatch("INSERT INTO VLOGGER.ACTIONEXECUTEDLOG VALUES ('"+transactionID+"', '"+executedAction.getActionID()+"', '"+executedAction.getSensorID()+"', '"+executedAction.getActorID()+"', '"+executedAction.getPayload()+"', STATEMENT_TIMESTAMP())");  
       }
-
       
-      // Commit the transaction to close the COPY command
-      conn.commit();
+      Iterator<CheckObject> cIT = checks.iterator();
       
-      **/
+      while (cIT.hasNext()){
+    	  CheckObject executedCheck = cIT.next();
+    	 
+    	  myInsert.addBatch("INSERT INTO VLOGGER.CHECKEXECUTEDLOG VALUES ('"+transactionID+"', '"+executedCheck.getCheckID()+"', '"+executedCheck.getCheckValue()+"', '"+executedCheck.getHit()+"', STATEMENT_TIMESTAMP())");  
+      }
       
       
-      myInsert.executeUpdate("INSERT INTO VLOGGER.ENDPOINTPROPERTYLOG VALUES ('"+entryID+"', '"+endpointID+"', '"+propertyID+"', '"+entry+"', STATEMENT_TIMESTAMP())");
+            
+      myInsert.executeBatch();
+      myInsert.close();
+      
+      } catch (SQLException e)
+         {
+         System.err.println("Could not connect to the database.\n");
+         e.printStackTrace();
+         return;
+         }
+   } 
+  
+  public static void ainsertActionExecutionLog(String actionID, String payload, String sensorID, String actorID)
+  {
+   try
+      {
+	   
+	  UUID entryID = UUID.randomUUID();
+	  	   
+      Statement myInsert = conn.createStatement();
+      
+      
+      myInsert.executeUpdate("INSERT INTO VLOGGER.ACTIONEXECUTEDLOG VALUES ('"+entryID.toString()+"', '"+actionID+"', '"+sensorID+"', '"+actorID+"', '"+payload+"', STATEMENT_TIMESTAMP())");
       myInsert.close();
       
       } catch (SQLException e)

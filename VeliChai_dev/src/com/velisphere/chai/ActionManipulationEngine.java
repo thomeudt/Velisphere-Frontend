@@ -20,12 +20,16 @@ package com.velisphere.chai;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.voltdb.VoltTable;
 import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
+
+import com.velisphere.chai.dataObjects.ActionObject;
 
 public class ActionManipulationEngine {
 
@@ -57,9 +61,10 @@ public class ActionManipulationEngine {
 	}
 	*/
 	
-	public static void executeActionItems(Entry<String, String> actionHash, HashMap<String, String> inboundMessageMap) throws Exception
+	public static LinkedList<ActionObject> executeActionItems(Entry<String, String> actionHash, HashMap<String, String> inboundMessageMap) throws Exception
 	{
 				
+		LinkedList<ActionObject> executedActions = new LinkedList<ActionObject>();
 		
 		final ClientResponse findActionDetails = BusinessLogicEngine.montanaClient
 				.callProcedure("AME_DetailsForAction", actionHash.getValue(), actionHash.getKey());
@@ -71,7 +76,7 @@ public class ActionManipulationEngine {
 		// check if any rows have been returned
 		
 		HashMap<String,String> outboundMessageMap = new HashMap<String, String>();
-		while (actionDetails.advanceRow()) {
+		while (actionDetails.advanceRow()) 
 			{
 				//System.out.println(actionDetails.toFormattedString());
 				//System.out.println("Actiondetails: " + actionDetails);
@@ -96,12 +101,19 @@ public class ActionManipulationEngine {
 						payload = actionDetails.getString("CUSTOMPAYLOAD");
 				
 				outboundMessageMap.put(actionDetails.getString("OUTBOUNDPROPERTYID"), payload);
-				// System.out.println("Outboundmap: " + outboundMessageMap);
+								
+				// execute action via AMQP
+				
 				Send.sendHashTable(outboundMessageMap, targetEPID, inboundMessageMap.get("EPID"));
+				
+				// return ActionObject
+				
+				ActionObject executedAction = new ActionObject(actionDetails.getString("ACTIONID"), inboundMessageMap.get("EPID"),targetEPID, payload);
+				executedActions.add(executedAction);
 
 			}
-		}
-		
+				
+		return executedActions;
 		
 	}
 

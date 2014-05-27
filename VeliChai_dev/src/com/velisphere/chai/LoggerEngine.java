@@ -5,10 +5,10 @@ import java.util.UUID;
 
 import org.voltdb.types.TimestampType;
 
-
+// unused
 public class LoggerEngine {
 
-	public static void writeEndpointLog(String EPID, String property, String entry) throws Exception {
+	public static void awriteEndpointLog(String EPID, String property, String entry) throws Exception {
 
 		/*
 		 * Write log to database.
@@ -26,7 +26,7 @@ public class LoggerEngine {
 		// now only logging to VeliSphere Mart
 		
 		
-		VelisphereMart.insertLog(entryIDString, EPID, property, entry);
+		//VelisphereMart.insertPropertyLog(entryIDString, EPID, property, entry);
 		//BusinessLogicEngine.montanaClient.callProcedure("LGE_InsertEndpointPropertyLog", "A", "B", "C", "D", "E");
 	}
 
