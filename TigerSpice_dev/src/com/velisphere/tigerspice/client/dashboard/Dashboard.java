@@ -98,11 +98,6 @@ interface MyBinder extends UiBinder<Widget, Dashboard>{}
 
 		
 		
-		//initWidget(uiBinder.createAndBindUi(this));	
-		// set history for back button support
-		History.newItem("dashboard");
-		
-		//
 		
 		
 		// set page header welcome back message

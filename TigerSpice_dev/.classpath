@@ -38,9 +38,6 @@
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/gwt-maps.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/vertica/vertica-jdbc-7.0.1-0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/google apis/gwt-visualization.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/gxt-3.1.0-gpl/gxt.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/gxt-3.1.0-gpl/gxt-chart.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/gxt-3.1.0-gpl/gxt-legacy.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/gxt-3.1.0-gpl/gxt-theme-neptune.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/gxt-3.0.1-GPL/gxt-3.0.1.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

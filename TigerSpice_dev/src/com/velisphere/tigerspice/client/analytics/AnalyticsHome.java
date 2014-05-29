@@ -55,15 +55,10 @@ public void loadContent(){
 
 		
 		
-		//initWidget(uiBinder.createAndBindUi(this));	
-		// set history for back button support
-		History.newItem("dashboard");
-		
-		//
 		
 		
 		// set page header welcome back message
-    	pageHeader.setText("Analytics for " + SessionHelper.getCurrentUserName());
+    	pageHeader.setText("VeliSphere Analytics");
     	
     	final LogServiceAsync logService = GWT
 				.create(LogService.class);
@@ -108,7 +103,7 @@ public void loadContent(){
 		bread0.setText("Home");
 		brdMain.add(bread0);
 		bread1 = new NavLink();
-		bread1.setText("Dashboard");
+		bread1.setText("Analytics");
 		brdMain.add(bread1);
 		bread0.addClickHandler(new ClickHandler() {
 		public void onClick(ClickEvent event) {

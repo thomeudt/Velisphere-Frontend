@@ -2,7 +2,7 @@ package com.velisphere.tigerspice.client.analytics;
 
 
 
-	public class DataPropertyHistory {
+	public class UNUSEDDataPropertyHistory {
 		  private static int lastId = 0;
 		  private String id = "" + lastId++ ;
 		 
@@ -17,7 +17,7 @@ package com.velisphere.tigerspice.client.analytics;
 		  private double data8;
 		  private double data9;
 		 
-		  public DataPropertyHistory(String name, double data1, double data2, double data3, double data4, double data5, double data6,
+		  public UNUSEDDataPropertyHistory(String name, double data1, double data2, double data3, double data4, double data5, double data6,
 		      double data7, double data8, double data9) {
 		    super();
 		    this.name = name;

@@ -38,6 +38,8 @@
 	<!--   <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 	 <inherits name='com.google.gwt.visualization.Visualization'/>
 	 
+<inherits name='com.sencha.gxt.ui.GXT'/>
+	 
 	<!-- Other module inherits                                      -->
 	<inherits name='com.google.web.bindery.requestfactory.RequestFactory' />
 	<inherits name='com.orange.links.Links' />

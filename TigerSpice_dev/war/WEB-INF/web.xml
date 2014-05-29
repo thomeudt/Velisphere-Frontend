@@ -148,6 +148,17 @@
     <url-pattern>/tigerspice_dev/voltHelper</url-pattern>
   </servlet-mapping>
 
+<servlet>
+    <servlet-name>analyticsServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.AnalyticsServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>analyticsServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/verticaAnalytics</url-pattern>
+  </servlet-mapping>
+
+
 
 <servlet>
     <servlet-name>requestFactoryServlet</servlet-name>
