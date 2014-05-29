@@ -13,11 +13,9 @@ import com.velisphere.chai.dataObjects.CheckObject;
 public class VelisphereMart {
 
 
-	private static Connection conn;
+  private static Connection conn;
 
-/* This example connects to Vertica and issues a simple select */
-
-
+  /* This example connects to Vertica and issues a simple select */
 
   public static void connect()
      {
@@ -52,7 +50,7 @@ public class VelisphereMart {
   
   
   public static void insertTransactionLog(String transactionID, String endpointID, String propertyID, String entry, LinkedList<ActionObject> executedActions,
-		  LinkedList<CheckObject> checks)
+		  LinkedList<CheckObject> checks, LinkedList<String> checkPaths)
   {
    try
       {
@@ -75,8 +73,14 @@ public class VelisphereMart {
     	  myInsert.addBatch("INSERT INTO VLOGGER.CHECKEXECUTEDLOG VALUES ('"+transactionID+"', '"+executedCheck.getCheckID()+"', '"+executedCheck.getCheckValue()+"', '"+executedCheck.getHit()+"', STATEMENT_TIMESTAMP())");  
       }
       
+      Iterator<String> cpIT = checkPaths.iterator();
       
-            
+      while (cpIT.hasNext()){
+    	  String executedCheckpathID = cpIT.next();
+    	 
+    	  myInsert.addBatch("INSERT INTO VLOGGER.CHECKPATHEXECUTEDLOG VALUES ('"+transactionID+"', '"+executedCheckpathID+"', STATEMENT_TIMESTAMP())");  
+      }
+      
       myInsert.executeBatch();
       myInsert.close();
       
@@ -108,8 +112,5 @@ public class VelisphereMart {
          return;
          }
    } 
-  
-  
-  
-  
-} // end of class 
+    
+}  

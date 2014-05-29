@@ -75,6 +75,8 @@ public class MessageInspect implements Runnable {
 							&& e.getKey() != "SECTOK"
 							&& e.getKey() != "TIMESTAMP"
 							&& e.getKey() != "TYPE") {
+						
+							
 							
 						    BLEResultObject bleResult = BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), (byte) 0);
 						    triggeredActions.putAll(bleResult.getTriggerActions());
@@ -87,7 +89,7 @@ public class MessageInspect implements Runnable {
 							}
 						    //LoggerEngine.writeEndpointLog(EPID, e.getKey(), e.getValue());
 						    
-						    VelisphereMart.insertTransactionLog(transactionID, EPID, e.getKey(), e.getValue(), executedActions, bleResult.getChecks() );		    
+						    VelisphereMart.insertTransactionLog(transactionID, EPID, e.getKey(), e.getValue(), executedActions, bleResult.getChecks(), bleResult.getCheckpaths() );		    
 						    
 							// BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), (byte) 0);
 						

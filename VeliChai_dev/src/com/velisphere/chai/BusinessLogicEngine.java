@@ -170,10 +170,11 @@ public class BusinessLogicEngine {
 		LinkedList<CheckObject> allChecks = new LinkedList<CheckObject>();
 		LinkedList<MulticheckObject> allMultichecks = new LinkedList<MulticheckObject>();
 
+		//System.out.println("CHECKING "+propertyID+" on " + endpointID);
 
 		// find checks that match the incoming expression 
 
-		HashSet<String> checkPathForCheck = new HashSet<String>();
+		LinkedList<String> checkPathForCheck = new LinkedList<String>();
 		HashSet<String> trueCheckIDs = new HashSet<String>();
 		
 		
@@ -217,7 +218,7 @@ public class BusinessLogicEngine {
 			allChecks.add(check);
 		}
 		
-		// find rules for all true checks
+		// find checkpaths for all true checks
 		
 		Iterator<String> cpID = checkPathForCheck.iterator();
 		
@@ -234,7 +235,7 @@ public class BusinessLogicEngine {
 		triggerActions.putAll(firstLevelMultiChecks(cpID.next()));
 		}
 		
-		BLEResultObject bleResult = new BLEResultObject(triggerActions, allChecks, null);
+		BLEResultObject bleResult = new BLEResultObject(triggerActions, allChecks, null, checkPathForCheck);
 		
 		return bleResult;
 
