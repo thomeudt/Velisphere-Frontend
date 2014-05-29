@@ -54,16 +54,7 @@ public class Overviewer {
 	NavBar navBar;
 	AnimationLoading animationLoading;
 
-	public void onModuleLoad() {
-		String sessionID = Cookies.getCookie("sid");
-		System.out.println("Session ID: " + sessionID);
-		if (sessionID == null) {
-			Login loginScreen = new Login();
-			loginScreen.onModuleLoad();
-		} else {
-			checkWithServerIfSessionIdIsStillLegal(sessionID);
-		}
-	}
+	
 
 	public void loadContent() {
 
@@ -72,12 +63,7 @@ public class Overviewer {
 		rootPanel.clear();
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 
-		rootPanelHeader = RootPanel.get("stockList");
-		rootPanelHeader.clear();
-		rootPanelHeader.getElement().getStyle().setPosition(Position.RELATIVE);
-		navBar = new NavBar();
-		rootPanelHeader.add(navBar);
-
+	
 		mainPanel = new VerticalPanel();
 		rootPanel.add(mainPanel);
 

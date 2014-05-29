@@ -211,13 +211,22 @@ public class NavBar extends Composite implements HasText {
 		
 	}
 		
+
+	@UiHandler("btnAnalytics")
+	void openAnalytics (ClickEvent event) {
+	
+		AppController.openAnalytics();
+		
+		
+	}
+
 	
 	@UiHandler("btnAdmin")
 	void openAdmin (ClickEvent event) {
 		
 		clearBandarole();
 		Overviewer overviewer = new Overviewer();
-		overviewer.onModuleLoad();
+		overviewer.loadContent();
 	}
 
 	

@@ -1,23 +1,4 @@
-/*******************************************************************************
- * CONFIDENTIAL INFORMATION
- *  __________________
- *  
- *   Copyright (C) 2014 Thorsten Meudt / Connected Things Lab
- *   All Rights Reserved.
- *  
- *  NOTICE:  All information contained herein is, and remains
- *  the property of Thorsten Meudt and its suppliers,
- *  if any.  The intellectual and technical concepts contained
- *  herein are proprietary to Thorsten Meudt
- *  and its suppliers and may be covered by Patents,
- *  patents in process, and are protected by trade secret or copyright law.
- *  Dissemination of this information or reproduction of this material
- *  is strictly forbidden unless prior written permission is obtained
- *  from Thorsten Meudt.
- ******************************************************************************/
-package com.velisphere.tigerspice.client.dashboard;
-
-
+package com.velisphere.tigerspice.client.analytics;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -31,7 +12,6 @@ import com.github.gwtbootstrap.client.ui.StackProgressBar;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.History;
@@ -41,60 +21,37 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.NavBar;
-import com.velisphere.tigerspice.client.analytics.LogService;
-import com.velisphere.tigerspice.client.analytics.LogServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
-import com.velisphere.tigerspice.client.helper.HelperService;
-import com.velisphere.tigerspice.client.helper.HelperServiceAsync;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
-import com.velisphere.tigerspice.shared.MontanaStatsData;
 
+public class AnalyticsHome extends Composite {
 
-public class Dashboard extends Composite  {
+	private static AnalyticsHomeUiBinder uiBinder = GWT
+			.create(AnalyticsHomeUiBinder.class);
 
-interface MyBinder extends UiBinder<Widget, Dashboard>{}
-	
-	private static MyBinder uiBinder = GWT.create(MyBinder.class);
+	interface AnalyticsHomeUiBinder extends UiBinder<Widget, AnalyticsHome> {
+	}
 
-	
 	RootPanel rootPanel;
 	RootPanel rootPanelHeader;
 	VerticalPanel mainPanel;
 	NavBar navBar;
 	@UiField PageHeader pageHeader;
-	@UiField Bar pgbGreen;
-	@UiField Bar pgbYellow;
-	@UiField Bar pgbRed;
-	@UiField StackProgressBar pgbUtilization;
+
+
 	@UiField Breadcrumbs brdMain;
 	@UiField Paragraph pgpLogCount;
 	NavLink bread0;
 	NavLink bread1;
 	String userName;
 	
- 	
-	public Dashboard() {
-	    
-			
+	
+	public AnalyticsHome() {
 		initWidget(uiBinder.createAndBindUi(this));
 		loadContent();
-		
-	
-		
-
-		
-	}
-	 
-	public Dashboard(HandlerRegistration reg) {
-		
-		initWidget(uiBinder.createAndBindUi(this));
-		reg.removeHandler();
-		
-		loadContent();
-			
 	}
 	
-	public void loadContent(){
+public void loadContent(){
 
 		
 		
@@ -106,12 +63,7 @@ interface MyBinder extends UiBinder<Widget, Dashboard>{}
 		
 		
 		// set page header welcome back message
-    	pageHeader.setText("Dashboard for " + SessionHelper.getCurrentUserName());
-    	pgbGreen.setPercent(30);
-    	
-    	pgbRed.setPercent(0);
-    	pgbYellow.setPercent(0);
-    	pgbGreen.setText("30/100 endpoints activated");
+    	pageHeader.setText("Analytics for " + SessionHelper.getCurrentUserName());
     	
     	final LogServiceAsync logService = GWT
 				.create(LogService.class);
@@ -169,14 +121,5 @@ interface MyBinder extends UiBinder<Widget, Dashboard>{}
 
 		});
 	}
-}
-		
-	
-		
 
-	
-	
-			
-	
-	
-	
+}

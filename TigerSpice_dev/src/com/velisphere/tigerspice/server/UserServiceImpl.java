@@ -19,6 +19,10 @@ package com.velisphere.tigerspice.server;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -114,11 +118,11 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 	public String addNewUser(String userName, String eMail, String password)
 
 	{
-		
-		ConfigHandler cfh = new ConfigHandler();
-		cfh.loadParamChangesAsXML();
+
+		// first add to VoltDB
 		
 		VoltConnector voltCon = new VoltConnector();
+		String userID = UUID.randomUUID().toString();
 
 		try {
 			voltCon.openDatabase();
@@ -128,13 +132,11 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
-
-		
+		}		
 		
 		try {
 			String pwHash =  BCrypt.hashpw(password, BCrypt.gensalt());
-			voltCon.montanaClient.callProcedure("USER.insert", UUID.randomUUID().toString(), userName, eMail, pwHash, "PAYPERUSE");
+			voltCon.montanaClient.callProcedure("USER.insert", userID, userName, eMail, pwHash, "PAYPERUSE");
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -153,6 +155,52 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 			e.printStackTrace();
 		}
 		
+		
+		// second add to Vertica
+		
+		Connection conn;
+		
+		 try
+	        {
+	        Class.forName("com.vertica.jdbc.Driver");
+	        } catch (ClassNotFoundException e)
+	           {
+	           System.err.println("Could not find the JDBC driver class.\n");
+	           e.printStackTrace();
+	           
+	           }
+	      try
+	         {
+	         conn = DriverManager.getConnection
+	            (
+	            "jdbc:vertica://"+ServerParameters.vertica_ip+":5433/VelisphereMart", "vertica", "1Suplies!"
+	            );
+	         
+	         conn.setAutoCommit(true);
+	 		System.out.println(" [OK] Connected to Vertica on address: "
+	 				+ "16.1.1.113");
+	 		
+	 		Statement myInsert = conn.createStatement();
+	 		myInsert.executeUpdate("INSERT INTO VLOGGER.USER VALUES ('"+userID+"','"+userName+"','"+eMail+"','','PAYPERUSE')");
+	        
+	 		myInsert.close();
+	 		
+	 		
+	 		
+	         } catch (SQLException e)
+	            {
+	            System.err.println("Could not connect to the database.\n");
+	            e.printStackTrace();
+	           
+	            }
+
+
+			
+			
+			
+			
+			
+			
 		return "OK";
 		
 	}

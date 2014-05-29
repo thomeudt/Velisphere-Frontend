@@ -75,12 +75,11 @@ public class HelperServiceImpl extends RemoteServiceServlet implements HelperSer
 		}
 		catch ( Exception e ) { }
 
-	
-		ServerParameters.volt_ip = props.getProperty("Volt IP");
-
 		System.out.println("[IN] Reading Configuration");
+		ServerParameters.volt_ip = props.getProperty("Volt IP");
 		System.out.println("[IN] Selected VoltDB: "+ ServerParameters.volt_ip);
-		
+		ServerParameters.vertica_ip = props.getProperty("Vertica IP");
+		System.out.println("[IN] Selected Vertica Database: "+ ServerParameters.vertica_ip);
 		
 		VoltConnector voltCon = new VoltConnector();
     	

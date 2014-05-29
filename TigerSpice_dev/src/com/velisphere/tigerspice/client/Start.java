@@ -55,14 +55,14 @@ public class Start implements EntryPoint{
 			@Override
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
-				System.out.println("[ER] Failed to complete Montana database auto configuration. Error: " + caught);
+				System.out.println("[ER] Failed to complete Montana or VeliMart database auto configuration. Error: " + caught);
 				
 			}
 
 			@Override
 			public void onSuccess(String result) {
 				// TODO Auto-generated method stub
-				System.out.println("[IN] Successfully completed Montana database auto configuration, stats context: " + result);
+				System.out.println("[IN] Successfully completed Montana and VeliMart database auto configuration, stats context: " + result);
 				
 			}
 			

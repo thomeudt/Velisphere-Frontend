@@ -20,4 +20,5 @@
 <properties>
 <comment>This file contains config information. Do not overwrite!</comment>
 <entry key="Volt IP">16.1.1.110</entry>
+<entry key="Vertica IP">16.1.1.113</entry>
 </properties>
