@@ -164,7 +164,7 @@ public class LogServiceImpl extends RemoteServiceServlet implements
 
           while (myResult.next())
              {
-             System.out.println(myResult.getString(1));
+             //System.out.println(myResult.getString(1));
              result.add(myResult.getString(1));
              }
 	      

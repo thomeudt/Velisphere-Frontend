@@ -3,7 +3,6 @@ package com.velisphere.tigerspice.client.analytics;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import com.github.gwtbootstrap.client.ui.Bar;
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
