@@ -25,6 +25,7 @@ import java.util.HashSet;
 
 
 
+import java.util.LinkedList;
 import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -37,7 +38,7 @@ import com.velisphere.tigerspice.shared.UserData;
 @RemoteServiceRelativePath("voltEndpoint")
 public interface EndpointService extends RemoteService {
 	Vector<EndpointData> getAllEndpointDetails();
-	Vector<EndpointData> getEndpointsForSphere(String sphereID);
+	LinkedList<EndpointData> getEndpointsForSphere(String sphereID);
 	String addEndpointToSphere(String endpointID, String sphereID);
 	String removeEndpointFromSphere(String endpointID, String sphereID);
 	Vector<EndpointData> getEndpointsForUser(String userID);

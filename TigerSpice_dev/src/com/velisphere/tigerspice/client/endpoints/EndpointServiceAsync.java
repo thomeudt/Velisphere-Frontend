@@ -18,6 +18,7 @@
 package com.velisphere.tigerspice.client.endpoints;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -28,7 +29,7 @@ import com.velisphere.tigerspice.shared.UserData;
 
 public interface EndpointServiceAsync {
 	void getAllEndpointDetails(AsyncCallback<Vector<EndpointData>> callback);
-	void getEndpointsForSphere(String sphereID, AsyncCallback<Vector<EndpointData>> callback);
+	void getEndpointsForSphere(String sphereID, AsyncCallback<LinkedList<EndpointData>> callback);
 	void addEndpointToSphere(String endpointID, String sphereID, AsyncCallback<String> callback);
 	void removeEndpointFromSphere(String endpointID, String sphereID, AsyncCallback<String> callback);
 	void getEndpointsForUser(String userID, AsyncCallback<Vector<EndpointData>> callback);

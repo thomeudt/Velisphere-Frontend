@@ -19,6 +19,7 @@ package com.velisphere.tigerspice.server;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.LinkedList;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -97,7 +98,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		return allEndPoints;
 	}
 
-	public Vector<EndpointData> getEndpointsForSphere(String sphereID)
+	public LinkedList<EndpointData> getEndpointsForSphere(String sphereID)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -112,7 +113,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			e1.printStackTrace();
 		}
 
-		Vector<EndpointData> endPointsforSphere = new Vector<EndpointData>();
+		LinkedList<EndpointData> endPointsforSphere = new LinkedList<EndpointData>();
 		try {
 
 			final ClientResponse findAllEndpoints = voltCon.montanaClient

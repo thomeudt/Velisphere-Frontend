@@ -18,6 +18,7 @@
 package com.velisphere.tigerspice.client.endpoints;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Vector;
 
 import com.google.gwt.core.client.GWT;
@@ -59,7 +60,7 @@ public class EndpointsForSphereListerWidget_unused extends Composite {
 		
 		final AnimationLoading animationLoading = new  AnimationLoading();
 		showLoadAnimation(animationLoading);
-		rpcService.getEndpointsForSphere(sphereID, new AsyncCallback<Vector<EndpointData>>() {
+		rpcService.getEndpointsForSphere(sphereID, new AsyncCallback<LinkedList<EndpointData>>() {
 			
 			// There's been a failure in the RPC call
 			// Normally you would handle that in a good way,
@@ -72,7 +73,7 @@ public class EndpointsForSphereListerWidget_unused extends Composite {
 			}
 
 			@Override
-			public void onSuccess(Vector<EndpointData> result) {
+			public void onSuccess(LinkedList<EndpointData> result) {
 				
 								
 				Iterator<EndpointData> it = result.iterator();

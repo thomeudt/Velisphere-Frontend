@@ -12,6 +12,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -21,6 +22,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.NavBar;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
+import com.velisphere.tigerspice.client.rules.CheckpathEditorWidget;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 
 public class AnalyticsHome extends Composite {
@@ -43,10 +45,13 @@ public class AnalyticsHome extends Composite {
 	NavLink bread0;
 	NavLink bread1;
 	String userName;
+	String userID;
 	
 	
-	public AnalyticsHome() {
+	public AnalyticsHome(String userID) {
+		this.userID = userID;
 		initWidget(uiBinder.createAndBindUi(this));
+		
 		loadContent();
 	}
 	
@@ -115,5 +120,10 @@ public void loadContent(){
 
 		});
 	}
+
+@UiFactory ChartSensorHistoryWidget makePropHistory() { // method name is insignificant
+    return new ChartSensorHistoryWidget(userID);
+  }
+
 
 }

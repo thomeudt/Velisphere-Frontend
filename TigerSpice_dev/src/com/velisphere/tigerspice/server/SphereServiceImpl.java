@@ -150,6 +150,68 @@ public class SphereServiceImpl extends RemoteServiceServlet implements
 
 	}
 
+	@Override
+	public LinkedList<SphereData> getAllSpheresForUserID(String userID) {
+
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		LinkedList<SphereData> allSpheres = new LinkedList<SphereData>();
+		try {
+
+			final ClientResponse findAllSpheres = voltCon.montanaClient
+					.callProcedure("UI_SelectAllSpheres");
+
+			final VoltTable findAllSpheresResults[] = findAllSpheres.getResults();
+
+			VoltTable result = findAllSpheresResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					SphereData sphereData = new SphereData();
+					sphereData.sphereId = result.getString("SPHEREID");
+					sphereData.sphereName = result.getString("SPHERENAME");
+					
+					
+					Byte b;
+					b = (Byte) result.get("PUBLIC", VoltType.TINYINT);
+					sphereData.sphereIsPublic = b.intValue();
+					
+					allSpheres.add(sphereData);
+
+				}
+			}
+
+			
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return allSpheres;
+
+	
+	}
+
 
 	
 }

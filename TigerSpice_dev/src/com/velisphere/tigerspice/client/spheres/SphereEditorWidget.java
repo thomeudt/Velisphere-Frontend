@@ -18,6 +18,7 @@
 package com.velisphere.tigerspice.client.spheres;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Vector;
 
 import com.github.gwtbootstrap.client.ui.Button;
@@ -392,13 +393,13 @@ public class SphereEditorWidget extends Composite {
 		// query endpoints that are already part of the current sphere
 
 		rpcService.getEndpointsForSphere(sphereID,
-				new AsyncCallback<Vector<EndpointData>>() {
+				new AsyncCallback<LinkedList<EndpointData>>() {
 					public void onFailure(Throwable caught) {
 						Window.alert("Error" + caught.getMessage());
 					}
 
 					@Override
-					public void onSuccess(Vector<EndpointData> result) {
+					public void onSuccess(LinkedList<EndpointData> result) {
 
 						Iterator<EndpointData> it = result.iterator();
 						removeLoadAnimation(animationLoading);

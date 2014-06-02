@@ -7,7 +7,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.analytics.AnalyticsHome;
-import com.velisphere.tigerspice.client.analytics.ChartPropertyHistoryWidget;
+import com.velisphere.tigerspice.client.analytics.ChartSensorHistoryWidget;
 import com.velisphere.tigerspice.client.dashboard.Dashboard;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
@@ -24,7 +24,7 @@ import com.velisphere.tigerspice.client.users.LoginSuccess;
 public class AppController {
 	
 	private static HandlerRegistration sessionHandler;
-	private String userID;
+
 		
 
 
@@ -211,8 +211,8 @@ public class AppController {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
-			//userID = SessionHelper.getCurrentUserID();
-			AnalyticsHome analytics = new AnalyticsHome();
+			String userID = SessionHelper.getCurrentUserID();
+			AnalyticsHome analytics = new AnalyticsHome(userID);
 			openWithHistoryHandler("analytics_home", analytics);
 		}		
 	});
