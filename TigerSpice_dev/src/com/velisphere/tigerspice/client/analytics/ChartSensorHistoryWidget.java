@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.visualization.client.AbstractDataTable;
 import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
@@ -333,7 +334,7 @@ public class ChartSensorHistoryWidget extends Composite {
 						// Add the columns.
 						table.addColumn(timeStampColumn, "Time Stamp");
 						table.addColumn(valueColumn, "Value");
-						table.setRowCount(result.size(), true);
+						//table.setRowCount(result.size(), true);
 						table.setVisibleRange(0, 10);
 
 						// Create a data provider.
@@ -341,6 +342,7 @@ public class ChartSensorHistoryWidget extends Composite {
 
 						// Connect the table to the data provider.
 						dataProvider.addDataDisplay(table);
+					
 
 						// create the datatable for chart and celltable for
 						// table
@@ -380,18 +382,8 @@ public class ChartSensorHistoryWidget extends Composite {
 						graphCol.add(lines);
 
 						graphCol.add(new Paragraph("Data Table:"));
+
 						
-						graphCol.add(table);
-						
-						SimplePager test = new SimplePager();
-						test.setDisplay(table);						
-						
-						graphCol.add(test);
-						graphCol.add(new Paragraph(" "));
-						
-						/**
-						 * this does not work yet
-						 */
 						
 						// Add a ColumnSortEvent.ListHandler to connect sorting to the
 					    // java.util.List.
@@ -411,6 +403,23 @@ public class ChartSensorHistoryWidget extends Composite {
 					          }
 					        });
 					    table.addColumnSortHandler(columnSortHandler);
+					    
+					    
+					    
+					    table.setStriped(true);
+					    table.getColumnSortList().push(timeStampColumn);
+					    
+						
+						
+						graphCol.add(table);
+						
+						SimplePager test = new SimplePager();
+						test.setDisplay(table);						
+						
+						graphCol.add(test);
+						graphCol.add(new Paragraph(" "));
+						
+
 
 
 					}
