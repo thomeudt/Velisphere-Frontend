@@ -46,7 +46,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 	 		Statement mySelect = conn.createStatement();
 	 		
 	 		ResultSet myResult = mySelect.executeQuery
-                    ("SELECT * FROM vlogger.endpointpropertylog WHERE PROPERTYID = '"+propertyID+"' AND ENDPOINTID = '"+endpointID+"' LIMIT 1000");
+                    ("SELECT * FROM vlogger.endpointpropertylog WHERE PROPERTYID = '"+propertyID+"' AND ENDPOINTID = '"+endpointID+"' ORDER BY TIME_STAMP");
 
 	 		
 	 		
@@ -54,10 +54,10 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 	 		{
 	 			EndpointLogData logItem = new EndpointLogData();
 	 			logItem.setPropertyID(myResult.getString(3));
-	 			logItem.setValue(myResult.getString(4));
+	 			logItem.setValue(Double.parseDouble(myResult.getString(4)));
 	 			logItem.setTimeStamp(myResult.getString(5));
 	 			logData.add(logItem);
-	 			System.out.println("Retrieved: " + myResult.getString(4));
+	 			//System.out.println("Retrieved: " + logItem.getValue());
 	 		}
 	        
 	 		mySelect.close();

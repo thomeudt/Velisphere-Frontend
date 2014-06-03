@@ -5,14 +5,14 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class EndpointLogData implements IsSerializable {
 
 	String propertyID;
-	String value;
+	Double value;
 	String timeStamp;
 	
 	public void setPropertyID(String propertyID){
 		this.propertyID = propertyID;
 	}
 	
-	public void setValue(String value){
+	public void setValue(Double value){
 		this.value = value;
 	}
 	
@@ -24,7 +24,7 @@ public class EndpointLogData implements IsSerializable {
 		return this.propertyID;
 	}
 	
-	public String getValue(){
+	public Double getValue(){
 		return this.value;
 	}
 	
