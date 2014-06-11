@@ -9,6 +9,6 @@ import com.velisphere.tigerspice.shared.EndpointLogData;
 
 public interface AnalyticsServiceAsync {
 	void getEndpointLog(String EndpointID, String PropertyID, AsyncCallback<LinkedList<EndpointLogData>> callback);
-	
+	void getEndpointLogAsFile(String EndpointID, String PropertyID, AsyncCallback<String> callback);
 }
 

@@ -70,11 +70,12 @@
 
 					<b:Column size="2" offset="0">
 					    <vsrl:CheckpathCostIndicator ui:field="wgtCostIndicator"/> 
-						
+						<b:Paragraph addStyleNames="smalltext">Analytics Explorer</b:Paragraph>
 						<b:Paragraph addStyleNames="smalltext">Sensor Explorer</b:Paragraph>
 						<vspr:SensorPropertiesByEndpointWidget />
 						<b:Paragraph addStyleNames="smalltext">Actor Explorer</b:Paragraph>
 						<vspr:ActorPropertiesByEndpointWidget />
+						
 
 					</b:Column>
 

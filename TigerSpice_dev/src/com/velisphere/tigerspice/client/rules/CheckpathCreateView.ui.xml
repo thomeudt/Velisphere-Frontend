@@ -92,11 +92,13 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 				    	<vsrl:CheckpathCostIndicator ui:field="wgtCostIndicator"/>
 				        <b:Paragraph addStyleNames="smalltext">Use Logic Template</b:Paragraph>
 				        <b:Paragraph addStyleNames="smalltext">...</b:Paragraph>
+				        <b:Paragraph addStyleNames="smalltext">Analytics Explorer</b:Paragraph>
 				        <b:Paragraph addStyleNames="smalltext">Sensor Explorer</b:Paragraph>
 				        <vspr:SensorPropertiesByEndpointWidget />
 				   	
 				   		<b:Paragraph addStyleNames="smalltext">Actor Explorer</b:Paragraph>
 				   		<vspr:ActorPropertiesByEndpointWidget />
+				   		
 				     
 					</b:Column>
 					

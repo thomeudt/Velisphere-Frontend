@@ -47,8 +47,6 @@
 
 						<b:Row>
 							<b:Column size="6" offset="0">
-								<b:Paragraph addStyleNames="smalltext">Upgrade your subscription
-									to increase your endpoint limit.</b:Paragraph>
 								<b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
 							</b:Column>
 						</b:Row>

@@ -29,12 +29,15 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
+import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
@@ -74,6 +77,7 @@ import com.google.gwt.visualization.client.visualizations.corechart.LineChart;
 import com.google.gwt.visualization.client.visualizations.corechart.Options;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
+import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.spheres.SphereService;
@@ -89,8 +93,8 @@ public class ChartSensorHistoryWidget extends Composite {
 	ListBox lbxEndpointFilter;
 	ListBox lbxPropertyFilter;
 	Column graphCol;
-	DateTimeBoxAppended dtbStart;
-	DateTimeBoxAppended dtbEnd;
+	DateTimeBox dtbStart;
+	DateTimeBox dtbEnd;
 
 	public ChartSensorHistoryWidget(String userID) {
 		// initWidget(uiBinder.createAndBindUi(this));
@@ -119,7 +123,7 @@ public class ChartSensorHistoryWidget extends Composite {
 		Row filterRow2 = new Row();
 		Column filterCol2 = new Column(2);
 		lbxSphereFilter = new ListBox();
-		lbxSphereFilter.setSize(2);
+		lbxSphereFilter.setAlternateSize(AlternateSize.MEDIUM);
 		filterCol2.add(lbxSphereFilter);
 
 		filterRow2.add(filterCol2);
@@ -134,7 +138,7 @@ public class ChartSensorHistoryWidget extends Composite {
 		Row filterRow4 = new Row();
 		Column filterCol4 = new Column(2);
 		lbxEndpointFilter = new ListBox();
-		lbxEndpointFilter.setSize(2);
+		lbxEndpointFilter.setAlternateSize(AlternateSize.MEDIUM);
 		filterCol4.add(lbxEndpointFilter);
 
 		filterRow4.add(filterCol4);
@@ -149,7 +153,7 @@ public class ChartSensorHistoryWidget extends Composite {
 		Row filterRow6 = new Row();
 		Column filterCol6 = new Column(2);
 		lbxPropertyFilter = new ListBox();
-		lbxPropertyFilter.setSize(2);
+		lbxPropertyFilter.setAlternateSize(AlternateSize.MEDIUM);
 		filterCol6.add(lbxPropertyFilter);
 		filterRow6.add(filterCol6);
 
@@ -161,11 +165,11 @@ public class ChartSensorHistoryWidget extends Composite {
 
 		Row filterRow8 = new Row();
 		Column filterCol8 = new Column(2);
-		dtbStart = new DateTimeBoxAppended();
+		dtbStart = new DateTimeBox();
 		dtbStart.setAlternateSize(AlternateSize.MEDIUM);
 		dtbStart.setShowTodayButton(true);
 		dtbStart.setHighlightToday(true);
-		dtbStart.setBaseIcon(IconType.CALENDAR);
+		//dtbStart.setBaseIcon(IconType.CALENDAR);
 		dtbStart.setAutoClose(true);
 		
 		filterCol8.add(dtbStart);				
@@ -180,11 +184,11 @@ public class ChartSensorHistoryWidget extends Composite {
 
 		Row filterRow10 = new Row();
 		Column filterCol10 = new Column(2);
-		dtbEnd = new DateTimeBoxAppended();
+		dtbEnd = new DateTimeBox();
 		dtbEnd.setAlternateSize(AlternateSize.MEDIUM);
 		dtbEnd.setShowTodayButton(true);
 		dtbEnd.setHighlightToday(true);
-		dtbEnd.setBaseIcon(IconType.CALENDAR);
+		//dtbEnd.setBaseIcon(IconType.CALENDAR);
 		dtbEnd.setAutoClose(true);
 		
 		filterCol10.add(dtbEnd);
@@ -196,13 +200,27 @@ public class ChartSensorHistoryWidget extends Composite {
 		btnDownloadChart.setSize(ButtonSize.SMALL);
 		btnDownloadChart.setType(ButtonType.PRIMARY);
 		filterCol11.add(btnDownloadChart);
+		filterRow11.add(filterCol11);
+		
+		Row filterRow12 = new Row();
+		Column filterCol12 = new Column(2);
 		Button btnDownloadTable = new Button("Download Data");
 		btnDownloadTable.setSize(ButtonSize.SMALL);
 		btnDownloadTable.setType(ButtonType.PRIMARY);
-		filterCol11.add(btnDownloadTable);
+		btnDownloadTable.addClickHandler(new ClickHandler()
+		{
 
-
-		filterRow11.add(filterCol11);
+			@Override
+			public void onClick(ClickEvent event) {
+				startDownload();
+				
+			}
+			
+		});
+		
+		filterCol12.add(new Paragraph(" "));
+		filterCol12.add(btnDownloadTable);
+		filterRow12.add(filterCol12);
 		
 		Row graphRow = new Row();
 		graphCol = new Column(8);
@@ -219,11 +237,13 @@ public class ChartSensorHistoryWidget extends Composite {
 		leftCol.add(filterRow9);
 		leftCol.add(filterRow10);
 		leftCol.add(filterRow11);
-		
+		leftCol.add(filterRow12);
 
 		rightCol.add(graphRow);
 
 		populateSphereList(userID);
+		
+		
 		lbxSphereFilter.addChangeHandler(new ChangeHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
@@ -421,6 +441,7 @@ public class ChartSensorHistoryWidget extends Composite {
 		options.setFontName("Source Sans Pro");
 		options.setLineWidth(2);
 		
+		
 
 		final AnalyticsServiceAsync analyticsService = GWT
 				.create(AnalyticsService.class);
@@ -443,6 +464,10 @@ public class ChartSensorHistoryWidget extends Composite {
 
 						// prep the datatable
 
+						if (result.size() > 0){
+							
+						
+						
 						final CellTable<SensorTrail> table = new CellTable<SensorTrail>(10, GWT.<CellTable.SelectableResources>create(CellTable.SelectableResources.class));
 
 						TextColumn<SensorTrail> timeStampColumn = new TextColumn<SensorTrail>() {
@@ -519,7 +544,6 @@ public class ChartSensorHistoryWidget extends Composite {
 						graphCol.add(lines);
 
 
-						graphCol.add(new Paragraph("Data Table:"));
 						
 						
 											
@@ -567,6 +591,7 @@ public class ChartSensorHistoryWidget extends Composite {
 					    table.setStriped(false);
 					    table.setHover(true);
 					    
+					    
 					    table.getColumnSortList().push(timeStampColumn);
 					    table.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 					    
@@ -603,6 +628,13 @@ public class ChartSensorHistoryWidget extends Composite {
 						graphCol.add(new Paragraph(" "));
 						
 					}
+						else
+						{
+							graphCol.clear();
+							graphCol.add(new Paragraph("No data to display - data out of date range, nothing tracked for this sensor or sensor is not providing numeric values."));
+						}
+					}
+					
 				});
 	}
 
@@ -732,7 +764,6 @@ public class ChartSensorHistoryWidget extends Composite {
 						graphCol.add(lines);
 
 
-						graphCol.add(new Paragraph("Data Table:"));
 						
 						
 											
@@ -820,6 +851,38 @@ public class ChartSensorHistoryWidget extends Composite {
 	}
 
 	
+
+	private void startDownload()
+	{
+		final AnalyticsServiceAsync analyticsService = GWT
+				.create(AnalyticsService.class);
+
+		System.out.println(lbxEndpointFilter.getValue() + " / "
+				+ lbxPropertyFilter.getValue());
+		
+		analyticsService.getEndpointLogAsFile(lbxEndpointFilter.getValue(),
+				lbxPropertyFilter.getValue(),
+				new AsyncCallback<String>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						Window.open("/tigerspice_dev/tigerspiceDownloads?privateURL="+result+"&outboundFileName=Sensortrail_for_"+lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex())
+								+"_"+lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex())+".csv", "", "");
+						//secure with sessionID PLEASE!!!
+					}
+
+		});
+
+	
+		
+		
+	}
 	
 	private final native JavaScriptObject newJsEntry(String rowNo, 
             String colNo)/*-{

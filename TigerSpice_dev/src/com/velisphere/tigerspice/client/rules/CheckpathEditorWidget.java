@@ -724,7 +724,7 @@ public class CheckpathEditorWidget extends Composite {
 
 			}
 		}
-
+		
 	}
 
 	private void loadCheckpathJSON(final String checkpathId) {

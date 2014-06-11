@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.Paragraph;
@@ -53,6 +54,8 @@ public class CheckpathList extends Composite {
 	TabPane tbpTmplLogic;
 	@UiField
 	TabPane tbpEmbLogic;
+	@UiField
+	Button btnOpenCheckpath;
 
 	
 	
@@ -95,6 +98,7 @@ public class CheckpathList extends Composite {
 			tbpMyLogic.setActive(true);
 			tbpTmplLogic.setActive(false);
 			tbpEmbLogic.setActive(false);
+			btnOpenCheckpath.setEnabled(false);
 		
 		
 		
@@ -127,8 +131,10 @@ public class CheckpathList extends Composite {
 						while (it.hasNext()){
 							Map.Entry<String, String> checkPair = (Map.Entry<String, String>)it.next();
 							lstCheckpath.addItem(checkPair.getValue(), checkPair.getKey());
+							
 						}
 						lstCheckpath.setVisibleItemCount(7);
+						if(result.entrySet().size() > 0) btnOpenCheckpath.setEnabled(true);
 
 					}
 				});
