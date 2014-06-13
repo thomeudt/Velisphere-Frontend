@@ -75,6 +75,7 @@ import com.google.gwt.visualization.client.visualizations.Table;
 import com.google.gwt.visualization.client.visualizations.corechart.CoreChart;
 import com.google.gwt.visualization.client.visualizations.corechart.LineChart;
 import com.google.gwt.visualization.client.visualizations.corechart.Options;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
@@ -86,6 +87,7 @@ import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.EndpointLogData;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.SphereData;
+import com.velisphere.tigerspice.shared.TableRowData;
 
 public class ChartSensorHistoryWidget extends Composite {
 
@@ -95,14 +97,20 @@ public class ChartSensorHistoryWidget extends Composite {
 	Column graphCol;
 	DateTimeBox dtbStart;
 	DateTimeBox dtbEnd;
+	DataTable data;
+	LinkedList<TableRowData> tableData;
+	
 
 	public ChartSensorHistoryWidget(String userID) {
 		// initWidget(uiBinder.createAndBindUi(this));
 
 		final VerticalPanel vp = new VerticalPanel();
 
+		
+		
 		initWidget(vp);
 
+		tableData = new LinkedList<TableRowData>();
 		// setup main analyzer layout
 		Row mainRow = new Row();
 		Column leftCol = new Column(2);
@@ -422,7 +430,9 @@ public class ChartSensorHistoryWidget extends Composite {
 
 	private void populateChart(String endpointName, String propertyName) {
 
+		// clear tableData before loading new data
 		
+		tableData.clear();
 
 		// container class for cell table
 
@@ -515,12 +525,34 @@ public class ChartSensorHistoryWidget extends Composite {
 						int i = 1;
 						Iterator<EndpointLogData> it = result.iterator();
 						List<SensorTrail> list = dataProvider.getList();
+						
+						TableRowData introRow = new TableRowData();
+						introRow.setRow("*** VeliSphere Data Trail Export for " + lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex())
+								+ " on " + lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), "", "", "", "", "", "", "");
+						
+						tableData.add(introRow);
+				
+						TableRowData spacerRow = new TableRowData();
+						spacerRow.setRow(" ", "", "", "", "", "", "", "");
+						tableData.add(spacerRow);
+				
+						
+						TableRowData headerRow = new TableRowData();
+						headerRow.setRow("Time Stamp", lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex()), "", "", "", "", "", "");
+						tableData.add(headerRow);
+						
+						
+					
 
 						while (it.hasNext()) {
 
 							EndpointLogData logItem = it.next();
 							data.setValue(i, 0, logItem.getTimeStamp());
 							data.setValue(i, 1,	logItem.getValue());
+							TableRowData row = new TableRowData();
+							row.setRow(logItem.getTimeStamp(), String.valueOf(logItem.getValue()), "", "", "", "", "", "");
+							tableData.add(row);
+						
 						
 
 							// Add the data to the data provider, which
@@ -641,7 +673,10 @@ public class ChartSensorHistoryWidget extends Composite {
 
 	private void populateChartForRange(String endpointName, String propertyName, final Timestamp startDate, final Timestamp endDate) {
 
+		// clear tableData before loading new data
 		
+				tableData.clear();
+
 
 		// container class for cell table
 
@@ -720,16 +755,36 @@ public class ChartSensorHistoryWidget extends Composite {
 						// create the datatable for chart and celltable for
 						// table
 
-						final DataTable data = DataTable.create();
+						data = DataTable.create();
 						data.addColumn(ColumnType.STRING, "Time");
 						data.addColumn(ColumnType.NUMBER, lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex()));
 
 						data.addRows(result.size() + 1);
+						
+						
 
 						int i = 1;
 						Iterator<EndpointLogData> it = result.iterator();
 						List<SensorTrail> list = dataProvider.getList();
 
+						TableRowData introRow = new TableRowData();
+						introRow.setRow("VeliSphere Data Trail Export for " + lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex())
+								+ " on " + lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), "", "", "", "", "", "", "");
+						
+						tableData.add(introRow);
+				
+						TableRowData spacerRow = new TableRowData();
+						spacerRow.setRow("---------------------------------------", "", "", "", "", "", "", "");
+						tableData.add(spacerRow);
+				
+						
+						TableRowData headerRow = new TableRowData();
+						headerRow.setRow("VeliSphere Data Trail Export for " + lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex())
+								+ " on " + lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), "", "", "", "", "", "", "");
+						tableData.add(headerRow);
+						
+						
+						
 						while (it.hasNext()) {
 
 							
@@ -740,6 +795,11 @@ public class ChartSensorHistoryWidget extends Composite {
 							
 							data.setValue(i, 0, logItem.getTimeStamp());
 							data.setValue(i, 1,	logItem.getValue());
+							
+							TableRowData row = new TableRowData();
+							row.setRow(logItem.getTimeStamp(),String.valueOf(logItem.getValue()), "", "", "", "", "", "");
+							tableData.add(row);
+						
 						
 
 							// Add the data to the data provider, which
@@ -757,6 +817,8 @@ public class ChartSensorHistoryWidget extends Composite {
 
 						}
 
+						System.out.println(tableData.toString());
+						
 						// Create a line chart visualization.
 						final LineChart lines = new LineChart(data, options);
 						graphCol.clear();
@@ -857,11 +919,9 @@ public class ChartSensorHistoryWidget extends Composite {
 		final AnalyticsServiceAsync analyticsService = GWT
 				.create(AnalyticsService.class);
 
-		System.out.println(lbxEndpointFilter.getValue() + " / "
-				+ lbxPropertyFilter.getValue());
 		
-		analyticsService.getEndpointLogAsFile(lbxEndpointFilter.getValue(),
-				lbxPropertyFilter.getValue(),
+		
+		analyticsService.getEndpointLogAsFile(tableData,
 				new AsyncCallback<String>() {
 
 					@Override
@@ -872,9 +932,9 @@ public class ChartSensorHistoryWidget extends Composite {
 
 					@Override
 					public void onSuccess(String result) {
-						Window.open("/tigerspice_dev/tigerspiceDownloads?privateURL="+result+"&outboundFileName=Sensortrail_for_"+lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex())
-								+"_"+lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex())+".csv", "", "");
-						//secure with sessionID PLEASE!!!
+						AppController.openDirectLink("/tigerspice_dev/tigerspiceDownloads?privateURL="+result+"&outboundFileName=Sensortrail_for_"+lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex())
+								+"_"+lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex())+".csv");
+						
 					}
 
 		});
