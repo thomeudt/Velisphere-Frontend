@@ -1,5 +1,9 @@
 package com.velisphere.tigerspice.server;
 
+import gui.ava.html.image.generator.HtmlImageGenerator;
+
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,7 +16,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.UUID;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
+
+import org.apache.commons.codec.binary.Base64;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
@@ -107,5 +114,41 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 				+ tempFile.getAbsolutePath());
 		return tempFile.getAbsolutePath();
 	}
+	
+	@Override
+	public String getEndpointLogChartAsFile(String imageData) {
+
+		ServletContext app = this.getServletContext();
+	
+		
+		File tmpDir = (File) app.getAttribute("javax.servlet.context.tempdir");
+		File tempFile = new File(tmpDir.getAbsolutePath(), UUID.randomUUID()
+				.toString() + ".png");
+
+
+		String encodingPrefix = "base64,";
+		int contentStartIndex = imageData.indexOf(encodingPrefix) + encodingPrefix.length();
+		
+		byte[] imageDataArray = Base64.decodeBase64(imageData.substring(contentStartIndex).getBytes());
+		System.out.println(String.valueOf(imageDataArray));
+		
+		
+		
+		BufferedImage inputImage;
+		try {
+			inputImage = ImageIO.read(new ByteArrayInputStream(imageDataArray));
+			ImageIO.write(inputImage, "png", tempFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+
+		System.out.println("[IN] Creating temporary file at "
+				+ tempFile.getAbsolutePath());
+		return tempFile.getAbsolutePath();
+	}
+
 
 }

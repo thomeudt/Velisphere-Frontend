@@ -1,11 +1,16 @@
 package com.velisphere.tigerspice.client.analytics;
 
+
+
+
+
 import java.sql.Timestamp;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
 
 import org.apache.james.mime4j.field.datetime.DateTime;
 
@@ -22,6 +27,8 @@ import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.resources.ButtonSize;
 import com.github.gwtbootstrap.datetimepicker.client.ui.DateTimeBox;
 import com.github.gwtbootstrap.datetimepicker.client.ui.DateTimeBoxAppended;
+import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -60,6 +67,7 @@ import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.visualization.client.AbstractDataTable;
 import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
+import com.google.gwt.visualization.client.ChartArea;
 import com.google.gwt.visualization.client.Query.Callback;
 import com.google.gwt.visualization.client.Query.SendMethod;
 import com.google.gwt.visualization.client.DataTable;
@@ -99,6 +107,7 @@ public class ChartSensorHistoryWidget extends Composite {
 	DateTimeBox dtbEnd;
 	DataTable data;
 	LinkedList<TableRowData> tableData;
+	LineChart lines;
 	
 
 	public ChartSensorHistoryWidget(String userID) {
@@ -210,6 +219,19 @@ public class ChartSensorHistoryWidget extends Composite {
 		filterCol11.add(btnDownloadChart);
 		filterRow11.add(filterCol11);
 		
+		btnDownloadChart.addClickHandler(new ClickHandler()
+		{
+
+			@Override
+			public void onClick(ClickEvent event) {
+				getImage();
+				
+				
+			}
+			
+		});
+		
+		
 		Row filterRow12 = new Row();
 		Column filterCol12 = new Column(2);
 		Button btnDownloadTable = new Button("Download Data");
@@ -221,6 +243,7 @@ public class ChartSensorHistoryWidget extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				startDownload();
+				
 				
 			}
 			
@@ -271,7 +294,8 @@ public class ChartSensorHistoryWidget extends Composite {
 			@Override
 			public void onChange(ChangeEvent event) {
 
-				graphCol.add(new Paragraph("Loading chart..."));
+				graphCol.clear();
+				graphCol.add(new Paragraph("Loading chart, please wait..."));
 
 				Runnable onLoadCallback = new Runnable() {
 					public void run() {
@@ -570,11 +594,13 @@ public class ChartSensorHistoryWidget extends Composite {
 						}
 
 						// Create a line chart visualization.
-						final LineChart lines = new LineChart(data, options);
+						lines = new LineChart(data, options);
 						graphCol.clear();
 						
 						graphCol.add(lines);
-
+						
+					
+				
 
 						
 						
@@ -653,10 +679,10 @@ public class ChartSensorHistoryWidget extends Composite {
 						
 						graphCol.add(table);
 						
-						SimplePager test = new SimplePager();
-						test.setDisplay(table);						
+						SimplePager pager = new SimplePager();
+						pager.setDisplay(table);						
 						
-						graphCol.add(test);
+						graphCol.add(pager);
 						graphCol.add(new Paragraph(" "));
 						
 					}
@@ -820,10 +846,12 @@ public class ChartSensorHistoryWidget extends Composite {
 						System.out.println(tableData.toString());
 						
 						// Create a line chart visualization.
-						final LineChart lines = new LineChart(data, options);
+						lines = new LineChart(data, options);
 						graphCol.clear();
 						
 						graphCol.add(lines);
+						
+						
 
 
 						
@@ -902,10 +930,10 @@ public class ChartSensorHistoryWidget extends Composite {
 						
 						graphCol.add(table);
 						
-						SimplePager test = new SimplePager();
-						test.setDisplay(table);						
+						SimplePager pager = new SimplePager();
+						pager.setDisplay(table);						
 						
-						graphCol.add(test);
+						graphCol.add(pager);
 						graphCol.add(new Paragraph(" "));
 						
 					}
@@ -938,8 +966,37 @@ public class ChartSensorHistoryWidget extends Composite {
 					}
 
 		});
-
+			
+	}
 	
+	public void getImage(){
+		System.out.println(lines.getElement().getInnerHTML());
+		
+		final AnalyticsServiceAsync analyticsService = GWT
+				.create(AnalyticsService.class);
+
+		
+		final String dataUri = nativeGetUrl(lines.getJso());
+		
+		
+		analyticsService.getEndpointLogChartAsFile(dataUri,
+				new AsyncCallback<String>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						AppController.openDirectLink("/tigerspice_dev/tigerspiceDownloads?privateURL="+result+"&outboundFileName=Sensortrail_for_"+lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex())
+								+"_"+lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex())+".png");
+						
+					}
+
+		});
+
 		
 		
 	}
@@ -947,6 +1004,14 @@ public class ChartSensorHistoryWidget extends Composite {
 	private final native JavaScriptObject newJsEntry(String rowNo, 
             String colNo)/*-{
 	return {row: rowNo, col: colNo};
-}-*/; 
+		
+	
+	}-*/;
+	
+	 private final native String nativeGetUrl(JavaScriptObject jso) /*-{
+	    return jso.getImageURI();
+	  }-*/;
+	
+
 	
 }

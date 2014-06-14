@@ -40,5 +40,8 @@
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/google apis/gwt-visualization.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/gxt-3.0.1-GPL/gxt-3.0.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/openCSV/opencsv-2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/html2image-0.9.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Downloads/html2image-0.9-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/commons-codec-1.9.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

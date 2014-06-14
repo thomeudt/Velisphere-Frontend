@@ -12,6 +12,7 @@ import com.velisphere.tigerspice.shared.TableRowData;
 	public interface AnalyticsService extends RemoteService {
 		LinkedList<EndpointLogData> getEndpointLog(String endpointID, String propertyID);
 		String getEndpointLogAsFile(LinkedList<TableRowData> table) throws IOException;
+		String getEndpointLogChartAsFile (String htmlData);
 	}
 
 	
