@@ -231,11 +231,11 @@ public class SimpleLineChart {
 
 						TableRowData row = new TableRowData();
 						String[] rowArray = new String[logItem
-								.getPropertyValuePairs().size()];
+								.getPropertyValuePairs().size()+1];//+1 because of timestamp in column 0
 						rowArray[0] = logItem.getTimeStamp();
 						Iterator<Entry<String, Double>> itPV = logItem
 								.getPropertyValuePairs().entrySet().iterator();
-						int iColumnPV = 0;
+						int iColumnPV = 1;
 						while (itPV.hasNext()) {
 							rowArray[iColumnPV] = String.valueOf(itPV.next()
 									.getValue());
@@ -288,11 +288,11 @@ public class SimpleLineChart {
 
 					TableRowData row = new TableRowData();
 					String[] rowArray = new String[logItem
-							.getPropertyValuePairs().size()];
+							.getPropertyValuePairs().size()+1];//+1 because of timestamp in column 0
 					rowArray[0] = logItem.getTimeStamp();
 					Iterator<Entry<String, Double>> itPV = logItem
 							.getPropertyValuePairs().entrySet().iterator();
-					int iColumnPV = 0;
+					int iColumnPV = 1;
 					while (itPV.hasNext()) {
 						rowArray[iColumnPV] = String.valueOf(itPV.next()
 								.getValue());
