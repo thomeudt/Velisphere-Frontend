@@ -69,6 +69,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			while (myResult.next()) {
 				AnalyticsRawData logItem = new AnalyticsRawData();
 				logItem.addPropertyValuePair(myResult.getString(1), Double.parseDouble(myResult.getString(2)));
+				logItem.addPropertyValuePair("Test", Double.parseDouble(myResult.getString(2)));
 				logItem.setTimeStamp(myResult.getString(3));
 				logData.add(logItem);
 				// System.out.println("Retrieved: " + logItem.getValue());

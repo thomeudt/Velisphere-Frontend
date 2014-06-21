@@ -55,11 +55,8 @@
 
 
 					<b:TabPane heading="Action Data Trail" active="false">
-						<b:Heading size="4">System: OK</b:Heading>
-
-						<b:Paragraph addStyleNames="smalltext-black">System is up.</b:Paragraph>
-						<b:Paragraph addStyleNames="smalltext-black">No issues reported.</b:Paragraph>
-						<b:Paragraph addStyleNames="smalltext-black" ui:field="pgpLogCount">...</b:Paragraph>
+						
+						<vsan:ChartActorHistoryWidget />
 					</b:TabPane>
 					<b:TabPane heading="Anomalies" active="false">
 						<b:Heading size="4">Spheres: OK</b:Heading>

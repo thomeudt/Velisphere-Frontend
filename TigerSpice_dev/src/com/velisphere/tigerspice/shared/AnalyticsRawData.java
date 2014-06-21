@@ -1,6 +1,7 @@
 package com.velisphere.tigerspice.shared;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -18,7 +19,7 @@ public class AnalyticsRawData implements IsSerializable {
 		this.timeStamp = timeStamp;
 	}
 	
-	public HashMap<String, Double> getPropertyValuePairs(){
+	public Map<String, Double> getPropertyValuePairs(){
 		return this.propertyValuePairs;
 	}
 		

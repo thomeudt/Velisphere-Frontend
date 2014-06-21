@@ -2,7 +2,6 @@ package com.velisphere.tigerspice.client.analytics;
 
 import java.sql.Timestamp;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,10 +53,10 @@ public class SimpleLineChart {
 
 			graphCol = new Column(8);
 
-			// clear tableData before loading new data
-			tableExportData = new LinkedList<TableRowData>();
+			int columnCount = dataSource.getLast().getPropertyValuePairs().size();
 
-			// container class for cell table
+
+			// create container class for cell table
 
 			class SensorTrail {
 
@@ -79,7 +78,7 @@ public class SimpleLineChart {
 		
 			System.out.println(endpointID + " / " + propertyID);
 
-			// prep the datatable
+			// prep the datatable for celltable
 
 			final CellTable<SensorTrail> table = new CellTable<SensorTrail>(
 					10,
@@ -97,54 +96,10 @@ public class SimpleLineChart {
 			// Add the timestamp column to table.
 			table.addColumn(timeStampColumn, "Time Stamp");
 
-			
-			LinkedList<com.google.gwt.user.cellview.client.Column<SensorTrail, Number>> valueColumns = new LinkedList<com.google.gwt.user.cellview.client.Column<SensorTrail, Number>>();
-			int columnCount = dataSource.getLast().getPropertyValuePairs()
-					.size();
-
-			int iColNo = 0;
-
-			Iterator<Entry<String, Double>> dsIT = dataSource.getLast().getPropertyValuePairs().entrySet().iterator(); 
-			while (dsIT.hasNext()) {
-				final int entryNo = iColNo;
-				com.google.gwt.user.cellview.client.Column<SensorTrail, Number> valueColumn = new com.google.gwt.user.cellview.client.Column<SensorTrail, Number>(
-						new NumberCell(
-								NumberFormat.getFormat("#,##0.00;-#,##0.00"))) {
-					@Override
-					public Number getValue(SensorTrail entry) {
-						System.out.println("ENTRY content: " + entry.value);
-						System.out.println("ENTRY Number: " + entryNo);
-						return entry.value[entryNo];
-					}
-				};
-				valueColumn.setSortable(true);
-				table.addColumn(valueColumn, dsIT.next().getKey());
-				valueColumns.add(valueColumn);
-
-				iColNo = iColNo + 1;
-			}
-
-			table.setRowCount(dataSource.size(), true);
-			// table.setVisibleRange(0, 10);
-
-			// Create a data provider.
-			ListDataProvider<SensorTrail> dataProvider = new ListDataProvider<SensorTrail>();
-
-			// Connect the table to the data provider.
-			dataProvider.addDataDisplay(table);
-
-			// create the datatable for chart and celltable for
-			// table
+			// prep the datatable for chart 
 
 			data = DataTable.create();
 			data.addColumn(ColumnType.STRING, "Time");
-			data.addColumn(ColumnType.NUMBER, propertyName);
-
-			data.addRows(dataSource.size() + 1);
-
-			int iRow = 1;
-			Iterator<AnalyticsRawData> it = dataSource.iterator();
-			List<SensorTrail> list = dataProvider.getList();
 
 			TableRowData introRow = new TableRowData();
 			String[] introRowArray = new String[columnCount + 1]; // +1 because
@@ -159,6 +114,9 @@ public class SimpleLineChart {
 				introCount = introCount + 1;
 			}
 			introRow.setRow(introRowArray);
+
+			// prep data table for csv export
+			tableExportData = new LinkedList<TableRowData>();
 
 			tableExportData.add(introRow);
 
@@ -182,14 +140,63 @@ public class SimpleLineChart {
 																	// timestamp
 																	// column
 			headerRowArray[0] = "Timestamp";
-			headerRowArray[1] = propertyName;
-			int headerCount = 2;
-			while (headerCount <= columnCount) {
-				spacerRowArray[headerCount] = "";
-				headerCount = headerCount + 1;
+
+			
+						
+						
+			// set the headers in all tables
+			
+			LinkedList<com.google.gwt.user.cellview.client.Column<SensorTrail, Number>> valueColumns = new LinkedList<com.google.gwt.user.cellview.client.Column<SensorTrail, Number>>();
+			
+			int iColNo = 0;
+
+			Iterator<Entry<String, Double>> dsIT = dataSource.getLast().getPropertyValuePairs().entrySet().iterator(); 
+			while (dsIT.hasNext()) {
+				final int entryNo = iColNo;
+				com.google.gwt.user.cellview.client.Column<SensorTrail, Number> valueColumn = new com.google.gwt.user.cellview.client.Column<SensorTrail, Number>(
+						new NumberCell(
+								NumberFormat.getFormat("#,##0.00;-#,##0.00"))) {
+					@Override
+					public Number getValue(SensorTrail entry) {
+						return entry.value[entryNo];
+					}
+				};
+				
+				String columnHeader = dsIT.next().getKey();
+				data.addColumn(ColumnType.NUMBER, columnHeader);
+				valueColumn.setSortable(true);
+				table.addColumn(valueColumn, columnHeader);
+				valueColumns.add(valueColumn);
+				
+				
+				headerRowArray[entryNo+1] = columnHeader; //+1 because of timestamp
+				
+				
+
+				iColNo = iColNo + 1;
 			}
+
+			
+			
 			headerRow.setRow(headerRowArray);
 			tableExportData.add(headerRow);
+			
+			// set correct row count for all tables
+			data.addRows(dataSource.size() + 1);
+
+			table.setRowCount(dataSource.size(), true);
+			// table.setVisibleRange(0, 10);
+
+			// Create a data provider.
+			ListDataProvider<SensorTrail> dataProvider = new ListDataProvider<SensorTrail>();
+
+			// Connect the table to the data provider.
+			dataProvider.addDataDisplay(table);
+
+			
+			int iRow = 1;
+			Iterator<AnalyticsRawData> it = dataSource.iterator();
+			List<SensorTrail> list = dataProvider.getList();
 
 			if (startDate != null && endDate != null) {
 

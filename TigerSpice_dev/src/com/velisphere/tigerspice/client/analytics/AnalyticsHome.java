@@ -41,7 +41,7 @@ public class AnalyticsHome extends Composite {
 
 
 	@UiField Breadcrumbs brdMain;
-	@UiField Paragraph pgpLogCount;
+	
 	NavLink bread0;
 	NavLink bread1;
 	String userName;
@@ -69,27 +69,7 @@ public void loadContent(){
 		
     	    	
 
-    	logService.getLogCount(new AsyncCallback<LinkedList<String>>(){
-    		@Override
-    		public void onFailure(Throwable caught) {
-    			// TODO Auto-generated method stub
-    			
-    		}
-
-    		@Override
-    		public void onSuccess(LinkedList<String> result) {
-    			// TODO Auto-generated method stub
     	
-    			int logCount = 0;
-    			Iterator<String> iT = result.iterator();
-    			while (iT.hasNext()){
-    				int entry = Integer.parseInt(iT.next());
-    				logCount = logCount + entry;
-    			}
-    			
-    			pgpLogCount.setText("Number of record sets in analytics database: " + logCount);
-    		}
-    		});
 
     	
 
@@ -121,8 +101,12 @@ public void loadContent(){
 		});
 	}
 
-@UiFactory ChartSensorHistoryWidget makePropHistory() { // method name is insignificant
+@UiFactory ChartSensorHistoryWidget makeSensorHistory() { // method name is insignificant
     return new ChartSensorHistoryWidget(userID);
+  }
+
+@UiFactory ChartActorHistoryWidget makeActorHistory() { // method name is insignificant
+    return new ChartActorHistoryWidget(userID);
   }
 
 
