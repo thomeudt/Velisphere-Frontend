@@ -5,12 +5,12 @@ import java.util.LinkedList;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.velisphere.tigerspice.shared.EndpointLogData;
+import com.velisphere.tigerspice.shared.AnalyticsRawData;
 import com.velisphere.tigerspice.shared.TableRowData;
 
 	@RemoteServiceRelativePath("verticaAnalytics")
 	public interface AnalyticsService extends RemoteService {
-		LinkedList<EndpointLogData> getEndpointLog(String endpointID, String propertyID);
+		LinkedList<AnalyticsRawData> getEndpointLog(String endpointID, String propertyID);
 		String getEndpointLogAsFile(LinkedList<TableRowData> table) throws IOException;
 		String getEndpointLogChartAsFile (String htmlData);
 	}

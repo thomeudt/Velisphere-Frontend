@@ -30,7 +30,7 @@ import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
 import com.google.gwt.visualization.client.visualizations.corechart.LineChart;
 import com.google.gwt.visualization.client.visualizations.corechart.Options;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
-import com.velisphere.tigerspice.shared.EndpointLogData;
+import com.velisphere.tigerspice.shared.AnalyticsRawData;
 import com.velisphere.tigerspice.shared.TableRowData;
 
 public class SimpleLineChart {
@@ -40,7 +40,7 @@ public class SimpleLineChart {
 	LineChart lines;
 	Column graphCol;
 
-	SimpleLineChart(LinkedList<EndpointLogData> dataSource, String endpointID,
+	SimpleLineChart(LinkedList<AnalyticsRawData> dataSource, String endpointID,
 			String propertyID, final String propertyName,
 			final String endpointName, final Timestamp startDate,
 			final Timestamp endDate) {
@@ -143,7 +143,7 @@ public class SimpleLineChart {
 			data.addRows(dataSource.size() + 1);
 
 			int iRow = 1;
-			Iterator<EndpointLogData> it = dataSource.iterator();
+			Iterator<AnalyticsRawData> it = dataSource.iterator();
 			List<SensorTrail> list = dataProvider.getList();
 
 			TableRowData introRow = new TableRowData();
@@ -196,7 +196,7 @@ public class SimpleLineChart {
 				// populate table with date filter applied
 				while (it.hasNext()) {
 
-					EndpointLogData logItem = it.next();
+					AnalyticsRawData logItem = it.next();
 
 					if (Timestamp.valueOf(logItem.getTimeStamp()).after(
 							startDate)
@@ -258,7 +258,7 @@ public class SimpleLineChart {
 				// populate table without date filter applied
 				while (it.hasNext()) {
 
-					EndpointLogData logItem = it.next();
+					AnalyticsRawData logItem = it.next();
 
 					// add to data table for graph
 					data.setValue(iRow, 0, logItem.getTimeStamp());

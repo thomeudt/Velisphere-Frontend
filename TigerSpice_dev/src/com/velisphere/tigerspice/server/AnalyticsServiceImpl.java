@@ -26,18 +26,18 @@ import au.com.bytecode.opencsv.CSVWriter;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
-import com.velisphere.tigerspice.shared.EndpointLogData;
+import com.velisphere.tigerspice.shared.AnalyticsRawData;
 import com.velisphere.tigerspice.shared.TableRowData;
 
 public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 		AnalyticsService {
 
 	@Override
-	public LinkedList<EndpointLogData> getEndpointLog(String endpointID,
+	public LinkedList<AnalyticsRawData> getEndpointLog(String endpointID,
 			String propertyID) {
 
 		Connection conn;
-		LinkedList<EndpointLogData> logData = new LinkedList<EndpointLogData>();
+		LinkedList<AnalyticsRawData> logData = new LinkedList<AnalyticsRawData>();
 
 		try {
 			Class.forName("com.vertica.jdbc.Driver");
@@ -58,16 +58,18 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
-					.executeQuery("SELECT * FROM vlogger.endpointpropertylog WHERE PROPERTYID = '"
+					.executeQuery("SELECT propertyname, propertyentry, time_stamp FROM vlogger.endpointpropertylog "
+							+ "JOIN vlogger.property ON vlogger.endpointpropertylog.propertyid = vlogger.property.propertyid WHERE "
+							+ "vlogger.endpointpropertylog.PROPERTYID = '"
 							+ propertyID
-							+ "' AND ENDPOINTID = '"
+							+ "' AND vlogger.endpointpropertylog.endpointid = '"
 							+ endpointID
 							+ "' ORDER BY TIME_STAMP");
 
 			while (myResult.next()) {
-				EndpointLogData logItem = new EndpointLogData();
-				logItem.addPropertyValuePair(myResult.getString(3), Double.parseDouble(myResult.getString(4)));
-				logItem.setTimeStamp(myResult.getString(5));
+				AnalyticsRawData logItem = new AnalyticsRawData();
+				logItem.addPropertyValuePair(myResult.getString(1), Double.parseDouble(myResult.getString(2)));
+				logItem.setTimeStamp(myResult.getString(3));
 				logData.add(logItem);
 				// System.out.println("Retrieved: " + logItem.getValue());
 			}

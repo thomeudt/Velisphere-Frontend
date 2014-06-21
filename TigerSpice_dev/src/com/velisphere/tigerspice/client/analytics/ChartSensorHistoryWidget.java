@@ -94,7 +94,7 @@ import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.spheres.SphereService;
 import com.velisphere.tigerspice.client.spheres.SphereServiceAsync;
 import com.velisphere.tigerspice.shared.EndpointData;
-import com.velisphere.tigerspice.shared.EndpointLogData;
+import com.velisphere.tigerspice.shared.AnalyticsRawData;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.SphereData;
 import com.velisphere.tigerspice.shared.TableRowData;
@@ -497,7 +497,7 @@ public class ChartSensorHistoryWidget extends Composite {
 	
 	analyticsService.getEndpointLog(endpointID,
 			propertyID,
-			new AsyncCallback<LinkedList<EndpointLogData>>() {
+			new AsyncCallback<LinkedList<AnalyticsRawData>>() {
 				@Override
 				public void onFailure(Throwable caught) {
 					// TODO Auto-generated method stub
@@ -506,7 +506,7 @@ public class ChartSensorHistoryWidget extends Composite {
 				}
 
 				@Override
-				public void onSuccess(LinkedList<EndpointLogData> result) {
+				public void onSuccess(LinkedList<AnalyticsRawData> result) {
 
 					graphRow.clear();
 					sensorHistoryChart = new SimpleLineChart(result, endpointID, propertyID, propertyName, endpointName, startDate, endDate);

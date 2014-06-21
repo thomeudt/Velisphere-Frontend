@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class EndpointLogData implements IsSerializable {
+public class AnalyticsRawData implements IsSerializable {
 
 	HashMap<String, Double> propertyValuePairs = new HashMap<String, Double>();
 	
