@@ -301,8 +301,8 @@ public class ChartSensorHistoryWidget extends Composite {
 			@Override
 			public void onChange(ChangeEvent event) {
 
-				
-				graphRow.add(new Paragraph("Loading chart, please wait..."));
+				graphRow.clear();
+				graphRow.add(new Paragraph("Preparing Chart, please wait..."));
 
 				Runnable onLoadCallback = new Runnable() {
 					public void run() {
