@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 
+
+
 import org.apache.james.mime4j.field.datetime.DateTime;
 
 import com.github.gwtbootstrap.client.ui.Button;
@@ -305,11 +307,9 @@ public class ChartSensorHistoryWidget extends Composite {
 				Runnable onLoadCallback = new Runnable() {
 					public void run() {
 						
-						sensorHistoryChart = new SimpleLineChart(lbxEndpointFilter.getValue(), lbxPropertyFilter.getValue(), lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), 
+						createGraph(lbxEndpointFilter.getValue(), lbxPropertyFilter.getValue(), lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), 
 								lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex()), null, null);
 						
-						graphRow.clear();
-						graphRow.add(sensorHistoryChart.getGraphColumn());
 						
 						/**
 						populateChart(lbxEndpointFilter
@@ -339,11 +339,9 @@ public class ChartSensorHistoryWidget extends Composite {
 				Timestamp tsEnd = new Timestamp(dtbEnd.getValue().getTime());
 				
 				
-				sensorHistoryChart = new SimpleLineChart(lbxEndpointFilter.getValue(), lbxPropertyFilter.getValue(), lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), 
+				createGraph(lbxEndpointFilter.getValue(), lbxPropertyFilter.getValue(), lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), 
 						lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex()), tsStart, tsEnd);
 				
-				graphRow.clear();
-				graphRow.add(sensorHistoryChart.getGraphColumn());
 				
 				/**
 				populateChartForRange(lbxEndpointFilter
@@ -363,11 +361,9 @@ public class ChartSensorHistoryWidget extends Composite {
 				Timestamp tsStart = new Timestamp(dtbStart.getValue().getTime());
 				Timestamp tsEnd = new Timestamp(dtbEnd.getValue().getTime());
 				
-				sensorHistoryChart = new SimpleLineChart(lbxEndpointFilter.getValue(), lbxPropertyFilter.getValue(), lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), 
+				createGraph(lbxEndpointFilter.getValue(), lbxPropertyFilter.getValue(), lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), 
 						lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex()), tsStart, tsEnd);
 				
-				graphRow.clear();
-				graphRow.add(sensorHistoryChart.getGraphColumn());
 				
 				
 				
@@ -470,11 +466,10 @@ public class ChartSensorHistoryWidget extends Composite {
 
 						}
 						
-						sensorHistoryChart = new SimpleLineChart(lbxEndpointFilter.getValue(), lbxPropertyFilter.getValue(), lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), 
+						createGraph(lbxEndpointFilter.getValue(), lbxPropertyFilter.getValue(), lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), 
 								lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex()), null, null);
 						
-						graphRow.clear();
-						graphRow.add(sensorHistoryChart.getGraphColumn());
+						
 						
 
 						/**
@@ -489,6 +484,38 @@ public class ChartSensorHistoryWidget extends Composite {
 
 	}
 
+	private void createGraph(final String endpointID, final String propertyID, final String endpointName, final String propertyName, final Timestamp startDate, final Timestamp endDate)
+	{
 	
+		
+		
+	final AnalyticsServiceAsync analyticsService = GWT
+			.create(AnalyticsService.class);
+
+	System.out.println(endpointID + " / "
+			+ propertyID);
+	
+	analyticsService.getEndpointLog(endpointID,
+			propertyID,
+			new AsyncCallback<LinkedList<EndpointLogData>>() {
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					System.out.println("VERTICA Error " + caught);
+
+				}
+
+				@Override
+				public void onSuccess(LinkedList<EndpointLogData> result) {
+
+					graphRow.clear();
+					sensorHistoryChart = new SimpleLineChart(result, endpointID, propertyID, propertyName, endpointName, startDate, endDate);
+					
+					
+					graphRow.add(sensorHistoryChart.getGraphColumn());
+					
+				}
+		});
+	}
 	
 }

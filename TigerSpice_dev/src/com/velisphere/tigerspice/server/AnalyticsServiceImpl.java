@@ -66,8 +66,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 
 			while (myResult.next()) {
 				EndpointLogData logItem = new EndpointLogData();
-				logItem.setPropertyID(myResult.getString(3));
-				logItem.setValue(Double.parseDouble(myResult.getString(4)));
+				logItem.addPropertyValuePair(myResult.getString(3), Double.parseDouble(myResult.getString(4)));
 				logItem.setTimeStamp(myResult.getString(5));
 				logData.add(logItem);
 				// System.out.println("Retrieved: " + logItem.getValue());
@@ -100,10 +99,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 
 		while (it.hasNext()) {
 			TableRowData row = it.next();
-			String[] rowArray = { row.getCol1(), row.getCol2(), row.getCol3(),
-					row.getCol4(), row.getCol5(), row.getCol6(), row.getCol7(),
-					row.getCol8() };
-			writer.writeNext(rowArray);
+			writer.writeNext(row.getCols());
 
 		}
 

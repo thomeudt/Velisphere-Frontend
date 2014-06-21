@@ -2,9 +2,11 @@ package com.velisphere.tigerspice.client.analytics;
 
 import java.sql.Timestamp;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import com.github.gwtbootstrap.client.ui.CellTable;
 import com.github.gwtbootstrap.client.ui.Column;
@@ -31,383 +33,468 @@ import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.shared.EndpointLogData;
 import com.velisphere.tigerspice.shared.TableRowData;
 
-
-
 public class SimpleLineChart {
 
-
 	DataTable data;
-	LinkedList<TableRowData> tableData;
+	LinkedList<TableRowData> tableExportData;
 	LineChart lines;
 	Column graphCol;
 
-	
-	SimpleLineChart(String endpointID, String propertyID, final String endpointName, final String propertyName, final Timestamp startDate, final Timestamp endDate) {
+	SimpleLineChart(LinkedList<EndpointLogData> dataSource, String endpointID,
+			String propertyID, final String propertyName,
+			final String endpointName, final Timestamp startDate,
+			final Timestamp endDate) {
 
-		graphCol = new Column(8);
+		// check if datasource is not empty
+
+		if (dataSource.size() == 0) {
+			graphCol = new Column(8);
+			graphCol.add(new Paragraph("Nothing to display..."));
+		} else {
+
+			graphCol = new Column(8);
+
+			// clear tableData before loading new data
+			tableExportData = new LinkedList<TableRowData>();
+
+			// container class for cell table
+
+			class SensorTrail {
+
+				private String timeStamp;
+				private Double value[];
+				private Integer itemNumber;
+
+			}
+
+			final Options options = Options.create();
+
+			options.setTitle("Sensor Data Trail for Sensor '" + propertyName
+					+ "' on Endpoint '" + endpointName + "'");
+			
+			options.setHeight((int) (RootPanel.get().getOffsetHeight() * 0.3));
+			options.setFontName("Source Sans Pro");
+			options.setLineWidth(2);
+
 		
-		// clear tableData before loading new data
-		tableData = new LinkedList<TableRowData>();
-		
+			System.out.println(endpointID + " / " + propertyID);
 
+			// prep the datatable
 
-		// container class for cell table
+			final CellTable<SensorTrail> table = new CellTable<SensorTrail>(
+					10,
+					GWT.<CellTable.SelectableResources> create(CellTable.SelectableResources.class));
 
-		class SensorTrail {
-			private String timeStamp;
-			private Double value;
-			private Integer itemNumber;
-		}
+			TextColumn<SensorTrail> timeStampColumn = new TextColumn<SensorTrail>() {
+				@Override
+				public String getValue(SensorTrail entry) {
+					return entry.timeStamp;
+				}
+			};
 
-		final Options options = Options.create();
+			timeStampColumn.setSortable(true);
 
-		options.setTitle("Sensor Data Trail for Sensor '" + propertyName
-				+ "' on Endpoint '" + endpointName + "'");
-		// options.setWidth(vp.getOffsetWidth());
-		options.setHeight((int) (RootPanel.get().getOffsetHeight() * 0.3));
-		options.setFontName("Source Sans Pro");
-		options.setLineWidth(2);
-		
+			// Add the timestamp column to table.
+			table.addColumn(timeStampColumn, "Time Stamp");
 
-		final AnalyticsServiceAsync analyticsService = GWT
-				.create(AnalyticsService.class);
+			
+			LinkedList<com.google.gwt.user.cellview.client.Column<SensorTrail, Number>> valueColumns = new LinkedList<com.google.gwt.user.cellview.client.Column<SensorTrail, Number>>();
+			int columnCount = dataSource.getLast().getPropertyValuePairs()
+					.size();
 
-		System.out.println(endpointID + " / "
-				+ propertyID);
-		
-		analyticsService.getEndpointLog(endpointID,
-				propertyID,
-				new AsyncCallback<LinkedList<EndpointLogData>>() {
+			int iColNo = 0;
+
+			Iterator<Entry<String, Double>> dsIT = dataSource.getLast().getPropertyValuePairs().entrySet().iterator(); 
+			while (dsIT.hasNext()) {
+				final int entryNo = iColNo;
+				com.google.gwt.user.cellview.client.Column<SensorTrail, Number> valueColumn = new com.google.gwt.user.cellview.client.Column<SensorTrail, Number>(
+						new NumberCell(
+								NumberFormat.getFormat("#,##0.00;-#,##0.00"))) {
 					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-
+					public Number getValue(SensorTrail entry) {
+						System.out.println("ENTRY content: " + entry.value);
+						System.out.println("ENTRY Number: " + entryNo);
+						return entry.value[entryNo];
 					}
+				};
+				valueColumn.setSortable(true);
+				table.addColumn(valueColumn, dsIT.next().getKey());
+				valueColumns.add(valueColumn);
 
-					@Override
-					public void onSuccess(LinkedList<EndpointLogData> result) {
-						// TODO Auto-generated method stub
+				iColNo = iColNo + 1;
+			}
 
-						// prep the datatable
+			table.setRowCount(dataSource.size(), true);
+			// table.setVisibleRange(0, 10);
 
-						final CellTable<SensorTrail> table = new CellTable<SensorTrail>(10, GWT.<CellTable.SelectableResources>create(CellTable.SelectableResources.class));
+			// Create a data provider.
+			ListDataProvider<SensorTrail> dataProvider = new ListDataProvider<SensorTrail>();
 
-						TextColumn<SensorTrail> timeStampColumn = new TextColumn<SensorTrail>() {
-							@Override
-							public String getValue(SensorTrail entry) {
-								return entry.timeStamp;
-							}
-						};
-						
-						timeStampColumn.setSortable(true);
+			// Connect the table to the data provider.
+			dataProvider.addDataDisplay(table);
 
-												
-						com.google.gwt.user.cellview.client.Column<SensorTrail, Number> valueColumn = 
-								new com.google.gwt.user.cellview.client.Column<SensorTrail, Number>(new NumberCell(NumberFormat.getFormat("#,##0.00;-#,##0.00"))) {
-							@Override
-							public Number getValue(SensorTrail entry) {
-								return entry.value;
-							}
-						};
-						
-						valueColumn.setSortable(true);
+			// create the datatable for chart and celltable for
+			// table
 
-						// Add the columns.
-						table.addColumn(timeStampColumn, "Time Stamp");
-						table.addColumn(valueColumn, propertyName);
-						table.setRowCount(result.size(), true);
-						//table.setVisibleRange(0, 10);
+			data = DataTable.create();
+			data.addColumn(ColumnType.STRING, "Time");
+			data.addColumn(ColumnType.NUMBER, propertyName);
 
-						// Create a data provider.
-						ListDataProvider<SensorTrail> dataProvider = new ListDataProvider<SensorTrail>();
+			data.addRows(dataSource.size() + 1);
 
-						// Connect the table to the data provider.
-						dataProvider.addDataDisplay(table);
-					
+			int iRow = 1;
+			Iterator<EndpointLogData> it = dataSource.iterator();
+			List<SensorTrail> list = dataProvider.getList();
 
-						// create the datatable for chart and celltable for
-						// table
+			TableRowData introRow = new TableRowData();
+			String[] introRowArray = new String[columnCount + 1]; // +1 because
+																	// of
+																	// timestamp
+																	// column
+			introRowArray[0] = "VeliSphere Data Trail Export for "
+					+ propertyName + " on " + endpointName;
+			int introCount = 1;
+			while (introCount <= columnCount) {
+				introRowArray[introCount] = "";
+				introCount = introCount + 1;
+			}
+			introRow.setRow(introRowArray);
 
-						data = DataTable.create();
-						data.addColumn(ColumnType.STRING, "Time");
-						data.addColumn(ColumnType.NUMBER, propertyName);
+			tableExportData.add(introRow);
 
-						data.addRows(result.size() + 1);
-						
-						
+			TableRowData spacerRow = new TableRowData();
+			String[] spacerRowArray = new String[columnCount + 1]; // +1 because
+																	// of
+																	// timestamp
+																	// column
+			spacerRowArray[0] = "--------------------------------------------------------------------";
+			int spacerCount = 1;
+			while (spacerCount <= columnCount) {
+				spacerRowArray[spacerCount] = "";
+				spacerCount = spacerCount + 1;
+			}
+			spacerRow.setRow(spacerRowArray);
+			tableExportData.add(spacerRow);
 
-						int i = 1;
-						Iterator<EndpointLogData> it = result.iterator();
-						List<SensorTrail> list = dataProvider.getList();
+			TableRowData headerRow = new TableRowData();
+			String[] headerRowArray = new String[columnCount + 1]; // +1 because
+																	// of
+																	// timestamp
+																	// column
+			headerRowArray[0] = "Timestamp";
+			headerRowArray[1] = propertyName;
+			int headerCount = 2;
+			while (headerCount <= columnCount) {
+				spacerRowArray[headerCount] = "";
+				headerCount = headerCount + 1;
+			}
+			headerRow.setRow(headerRowArray);
+			tableExportData.add(headerRow);
 
-						TableRowData introRow = new TableRowData();
-						introRow.setRow("VeliSphere Data Trail Export for " + propertyName
-								+ " on " + endpointName, "", "", "", "", "", "", "");
-						
-						tableData.add(introRow);
-				
-						TableRowData spacerRow = new TableRowData();
-						spacerRow.setRow("---------------------------------------", "", "", "", "", "", "", "");
-						tableData.add(spacerRow);
-				
-						
-						TableRowData headerRow = new TableRowData();
-						headerRow.setRow("Timestamp ", propertyName, "", "", "", "", "", "");
-						tableData.add(headerRow);
-						
-						
-						
-						if (startDate != null && endDate != null)
-						{
-							
-							// populate table with date filter applied
-							while (it.hasNext()) {
+			if (startDate != null && endDate != null) {
 
-								
-								EndpointLogData logItem = it.next();
-																						
-								if(Timestamp.valueOf(logItem.getTimeStamp()).after(startDate) && Timestamp.valueOf(logItem.getTimeStamp()).before(endDate))
-								{
-								
-								data.setValue(i, 0, logItem.getTimeStamp());
-								data.setValue(i, 1,	logItem.getValue());
-								
-								TableRowData row = new TableRowData();
-								row.setRow(logItem.getTimeStamp(),String.valueOf(logItem.getValue()), "", "", "", "", "", "");
-								tableData.add(row);
-							
-							
+				// populate table with date filter applied
+				while (it.hasNext()) {
 
-								// Add the data to the data provider, which
-								// automatically pushes it to the
-								// widget.
-								
-								SensorTrail trailItem = new SensorTrail();
-								trailItem.timeStamp = logItem.getTimeStamp();
-								trailItem.value = logItem.getValue();
-								trailItem.itemNumber = i;
-								list.add(trailItem);
-								}
+					EndpointLogData logItem = it.next();
 
-								i = i + 1;
-							}
-							
-						} else
-						{
-							// populate table without date filter applied
-							while (it.hasNext()) {
+					if (Timestamp.valueOf(logItem.getTimeStamp()).after(
+							startDate)
+							&& Timestamp.valueOf(logItem.getTimeStamp())
+									.before(endDate)) {
 
-								
-								EndpointLogData logItem = it.next();
-																						
-								
-								data.setValue(i, 0, logItem.getTimeStamp());
-								data.setValue(i, 1,	logItem.getValue());
-								
-								TableRowData row = new TableRowData();
-								row.setRow(logItem.getTimeStamp(),String.valueOf(logItem.getValue()), "", "", "", "", "", "");
-								tableData.add(row);
-							
-							
+						// add to data table for graph
+						data.setValue(iRow, 0, logItem.getTimeStamp());
 
-								// Add the data to the data provider, which
-								// automatically pushes it to the
-								// widget.
-								
-								SensorTrail trailItem = new SensorTrail();
-								trailItem.timeStamp = logItem.getTimeStamp();
-								trailItem.value = logItem.getValue();
-								trailItem.itemNumber = i;
-								list.add(trailItem);
-								
+						// add to datasource for table display
+						SensorTrail trailItem = new SensorTrail();
+						trailItem.timeStamp = logItem.getTimeStamp();
+						trailItem.value = new Double[logItem
+								.getPropertyValuePairs().size()];
 
-								i = i + 1;
-							}
-							
-							
+						int iColumn = 0;
+						Iterator<Entry<String, Double>> itItem = logItem
+								.getPropertyValuePairs().entrySet().iterator();
+						while (itItem.hasNext()) {
+
+							Entry<String, Double> logItemColumn = itItem.next();
+							data.setValue(iRow, iColumn + 1,
+									logItemColumn.getValue());
+
+							trailItem.value[iColumn] = logItemColumn.getValue();
+							iColumn = iColumn + 1;
+
 						}
-						
-						
-						
-						
-						
-						System.out.println(tableData.toString());
-						
-						// Create a line chart visualization.
-						lines = new LineChart(data, options);
-						graphCol.clear();
-						
-						graphCol.add(lines);
-						
-						
 
+						trailItem.itemNumber = iRow;
+						list.add(trailItem);
 
-						
-						
-											
-						
-						// Add a ColumnSortEvent.ListHandler to connect sorting to the
-					    // java.util.List.
-					    ListHandler<SensorTrail> columnSortHandler = new ListHandler<SensorTrail>(list);
-					    // Sort by TimeStamp
-					    columnSortHandler.setComparator(timeStampColumn,
-					        new Comparator<SensorTrail>() {
-					          public int compare(SensorTrail o1, SensorTrail o2) {
-					            if (o1 == o2) {
-					              return 0;
-					            }
+						TableRowData row = new TableRowData();
+						String[] rowArray = new String[logItem
+								.getPropertyValuePairs().size()];
+						rowArray[0] = logItem.getTimeStamp();
+						Iterator<Entry<String, Double>> itPV = logItem
+								.getPropertyValuePairs().entrySet().iterator();
+						int iColumnPV = 0;
+						while (itPV.hasNext()) {
+							rowArray[iColumnPV] = String.valueOf(itPV.next()
+									.getValue());
+							iColumnPV = iColumnPV + 1;
+						}
+						row.setRow(rowArray);
 
-					            // Compare the timestamp columns.
-					            if (o1 != null) {
-					              return (o2 != null) ? o1.timeStamp.compareTo(o2.timeStamp) : 1;
-					            }
-					            return -1;
-					          }
-					        });
-					    
-					    // Sort by Value
-					    
-					    columnSortHandler.setComparator(valueColumn,
-						        new Comparator<SensorTrail>() {
-						          public int compare(SensorTrail o1, SensorTrail o2) {
-						            if (o1 == o2) {
-						              return 0;
-						            }
+						tableExportData.add(row);
 
-						            // Compare the timestamp columns.
-						            if (o1 != null) {
-						              return (o2 != null) ? o1.value.compareTo(o2.value) : 1;
-						            }
-						            return -1;
-						          }
-						        });
+						// Add the data to the data provider, which
+						// automatically pushes it to the
+						// widget.
 
-					    table.addColumnSortHandler(columnSortHandler);
-					    
-					    
-					    
-					    table.setStriped(false);
-					    table.setHover(true);
-					    
-					    table.getColumnSortList().push(timeStampColumn);
-					    table.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
-					    
-					    
-					    // add selection model
-					    
-					    final SingleSelectionModel<SensorTrail> selectionModel = new SingleSelectionModel<SensorTrail>();
-					    table.setSelectionModel(selectionModel);
-					    selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-					      public void onSelectionChange(SelectionChangeEvent event) {
-					    	  SensorTrail selected = selectionModel.getSelectedObject();
-					    	  
-					        if (selected != null) {
-					          //Window.alert("You selected: " + selected.value);
-					        	
-					        	
-					        	JsArray arr = JavaScriptObject.createArray().cast();
-								arr.push(newJsEntry(selected.itemNumber.toString(), "1")); 
-								lines.setSelections(arr);
-					         
-					          
-					        }
-					      }
-					    });
-					    
-						
-						
-						graphCol.add(table);
-						
-						SimplePager pager = new SimplePager();
-						pager.setDisplay(table);						
-						
-						graphCol.add(pager);
-						graphCol.add(new Paragraph(" "));
-						
 					}
-				});
-		
+
+					iRow = iRow + 1;
+				}
+
+			} else {
+				// populate table without date filter applied
+				while (it.hasNext()) {
+
+					EndpointLogData logItem = it.next();
+
+					// add to data table for graph
+					data.setValue(iRow, 0, logItem.getTimeStamp());
+
+					// add to datasource for table display
+					SensorTrail trailItem = new SensorTrail();
+					trailItem.timeStamp = logItem.getTimeStamp();
+					trailItem.value = new Double[logItem
+							.getPropertyValuePairs().size()];
+
+					int iColumn = 0;
+					Iterator<Entry<String, Double>> itItem = logItem
+							.getPropertyValuePairs().entrySet().iterator();
+					while (itItem.hasNext()) {
+
+						Entry<String, Double> logItemColumn = itItem.next();
+						data.setValue(iRow, iColumn + 1,
+								logItemColumn.getValue());
+
+						trailItem.value[iColumn] = logItemColumn.getValue();
+						iColumn = iColumn + 1;
+
+					}
+
+					trailItem.itemNumber = iRow;
+					list.add(trailItem);
+
+					TableRowData row = new TableRowData();
+					String[] rowArray = new String[logItem
+							.getPropertyValuePairs().size()];
+					rowArray[0] = logItem.getTimeStamp();
+					Iterator<Entry<String, Double>> itPV = logItem
+							.getPropertyValuePairs().entrySet().iterator();
+					int iColumnPV = 0;
+					while (itPV.hasNext()) {
+						rowArray[iColumnPV] = String.valueOf(itPV.next()
+								.getValue());
+						iColumnPV = iColumnPV + 1;
+					}
+					row.setRow(rowArray);
+
+					tableExportData.add(row);
+
+					// Add the data to the data provider, which
+					// automatically pushes it to the
+					// widget.
+
+					iRow = iRow + 1;
+
+			
+				}
+
+			}
+
+			System.out.println(tableExportData.toString());
+
+			// Create a line chart visualization.
+			lines = new LineChart(data, options);
+			graphCol.clear();
+
+			graphCol.add(lines);
+
+			// Add a ColumnSortEvent.ListHandler to connect sorting to the
+			// java.util.List.
+			ListHandler<SensorTrail> columnSortHandler = new ListHandler<SensorTrail>(
+					list);
+			// Sort by TimeStamp
+			columnSortHandler.setComparator(timeStampColumn,
+					new Comparator<SensorTrail>() {
+						public int compare(SensorTrail o1, SensorTrail o2) {
+							if (o1 == o2) {
+								return 0;
+							}
+
+							// Compare the timestamp columns.
+							if (o1 != null) {
+								return (o2 != null) ? o1.timeStamp
+										.compareTo(o2.timeStamp) : 1;
+							}
+							return -1;
+						}
+					});
+			
+
+			// Sort by Value
+
+
+			Iterator<com.google.gwt.user.cellview.client.Column<SensorTrail, Number>> vcIT = valueColumns.iterator();
+			int colNo = 0;
+			while(vcIT.hasNext())
+			{
+				
+				System.out.println("creating value sort handler");
+			final int currentColNo = colNo;
+			com.google.gwt.user.cellview.client.Column<SensorTrail, Number> currentValueColumn = vcIT.next();
+			columnSortHandler.setComparator(currentValueColumn,
+					new Comparator<SensorTrail>() {
+						public int compare(SensorTrail o1, SensorTrail o2) {
+							if (o1 == o2) {
+								return 0;
+							}
+
+							// Compare the value columns.
+							if (o1 != null) {
+								return (o2 != null) ? o1.value[currentColNo]
+										.compareTo(o2.value[currentColNo]) : 1;
+							}
+							return -1;
+						}
+					});
+			colNo = colNo + 1;
+			}
+			
+			table.addColumnSortHandler(columnSortHandler);
+			
+			
+			table.setStriped(false);
+			table.setHover(true);
+
+			table.getColumnSortList().push(timeStampColumn);
+			table.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+
+			// add selection model
+
+			final SingleSelectionModel<SensorTrail> selectionModel = new SingleSelectionModel<SensorTrail>();
+			table.setSelectionModel(selectionModel);
+			selectionModel
+					.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+						public void onSelectionChange(SelectionChangeEvent event) {
+							SensorTrail selected = selectionModel
+									.getSelectedObject();
+
+							if (selected != null) {
+								// Window.alert("You selected: " +
+								// selected.value);
+
+								JsArray arr = JavaScriptObject.createArray()
+										.cast();
+								arr.push(newJsEntry(
+										selected.itemNumber.toString(), "1"));
+								lines.setSelections(arr);
+
+							}
+						}
+					});
+
+			graphCol.add(table);
+
+			SimplePager pager = new SimplePager();
+			pager.setDisplay(table);
+
+			graphCol.add(pager);
+			graphCol.add(new Paragraph(" "));
+
+		}
 	}
 
-	
-
-	public void startDownload(final String endpointName, final String propertyName)
-	{
+	public void startDownload(final String endpointName,
+			final String propertyName) {
 		final AnalyticsServiceAsync analyticsService = GWT
 				.create(AnalyticsService.class);
 
-		
-		
-		analyticsService.getEndpointLogAsFile(tableData,
+		analyticsService.getEndpointLogAsFile(tableExportData,
 				new AsyncCallback<String>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
-						
+
 					}
 
 					@Override
 					public void onSuccess(String result) {
-						AppController.openDirectLink("/tigerspice_dev/tigerspiceDownloads?privateURL="+result+"&outboundFileName=Sensortrail_for_"+endpointName
-								+"_"+propertyName+".csv");
-						
+						AppController
+								.openDirectLink("/tigerspice_dev/tigerspiceDownloads?privateURL="
+										+ result
+										+ "&outboundFileName=Sensortrail_for_"
+										+ endpointName
+										+ "_"
+										+ propertyName
+										+ ".csv");
+
 					}
 
-		});
-			
+				});
+
 	}
-	
-	public void getImage(final String endpointName, final String propertyName){
+
+	public void getImage(final String endpointName, final String propertyName) {
 		System.out.println(lines.getElement().getInnerHTML());
-		
+
 		final AnalyticsServiceAsync analyticsService = GWT
 				.create(AnalyticsService.class);
 
-		
 		final String dataUri = nativeGetUrl(lines.getJso());
-		
-		
+
 		analyticsService.getEndpointLogChartAsFile(dataUri,
 				new AsyncCallback<String>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
-						
+
 					}
 
 					@Override
 					public void onSuccess(String result) {
-						AppController.openDirectLink("/tigerspice_dev/tigerspiceDownloads?privateURL="+result+"&outboundFileName=Sensortrail_for_"+endpointName
-								+"_"+propertyName+".png");
-						
+						AppController
+								.openDirectLink("/tigerspice_dev/tigerspiceDownloads?privateURL="
+										+ result
+										+ "&outboundFileName=Sensortrail_for_"
+										+ endpointName
+										+ "_"
+										+ propertyName
+										+ ".png");
+
 					}
 
-		});
+				});
 
-		
-		
 	}
-	
-	public Column getGraphColumn(){
+
+	public Column getGraphColumn() {
 		return graphCol;
 	}
-	
-	
-	
-	private final native JavaScriptObject newJsEntry(String rowNo, 
-            String colNo)/*-{
-	return {row: rowNo, col: colNo};
-		
-	
-	}-*/;
-	
-	 private final native String nativeGetUrl(JavaScriptObject jso) /*-{
-	    return jso.getImageURI();
-	  }-*/;
 
-	
-	
-	
+	private final native JavaScriptObject newJsEntry(String rowNo, String colNo)/*-{
+																				return {
+																				row : rowNo,
+																				col : colNo
+																				};
+
+																				}-*/;
+
+	private final native String nativeGetUrl(JavaScriptObject jso) /*-{
+																	return jso.getImageURI();
+																	}-*/;
+
 }

@@ -1,32 +1,27 @@
 package com.velisphere.tigerspice.shared;
 
+import java.util.HashMap;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class EndpointLogData implements IsSerializable {
 
-	String propertyID;
-	Double value;
+	HashMap<String, Double> propertyValuePairs = new HashMap<String, Double>();
+	
 	String timeStamp;
 	
-	public void setPropertyID(String propertyID){
-		this.propertyID = propertyID;
+	public void addPropertyValuePair(String propertyID, Double value){
+		this.propertyValuePairs.put(propertyID, value);
 	}
-	
-	public void setValue(Double value){
-		this.value = value;
-	}
-	
+		
 	public void setTimeStamp(String timeStamp){
 		this.timeStamp = timeStamp;
 	}
 	
-	public String getPropertyID(){
-		return this.propertyID;
+	public HashMap<String, Double> getPropertyValuePairs(){
+		return this.propertyValuePairs;
 	}
-	
-	public Double getValue(){
-		return this.value;
-	}
+		
 	
 	public String getTimeStamp(){
 		return this.timeStamp;
