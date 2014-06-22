@@ -52,13 +52,14 @@ public class SimpleLineChart {
 
 		if (dataSource.size() == 0) {
 			graphCol = new Column(8);
-			graphCol.add(new Paragraph("Chart not available for your selection."));
+			graphCol.add(new Paragraph(
+					"Chart not available for your selection."));
 		} else {
 
 			graphCol = new Column(8);
 
-			int columnCount = dataSource.getLast().getPropertyValuePairs().size();
-
+			int columnCount = dataSource.getLast().getPropertyValuePairs()
+					.size();
 
 			// create container class for cell table
 
@@ -74,12 +75,11 @@ public class SimpleLineChart {
 
 			options.setTitle("Sensor Data Trail for Sensor '" + propertyName
 					+ "' on Endpoint '" + endpointName + "'");
-			
+
 			options.setHeight((int) (RootPanel.get().getOffsetHeight() * 0.3));
 			options.setFontName("Source Sans Pro");
 			options.setLineWidth(2);
 
-		
 			System.out.println(endpointID + " / " + propertyID);
 
 			// prep the datatable for celltable
@@ -97,10 +97,40 @@ public class SimpleLineChart {
 
 			timeStampColumn.setSortable(true);
 
+			// Create a data provider for celltable.
+			ListDataProvider<SensorTrail> dataProvider = new ListDataProvider<SensorTrail>();
+
+			// Connect the table to the data provider.
+			dataProvider.addDataDisplay(table);
+
+			List<SensorTrail> list = dataProvider.getList();
+			
+			// Add a ColumnSortEvent.ListHandler to connect sorting to the
+						// java.util.List.
+						ListHandler<SensorTrail> columnSortHandler = new ListHandler<SensorTrail>(
+								list);
+						// Sort by TimeStamp
+						columnSortHandler.setComparator(timeStampColumn,
+								new Comparator<SensorTrail>() {
+									public int compare(SensorTrail o1, SensorTrail o2) {
+										if (o1 == o2) {
+											return 0;
+										}
+
+										// Compare the timestamp columns.
+										if (o1 != null) {
+											return (o2 != null) ? o1.timeStamp
+													.compareTo(o2.timeStamp) : 1;
+										}
+										return -1;
+									}
+								});
+
+
 			// Add the timestamp column to table.
 			table.addColumn(timeStampColumn, "Time Stamp");
 
-			// prep the datatable for chart 
+			// prep the datatable for chart
 
 			data = DataTable.create();
 			data.addColumn(ColumnType.STRING, "Time");
@@ -145,36 +175,112 @@ public class SimpleLineChart {
 																	// column
 			headerRowArray[0] = "Timestamp";
 
-			
-						
-						
 			// set the headers in all tables
-			
-			LinkedList<com.google.gwt.user.cellview.client.Column<SensorTrail, SafeHtml>> valueColumns = new LinkedList<com.google.gwt.user.cellview.client.Column<SensorTrail, SafeHtml>>();
+
+			//@SuppressWarnings("rawtypes")
+			//LinkedList valueColumns = new LinkedList<com.google.gwt.user.cellview.client.Column<SensorTrail, SafeHtml>>();
 			
 			int iColNo = 0;
 
 			Iterator<Entry<String, String>> dsIT = dataSource.getLast().getPropertyValuePairs().entrySet().iterator(); 
 			while (dsIT.hasNext()) {
-				final int entryNo = iColNo;
-				com.google.gwt.user.cellview.client.Column<SensorTrail, SafeHtml> valueColumn = new com.google.gwt.user.cellview.client.Column<SensorTrail, SafeHtml>(
-						new SafeHtmlCell()) {
-					@Override
-					public SafeHtml getValue(SensorTrail entry) {
-						return SafeHtmlUtils.fromString(entry.value[entryNo]);
-					}
-				};
 				
-				String columnHeader = dsIT.next().getKey();
-				data.addColumn(ColumnType.NUMBER, columnHeader);
-				valueColumn.setSortable(true);
-				table.addColumn(valueColumn, columnHeader);
-				valueColumns.add(valueColumn);
+				Entry<String, String> pvPair = dsIT.next();
+				String columnHeader = pvPair.getKey();
+				String columnContent = pvPair.getValue();
+				
+				// check if column content is numeric to arrange for proper sorting behavior
+				if (ConversionHelpers.isNumeric(columnContent))
+				{
+					System.out.println(columnHeader + " is numeric.");
+					final int entryNo = iColNo;
+					com.google.gwt.user.cellview.client.Column<SensorTrail, Number> valueColumn = new com.google.gwt.user.cellview.client.Column<SensorTrail, Number>(
+							new NumberCell()) {
+						@Override
+						public Number getValue(SensorTrail entry) {
+							return Double.parseDouble(entry.value[entryNo]);
+						}
+					};
+					//---
+					data.addColumn(ColumnType.NUMBER, columnHeader);
+					valueColumn.setSortable(true);
+					table.addColumn(valueColumn, columnHeader);
+					//valueColumns.add(valueColumn);
+					headerRowArray[entryNo+1] = columnHeader; //+1 because of timestamp
+					//---
+
+					// Add sort handler to column
+
+						System.out.println("creating value sort handler for numeric cells");
+				
+						columnSortHandler.setComparator(valueColumn,
+								new Comparator<SensorTrail>() {
+									public int compare(SensorTrail o1, SensorTrail o2) {
+										if (o1 == o2) {
+											return 0;
+										}
+
+										// Compare the value columns.
+										if (o1 != null) {
+											Double o1number = Double.parseDouble(o1.value[entryNo]);
+											Double o2number = Double.parseDouble(o2.value[entryNo]);
+											return (o2 != null) ? o1number
+													.compareTo(o2number) : 1;
+										}
+										return -1;
+									}
+								});
+
+
+						
+				} else
+				{
+					final int entryNo = iColNo;
+					com.google.gwt.user.cellview.client.Column<SensorTrail, SafeHtml> valueColumn = new com.google.gwt.user.cellview.client.Column<SensorTrail, SafeHtml>(
+							new SafeHtmlCell()) {
+						@Override
+						public SafeHtml getValue(SensorTrail entry) {
+							return SafeHtmlUtils.fromString(entry.value[entryNo]);
+						}
+					};
+					//---
+					data.addColumn(ColumnType.NUMBER, columnHeader);
+					valueColumn.setSortable(true);
+					table.addColumn(valueColumn, columnHeader);
+					//valueColumns.add(valueColumn);
+					headerRowArray[entryNo+1] = columnHeader; //+1 because of timestamp
+					//---
+					
+					// Add sort handler to column
+
+					
+						System.out.println("creating value sort handler for HTML cells");
+				
+						columnSortHandler.setComparator(valueColumn,
+								new Comparator<SensorTrail>() {
+									public int compare(SensorTrail o1, SensorTrail o2) {
+										if (o1 == o2) {
+											return 0;
+										}
+
+										// Compare the value columns.
+										if (o1 != null) {
+											return (o2 != null) ? o1.value[entryNo]
+													.compareTo(o2.value[entryNo])
+													: 1;
+										}
+										return -1;
+									}
+								});
+						
+					
+
+
+					
+				}
 				
 				
-				headerRowArray[entryNo+1] = columnHeader; //+1 because of timestamp
-				
-				
+								
 
 				iColNo = iColNo + 1;
 			}
@@ -189,18 +295,10 @@ public class SimpleLineChart {
 
 			table.setRowCount(dataSource.size(), true);
 			// table.setVisibleRange(0, 10);
-
-			// Create a data provider.
-			ListDataProvider<SensorTrail> dataProvider = new ListDataProvider<SensorTrail>();
-
-			// Connect the table to the data provider.
-			dataProvider.addDataDisplay(table);
-
 			
 			int iRow = 1;
 			Iterator<AnalyticsRawData> it = dataSource.iterator();
-			List<SensorTrail> list = dataProvider.getList();
-
+			
 			if (startDate != null && endDate != null) {
 
 				// populate table with date filter applied
@@ -229,19 +327,16 @@ public class SimpleLineChart {
 
 							Entry<String, String> logItemColumn = itItem.next();
 
-							// add to chart table only if numeric value, otherwise set to 1 to indicate data transmission
-							if (ConversionHelpers.isNumeric(logItemColumn.getValue()))
-							{
+							// add to chart table only if numeric value,
+							// otherwise set to 1 to indicate data transmission
+							if (ConversionHelpers.isNumeric(logItemColumn
+									.getValue())) {
 								data.setValue(iRow, iColumn + 1,
- 									logItemColumn.getValue());
+										logItemColumn.getValue());
+							} else {
+								data.setValue(iRow, iColumn + 1, 1);
 							}
-							else
-							{
-								data.setValue(iRow, iColumn + 1,
-										1);
-							}
-									
-							
+
 							trailItem.value[iColumn] = logItemColumn.getValue();
 							iColumn = iColumn + 1;
 
@@ -252,7 +347,13 @@ public class SimpleLineChart {
 
 						TableRowData row = new TableRowData();
 						String[] rowArray = new String[logItem
-								.getPropertyValuePairs().size()+1];//+1 because of timestamp in column 0
+								.getPropertyValuePairs().size() + 1];// +1
+																		// because
+																		// of
+																		// timestamp
+																		// in
+																		// column
+																		// 0
 						rowArray[0] = logItem.getTimeStamp();
 						Iterator<Entry<String, String>> itPV = logItem
 								.getPropertyValuePairs().entrySet().iterator();
@@ -296,19 +397,17 @@ public class SimpleLineChart {
 					while (itItem.hasNext()) {
 
 						Entry<String, String> logItemColumn = itItem.next();
-						
-						// add to chart table only if numeric value, otherwise set to 1 to indicate data transmission
-						if (ConversionHelpers.isNumeric(logItemColumn.getValue()))
-						{
+
+						// add to chart table only if numeric value, otherwise
+						// set to 1 to indicate data transmission
+						if (ConversionHelpers.isNumeric(logItemColumn
+								.getValue())) {
 							data.setValue(iRow, iColumn + 1,
 									logItemColumn.getValue());
+						} else {
+							data.setValue(iRow, iColumn + 1, 1);
 						}
-						else
-						{
-							data.setValue(iRow, iColumn + 1,
-									1);
-						}
-						
+
 						trailItem.value[iColumn] = logItemColumn.getValue();
 						iColumn = iColumn + 1;
 
@@ -319,7 +418,11 @@ public class SimpleLineChart {
 
 					TableRowData row = new TableRowData();
 					String[] rowArray = new String[logItem
-							.getPropertyValuePairs().size()+1];//+1 because of timestamp in column 0
+							.getPropertyValuePairs().size() + 1];// +1 because
+																	// of
+																	// timestamp
+																	// in column
+																	// 0
 					rowArray[0] = logItem.getTimeStamp();
 					Iterator<Entry<String, String>> itPV = logItem
 							.getPropertyValuePairs().entrySet().iterator();
@@ -339,7 +442,6 @@ public class SimpleLineChart {
 
 					iRow = iRow + 1;
 
-			
 				}
 
 			}
@@ -352,60 +454,10 @@ public class SimpleLineChart {
 
 			graphCol.add(lines);
 
-			// Add a ColumnSortEvent.ListHandler to connect sorting to the
-			// java.util.List.
-			ListHandler<SensorTrail> columnSortHandler = new ListHandler<SensorTrail>(
-					list);
-			// Sort by TimeStamp
-			columnSortHandler.setComparator(timeStampColumn,
-					new Comparator<SensorTrail>() {
-						public int compare(SensorTrail o1, SensorTrail o2) {
-							if (o1 == o2) {
-								return 0;
-							}
-
-							// Compare the timestamp columns.
-							if (o1 != null) {
-								return (o2 != null) ? o1.timeStamp
-										.compareTo(o2.timeStamp) : 1;
-							}
-							return -1;
-						}
-					});
 			
 
-			// Sort by Value
-
-
-			Iterator<com.google.gwt.user.cellview.client.Column<SensorTrail, SafeHtml>> vcIT = valueColumns.iterator();
-			int colNo = 0;
-			while(vcIT.hasNext())
-			{
-				
-				System.out.println("creating value sort handler");
-			final int currentColNo = colNo;
-			com.google.gwt.user.cellview.client.Column<SensorTrail, SafeHtml> currentValueColumn = vcIT.next();
-			columnSortHandler.setComparator(currentValueColumn,
-					new Comparator<SensorTrail>() {
-						public int compare(SensorTrail o1, SensorTrail o2) {
-							if (o1 == o2) {
-								return 0;
-							}
-
-							// Compare the value columns.
-							if (o1 != null) {
-								return (o2 != null) ? o1.value[currentColNo]
-										.compareTo(o2.value[currentColNo]) : 1;
-							}
-							return -1;
-						}
-					});
-			colNo = colNo + 1;
-			}
-			
 			table.addColumnSortHandler(columnSortHandler);
-			
-			
+
 			table.setStriped(false);
 			table.setHover(true);
 
@@ -517,15 +569,15 @@ public class SimpleLineChart {
 	}
 
 	private final native JavaScriptObject newJsEntry(String rowNo, String colNo)/*-{
-																				return {
-																				row : rowNo,
-																				col : colNo
-																				};
+		return {
+			row : rowNo,
+			col : colNo
+		};
 
-																				}-*/;
+	}-*/;
 
 	private final native String nativeGetUrl(JavaScriptObject jso) /*-{
-																	return jso.getImageURI();
-																	}-*/;
+		return jso.getImageURI();
+	}-*/;
 
 }
