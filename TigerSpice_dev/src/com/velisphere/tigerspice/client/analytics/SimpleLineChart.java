@@ -11,10 +11,13 @@ import com.github.gwtbootstrap.client.ui.CellTable;
 import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.google.gwt.cell.client.NumberCell;
+import com.google.gwt.cell.client.SafeHtmlCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
@@ -29,6 +32,7 @@ import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
 import com.google.gwt.visualization.client.visualizations.corechart.LineChart;
 import com.google.gwt.visualization.client.visualizations.corechart.Options;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
+import com.velisphere.tigerspice.client.helper.ConversionHelpers;
 import com.velisphere.tigerspice.shared.AnalyticsRawData;
 import com.velisphere.tigerspice.shared.TableRowData;
 
@@ -61,7 +65,7 @@ public class SimpleLineChart {
 			class SensorTrail {
 
 				private String timeStamp;
-				private Double value[];
+				private String value[];
 				private Integer itemNumber;
 
 			}
@@ -146,19 +150,18 @@ public class SimpleLineChart {
 						
 			// set the headers in all tables
 			
-			LinkedList<com.google.gwt.user.cellview.client.Column<SensorTrail, Number>> valueColumns = new LinkedList<com.google.gwt.user.cellview.client.Column<SensorTrail, Number>>();
+			LinkedList<com.google.gwt.user.cellview.client.Column<SensorTrail, SafeHtml>> valueColumns = new LinkedList<com.google.gwt.user.cellview.client.Column<SensorTrail, SafeHtml>>();
 			
 			int iColNo = 0;
 
-			Iterator<Entry<String, Double>> dsIT = dataSource.getLast().getPropertyValuePairs().entrySet().iterator(); 
+			Iterator<Entry<String, String>> dsIT = dataSource.getLast().getPropertyValuePairs().entrySet().iterator(); 
 			while (dsIT.hasNext()) {
 				final int entryNo = iColNo;
-				com.google.gwt.user.cellview.client.Column<SensorTrail, Number> valueColumn = new com.google.gwt.user.cellview.client.Column<SensorTrail, Number>(
-						new NumberCell(
-								NumberFormat.getFormat("#,##0.00;-#,##0.00"))) {
+				com.google.gwt.user.cellview.client.Column<SensorTrail, SafeHtml> valueColumn = new com.google.gwt.user.cellview.client.Column<SensorTrail, SafeHtml>(
+						new SafeHtmlCell()) {
 					@Override
-					public Number getValue(SensorTrail entry) {
-						return entry.value[entryNo];
+					public SafeHtml getValue(SensorTrail entry) {
+						return SafeHtmlUtils.fromString(entry.value[entryNo]);
 					}
 				};
 				
@@ -216,18 +219,29 @@ public class SimpleLineChart {
 						// add to datasource for table display
 						SensorTrail trailItem = new SensorTrail();
 						trailItem.timeStamp = logItem.getTimeStamp();
-						trailItem.value = new Double[logItem
+						trailItem.value = new String[logItem
 								.getPropertyValuePairs().size()];
 
 						int iColumn = 0;
-						Iterator<Entry<String, Double>> itItem = logItem
+						Iterator<Entry<String, String>> itItem = logItem
 								.getPropertyValuePairs().entrySet().iterator();
 						while (itItem.hasNext()) {
 
-							Entry<String, Double> logItemColumn = itItem.next();
-							data.setValue(iRow, iColumn + 1,
-									logItemColumn.getValue());
+							Entry<String, String> logItemColumn = itItem.next();
 
+							// add to chart table only if numeric value, otherwise set to 1 to indicate data transmission
+							if (ConversionHelpers.isNumeric(logItemColumn.getValue()))
+							{
+								data.setValue(iRow, iColumn + 1,
+ 									logItemColumn.getValue());
+							}
+							else
+							{
+								data.setValue(iRow, iColumn + 1,
+										1);
+							}
+									
+							
 							trailItem.value[iColumn] = logItemColumn.getValue();
 							iColumn = iColumn + 1;
 
@@ -240,7 +254,7 @@ public class SimpleLineChart {
 						String[] rowArray = new String[logItem
 								.getPropertyValuePairs().size()+1];//+1 because of timestamp in column 0
 						rowArray[0] = logItem.getTimeStamp();
-						Iterator<Entry<String, Double>> itPV = logItem
+						Iterator<Entry<String, String>> itPV = logItem
 								.getPropertyValuePairs().entrySet().iterator();
 						int iColumnPV = 1;
 						while (itPV.hasNext()) {
@@ -273,18 +287,28 @@ public class SimpleLineChart {
 					// add to datasource for table display
 					SensorTrail trailItem = new SensorTrail();
 					trailItem.timeStamp = logItem.getTimeStamp();
-					trailItem.value = new Double[logItem
+					trailItem.value = new String[logItem
 							.getPropertyValuePairs().size()];
 
 					int iColumn = 0;
-					Iterator<Entry<String, Double>> itItem = logItem
+					Iterator<Entry<String, String>> itItem = logItem
 							.getPropertyValuePairs().entrySet().iterator();
 					while (itItem.hasNext()) {
 
-						Entry<String, Double> logItemColumn = itItem.next();
-						data.setValue(iRow, iColumn + 1,
-								logItemColumn.getValue());
-
+						Entry<String, String> logItemColumn = itItem.next();
+						
+						// add to chart table only if numeric value, otherwise set to 1 to indicate data transmission
+						if (ConversionHelpers.isNumeric(logItemColumn.getValue()))
+						{
+							data.setValue(iRow, iColumn + 1,
+									logItemColumn.getValue());
+						}
+						else
+						{
+							data.setValue(iRow, iColumn + 1,
+									1);
+						}
+						
 						trailItem.value[iColumn] = logItemColumn.getValue();
 						iColumn = iColumn + 1;
 
@@ -297,7 +321,7 @@ public class SimpleLineChart {
 					String[] rowArray = new String[logItem
 							.getPropertyValuePairs().size()+1];//+1 because of timestamp in column 0
 					rowArray[0] = logItem.getTimeStamp();
-					Iterator<Entry<String, Double>> itPV = logItem
+					Iterator<Entry<String, String>> itPV = logItem
 							.getPropertyValuePairs().entrySet().iterator();
 					int iColumnPV = 1;
 					while (itPV.hasNext()) {
@@ -353,14 +377,14 @@ public class SimpleLineChart {
 			// Sort by Value
 
 
-			Iterator<com.google.gwt.user.cellview.client.Column<SensorTrail, Number>> vcIT = valueColumns.iterator();
+			Iterator<com.google.gwt.user.cellview.client.Column<SensorTrail, SafeHtml>> vcIT = valueColumns.iterator();
 			int colNo = 0;
 			while(vcIT.hasNext())
 			{
 				
 				System.out.println("creating value sort handler");
 			final int currentColNo = colNo;
-			com.google.gwt.user.cellview.client.Column<SensorTrail, Number> currentValueColumn = vcIT.next();
+			com.google.gwt.user.cellview.client.Column<SensorTrail, SafeHtml> currentValueColumn = vcIT.next();
 			columnSortHandler.setComparator(currentValueColumn,
 					new Comparator<SensorTrail>() {
 						public int compare(SensorTrail o1, SensorTrail o2) {

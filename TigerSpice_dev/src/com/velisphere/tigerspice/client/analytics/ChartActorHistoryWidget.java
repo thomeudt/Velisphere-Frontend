@@ -496,7 +496,7 @@ public class ChartActorHistoryWidget extends Composite {
 	System.out.println(endpointID + " / "
 			+ propertyID);
 	
-	analyticsService.getEndpointLog(endpointID,
+	analyticsService.getActionExecutedLog(endpointID,
 			propertyID,
 			new AsyncCallback<LinkedList<AnalyticsRawData>>() {
 				@Override

@@ -7,11 +7,11 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class AnalyticsRawData implements IsSerializable {
 
-	HashMap<String, Double> propertyValuePairs = new HashMap<String, Double>();
+	HashMap<String, String> propertyValuePairs = new HashMap<String, String>();
 	
 	String timeStamp;
 	
-	public void addPropertyValuePair(String propertyID, Double value){
+	public void addPropertyValuePair(String propertyID, String value){
 		this.propertyValuePairs.put(propertyID, value);
 	}
 		
@@ -19,7 +19,7 @@ public class AnalyticsRawData implements IsSerializable {
 		this.timeStamp = timeStamp;
 	}
 	
-	public Map<String, Double> getPropertyValuePairs(){
+	public Map<String, String> getPropertyValuePairs(){
 		return this.propertyValuePairs;
 	}
 		

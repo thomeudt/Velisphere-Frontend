@@ -68,8 +68,8 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 
 			while (myResult.next()) {
 				AnalyticsRawData logItem = new AnalyticsRawData();
-				logItem.addPropertyValuePair(myResult.getString(1), Double.parseDouble(myResult.getString(2)));
-				logItem.addPropertyValuePair("Test", Double.parseDouble(myResult.getString(2)));
+				logItem.addPropertyValuePair(myResult.getString(1), myResult.getString(2));
+				logItem.addPropertyValuePair("Test", myResult.getString(2));
 				logItem.setTimeStamp(myResult.getString(3));
 				logData.add(logItem);
 				// System.out.println("Retrieved: " + logItem.getValue());
@@ -150,4 +150,62 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 	}
 
 
+	@Override
+	public LinkedList<AnalyticsRawData> getActionExecutedLog(String endpointID,
+			String propertyID) {
+
+		Connection conn;
+		LinkedList<AnalyticsRawData> logData = new LinkedList<AnalyticsRawData>();
+
+		try {
+			Class.forName("com.vertica.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Could not find the JDBC driver class.\n");
+			e.printStackTrace();
+
+		}
+		try {
+			conn = DriverManager.getConnection("jdbc:vertica://"
+					+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+					"vertica", "1Suplies!");
+
+			conn.setAutoCommit(true);
+			System.out.println(" [OK] Connected to Vertica on address: "
+					+ "16.1.1.113");
+
+			Statement mySelect = conn.createStatement();
+
+			ResultSet myResult = mySelect
+					.executeQuery("SELECT propertyname, actionID, sensorID, payload, time_stamp FROM vlogger.actionexecutedlog "
+							+ "JOIN vlogger.property ON vlogger.actionexecutedlog.propertyid = vlogger.property.propertyid WHERE "
+							+ "vlogger.actionexecutedlog.PROPERTYID = '"
+							+ propertyID
+							+ "' AND vlogger.actionexecutedlog.actorid = '"
+							+ endpointID
+							+ "' ORDER BY TIME_STAMP");
+
+			while (myResult.next()) {
+				AnalyticsRawData logItem = new AnalyticsRawData();
+				logItem.addPropertyValuePair(myResult.getString(1), myResult.getString(4));
+				logItem.addPropertyValuePair("Action ID", myResult.getString(2));
+				logItem.addPropertyValuePair("Triggered by Sensor", myResult.getString(3));
+				logItem.setTimeStamp(myResult.getString(5));
+				logData.add(logItem);
+				// System.out.println("Retrieved: " + logItem.getValue());
+			}
+
+			mySelect.close();
+
+		} catch (SQLException e) {
+			System.err.println("Could not connect to the database.\n");
+			e.printStackTrace();
+
+		}
+
+		return logData;
+	}
+
+	
+	
+	
 }
