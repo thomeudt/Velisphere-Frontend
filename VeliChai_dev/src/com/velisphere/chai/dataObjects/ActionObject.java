@@ -6,12 +6,14 @@ public class ActionObject {
 	String sensorID;
 	String actorID;
 	String payload;
+	String propertyID;
 	
-	public ActionObject(String actionID, String sensorID, String actorID, String payload){
+	public ActionObject(String actionID, String sensorID, String actorID, String payload, String propertyID){
 		this.actionID = actionID;
 		this.sensorID = sensorID;
 		this.actorID = actorID;
 		this.payload = payload;
+		this.propertyID = propertyID;
 	}
 	
 	public String getActionID(){
@@ -29,4 +31,9 @@ public class ActionObject {
 	public String getPayload(){
 		return payload;
 	}
+	
+	public String getPropertyID(){
+		return propertyID;
+	}
+	
 }

@@ -62,7 +62,8 @@ public class VelisphereMart {
       
       while (aIT.hasNext()){
     	  ActionObject executedAction = aIT.next();
-    	  myInsert.addBatch("INSERT INTO VLOGGER.ACTIONEXECUTEDLOG VALUES ('"+transactionID+"', '"+executedAction.getActionID()+"', '"+executedAction.getSensorID()+"', '"+executedAction.getActorID()+"', '"+executedAction.getPayload()+"', STATEMENT_TIMESTAMP())");  
+    	  myInsert.addBatch("INSERT INTO VLOGGER.ACTIONEXECUTEDLOG VALUES ('"+transactionID+"', '"+executedAction.getActionID()+"', '"+executedAction.getSensorID()+"', '"+executedAction.getActorID()+"', '"+executedAction.getPayload()+"', STATEMENT_TIMESTAMP(), '"+executedAction.getPropertyID()+"')");  
+    	  
       }
       
       Iterator<CheckObject> cIT = checks.iterator();
