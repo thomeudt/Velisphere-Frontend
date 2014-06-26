@@ -7,9 +7,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
  
-@Path("/hello")
-public class HelloWorldService {
+@Path("/pollXML")
+public class pollXML  {
  
+	/**
 	@GET
 	@Path("/{param}")
 	public Response getMsg(@PathParam("param") String msg) {
@@ -19,25 +20,30 @@ public class HelloWorldService {
 		return Response.status(200).entity(output).build();
  
 	} 
+	**/
 	
 	@GET
-	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Path("/xml")
+	@Produces({ MediaType.APPLICATION_XML })
 	public Todo getXML() {
 	    Todo todo = new Todo();
-	    todo.setSummary("This is my first todo");
-	    todo.setDescription("This is my first todo");
+	    todo.setSummary("VeliSphere");
+	    todo.setDescription("First Sphere");
 	 return todo;
 	  }
 	
 	 // This can be used to test the integration with the browser
-	  @GET
+	
+	@GET
+	@Path("/text")
 	  @Produces({ MediaType.TEXT_XML })
 	  public Todo getHTML() {
 	    Todo todo = new Todo();
-	    todo.setSummary("This is my first todo");
-	    todo.setDescription("This is my first todo");
+	    todo.setSummary("VeliSphere");
+	    todo.setDescription("First Sphere");
 	    return todo;
 	  }
+	 
 
 	 
  
