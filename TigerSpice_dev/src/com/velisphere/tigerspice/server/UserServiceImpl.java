@@ -29,6 +29,13 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Vector;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.mindrot.BCrypt;
 import org.voltdb.VoltTable;
 import org.voltdb.client.ClientResponse;
@@ -195,11 +202,33 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 	            }
 
 
+		// third add to rabbitMQ
+	      
+	      
+	      // create rabbitMQ account
+			Client rabbitClient = ClientBuilder.newClient();
+			HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("veliadmin2014", "4GfQ2xgIwVsJ9g3wZIQE");
+			rabbitClient.register(feature);
+			WebTarget target = rabbitClient.target( "http://h2209363.stratoserver.net:15672/api/users/"+userID );
+			Response response = target.request().put( Entity.json("{\"password\":\""+userID+"\",\"tags\":\"administrator\"}") ); // replace user ID with API Key later on
+
+	
+			System.out.println("[IN] RabbitMQ account creation started, result: "+ response );
 			
+			 // allow access to clients virtual host
 			
+			target = rabbitClient.target( "http://h2209363.stratoserver.net:15672/api/permissions/hClients/"+userID );
+			response = target.request().put( Entity.json("{\"configure\":\"\",\"write\":\"\",\"read\":\""+userID+".*\"}") );
+			System.out.println("[IN] RabbitMQ read permission for clients queue requested, result: "+ response );
+
 			
+			 // allow access to controller virtual host
 			
-			
+			target = rabbitClient.target( "http://h2209363.stratoserver.net:15672/api/permissions/hController/"+userID );
+			response = target.request().put( Entity.json("{\"configure\":\"\",\"write\":\"controller\",\"read\":\"\"}") );
+			System.out.println("[IN] RabbitMQ write permission for controller queue requested, result: "+ response );
+
+		
 			
 		return "OK";
 		
