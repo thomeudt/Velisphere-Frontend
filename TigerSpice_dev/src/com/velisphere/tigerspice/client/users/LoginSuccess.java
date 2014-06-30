@@ -30,11 +30,15 @@ import com.github.gwtbootstrap.client.ui.StackProgressBar;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -42,6 +46,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.Login;
 import com.velisphere.tigerspice.client.NavBar;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
@@ -77,15 +82,17 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
 	@UiField Paragraph voltMsgRead;
 	@UiField Paragraph voltMsgWritten;
 	@UiField Paragraph voltTimestamp;
+	@UiField Anchor ancProvisioning;
 	
 	
 	
  	
 	public LoginSuccess() {
 	    
-			
+		
 		initWidget(uiBinder.createAndBindUi(this));
 		loadContent();
+			
 		
 	
 		
@@ -115,6 +122,8 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
 		
 		// set page header welcome back message
     	pageHeader.setText("Welcome back, " + SessionHelper.getCurrentUserName());
+    	
+    	ancProvisioning.setHref("#");
     	
 		
 		bread0 = new NavLink();
@@ -167,11 +176,14 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
 		
 	}
 		
+	
+	@UiHandler("ancProvisioning")
+	void openProvisioning (ClickEvent event) {
+	
+		AppController.openProvisioningWizard();
+		
+		
+	}
+}
 
 	
-	
-			
-	
-	
-	
-}

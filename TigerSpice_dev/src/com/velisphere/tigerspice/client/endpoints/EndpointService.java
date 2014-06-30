@@ -33,6 +33,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.PropertyData;
+import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
 import com.velisphere.tigerspice.shared.UserData;
 
 @RemoteServiceRelativePath("voltEndpoint")
@@ -44,6 +45,7 @@ public interface EndpointService extends RemoteService {
 	Vector<EndpointData> getEndpointsForUser(String userID);
 	EndpointData getEndpointForEndpointID(String endpointID);
 	String updateEndpointNameForEndpointID(String endpointID, String endpointName);
+	UnprovisionedEndpointData getUnprovisionedEndpoints(String endpointID);
 }
 
 

@@ -31,6 +31,7 @@ import org.voltdb.client.ProcCallException;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.shared.EndpointData;
+import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
 
 public class EndpointServiceImpl extends RemoteServiceServlet implements
 		EndpointService {
@@ -349,6 +350,64 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		return endpointForEndpointID;
 	}
 
+
+	public UnprovisionedEndpointData getUnprovisionedEndpoints(String identifier)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		UnprovisionedEndpointData uep = new UnprovisionedEndpointData();
+		try {
+
+			final ClientResponse findEndpoint= voltCon.montanaClient
+					.callProcedure("UI_SelectUnprovisionedEPforIdentifier", identifier);
+
+			final VoltTable findEndpointResults[] = findEndpoint.getResults();
+
+			VoltTable result = findEndpointResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					
+					uep.setIdentifier(result.getString("IDENTIFIER"));
+					uep.setUepid(result.getString("UEPID"));
+					uep.setEpcId(result.getString("ENDPOINTCLASSID"));
+					uep.setTimestamp(String.valueOf(result.getTimestampAsTimestamp("TIME_STAMP")));
+					uep.setEndpointClassName(result.getString("ENDPOINTCLASSNAME"));
+
+				}
+			}
+
+			// System.out.println(endPointsforSphere);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return uep;
+	}
+
+	
 	
 	public String updateEndpointNameForEndpointID(String endpointID, String endpointName)
 

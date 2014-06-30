@@ -25,6 +25,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.PropertyData;
+import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
 import com.velisphere.tigerspice.shared.UserData;
 
 public interface EndpointServiceAsync {
@@ -35,5 +36,6 @@ public interface EndpointServiceAsync {
 	void getEndpointsForUser(String userID, AsyncCallback<Vector<EndpointData>> callback);
 	void getEndpointForEndpointID(String endpointID, AsyncCallback<EndpointData> callback);
 	void updateEndpointNameForEndpointID(String endpointID, String endpointName, AsyncCallback<String> callback);
+	void getUnprovisionedEndpoints(String endpointID, AsyncCallback<UnprovisionedEndpointData> callback);
 	
 }

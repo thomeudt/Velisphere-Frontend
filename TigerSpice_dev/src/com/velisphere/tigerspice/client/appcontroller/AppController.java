@@ -13,6 +13,7 @@ import com.velisphere.tigerspice.client.dashboard.Dashboard;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
+import com.velisphere.tigerspice.client.provisioning.ProvisioningWizard;
 import com.velisphere.tigerspice.client.rules.CheckpathCreateView;
 import com.velisphere.tigerspice.client.rules.CheckpathEditView;
 import com.velisphere.tigerspice.client.rules.CheckpathList;
@@ -231,6 +232,21 @@ public class AppController {
 		}		
 	});
 	}
+	
+	public static void openProvisioningWizard()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			String userID = SessionHelper.getCurrentUserID();
+			ProvisioningWizard provWizard = new ProvisioningWizard(userID);
+			openWithHistoryHandler("provisioning_wizard", provWizard);
+		}		
+	});
+	}
+
 
 	
 }
