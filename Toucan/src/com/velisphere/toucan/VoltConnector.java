@@ -17,8 +17,34 @@
  ******************************************************************************/
 package com.velisphere.toucan;
 
-public class ServerParameters {
-	public static String bunny_ip = "not set";
-	public static String volt_ip = "16.1.1.110";
+import java.io.IOException;
+import java.net.UnknownHostException;
+
+import org.voltdb.client.ClientFactory;
+
+public class VoltConnector {
+	public org.voltdb.client.Client montanaClient;
+	
+		public void openDatabase() throws UnknownHostException, IOException {
+			/*
+			 * Instantiate a client and connect to the database.
+			 */
+	
+			// System.out.println("Creating factory on ip " + ServerParameters.volt_ip);
+			montanaClient = ClientFactory.createClient();
+			montanaClient.createConnection(ServerParameters.volt_ip);
+			/*
+			System.out.println(" [IN] Connected to VoltDB on address: "
+			+ ServerParameters.volt_ip);
+			*/
+		}
+		
+		public void closeDatabase() throws UnknownHostException, IOException, InterruptedException {
+			/*
+			 * Instantiate a client and connect to the database.
+			 */
+			montanaClient.close();			
+		}
 	
 }
+

@@ -98,15 +98,24 @@ public class Messages {
 		try {
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setHost(ServerParameters.bunny_ip);
+			factory.setUsername("guest");
+			factory.setPassword("guest");
+			
 			Connection connection;
 			connection = factory.newConnection();
 
+			
 			Channel channel = connection.createChannel();
 
-			// channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 			System.out
 					.println(" [*] Waiting for messages. To exit press CTRL+C");
 
+			//String queueName = channel.queueDeclare();
+
+			channel.queueBind(QUEUE_NAME, "xClients", "EX");
+			
+			
 			GetResponse response = channel.basicGet(QUEUE_NAME, true);
 
 			while (response != null) {
@@ -156,7 +165,7 @@ public class Messages {
 	System.out.printf( "%s sendet ‘%s’%n", user, message );
 	HashMap<String,String>outboundMessageMap = new HashMap<String, String>();
 	outboundMessageMap.put("A", message);
-	String targetEPID = new String("EE");
+	String targetEPID = new String("EX");
 
 	Send.sendHashTable(outboundMessageMap, targetEPID, "test");
 	return Response.noContent().build();

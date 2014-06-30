@@ -49,12 +49,18 @@ public class Send {
 		
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(ServerParameters.bunny_ip);
+		factory.setUsername("guest");
+		factory.setPassword("guest");
+		
+
 		Connection connection;
 		connection = factory.newConnection();
 
+		
 		Channel channel = connection.createChannel();
 
-		channel.queueDeclare("EC", false, false, false, null);
+		//String queueName = channel.queueDeclare().getQueue();
+        //channel.queueBind(queueName, "xClients", targetQueueName);
 
 		ObjectMapper mapper = new ObjectMapper();
 		StringWriter writer = new StringWriter();
@@ -64,13 +70,12 @@ public class Send {
 		messageMap.put("TYPE", "REG");
 		messageMap.put("EPID", senderQueueName);
 		messageMap.putAll(message);
-
 		
 		mapper.writeValue(writer, messageMap);
 		
 		//System.out.println("Target: " + targetQueueName);
 
-		channel.basicPublish("", targetQueueName, null,
+		channel.basicPublish("xClients", targetQueueName, null,
 				writer.toString().getBytes());
 
 		// System.out.println(" [x] Sent '" + writer.toString() + "' from " + senderQueueName + " to " + targetQueueName);
