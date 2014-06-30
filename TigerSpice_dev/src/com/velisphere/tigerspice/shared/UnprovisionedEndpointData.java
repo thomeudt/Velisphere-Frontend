@@ -28,12 +28,18 @@ public class UnprovisionedEndpointData implements IsSerializable
 	public String endpointclassId;
 	public String time_stamp;
 	public String endpointclassName;
+	public String secondsSinceConnection;
 
 	
 	
 	public String getUepid(){
 		return uepid;
 	}
+	
+	public String getSecondsSinceConnection(){
+		return secondsSinceConnection;
+	}
+	
 	
 	public String getIdentifier(){
 		return identifier;
@@ -70,5 +76,9 @@ public class UnprovisionedEndpointData implements IsSerializable
 	
 	public void  setTimestamp(String time_stamp){
 		this.time_stamp = time_stamp;
+	}
+	
+	public void  setSecondsSinceConnection(String secondsSinceConnection){
+		this.secondsSinceConnection = secondsSinceConnection;
 	}
 }

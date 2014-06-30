@@ -19,10 +19,15 @@ package com.velisphere.tigerspice.server;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.UUID;
 import java.util.Vector;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.voltdb.VoltTable;
 import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
@@ -404,6 +409,13 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			e.printStackTrace();
 		}
 
+		System.out.println("Time " +  (new Date().getTime() - (Timestamp.valueOf(uep.time_stamp).getTime())));
+		
+		if ((new Date().getTime() - (Timestamp.valueOf(uep.time_stamp).getTime())) > 60000)
+			uep = null;
+			else
+				uep.setSecondsSinceConnection(String.valueOf(((new Date().getTime() - (Timestamp.valueOf(uep.time_stamp).getTime()))/1000)));
+		
 		return uep;
 	}
 
