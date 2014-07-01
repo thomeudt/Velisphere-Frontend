@@ -37,5 +37,6 @@ public interface EndpointServiceAsync {
 	void getEndpointForEndpointID(String endpointID, AsyncCallback<EndpointData> callback);
 	void updateEndpointNameForEndpointID(String endpointID, String endpointName, AsyncCallback<String> callback);
 	void getUnprovisionedEndpoints(String endpointID, AsyncCallback<UnprovisionedEndpointData> callback);
+	void addNewEndpoint(String endpointID, String endpointName, String endpointclassID, String userID, AsyncCallback<String> callback);
 	
 }

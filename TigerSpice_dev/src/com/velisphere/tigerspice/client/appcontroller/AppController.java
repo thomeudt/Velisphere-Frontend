@@ -13,6 +13,7 @@ import com.velisphere.tigerspice.client.dashboard.Dashboard;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
+import com.velisphere.tigerspice.client.provisioning.ProvisioningSuccess;
 import com.velisphere.tigerspice.client.provisioning.ProvisioningWizard;
 import com.velisphere.tigerspice.client.provisioning.TakeOwnership;
 import com.velisphere.tigerspice.client.rules.CheckpathCreateView;
@@ -102,11 +103,11 @@ public class AppController {
 		    });
 	}
 
-	static void openTakeDeviceOwnershipWithHistoryHandler(final String token, final String uEPID, final String identifier, final String endpointclassID)
+	static void openTakeDeviceOwnershipWithHistoryHandler(final String token, final String uEPID, final String identifier, final String endpointclassID, final String endpointclassName)
 	{
 		History.newItem(token);
 		RootPanel.get("main").clear();
-		RootPanel.get("main").add((Widget) new TakeOwnership(uEPID, identifier, endpointclassID));
+		RootPanel.get("main").add((Widget) new TakeOwnership(uEPID, identifier, endpointclassID, endpointclassName));
 				 
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {
 
@@ -119,7 +120,7 @@ public class AppController {
 
 	          if (historyToken.equals(token)) {
 	        	  RootPanel.get("main").clear();
-	        	  RootPanel.get("main").add((Widget) new TakeOwnership(uEPID, identifier, endpointclassID));
+	        	  RootPanel.get("main").add((Widget) new TakeOwnership(uEPID, identifier, endpointclassID, endpointclassName));
 		        }
 			}
 		    });
@@ -273,7 +274,7 @@ public class AppController {
 	});
 	}
 
-	public static void openTakeOwnership(final String uEPID, final String identifier, final String endpointclassID)
+	public static void openTakeOwnership(final String uEPID, final String identifier, final String endpointclassID, final String endpointclassName)
 	{	
 		SessionHelper.validateCurrentSession();
 		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
@@ -281,10 +282,23 @@ public class AppController {
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
 			
-			openTakeDeviceOwnershipWithHistoryHandler("take_ownership", uEPID, identifier, endpointclassID);
+			openTakeDeviceOwnershipWithHistoryHandler("take_ownership", uEPID, identifier, endpointclassID, endpointclassName);
 		}		
 	});
 	}
 
+	public static void openProvisioningSuccess()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			ProvisioningSuccess provSuc = new ProvisioningSuccess();
+			openWithHistoryHandler("prov_success", provSuc);
+		}		
+	});
+	}
 	
 }

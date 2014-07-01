@@ -37,6 +37,8 @@ public class ProvisioningWizard extends Composite {
 	String uEPID;
 	String endpointclassID;
 	String identifier;
+	String endpointclassName;
+	
 	
 	private static ProvisioningWizardUiBinder uiBinder = GWT
 			.create(ProvisioningWizardUiBinder.class);
@@ -55,6 +57,7 @@ public class ProvisioningWizard extends Composite {
 		bread1 = new NavLink();
 		bread1.setText("Device Provisioning Wizard");
 		brdMain.add(bread1);
+		ancFound.setEnabled(false);
 
 	}
 	
@@ -75,6 +78,7 @@ public class ProvisioningWizard extends Composite {
 					@Override
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
+						ancFound.setEnabled(false);
 						
 					}
 
@@ -88,14 +92,17 @@ public class ProvisioningWizard extends Composite {
 						if (result == null){
 							ancFound.setText("No recently connected endpoint found for this identifier. Click here for further information.");
 							imgFound.setResource(Images.INSTANCE.blocked());
+							ancFound.setEnabled(false);
 						} else
 						{
+							ancFound.setEnabled(true);
 							ancFound.setText("Device of type " + result.getEndpointClassName() + ", identified as " + result.identifier + " was connected about " + result.getSecondsSinceConnection() + " seconds ago. Click here to take ownership.");
 							imgFound.setResource(Images.INSTANCE.paperplane());
 							ancFound.setHref("#");
 							uEPID = result.getUepid();
 							identifier = result.getIdentifier();
 							endpointclassID = result.getEpcId();
+							endpointclassName = result.getEndpointClassName();
 						}
 						
 					}
@@ -105,7 +112,7 @@ public class ProvisioningWizard extends Composite {
 	
 	@UiHandler("ancFound")
 	void openTakeOwnership(ClickEvent event){
-		AppController.openTakeOwnership(uEPID, identifier, endpointclassID);
+		AppController.openTakeOwnership(uEPID, identifier, endpointclassID, endpointclassName);
 	}
 
 }

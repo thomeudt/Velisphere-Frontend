@@ -27,7 +27,7 @@
 
 		    
 		    <b:Column size="12" offset="0">
-				<b:PageHeader ui:field="pageHeader">Device Provisioning Wizard</b:PageHeader>
+				<b:PageHeader ui:field="pageHeader">Take Device Ownership</b:PageHeader>
 			</b:Column>
 		</b:Row>
 			
@@ -40,26 +40,58 @@
 		    <b:Row>
 			<b:Column size="8" offset="0">
 			    	<b:Heading size="3" >Request Device Ownership</b:Heading>
-				    <b:Paragraph>When a new device has been added to the VeliSphere Network, it will be visible for 60 seconds.</b:Paragraph> 
-				    <b:Paragraph>During this time, you can lookup the new device by entering the device identifier in the search box below
-				        and hitting the search button. The device identifier is a unique ID, such as a MAC address, and is provided by the device vendor.
-				        Consult your device vendor for further information</b:Paragraph>
-				    <b:Paragraph>Once you have found the device, you are able to claim ownership of the device and continue with its configruation.</b:Paragraph>
-				    <b:Paragraph>If ownership is not claimed within the 60 seconds time window, the device will not be visible anymore.
-				        You can restart the process by reconnecting/restarting your device. Consult you device vendor for details.</b:Paragraph>
-				    
-				    <b:Row>
+				    <b:Paragraph>You are about to claim ownership of the selected device, adding it to your sphere of things.</b:Paragraph>
+				    <b:Paragraph>Please provide the requested information below and hit the claim button to continue.</b:Paragraph>
+				    <b:Heading size="3" >Device details:</b:Heading>
+				    <b:Row>											
 						<b:Column size="3" offset="0">
-				    		<b:TextBox ui:field="txtSearchID"></b:TextBox>
+				    		<b:Paragraph>Device Identifier</b:Paragraph>
+				  		</b:Column>		
+				  		<b:Column size="4" offset="0">
+				    		<b:Paragraph ui:field="pgpIdentifier">...</b:Paragraph>
+				  		</b:Column>				  		
+					</b:Row>
+					
+				    <b:Row>											
+						<b:Column size="3" offset="0">
+				    		<b:Paragraph>Device Class/Type</b:Paragraph>
+				  		</b:Column>		
+				  		<b:Column size="4" offset="0">
+				    		<b:Paragraph ui:field="pgpEndpointClass">...</b:Paragraph>
+				  		</b:Column>				  		
+					</b:Row>
+					
+				    <b:Row>											
+						<b:Column size="3" offset="0">
+				    		<b:Paragraph>Device Name</b:Paragraph>
+				  		</b:Column>		
+				  		<b:Column size="4" offset="0">
+				    		<b:TextBox ui:field="txtEndpointName"></b:TextBox>
+				  		</b:Column>				  		
+					</b:Row>
+					
+				    <b:Row>											
+						<b:Column size="3" offset="0">
+				    		<b:Paragraph>Add to sphere</b:Paragraph>
 				  		</b:Column>		
 				  		<b:Column size="2" offset="0">
-				    		<b:Button ui:field="btnSearchID" type="PRIMARY" size="SMALL" addStyleNames="btn-block">Search</b:Button>
-				  		</b:Column>
+				    		<b:Paragraph ui:field="pgpDummy">...</b:Paragraph>
+				  		</b:Column>				  		
 					</b:Row>
-					<b:Heading size="3" >Found:</b:Heading>
+					
+				    <b:Row>											
+						<b:Column size="1" offset="3">
+				    		<b:Button ui:field="btnClaim" type="PRIMARY" size="SMALL" addStyleNames="btn-block">Claim</b:Button>
+				  		</b:Column>		
+				  						  		
+					</b:Row>
+				    
+				    
+				    
+					
 					<b:Image ui:field="imgFound"></b:Image>
 				    <g:Anchor ui:field="ancFound"></g:Anchor> 
-				    <b:Heading size="3" >CAPTCHA!!!</b:Heading>
+				    
 				
 				</b:Column>
 			

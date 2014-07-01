@@ -19,6 +19,10 @@ package com.velisphere.tigerspice.server;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -27,7 +31,15 @@ import java.util.LinkedList;
 import java.util.UUID;
 import java.util.Vector;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+
 import org.apache.commons.lang.time.DateUtils;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import org.mindrot.BCrypt;
 import org.voltdb.VoltTable;
 import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
@@ -462,6 +474,125 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 
 		return "OK";
 
+	}
+
+	
+	
+	public String addNewEndpoint(String endpointID, String endpointName, String endpointclassID, String userID)
+
+	{
+
+		/*
+		 * TODO: ADD ERROR HANDLING VERIFY IF DUPLICATE ENTRY!!!!!!!!!!
+		 */
+		
+		// first add to VoltDB
+		
+		VoltConnector voltCon = new VoltConnector();
+		String linkID = UUID.randomUUID().toString();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}		
+		
+		try {
+		
+			voltCon.montanaClient.callProcedure("ENDPOINT.insert", endpointID, endpointName, endpointclassID);
+			voltCon.montanaClient.callProcedure("ENDPOINT_USER_LINK.insert", linkID, endpointID, userID);
+		} catch (NoConnectionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProcCallException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		// second add to Vertica
+		
+		Connection conn;
+		
+		 try
+	        {
+	        Class.forName("com.vertica.jdbc.Driver");
+	        } catch (ClassNotFoundException e)
+	           {
+	           System.err.println("Could not find the JDBC driver class.\n");
+	           e.printStackTrace();
+	           
+	           }
+	      try
+	         {
+	         conn = DriverManager.getConnection
+	            (
+	            "jdbc:vertica://"+ServerParameters.vertica_ip+":5433/VelisphereMart", "vertica", "1Suplies!"
+	            );
+	         
+	         conn.setAutoCommit(true);
+	 		System.out.println(" [OK] Connected to Vertica on address: "
+	 				+ "16.1.1.113");
+	 		
+	 		Statement myInsert = conn.createStatement();
+	 		myInsert.executeUpdate("INSERT INTO VLOGGER.ENDPOINT VALUES ('"+endpointID+"','"+endpointName+"','"+endpointclassID+"')");
+	 		myInsert.executeUpdate("INSERT INTO VLOGGER.ENDPOINT_USER_LINK VALUES ('"+linkID+"','"+endpointID+"','"+userID+"')");
+	 		myInsert.close();
+	 		
+	 		
+	 		
+	         } catch (SQLException e)
+	            {
+	            System.err.println("Could not connect to the database.\n");
+	            e.printStackTrace();
+	           
+	            }
+
+
+		// third add to rabbitMQ
+	      
+	      
+	      // create rabbitMQ account
+			Client rabbitClient = ClientBuilder.newClient();
+			HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("veliadmin2014", "4GfQ2xgIwVsJ9g3wZIQE");
+			rabbitClient.register(feature);
+			WebTarget target = rabbitClient.target( "http://h2209363.stratoserver.net:15672/api/users/"+endpointID );
+			Response response = target.request().put( Entity.json("{\"password\":\""+endpointID+"\",\"tags\":\"\"}") ); // replace endpoint ID with API Key later on
+
+	
+			System.out.println("[IN] RabbitMQ account creation started, result: "+ response );
+			
+			 // allow access to clients virtual host
+			
+			target = rabbitClient.target( "http://h2209363.stratoserver.net:15672/api/permissions/hClients/"+endpointID );
+			response = target.request().put( Entity.json("{\"configure\":\"\",\"write\":\"\",\"read\":\""+endpointID+".*\"}") );
+			System.out.println("[IN] RabbitMQ read permission for clients queue requested, result: "+ response );
+
+			
+			 // allow access to controller virtual host
+			
+			target = rabbitClient.target( "http://h2209363.stratoserver.net:15672/api/permissions/hController/"+endpointID );
+			response = target.request().put( Entity.json("{\"configure\":\"\",\"write\":\"controller\",\"read\":\"\"}") );
+			System.out.println("[IN] RabbitMQ write permission for controller queue requested, result: "+ response );
+
+		
+			
+		return "OK";
+		
 	}
 
 	

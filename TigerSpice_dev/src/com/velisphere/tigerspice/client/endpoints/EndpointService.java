@@ -46,6 +46,7 @@ public interface EndpointService extends RemoteService {
 	EndpointData getEndpointForEndpointID(String endpointID);
 	String updateEndpointNameForEndpointID(String endpointID, String endpointName);
 	UnprovisionedEndpointData getUnprovisionedEndpoints(String endpointID);
+	String addNewEndpoint(String endpointID, String endpointName, String endpointclassID, String userID);
 }
 
 
