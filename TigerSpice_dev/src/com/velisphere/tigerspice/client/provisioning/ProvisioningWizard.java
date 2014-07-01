@@ -34,6 +34,9 @@ public class ProvisioningWizard extends Composite {
 	@UiField Button btnSearchID;
 	@UiField Anchor ancFound;
 	@UiField Image imgFound;
+	String uEPID;
+	String endpointclassID;
+	String identifier;
 	
 	private static ProvisioningWizardUiBinder uiBinder = GWT
 			.create(ProvisioningWizardUiBinder.class);
@@ -42,7 +45,7 @@ public class ProvisioningWizard extends Composite {
 			UiBinder<Widget, ProvisioningWizard> {
 	}
 
-	public ProvisioningWizard(String userID) {
+	public ProvisioningWizard() {
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		bread0 = new NavLink();
@@ -56,15 +59,17 @@ public class ProvisioningWizard extends Composite {
 	}
 	
 	@UiHandler("btnSearchID")
-	void openProvisioning (ClickEvent event) {
+	void searchDeviceID (ClickEvent event) {
 	
 		
 		final EndpointServiceAsync endpointService = GWT
 				.create(EndpointService.class);
 
-		System.out.println("Search for unprovisioned ID: " + txtSearchID.getText());
+		String searchID = new String("");
+		searchID = txtSearchID.getText();
+		System.out.println("Search for unprovisioned ID: " + searchID);
 		
-		endpointService.getUnprovisionedEndpoints(txtSearchID.getText(),
+		endpointService.getUnprovisionedEndpoints(searchID,
 				new AsyncCallback<UnprovisionedEndpointData>() {
 
 					@Override
@@ -78,20 +83,29 @@ public class ProvisioningWizard extends Composite {
 						// TODO Auto-generated method stub
 
 						
+				
+						
 						if (result == null){
-							ancFound.setText("No recently connected endpoint found for this identifier. Click here for further information.");	
+							ancFound.setText("No recently connected endpoint found for this identifier. Click here for further information.");
+							imgFound.setResource(Images.INSTANCE.blocked());
 						} else
 						{
 							ancFound.setText("Device of type " + result.getEndpointClassName() + ", identified as " + result.identifier + " was connected about " + result.getSecondsSinceConnection() + " seconds ago. Click here to take ownership.");
 							imgFound.setResource(Images.INSTANCE.paperplane());
 							ancFound.setHref("#");
+							uEPID = result.getUepid();
+							identifier = result.getIdentifier();
+							endpointclassID = result.getEpcId();
 						}
 						
 					}
 				
 		});
-		
-		
+	}
+	
+	@UiHandler("ancFound")
+	void openTakeOwnership(ClickEvent event){
+		AppController.openTakeOwnership(uEPID, identifier, endpointclassID);
 	}
 
 }

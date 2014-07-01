@@ -48,8 +48,8 @@ public class AnalyticsHome extends Composite {
 	String userID;
 	
 	
-	public AnalyticsHome(String userID) {
-		this.userID = userID;
+	public AnalyticsHome() {
+		this.userID = SessionHelper.getCurrentUserID();
 		initWidget(uiBinder.createAndBindUi(this));
 		
 		loadContent();

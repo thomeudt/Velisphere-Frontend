@@ -409,12 +409,15 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			e.printStackTrace();
 		}
 
-		System.out.println("Time " +  (new Date().getTime() - (Timestamp.valueOf(uep.time_stamp).getTime())));
-		
-		if ((new Date().getTime() - (Timestamp.valueOf(uep.time_stamp).getTime())) > 60000)
-			uep = null;
-			else
-				uep.setSecondsSinceConnection(String.valueOf(((new Date().getTime() - (Timestamp.valueOf(uep.time_stamp).getTime()))/1000)));
+		if (uep.getTimestamp() != null)
+		{
+			System.out.println("Time " +  (new Date().getTime() - (Timestamp.valueOf(uep.getTimestamp()).getTime())));
+			
+			if ((new Date().getTime() - (Timestamp.valueOf(uep.time_stamp).getTime())) > 600000000)
+				uep = null;
+				else
+					uep.setSecondsSinceConnection(String.valueOf(((new Date().getTime() - (Timestamp.valueOf(uep.time_stamp).getTime()))/1000)));	
+		} else uep = null;
 		
 		return uep;
 	}
