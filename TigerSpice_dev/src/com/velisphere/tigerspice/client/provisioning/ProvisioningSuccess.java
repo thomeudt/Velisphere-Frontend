@@ -25,7 +25,7 @@ import com.velisphere.tigerspice.client.images.Images;
 import com.velisphere.tigerspice.shared.AnalyticsRawData;
 import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
 
-public class ProvisioningWizard extends Composite {
+public class ProvisioningSuccess extends Composite {
 
 	@UiField Breadcrumbs brdMain;
 	NavLink bread0;
@@ -34,22 +34,20 @@ public class ProvisioningWizard extends Composite {
 	@UiField Button btnSearchID;
 	@UiField Anchor ancFound;
 	@UiField Image imgFound;
-	@UiField Image imgCaptchaImage;
-	@UiField TextBox txtCaptchaWord;
+	
 	String uEPID;
 	String endpointclassID;
 	String identifier;
 	String endpointclassName;
 	
-	
-	private static ProvisioningWizardUiBinder uiBinder = GWT
-			.create(ProvisioningWizardUiBinder.class);
+	private static ProvisioningSuccessUiBinder uiBinder = GWT
+			.create(ProvisioningSuccessUiBinder.class);
 
-	interface ProvisioningWizardUiBinder extends
-			UiBinder<Widget, ProvisioningWizard> {
+	interface ProvisioningSuccessUiBinder extends
+			UiBinder<Widget, ProvisioningSuccess> {
 	}
 
-	public ProvisioningWizard() {
+	public ProvisioningSuccess() {
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		bread0 = new NavLink();
@@ -59,10 +57,6 @@ public class ProvisioningWizard extends Composite {
 		bread1 = new NavLink();
 		bread1.setText("Device Provisioning Wizard");
 		brdMain.add(bread1);
-		ancFound.setEnabled(false);
-		
-		imgCaptchaImage.setUrl("/SimpleCaptcha.jpg");
-
 
 	}
 	
@@ -77,13 +71,12 @@ public class ProvisioningWizard extends Composite {
 		searchID = txtSearchID.getText();
 		System.out.println("Search for unprovisioned ID: " + searchID);
 		
-		endpointService.getUnprovisionedEndpoints(searchID, txtCaptchaWord.getText(),
+		endpointService.getUnprovisionedEndpoints(searchID, searchID,
 				new AsyncCallback<UnprovisionedEndpointData>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
-						ancFound.setEnabled(false);
 						
 					}
 
@@ -95,12 +88,10 @@ public class ProvisioningWizard extends Composite {
 				
 						
 						if (result == null){
-							ancFound.setText("No recently connected endpoint found for this identifier or wrong captcha. Click here for further information.");
+							ancFound.setText("No recently connected endpoint found for this identifier. Click here for further information.");
 							imgFound.setResource(Images.INSTANCE.blocked());
-							ancFound.setEnabled(false);
 						} else
 						{
-							ancFound.setEnabled(true);
 							ancFound.setText("Device of type " + result.getEndpointClassName() + ", identified as " + result.identifier + " was connected about " + result.getSecondsSinceConnection() + " seconds ago. Click here to take ownership.");
 							imgFound.setResource(Images.INSTANCE.paperplane());
 							ancFound.setHref("#");

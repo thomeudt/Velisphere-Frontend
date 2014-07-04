@@ -31,11 +31,15 @@ import java.util.LinkedList;
 import java.util.UUID;
 import java.util.Vector;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+
+import nl.captcha.Captcha;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
@@ -368,7 +372,10 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 	}
 
 
-	public UnprovisionedEndpointData getUnprovisionedEndpoints(String identifier)
+	
+	
+	
+	public String updateEndpointNameForEndpointID(String endpointID, String endpointName)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -383,7 +390,64 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			e1.printStackTrace();
 		}
 
+		try {
+			voltCon.montanaClient.callProcedure("UI_UpdateEndpointnameForEndpointID",
+					endpointID, endpointName);
+		} catch (NoConnectionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProcCallException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "OK";
+
+	}
+
+	
+	
+	public UnprovisionedEndpointData getUnprovisionedEndpoints(String identifier, String captchaWord)
+
+	{
+		
+
+		// before all, validate Captcha
+		
 		UnprovisionedEndpointData uep = new UnprovisionedEndpointData();
+				
+		HttpServletRequest request = getThreadLocalRequest();
+		HttpSession session = request.getSession();
+		Captcha captcha = (Captcha) session.getAttribute(Captcha.NAME);
+		System.out.println("[IN] Captcha Word " + captchaWord);
+		System.out.println("[IN] Captcha on Session " + Captcha.NAME);
+		if (captcha.isCorrect(captchaWord))
+		{		
+		
+			System.out.println("[IN] Correct Captcha");
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		
 		try {
 
 			final ClientResponse findEndpoint= voltCon.montanaClient
@@ -430,53 +494,11 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 				else
 					uep.setSecondsSinceConnection(String.valueOf(((new Date().getTime() - (Timestamp.valueOf(uep.time_stamp).getTime()))/1000)));	
 		} else uep = null;
-		
+		}		
+		else uep = null;
 		return uep;
 	}
 
-	
-	
-	public String updateEndpointNameForEndpointID(String endpointID, String endpointName)
-
-	{
-		VoltConnector voltCon = new VoltConnector();
-
-		try {
-			voltCon.openDatabase();
-		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		try {
-			voltCon.montanaClient.callProcedure("UI_UpdateEndpointnameForEndpointID",
-					endpointID, endpointName);
-		} catch (NoConnectionsException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ProcCallException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		try {
-			voltCon.closeDatabase();
-		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return "OK";
-
-	}
-
-	
 	
 	public String addNewEndpoint(String endpointID, String endpointName, String endpointclassID, String userID)
 
@@ -485,6 +507,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		/*
 		 * TODO: ADD ERROR HANDLING VERIFY IF DUPLICATE ENTRY!!!!!!!!!!
 		 */
+		
 		
 		// first add to VoltDB
 		

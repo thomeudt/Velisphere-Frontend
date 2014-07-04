@@ -71,5 +71,6 @@
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/Jersey/jersey-container-servlet.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/Jersey/jersey-container-servlet-core.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/Jersey/jersey-server.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/captcha/simplecaptcha-1.2.1.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

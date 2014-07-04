@@ -45,7 +45,7 @@ public interface EndpointService extends RemoteService {
 	Vector<EndpointData> getEndpointsForUser(String userID);
 	EndpointData getEndpointForEndpointID(String endpointID);
 	String updateEndpointNameForEndpointID(String endpointID, String endpointName);
-	UnprovisionedEndpointData getUnprovisionedEndpoints(String endpointID);
+	UnprovisionedEndpointData getUnprovisionedEndpoints(String endpointID, String captchaWord);
 	String addNewEndpoint(String endpointID, String endpointName, String endpointclassID, String userID);
 }
 
