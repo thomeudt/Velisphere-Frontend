@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre7">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.core.runtimeTarget/com.amazonaws.eclipse.elasticbeanstalk.jee.runtime">
+		<attributes>
+			<attribute name="owner.project.facets" value="jst.web"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/Jersey/javax.servlet-api-3.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/Jersey/javax.ws.rs-api-2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/genson/genson-0.97.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/jackson-annotations-2.2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/jackson-core-2.2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/jackson-databind-2.2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/Jersey/jersey-media-json-jackson-2.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/Jersey/jackson-jaxrs-json-provider-2.4.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/commons-cli-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/commons-io-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/junit.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/rabbitmq-client.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/rabbitmq-client-tests.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/client 4.0/voltdbclient-4.0.2.3.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

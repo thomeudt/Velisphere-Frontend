@@ -83,6 +83,7 @@ public class Send {
 
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(ServerParameters.bunny_ip);
+		factory.setVirtualHost("hController");
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 

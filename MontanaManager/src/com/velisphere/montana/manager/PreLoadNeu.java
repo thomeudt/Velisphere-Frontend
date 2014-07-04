@@ -52,13 +52,19 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1001", "E2", "1000");
 	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1002", "E3", "1001");
 	        
-	        System.out.println("Endpoints and Spheres linked");
+	        System.out.println("Endpoints and Users linked");
 	        
 	        preLoader.callProcedure("ENDPOINT_SPHERE_LINK.insert", "1000", "E1", "1000");
 	        preLoader.callProcedure("ENDPOINT_SPHERE_LINK.insert", "1001", "E2", "1000");
-	        preLoader.callProcedure("ENDPOINT_SPHERE_LINK.insert", "1002", "E3", "1001");
+	        System.out.println("Endpoints and Spheres linked");
 	        
-	        System.out.println("Endpoints and Users linked");
+	      /**  
+	        preLoader.callProcedure("SPHERE_USER_LINK.insert", "1000", "1000", "1000");
+	        preLoader.callProcedure("SPHERE_USER_LINK.insert", "1001", "1001", "1000");
+	        
+	        
+	        System.out.println("Spheres and Users linked");
+	        **/
 	        
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC1", "Text", "String", "");
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC2", "Generic Digital Port", "Byte", "");

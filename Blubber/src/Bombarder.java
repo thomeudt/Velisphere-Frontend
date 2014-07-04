@@ -28,9 +28,13 @@ public class Bombarder implements Runnable {
 	public void run() {
 		int i = 0;
 		
+		java.util.Random random = new java.util.Random();
+		
 		while (i<1000) {
 			try {
 				HashMap<String, String> messageHash = new HashMap<String, String>();
+				Integer rndNum = random.nextInt();
+				//messageHash.put("PR1", rndNum.toString());
 				messageHash.put("PR1", "1");
 				//messageHash.put("PR2", "1");
 	        	//messageHash.put("PR3", "1");

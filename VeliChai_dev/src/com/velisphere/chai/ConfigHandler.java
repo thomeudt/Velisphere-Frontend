@@ -35,7 +35,7 @@ public class ConfigHandler {
 	 * 
 	 */
 
-	public void saveParamChangesAsXML(String url, String principal, String password, String controllerQueueName, String veliBunnyIP) {
+	public static void saveParamChangesAsXML(String url, String principal, String password, String controllerQueueName, String veliBunnyIP) {
 		try {
 			Properties props = new Properties();
 			props.setProperty("LDAP URL", url);

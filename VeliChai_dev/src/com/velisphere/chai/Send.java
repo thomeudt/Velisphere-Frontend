@@ -30,7 +30,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.AMQP.BasicProperties;
 
-public class Send implements Runnable {
+public class Send {
 
 	String message = new String();
 	String queue_name = new String();
@@ -75,7 +75,7 @@ public class Send implements Runnable {
 		channel.basicPublish("", targetQueueName, null,
 				writer.toString().getBytes());
 
-		// System.out.println(" [x] Sent '" + writer.toString() + "' from " + senderQueueName + " to " + targetQueueName);
+		//System.out.println(" [x] Sent '" + writer.toString() + "' from " + senderQueueName + " to " + targetQueueName);
 
 		channel.close();
 		
@@ -98,23 +98,5 @@ public class Send implements Runnable {
 		connection.close();
 	}
 
-	@Override
-	public void run() {
-		// Not used yet, need to evaluate if sending as a thread makes a lot of
-		// sense from a performance point of view
-
-		Connection connection;
-		try {
-			connection = BrokerConnection.factory.newConnection();
-			Channel channel = connection.createChannel();
-			channel.queueDeclare(queue_name, false, false, false, null);
-			message = "[" + "via controller" + "] " + message;
-			channel.basicPublish("", queue_name, null, message.getBytes());
-			channel.close();
-			connection.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	
 }

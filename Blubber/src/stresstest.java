@@ -26,7 +26,7 @@ public class stresstest {
 		ServerParameters.my_queue_name = "E1";
 		//ServerParameters.my_queue_name = "EX1";
 		
-		int numworkers = 128;
+		int numworkers = 32;
 		
 		ExecutorService B52 = Executors.newFixedThreadPool(128);
 		Bombarder[] bombThread = new Bombarder[numworkers];
