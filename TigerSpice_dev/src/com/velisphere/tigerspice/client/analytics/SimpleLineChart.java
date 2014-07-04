@@ -52,7 +52,7 @@ public class SimpleLineChart {
 		if (dataSource.size() == 0) {
 			graphCol = new Column(8);
 			graphCol.add(new Paragraph(
-					"Chart not available for your selection."));
+					"Sorry - There is no data available for your selection."));
 		} else {
 
 			graphCol = new Column(8);

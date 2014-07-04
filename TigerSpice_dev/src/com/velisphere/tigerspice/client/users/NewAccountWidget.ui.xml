@@ -77,6 +77,28 @@
 						<b:PasswordTextBox b:id="txtPassword" ui:field="txtPassword" />
 					</b:Controls>
 	</b:ControlGroup>
+
+		<b:ControlGroup>			
+					<b:ControlLabel>Please enter the text show in the image below.</b:ControlLabel>
+						<b:Controls>
+						
+						<b:TextBox ui:field="txtCaptchaWord"></b:TextBox>
+												
+					</b:Controls>
+					
+	</b:ControlGroup>
+	<b:ControlGroup>			
+					<b:ControlLabel>Captcha is used to prevent bots from signing up.</b:ControlLabel>
+						<b:Controls>
+						<b:Image ui:field="imgCaptchaImage"></b:Image>											
+					</b:Controls>
+					
+	</b:ControlGroup>
+	
+	
+	
+	
+	
   				
 <b:ControlGroup>
     		<b:Controls>

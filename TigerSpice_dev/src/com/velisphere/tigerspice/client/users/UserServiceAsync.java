@@ -25,5 +25,5 @@ import com.velisphere.tigerspice.shared.UserData;
 
 public interface UserServiceAsync {
 	void getAllUserDetails(AsyncCallback<Vector<UserData>> callback);
-	void addNewUser(String userName, String password, String eMail, AsyncCallback<String> callback);
+	void addNewUser(String userName, String password, String eMail, String captchaWord, AsyncCallback<String> callback);
 }

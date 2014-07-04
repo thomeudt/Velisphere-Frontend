@@ -43,7 +43,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.admin.Overviewer;
 import com.velisphere.tigerspice.client.users.LoginService;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
-import com.velisphere.tigerspice.client.users.NewAccountDialogbox;
+import com.velisphere.tigerspice.client.users.NewAccountWidget;
 import com.velisphere.tigerspice.shared.UserData;
 
 public class LoginDialogBox extends PopupPanel{
@@ -141,7 +141,7 @@ public class LoginDialogBox extends PopupPanel{
 	void redirectSignup (ClickEvent event)  {
 		// Window.alert("Logging In");
 		RootPanel.get("main").clear();
-		NewAccountDialogbox newAccount = new NewAccountDialogbox();
+		NewAccountWidget newAccount = new NewAccountWidget();
 		RootPanel.get("main").add(newAccount);
 		this.hide();
 	

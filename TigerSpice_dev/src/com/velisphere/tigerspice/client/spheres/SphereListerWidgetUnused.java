@@ -39,7 +39,7 @@ import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointsForSphereListerWidget_unused;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
-import com.velisphere.tigerspice.client.users.NewAccountDialogbox;
+import com.velisphere.tigerspice.client.users.NewAccountWidget;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.SphereData;
 

@@ -21,6 +21,7 @@ package com.velisphere.tigerspice.client.users;
 
 import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.CheckBox;
+import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.Label;
 import com.github.gwtbootstrap.client.ui.PasswordTextBox;
 import com.github.gwtbootstrap.client.ui.TextBox;
@@ -36,9 +37,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 
-public class NewAccountDialogbox extends Composite {
+public class NewAccountWidget extends Composite {
 
-interface MyBinder extends UiBinder<Widget, NewAccountDialogbox>{}
+interface MyBinder extends UiBinder<Widget, NewAccountWidget>{}
 	
 	private static MyBinder uiBinder = GWT.create(MyBinder.class);
 	
@@ -47,13 +48,15 @@ interface MyBinder extends UiBinder<Widget, NewAccountDialogbox>{}
 	@UiField TextBox txtPassword;
 	@UiField CheckBox cbxAgreeTandC;
 	@UiField Alert aleError;
+	@UiField Image imgCaptchaImage;
+	@UiField TextBox txtCaptchaWord;
 	
 	
 	
 	private final UserServiceAsync userService = GWT
 			.create(UserService.class);
 	
-	public NewAccountDialogbox() {
+	public NewAccountWidget() {
 		txtEmail = new TextBox();
 		txtUsername = new TextBox();
 		txtPassword = new PasswordTextBox();
@@ -63,6 +66,7 @@ interface MyBinder extends UiBinder<Widget, NewAccountDialogbox>{}
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		aleError.setVisible(false);
+		imgCaptchaImage.setUrl("/SimpleCaptcha.jpg");
 	
 	
 	}
@@ -73,7 +77,7 @@ interface MyBinder extends UiBinder<Widget, NewAccountDialogbox>{}
 			if (cbxAgreeTandC.getValue() == true)
 			{
 		 
-			userService.addNewUser(txtUsername.getText(), txtEmail.getText(), txtPassword.getText(), new AsyncCallback<String>(){
+			userService.addNewUser(txtUsername.getText(), txtEmail.getText(), txtPassword.getText(), txtCaptchaWord.getText(), new AsyncCallback<String>(){
 
 				@Override
 				public void onFailure(Throwable caught) {
@@ -84,9 +88,15 @@ interface MyBinder extends UiBinder<Widget, NewAccountDialogbox>{}
 				@Override
 				public void onSuccess(String result) {
 					// TODO Auto-generated method stub
-					RootPanel.get("main").clear();
-					NewAccountSuccessMessage newAccountSuccessMessage = new NewAccountSuccessMessage();
-					RootPanel.get("main").add(newAccountSuccessMessage);
+					
+					if (result.equals("OK")){
+						RootPanel.get("main").clear();
+						NewAccountSuccessMessage newAccountSuccessMessage = new NewAccountSuccessMessage();
+						RootPanel.get("main").add(newAccountSuccessMessage);	
+					} else
+						aleError.setText("Signup failed - make sure you entered the right captcha word.");
+					aleError.setVisible(true);
+					
 					
 				}
 				

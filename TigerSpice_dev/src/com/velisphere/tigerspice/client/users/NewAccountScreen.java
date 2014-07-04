@@ -43,7 +43,7 @@ public class NewAccountScreen {
 	RootPanel rootPanelBanderole;
 	VerticalPanel mainPanel;
 	NavBar navBar;
-	NewAccountDialogbox newAccount;
+	NewAccountWidget newAccount;
 	
 	public void open(){
 
@@ -70,7 +70,7 @@ public class NewAccountScreen {
 	mainPanel = new VerticalPanel();
 	rootPanel.add(mainPanel);
 	
-	newAccount = new NewAccountDialogbox();
+	newAccount = new NewAccountWidget();
 	rootPanel.add(newAccount);
 	
 		

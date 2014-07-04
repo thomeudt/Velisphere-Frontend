@@ -29,11 +29,15 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Vector;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+
+import nl.captcha.Captcha;
 
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.mindrot.BCrypt;
@@ -45,25 +49,16 @@ import org.voltdb.client.ProcCallException;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.users.UserService;
 import com.velisphere.tigerspice.shared.EPCData;
+import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
 import com.velisphere.tigerspice.shared.UserData;
 
 public class UserServiceImpl extends RemoteServiceServlet implements
 		UserService {
 
-
-
-
-
-
-
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6705704565729998384L;
-
-
-
-
 
 	public Vector<UserData> getAllUserDetails()
 
@@ -117,126 +112,103 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return allUsers;
 	}
-	
 
-	public String addNewUser(String userName, String eMail, String password)
+	public String addNewUser(String userName, String eMail, String password,
+			String captchaWord)
 
 	{
 
-		// first add to VoltDB
-		
-		VoltConnector voltCon = new VoltConnector();
-		String userID = UUID.randomUUID().toString();
+		// before all, validate Captcha
 
-		try {
-			voltCon.openDatabase();
-		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}		
+		String response = "captcha_unverified";
+
+		HttpServletRequest request = getThreadLocalRequest();
+		HttpSession session = request.getSession();
+		Captcha captcha = (Captcha) session.getAttribute(Captcha.NAME);
 		
-		try {
-			String pwHash =  BCrypt.hashpw(password, BCrypt.gensalt());
-			voltCon.montanaClient.callProcedure("USER.insert", userID, userName, eMail, pwHash, "PAYPERUSE");
-		} catch (NoConnectionsException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ProcCallException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		
+		if (captcha.isCorrect(captchaWord)) {
+			
+			response = "OK";
+			System.out.println("[IN] Captcha OK");
+
+			// first add to VoltDB
+
+			VoltConnector voltCon = new VoltConnector();
+			String userID = UUID.randomUUID().toString();
+
+			try {
+				voltCon.openDatabase();
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			try {
+				String pwHash = BCrypt.hashpw(password, BCrypt.gensalt());
+				voltCon.montanaClient.callProcedure("USER.insert", userID,
+						userName, eMail, pwHash, "PAYPERUSE");
+			} catch (NoConnectionsException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (ProcCallException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			try {
+				voltCon.closeDatabase();
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// second add to Vertica
+
+			Connection conn;
+
+			try {
+				Class.forName("com.vertica.jdbc.Driver");
+			} catch (ClassNotFoundException e) {
+				System.err.println("Could not find the JDBC driver class.\n");
+				e.printStackTrace();
+
+			}
+			try {
+				conn = DriverManager.getConnection("jdbc:vertica://"
+						+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+						"vertica", "1Suplies!");
+
+				conn.setAutoCommit(true);
+				System.out.println(" [OK] Connected to Vertica on address: "
+						+ "16.1.1.113");
+
+				Statement myInsert = conn.createStatement();
+				myInsert.executeUpdate("INSERT INTO VLOGGER.USER VALUES ('"
+						+ userID + "','" + userName + "','" + eMail
+						+ "','','PAYPERUSE')");
+
+				myInsert.close();
+
+			} catch (SQLException e) {
+				System.err.println("Could not connect to the database.\n");
+				e.printStackTrace();
+
+			}
+
 		}
-		
-		try {
-			voltCon.closeDatabase();
-		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		// second add to Vertica
-		
-		Connection conn;
-		
-		 try
-	        {
-	        Class.forName("com.vertica.jdbc.Driver");
-	        } catch (ClassNotFoundException e)
-	           {
-	           System.err.println("Could not find the JDBC driver class.\n");
-	           e.printStackTrace();
-	           
-	           }
-	      try
-	         {
-	         conn = DriverManager.getConnection
-	            (
-	            "jdbc:vertica://"+ServerParameters.vertica_ip+":5433/VelisphereMart", "vertica", "1Suplies!"
-	            );
-	         
-	         conn.setAutoCommit(true);
-	 		System.out.println(" [OK] Connected to Vertica on address: "
-	 				+ "16.1.1.113");
-	 		
-	 		Statement myInsert = conn.createStatement();
-	 		myInsert.executeUpdate("INSERT INTO VLOGGER.USER VALUES ('"+userID+"','"+userName+"','"+eMail+"','','PAYPERUSE')");
-	        
-	 		myInsert.close();
-	 		
-	 		
-	 		
-	         } catch (SQLException e)
-	            {
-	            System.err.println("Could not connect to the database.\n");
-	            e.printStackTrace();
-	           
-	            }
 
+		return response;
 
-		// third add to rabbitMQ
-	      
-	      
-	      // create rabbitMQ account
-			Client rabbitClient = ClientBuilder.newClient();
-			HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("veliadmin2014", "4GfQ2xgIwVsJ9g3wZIQE");
-			rabbitClient.register(feature);
-			WebTarget target = rabbitClient.target( "http://h2209363.stratoserver.net:15672/api/users/"+userID );
-			Response response = target.request().put( Entity.json("{\"password\":\""+userID+"\",\"tags\":\"administrator\"}") ); // replace user ID with API Key later on
-
-	
-			System.out.println("[IN] RabbitMQ account creation started, result: "+ response );
-			
-			 // allow access to clients virtual host
-			
-			target = rabbitClient.target( "http://h2209363.stratoserver.net:15672/api/permissions/hClients/"+userID );
-			response = target.request().put( Entity.json("{\"configure\":\"\",\"write\":\"\",\"read\":\""+userID+".*\"}") );
-			System.out.println("[IN] RabbitMQ read permission for clients queue requested, result: "+ response );
-
-			
-			 // allow access to controller virtual host
-			
-			target = rabbitClient.target( "http://h2209363.stratoserver.net:15672/api/permissions/hController/"+userID );
-			response = target.request().put( Entity.json("{\"configure\":\"\",\"write\":\"controller\",\"read\":\"\"}") );
-			System.out.println("[IN] RabbitMQ write permission for controller queue requested, result: "+ response );
-
-		
-			
-		return "OK";
-		
 	}
-
-	
-	
-	
-
 
 }

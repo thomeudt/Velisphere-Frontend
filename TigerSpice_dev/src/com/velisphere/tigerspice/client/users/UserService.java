@@ -34,7 +34,7 @@ import com.velisphere.tigerspice.shared.UserData;
 @RemoteServiceRelativePath("voltUser")
 public interface UserService extends RemoteService {
 	Vector<UserData> getAllUserDetails();
-	String addNewUser(String userName, String password, String eMail);
+	String addNewUser(String userName, String password, String eMail, String captchaWord);
 }
 
 
