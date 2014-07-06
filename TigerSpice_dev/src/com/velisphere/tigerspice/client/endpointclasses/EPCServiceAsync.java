@@ -27,5 +27,6 @@ import com.velisphere.tigerspice.shared.UserData;
 public interface EPCServiceAsync {
 	void getAllEndpointClassDetails(AsyncCallback<Vector<EPCData>> callback);
 	void getEndpointClassForEndpointClassID(String endpointClassID, AsyncCallback<EPCData> callback);
+	void addEndpointClass(String epcName, String epcImageURL, AsyncCallback<String> callback);
 	
 }

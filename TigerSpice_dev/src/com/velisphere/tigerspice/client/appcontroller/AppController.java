@@ -7,6 +7,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.admin.ManageEPC;
 import com.velisphere.tigerspice.client.analytics.AnalyticsHome;
 import com.velisphere.tigerspice.client.analytics.ChartSensorHistoryWidget;
 import com.velisphere.tigerspice.client.dashboard.Dashboard;
@@ -297,6 +298,20 @@ public class AppController {
 			//String userID = SessionHelper.getCurrentUserID();
 			ProvisioningSuccess provSuc = new ProvisioningSuccess();
 			openWithHistoryHandler("prov_success", provSuc);
+		}		
+	});
+	}
+	
+	public static void openEPCManager()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			ManageEPC epcManager = new ManageEPC();
+			openWithHistoryHandler("epc_manager", epcManager);
 		}		
 	});
 	}

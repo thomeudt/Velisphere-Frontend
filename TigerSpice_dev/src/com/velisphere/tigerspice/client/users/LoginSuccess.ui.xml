@@ -41,9 +41,11 @@
 		    <b:Row>
 			<b:Column size="8" offset="0">
 			    	<b:Heading size="3" >Debug/Version Information</b:Heading>
-				    <b:Paragraph>VeliSphere TigerSprice 0.7.3</b:Paragraph>
-				    <b:Paragraph>VeliSphere Montana Database Version 0.7.3 or newer required</b:Paragraph>
+				    <b:Paragraph>VeliSphere TigerSpice 0.7.6</b:Paragraph>
+				    <b:Paragraph>VeliSphere Montana Database Version 0.7.6 or newer required</b:Paragraph>
 				    <b:Paragraph>VoltDB 4.0.2 or newer required</b:Paragraph>
+				    <b:Paragraph>VeliSphere Mart Version 0.7.6 or newer required</b:Paragraph>
+				    <b:Paragraph>Vertica 7.0.1 or newer required</b:Paragraph>
 				    <b:Paragraph ui:field="voltIP">... </b:Paragraph>
 				    <b:Paragraph ui:field="voltHostID">... </b:Paragraph>
 				    <b:Paragraph ui:field="voltHostName">... </b:Paragraph>

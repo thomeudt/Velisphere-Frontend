@@ -36,6 +36,7 @@ import com.velisphere.tigerspice.shared.UserData;
 public interface EPCService extends RemoteService {
 	Vector<EPCData> getAllEndpointClassDetails();
 	EPCData getEndpointClassForEndpointClassID(String endpointClassID);
+	String addEndpointClass(String epcName, String epcImageURL);
 }
 
 

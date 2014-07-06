@@ -19,11 +19,22 @@ package com.velisphere.tigerspice.server;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 import java.util.Vector;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import nl.captcha.Captcha;
+
+import org.mindrot.BCrypt;
 import org.voltdb.VoltTable;
 import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
@@ -149,6 +160,86 @@ public class EPCServiceImpl extends RemoteServiceServlet implements
 		}
 		
 		return endPointClass;
+	}
+
+	
+	public String addEndpointClass(String epcName, String epcImageURL)
+
+	{
+
+			
+			// first add to VoltDB
+
+			VoltConnector voltCon = new VoltConnector();
+			String epcID = UUID.randomUUID().toString();
+
+			try {
+				voltCon.openDatabase();
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			try {
+
+				voltCon.montanaClient.callProcedure("ENDPOINTCLASS.insert", epcID,
+						epcName, epcImageURL);
+			} catch (NoConnectionsException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (ProcCallException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			try {
+				voltCon.closeDatabase();
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// second add to Vertica
+
+			Connection conn;
+
+			try {
+				Class.forName("com.vertica.jdbc.Driver");
+			} catch (ClassNotFoundException e) {
+				System.err.println("Could not find the JDBC driver class.\n");
+				e.printStackTrace();
+
+			}
+			try {
+				conn = DriverManager.getConnection("jdbc:vertica://"
+						+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+						"vertica", "1Suplies!");
+
+				conn.setAutoCommit(true);
+				System.out.println(" [OK] Connected to Vertica on address: "
+						+ "16.1.1.113");
+
+				Statement myInsert = conn.createStatement();
+				myInsert.executeUpdate("INSERT INTO VLOGGER.ENDPOINTCLASS VALUES ('"
+						+ epcID + "','" + epcName + "')");
+
+				myInsert.close();
+
+			} catch (SQLException e) {
+				System.err.println("Could not connect to the database.\n");
+				e.printStackTrace();
+
+			}
+
+
+		return "OK";
+
 	}
 
 

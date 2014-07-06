@@ -65,7 +65,10 @@ public class NavBar extends Composite implements HasText {
 	@UiField NavLink btnLogout;
 	@UiField NavLink btnAccount;
 	@UiField Dropdown dpdAccount;
+	@UiField Dropdown dpdAdmin;
 	@UiField NavLink btnSearch;
+	@UiField NavLink btnMaps;
+	@UiField NavLink btnManageEPC;
 	@UiField NavLink btnSpheres;
 	@UiField NavLink btnRules;
 	@UiField NavLink btnAnalytics;
@@ -99,6 +102,9 @@ public class NavBar extends Composite implements HasText {
    	 forSearch.setVisible(false);
    	 btnHome.setVisible(false);
    	 dpdAccount.setVisible(false);
+   	 dpdAdmin.setVisible(false);
+   	 btnMaps.setVisible(false);
+   	 btnManageEPC.setVisible(false);
    	 txtUserName.setText("");
    	 
 	    //checkWithServerIfSessionIdIsStillLegal();
@@ -220,6 +226,13 @@ public class NavBar extends Composite implements HasText {
 		
 	}
 
+	@UiHandler("btnManageEPC")
+	void openEPCManager (ClickEvent event) {
+	
+		AppController.openEPCManager();
+		
+		
+	}
 	
 	@UiHandler("btnLister")
 	void openAdmin (ClickEvent event) {
@@ -313,6 +326,10 @@ public class NavBar extends Composite implements HasText {
 	    	 forSearch.setVisible(false);
 	    	 btnHome.setVisible(true);
 	    	 dpdAccount.setVisible(true);
+	       	 dpdAdmin.setVisible(true);
+	       	 btnMaps.setVisible(true);
+	       	 btnManageEPC.setVisible(true);
+
 			 txtUserName.setText(SessionHelper.getCurrentUserName());
 	    
 	}

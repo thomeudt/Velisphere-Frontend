@@ -39,6 +39,10 @@
 	<!--   <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
 	<!--   <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 	 <inherits name='com.google.gwt.visualization.Visualization'/>
+	  <!-- Include GWTUpload library -->
+ 	 <inherits name="gwtupload.GWTUpload"/>
+  	<!-- Load dinamically predefined styles in the library when the application starts -->
+  	<stylesheet src="Upload.css"/>
 
 	
 	 
