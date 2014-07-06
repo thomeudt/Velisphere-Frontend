@@ -45,7 +45,12 @@ public class DownloadServlet extends HttpServlet{
 	        } finally {
 	        	os.close();
 	        }
-	        downloadableFile.delete();
+	        
+	        String persist = req.getParameter("persist");
+	        if (persist.equals("1") == false){
+	        	downloadableFile.delete();	
+	        }
+	        
 
     }
 }

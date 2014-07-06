@@ -5,6 +5,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.admin.ManageEPC;
@@ -312,6 +313,22 @@ public class AppController {
 			//String userID = SessionHelper.getCurrentUserID();
 			ManageEPC epcManager = new ManageEPC();
 			openWithHistoryHandler("epc_manager", epcManager);
+		}		
+	});
+	}
+	
+	public static void openPopUp(final Widget w)
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			PopupPanel popup = new PopupPanel();
+			popup.setWidget(w);
+			popup.center();
+			
 		}		
 	});
 	}

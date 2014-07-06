@@ -25,7 +25,7 @@ public class EPCData implements IsSerializable
 {
 	public String endpointclassID;
 	public String endpointclassName;
-	
+	public String endpointclassPath;
 		
 	public String getName(){
 		return endpointclassName;
@@ -35,7 +35,15 @@ public class EPCData implements IsSerializable
 		return endpointclassID;
 	}
 	
+	public String getPath(){
+		return endpointclassPath;
+	}
+	
 	public void setName(String endpointclassName){
 		this.endpointclassName = endpointclassName;
+	}
+	
+	public void setPath(String endpointclassPath){
+		this.endpointclassPath = endpointclassPath;
 	}
 }

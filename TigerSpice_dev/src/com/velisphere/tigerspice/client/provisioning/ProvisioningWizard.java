@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
+import com.velisphere.tigerspice.client.endpointclasses.EPCInfo;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.images.Images;
@@ -193,6 +194,9 @@ public class ProvisioningWizard extends Composite {
 		imgCaptchaImage.setUrl("/SimpleCaptcha.jpg?load_"+Random.nextInt());
 	}
 	
-
+	@UiHandler("ancEPC")
+	void openEPCPopup(ClickEvent event){
+		AppController.openPopUp(new EPCInfo(endpointclassID));
+	}
 
 }

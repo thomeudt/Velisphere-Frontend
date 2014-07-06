@@ -17,6 +17,7 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.server;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.sql.Connection;
@@ -140,7 +141,7 @@ public class EPCServiceImpl extends RemoteServiceServlet implements
 					
 					endPointClass.endpointclassName = result.getString("ENDPOINTCLASSNAME");
 					endPointClass.endpointclassID = result.getString("ENDPOINTCLASSID");
-					
+					endPointClass.endpointclassPath = result.getString("ENDPOINTCLASSIMAGEURL");
 
 				}
 			}

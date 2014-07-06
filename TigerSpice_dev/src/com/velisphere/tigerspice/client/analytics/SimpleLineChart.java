@@ -544,6 +544,7 @@ public class SimpleLineChart {
 
 					@Override
 					public void onSuccess(String result) {
+						
 						AppController
 								.openDirectLink("/tigerspice_dev/tigerspiceDownloads?privateURL="
 										+ result
@@ -551,7 +552,7 @@ public class SimpleLineChart {
 										+ endpointName
 										+ "_"
 										+ propertyName
-										+ ".png");
+										+ ".png&persist=0");
 
 					}
 

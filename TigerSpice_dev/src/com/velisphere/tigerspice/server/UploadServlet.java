@@ -3,13 +3,17 @@ package com.velisphere.tigerspice.server;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Hashtable;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
+
+import com.google.gwt.core.client.GWT;
 
 import gwtupload.server.UploadAction;
 import gwtupload.server.exceptions.UploadActionException;
@@ -52,16 +56,18 @@ public class UploadServlet extends UploadAction {
           // File file = File.createTempFile("upload-", ".bin", new File("/tmp"));
           
           /// Create a temporary file placed in the default system temp folder
-          File file = new File(System.getProperty("user.dir")+"/staticImages", item.getName());
-          System.out.println("USERDIR: " + System.getProperty("user.dir"));
+        	
+        	File file = new File("/images/" + item.getName());
+        	System.out.println(file.getCanonicalPath());
           item.write(file);
+          
           
           /// Save a list with the received files
           receivedFiles.put(item.getFieldName(), file);
           receivedContentTypes.put(item.getFieldName(), item.getContentType());
           
           /// Send a customized message to the client.
-          response = file.getAbsolutePath();
+          response = file.getCanonicalPath();
 
         } catch (Exception e) {
           throw new UploadActionException(e);
