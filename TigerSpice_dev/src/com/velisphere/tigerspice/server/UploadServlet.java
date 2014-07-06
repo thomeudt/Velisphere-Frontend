@@ -52,7 +52,8 @@ public class UploadServlet extends UploadAction {
           // File file = File.createTempFile("upload-", ".bin", new File("/tmp"));
           
           /// Create a temporary file placed in the default system temp folder
-          File file = File.createTempFile("upload-", ".png");
+          File file = new File(System.getProperty("user.dir")+"/staticImages", item.getName());
+          System.out.println("USERDIR: " + System.getProperty("user.dir"));
           item.write(file);
           
           /// Save a list with the received files
@@ -60,7 +61,7 @@ public class UploadServlet extends UploadAction {
           receivedContentTypes.put(item.getFieldName(), item.getContentType());
           
           /// Send a customized message to the client.
-          response += "File saved as " + file.getAbsolutePath();
+          response = file.getAbsolutePath();
 
         } catch (Exception e) {
           throw new UploadActionException(e);

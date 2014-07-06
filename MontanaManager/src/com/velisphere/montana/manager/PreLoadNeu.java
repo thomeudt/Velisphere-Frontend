@@ -35,9 +35,9 @@ public class PreLoadNeu {
 	        
 	        System.out.println("Users loaded");
 	        
-	        preLoader.callProcedure("ENDPOINTCLASS.insert", "EPC1", "Blubber Messenger Client Account");
-	        preLoader.callProcedure("ENDPOINTCLASS.insert", "EPC2", "Generic Universal Sensor / Actor");
-	        preLoader.callProcedure("ENDPOINTCLASS.insert", "EPC3", "Generic Setter/Getter Application");
+	        preLoader.callProcedure("ENDPOINTCLASS.insert", "EPC1", "Blubber Messenger Client Account", "");
+	        preLoader.callProcedure("ENDPOINTCLASS.insert", "EPC2", "Generic Universal Sensor / Actor", "");
+	        preLoader.callProcedure("ENDPOINTCLASS.insert", "EPC3", "Generic Setter/Getter Application", "");
 	        
 	        System.out.println("Endpointclasses loaded");
 	        

@@ -47,7 +47,7 @@
 							<b:ControlLabel>Name</b:ControlLabel>
 
 							<b:Controls>
-								<b:TextBox b:id="txtUsername" ui:field="txtUsername" />
+								<b:TextBox b:id="txtEPCName" ui:field="txtEPCName" />
 
 							</b:Controls>
 						</b:ControlGroup>
@@ -56,7 +56,7 @@
 							<b:ControlLabel>Image URL</b:ControlLabel>
 
 							<b:Controls>
-								<b:TextBox b:id="txtEmail" ui:field="txtEmail" />
+								<b:TextBox b:id="txtImageURL" ui:field="txtImageURL" />
 								<gu:SingleUploader type="LABEL" ui:field="imageUploader"></gu:SingleUploader>
 
 							</b:Controls>
@@ -64,7 +64,7 @@
 						<b:ControlGroup>
 						    	<b:Controls>
 								<b:Button styleName="btn btn-primary" text="Create Endpoint Class"
-									ui:field="btnLogin" />
+									ui:field="btnUpload" />
 							</b:Controls>
 						</b:ControlGroup>
 
