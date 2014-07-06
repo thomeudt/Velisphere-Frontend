@@ -42,7 +42,14 @@
              <b:NavLink ui:field="btnSpheres">Endpoint Manager</b:NavLink>
              <b:NavLink ui:field="btnRules">Logic Designer</b:NavLink>
              <b:NavLink ui:field="btnAnalytics">Analytics</b:NavLink>
-             <b:NavLink ui:field="btnAdmin">Maps</b:NavLink>
+             <b:NavLink ui:field="btnMaps">Maps</b:NavLink>
+             
+             <b:Dropdown ui:field="dpdAdmin" text="[Admin]">
+             	<b:NavLink ui:field="btnLister">Overviewer</b:NavLink>    
+             	<b:NavLink ui:field="btnManageEPC">Endpoint Class Manager</b:NavLink>
+             	
+             </b:Dropdown>
+             
              
          </b:Nav>
          <b:NavForm ui:field="forSearch" size="1" />

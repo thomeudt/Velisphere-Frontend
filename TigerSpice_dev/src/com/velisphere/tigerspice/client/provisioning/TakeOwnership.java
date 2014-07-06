@@ -1,5 +1,6 @@
 package com.velisphere.tigerspice.client.provisioning;
 
+import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Image;
@@ -19,9 +20,7 @@ import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
-import com.velisphere.tigerspice.client.images.Images;
-import com.velisphere.tigerspice.client.provisioning.ProvisioningWizard.ProvisioningWizardUiBinder;
-import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
+import com.velisphere.tigerspice.client.helper.ErrorCodes;
 
 public class TakeOwnership extends Composite {
 
@@ -36,6 +35,7 @@ public class TakeOwnership extends Composite {
 	@UiField Image imgFound;
 	@UiField Paragraph pgpIdentifier;
 	@UiField Paragraph pgpEndpointClass;
+	@UiField Alert aleError;
 	String userID;
 	String uEPID;
 	String endpointclassID;
@@ -53,9 +53,12 @@ public class TakeOwnership extends Composite {
 		this.uEPID = uEPID;
 		this.endpointclassID = endpointclassID;
 		
+
 		System.out.println("ÜPID: " + uEPID);
 		
 		initWidget(uiBinder.createAndBindUi(this));
+		aleError.setVisible(false);
+		
 		bread0 = new NavLink();
 		bread0.setText("Home");
 		brdMain.add(bread0);
@@ -66,6 +69,7 @@ public class TakeOwnership extends Composite {
 
 		this.pgpEndpointClass.setText(endpointclassName);
 		this.pgpIdentifier.setText(identifier);
+		
 		
 	}
 	
@@ -90,8 +94,21 @@ public class TakeOwnership extends Composite {
 					public void onSuccess(String result) {
 						// TODO Auto-generated method stub
 
-						System.out.println("[OK] " + result);
-						AppController.openProvisioningSuccess();
+						System.out.println("RES " + result);
+						  if(result.equals("OK"))
+						  {							 
+					        	System.out.println("[OK] " + result);
+								AppController.openProvisioningSuccess(); 
+						  }
+						  else if (result.equals(ErrorCodes.VOLT_INSERTFAILED))
+						  {							  
+					        	System.out.println("[ER] " + result);
+					        	aleError.setVisible(true);
+					        	aleError.setHeading("Provisioning failed.");
+								aleError.setText("Likely reason: Device owned by somebody else. Current owner has to release his ownership, then try again."); 
+					       					            
+						  }
+						
 					}
 				
 		});

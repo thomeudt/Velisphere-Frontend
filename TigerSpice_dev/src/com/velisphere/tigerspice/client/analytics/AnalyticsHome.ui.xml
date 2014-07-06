@@ -9,7 +9,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:vsan="urn:import:com.velisphere.tigerspice.client.analytics">
+	xmlns:vsan="urn:import:com.velisphere.tigerspice.client.analytics"
+	xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
 	<g:HTMLPanel>
 
 		<b:Breadcrumbs divider=">" ui:field="brdMain">
@@ -106,16 +107,7 @@
 			</b:Column>
 
 			<b:Column size="2" offset="0">
-				<b:Heading size="4">Additional Resources</b:Heading>
-
-				<b:Paragraph addStyleNames="smalltext">Device Provisioning Wizard</b:Paragraph>
-
-				<b:Paragraph addStyleNames="smalltext">Getting Started</b:Paragraph>
-
-				<b:Paragraph addStyleNames="smalltext">Best Practices</b:Paragraph>
-
-				<b:Paragraph addStyleNames="smalltext">Market Place</b:Paragraph>
-
+			<vssb:General></vssb:General>
 
 			</b:Column>
 

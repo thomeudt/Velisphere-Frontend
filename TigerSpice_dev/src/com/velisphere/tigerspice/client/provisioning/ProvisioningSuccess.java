@@ -30,10 +30,6 @@ public class ProvisioningSuccess extends Composite {
 	@UiField Breadcrumbs brdMain;
 	NavLink bread0;
 	NavLink bread1;
-	@UiField TextBox txtSearchID;
-	@UiField Button btnSearchID;
-	@UiField Anchor ancFound;
-	@UiField Image imgFound;
 	
 	String uEPID;
 	String endpointclassID;
@@ -60,55 +56,10 @@ public class ProvisioningSuccess extends Composite {
 
 	}
 	
-	@UiHandler("btnSearchID")
-	void searchDeviceID (ClickEvent event) {
-	
-		
-		final EndpointServiceAsync endpointService = GWT
-				.create(EndpointService.class);
-
-		String searchID = new String("");
-		searchID = txtSearchID.getText();
-		System.out.println("Search for unprovisioned ID: " + searchID);
-		
-		endpointService.getUnprovisionedEndpoints(searchID, searchID,
-				new AsyncCallback<UnprovisionedEndpointData>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void onSuccess(UnprovisionedEndpointData result) {
-						// TODO Auto-generated method stub
-
-						
-				
-						
-						if (result == null){
-							ancFound.setText("No recently connected endpoint found for this identifier. Click here for further information.");
-							imgFound.setResource(Images.INSTANCE.blocked());
-						} else
-						{
-							ancFound.setText("Device of type " + result.getEndpointClassName() + ", identified as " + result.identifier + " was connected about " + result.getSecondsSinceConnection() + " seconds ago. Click here to take ownership.");
-							imgFound.setResource(Images.INSTANCE.paperplane());
-							ancFound.setHref("#");
-							uEPID = result.getUepid();
-							identifier = result.getIdentifier();
-							endpointclassID = result.getEpcId();
-							endpointclassName = result.getEndpointClassName();
-						}
-						
-					}
-				
-		});
-	}
 	
 	@UiHandler("ancFound")
 	void openTakeOwnership(ClickEvent event){
-		AppController.openTakeOwnership(uEPID, identifier, endpointclassID, endpointclassName);
+		AppController.openEndpointManager();
 	}
 
 }

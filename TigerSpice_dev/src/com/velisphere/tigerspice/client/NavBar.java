@@ -61,7 +61,7 @@ import com.velisphere.tigerspice.shared.UserData;
 public class NavBar extends Composite implements HasText {
 
 	@UiField ResponsiveNavbar navbar;
-	@UiField NavLink btnAdmin;
+	@UiField NavLink btnLister;
 	@UiField NavLink btnLogout;
 	@UiField NavLink btnAccount;
 	@UiField Dropdown dpdAccount;
@@ -88,7 +88,7 @@ public class NavBar extends Composite implements HasText {
 		//navbar.setWidth(RootPanel.get("main").getElement().getStyle().getWidth());
 		
 
-		btnAdmin.setVisible(false);
+		btnLister.setVisible(false);
 	
    	 btnLogout.setVisible(false);
    	 btnAccount.setVisible(false);
@@ -221,7 +221,7 @@ public class NavBar extends Composite implements HasText {
 	}
 
 	
-	@UiHandler("btnAdmin")
+	@UiHandler("btnLister")
 	void openAdmin (ClickEvent event) {
 		
 		clearBandarole();
@@ -268,7 +268,7 @@ public class NavBar extends Composite implements HasText {
 	{
 		
 
-		btnAdmin.setVisible(false);
+		btnLister.setVisible(false);
    	 	btnLogout.setVisible(false);
    	 	btnAccount.setVisible(false);
    	 	btnSearch.setVisible(false);
@@ -303,7 +303,7 @@ public class NavBar extends Composite implements HasText {
 	{
 		
 		
-			btnAdmin.setVisible(true);
+			btnLister.setVisible(true);
 	    	 btnLogout.setVisible(true);
 	    	 btnAccount.setVisible(true);
 	    	 btnSearch.setVisible(false);

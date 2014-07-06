@@ -20,7 +20,8 @@
 	xmlns:container="urn:import:com.sencha.gxt.widget.core.client.container"
 	xmlns:gxt="urn:import:com.sencha.gxt.widget.core.client" xmlns:button="urn:import:com.sencha.gxt.widget.core.client.button"
 	xmlns:vs='urn:import:com.velisphere.tigerspice.client.spheres' xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" 
+	xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
 	<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images'/>
 
 	<g:HTMLPanel>
@@ -100,26 +101,7 @@
 			<b:Column size="2" offset="0">
 			    
 			    
-			    <b:Heading size="4">Tasks</b:Heading>
-					<b:Paragraph addStyleNames="smalltext">Provision new Endpoint using the Provisioning Wizard.</b:Paragraph>
-					<b:Paragraph addStyleNames="smalltext">Create and manage Virtual End Points.</b:Paragraph>
-					<b:Paragraph addStyleNames="smalltext">Best practices</b:Paragraph>
-					<b:Paragraph addStyleNames="smalltext">Getting started</b:Paragraph>
-			
-					<b:Paragraph><br></br></b:Paragraph>
-					
-				<b:Heading size="4">Additional Resources</b:Heading>
-				
-			<b:Paragraph addStyleNames="smalltext">Device Provisioning Wizard</b:Paragraph>
-			
-			<b:Paragraph addStyleNames="smalltext">Getting Started</b:Paragraph>
-			
-			<b:Paragraph addStyleNames="smalltext">Best Practices</b:Paragraph>
-			
-			<b:Paragraph addStyleNames="smalltext">Market Place</b:Paragraph>
-		
-					
-					
+			  <vssb:General></vssb:General>
 			
 			</b:Column>	
 			

@@ -82,7 +82,7 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
 	@UiField Paragraph voltMsgRead;
 	@UiField Paragraph voltMsgWritten;
 	@UiField Paragraph voltTimestamp;
-	@UiField Anchor ancProvisioning;
+
 	
 	
 	
@@ -123,7 +123,7 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
 		// set page header welcome back message
     	pageHeader.setText("Welcome back, " + SessionHelper.getCurrentUserName());
     	
-    	ancProvisioning.setHref("#");
+    	
     	
 		
 		bread0 = new NavLink();
@@ -177,13 +177,7 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
 	}
 		
 	
-	@UiHandler("ancProvisioning")
-	void openProvisioning (ClickEvent event) {
 	
-		AppController.openProvisioningWizard();
-		
-		
-	}
 }
 
 	

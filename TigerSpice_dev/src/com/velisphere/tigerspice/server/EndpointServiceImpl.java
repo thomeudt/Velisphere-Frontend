@@ -51,6 +51,7 @@ import org.voltdb.client.ProcCallException;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
+import com.velisphere.tigerspice.client.helper.ErrorCodes;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
 
@@ -510,6 +511,8 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		
 		
 		// first add to VoltDB
+
+		String errorTracker = new String("OK");
 		
 		VoltConnector voltCon = new VoltConnector();
 		String linkID = UUID.randomUUID().toString();
@@ -535,8 +538,11 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (ProcCallException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			errorTracker = ErrorCodes.VOLT_INSERTFAILED;
+			
+			System.out.println("[ER] ENDPOINT COULD NOT BE PROVISIONED, PROBABLY ALREADY EXISTS");
+			
+			
 		}
 		
 		try {
@@ -611,10 +617,9 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			target = rabbitClient.target( "http://h2209363.stratoserver.net:15672/api/permissions/hController/"+endpointID );
 			response = target.request().put( Entity.json("{\"configure\":\"\",\"write\":\"controller\",\"read\":\"\"}") );
 			System.out.println("[IN] RabbitMQ write permission for controller queue requested, result: "+ response );
-
-		
 			
-		return "OK";
+			
+		return errorTracker;
 		
 	}
 

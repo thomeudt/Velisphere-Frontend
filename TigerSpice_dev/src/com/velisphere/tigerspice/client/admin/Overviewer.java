@@ -67,11 +67,7 @@ public class Overviewer {
 		mainPanel = new VerticalPanel();
 		rootPanel.add(mainPanel);
 
-		RootPanel banderolePanel = RootPanel.get("banderole");
-		banderolePanel.clear();
-		Banderole banderole = new Banderole();
-		banderolePanel.add(banderole);
-
+	
 		UserList userClassList = new UserList();
 		mainPanel.add(userClassList);
 
@@ -84,52 +80,9 @@ public class Overviewer {
 		PropertyList propertyList = new PropertyList();
 		mainPanel.add(propertyList);
 		
-				
-		removeLoadAnimation();
-
-	}
-
-	private void checkWithServerIfSessionIdIsStillLegal(String sessionID) {
-
-		showLoadAnimation();
-		LoginService.Util.getInstance().loginFromSessionServer(
-				new AsyncCallback<UserData>() {
-					@Override
-					public void onFailure(Throwable caught) {
-						Login loginScreen = new Login();
-						loginScreen.onModuleLoad();
-					}
-
-					@Override
-					public void onSuccess(UserData result) {
-						if (result == null) {
-							Login loginScreen = new Login();
-							loginScreen.onModuleLoad();
-						} else {
-							if (result.getLoggedIn()) {
-								loadContent();
-							} else {
-								Login loginScreen = new Login();
-								loginScreen.onModuleLoad();
-							}
-						}
-					}
-
-				});
-	}
-
-	private void showLoadAnimation() {
-		RootPanel rootPanel = RootPanel.get("main");
-		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-		animationLoading = new AnimationLoading();
-		rootPanel.add(animationLoading, 25, 40);
-	}
-	
-	private void removeLoadAnimation() {
-		if (animationLoading != null) animationLoading.removeFromParent();
-	}
 	
 
+	}
 
 	
 }

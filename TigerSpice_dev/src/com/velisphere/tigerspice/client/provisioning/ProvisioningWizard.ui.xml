@@ -1,23 +1,15 @@
-<!--
-  CONFIDENTIAL INFORMATION
-   __________________
-   
-    Copyright (C) 2014 Thorsten Meudt / Connected Things Lab
-    All Rights Reserved.
-   
-   NOTICE:  All information contained herein is, and remains
-   the property of Thorsten Meudt and its suppliers,
-   if any.  The intellectual and technical concepts contained
-   herein are proprietary to Thorsten Meudt
-   and its suppliers and may be covered by Patents,
-   patents in process, and are protected by trade secret or copyright law.
-   Dissemination of this information or reproduction of this material
-   is strictly forbidden unless prior written permission is obtained
-   from Thorsten Meudt.
--->
+<!-- CONFIDENTIAL INFORMATION __________________ Copyright (C) 2014 Thorsten 
+	Meudt / Connected Things Lab All Rights Reserved. NOTICE: All information 
+	contained herein is, and remains the property of Thorsten Meudt and its suppliers, 
+	if any. The intellectual and technical concepts contained herein are proprietary 
+	to Thorsten Meudt and its suppliers and may be covered by Patents, patents 
+	in process, and are protected by trade secret or copyright law. Dissemination 
+	of this information or reproduction of this material is strictly forbidden 
+	unless prior written permission is obtained from Thorsten Meudt. -->
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
 	<g:HTMLPanel>
 
 		<b:Breadcrumbs divider=">" ui:field="brdMain">
@@ -25,100 +17,163 @@
 
 		<b:Row>
 
-		    
-		    <b:Column size="12" offset="0">
+
+			<b:Column size="12" offset="0">
 				<b:PageHeader ui:field="pageHeader">Device Provisioning Wizard</b:PageHeader>
 			</b:Column>
 		</b:Row>
-			
-		
+
+
 
 		<b:Row>
-		
-		<b:Column size="9" offset="0">
-		
-		    <b:Row>
-			<b:Column size="8" offset="0">
-			    	<b:Heading size="3" >Request Device Ownership</b:Heading>
-				    <b:Paragraph>When a new device has been added to the VeliSphere Network, it will be visible for 60 seconds.</b:Paragraph> 
-				    <b:Paragraph>During this time, you can lookup the new device by entering the device identifier in the search box below
-				        and hitting the search button. The device identifier is a unique ID, such as a MAC address, and is provided by the device vendor.
-				        Consult your device vendor for further information</b:Paragraph>
-				    <b:Paragraph>Once you have found the device, you are able to claim ownership of the device and continue with its configruation.</b:Paragraph>
-				    <b:Paragraph>If ownership is not claimed within the 60 seconds time window, the device will not be visible anymore.
-				        You can restart the process by reconnecting/restarting your device. Consult you device vendor for details.</b:Paragraph>
-				    
-				    <b:Row>
-						<b:Column size="3" offset="0">
-				    		<b:Paragraph>Device ID*</b:Paragraph>
-				    		
-				  		</b:Column>
-				  				
-				  		<b:Column size="2" offset="0">
-				    			<b:TextBox ui:field="txtSearchID"></b:TextBox>
-				  		</b:Column>
-					</b:Row>
-					<b:Row>
-						<b:Column size="3" offset="0">
-				    		<b:Paragraph>Please enter the word below to verify.</b:Paragraph>
-				    		
-				  		</b:Column>
-				  				
-				  		<b:Column size="2" offset="0">
-				    		<b:TextBox ui:field="txtCaptchaWord"></b:TextBox>
-				  		</b:Column>
-					</b:Row>
-					
-					<b:Row>
-					    <b:Column size="3" offset="0">
-				    	<b:Paragraph>Captcha is a mechanism to verify you are an actual human being, not a bot.</b:Paragraph>
-				    	<b:Paragraph>&nbsp;</b:Paragraph>	
-				  		</b:Column>
-						
-				  		<b:Column size="3" offset="0">
-				    		<b:Image ui:field="imgCaptchaImage"></b:Image>
-				  		</b:Column>
-					</b:Row>
-					
 
-					<b:Row>
-						
-				  				
-				  		<b:Column size="2" offset="3">
-				    		<b:Button ui:field="btnSearchID" type="PRIMARY" size="SMALL" addStyleNames="btn-block">Search</b:Button>
+			<b:Column size="9" offset="0">
+
+				<b:Row>
+					<b:Column size="8" offset="0">
+						<b:Heading size="3">Request Device Ownership</b:Heading>
+						<b:Paragraph>When a new device has been added to the VeliSphere
+							Network, it will be visible for 60 seconds.</b:Paragraph>
+						<b:Paragraph>During this time, you can lookup the new device by
+							entering the device identifier in the search box below
+							and hitting the search button. The device identifier is a unique ID,
+							such as a MAC address, and is provided by the device vendor.
+							Consult your device vendor for further information</b:Paragraph>
+						<b:Paragraph>Once you have found the device, you are able to claim
+							ownership of the device and continue with its configruation.</b:Paragraph>
+						<b:Paragraph>If ownership is not claimed within the 60 seconds
+							time window, the device will not be visible anymore.
+							You can restart the process by reconnecting/restarting your device.
+							Consult you device vendor for details.</b:Paragraph>
+
+						<b:Row>
+							<b:Column size="8" offset="0">
+				    		<b:Alert type="ERROR" close="false" ui:field="aleError" />
 				  		</b:Column>
-					</b:Row>
-					
-					<b:Heading size="3" >Found:</b:Heading>
-					<b:Image ui:field="imgFound"></b:Image>
-				    <g:Anchor ui:field="ancFound"></g:Anchor> 
-				    
-				
-				</b:Column>
-			
+				  		</b:Row>		
+						
+						<b:Row>
+							<b:Column size="3" offset="0">
+								<b:Paragraph ui:field="pgpHeadingID">Device ID*</b:Paragraph>
+
+							</b:Column>
+
+							<b:Column size="2" offset="0">
+								<b:TextBox ui:field="txtSearchID"></b:TextBox>
+							</b:Column>
+						</b:Row>
+						<b:Row>
+							<b:Column size="3" offset="0">
+								<b:Paragraph ui:field="pgpHeadingCaptcha">Please enter the word below to verify.</b:Paragraph>
+
+							</b:Column>
+
+							<b:Column size="2" offset="0">
+								<b:TextBox ui:field="txtCaptchaWord"></b:TextBox>
+							</b:Column>
+						</b:Row>
+
+						<b:Row>
+							<b:Column size="3" offset="0">
+								
+								<g:Anchor addStyleNames="smalltext-black" ui:field="ancReloadCaptcha">(If you can't read the current image, click here to load a new one.)</g:Anchor>
+								
+							</b:Column>
+
+							<b:Column size="3" offset="0">
+								<b:Image ui:field="imgCaptchaImage"></b:Image>
+								<b:Paragraph>&nbsp;</b:Paragraph>
+							</b:Column>
+						</b:Row>
+
+
+						<b:Row>
+							<b:Column size="2" offset="3">
+								<b:Button ui:field="btnSearchID" type="PRIMARY" size="SMALL"
+									addStyleNames="btn-block">Search</b:Button>
+							</b:Column>
+						</b:Row>
+
+						<b:Heading ui:field="hdgFound" size="3">Endpoint found:</b:Heading>
+
+
+						<b:Row>
+							<b:Column size="3" offset="0">
+								<b:Paragraph ui:field="pgpHeadingIcon">Device Icon</b:Paragraph>
+
+							</b:Column>
+
+							<b:Column size="2" offset="0">
+								<b:Image ui:field="imgFound"></b:Image>
+							</b:Column>
+						</b:Row>
+						<b:Row>
+							<b:Column size="3" offset="0">
+								<b:Paragraph ui:field="pgpHeadingEPC">Device Type</b:Paragraph>
+
+							</b:Column>
+
+							<b:Column size="3" offset="0">
+								<g:Anchor ui:field="ancEPC"></g:Anchor>
+							</b:Column>
+						</b:Row>
+
+						<b:Row>
+							<b:Column size="3" offset="0">
+								<b:Paragraph ui:field="pgpHeadingIdentifier">Identifier</b:Paragraph>
+
+							</b:Column>
+
+							<b:Column size="3" offset="0">
+								<b:Paragraph ui:field="pgpIdentifier">Identifier</b:Paragraph>
+							</b:Column>
+						</b:Row>
+
+						<b:Row>
+							<b:Column size="3" offset="0">
+								<b:Paragraph ui:field="pgpHeadingTime">Connection Time</b:Paragraph>
+
+							</b:Column>
+
+							<b:Column size="3" offset="0">
+								<b:Paragraph ui:field="pgpTime">Identifier</b:Paragraph>
+							</b:Column>
+						</b:Row>
+
+						<b:Row>
+							<b:Column size="2" offset="3">
+								<b:Button ui:field="btnClaim" type="PRIMARY" size="SMALL"
+									addStyleNames="btn-block">Claim Ownership</b:Button>
+								<b:Paragraph>&nbsp;</b:Paragraph>
+							</b:Column>
+						</b:Row>
+						
+						<b:Row>
+							<b:Column size="2" offset="3">
+								<b:Button ui:field="btnNewSearch" type="PRIMARY" size="SMALL"
+									addStyleNames="btn-block">Search Again</b:Button>
+							</b:Column>
+						</b:Row>
+						
+
+
+
+
+					</b:Column>
+
+				</b:Row>
+
+
+
+
+
+			</b:Column>
+
+			<b:Column size="2" offset="1">
+<vssb:General></vssb:General>
+			</b:Column>
+
 		</b:Row>
-		    
-		
-					    
-		
-		
-	</b:Column>
-
-<b:Column size="2" offset="1">
-			<b:Heading size="4">Additional Resources</b:Heading>
-				
-			<b:Paragraph addStyleNames="smalltext">Device Provisioning Wizard</b:Paragraph>
-			
-			<b:Paragraph addStyleNames="smalltext">Getting Started</b:Paragraph>
-			
-			<b:Paragraph addStyleNames="smalltext">Best Practices</b:Paragraph>
-			
-			<b:Paragraph addStyleNames="smalltext">Market Place</b:Paragraph>
-			
-			
-			</b:Column>	
-		
-</b:Row>
 
 	</g:HTMLPanel>
 </ui:UiBinder> 
