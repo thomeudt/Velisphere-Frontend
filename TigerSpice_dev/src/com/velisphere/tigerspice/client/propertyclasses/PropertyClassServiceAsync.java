@@ -26,6 +26,6 @@ import com.velisphere.tigerspice.shared.PropertyClassData;
 public interface PropertyClassServiceAsync {
 	
 	void getPropertyClassForPropertyClassID(String propertyClassID, AsyncCallback<PropertyClassData> callback);
-	
+	void addPropertyClass(String propertyClassName, String propertyClassDataType, String propertyClassUnit, AsyncCallback<String> callback);
 	
 }

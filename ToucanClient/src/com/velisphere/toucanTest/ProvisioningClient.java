@@ -46,11 +46,13 @@ public class ProvisioningClient {
 			}
 			System.out.println("Current Mac Address: " + sb.toString());
 	 
+		
+		
 			
 			WebTarget target = client.target( "http://localhost:8080/Toucan/rest/provisioning/put" );
 
-			Response response = target.path( "endpoint" ).path( sb.toString() ).request().put( Entity.text("cd8d0307-7284-40f5-b644-2100ff7dd950") );
-			
+			//Response response = target.path( "endpoint" ).path( sb.toString() ).request().put( Entity.text("f67528e4-80f7-4832-a5fd-3082bd4e7385") );
+			Response response = target.path( "endpoint" ).path( "Phi2" ).request().put( Entity.text("9555b1d6-aa24-4dd5-afef-bc7c95897e34") );
 				
 		
 			System.out.println (response);

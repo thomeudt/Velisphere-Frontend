@@ -14,7 +14,7 @@
 
 		<b:Row>
 			<b:Column size="12" offset="0">
-				<b:PageHeader>Create a new Endpoint Class</b:PageHeader>
+				<b:PageHeader>Create a new Property</b:PageHeader>
 			</b:Column>
 		</b:Row>
 
@@ -47,21 +47,24 @@
 							<b:ControlLabel>Name</b:ControlLabel>
 
 							<b:Controls>
-								<b:TextBox b:id="txtEPCName" ui:field="txtEPCName" />
+								<b:TextBox b:id="txtPCName" ui:field="txtPCName" />
 
 							</b:Controls>
 						</b:ControlGroup>
 
 						<b:ControlGroup>
-							<b:ControlLabel>Image URL</b:ControlLabel>
-
+							<b:ControlLabel>Datatype</b:ControlLabel>
 							<b:Controls>
-								
-								<gu:SingleUploader type="LABEL" ui:field="imageUploader"></gu:SingleUploader>
-								<gu:PreloadedImage ui:field="imgPreview" />
-
+								<b:ListBox b:id="lbxDataType" ui:field="lbxDataType" />
 							</b:Controls>
 						</b:ControlGroup>
+						<b:ControlGroup>
+							<b:ControlLabel>Unit of measure</b:ControlLabel>
+							<b:Controls>
+								<b:TextBox b:id="txtUnit" ui:field="txtUnit" />
+							</b:Controls>
+						</b:ControlGroup>
+						
 						<b:ControlGroup>
 						    	<b:Controls>
 								<b:Button styleName="btn btn-primary" text="Create Endpoint Class"

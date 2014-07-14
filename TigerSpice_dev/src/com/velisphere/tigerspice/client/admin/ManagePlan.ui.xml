@@ -14,7 +14,7 @@
 
 		<b:Row>
 			<b:Column size="12" offset="0">
-				<b:PageHeader>Create a new Endpoint Class</b:PageHeader>
+				<b:PageHeader>Create a new Billing Plan</b:PageHeader>
 			</b:Column>
 		</b:Row>
 
@@ -24,7 +24,7 @@
 
 			<b:Column size="2" offset="0">
 				<b:Well>
-					<b:Strong ui:field="pgpInformHeader">Endpoint Class Tasks</b:Strong>
+					<b:Strong ui:field="pgpInformHeader">Property Class Tasks</b:Strong>
 					<b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
 					<b:Paragraph addStyleNames="smalltext">Create</b:Paragraph>
 					<b:Paragraph addStyleNames="smalltext">Edit</b:Paragraph>
@@ -56,9 +56,8 @@
 							<b:ControlLabel>Image URL</b:ControlLabel>
 
 							<b:Controls>
-								
+								<b:TextBox b:id="txtImageURL" ui:field="txtImageURL" />
 								<gu:SingleUploader type="LABEL" ui:field="imageUploader"></gu:SingleUploader>
-								<gu:PreloadedImage ui:field="imgPreview" />
 
 							</b:Controls>
 						</b:ControlGroup>

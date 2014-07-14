@@ -8,6 +8,9 @@ import gwtupload.client.PreloadedImage;
 import gwtupload.client.PreloadedImage.OnLoadPreloadedImageHandler;
 import gwtupload.client.SingleUploader;
 
+import com.github.gwtbootstrap.client.ui.Alert;
+import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.Image;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -31,8 +34,11 @@ import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
 public class ManageEPC extends Composite {
 
 	@UiField SingleUploader imageUploader;
-	@UiField TextBox txtImageURL;
 	@UiField TextBox txtEPCName;
+	@UiField Button btnUpload;
+	@UiField Alert aleError;
+	@UiField PreloadedImage imgPreview;
+	String imagePath;
 
 	
 	private static ManageEPCUiBinder uiBinder = GWT
@@ -46,6 +52,9 @@ public class ManageEPC extends Composite {
 		
 		
 		  imageUploader.addOnFinishUploadHandler(onFinishUploaderHandler);
+		  
+		  btnUpload.setEnabled(false);
+		  aleError.setVisible(false);
 	}
 
 	 private IUploader.OnFinishUploaderHandler onFinishUploaderHandler = new IUploader.OnFinishUploaderHandler() {
@@ -58,18 +67,26 @@ public class ManageEPC extends Composite {
 		        System.out.println("File content-type " + info.ctype);
 		        System.out.println("File size " + info.size);
 		        System.out.println("Res " + uploader.getServerMessage().getMessage());
-		        txtImageURL.setText(uploader.getServerMessage().getMessage());
+		        imagePath = uploader.getServerMessage().getMessage();
+		        btnUpload.setEnabled(true);
 		      }
 		    }
 		  };
 		  
-		// Attach an image to the pictures viewer
+		  //TODO activate preview
+		  
+		// Attach an image to the pictures viewer - currently disabled
+		  
 		  private OnLoadPreloadedImageHandler showImage = new OnLoadPreloadedImageHandler() {
 		    public void onLoad(PreloadedImage image) {
 		      image.setWidth("75px");
+		      //imgPreview = image;
+		      //image.setVisible(false);
 		      
+		     
 		    }
 		  };
+		  
 		  
 		  @UiHandler("btnUpload")
 			void searchDeviceID (ClickEvent event) {
@@ -80,12 +97,12 @@ public class ManageEPC extends Composite {
 
 				String epcName = new String("");
 				epcName = txtEPCName.getText();
-				String epcImagePath = new String("");
-				epcImagePath = txtImageURL.getText();
 				
 				
 				
-				epcService.addEndpointClass(epcName, epcImagePath,
+				
+				
+				epcService.addEndpointClass(epcName, imagePath,
 						new AsyncCallback<String>() {
 
 							@Override

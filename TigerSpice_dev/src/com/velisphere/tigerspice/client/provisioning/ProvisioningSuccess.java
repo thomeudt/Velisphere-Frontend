@@ -28,6 +28,7 @@ import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
 public class ProvisioningSuccess extends Composite {
 
 	@UiField Breadcrumbs brdMain;
+	@UiField Anchor ancFound;
 	NavLink bread0;
 	NavLink bread1;
 	
@@ -53,6 +54,7 @@ public class ProvisioningSuccess extends Composite {
 		bread1 = new NavLink();
 		bread1.setText("Device Provisioning Wizard");
 		brdMain.add(bread1);
+		ancFound.setHref("#");
 
 	}
 	

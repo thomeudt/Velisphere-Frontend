@@ -9,6 +9,10 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.admin.ManageEPC;
+import com.velisphere.tigerspice.client.admin.ManagePlan;
+import com.velisphere.tigerspice.client.admin.ManageProperty;
+import com.velisphere.tigerspice.client.admin.ManagePropertyClass;
+import com.velisphere.tigerspice.client.admin.ManageVendor;
 import com.velisphere.tigerspice.client.analytics.AnalyticsHome;
 import com.velisphere.tigerspice.client.analytics.ChartSensorHistoryWidget;
 import com.velisphere.tigerspice.client.dashboard.Dashboard;
@@ -313,6 +317,62 @@ public class AppController {
 			//String userID = SessionHelper.getCurrentUserID();
 			ManageEPC epcManager = new ManageEPC();
 			openWithHistoryHandler("epc_manager", epcManager);
+		}		
+	});
+	}
+	
+	public static void openPropertyManager()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			ManageProperty propertyManager = new ManageProperty();
+			openWithHistoryHandler("prop_manager", propertyManager);
+		}		
+	});
+	}
+	
+	public static void openPropertyClassManager()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			ManagePropertyClass propertyClassManager = new ManagePropertyClass();
+			openWithHistoryHandler("prop_class_manager", propertyClassManager);
+		}		
+	});
+	}
+	
+	public static void openVendorManager()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			ManageVendor vendorManager = new ManageVendor();
+			openWithHistoryHandler("vendor_manager", vendorManager);
+		}		
+	});
+	}
+	
+	public static void openPlanManager()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			ManagePlan planManager = new ManagePlan();
+			openWithHistoryHandler("plan_manager", planManager);
 		}		
 	});
 	}
