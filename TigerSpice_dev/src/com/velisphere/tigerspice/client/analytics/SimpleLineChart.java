@@ -487,6 +487,7 @@ public class SimpleLineChart {
 
 			SimplePager pager = new SimplePager();
 			pager.setDisplay(table);
+			pager.setRangeLimited(false);
 
 			graphCol.add(pager);
 			graphCol.add(new Paragraph(" "));

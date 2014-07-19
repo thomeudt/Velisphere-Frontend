@@ -34,7 +34,7 @@ import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
 
 public class EditEPC extends Composite {
 
-	@UiField EPCList epcList;
+	//@UiField EPCList epcList;
 	
 	@UiField EPCMenu menu;
 	@UiField Alert aleSuccess;

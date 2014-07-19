@@ -19,13 +19,16 @@ package com.velisphere.tigerspice.shared;
 
 import java.util.List;
 
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.user.client.ui.Image;
 
 public class EPCData implements IsSerializable
 {
 	public String endpointclassID;
 	public String endpointclassName;
 	public String endpointclassPath;
+	public String endpointclassImageURL;
 		
 	public String getName(){
 		return endpointclassName;
@@ -39,11 +42,19 @@ public class EPCData implements IsSerializable
 		return endpointclassPath;
 	}
 	
+	public String getImageURL(){
+		return endpointclassImageURL;
+	}
+	
 	public void setName(String endpointclassName){
 		this.endpointclassName = endpointclassName;
 	}
 	
 	public void setPath(String endpointclassPath){
 		this.endpointclassPath = endpointclassPath;
+	}
+	
+	public void setImageURL( String endpointclassImage){
+		this.endpointclassImageURL = endpointclassImage;
 	}
 }

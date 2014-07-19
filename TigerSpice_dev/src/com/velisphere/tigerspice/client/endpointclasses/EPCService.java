@@ -25,6 +25,7 @@ import java.util.HashSet;
 
 
 
+import java.util.LinkedList;
 import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -34,7 +35,7 @@ import com.velisphere.tigerspice.shared.UserData;
 
 @RemoteServiceRelativePath("voltEPC")
 public interface EPCService extends RemoteService {
-	Vector<EPCData> getAllEndpointClassDetails();
+	LinkedList<EPCData> getAllEndpointClassDetails();
 	EPCData getEndpointClassForEndpointClassID(String endpointClassID);
 	String addEndpointClass(String epcName, String epcImageURL);
 }

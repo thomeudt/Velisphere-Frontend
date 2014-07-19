@@ -26,6 +26,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import java.util.Vector;
@@ -33,6 +34,7 @@ import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import net.sourceforge.htmlunit.corejs.javascript.Context;
 import nl.captcha.Captcha;
 
 import org.mindrot.BCrypt;
@@ -41,6 +43,10 @@ import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
+
+
+
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.users.UserService;
@@ -54,7 +60,7 @@ public class EPCServiceImpl extends RemoteServiceServlet implements
 	
 		
 	
-	public Vector<EPCData> getAllEndpointClassDetails()
+	public LinkedList<EPCData> getAllEndpointClassDetails()
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -69,7 +75,7 @@ public class EPCServiceImpl extends RemoteServiceServlet implements
 			e1.printStackTrace();
 		}
 
-		Vector<EPCData> allEndPointClasses = new Vector<EPCData>();
+		LinkedList<EPCData> allEndPointClasses = new LinkedList<EPCData>();
 		try {
 
 			final ClientResponse findAllUsers = voltCon.montanaClient
@@ -82,10 +88,22 @@ public class EPCServiceImpl extends RemoteServiceServlet implements
 
 			while (result.advanceRow()) {
 				{
+					System.out.println("GETTING...");
+					
 					// extract the value in column checkid
 					EPCData epcData = new EPCData();
 					epcData.endpointclassName = result.getString("ENDPOINTCLASSNAME");
 					epcData.endpointclassID = result.getString("ENDPOINTCLASSID");
+					String imagePath = result.getString("ENDPOINTCLASSIMAGEURL");
+					
+					
+					
+					epcData.endpointclassImageURL = "/tigerspice_dev/tigerspiceDownloads?privateURL="+result.getString("ENDPOINTCLASSIMAGEURL")
+							+ "&outboundFileName=EPC_image&persist=1";
+					System.out.println("Got " + epcData.endpointclassImageURL);
+					
+					
+					
 					allEndPointClasses.add(epcData);
 
 				}

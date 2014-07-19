@@ -18,6 +18,7 @@
 package com.velisphere.tigerspice.client.dataproviders;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -31,17 +32,23 @@ import com.google.gwt.user.cellview.client.AbstractCellTable;
 import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
+import com.velisphere.tigerspice.client.event.CheckpathCalculatedEvent;
+import com.velisphere.tigerspice.client.event.EventUtils;
+
 import com.velisphere.tigerspice.client.users.UserService;
 import com.velisphere.tigerspice.client.users.UserServiceAsync;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.UserData;
+
 
 /**
  * An AsynchDataProvider using RPC call to get all Photo Information from the
  * server. Used in the GWT in Action 2nd Edition CellList example
  * 
  */
-public class EPCAsyncDataProvider extends AsyncDataProvider<EPCData> {
+public class UNUSEDEPCAsyncDataProvider extends AsyncDataProvider<EPCData> {
+	
+	
 
 	/**
 	 * Reference to the RPC service this provider will use to get data.
@@ -52,7 +59,7 @@ public class EPCAsyncDataProvider extends AsyncDataProvider<EPCData> {
 	 * Create a new AllDataAsyncDataProvider instance and set up the RPC
 	 * framework that it will use.
 	 */
-	public EPCAsyncDataProvider() {
+	public UNUSEDEPCAsyncDataProvider() {
 		rpcService = GWT.create(EPCService.class);
 	}
 
@@ -64,11 +71,17 @@ public class EPCAsyncDataProvider extends AsyncDataProvider<EPCData> {
 	@Override
 	protected void onRangeChanged(HasData<EPCData> display) {
 
+		
 		// Get the new range required.
 		final Range range = display.getVisibleRange();
 
 		ColumnSortList sortList = ((AbstractCellTable<EPCData>) display)
 				.getColumnSortList();
+		
+		 final int start = display.getVisibleRange().getStart();
+	        int length = display.getVisibleRange().getLength();
+		
+		
 		String sortOnName = "epcName";
 		boolean isAscending = true;
 		if ((sortList != null) && (sortList.size() > 0)) {
@@ -77,7 +90,7 @@ public class EPCAsyncDataProvider extends AsyncDataProvider<EPCData> {
 		}
 
 		// Call getPhotoList RPC call
-		rpcService.getAllEndpointClassDetails(new AsyncCallback<Vector<EPCData>>() {
+		rpcService.getAllEndpointClassDetails(new AsyncCallback<LinkedList<EPCData>>() {
 
 			// There's been a failure in the RPC call
 			// Normally you would handle that in a good way,
@@ -87,8 +100,11 @@ public class EPCAsyncDataProvider extends AsyncDataProvider<EPCData> {
 			}
 
 			@Override
-			public void onSuccess(Vector<EPCData> result) {
-				updateRowData(range.getStart(), result);
+			public void onSuccess(LinkedList<EPCData> result) {
+								
+				updateRowCount(result.size(), true);
+				updateRowData(start, result);
+				//EventUtils.EVENT_BUS.fireEvent(new ListPopulatedEvent());
 
 			}
 
@@ -98,4 +114,6 @@ public class EPCAsyncDataProvider extends AsyncDataProvider<EPCData> {
 
 		});
 	}
+	
+
 }
