@@ -22,6 +22,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
@@ -31,23 +32,24 @@ import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
 
 
 
-public class ManageEPC extends Composite {
+public class CreateEPC extends Composite {
 
 	@UiField SingleUploader imageUploader;
 	@UiField TextBox txtEPCName;
 	@UiField Button btnUpload;
 	@UiField Alert aleError;
 	@UiField PreloadedImage imgPreview;
+	@UiField EPCMenu menu;
 	String imagePath;
 
 	
-	private static ManageEPCUiBinder uiBinder = GWT
-			.create(ManageEPCUiBinder.class);
+	private static CreateEPCUiBinder uiBinder = GWT
+			.create(CreateEPCUiBinder.class);
 
-	interface ManageEPCUiBinder extends UiBinder<Widget, ManageEPC> {
+	interface CreateEPCUiBinder extends UiBinder<Widget, CreateEPC> {
 	}
 
-	public ManageEPC() {
+	public CreateEPC() {
 		initWidget(uiBinder.createAndBindUi(this));
 		
 		
@@ -55,6 +57,7 @@ public class ManageEPC extends Composite {
 		  
 		  btnUpload.setEnabled(false);
 		  aleError.setVisible(false);
+		  menu.setAddActive();
 	}
 
 	 private IUploader.OnFinishUploaderHandler onFinishUploaderHandler = new IUploader.OnFinishUploaderHandler() {
@@ -80,6 +83,7 @@ public class ManageEPC extends Composite {
 		  private OnLoadPreloadedImageHandler showImage = new OnLoadPreloadedImageHandler() {
 		    public void onLoad(PreloadedImage image) {
 		      image.setWidth("75px");
+		      image.setVisible(false);
 		      //imgPreview = image;
 		      //image.setVisible(false);
 		      
@@ -95,9 +99,10 @@ public class ManageEPC extends Composite {
 				final EPCServiceAsync epcService = GWT
 						.create(EPCService.class);
 
+				
 				String epcName = new String("");
 				epcName = txtEPCName.getText();
-				
+				final String epcNameSuccess = epcName;
 				
 				
 				
@@ -114,7 +119,7 @@ public class ManageEPC extends Composite {
 
 							@Override
 							public void onSuccess(String result) {
-								// TODO Auto-generated method stub
+								AppController.openEPCManager("New Endpoint Class "+epcNameSuccess+" successfully created.");
 								
 							}
 						

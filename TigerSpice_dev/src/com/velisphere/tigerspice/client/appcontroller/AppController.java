@@ -8,11 +8,13 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.velisphere.tigerspice.client.admin.ManageEPC;
+import com.velisphere.tigerspice.client.admin.CreateEPC;
+import com.velisphere.tigerspice.client.admin.EditEPC;
 import com.velisphere.tigerspice.client.admin.ManagePlan;
 import com.velisphere.tigerspice.client.admin.ManageProperty;
 import com.velisphere.tigerspice.client.admin.ManagePropertyClass;
 import com.velisphere.tigerspice.client.admin.ManageVendor;
+import com.velisphere.tigerspice.client.admin.RetireEPC;
 import com.velisphere.tigerspice.client.analytics.AnalyticsHome;
 import com.velisphere.tigerspice.client.analytics.ChartSensorHistoryWidget;
 import com.velisphere.tigerspice.client.dashboard.Dashboard;
@@ -307,7 +309,7 @@ public class AppController {
 	});
 	}
 	
-	public static void openEPCManager()
+	public static void openEPCManager(final String successMessage)
 	{	
 		SessionHelper.validateCurrentSession();
 		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
@@ -315,8 +317,37 @@ public class AppController {
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
 			//String userID = SessionHelper.getCurrentUserID();
-			ManageEPC epcManager = new ManageEPC();
+			EditEPC epcManager = new EditEPC();
 			openWithHistoryHandler("epc_manager", epcManager);
+			epcManager.setSuccess(successMessage);
+		}		
+	});
+	}
+	
+	public static void openEPCCreator()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			CreateEPC epcCreator = new CreateEPC();
+			openWithHistoryHandler("epc_creator", epcCreator);
+		}		
+	});
+	}
+	
+	public static void openEPCDeleter()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			RetireEPC epcDeleter = new RetireEPC();
+			openWithHistoryHandler("epc_retire", epcDeleter);
 		}		
 	});
 	}

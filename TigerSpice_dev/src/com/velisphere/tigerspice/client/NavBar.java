@@ -229,7 +229,7 @@ public class NavBar extends Composite implements HasText {
 	@UiHandler("btnManageEPC")
 	void openEPCManager (ClickEvent event) {
 	
-		AppController.openEPCManager();
+		AppController.openEPCManager("");
 		
 	}
 	
