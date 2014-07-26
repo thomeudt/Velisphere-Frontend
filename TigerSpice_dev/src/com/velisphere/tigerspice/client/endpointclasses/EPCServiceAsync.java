@@ -29,5 +29,6 @@ public interface EPCServiceAsync {
 	void getAllEndpointClassDetails(AsyncCallback<LinkedList<EPCData>> callback);
 	void getEndpointClassForEndpointClassID(String endpointClassID, AsyncCallback<EPCData> callback);
 	void addEndpointClass(String epcName, String epcImageURL, AsyncCallback<String> callback);
+	void updateEndpointClass(String epcID, String epcName, String epcImageURL, AsyncCallback<String> callback);
 	
 }

@@ -35,6 +35,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.velisphere.tigerspice.client.admin.EditEPCWidget;
+import com.velisphere.tigerspice.client.rules.MulticheckDialogBox;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
@@ -100,6 +102,7 @@ public class EPCList extends Composite {
 
 						Iterator<EPCData> it = result.iterator();
 
+						cellTable.setRowCount(result.size(), false);
 						while (it.hasNext()) {
 
 							final EPCData sourceItem = it.next();
@@ -110,7 +113,7 @@ public class EPCList extends Composite {
 							list.add(targetItem);
 						}
 						
-						cellTable.setRowCount(result.size(), false);
+						
 					
 					}
 				});
@@ -127,8 +130,19 @@ public class EPCList extends Composite {
 								.getSelectedObject();
 
 						if (selected != null) {
-							Window.alert("You selected: " +
-							selected.name);
+							
+							
+							//Window.alert("You selected: " + selected.name);
+							
+							final EditEPCWidget editEPCWidget = new EditEPCWidget(selected.id, selected.name, selected.imageURL);
+					
+							editEPCWidget.setAutoHideEnabled(true);
+
+							//multicheckDialogBox.setAnimationEnabled(true);
+
+							editEPCWidget.show();
+							editEPCWidget.center();
+
 
 							
 

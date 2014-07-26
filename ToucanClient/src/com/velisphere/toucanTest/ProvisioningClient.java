@@ -52,7 +52,7 @@ public class ProvisioningClient {
 			WebTarget target = client.target( "http://localhost:8080/Toucan/rest/provisioning/put" );
 
 			//Response response = target.path( "endpoint" ).path( sb.toString() ).request().put( Entity.text("f67528e4-80f7-4832-a5fd-3082bd4e7385") );
-			Response response = target.path( "endpoint" ).path( "Phi2" ).request().put( Entity.text("9555b1d6-aa24-4dd5-afef-bc7c95897e34") );
+			Response response = target.path( "endpoint" ).path( "Phi2" ).request().put( Entity.text("8e657ec5-8d4a-4850-be86-b65c364685ef") );
 				
 		
 			System.out.println (response);

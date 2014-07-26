@@ -89,7 +89,7 @@ public class NavBar extends Composite implements HasText {
 		initWidget(uiBinder.createAndBindUi(this));
 		navbar.setPosition(NavbarPosition.TOP);
 		//navbar.setWidth(RootPanel.get("main").getElement().getStyle().getWidth());
-		
+		brdHome.setHref("#home");
 
 		btnLister.setVisible(false);
 	

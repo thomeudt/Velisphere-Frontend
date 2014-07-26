@@ -24,6 +24,7 @@ import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
@@ -76,7 +77,9 @@ public class Start implements EntryPoint{
 			
 			@Override
 	        public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
-	        	RootPanel.get().clear();
+	        	
+				
+				RootPanel.get().clear();
 	            RootPanel rootPanelHeader = RootPanel.get("stockList");
 	        	rootPanelHeader.clear();
 	        	rootPanelHeader.getElement().getStyle().setPosition(Position.RELATIVE);
@@ -93,7 +96,7 @@ public class Start implements EntryPoint{
 	    		
 	        	
 	        	rootPanelMain.add(new LoginSuccess(reg));
-	        	
+	        		        	
 	        	
 				}
 	    }); 

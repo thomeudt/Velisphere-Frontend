@@ -1,5 +1,8 @@
 package com.velisphere.tigerspice.client.admin;
 
+
+import org.glassfish.hk2.api.Self;
+
 import gwtupload.client.IFileInput.FileInputType;
 import gwtupload.client.IUploadStatus.Status;
 import gwtupload.client.IUploader;
@@ -14,6 +17,8 @@ import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.regexp.shared.MatchResult;
+import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -21,7 +26,9 @@ import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
@@ -33,50 +40,67 @@ import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
 
 
 
-public class CreateEPC extends Composite {
+public class EditEPCWidget extends PopupPanel {
 
 	@UiField SingleUploader imageUploader;
 	@UiField TextBox txtEPCName;
 	@UiField Button btnUpload;
 	@UiField Alert aleError;
-	@UiField EPCMenu menu;
-	@UiField Image imgEPCImage;
+	String epcID;
 	String imagePath;
+	@UiField Image imgEPCImage;
 
 	
-	private static CreateEPCUiBinder uiBinder = GWT
-			.create(CreateEPCUiBinder.class);
+	private static EditEPCUiBinder uiBinder = GWT
+			.create(EditEPCUiBinder.class);
 
-	interface CreateEPCUiBinder extends UiBinder<Widget, CreateEPC> {
+	interface EditEPCUiBinder extends UiBinder<Widget, EditEPCWidget> {
 	}
 
-	public CreateEPC() {
-		initWidget(uiBinder.createAndBindUi(this));
-		
-		
+	public EditEPCWidget() {
+		add(uiBinder.createAndBindUi(this));
 		  imageUploader.addOnFinishUploadHandler(onFinishUploaderHandler);
-		
-		 
-		  
 		  btnUpload.setEnabled(false);
 		  aleError.setVisible(false);
-		  menu.setAddActive();
+	
+	}
+	
+	public EditEPCWidget(String epcID, String epcName, String imageUrl) {
+		add(uiBinder.createAndBindUi(this));
+		  imageUploader.addOnFinishUploadHandler(onFinishUploaderHandler);
+		  aleError.setVisible(false);
+		  
+		  int startIndex = imageUrl.indexOf("=");
+		  int endIndex = imageUrl.indexOf("&out");
+		  
+		  System.out.println(imageUrl.substring(startIndex+1, endIndex));
+		  this.imagePath = imageUrl.substring(startIndex+1, endIndex);
+		   this.txtEPCName.setText(epcName);
+		  this.epcID = epcID;
+		  imgEPCImage.setUrl(imageUrl);
+		  
+	
 	}
 
 	 private IUploader.OnFinishUploaderHandler onFinishUploaderHandler = new IUploader.OnFinishUploaderHandler() {
 		    public void onFinish(IUploader uploader) {
 		      if (uploader.getStatus() == Status.SUCCESS) {
-		        // The server sends useful information to the client by default
+
+		    	//TODO REMOVE OLD IMAGE FROM FILE SYSTEM  
+		    	  
+		    	// The server sends useful information to the client by default
 		        UploadedInfo info = uploader.getServerInfo();
 		        new PreloadedImage(info.fileUrl, showImage);
 		        System.out.println("File name " + info.name);
 		        System.out.println("File content-type " + info.ctype);
 		        System.out.println("File size " + info.size);
 		        System.out.println("Res " + uploader.getServerMessage().getMessage());
+		        
+		        // setNewImagePath
 		        imagePath = uploader.getServerMessage().getMessage();
-		        btnUpload.setEnabled(true);
 		        imgEPCImage.setUrl("/tigerspice_dev/tigerspiceDownloads?privateURL="+imagePath
 						+ "&outboundFileName=EPC_image&persist=1");
+		        btnUpload.setEnabled(true);
 		      }
 		    }
 		  };
@@ -112,7 +136,7 @@ public class CreateEPC extends Composite {
 				
 				
 				
-				epcService.addEndpointClass(epcName, imagePath,
+				epcService.updateEndpointClass(epcID, epcName, imagePath,
 						new AsyncCallback<String>() {
 
 							@Override
@@ -124,12 +148,17 @@ public class CreateEPC extends Composite {
 
 							@Override
 							public void onSuccess(String result) {
-								AppController.openEPCManager("New Endpoint Class "+epcNameSuccess+" successfully created.");
 								
+								AppController.openEPCManager("Endpoint Class "+epcNameSuccess+" successfully updated.");
+								closePopup();
 							}
 						
 				});
 			}
+		  
+		  void closePopup(){
+			  this.removeFromParent();
+		  }
 	 
 	
 }

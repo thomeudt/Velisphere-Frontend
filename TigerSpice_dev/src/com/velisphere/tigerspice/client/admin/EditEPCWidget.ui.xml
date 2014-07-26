@@ -12,27 +12,13 @@
 	xmlns:gu="urn:import:gwtupload.client"  xmlns:vsad="urn:import:com.velisphere.tigerspice.client.admin" 
 	xmlns:vsepc="urn:import:com.velisphere.tigerspice.client.endpointclasses">
 	<g:HTMLPanel>
+	<div class="well" style="background-color: rgba(245, 245, 245, 1)">
+		
+<b:Row>
+			<b:Column size="5" offset="0">
 
-		<b:Row>
-			<b:Column size="12" offset="0">
-				<b:PageHeader>Create Endpoint Class</b:PageHeader>
-			</b:Column>
-		</b:Row>
-  
-
-
-		<b:Row>
-
-			<b:Column size="2" offset="0">
-				
-				<vsad:EPCMenu ui:field="menu"></vsad:EPCMenu>
-			
-
-			</b:Column>
-
-
-			<b:Column size="8" offset="0">
-
+			    				<b:PageHeader>Edit Endpoint Class</b:PageHeader>
+			    
 				<b:Form type="HORIZONTAL">
 
 					<b:Alert type="ERROR" close="false" ui:field="aleError">
@@ -47,21 +33,26 @@
 								<b:TextBox b:id="txtEPCName" ui:field="txtEPCName" />
 
 							</b:Controls>
+						
 						</b:ControlGroup>
-
+						
+						
+						
 						<b:ControlGroup>
-							<b:ControlLabel>Image</b:ControlLabel>
+							<b:ControlLabel>Image URL</b:ControlLabel>
 
 							<b:Controls>
-								<g:Image ui:field="imgEPCImage" />	
+								<g:Image ui:field="imgEPCImage" />		
 								<gu:SingleUploader type="BUTTON" ui:field="imageUploader"></gu:SingleUploader>
 						
 
 							</b:Controls>
 						</b:ControlGroup>
+						
+						
 						<b:ControlGroup>
 						    	<b:Controls>
-								<b:Button styleName="btn btn-primary" text="Create Endpoint Class"
+								<b:Button styleName="btn btn-primary" text="Update Endpoint Class"
 									ui:field="btnUpload" />
 							</b:Controls>
 						</b:ControlGroup>
@@ -73,6 +64,6 @@
 		</b:Row>
 
 
-
+</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

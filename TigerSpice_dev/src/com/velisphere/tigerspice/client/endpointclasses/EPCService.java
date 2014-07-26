@@ -38,6 +38,7 @@ public interface EPCService extends RemoteService {
 	LinkedList<EPCData> getAllEndpointClassDetails();
 	EPCData getEndpointClassForEndpointClassID(String endpointClassID);
 	String addEndpointClass(String epcName, String epcImageURL);
+	String updateEndpointClass(String epcID, String epcName, String epcImageURL);
 }
 
 
