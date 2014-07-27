@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,6 +38,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.analytics.LogService;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
 import com.velisphere.tigerspice.client.users.UserService;
+import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.LogData;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.velisphere.tigerspice.shared.PropertyData;
@@ -189,6 +191,68 @@ public class PropertyClassServiceImpl extends RemoteServiceServlet implements
 		return "OK";
 
 	}
+	
+	
+	public LinkedList<PropertyClassData> getAllPropertyClassDetails()
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		LinkedList<PropertyClassData> allPropertyClasses = new LinkedList<PropertyClassData>();
+		try {
+
+			final ClientResponse findAllPropertyClasses = voltCon.montanaClient
+					.callProcedure("UI_SelectAllPropertyClasses");
+
+			final VoltTable findAllPropertyClassesResults[] = findAllPropertyClasses.getResults();
+
+			VoltTable result = findAllPropertyClassesResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					System.out.println("GETTING...");
+					
+					// extract the value in column checkid
+					PropertyClassData pcData = new PropertyClassData();
+					pcData.propertyClassName = result.getString("PROPERTYCLASSNAME");
+					pcData.propertyClassId = result.getString("PROPERTYCLASSID");
+					pcData.propertyClassDatatype = result.getString("PROPERTYCLASSDATATYPE");
+					pcData.propertyClassUnit = result.getString("PROPERTYCLASSUNIT");
+					
+					
+					allPropertyClasses.add(pcData);
+
+				}
+			}
+
+			// System.out.println(allEndPointClasses);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return allPropertyClasses;
+	}
+
 
 
 	

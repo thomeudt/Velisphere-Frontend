@@ -9,10 +9,11 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.admin.CreateEPC;
+import com.velisphere.tigerspice.client.admin.CreatePropertyClass;
 import com.velisphere.tigerspice.client.admin.EditEPC;
+import com.velisphere.tigerspice.client.admin.EditPropertyClass;
 import com.velisphere.tigerspice.client.admin.ManagePlan;
 import com.velisphere.tigerspice.client.admin.ManageProperty;
-import com.velisphere.tigerspice.client.admin.ManagePropertyClass;
 import com.velisphere.tigerspice.client.admin.ManageVendor;
 import com.velisphere.tigerspice.client.admin.RetireEPC;
 import com.velisphere.tigerspice.client.analytics.AnalyticsHome;
@@ -366,7 +367,7 @@ public class AppController {
 	});
 	}
 	
-	public static void openPropertyClassManager()
+	public static void openPropertyClassManager(final String successMessage)
 	{	
 		SessionHelper.validateCurrentSession();
 		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
@@ -374,8 +375,23 @@ public class AppController {
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
 			//String userID = SessionHelper.getCurrentUserID();
-			ManagePropertyClass propertyClassManager = new ManagePropertyClass();
+			EditPropertyClass propertyClassManager = new EditPropertyClass();
 			openWithHistoryHandler("prop_class_manager", propertyClassManager);
+			propertyClassManager.setSuccess(successMessage);
+		}		
+	});
+	}
+	
+	public static void openPropertyClassCreator()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			CreatePropertyClass propertyClassCreator = new CreatePropertyClass();
+			openWithHistoryHandler("prop_class_creator", propertyClassCreator);
 		}		
 	});
 	}

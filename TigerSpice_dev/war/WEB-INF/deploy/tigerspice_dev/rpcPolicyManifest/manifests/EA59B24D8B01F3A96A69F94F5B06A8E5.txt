@@ -1,2 +1,0 @@
-serviceClass: com.velisphere.tigerspice.client.endpointclasses.EPCService
-path: D96874BAA18DABCA5DC9E30E66FD87B5.gwt.rpc

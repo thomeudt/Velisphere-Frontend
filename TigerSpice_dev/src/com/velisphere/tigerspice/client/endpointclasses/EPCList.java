@@ -35,7 +35,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.velisphere.tigerspice.client.admin.EditEPCWidget;
+import com.velisphere.tigerspice.client.admin.EditEPCInputWidget;
 import com.velisphere.tigerspice.client.rules.MulticheckDialogBox;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.google.gwt.user.cellview.client.Column;
@@ -52,10 +52,7 @@ public class EPCList extends Composite {
 
 	final DialogBox dialogBox = new DialogBox();
 	CellTable<EpcItem> cellTable;
-	Column<EPCData, String> columnId;
-	Column<EPCData, String> columnName;
-	Column<EPCData, String> columnImage;
-
+	
 	
 	
 	class EpcItem {
@@ -134,7 +131,7 @@ public class EPCList extends Composite {
 							
 							//Window.alert("You selected: " + selected.name);
 							
-							final EditEPCWidget editEPCWidget = new EditEPCWidget(selected.id, selected.name, selected.imageURL);
+							final EditEPCInputWidget editEPCWidget = new EditEPCInputWidget(selected.id, selected.name, selected.imageURL);
 					
 							editEPCWidget.setAutoHideEnabled(true);
 

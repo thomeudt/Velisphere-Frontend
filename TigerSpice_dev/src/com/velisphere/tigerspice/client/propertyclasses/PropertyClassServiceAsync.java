@@ -17,6 +17,7 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client.propertyclasses;
 
+import java.util.LinkedList;
 import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -27,5 +28,5 @@ public interface PropertyClassServiceAsync {
 	
 	void getPropertyClassForPropertyClassID(String propertyClassID, AsyncCallback<PropertyClassData> callback);
 	void addPropertyClass(String propertyClassName, String propertyClassDataType, String propertyClassUnit, AsyncCallback<String> callback);
-	
+	void getAllPropertyClassDetails(AsyncCallback<LinkedList<PropertyClassData>> callback);
 }
