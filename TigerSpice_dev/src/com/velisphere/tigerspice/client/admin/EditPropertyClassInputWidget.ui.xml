@@ -11,10 +11,10 @@
 	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:gu="urn:import:gwtupload.client" xmlns:vsad="urn:import:com.velisphere.tigerspice.client.admin">
 	<g:HTMLPanel>
-
+<div class="well" style="background-color: rgba(245, 245, 245, 1)">
 		<b:Row>
-			<b:Column size="12" offset="0">
-				<b:PageHeader>Create a new Property Class</b:PageHeader>
+			<b:Column size="5" offset="0">
+				<b:PageHeader>Edit Property Class</b:PageHeader>
 			</b:Column>
 		</b:Row>
 
@@ -22,12 +22,8 @@
 
 		<b:Row>
 
-		<b:Column size="2" offset="0">
-				<vsad:AdminMenuPropertyClass ui:field="menu"></vsad:AdminMenuPropertyClass>
-			</b:Column>
-
-
-			<b:Column size="8" offset="0">
+		
+			<b:Column size="5" offset="0">
 
 				<b:Form type="HORIZONTAL">
 
@@ -60,7 +56,7 @@
 						
 						<b:ControlGroup>
 						    	<b:Controls>
-								<b:Button styleName="btn btn-primary" text="Create Endpoint Class"
+								<b:Button styleName="btn btn-primary" text="Update Property Class"
 									ui:field="btnUpload" />
 							</b:Controls>
 						</b:ControlGroup>
@@ -71,7 +67,7 @@
 			</b:Column>
 		</b:Row>
 
-
+</div>
 
 	</g:HTMLPanel>
 </ui:UiBinder>  

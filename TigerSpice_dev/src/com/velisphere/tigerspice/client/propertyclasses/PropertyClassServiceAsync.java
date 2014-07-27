@@ -29,4 +29,5 @@ public interface PropertyClassServiceAsync {
 	void getPropertyClassForPropertyClassID(String propertyClassID, AsyncCallback<PropertyClassData> callback);
 	void addPropertyClass(String propertyClassName, String propertyClassDataType, String propertyClassUnit, AsyncCallback<String> callback);
 	void getAllPropertyClassDetails(AsyncCallback<LinkedList<PropertyClassData>> callback);
+	void updatePropertyClass(String pcID, String pcName, String pcDataType, String pcUnit, AsyncCallback<String> callback);
 }

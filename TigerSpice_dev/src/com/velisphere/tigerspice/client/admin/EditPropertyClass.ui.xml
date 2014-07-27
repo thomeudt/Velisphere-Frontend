@@ -15,7 +15,7 @@
 
 		<b:Row>
 			<b:Column size="12" offset="0">
-				<b:PageHeader>Edit Endpoint Classes</b:PageHeader>
+				<b:PageHeader>Edit Property Classes</b:PageHeader>
 			</b:Column>
 		</b:Row>
   

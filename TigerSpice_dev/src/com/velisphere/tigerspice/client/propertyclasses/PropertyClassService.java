@@ -32,5 +32,6 @@ public interface PropertyClassService extends RemoteService {
 	PropertyClassData getPropertyClassForPropertyClassID(String propertyClassID);
 	String addPropertyClass(String propertyClassName, String propertyClassDataType, String propertyClassUnit);
 	LinkedList<PropertyClassData> getAllPropertyClassDetails();
+	String updatePropertyClass(String pcID, String pcName, String pcDataType, String pcUnit);
 
 }

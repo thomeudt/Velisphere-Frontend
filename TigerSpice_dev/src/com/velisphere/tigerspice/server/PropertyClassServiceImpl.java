@@ -252,6 +252,88 @@ public class PropertyClassServiceImpl extends RemoteServiceServlet implements
 		
 		return allPropertyClasses;
 	}
+	
+	
+	public String updatePropertyClass(String pcID, String pcName, String pcDataType, String pcUnit)
+
+	{
+
+			
+			// first update to VoltDB
+
+			VoltConnector voltCon = new VoltConnector();
+			
+
+			try {
+				voltCon.openDatabase();
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			try {
+
+				voltCon.montanaClient.callProcedure("UI_UpdatePropertyClass", pcID,
+						pcName, pcDataType, pcUnit);
+			} catch (NoConnectionsException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (ProcCallException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			try {
+				voltCon.closeDatabase();
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// second update to Vertica
+
+			Connection conn;
+
+			try {
+				Class.forName("com.vertica.jdbc.Driver");
+			} catch (ClassNotFoundException e) {
+				System.err.println("Could not find the JDBC driver class.\n");
+				e.printStackTrace();
+
+			}
+			try {
+				conn = DriverManager.getConnection("jdbc:vertica://"
+						+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+						"vertica", "1Suplies!");
+
+				conn.setAutoCommit(true);
+				System.out.println(" [OK] Connected to Vertica on address: "
+						+ "16.1.1.113");
+
+				Statement myInsert = conn.createStatement();
+				myInsert.executeUpdate(""
+						+ "UPDATE VLOGGER.PROPERTYCLASS SET PROPERTYCLASSNAME = '"+pcName+"', PROPERTYCLASSUNIT = '"+pcUnit+"',"
+								+ "PROPERTYCLASSDATATYPE = '"+pcDataType+"' WHERE PROPERTYCLASSID = '"+pcID+"'");
+						
+				myInsert.close();
+
+			} catch (SQLException e) {
+				System.err.println("Could not connect to the database.\n");
+				e.printStackTrace();
+
+			}
+
+
+		return "OK";
+
+	}
+
 
 
 

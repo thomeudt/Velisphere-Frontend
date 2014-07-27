@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.admin.EditEPCInputWidget;
+import com.velisphere.tigerspice.client.admin.EditPropertyClassInputWidget;
 import com.velisphere.tigerspice.client.rules.MulticheckDialogBox;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.google.gwt.user.cellview.client.Column;
@@ -105,18 +106,19 @@ public class PropertyClassList extends Composite {
 
 						if (selected != null) {
 
-							Window.alert("You selected: " + selected.name);
-							/**
-							 * final EditEPCWidget editEPCWidget = new
-							 * EditEPCWidget(selected.id, selected.name,
-							 * selected.imageURL);
-							 * 
-							 * editEPCWidget.setAutoHideEnabled(true);
-							 * 
-							 * //multicheckDialogBox.setAnimationEnabled(true);
-							 * 
-							 * editEPCWidget.show(); editEPCWidget.center();
-							 **/
+							// Window.alert("You selected: " + selected.name);
+							
+							  final EditPropertyClassInputWidget editPCWidget = new
+									  EditPropertyClassInputWidget(selected.id, selected.name,
+							  selected.datatype, selected.unit);
+							  
+							  editPCWidget.setAutoHideEnabled(true);
+							  
+							  //multicheckDialogBox.setAnimationEnabled(true);
+							  
+							  editPCWidget.show(); 
+							  editPCWidget.center();
+							 
 
 						}
 					}
