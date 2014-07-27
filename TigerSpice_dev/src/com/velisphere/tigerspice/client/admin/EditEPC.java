@@ -36,7 +36,7 @@ public class EditEPC extends Composite {
 
 	//@UiField EPCList epcList;
 	
-	@UiField EPCMenu menu;
+	@UiField AdminMenuEPC menu;
 	@UiField Alert aleSuccess;
 	String imagePath;
 

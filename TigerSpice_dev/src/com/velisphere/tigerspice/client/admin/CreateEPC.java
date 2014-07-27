@@ -39,7 +39,7 @@ public class CreateEPC extends Composite {
 	@UiField TextBox txtEPCName;
 	@UiField Button btnUpload;
 	@UiField Alert aleError;
-	@UiField EPCMenu menu;
+	@UiField AdminMenuEPC menu;
 	@UiField Image imgEPCImage;
 	String imagePath;
 

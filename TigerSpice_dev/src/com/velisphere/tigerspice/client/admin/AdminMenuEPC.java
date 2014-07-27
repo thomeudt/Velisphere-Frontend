@@ -11,13 +11,13 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
 
-public class EPCMenu extends Composite {
+public class AdminMenuEPC extends Composite {
 
 	NavLink edit = new NavLink("Edit");
 	NavLink add = new NavLink("Add");
 	NavLink retire = new NavLink("Retire");
 	
-	public EPCMenu()
+	public AdminMenuEPC()
 	{
 		edit.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event){

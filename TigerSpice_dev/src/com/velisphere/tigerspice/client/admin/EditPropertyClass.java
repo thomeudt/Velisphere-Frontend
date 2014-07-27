@@ -32,26 +32,39 @@ import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
 
 
 
-public class RetireEPC extends Composite {
+public class EditPropertyClass extends Composite {
 
-	@UiField EPCList epcList;
+	//@UiField EPCList epcList;
 	
-	@UiField AdminMenuEPC menu;
+	@UiField AdminMenuPropertyClass menu;
+	@UiField Alert aleSuccess;
 	String imagePath;
 
 	
-	private static RetireEPCUiBinder uiBinder = GWT
-			.create(RetireEPCUiBinder.class);
+	private static EditEPCUiBinder uiBinder = GWT
+			.create(EditEPCUiBinder.class);
 
-	interface RetireEPCUiBinder extends UiBinder<Widget, RetireEPC> {
+	interface EditEPCUiBinder extends UiBinder<Widget, EditPropertyClass> {
 	}
 
-	public RetireEPC() {
+	public EditPropertyClass() {
 		initWidget(uiBinder.createAndBindUi(this));
-		menu.setRetireActive();
-		
-		
+		menu.setEditActive();
 		  
+	}
+	
+	public void setSuccess(String text)
+	{
+		if(text.equals("")){
+			aleSuccess.setVisible(false);
+		} else
+		{
+			aleSuccess.setVisible(true);
+			aleSuccess.setText(text);
+		}
+		
+			
+		
 	}
 
 	 	

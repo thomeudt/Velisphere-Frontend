@@ -25,7 +25,7 @@
 
 			<b:Column size="2" offset="0">
 				
-				<vsad:EPCMenu ui:field="menu"></vsad:EPCMenu>
+				<vsad:AdminMenuEPC ui:field="menu"></vsad:AdminMenuEPC>
 			
 
 			</b:Column>

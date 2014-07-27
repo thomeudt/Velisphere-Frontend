@@ -40,7 +40,7 @@ import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
 
 
 
-public class EditEPCWidget extends PopupPanel {
+public class EditEPCInputWidget extends PopupPanel {
 
 	@UiField SingleUploader imageUploader;
 	@UiField TextBox txtEPCName;
@@ -54,10 +54,10 @@ public class EditEPCWidget extends PopupPanel {
 	private static EditEPCUiBinder uiBinder = GWT
 			.create(EditEPCUiBinder.class);
 
-	interface EditEPCUiBinder extends UiBinder<Widget, EditEPCWidget> {
+	interface EditEPCUiBinder extends UiBinder<Widget, EditEPCInputWidget> {
 	}
 
-	public EditEPCWidget() {
+	public EditEPCInputWidget() {
 		add(uiBinder.createAndBindUi(this));
 		  imageUploader.addOnFinishUploadHandler(onFinishUploaderHandler);
 		  btnUpload.setEnabled(false);
@@ -65,7 +65,7 @@ public class EditEPCWidget extends PopupPanel {
 	
 	}
 	
-	public EditEPCWidget(String epcID, String epcName, String imageUrl) {
+	public EditEPCInputWidget(String epcID, String epcName, String imageUrl) {
 		add(uiBinder.createAndBindUi(this));
 		  imageUploader.addOnFinishUploadHandler(onFinishUploaderHandler);
 		  aleError.setVisible(false);

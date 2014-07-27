@@ -10,12 +10,12 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:gu="urn:import:gwtupload.client" xmlns:vsad="urn:import:com.velisphere.tigerspice.client.admin" 
-	xmlns:vsepc="urn:import:com.velisphere.tigerspice.client.endpointclasses">
+	xmlns:vspc="urn:import:com.velisphere.tigerspice.client.propertyclasses">
 	<g:HTMLPanel>
 
 		<b:Row>
 			<b:Column size="12" offset="0">
-				<b:PageHeader>Retire Endpoint Classes</b:PageHeader>
+				<b:PageHeader>Edit Endpoint Classes</b:PageHeader>
 			</b:Column>
 		</b:Row>
   
@@ -24,12 +24,13 @@
 		<b:Row>
 
 			<b:Column size="2" offset="0">
-				<vsad:AdminMenuEPC ui:field="menu"></vsad:AdminMenuEPC>
+				<vsad:AdminMenuPropertyClass ui:field="menu"></vsad:AdminMenuPropertyClass>
 			</b:Column>
 
 
 			<b:Column size="8" offset="0">
-				<vsepc:EPCList ui:field="epcList"></vsepc:EPCList>
+			    <b:Alert type="SUCCESS" close="false" ui:field="aleSuccess" />
+				<vspc:PropertyClassList ui:field="pcList"></vspc:PropertyClassList>
 
 			    
 			</b:Column>
