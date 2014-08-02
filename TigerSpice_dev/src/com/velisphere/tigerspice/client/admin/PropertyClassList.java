@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.propertyclasses;
+package com.velisphere.tigerspice.client.admin;
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -18,8 +18,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.velisphere.tigerspice.client.admin.EditEPCInputWidget;
-import com.velisphere.tigerspice.client.admin.EditPropertyClassInputWidget;
+import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
+import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
 import com.velisphere.tigerspice.client.rules.MulticheckDialogBox;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.google.gwt.user.cellview.client.Column;

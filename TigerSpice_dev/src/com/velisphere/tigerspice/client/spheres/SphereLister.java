@@ -47,6 +47,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.info.Info;
+import com.velisphere.tigerspice.client.admin.EditPropertyClassInputWidget;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
@@ -142,6 +143,25 @@ public class SphereLister extends Composite {
 		AppController.openSphere(lstPrivateSpheres.getValue(), lstPrivateSpheres.getValue());
 		
 	}
- 
+  
+
+  @UiHandler("btnCreateNewSphere")
+ 	void createNewSphere(ClickEvent event) {
+ 	
+	  final SphereAdder addSphere = new
+			  SphereAdder();
+	  
+	  addSphere.setAutoHideEnabled(true);
+	  
+	  
+	  
+	  addSphere.show(); 
+	  addSphere.center();
+	 
+	 		
+ 	}
+
+  
+  
    
 }

@@ -29,7 +29,7 @@
 
 
 			<b:Column size="8" offset="0">
-				<vsepc:EPCList ui:field="epcList"></vsepc:EPCList>
+				<vsad:EPCList ui:field="epcList"></vsad:EPCList>
 
 			    
 			</b:Column>

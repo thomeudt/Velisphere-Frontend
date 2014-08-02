@@ -30,7 +30,7 @@
 
 			<b:Column size="8" offset="0">
 			    <b:Alert type="SUCCESS" close="false" ui:field="aleSuccess" />
-				<vspc:PropertyClassList ui:field="pcList"></vspc:PropertyClassList>
+				<vsad:PropertyClassList ui:field="pcList"></vsad:PropertyClassList>
 
 			    
 			</b:Column>

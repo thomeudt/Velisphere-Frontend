@@ -108,7 +108,7 @@ public class EditEPCInputWidget extends PopupPanel {
 		  
 		  
 		  @UiHandler("btnUpload")
-			void searchDeviceID (ClickEvent event) {
+			void upload (ClickEvent event) {
 			
 				
 				final EPCServiceAsync epcService = GWT

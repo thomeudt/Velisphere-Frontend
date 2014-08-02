@@ -24,7 +24,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 <div class="row">
     <div class="span4 offset0">
       <div class="well" style="background-color: rgba(245, 245, 245, 0.95)">
-        <legend>Sign in to Perspectives</legend>
+        <legend>Sign in to VeliSphere</legend>
           <div id="login-form">
             <b:Alert type="ERROR" close="false" ui:field="aleError" />      
             <b:TextBox styleName="span3" ui:field="txtUsername" name="username" />

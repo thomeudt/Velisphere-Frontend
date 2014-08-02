@@ -11,6 +11,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
@@ -58,7 +59,7 @@ public class CreatePropertyClass extends Composite {
 				String unit = new String("");
 				unit = txtUnit.getText();
 				
-				
+				final String pcNameSuccess = pcName;
 				
 				propertyClassService.addPropertyClass(pcName, lbxDataType.getValue(), unit,
 						new AsyncCallback<String>() {
@@ -72,7 +73,8 @@ public class CreatePropertyClass extends Composite {
 
 							@Override
 							public void onSuccess(String result) {
-								// TODO Auto-generated method stub
+								AppController.openPropertyClassManager("Property Class "
+										+ pcNameSuccess + " successfully created.");
 								
 							}
 						

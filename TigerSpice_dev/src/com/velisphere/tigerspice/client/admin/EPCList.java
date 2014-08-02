@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client.endpointclasses;
+package com.velisphere.tigerspice.client.admin;
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -35,7 +35,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.velisphere.tigerspice.client.admin.EditEPCInputWidget;
+import com.velisphere.tigerspice.client.endpointclasses.EPCService;
+import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.rules.MulticheckDialogBox;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.google.gwt.user.cellview.client.Column;

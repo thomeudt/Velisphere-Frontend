@@ -32,6 +32,7 @@ public interface SphereServiceAsync {
 	void getAllSpheres(AsyncCallback<LinkedList<SphereData>> callback);
 	void getAllSpheresForUserID(String userID, AsyncCallback<LinkedList<SphereData>> callback);
 	void updateSpherenameForSphereID(String sphereID, String sphereName, AsyncCallback<String> callback);
+	void addSphere(String sphereName, AsyncCallback<String> callback);
 
 	
 }

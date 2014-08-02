@@ -68,7 +68,7 @@
 									addStyleNames="btn-block" size="SMALL">Open Selected Sphere</b:Button>
 							</b:Column>
 							<b:Column size="2" offset="0">
-								<b:Button type="SUCCESS" ui:field="btnCreateSphere"
+								<b:Button type="SUCCESS" ui:field="btnCreateNewSphere"
 									addStyleNames="btn-block" size="SMALL">Create New Sphere</b:Button>
 							</b:Column>						
 
