@@ -38,13 +38,14 @@
          <b:Brand ui:field="brdHome"><img alt="" src="./images/logo_alpha.png" /></b:Brand>
     
          <b:Nav>
-             <b:NavLink ui:field="btnHome">Dashboard</b:NavLink>
-             <b:NavLink ui:field="btnSpheres">Endpoint Manager</b:NavLink>
-             <b:NavLink ui:field="btnRules">Logic Designer</b:NavLink>
-             <b:NavLink ui:field="btnAnalytics">Analytics</b:NavLink>
-             <b:NavLink ui:field="btnMaps">Maps</b:NavLink>
+             <b:NavLink ui:field="btnHome" icon="TASKS">Status</b:NavLink>
+             <b:NavLink ui:field="btnSpheres" icon="WRENCH">Manage</b:NavLink>
+             <b:NavLink ui:field="btnRules" icon="SHARE_ALT">Interact</b:NavLink>
+             <b:NavLink ui:field="btnMaps" icon="LOCATION_ARROW">Locate</b:NavLink>
+             <b:NavLink ui:field="btnAnalytics" icon="BAR_CHART">Analyse</b:NavLink>
              
-             <b:Dropdown ui:field="dpdAdmin" text="[Admin]">
+             
+             <b:Dropdown ui:field="dpdAdmin" icon="TERMINAL" text="Admin">
              	<b:NavLink ui:field="btnLister">Overviewer</b:NavLink>    
              	<b:NavLink ui:field="btnManageEPC">Endpoint Class Manager</b:NavLink>
              	<b:NavLink ui:field="btnManagePropertyClass">Property Class Manager</b:NavLink>
@@ -61,14 +62,14 @@
          </b:Nav>
          <b:Nav alignment="RIGHT">
              
-             <b:NavLink ui:field="btnShop">IoT Market Place</b:NavLink>
-             <b:Dropdown ui:field="dpdAccount" text="My Account">
+             <b:NavLink ui:field="btnShop" icon="SHOPPING_CART">Buy Things</b:NavLink>
+             <b:Dropdown ui:field="dpdAccount" icon="USER" text="My Account">
              	<b:NavLink ui:field="btnAccount">Account Data</b:NavLink>    
              	<b:NavLink ui:field="btnSupport">Request Support</b:NavLink>
              	<b:NavLink ui:field="btnBilling">Billing Statement</b:NavLink>
                 <b:NavLink ui:field="btnLogout">Logout</b:NavLink>
              </b:Dropdown>
-             <b:NavText ui:field="txtUserName">Not Logged In</b:NavText>
+            
          </b:Nav>
          </g:HorizontalPanel>
        

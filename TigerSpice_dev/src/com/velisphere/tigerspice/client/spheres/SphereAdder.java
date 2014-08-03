@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
+import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 
@@ -39,9 +40,12 @@ public class SphereAdder extends PopupPanel {
 		
 		String sphereName = new String("");
 		sphereName = txtSphereName.getText();
-				
 		
-		sphereService.addSphere(sphereName, 
+		String userID = SessionHelper.getCurrentUserID();
+		
+		//TODO Link Sphere to User!!!
+		
+		sphereService.addSphere(sphereName,
 				new AsyncCallback<String>() {
 
 					@Override

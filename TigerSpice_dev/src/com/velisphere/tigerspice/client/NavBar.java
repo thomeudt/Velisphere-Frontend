@@ -20,6 +20,7 @@ package com.velisphere.tigerspice.client;
 import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Brand;
 import com.github.gwtbootstrap.client.ui.Dropdown;
+import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.NavForm;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.NavText;
@@ -75,7 +76,9 @@ public class NavBar extends Composite implements HasText {
 	@UiField NavForm forSearch;
 	@UiField NavLink btnHome;
 	@UiField Brand brdHome;
-	@UiField NavText txtUserName;
+	
+	
+	
 	
 	private static NavBarUiBinder uiBinder = GWT.create(NavBarUiBinder.class);
 
@@ -105,7 +108,7 @@ public class NavBar extends Composite implements HasText {
    	 dpdAdmin.setVisible(false);
    	 btnMaps.setVisible(false);
    	 btnManageEPC.setVisible(false);
-   	 txtUserName.setText("");
+   	 
    	 
 	    //checkWithServerIfSessionIdIsStillLegal();
 		   
@@ -319,7 +322,7 @@ public class NavBar extends Composite implements HasText {
    	    btnAnalytics.setVisible(false);
    	 	forSearch.setVisible(false);
    	 	btnHome.setVisible(false);
-   	 	txtUserName.setText("");
+   	 	
 		
    	 	SessionHelper.validateCurrentSession();		
 		
@@ -330,7 +333,7 @@ public class NavBar extends Composite implements HasText {
 			
 
 								sessionHandler.removeHandler();
-								txtUserName.setText(SessionHelper.getCurrentUserName());
+								dpdAccount.setText(SessionHelper.getCurrentUserName());
 		}
 		});
 
@@ -358,8 +361,8 @@ public class NavBar extends Composite implements HasText {
 	       	 dpdAdmin.setVisible(true);
 	       	 btnMaps.setVisible(true);
 	       	 btnManageEPC.setVisible(true);
-
-			 txtUserName.setText(SessionHelper.getCurrentUserName());
+	       	 dpdAccount.setText(SessionHelper.getCurrentUserName());
+			 
 	    
 	}
 
