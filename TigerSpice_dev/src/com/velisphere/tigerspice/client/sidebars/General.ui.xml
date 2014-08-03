@@ -8,17 +8,21 @@
 	<g:HTMLPanel>
 <b:Row>
 	    	    <b:Column size="2" offset="0">
-			<b:Heading size="4">Additional Resources</b:Heading>
+			<b:Heading size="4">Shortcuts</b:Heading>
 				
-			<g:Anchor ui:field="ancProvisioning" addStyleNames="smalltext">Device Provisioning Wizard</g:Anchor>
+			<g:Anchor ui:field="ancProvisioning">Device Provisioning Wizard<br></br></g:Anchor>
 			
-			<b:Paragraph addStyleNames="smalltext">Getting Started</b:Paragraph>
+			<g:Anchor>Getting Started<br></br></g:Anchor>
 			
-			<b:Paragraph addStyleNames="smalltext">Best Practices</b:Paragraph>
+			<g:Anchor>Best Practices<br></br></g:Anchor>
 			
-			<b:Paragraph addStyleNames="smalltext">Market Place</b:Paragraph>
+			<g:Anchor>Market Place<br></br></g:Anchor>
+			<g:Anchor>Logic Simulator<br></br></g:Anchor>
 			
 			
+			
+			<b:Heading size="4">Quick Access</b:Heading>
+			<b:ListBox addStyleNames="smalltext" ui:field="ddlShortcut"></b:ListBox>
 			</b:Column>	
 		
 </b:Row>

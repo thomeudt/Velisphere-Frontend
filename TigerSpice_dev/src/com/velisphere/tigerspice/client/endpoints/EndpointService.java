@@ -42,7 +42,7 @@ public interface EndpointService extends RemoteService {
 	LinkedList<EndpointData> getEndpointsForSphere(String sphereID);
 	String addEndpointToSphere(String endpointID, String sphereID);
 	String removeEndpointFromSphere(String endpointID, String sphereID);
-	Vector<EndpointData> getEndpointsForUser(String userID);
+	LinkedList<EndpointData> getEndpointsForUser(String userID);
 	EndpointData getEndpointForEndpointID(String endpointID);
 	String updateEndpointNameForEndpointID(String endpointID, String endpointName);
 	UnprovisionedEndpointData getUnprovisionedEndpoints(String endpointID, String captchaWord);

@@ -115,7 +115,7 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 		userID = SessionHelper.getCurrentUserID();
 
 	loadAnimation.showLoadAnimation("Loading sensors");
-	rpcServiceEndpoint.getEndpointsForUser(userID, new AsyncCallback<Vector<EndpointData>>(){
+	rpcServiceEndpoint.getEndpointsForUser(userID, new AsyncCallback<LinkedList<EndpointData>>(){
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -124,7 +124,7 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 		}
 
 		@Override
-		public void onSuccess(Vector<EndpointData> result) {
+		public void onSuccess(LinkedList<EndpointData> result) {
 			
 			loadAnimation.removeLoadAnimation();
 			Iterator<EndpointData> it = result.iterator();

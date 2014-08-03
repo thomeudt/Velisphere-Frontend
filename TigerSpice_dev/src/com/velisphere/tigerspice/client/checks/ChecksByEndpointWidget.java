@@ -18,6 +18,7 @@
 package com.velisphere.tigerspice.client.checks;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Vector;
 
 import com.github.gwtbootstrap.client.ui.Accordion;
@@ -96,7 +97,7 @@ public class ChecksByEndpointWidget extends Composite {
 		userID = SessionHelper.getCurrentUserID();
 
 	loadAnimation.showLoadAnimation("Loading endpoints");
-	rpcServiceEndpoint.getEndpointsForUser(userID, new AsyncCallback<Vector<EndpointData>>(){
+	rpcServiceEndpoint.getEndpointsForUser(userID, new AsyncCallback<LinkedList<EndpointData>>(){
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -105,7 +106,7 @@ public class ChecksByEndpointWidget extends Composite {
 		}
 
 		@Override
-		public void onSuccess(Vector<EndpointData> result) {
+		public void onSuccess(LinkedList<EndpointData> result) {
 			// TODO Auto-generated method stub
 			loadAnimation.removeLoadAnimation();
 			Iterator<EndpointData> it = result.iterator();

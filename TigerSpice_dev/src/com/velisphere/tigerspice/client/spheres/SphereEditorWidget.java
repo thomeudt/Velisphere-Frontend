@@ -274,7 +274,7 @@ public class SphereEditorWidget extends Composite {
 								rpcService
 										.getEndpointsForUser(
 												SessionHelper.getCurrentUserID(),
-												new AsyncCallback<Vector<EndpointData>>() {
+												new AsyncCallback<LinkedList<EndpointData>>() {
 													public void onFailure(
 															Throwable caught) {
 														Window.alert("Error"
@@ -283,7 +283,7 @@ public class SphereEditorWidget extends Composite {
 
 													@Override
 													public void onSuccess(
-															Vector<EndpointData> result) {
+															LinkedList<EndpointData> result) {
 
 														Iterator<EndpointData> it = result
 																.iterator();

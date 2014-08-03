@@ -33,7 +33,7 @@ public interface EndpointServiceAsync {
 	void getEndpointsForSphere(String sphereID, AsyncCallback<LinkedList<EndpointData>> callback);
 	void addEndpointToSphere(String endpointID, String sphereID, AsyncCallback<String> callback);
 	void removeEndpointFromSphere(String endpointID, String sphereID, AsyncCallback<String> callback);
-	void getEndpointsForUser(String userID, AsyncCallback<Vector<EndpointData>> callback);
+	void getEndpointsForUser(String userID, AsyncCallback<LinkedList<EndpointData>> callback);
 	void getEndpointForEndpointID(String endpointID, AsyncCallback<EndpointData> callback);
 	void updateEndpointNameForEndpointID(String endpointID, String endpointName, AsyncCallback<String> callback);
 	void getUnprovisionedEndpoints(String endpointID, String captchaWord, AsyncCallback<UnprovisionedEndpointData> callback);

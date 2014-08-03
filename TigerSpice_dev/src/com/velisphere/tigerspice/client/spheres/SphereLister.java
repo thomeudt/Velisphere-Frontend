@@ -91,7 +91,8 @@ public class SphereLister extends Composite {
 	
 		
 		final AnimationLoading animation = new AnimationLoading();
-		animation.showLoadAnimation("Loading endpoints");
+		animation.showLoadAnimation("Loading spheres");
+		System.out.println("Loading");
 		
 		// TODO needs to be changed to show only spheres personal to user
 		rpcService = GWT.create(SphereService.class);
@@ -100,11 +101,13 @@ public class SphereLister extends Composite {
 			
 			public void onFailure(Throwable caught) {
 				Window.alert("Error" + caught.getMessage());
+				System.out.println("NoSUCC");
 			}
 
 			@Override
 			public void onSuccess(LinkedList<SphereData> result) {
 				
+				System.out.println("SUCC");
 								
 				Iterator<SphereData> it = result.iterator();
 					

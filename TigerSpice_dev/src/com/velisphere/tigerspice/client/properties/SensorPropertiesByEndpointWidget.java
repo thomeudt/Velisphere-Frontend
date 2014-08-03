@@ -103,7 +103,7 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 		userID = SessionHelper.getCurrentUserID();
 
 	loadAnimation.showLoadAnimation("Loading endpoints");
-	rpcServiceEndpoint.getEndpointsForUser(userID, new AsyncCallback<Vector<EndpointData>>(){
+	rpcServiceEndpoint.getEndpointsForUser(userID, new AsyncCallback<LinkedList<EndpointData>>(){
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -112,7 +112,7 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 		}
 
 		@Override
-		public void onSuccess(Vector<EndpointData> result) {
+		public void onSuccess(LinkedList<EndpointData> result) {
 			
 			loadAnimation.removeLoadAnimation();
 			Iterator<EndpointData> it = result.iterator();

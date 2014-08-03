@@ -257,7 +257,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 
 	}
 
-	public Vector<EndpointData> getEndpointsForUser(String userID)
+	public LinkedList<EndpointData> getEndpointsForUser(String userID)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -272,7 +272,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			e1.printStackTrace();
 		}
 
-		Vector<EndpointData> endPointsforUser = new Vector<EndpointData>();
+		LinkedList<EndpointData> endPointsforUser = new LinkedList<EndpointData>();
 		try {
 
 			final ClientResponse findAllUsers = voltCon.montanaClient
