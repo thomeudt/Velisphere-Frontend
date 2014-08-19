@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.admin;
+package com.velisphere.tigerspice.client.admin.epc;
 
 import com.github.gwtbootstrap.client.ui.Divider;
 import com.github.gwtbootstrap.client.ui.NavHeader;

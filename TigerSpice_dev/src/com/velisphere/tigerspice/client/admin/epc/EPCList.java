@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client.admin;
+package com.velisphere.tigerspice.client.admin.epc;
 
 import java.util.Comparator;
 import java.util.Iterator;

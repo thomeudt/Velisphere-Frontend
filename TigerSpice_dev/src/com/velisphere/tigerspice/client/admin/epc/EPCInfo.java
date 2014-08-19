@@ -1,6 +1,7 @@
-package com.velisphere.tigerspice.client.endpointclasses;
+package com.velisphere.tigerspice.client.admin.epc;
 
 import java.io.File;
+
 
 
 
@@ -17,6 +18,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
+import com.velisphere.tigerspice.client.endpointclasses.EPCService;
+import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.shared.EPCData;
 
 public class EPCInfo extends Composite {

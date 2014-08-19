@@ -34,6 +34,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.Login;
 import com.velisphere.tigerspice.client.LoginDialogBox;
 import com.velisphere.tigerspice.client.NavBar;
+import com.velisphere.tigerspice.client.admin.epc.EPCList;
 import com.velisphere.tigerspice.client.endpoints.EndpointList;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.Banderole;

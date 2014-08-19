@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.admin;
+package com.velisphere.tigerspice.client.admin.epc;
 
 import gwtupload.client.IUploadStatus.Status;
 import gwtupload.client.IUploader;
@@ -31,39 +31,26 @@ import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
 
 
 
-public class EditEPC extends Composite {
+public class RetireEPC extends Composite {
 
-	//@UiField EPCList epcList;
+	@UiField EPCList epcList;
 	
 	@UiField AdminMenuEPC menu;
-	@UiField Alert aleSuccess;
 	String imagePath;
 
 	
-	private static EditEPCUiBinder uiBinder = GWT
-			.create(EditEPCUiBinder.class);
+	private static RetireEPCUiBinder uiBinder = GWT
+			.create(RetireEPCUiBinder.class);
 
-	interface EditEPCUiBinder extends UiBinder<Widget, EditEPC> {
+	interface RetireEPCUiBinder extends UiBinder<Widget, RetireEPC> {
 	}
 
-	public EditEPC() {
+	public RetireEPC() {
 		initWidget(uiBinder.createAndBindUi(this));
-		menu.setEditActive();
+		menu.setRetireActive();
+		
+		
 		  
-	}
-	
-	public void setSuccess(String text)
-	{
-		if(text.equals("")){
-			aleSuccess.setVisible(false);
-		} else
-		{
-			aleSuccess.setVisible(true);
-			aleSuccess.setText(text);
-		}
-		
-			
-		
 	}
 
 	 	

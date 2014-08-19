@@ -18,6 +18,7 @@
 package com.velisphere.tigerspice.client.dataproviders;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -83,7 +84,7 @@ public class PropertyAsyncDataProvider extends AsyncDataProvider<PropertyData> {
 		}
 
 		// Call getPhotoList RPC call
-		rpcService.getAllPropertyDetails(new AsyncCallback<Vector<PropertyData>>() {
+		rpcService.getAllPropertyDetails(new AsyncCallback<LinkedList<PropertyData>>() {
 
 			// There's been a failure in the RPC call
 			// Normally you would handle that in a good way,
@@ -93,7 +94,7 @@ public class PropertyAsyncDataProvider extends AsyncDataProvider<PropertyData> {
 			}
 
 			@Override
-			public void onSuccess(Vector<PropertyData> result) {
+			public void onSuccess(LinkedList<PropertyData> result) {
 				updateRowData(range.getStart(), result);
 
 			}

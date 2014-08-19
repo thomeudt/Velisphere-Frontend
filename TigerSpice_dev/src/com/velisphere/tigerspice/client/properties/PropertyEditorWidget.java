@@ -19,6 +19,7 @@ package com.velisphere.tigerspice.client.properties;
 
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -144,7 +145,7 @@ public class PropertyEditorWidget extends Composite {
 		showLoadAnimation(animationLoading);
 		rpcService.getPropertiesForEndpointClass(
 				endpointClassID,
-				new AsyncCallback<List<PropertyData>>() {
+				new AsyncCallback<LinkedList<PropertyData>>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -153,7 +154,7 @@ public class PropertyEditorWidget extends Composite {
 					}
 
 					@Override
-					public void onSuccess(List<PropertyData> result) {
+					public void onSuccess(LinkedList<PropertyData> result) {
 						// TODO Auto-generated method stub
 						removeLoadAnimation(animationLoading);
 

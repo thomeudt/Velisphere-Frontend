@@ -94,9 +94,7 @@ public class EPCServiceImpl extends RemoteServiceServlet implements
 					EPCData epcData = new EPCData();
 					epcData.endpointclassName = result.getString("ENDPOINTCLASSNAME");
 					epcData.endpointclassID = result.getString("ENDPOINTCLASSID");
-					String imagePath = result.getString("ENDPOINTCLASSIMAGEURL");
-					
-					
+										
 					
 					epcData.endpointclassImageURL = "/tigerspice_dev/tigerspiceDownloads?privateURL="+result.getString("ENDPOINTCLASSIMAGEURL")
 							+ "&outboundFileName=EPC_image&persist=1";

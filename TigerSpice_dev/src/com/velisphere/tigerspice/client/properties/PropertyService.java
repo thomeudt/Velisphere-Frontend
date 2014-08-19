@@ -39,8 +39,8 @@ import com.velisphere.tigerspice.shared.UserData;
 
 @RemoteServiceRelativePath("voltProperty")
 public interface PropertyService extends RemoteService {
-	Vector<PropertyData> getAllPropertyDetails();
-	List<PropertyData> getPropertiesForEndpointClass(String endpointClassID);
+	LinkedList<PropertyData> getAllPropertyDetails();
+	LinkedList<PropertyData> getPropertiesForEndpointClass(String endpointClassID);
 	String getValueForEndpointProperty(String endpointID, String propertyID);
 	String getPropertyClass(String propertyID);
 	String getPropertyName(String propertyID);

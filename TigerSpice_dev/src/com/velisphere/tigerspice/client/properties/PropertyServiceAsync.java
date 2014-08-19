@@ -29,8 +29,8 @@ import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.UserData;
 
 public interface PropertyServiceAsync {
-	void getAllPropertyDetails(AsyncCallback<Vector<PropertyData>> callback);
-	void getPropertiesForEndpointClass(String endpointClassID, AsyncCallback<List<PropertyData>> callback);
+	void getAllPropertyDetails(AsyncCallback<LinkedList<PropertyData>> callback);
+	void getPropertiesForEndpointClass(String endpointClassID, AsyncCallback<LinkedList<PropertyData>> callback);
 	void getValueForEndpointProperty(String endpointID, String propertyID, AsyncCallback<String> callback);
 	void getPropertyClass(String propertyID, AsyncCallback<String> callback);
 	void getPropertyName(String propertyID, AsyncCallback<String> callback);

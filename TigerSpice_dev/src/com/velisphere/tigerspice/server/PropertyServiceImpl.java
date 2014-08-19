@@ -48,7 +48,7 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -8872989521623692797L;
 
-	public Vector<PropertyData> getAllPropertyDetails()
+	public LinkedList<PropertyData> getAllPropertyDetails()
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -63,7 +63,7 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 			e1.printStackTrace();
 		}
 
-		Vector<PropertyData> allProperties = new Vector<PropertyData>();
+		LinkedList<PropertyData> allProperties = new LinkedList<PropertyData>();
 		try {
 
 			final ClientResponse findAllProperties = voltCon.montanaClient
@@ -109,7 +109,7 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public List<PropertyData> getPropertiesForEndpointClass(
+	public LinkedList<PropertyData> getPropertiesForEndpointClass(
 			String endpointClassID) {
 
 		VoltConnector voltCon = new VoltConnector();
@@ -124,7 +124,7 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 			e1.printStackTrace();
 		}
 
-		List<PropertyData> propertiesForEndpointClass = new ArrayList<PropertyData>();
+		LinkedList<PropertyData> propertiesForEndpointClass = new LinkedList<PropertyData>();
 		try {
 
 			final ClientResponse findAllProperties = voltCon.montanaClient

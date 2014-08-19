@@ -30,7 +30,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.LoginDialogBox;
-import com.velisphere.tigerspice.client.admin.EPCList;
+import com.velisphere.tigerspice.client.admin.epc.EPCList;
 import com.velisphere.tigerspice.client.endpoints.EndpointList;
 import com.velisphere.tigerspice.client.properties.PropertyList;
 import com.velisphere.tigerspice.client.users.UserList;

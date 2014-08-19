@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.admin;
+package com.velisphere.tigerspice.client.admin.epc;
 
 
 import gwtupload.client.IUploadStatus.Status;
@@ -14,6 +14,7 @@ import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -23,6 +24,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
+import com.velisphere.tigerspice.client.rules.CheckpathEditorWidget;
 
 
 
@@ -52,6 +54,7 @@ public class EditEPCInputWidget extends PopupPanel {
 	}
 	
 	public EditEPCInputWidget(String epcID, String epcName, String imageUrl) {
+		this.epcID = epcID;
 		add(uiBinder.createAndBindUi(this));
 		  imageUploader.addOnFinishUploadHandler(onFinishUploaderHandler);
 		  aleError.setVisible(false);
@@ -62,8 +65,9 @@ public class EditEPCInputWidget extends PopupPanel {
 		  System.out.println(imageUrl.substring(startIndex+1, endIndex));
 		  this.imagePath = imageUrl.substring(startIndex+1, endIndex);
 		   this.txtEPCName.setText(epcName);
-		  this.epcID = epcID;
+		  
 		  imgEPCImage.setUrl(imageUrl);
+		  imgEPCImage.setWidth("175px");
 		  
 	
 	}
@@ -97,7 +101,7 @@ public class EditEPCInputWidget extends PopupPanel {
 		  
 		  private OnLoadPreloadedImageHandler showImage = new OnLoadPreloadedImageHandler() {
 		    public void onLoad(PreloadedImage image) {
-		      image.setWidth("75px");
+		      image.setWidth("50px");
 		      image.setVisible(false);
 		      //imgPreview = image;
 		      //image.setVisible(false);
@@ -146,5 +150,10 @@ public class EditEPCInputWidget extends PopupPanel {
 			  this.removeFromParent();
 		  }
 	 
+		  
+			@UiFactory EpcPropertyList makePropertyList() { // method name is insignificant
+			    return new EpcPropertyList(this.epcID);
+			  }
+
 	
 }
