@@ -74,6 +74,39 @@ public class EpcPropertyList extends Composite {
 		Label propClass = new Label(propertyData.getPropertyclassId());
 		propClassCol.add(propClass);
 		row.add(propClassCol);
+				
+		Column actorCol = new Column(1);
+		Label actor = new Label();
+		if(propertyData.getIsActor()==1){
+			actor.setText("Actor");
+		}
+		actorCol.add(actor);
+		row.add(actorCol);
+		
+		Column sensorCol = new Column(1);
+		Label sensor = new Label();
+		if(propertyData.getIsSensor()==1){
+			sensor.setText("Sensor");
+		}
+		sensorCol.add(sensor);
+		row.add(sensorCol);
+		
+		Column configCol = new Column(1);
+		Label configurable = new Label();
+		if(propertyData.getIsConfigurable()==1){
+			configurable.setText("Configurable");
+		}
+		configCol.add(configurable);
+		row.add(configCol);
+		
+		Column statusCol = new Column(1);
+		Label status = new Label();
+		if(propertyData.getStatus()==1){
+			configurable.setText("Active");
+		}
+		statusCol.add(status);
+		row.add(statusCol);
+		
 		return row;
 		
 	}

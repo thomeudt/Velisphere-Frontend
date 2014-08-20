@@ -19,6 +19,7 @@ import com.velisphere.tigerspice.client.admin.epc.RetireEPC;
 import com.velisphere.tigerspice.client.analytics.AnalyticsHome;
 import com.velisphere.tigerspice.client.analytics.ChartSensorHistoryWidget;
 import com.velisphere.tigerspice.client.dashboard.Dashboard;
+import com.velisphere.tigerspice.client.endpoints.EndpointView;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
@@ -130,6 +131,33 @@ public class AppController {
 	          if (historyToken.equals(token)) {
 	        	  RootPanel.get("main").clear();
 	        	  RootPanel.get("main").add((Widget) new TakeOwnership(uEPID, identifier, endpointclassID, endpointclassName));
+		        }
+			}
+		    });
+	}
+
+	
+	static void openEndpointWithHistoryHandler(final String token, final String endpointID)
+	{
+		History.newItem(token);
+		RootPanel.get("main").clear();
+		RootPanel.get("main").add((Widget) new EndpointView("0", "0",
+				endpointID, "", ""));
+				 
+		
+		History.addValueChangeHandler(new ValueChangeHandler<String>() {
+
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+
+				String historyToken = event.getValue();
+				
+		        // Parse the history token
+
+	          if (historyToken.equals(token)) {
+	        	  RootPanel.get("main").clear();
+	        	  RootPanel.get("main").add((Widget) new EndpointView("0", "0",
+	      				endpointID, "", ""));
 		        }
 			}
 		    });
@@ -436,6 +464,20 @@ public class AppController {
 			popup.setWidget(w);
 			popup.center();
 			
+		}		
+	});
+	}
+	
+	
+	public static void openEndpoint(final String endpointID)
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			
+			openEndpointWithHistoryHandler("view_endpoint_"+endpointID, endpointID);
 		}		
 	});
 	}

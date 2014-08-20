@@ -28,6 +28,10 @@ public class PropertyData implements IsSerializable
 	public String propertyName;
 	public String propertyclassId;
 	public String endpointclassId;
+	public byte isActor;
+	public byte isSensor;
+	public byte isConfigurable;
+	public byte status;
 	
 	
 	public String getId(){
@@ -58,7 +62,21 @@ public class PropertyData implements IsSerializable
 		return endpointclassId;
 	}
 	
+	public byte getIsConfigurable(){
+		return isConfigurable;
+	}
 	
+	public byte getIsActor(){
+		return isActor;
+	}
+	
+	public byte getIsSensor(){
+		return isSensor;
+	}
+	
+	public byte getStatus(){
+		return status;
+	}
 	 
 	
 }

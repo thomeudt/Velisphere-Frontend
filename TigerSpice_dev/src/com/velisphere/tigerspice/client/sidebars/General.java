@@ -5,6 +5,8 @@ import java.util.LinkedList;
 
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -32,7 +34,15 @@ public class General extends Composite {
 	public General() {
 		initWidget(uiBinder.createAndBindUi(this));
 		ancProvisioning.setHref("#");
+		populateShortcuts();
+
+	}
+
+	
+	void populateShortcuts(){
 		EndpointServiceAsync rpcServiceEndpoint = GWT.create(EndpointService.class);
+		
+		ddlShortcut.addItem("Select Endpoint");
 		rpcServiceEndpoint.getEndpointsForUser(SessionHelper.getCurrentUserID(), new AsyncCallback<LinkedList<EndpointData>>(){
 
 			@Override
@@ -52,7 +62,17 @@ public class General extends Composite {
 			}
 
 		});
+		
+		ddlShortcut.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+
+				AppController.openEndpoint(ddlShortcut.getValue());
+			}
+		});
+
 	}
+	
 	
 	@UiHandler("ancProvisioning")
 	void openProvisioning (ClickEvent event) {

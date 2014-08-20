@@ -48,7 +48,13 @@
 
 							</b:Controls>
 						</b:ControlGroup>
-						
+
+						<b:ControlGroup>
+						    	<b:Controls>
+						    	    <vsad:EpcPropertyList ui:field="propertyList"></vsad:EpcPropertyList>
+							</b:Controls>
+						</b:ControlGroup>
+												
 						
 						<b:ControlGroup>
 						    	<b:Controls>
@@ -71,7 +77,7 @@
 		<b:Row>
 			<b:Column size="5" offset="0">
 
-<vsad:EpcPropertyList ui:field="propertyList"></vsad:EpcPropertyList>
+
 
 </b:Column>
 		</b:Row>
