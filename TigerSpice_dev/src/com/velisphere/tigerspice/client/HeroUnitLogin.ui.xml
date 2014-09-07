@@ -40,7 +40,10 @@
                         
                         <br></br><br></br>
                     <g:Button styleName="btn btn-primary btn-large" text="Login »" ui:field="btnLogin" />
-                    
+                    <br></br>
+                    <br></br>
+            		<g:Anchor href="#" ui:field="ancSignup">No Account? Sign up now!</g:Anchor>
+            		<br></br>
                     </div>
 
 					

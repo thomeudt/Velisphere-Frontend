@@ -29,6 +29,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.users.NewAccountWidget;
 
 public class HeroUnitLogin extends Composite implements HasText {
 
@@ -71,6 +72,15 @@ public class HeroUnitLogin extends Composite implements HasText {
 	public void setText(String text) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@UiHandler("ancSignup")
+	void redirectSignup (ClickEvent event)  {
+		// Window.alert("Logging In");
+		RootPanel.get("main").clear();
+		NewAccountWidget newAccount = new NewAccountWidget();
+		RootPanel.get("main").add(newAccount);
+	
 	}
 	
 }
