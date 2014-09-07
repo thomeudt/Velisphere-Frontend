@@ -15,6 +15,7 @@ import com.velisphere.tigerspice.client.admin.ManageProperty;
 import com.velisphere.tigerspice.client.admin.ManageVendor;
 import com.velisphere.tigerspice.client.admin.epc.CreateEPC;
 import com.velisphere.tigerspice.client.admin.epc.EditEPC;
+import com.velisphere.tigerspice.client.admin.epc.EditEPCInputPage;
 import com.velisphere.tigerspice.client.admin.epc.RetireEPC;
 import com.velisphere.tigerspice.client.analytics.AnalyticsHome;
 import com.velisphere.tigerspice.client.analytics.ChartSensorHistoryWidget;
@@ -163,9 +164,33 @@ public class AppController {
 		    });
 	}
 
+
+	static void openEPCInputWithHistoryHandler(final String token, final String id, final String name, final String imageURL)
+	{
+		History.newItem(token);
+		RootPanel.get("main").clear();
+		RootPanel.get("main").add((Widget) new EditEPCInputPage(id, name, imageURL));
+				 
+		
+		History.addValueChangeHandler(new ValueChangeHandler<String>() {
+
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+
+				String historyToken = event.getValue();
+				
+		        // Parse the history token
+
+	          if (historyToken.equals(token)) {
+	        	  RootPanel.get("main").clear();
+	        	  RootPanel.get("main").add((Widget) new EditEPCInputPage(id, name, imageURL));
+		        }
+			}
+		    });
+	}
+
 	
-	
-	
+		
 	
 
 	public static void openDashboard()
@@ -482,4 +507,19 @@ public class AppController {
 	});
 	}
 	
+	public static void openEPCInput(final String id, final String name, final String imageURL)
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			openEPCInputWithHistoryHandler("edit_epc_"+id, id, name, imageURL);
+		}		
+	});
+	}
+	
+	
+	
+
 }

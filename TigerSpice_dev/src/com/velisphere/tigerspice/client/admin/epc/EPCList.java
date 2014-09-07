@@ -35,6 +35,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.rules.MulticheckDialogBox;
@@ -131,8 +132,8 @@ public class EPCList extends Composite {
 							
 							
 							//Window.alert("You selected: " + selected.name);
-							
-							final EditEPCInputWidget editEPCWidget = new EditEPCInputWidget(selected.id, selected.name, selected.imageURL);
+							/**
+							final EditEPCInputPage editEPCWidget = new EditEPCInputPage(selected.id, selected.name, selected.imageURL);
 					
 							editEPCWidget.setAutoHideEnabled(true);
 
@@ -140,7 +141,9 @@ public class EPCList extends Composite {
 
 							editEPCWidget.show();
 							editEPCWidget.center();
-
+							**/
+							
+							AppController.openEPCInput(selected.id, selected.name, selected.imageURL);
 
 							
 

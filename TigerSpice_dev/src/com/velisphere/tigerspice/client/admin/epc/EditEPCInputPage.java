@@ -18,6 +18,7 @@ import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -28,7 +29,7 @@ import com.velisphere.tigerspice.client.rules.CheckpathEditorWidget;
 
 
 
-public class EditEPCInputWidget extends PopupPanel {
+public class EditEPCInputPage extends Composite {
 
 	@UiField SingleUploader imageUploader;
 	@UiField TextBox txtEPCName;
@@ -42,20 +43,20 @@ public class EditEPCInputWidget extends PopupPanel {
 	private static EditEPCUiBinder uiBinder = GWT
 			.create(EditEPCUiBinder.class);
 
-	interface EditEPCUiBinder extends UiBinder<Widget, EditEPCInputWidget> {
+	interface EditEPCUiBinder extends UiBinder<Widget, EditEPCInputPage> {
 	}
 
-	public EditEPCInputWidget() {
-		add(uiBinder.createAndBindUi(this));
+	public EditEPCInputPage() {
+		initWidget(uiBinder.createAndBindUi(this));
 		  imageUploader.addOnFinishUploadHandler(onFinishUploaderHandler);
 		  btnUpload.setEnabled(false);
 		  aleError.setVisible(false);
 	
 	}
 	
-	public EditEPCInputWidget(String epcID, String epcName, String imageUrl) {
+	public EditEPCInputPage(String epcID, String epcName, String imageUrl) {
 		this.epcID = epcID;
-		add(uiBinder.createAndBindUi(this));
+		initWidget(uiBinder.createAndBindUi(this));
 		  imageUploader.addOnFinishUploadHandler(onFinishUploaderHandler);
 		  aleError.setVisible(false);
 		  
