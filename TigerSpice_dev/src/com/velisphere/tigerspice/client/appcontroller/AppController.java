@@ -13,6 +13,7 @@ import com.velisphere.tigerspice.client.admin.EditPropertyClass;
 import com.velisphere.tigerspice.client.admin.ManagePlan;
 import com.velisphere.tigerspice.client.admin.ManageProperty;
 import com.velisphere.tigerspice.client.admin.ManageVendor;
+import com.velisphere.tigerspice.client.admin.epc.AddPropertyToEPC;
 import com.velisphere.tigerspice.client.admin.epc.CreateEPC;
 import com.velisphere.tigerspice.client.admin.epc.EditEPC;
 import com.velisphere.tigerspice.client.admin.epc.EditEPCInputPage;
@@ -189,6 +190,29 @@ public class AppController {
 		    });
 	}
 
+	static void openEPCAddPropertyWithHistoryHandler(final String token, final String EPCId)
+	{
+		History.newItem(token);
+		RootPanel.get("main").clear();
+		RootPanel.get("main").add((Widget) new AddPropertyToEPC(EPCId));
+				 
+		
+		History.addValueChangeHandler(new ValueChangeHandler<String>() {
+
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+
+				String historyToken = event.getValue();
+				
+		        // Parse the history token
+
+	          if (historyToken.equals(token)) {
+	        	  RootPanel.get("main").clear();
+	        	  RootPanel.get("main").add((Widget) new AddPropertyToEPC(EPCId));
+		        }
+			}
+		    });
+	}
 	
 		
 	
@@ -519,6 +543,18 @@ public class AppController {
 	});
 	}
 	
+	
+	public static void openEPCAddProperty(final String EPCId)
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			openEPCAddPropertyWithHistoryHandler("add_property_to_epc_"+EPCId, EPCId);
+		}		
+	});
+	}
 	
 	
 

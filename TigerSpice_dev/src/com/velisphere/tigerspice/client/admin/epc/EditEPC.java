@@ -60,11 +60,11 @@ public class EditEPC extends Composite {
 		{
 			aleSuccess.setVisible(true);
 			aleSuccess.setText(text);
-		}
-		
-			
+		}		
 		
 	}
+	
+	 
 
 	 	
 }

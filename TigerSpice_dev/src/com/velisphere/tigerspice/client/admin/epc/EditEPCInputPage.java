@@ -150,6 +150,12 @@ public class EditEPCInputPage extends Composite {
 		  void closePopup(){
 			  this.removeFromParent();
 		  }
+		  
+		  @UiHandler("btnAddProperty")
+		  void addProperty(ClickEvent event)
+		  {
+			  AppController.openEPCAddProperty(epcID);
+		  }
 	 
 		  
 			@UiFactory EpcPropertyList makePropertyList() { // method name is insignificant

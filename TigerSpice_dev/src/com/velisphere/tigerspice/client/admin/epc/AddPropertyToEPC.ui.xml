@@ -1,0 +1,130 @@
+<!-- CONFIDENTIAL INFORMATION __________________ Copyright (C) 2014 Thorsten 
+	Meudt / Connected Things Lab All Rights Reserved. NOTICE: All information 
+	contained herein is, and remains the property of Thorsten Meudt and its suppliers, 
+	if any. The intellectual and technical concepts contained herein are proprietary 
+	to Thorsten Meudt and its suppliers and may be covered by Patents, patents 
+	in process, and are protected by trade secret or copyright law. Dissemination 
+	of this information or reproduction of this material is strictly forbidden 
+	unless prior written permission is obtained from Thorsten Meudt. -->
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:gu="urn:import:gwtupload.client"  xmlns:vsad="urn:import:com.velisphere.tigerspice.client.admin.epc" 
+	xmlns:vsepc="urn:import:com.velisphere.tigerspice.client.endpointclasses">
+	
+	<g:HTMLPanel>
+
+		<b:Row>
+			<b:Column size="12" offset="0">
+				<b:PageHeader>Add Property to Endpoint Class</b:PageHeader>
+			</b:Column>
+		</b:Row>
+  
+
+
+		<b:Row>
+
+			<b:Column size="2" offset="0">
+				<vsad:AdminMenuEPC ui:field="menu"></vsad:AdminMenuEPC>
+			</b:Column>
+
+
+			<b:Column size="8" offset="0">
+			    
+			
+
+			    				
+			    
+				<b:Form type="HORIZONTAL">
+
+					
+					<b:Fieldset>
+						<b:ControlGroup>
+							<b:ControlLabel>Name</b:ControlLabel>
+
+							<b:Controls>
+								<b:TextBox b:id="txtPropertyName" ui:field="txtEPCName" />
+
+							</b:Controls>
+						
+						</b:ControlGroup>
+						
+						
+						
+						<b:ControlGroup>
+							<b:ControlLabel>Property Class</b:ControlLabel>
+								<b:ListBox b:id="lbxPropertyClassID" ui:field="lbxPropertyClassID" />
+							<b:Controls>
+								
+
+							</b:Controls>
+						</b:ControlGroup>
+
+						<b:ControlGroup>
+						    <b:ControlLabel>Status</b:ControlLabel>
+							
+						    	<b:Controls>
+						    	    <b:TextBox b:id="txtStatus" ui:field="txtStatus" />
+						    	    
+							</b:Controls>
+						</b:ControlGroup>
+						
+						<b:ControlGroup>
+						    <b:ControlLabel>Sensor</b:ControlLabel>
+							
+						    	<b:Controls>
+						    	    <b:CheckBox b:id="cbxSensor" ui:field="cbxSensor" />
+						    	    
+							</b:Controls>
+						</b:ControlGroup>
+
+						<b:ControlGroup>
+						    <b:ControlLabel>Actor</b:ControlLabel>
+							
+						    	<b:Controls>
+						    	    <b:CheckBox b:id="cbxActor" ui:field="cbxActor" />
+						    	    
+							</b:Controls>
+						</b:ControlGroup>
+										
+						<b:ControlGroup>
+						    <b:ControlLabel>Is Configurable</b:ControlLabel>
+							
+						    	<b:Controls>
+						    	    <b:CheckBox b:id="cbxConfigurable" ui:field="cbxConfigurable" />
+						    	    
+							</b:Controls>
+						</b:ControlGroup>		
+						
+						<b:ControlGroup>
+						    	<b:Controls>
+								<b:Button styleName="btn btn-primary" text="Save"
+									ui:field="btnUpload" />
+							</b:Controls>
+						</b:ControlGroup>
+						
+						
+						
+						
+						
+
+					</b:Fieldset>
+				</b:Form>
+					
+			
+		
+
+			    
+			</b:Column>
+		</b:Row>
+
+
+
+	</g:HTMLPanel>
+    
+	
+	
+	
+	
+</ui:UiBinder> 
+ 

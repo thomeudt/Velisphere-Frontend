@@ -74,6 +74,12 @@ public class EpcPropertyList extends Composite {
 		Label propClass = new Label(propertyData.getPropertyclassId());
 		propClassCol.add(propClass);
 		row.add(propClassCol);
+		
+		Column propClassNameCol = new Column(1);
+		Label propClassName = new Label(propertyData.getPropertyclassName());
+		propClassNameCol.add(propClassName);
+		row.add(propClassNameCol);
+
 				
 		Column actorCol = new Column(1);
 		Label actor = new Label();

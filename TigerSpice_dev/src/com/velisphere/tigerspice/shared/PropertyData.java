@@ -26,6 +26,7 @@ public class PropertyData implements IsSerializable
 {
 	public String propertyId;
 	public String propertyName;
+	public String propertyclassName;
 	public String propertyclassId;
 	public String endpointclassId;
 	public byte isActor;
@@ -76,6 +77,10 @@ public class PropertyData implements IsSerializable
 	
 	public byte getStatus(){
 		return status;
+	}
+	
+	public String getPropertyclassName(){
+		return propertyclassName;
 	}
 	 
 	
