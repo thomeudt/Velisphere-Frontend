@@ -46,6 +46,7 @@ public interface PropertyService extends RemoteService {
 	String getPropertyName(String propertyID);
 	LinkedList<PropertyData> getActorPropertiesForEndpointID(String endpointID);
 	LinkedList<PropertyData> getSensorPropertiesForEndpointID(String endpointID);
+	String addProperty(String propertyName, String propertyClassID, String epcID, boolean act, boolean sense, boolean status, boolean configurable);
 }
 
 

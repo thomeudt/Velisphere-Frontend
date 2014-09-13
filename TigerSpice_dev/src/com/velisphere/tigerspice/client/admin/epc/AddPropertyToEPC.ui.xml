@@ -43,7 +43,7 @@
 							<b:ControlLabel>Name</b:ControlLabel>
 
 							<b:Controls>
-								<b:TextBox b:id="txtPropertyName" ui:field="txtEPCName" />
+								<b:TextBox b:id="txtPropertyName" ui:field="txtPropertyName" />
 
 							</b:Controls>
 						
@@ -53,9 +53,9 @@
 						
 						<b:ControlGroup>
 							<b:ControlLabel>Property Class</b:ControlLabel>
-								<b:ListBox b:id="lbxPropertyClassID" ui:field="lbxPropertyClassID" />
-							<b:Controls>
 								
+							<b:Controls>
+								<b:ListBox b:id="lbxPropertyClassID" ui:field="lbxPropertyClassID" />
 
 							</b:Controls>
 						</b:ControlGroup>
@@ -64,7 +64,7 @@
 						    <b:ControlLabel>Status</b:ControlLabel>
 							
 						    	<b:Controls>
-						    	    <b:TextBox b:id="txtStatus" ui:field="txtStatus" />
+						    	    <b:CheckBox b:id="cbxStatus" ui:field="cbxStatus" />
 						    	    
 							</b:Controls>
 						</b:ControlGroup>
@@ -99,7 +99,7 @@
 						<b:ControlGroup>
 						    	<b:Controls>
 								<b:Button styleName="btn btn-primary" text="Save"
-									ui:field="btnUpload" />
+									ui:field="btnSave" />
 							</b:Controls>
 						</b:ControlGroup>
 						
