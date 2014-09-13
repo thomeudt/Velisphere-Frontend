@@ -1,6 +1,9 @@
 package com.velisphere.tigerspice.client.admin.epc;
 
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import gwtupload.client.IUploadStatus.Status;
 import gwtupload.client.IUploader;
 import gwtupload.client.IUploader.UploadedInfo;
@@ -11,6 +14,7 @@ import gwtupload.client.SingleUploader;
 import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.TextBox;
+import com.github.gwtbootstrap.client.ui.constants.AlertType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -25,7 +29,11 @@ import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
+import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
+import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
 import com.velisphere.tigerspice.client.rules.CheckpathEditorWidget;
+import com.velisphere.tigerspice.shared.EPCData;
+import com.velisphere.tigerspice.shared.PropertyClassData;
 
 
 
@@ -35,9 +43,14 @@ public class EditEPCInputPage extends Composite {
 	@UiField TextBox txtEPCName;
 	@UiField Button btnUpload;
 	@UiField Alert aleError;
+	@UiField AdminMenuEPC menu;
+	@UiField Image imgEPCImage;
 	String epcID;
 	String imagePath;
-	@UiField Image imgEPCImage;
+	String epcName;
+	String imageUrl;	
+	EPCServiceAsync epcService;
+	
 
 	
 	private static EditEPCUiBinder uiBinder = GWT
@@ -47,6 +60,8 @@ public class EditEPCInputPage extends Composite {
 	}
 
 	public EditEPCInputPage() {
+		epcService = GWT
+				.create(EPCService.class);
 		initWidget(uiBinder.createAndBindUi(this));
 		  imageUploader.addOnFinishUploadHandler(onFinishUploaderHandler);
 		  btnUpload.setEnabled(false);
@@ -54,23 +69,57 @@ public class EditEPCInputPage extends Composite {
 	
 	}
 	
-	public EditEPCInputPage(String epcID, String epcName, String imageUrl) {
-		this.epcID = epcID;
+	public EditEPCInputPage(String epcID, String message) {
+
+		epcService = GWT
+				.create(EPCService.class);
+		
+		this.epcID = epcID;		
 		initWidget(uiBinder.createAndBindUi(this));
+		getEPCDetails();
+		menu.setEditActive();
 		  imageUploader.addOnFinishUploadHandler(onFinishUploaderHandler);
-		  aleError.setVisible(false);
 		  
-		  int startIndex = imageUrl.indexOf("=");
-		  int endIndex = imageUrl.indexOf("&out");
+		  if (message.length() > 0){
+			  aleError.setVisible(true);
+			  aleError.setText(message);
+			  aleError.setType(AlertType.SUCCESS);
+		  } else aleError.setVisible(false);
 		  
-		  System.out.println(imageUrl.substring(startIndex+1, endIndex));
-		  this.imagePath = imageUrl.substring(startIndex+1, endIndex);
-		   this.txtEPCName.setText(epcName);
-		  
-		  imgEPCImage.setUrl(imageUrl);
-		  imgEPCImage.setWidth("175px");
-		  
+		  	
+	}
 	
+	
+	private void getEPCDetails(){
+		
+		epcService.getEndpointClassForEndpointClassID(epcID, new AsyncCallback<EPCData>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(EPCData result) {
+				epcName = result.getName();
+				imageUrl = result.getImageURL();
+				
+				int startIndex = imageUrl.indexOf("=");
+				  int endIndex = imageUrl.indexOf("&out");
+				  
+				  System.out.println(imageUrl.substring(startIndex+1, endIndex));
+				  imagePath = imageUrl.substring(startIndex+1, endIndex);
+				  txtEPCName.setText(epcName);
+				  
+				  imgEPCImage.setUrl(imageUrl);
+				  imgEPCImage.setWidth("175px");
+				  
+				
+			}
+
+		});
+
 	}
 
 	 private IUploader.OnFinishUploaderHandler onFinishUploaderHandler = new IUploader.OnFinishUploaderHandler() {
@@ -116,8 +165,6 @@ public class EditEPCInputPage extends Composite {
 			void upload (ClickEvent event) {
 			
 				
-				final EPCServiceAsync epcService = GWT
-						.create(EPCService.class);
 
 				
 				String epcName = new String("");

@@ -98,7 +98,6 @@ public class EPCServiceImpl extends RemoteServiceServlet implements
 					
 					epcData.endpointclassImageURL = "/tigerspice_dev/tigerspiceDownloads?privateURL="+result.getString("ENDPOINTCLASSIMAGEURL")
 							+ "&outboundFileName=EPC_image&persist=1";
-					System.out.println("Got " + epcData.endpointclassImageURL);
 					
 					
 					
@@ -158,6 +157,9 @@ public class EPCServiceImpl extends RemoteServiceServlet implements
 					endPointClass.endpointclassName = result.getString("ENDPOINTCLASSNAME");
 					endPointClass.endpointclassID = result.getString("ENDPOINTCLASSID");
 					endPointClass.endpointclassPath = result.getString("ENDPOINTCLASSIMAGEURL");
+					endPointClass.endpointclassImageURL = "/tigerspice_dev/tigerspiceDownloads?privateURL="+result.getString("ENDPOINTCLASSIMAGEURL")
+							+ "&outboundFileName=EPC_image&persist=1";
+
 
 				}
 			}

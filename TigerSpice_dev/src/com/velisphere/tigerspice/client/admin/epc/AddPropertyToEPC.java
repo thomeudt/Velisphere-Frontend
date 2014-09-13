@@ -33,6 +33,7 @@ public class AddPropertyToEPC extends Composite {
 	@UiField CheckBox cbxActor;
 	@UiField CheckBox cbxSensor;
 	@UiField CheckBox cbxConfigurable;
+	@UiField AdminMenuEPC menu;
 	String EPCId;
 	
 	private static AddPropertyToEPCUiBinder uiBinder = GWT
@@ -49,6 +50,7 @@ public class AddPropertyToEPC extends Composite {
 	public AddPropertyToEPC(String EPCId) {
 		this.EPCId = EPCId;
 		initWidget(uiBinder.createAndBindUi(this));
+		menu.setEditActive();
 		fillPropertyClassList();
 		
 	}
@@ -110,8 +112,8 @@ public class AddPropertyToEPC extends Composite {
 
 						@Override
 						public void onSuccess(String result) {
-							AppController.openEPCManager("New Property "+propertyNameSuccess+" successfully created.");
 							
+							AppController.openEPCInput(EPCId, "New Property "+propertyNameSuccess+" successfully created.");
 						}
 					
 			});

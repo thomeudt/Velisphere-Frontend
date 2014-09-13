@@ -166,11 +166,11 @@ public class AppController {
 	}
 
 
-	static void openEPCInputWithHistoryHandler(final String token, final String id, final String name, final String imageURL)
+	static void openEPCInputWithHistoryHandler(final String token, final String id, final String message)
 	{
 		History.newItem(token);
 		RootPanel.get("main").clear();
-		RootPanel.get("main").add((Widget) new EditEPCInputPage(id, name, imageURL));
+		RootPanel.get("main").add((Widget) new EditEPCInputPage(id, message));
 				 
 		
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {
@@ -184,7 +184,7 @@ public class AppController {
 
 	          if (historyToken.equals(token)) {
 	        	  RootPanel.get("main").clear();
-	        	  RootPanel.get("main").add((Widget) new EditEPCInputPage(id, name, imageURL));
+	        	  RootPanel.get("main").add((Widget) new EditEPCInputPage(id, ""));
 		        }
 			}
 		    });
@@ -531,14 +531,14 @@ public class AppController {
 	});
 	}
 	
-	public static void openEPCInput(final String id, final String name, final String imageURL)
+	public static void openEPCInput(final String id, final String message)
 	{	
 		SessionHelper.validateCurrentSession();
 		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
-			openEPCInputWithHistoryHandler("edit_epc_"+id, id, name, imageURL);
+			openEPCInputWithHistoryHandler("edit_epc_"+id, id, message);
 		}		
 	});
 	}

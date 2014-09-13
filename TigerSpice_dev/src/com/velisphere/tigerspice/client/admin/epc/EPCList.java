@@ -143,7 +143,7 @@ public class EPCList extends Composite {
 							editEPCWidget.center();
 							**/
 							
-							AppController.openEPCInput(selected.id, selected.name, selected.imageURL);
+							AppController.openEPCInput(selected.id, "");
 
 							
 
