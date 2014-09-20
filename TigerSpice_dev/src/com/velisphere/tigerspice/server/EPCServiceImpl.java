@@ -46,6 +46,9 @@ import org.voltdb.client.ProcCallException;
 
 
 
+
+
+
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
@@ -94,6 +97,7 @@ public class EPCServiceImpl extends RemoteServiceServlet implements
 					EPCData epcData = new EPCData();
 					epcData.endpointclassName = result.getString("ENDPOINTCLASSNAME");
 					epcData.endpointclassID = result.getString("ENDPOINTCLASSID");
+					epcData.vendorID = result.getString("VENDORID");
 										
 					
 					epcData.endpointclassImageURL = "/tigerspice_dev/tigerspiceDownloads?privateURL="+result.getString("ENDPOINTCLASSIMAGEURL")
@@ -157,6 +161,7 @@ public class EPCServiceImpl extends RemoteServiceServlet implements
 					endPointClass.endpointclassName = result.getString("ENDPOINTCLASSNAME");
 					endPointClass.endpointclassID = result.getString("ENDPOINTCLASSID");
 					endPointClass.endpointclassPath = result.getString("ENDPOINTCLASSIMAGEURL");
+					endPointClass.vendorID = result.getString("VENDORID");
 					endPointClass.endpointclassImageURL = "/tigerspice_dev/tigerspiceDownloads?privateURL="+result.getString("ENDPOINTCLASSIMAGEURL")
 							+ "&outboundFileName=EPC_image&persist=1";
 
@@ -182,7 +187,7 @@ public class EPCServiceImpl extends RemoteServiceServlet implements
 	}
 
 	
-	public String addEndpointClass(String epcName, String epcImageURL)
+	public String addEndpointClass(String epcName, String epcImageURL, String vendorID)
 
 	{
 
@@ -205,7 +210,7 @@ public class EPCServiceImpl extends RemoteServiceServlet implements
 			try {
 
 				voltCon.montanaClient.callProcedure("ENDPOINTCLASS.insert", epcID,
-						epcName, epcImageURL);
+						epcName, epcImageURL, vendorID);
 			} catch (NoConnectionsException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -262,7 +267,7 @@ public class EPCServiceImpl extends RemoteServiceServlet implements
 	}
 
 
-	public String updateEndpointClass(String epcID, String epcName, String epcImageURL)
+	public String updateEndpointClass(String epcID, String epcName, String epcImageURL, String vendorID)
 
 	{
 
@@ -284,8 +289,10 @@ public class EPCServiceImpl extends RemoteServiceServlet implements
 
 			try {
 
+				System.out.println("URL: " + epcImageURL);
+				System.out.println("Vendor: " + vendorID);
 				voltCon.montanaClient.callProcedure("UI_UpdateEndpointClass", epcID,
-						epcName, epcImageURL);
+						epcName, epcImageURL, vendorID);
 			} catch (NoConnectionsException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

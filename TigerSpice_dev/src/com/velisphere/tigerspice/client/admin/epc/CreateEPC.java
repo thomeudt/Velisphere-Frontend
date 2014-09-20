@@ -1,5 +1,8 @@
 package com.velisphere.tigerspice.client.admin.epc;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import gwtupload.client.IFileInput.FileInputType;
 import gwtupload.client.IUploadStatus.Status;
 import gwtupload.client.IUploader;
@@ -11,6 +14,7 @@ import gwtupload.client.SingleUploader;
 
 import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -29,7 +33,13 @@ import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.images.Images;
+import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
+import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
+import com.velisphere.tigerspice.client.vendors.VendorService;
+import com.velisphere.tigerspice.client.vendors.VendorServiceAsync;
+import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
+import com.velisphere.tigerspice.shared.VendorData;
 
 
 
@@ -41,6 +51,7 @@ public class CreateEPC extends Composite {
 	@UiField Alert aleError;
 	@UiField AdminMenuEPC menu;
 	@UiField Image imgEPCImage;
+	@UiField ListBox lbxVendorID;
 	String imagePath;
 
 	
@@ -61,6 +72,7 @@ public class CreateEPC extends Composite {
 		  btnUpload.setEnabled(false);
 		  aleError.setVisible(false);
 		  menu.setAddActive();
+		  fillVendorList();
 	}
 
 	 private IUploader.OnFinishUploaderHandler onFinishUploaderHandler = new IUploader.OnFinishUploaderHandler() {
@@ -112,7 +124,7 @@ public class CreateEPC extends Composite {
 				
 				
 				
-				epcService.addEndpointClass(epcName, imagePath,
+				epcService.addEndpointClass(epcName, imagePath, lbxVendorID.getValue(),
 						new AsyncCallback<String>() {
 
 							@Override
@@ -132,4 +144,33 @@ public class CreateEPC extends Composite {
 			}
 	 
 	
+		  void fillVendorList(){
+				
+				final VendorServiceAsync vendorService = GWT
+						.create(VendorService.class);
+
+				vendorService.getAllVendorDetails(new AsyncCallback<LinkedList<VendorData>>(){
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(LinkedList<VendorData> result) {
+						// TODO Auto-generated method stub
+						Iterator<VendorData> it = result.iterator();
+						while(it.hasNext()){
+							VendorData vendorItem = it.next();
+							lbxVendorID.addItem(vendorItem.vendorName, vendorItem.vendorID);
+						}
+					}
+
+					
+				});
+				
+			}
+			
+		  
 }

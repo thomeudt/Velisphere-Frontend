@@ -13,6 +13,7 @@ import gwtupload.client.SingleUploader;
 
 import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.AlertType;
 import com.google.gwt.core.client.GWT;
@@ -32,8 +33,11 @@ import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
 import com.velisphere.tigerspice.client.rules.CheckpathEditorWidget;
+import com.velisphere.tigerspice.client.vendors.VendorService;
+import com.velisphere.tigerspice.client.vendors.VendorServiceAsync;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.PropertyClassData;
+import com.velisphere.tigerspice.shared.VendorData;
 
 
 
@@ -45,6 +49,7 @@ public class EditEPCInputPage extends Composite {
 	@UiField Alert aleError;
 	@UiField AdminMenuEPC menu;
 	@UiField Image imgEPCImage;
+	@UiField ListBox lbxVendorID;
 	String epcID;
 	String imagePath;
 	String epcName;
@@ -66,6 +71,7 @@ public class EditEPCInputPage extends Composite {
 		  imageUploader.addOnFinishUploadHandler(onFinishUploaderHandler);
 		  btnUpload.setEnabled(false);
 		  aleError.setVisible(false);
+		  fillVendorList();
 	
 	}
 	
@@ -76,6 +82,7 @@ public class EditEPCInputPage extends Composite {
 		
 		this.epcID = epcID;		
 		initWidget(uiBinder.createAndBindUi(this));
+		fillVendorList();
 		getEPCDetails();
 		menu.setEditActive();
 		  imageUploader.addOnFinishUploadHandler(onFinishUploaderHandler);
@@ -115,6 +122,8 @@ public class EditEPCInputPage extends Composite {
 				  imgEPCImage.setUrl(imageUrl);
 				  imgEPCImage.setWidth("175px");
 				  
+				  
+				  lbxVendorID.setSelectedValue(result.vendorID);
 				
 			}
 
@@ -174,7 +183,7 @@ public class EditEPCInputPage extends Composite {
 				
 				
 				
-				epcService.updateEndpointClass(epcID, epcName, imagePath,
+				epcService.updateEndpointClass(epcID, epcName, imagePath, lbxVendorID.getValue(),
 						new AsyncCallback<String>() {
 
 							@Override
@@ -203,11 +212,41 @@ public class EditEPCInputPage extends Composite {
 		  {
 			  AppController.openEPCAddProperty(epcID);
 		  }
+		  
+		  void fillVendorList(){
+				
+				final VendorServiceAsync vendorService = GWT
+						.create(VendorService.class);
+
+				vendorService.getAllVendorDetails(new AsyncCallback<LinkedList<VendorData>>(){
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(LinkedList<VendorData> result) {
+						// TODO Auto-generated method stub
+						Iterator<VendorData> it = result.iterator();
+						while(it.hasNext()){
+							VendorData vendorItem = it.next();
+							lbxVendorID.addItem(vendorItem.vendorName, vendorItem.vendorID);
+						}
+					}
+
+					
+				});
+				
+			}
+			
 	 
 		  
 			@UiFactory EpcPropertyList makePropertyList() { // method name is insignificant
 			    return new EpcPropertyList(this.epcID);
 			  }
 
-	
+
+			
 }

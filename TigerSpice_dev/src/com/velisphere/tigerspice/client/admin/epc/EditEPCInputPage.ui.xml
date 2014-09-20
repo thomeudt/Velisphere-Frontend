@@ -52,7 +52,14 @@
 						
 						</b:ControlGroup>
 						
-						
+						<b:ControlGroup>
+							<b:ControlLabel>Vendor</b:ControlLabel>
+								
+							<b:Controls>
+								<b:ListBox b:id="lbxVendorID" ui:field="lbxVendorID" />
+
+							</b:Controls>
+						</b:ControlGroup>
 						
 						<b:ControlGroup>
 							<b:ControlLabel>Image</b:ControlLabel>

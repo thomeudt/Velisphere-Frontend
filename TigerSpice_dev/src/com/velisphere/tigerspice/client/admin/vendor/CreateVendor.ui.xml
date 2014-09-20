@@ -61,7 +61,7 @@
 						</b:ControlGroup>
 						<b:ControlGroup>
 						    	<b:Controls>
-								<b:Button styleName="btn btn-primary" text="Create Endpoint Class"
+								<b:Button styleName="btn btn-primary" text="Create Vendor"
 									ui:field="btnUpload" />
 							</b:Controls>
 						</b:ControlGroup>

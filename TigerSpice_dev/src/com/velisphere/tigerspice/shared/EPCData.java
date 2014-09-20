@@ -29,6 +29,7 @@ public class EPCData implements IsSerializable
 	public String endpointclassName;
 	public String endpointclassPath;
 	public String endpointclassImageURL;
+	public String vendorID;
 		
 	public String getName(){
 		return endpointclassName;
@@ -37,7 +38,12 @@ public class EPCData implements IsSerializable
 	public String getId(){
 		return endpointclassID;
 	}
+
 	
+	public String getVendorId(){
+		return vendorID;
+	}
+
 	public String getPath(){
 		return endpointclassPath;
 	}
@@ -56,5 +62,9 @@ public class EPCData implements IsSerializable
 	
 	public void setImageURL( String endpointclassImage){
 		this.endpointclassImageURL = endpointclassImage;
+	}
+	
+	public void setVendorID( String vendorID){
+		this.vendorID = vendorID;
 	}
 }

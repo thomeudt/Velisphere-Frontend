@@ -15,20 +15,16 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client.endpointclasses;
+package com.velisphere.tigerspice.client.vendors;
 
-import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Vector;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.velisphere.tigerspice.shared.EPCData;
-import com.velisphere.tigerspice.shared.UserData;
+import com.velisphere.tigerspice.shared.VendorData;
 
-public interface EPCServiceAsync {
-	void getAllEndpointClassDetails(AsyncCallback<LinkedList<EPCData>> callback);
-	void getEndpointClassForEndpointClassID(String endpointClassID, AsyncCallback<EPCData> callback);
-	void addEndpointClass(String epcName, String epcImageURL, String vendorID, AsyncCallback<String> callback);
-	void updateEndpointClass(String epcID, String epcName, String epcImageURL, String vendorID, AsyncCallback<String> callback);
+public interface VendorServiceAsync {
+	void getAllVendorDetails(AsyncCallback<LinkedList<VendorData>> callback);
+	void getVendorForVendorID(String VendorID, AsyncCallback<VendorData> callback);
+	void addVendor(String vendorName, String vendorImageURL, AsyncCallback<String> callback);
+	void updateVendor(String vendorID, String vendorName, String vendorImageURL, AsyncCallback<String> callback);
 	
 }

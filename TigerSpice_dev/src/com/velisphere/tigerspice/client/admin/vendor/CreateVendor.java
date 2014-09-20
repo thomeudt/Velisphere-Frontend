@@ -126,7 +126,7 @@ public class CreateVendor extends Composite {
 
 							@Override
 							public void onSuccess(String result) {
-								AppController.openEPCManager("New Endpoint Class "+vendorNameSuccess+" successfully created.");
+								AppController.openEPCManager("New Vendor "+vendorNameSuccess+" successfully created.");
 								
 							}
 						

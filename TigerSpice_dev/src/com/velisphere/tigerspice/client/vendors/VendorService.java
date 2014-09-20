@@ -15,20 +15,20 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client.endpointclasses;
+package com.velisphere.tigerspice.client.vendors;
 
-import java.util.HashSet;
+
 import java.util.LinkedList;
-import java.util.Vector;
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.velisphere.tigerspice.shared.VendorData;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.velisphere.tigerspice.shared.EPCData;
-import com.velisphere.tigerspice.shared.UserData;
-
-public interface EPCServiceAsync {
-	void getAllEndpointClassDetails(AsyncCallback<LinkedList<EPCData>> callback);
-	void getEndpointClassForEndpointClassID(String endpointClassID, AsyncCallback<EPCData> callback);
-	void addEndpointClass(String epcName, String epcImageURL, String vendorID, AsyncCallback<String> callback);
-	void updateEndpointClass(String epcID, String epcName, String epcImageURL, String vendorID, AsyncCallback<String> callback);
-	
+@RemoteServiceRelativePath("voltVendor")
+public interface VendorService extends RemoteService {
+	LinkedList<VendorData> getAllVendorDetails();
+	VendorData getVendorForVendorID(String VendorID);
+	String addVendor(String vendorName, String vendorImageURL);
+	String updateVendor(String vendorID, String vendorName, String vendorImageURL);
 }
+
+
