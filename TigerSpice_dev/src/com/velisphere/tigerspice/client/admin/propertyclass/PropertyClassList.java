@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.admin;
+package com.velisphere.tigerspice.client.admin.propertyclass;
 
 import java.util.Comparator;
 import java.util.Iterator;

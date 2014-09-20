@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.Row;
+import com.github.gwtbootstrap.client.ui.constants.LabelType;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
@@ -28,6 +29,10 @@ public class EpcPropertyList extends Composite {
 		
 	final VerticalPanel verticalPanel = new VerticalPanel();
 	
+	//draw header
+	verticalPanel.add(createHeader());
+	//get Data
+	
 	getData(verticalPanel);
 	initWidget(verticalPanel);
 	
@@ -40,6 +45,7 @@ public class EpcPropertyList extends Composite {
 		
 		PropertyServiceAsync rpcService;
 		rpcService = GWT.create(PropertyService.class);
+		
 		
 		rpcService
 		.getPropertiesForEndpointClass(endpointClassID, new AsyncCallback<LinkedList<PropertyData>>() {
@@ -66,6 +72,7 @@ public class EpcPropertyList extends Composite {
 		Row row = new Row();
 		Column nameCol = new Column(1);
 		Label name = new Label(propertyData.getPropertyName());
+	
 		nameCol.add(name);
 		row.add(nameCol);		
 		
@@ -116,5 +123,51 @@ public class EpcPropertyList extends Composite {
 		return row;
 		
 	}
+	
+	private Row createHeader(){
+		Row row = new Row();
+		
+		Column nameCol = new Column(1);
+		Label name = new Label("Property Name");
+		nameCol.add(name);
+		row.add(nameCol);		
+		
+		
+		Column propClassCol = new Column(1);
+		Label propClass = new Label("Property Class ID");
+		propClassCol.add(propClass);
+		row.add(propClassCol);
+		
+		Column propClassNameCol = new Column(1);
+		Label propClassName = new Label("Property Class");
+		propClassNameCol.add(propClassName);
+		row.add(propClassNameCol);
+
+				
+		Column actorCol = new Column(1);
+		Label actor = new Label("Actor");
+		
+		actorCol.add(actor);
+		row.add(actorCol);
+		
+		Column sensorCol = new Column(1);
+		Label sensor = new Label("Sensor");
+		sensorCol.add(sensor);
+		row.add(sensorCol);
+		
+		Column configCol = new Column(1);
+		Label configurable = new Label("Configurable");
+		configCol.add(configurable);
+		row.add(configCol);
+		
+		Column statusCol = new Column(1);
+		Label status = new Label("Status");
+		statusCol.add(status);
+		row.add(statusCol);
+		
+		return row;
+		
+	}
+
 	
 }

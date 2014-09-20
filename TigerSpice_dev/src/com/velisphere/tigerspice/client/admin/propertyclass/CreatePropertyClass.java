@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.admin;
+package com.velisphere.tigerspice.client.admin.propertyclass;
 
 import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.ListBox;

@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.admin;
+package com.velisphere.tigerspice.client.admin.vendor;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
