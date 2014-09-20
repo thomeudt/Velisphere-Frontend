@@ -236,12 +236,7 @@ public class NavBar extends Composite implements HasText {
 		
 	}
 	
-	@UiHandler("btnManageProperty")
-	void openPropertyManager (ClickEvent event) {
 	
-		AppController.openPropertyManager();;
-		
-	}
 	
 	
 	@UiHandler("btnManagePropertyClass")

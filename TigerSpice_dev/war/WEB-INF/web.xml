@@ -221,6 +221,19 @@
     <servlet-name>uploadServlet</servlet-name>
     <url-pattern>*.gupld</url-pattern>
   </servlet-mapping>
+  
+  
+  <servlet>
+    <servlet-name>vendorServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.VendorServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>vendorServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltVendor</url-pattern>
+  </servlet-mapping>
+  
+  
 
   <!-- Default page to serve -->
   <welcome-file-list>

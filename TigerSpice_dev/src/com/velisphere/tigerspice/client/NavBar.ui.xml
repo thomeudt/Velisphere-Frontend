@@ -49,7 +49,7 @@
              	<b:NavLink ui:field="btnLister">Overviewer</b:NavLink>    
              	<b:NavLink ui:field="btnManageEPC">Endpoint Class Manager</b:NavLink>
              	<b:NavLink ui:field="btnManagePropertyClass">Property Class Manager</b:NavLink>
-             	<b:NavLink ui:field="btnManageProperty">Property Manager</b:NavLink>
+             	
              	<b:NavLink ui:field="btnManageVendor">Vendor Manager</b:NavLink>
              	<b:NavLink ui:field="btnManagePlan">Billing Plan Manager</b:NavLink>
              </b:Dropdown>

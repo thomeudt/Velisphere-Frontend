@@ -17,7 +17,7 @@ import com.velisphere.tigerspice.client.admin.epc.EditEPCInputPage;
 import com.velisphere.tigerspice.client.admin.epc.RetireEPC;
 import com.velisphere.tigerspice.client.admin.propertyclass.CreatePropertyClass;
 import com.velisphere.tigerspice.client.admin.propertyclass.EditPropertyClass;
-import com.velisphere.tigerspice.client.admin.vendor.ManageVendor;
+import com.velisphere.tigerspice.client.admin.vendor.CreateVendor;
 import com.velisphere.tigerspice.client.analytics.AnalyticsHome;
 import com.velisphere.tigerspice.client.analytics.ChartSensorHistoryWidget;
 import com.velisphere.tigerspice.client.dashboard.Dashboard;
@@ -430,19 +430,7 @@ public class AppController {
 	});
 	}
 	
-	public static void openPropertyManager()
-	{	
-		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
-		@Override
-	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
-			sessionHandler.removeHandler();
-			//String userID = SessionHelper.getCurrentUserID();
-			ManageProperty propertyManager = new ManageProperty();
-			openWithHistoryHandler("prop_manager", propertyManager);
-		}		
-	});
-	}
+
 	
 	public static void openPropertyClassManager(final String successMessage)
 	{	
@@ -481,7 +469,7 @@ public class AppController {
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
 			//String userID = SessionHelper.getCurrentUserID();
-			ManageVendor vendorManager = new ManageVendor();
+			CreateVendor vendorManager = new CreateVendor();
 			openWithHistoryHandler("vendor_manager", vendorManager);
 		}		
 	});
