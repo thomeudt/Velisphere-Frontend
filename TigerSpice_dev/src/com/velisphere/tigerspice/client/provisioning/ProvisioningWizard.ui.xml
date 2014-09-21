@@ -64,7 +64,7 @@
 						</b:Row>
 						<b:Row>
 							<b:Column size="3" offset="0">
-								<b:Paragraph ui:field="pgpHeadingCaptcha">Please enter the word below to verify.</b:Paragraph>
+								<b:Paragraph ui:field="pgpHeadingCaptcha">Please enter the word below to verify you are a human being.</b:Paragraph>
 
 							</b:Column>
 

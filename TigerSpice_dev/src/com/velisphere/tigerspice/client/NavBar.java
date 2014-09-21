@@ -166,9 +166,9 @@ public class NavBar extends Composite implements HasText {
 	@UiHandler("brdHome")
 	void openHomeBrand (ClickEvent event) {
 		
-		AppController.openHome();
+		//AppController.openHome();
 		
-		/**
+		
 		String sessionID = Cookies.getCookie("sid");
 		clearBandarole();
 	     if (sessionID != null){
@@ -182,7 +182,7 @@ public class NavBar extends Composite implements HasText {
 	    	 LoggedOutHome loggedOutHome = new LoggedOutHome();
 	    	 loggedOutHome.open();
 		}	
-		**/	
+			
 	}
 
 	@UiHandler("btnSpheres")

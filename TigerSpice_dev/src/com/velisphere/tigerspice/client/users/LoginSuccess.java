@@ -89,25 +89,25 @@ interface MyBinder extends UiBinder<Widget, LoginSuccess>{}
  	
 	public LoginSuccess() {
 	    
-		
+		NavBar navBar = new NavBar();
+		navBar.activateForCurrentUser();
 		initWidget(uiBinder.createAndBindUi(this));
+				
 		loadContent();
+		
 			
-		
-	
-		
-
-		
 	}
 	 
 	public LoginSuccess(HandlerRegistration reg) {
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		reg.removeHandler();
+		//AppController.openHome();
 		
 		loadContent();
 			
 	}
+	
 	
 	public void loadContent(){
 

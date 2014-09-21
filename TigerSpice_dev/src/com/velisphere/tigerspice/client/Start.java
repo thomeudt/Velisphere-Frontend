@@ -92,11 +92,11 @@ public class Start implements EntryPoint{
 	        	
 	        	//NavBar navBar = new NavBar();
 	    		//navBar = (NavBar) RootPanel.get("stockList").getWidget(0);
-	    		navBar.activateForCurrentUser();
+	    		
 	    		
 	        	
 	        	rootPanelMain.add(new LoginSuccess(reg));
-	        		        	
+	        	navBar.activateForCurrentUser();	        	
 	        	
 				}
 	    }); 

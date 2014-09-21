@@ -72,7 +72,7 @@ public class AnimationLoading extends DialogBox {
 		
 	}
 
-	@Deprecated
+
 	public void showLoadAnimation(String text) {
 		stgLoading.setText(text);
 		RootPanel rootPanel = RootPanel.get("main");

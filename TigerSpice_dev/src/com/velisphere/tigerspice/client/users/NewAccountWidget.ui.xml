@@ -79,7 +79,7 @@
 	</b:ControlGroup>
 
 		<b:ControlGroup>			
-					<b:ControlLabel>Please enter the text show in the image below.</b:ControlLabel>
+					<b:ControlLabel>Please enter the word below to verify you are a human being.</b:ControlLabel>
 						<b:Controls>
 						
 						<b:TextBox ui:field="txtCaptchaWord"></b:TextBox>
@@ -88,9 +88,10 @@
 					
 	</b:ControlGroup>
 	<b:ControlGroup>			
-					<b:ControlLabel>Captcha is used to prevent bots from signing up.</b:ControlLabel>
+					<b:ControlLabel><g:Anchor addStyleNames="smalltext-black" ui:field="ancReloadCaptcha">(If you can't read the current image, click here to load a new one.)</g:Anchor></b:ControlLabel>
 						<b:Controls>
-						<b:Image ui:field="imgCaptchaImage"></b:Image>											
+						<b:Image ui:field="imgCaptchaImage"></b:Image>			
+														
 					</b:Controls>
 					
 	</b:ControlGroup>

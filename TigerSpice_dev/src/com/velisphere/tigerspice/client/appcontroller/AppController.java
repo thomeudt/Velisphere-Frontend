@@ -8,6 +8,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.Start;
 import com.velisphere.tigerspice.client.admin.ManagePlan;
 import com.velisphere.tigerspice.client.admin.ManageProperty;
 import com.velisphere.tigerspice.client.admin.epc.AddPropertyToEPC;
@@ -241,6 +242,9 @@ public class AppController {
 			//userID = SessionHelper.getCurrentUserID();
 			LoginSuccess loginSuccess = new LoginSuccess();
 			openWithHistoryHandler("home", loginSuccess);
+			
+			//Start start = new Start();
+			//start.onModuleLoad();
 		}		
 	});
 	}

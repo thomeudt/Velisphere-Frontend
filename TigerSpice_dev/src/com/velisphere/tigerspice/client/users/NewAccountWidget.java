@@ -30,6 +30,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
@@ -108,5 +109,10 @@ interface MyBinder extends UiBinder<Widget, NewAccountWidget>{}
 				aleError.setVisible(true);
 			}
 		}
+	
+	@UiHandler("ancReloadCaptcha")
+	void reloadCaptcha(ClickEvent event){
+		imgCaptchaImage.setUrl("/SimpleCaptcha.jpg?load_"+Random.nextInt());
+	}
 	
 }
