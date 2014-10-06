@@ -18,7 +18,7 @@
 package com.velisphere.tigerspice.server;
 
 public class ServerParameters {
-	public static String volt_ip = "not set"; // for local db
+	public static String volt_ip = "16.1.1.115"; // for local db
 	//public static String volt_ip = "54.186.33.146"; // for aws db
-	public static String vertica_ip = "16.1.1.113";
+	public static String vertica_ip = "16.1.1.116";
 }

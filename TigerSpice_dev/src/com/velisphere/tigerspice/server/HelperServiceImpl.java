@@ -80,6 +80,16 @@ public class HelperServiceImpl extends RemoteServiceServlet implements HelperSer
 		System.out.println("[IN] Selected VoltDB: "+ ServerParameters.volt_ip);
 		ServerParameters.vertica_ip = props.getProperty("Vertica IP");
 		System.out.println("[IN] Selected Vertica Database: "+ ServerParameters.vertica_ip);
+
+		// Setting manually
+		
+		System.out.println("[IN] Setting manual Configuration");
+		
+		ServerParameters.volt_ip = "16.1.1.115";
+		System.out.println("[IN] Selected VoltDB: "+ ServerParameters.volt_ip);
+		ServerParameters.vertica_ip = "16.1.1.116";
+		System.out.println("[IN] Selected Vertica Database: "+ ServerParameters.vertica_ip);
+
 		
 		VoltConnector voltCon = new VoltConnector();
     	

@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Vector;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -49,6 +50,9 @@ import org.voltdb.client.ProcCallException;
 
 
 
+
+
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
@@ -100,7 +104,8 @@ public class EPCServiceImpl extends RemoteServiceServlet implements
 					epcData.vendorID = result.getString("VENDORID");
 										
 					
-					epcData.endpointclassImageURL = "/tigerspice_dev/tigerspiceDownloads?privateURL="+result.getString("ENDPOINTCLASSIMAGEURL")
+					
+					epcData.endpointclassImageURL = getServletContext().getContextPath() +"/tigerspiceDownloads?privateURL="+result.getString("ENDPOINTCLASSIMAGEURL")
 							+ "&outboundFileName=EPC_image&persist=1";
 					
 					
@@ -162,7 +167,7 @@ public class EPCServiceImpl extends RemoteServiceServlet implements
 					endPointClass.endpointclassID = result.getString("ENDPOINTCLASSID");
 					endPointClass.endpointclassPath = result.getString("ENDPOINTCLASSIMAGEURL");
 					endPointClass.vendorID = result.getString("VENDORID");
-					endPointClass.endpointclassImageURL = "/tigerspice_dev/tigerspiceDownloads?privateURL="+result.getString("ENDPOINTCLASSIMAGEURL")
+					endPointClass.endpointclassImageURL = getServletContext().getContextPath()+"/tigerspiceDownloads?privateURL="+result.getString("ENDPOINTCLASSIMAGEURL")
 							+ "&outboundFileName=EPC_image&persist=1";
 
 

@@ -55,7 +55,7 @@ public class EPCInfo extends Composite {
 						
 						
 						
-						imgEPCImage.setUrl("/tigerspice_dev/tigerspiceDownloads?privateURL="+result.getPath()
+						imgEPCImage.setUrl(GWT.getHostPageBaseURL()+"tigerspiceDownloads?privateURL="+result.getPath()
 								+ "&outboundFileName=EPC_image&persist=1");
 						pgpEPCName.setText(result.endpointclassName);
 

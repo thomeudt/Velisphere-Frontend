@@ -67,7 +67,7 @@ interface MyBinder extends UiBinder<Widget, NewAccountWidget>{}
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		aleError.setVisible(false);
-		imgCaptchaImage.setUrl("/SimpleCaptcha.jpg");
+		imgCaptchaImage.setUrl(GWT.getHostPageBaseURL()+"SimpleCaptcha.jpg");
 	
 	
 	}

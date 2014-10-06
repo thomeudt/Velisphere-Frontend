@@ -1,2 +1,0 @@
-serviceClass: com.velisphere.tigerspice.client.propertyclasses.PropertyClassService
-path: D7065D670DE4930CC5FB365D88FA60D7.gwt.rpc

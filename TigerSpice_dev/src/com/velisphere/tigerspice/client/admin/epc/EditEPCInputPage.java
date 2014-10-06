@@ -147,7 +147,7 @@ public class EditEPCInputPage extends Composite {
 		        
 		        // setNewImagePath
 		        imagePath = uploader.getServerMessage().getMessage();
-		        imgEPCImage.setUrl("/tigerspice_dev/tigerspiceDownloads?privateURL="+imagePath
+		        imgEPCImage.setUrl(GWT.getHostPageBaseURL()+"tigerspiceDownloads?privateURL="+imagePath
 						+ "&outboundFileName=EPC_image&persist=1");
 		        btnUpload.setEnabled(true);
 		      }

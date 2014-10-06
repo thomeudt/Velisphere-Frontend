@@ -87,7 +87,7 @@ public class CreateEPC extends Composite {
 		        System.out.println("Res " + uploader.getServerMessage().getMessage());
 		        imagePath = uploader.getServerMessage().getMessage();
 		        btnUpload.setEnabled(true);
-		        imgEPCImage.setUrl("/tigerspice_dev/tigerspiceDownloads?privateURL="+imagePath
+		        imgEPCImage.setUrl(GWT.getHostPageBaseURL()+"tigerspiceDownloads?privateURL="+imagePath
 						+ "&outboundFileName=EPC_image&persist=1");
 		      }
 		    }

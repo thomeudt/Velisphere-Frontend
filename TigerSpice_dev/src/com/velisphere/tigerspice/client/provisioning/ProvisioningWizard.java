@@ -82,7 +82,7 @@ public class ProvisioningWizard extends Composite {
 		bread1.setText("Device Provisioning Wizard");
 		brdMain.add(bread1);
 		hideResultElements();		
-		imgCaptchaImage.setUrl("/SimpleCaptcha.jpg?load_"+Random.nextInt());
+		imgCaptchaImage.setUrl(GWT.getHostPageBaseURL()+"SimpleCaptcha.jpg?load_"+Random.nextInt());
 		ancReloadCaptcha.setHref("#");
 				
 
@@ -120,7 +120,7 @@ public class ProvisioningWizard extends Composite {
 							aleError.setVisible(true);
 				        	aleError.setHeading("Search request failed.");
 							aleError.setText("Likely reason: Misspelled identifier or captcha, device without connectivity, or provisioning time limit exceeded. Please try again."); 
-							imgCaptchaImage.setUrl("/SimpleCaptcha.jpg?load_"+Random.nextInt());
+							imgCaptchaImage.setUrl(GWT.getHostPageBaseURL()+"SimpleCaptcha.jpg?load_"+Random.nextInt());
 						} else
 						{
 							aleError.setVisible(false);

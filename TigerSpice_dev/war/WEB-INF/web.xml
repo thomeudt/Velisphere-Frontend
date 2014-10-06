@@ -166,7 +166,7 @@
 
 <servlet-mapping>
     <servlet-name>downloadServlet</servlet-name>
-    <url-pattern>/tigerspice_dev/tigerspiceDownloads</url-pattern>
+    <url-pattern>/tigerspiceDownloads</url-pattern>
   </servlet-mapping>
 
 

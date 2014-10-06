@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.UUID;
+
 import org.voltdb.VoltTable;
 import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
@@ -33,6 +34,8 @@ import org.voltdb.client.ProcCallException;
 
 
 
+
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.vendors.VendorService;
 import com.velisphere.tigerspice.shared.VendorData;
@@ -80,7 +83,7 @@ public class VendorServiceImpl extends RemoteServiceServlet implements
 					vendorData.vendorID = result.getString("VENDORID");
 										
 					
-					vendorData.vendorImageURL = "/tigerspice_dev/tigerspiceDownloads?privateURL="+result.getString("VENDORIMAGEURL")
+					vendorData.vendorImageURL = getServletContext().getContextPath()+"/tigerspiceDownloads?privateURL="+result.getString("VENDORIMAGEURL")
 							+ "&outboundFileName=VENDOR_image&persist=1";
 					
 					
@@ -141,7 +144,7 @@ public class VendorServiceImpl extends RemoteServiceServlet implements
 					vendor.vendorName = result.getString("VENDORNAME");
 					vendor.vendorID = result.getString("VENDORID");
 					vendor.vendorPath = result.getString("VENDORMAGEURL");
-					vendor.vendorImageURL = "/tigerspice_dev/tigerspiceDownloads?privateURL="+result.getString("VENDORIMAGEURL")
+					vendor.vendorImageURL = getServletContext().getContextPath()+"/tigerspiceDownloads?privateURL="+result.getString("VENDORIMAGEURL")
 							+ "&outboundFileName=VENDOR_image&persist=1";
 
 

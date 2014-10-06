@@ -77,7 +77,7 @@ public class CreateVendor extends Composite {
 		        System.out.println("Res " + uploader.getServerMessage().getMessage());
 		        imagePath = uploader.getServerMessage().getMessage();
 		        btnUpload.setEnabled(true);
-		        imgVendorImage.setUrl("/tigerspice_dev/tigerspiceDownloads?privateURL="+imagePath
+		        imgVendorImage.setUrl(GWT.getHostPageBaseURL()+"tigerspiceDownloads?privateURL="+imagePath
 						+ "&outboundFileName=EPC_image&persist=1");
 		      }
 		    }
