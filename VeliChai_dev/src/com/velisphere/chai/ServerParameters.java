@@ -30,5 +30,5 @@ public class ServerParameters {
     //public static String volt_ip = "16.1.1.149"; // for local db
 	public static String volt_ip = "ec2-54-213-184-238.us-west-2.compute.amazonaws.com"; // for aws db
 	// public static String volt_ip = "ec2-54-200-208-195.us-west-2.compute.amazonaws.com"; // for strato db
-	public static String vertica_ip = "16.1.1.113";
+	public static String vertica_ip = "16.1.1.116";
 }

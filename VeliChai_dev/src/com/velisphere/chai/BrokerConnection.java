@@ -21,6 +21,9 @@ import java.io.IOException;
 
 
 
+
+
+
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -40,15 +43,21 @@ public class BrokerConnection {
 	static Connection txConnection;
 
 	public static void establishConnection(){
+		
 		ConnectionFactory txFactory;
 		ConnectionFactory rxFactory;
 		txFactory = new ConnectionFactory();
 		txFactory.setHost(ServerParameters.bunny_ip);
 		txFactory.setVirtualHost("hClients");
+		txFactory.setUsername("dummy");
+		txFactory.setPassword("dummy");
 
 		rxFactory = new ConnectionFactory();
 		rxFactory.setHost(ServerParameters.bunny_ip);
 		rxFactory.setVirtualHost("hController");
+		rxFactory.setUsername("dummy");
+		rxFactory.setPassword("dummy");
+
 
 		
 		try {

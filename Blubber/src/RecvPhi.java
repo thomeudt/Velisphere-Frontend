@@ -35,6 +35,9 @@ public class RecvPhi implements Runnable {
 
 	try {
     ConnectionFactory factory = new ConnectionFactory();
+    factory.setUsername("dummy");
+	factory.setPassword("dummy");
+	factory.setVirtualHost("hClients");
     factory.setHost(ServerParameters.bunny_ip);
     Connection connection;
 		connection = factory.newConnection();

@@ -49,11 +49,14 @@ public class ProvisioningClient {
 		
 		
 			
-			WebTarget target = client.target( "http://localhost:8080/Toucan/rest/provisioning/put" );
+			WebTarget target = client.target( "http://16.1.1.119:8080/Toucan/rest/provisioning/put" );
 
 			//Response response = target.path( "endpoint" ).path( sb.toString() ).request().put( Entity.text("f67528e4-80f7-4832-a5fd-3082bd4e7385") );
-			Response response = target.path( "endpoint" ).path( "Phi2" ).request().put( Entity.text("8e657ec5-8d4a-4850-be86-b65c364685ef") );
-				
+			
+			String identifier = "LMX"; 
+			
+			Response response = target.path( "endpoint" ).path( identifier).request().put( Entity.text("e959a675-f4b6-45ac-b0ee-0deea48d2129") );
+			System.out.println("Search for identifier: " + identifier);	
 		
 			System.out.println (response);
 			System.out.println (response.readEntity(String.class));

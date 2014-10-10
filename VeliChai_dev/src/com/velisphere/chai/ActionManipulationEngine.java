@@ -33,33 +33,7 @@ import com.velisphere.chai.dataObjects.ActionObject;
 
 public class ActionManipulationEngine {
 
-	/**
-	 * 
-	 * not needed anymore
-	 * 
-	 
-	public static HashSet<String> getActionItems(String ruleID) throws NoConnectionsException, IOException, ProcCallException
-	{
-				
-		HashSet<String> actionsFound = new HashSet<String>();
-		final ClientResponse findActionsForRuleID = BusinessLogicEngine.montanaClient
-				.callProcedure("AME_ActionsForRule", ruleID);
-		
-		final VoltTable findActionsForRuleIDResults[] = findActionsForRuleID
-				.getResults();
-		
-		VoltTable actionsForRuleID = findActionsForRuleIDResults[0];
-		// check if any rows have been returned
-		while (actionsForRuleID.advanceRow()) {
-			{
-				actionsFound.add(actionsForRuleID.getString("ACTIONID"));
-				// System.out.println(actionsFound);
-			}
-		}
-		
-		return actionsFound;
-	}
-	*/
+	
 	
 	public static LinkedList<ActionObject> executeActionItems(Entry<String, String> actionHash, HashMap<String, String> inboundMessageMap) throws Exception
 	{

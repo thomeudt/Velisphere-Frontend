@@ -19,7 +19,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>VeliChai_dev</groupId>
   <artifactId>VeliChai_dev</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.7.6-SNAPSHOT</version>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>
