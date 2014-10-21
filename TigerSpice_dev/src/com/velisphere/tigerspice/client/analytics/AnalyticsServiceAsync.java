@@ -16,5 +16,6 @@ public interface AnalyticsServiceAsync {
 	void getActionExecutedLog(String EndpointID, String PropertyID, AsyncCallback<LinkedList<AnalyticsRawData>> callback);
 	void getEndpointLogAsFile(LinkedList<TableRowData> table, AsyncCallback<String> callback);
 	void getEndpointLogChartAsFile(String htmlData, AsyncCallback<String> callback);
+	void getCurrentSensorState(String endpointID, String propertyID, AsyncCallback<AnalyticsRawData> callback);
 }
 

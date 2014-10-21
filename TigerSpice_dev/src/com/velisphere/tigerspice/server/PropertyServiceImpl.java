@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -192,53 +193,49 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 	public String getValueForEndpointProperty(
 			String endpointID, String propertyID) {
 
-		VoltConnector voltCon = new VoltConnector();
-
-		try {
-			voltCon.openDatabase();
-		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
+		Connection conn;
 		String valueForEndpointProperty = new String();
+
 		try {
+			Class.forName("com.vertica.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Could not find the JDBC driver class.\n");
+			e.printStackTrace();
 
-			final ClientResponse findValueForEndpointProperty = voltCon.montanaClient
-					.callProcedure("UI_LastLogEntryForEndpointProperty",
-							endpointID, propertyID);
+		}
+		try {
+			conn = DriverManager.getConnection("jdbc:vertica://"
+					+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+					"vertica", "1Suplies!");
 
-			final VoltTable findValueForEndpointPropertyResults[] = findValueForEndpointProperty
-					.getResults();
+			conn.setAutoCommit(true);
+			System.out.println(" [OK] Connected to Vertica on address: "
+					+ "16.1.1.113");
 
-			VoltTable result = findValueForEndpointPropertyResults[0];
-			// check if any rows have been returned
+			Statement mySelect = conn.createStatement();
 
-			while (result.advanceRow()) {
-				{
-					// extract the value in column checkid
-					valueForEndpointProperty = result.getString("propertyEntry");
+			ResultSet myResult = mySelect
+					.executeQuery("SELECT propertyentry FROM vlogger.endpointpropertylog "
+							+ "WHERE vlogger.endpointpropertylog.endpointid = '"
+							+ endpointID 
+							+ "' AND vlogger.endpointpropertylog.propertyid = '"
+							+ propertyID
+							+ "' ORDER BY time_stamp DESC LIMIT 1");
 
-				}
+			while (myResult.next()) {
+				
+				valueForEndpointProperty = myResult.getString(1);
+				
+				// System.out.println("Retrieved: " + logItem.getValue());
 			}
 
-			
+			mySelect.close();
 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		} catch (SQLException e) {
+			System.err.println("Could not connect to the database.\n");
 			e.printStackTrace();
-		}
 
-		try {
-			voltCon.closeDatabase();
-		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-
 		return valueForEndpointProperty;
 
 	}
@@ -564,6 +561,74 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 
 		return "OK";
 
+	}
+
+	@Override
+	public PropertyData getPropertyDetailsForPropertyID(String propertyID) {
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		PropertyData propertyData = new PropertyData();
+		try {
+
+			final ClientResponse findAllProperties = voltCon.montanaClient
+					.callProcedure("UI_SelectPropertyDetailsForPropertyID",
+							propertyID);
+
+			final VoltTable findAllPropertiesResults[] = findAllProperties
+					.getResults();
+
+			VoltTable result = findAllPropertiesResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					
+					propertyData.propertyId = result.getString("PROPERTYID");
+					propertyData.propertyName = result
+							.getString("PROPERTYNAME");
+					propertyData.propertyclassId = result
+							.getString("PROPERTYCLASSID");
+					propertyData.endpointclassId = result
+							.getString("ENDPOINTCLASSID");
+					propertyData.isActor = (byte) result
+							.get("ACT", VoltType.TINYINT);
+					propertyData.isSensor = (byte) result
+							.get("SENSE", VoltType.TINYINT);
+					propertyData.isConfigurable = (byte) result
+							.get("CONFIGURABLE", VoltType.TINYINT);
+					propertyData.status = (byte) result
+							.get("STATUS", VoltType.TINYINT);
+					
+
+				}
+			}
+
+			//Collections.sort(propertiesForEndpointClass);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return propertyData;
 	}
 
 

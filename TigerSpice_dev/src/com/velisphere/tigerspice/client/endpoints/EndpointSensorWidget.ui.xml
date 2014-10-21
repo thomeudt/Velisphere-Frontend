@@ -11,9 +11,48 @@
 			<b:Column size="2">
 				<b:ListBox styleName="span2" ui:field="lstSensors" />
 			</b:Column>
-		
+			<b:Column size="6">
+
+				<b:Row>
+					<b:Column size="3">
+						<b:Heading size ="3" ui:field="pgpPropertyName" text="Loading..." />
+					</b:Column>
+				</b:Row>
+
+				
+				<b:Row>
+					<b:Column size="3">
+						<b:Paragraph text="Last known value" />
+					</b:Column>
+					<b:Column size="3">
+						<b:Paragraph ui:field="pgpLastValue" text="Last Loading..." />
+					</b:Column>
+				</b:Row>
+				
+				<b:Row>
+					<b:Column size="3">
+						<b:Paragraph text="Unit of Measure" />
+					</b:Column>
+					<b:Column size="3">
+						<b:Paragraph ui:field="pgpUnit" text="Loading..." />
+					</b:Column>
+				</b:Row>
+				
+				<b:Row>
+					<b:Column size="3">
+						<b:Paragraph text="Last update" />
+					</b:Column>
+					<b:Column size="3">
+						<b:Paragraph ui:field="pgpLastUpdate" text="Loading..." />
+					</b:Column>
+				</b:Row>
+				
+
+			</b:Column>
+
+
 		</b:Row>
 
-		
+
 	</g:HTMLPanel>
 </ui:UiBinder> 

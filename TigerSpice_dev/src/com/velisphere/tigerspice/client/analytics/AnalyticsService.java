@@ -17,6 +17,7 @@ import com.velisphere.tigerspice.shared.TableRowData;
 		LinkedList<AnalyticsRawData> getActionExecutedLog(String endpointID, String propertyID);
 		String getEndpointLogAsFile(LinkedList<TableRowData> table) throws IOException;
 		String getEndpointLogChartAsFile (String htmlData);
+		AnalyticsRawData getCurrentSensorState(String endpointID, String propertyID);
 	}
 
 	
