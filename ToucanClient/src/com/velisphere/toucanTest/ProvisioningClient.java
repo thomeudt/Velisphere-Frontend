@@ -53,9 +53,9 @@ public class ProvisioningClient {
 
 			//Response response = target.path( "endpoint" ).path( sb.toString() ).request().put( Entity.text("f67528e4-80f7-4832-a5fd-3082bd4e7385") );
 			
-			String identifier = "LMX"; 
+			String identifier = "LMP3D1"; 
 			
-			Response response = target.path( "endpoint" ).path( identifier).request().put( Entity.text("e959a675-f4b6-45ac-b0ee-0deea48d2129") );
+			Response response = target.path( "endpoint" ).path( identifier).request().put( Entity.text("ff5bffd4-d5ba-46b2-b3f8-769055193acd") );
 			System.out.println("Search for identifier: " + identifier);	
 		
 			System.out.println (response);

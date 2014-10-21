@@ -35,7 +35,7 @@ public class FsConnect {
 		try {
 			
 			// Start AMQP Listener
-			ServerParameters.my_queue_name = "9f3ddf0a-4202-4d2c-84ad-6608ba777485";
+			ServerParameters.my_queue_name = "d48f2294-d022-44b9-8676-28de01c169a5";
 			
 			
 			
@@ -115,12 +115,14 @@ public class FsConnect {
 						
 						HashMap<String, String> messageHash = new HashMap<String, String>();
 						
-						messageHash.put("c1c7d783-7dff-40ec-bb15-4c27e0de1a92", position.toString());
-						messageHash.put("46014829-2a8c-4bea-b83e-3dc67668f4bf", String.valueOf(altitude));
-						messageHash.put("44651f79-bdcd-43db-89fe-70b8bad940b1", String.valueOf(groundspeed));
-						messageHash.put("e32f37e2-f062-4b24-bd4a-d21a55af14b4", String.valueOf(stall));
-						messageHash.put("f124b4b1-e4eb-45ec-9a70-5bff490fe9b4", String.valueOf(overspeed));
-						messageHash.put("eab47d76-4065-471b-9bb1-922e62acb902", String.valueOf(aoA));
+						messageHash.put("4dbfba15-7297-4349-b152-b32ca81b2bd4", position.toString());
+						messageHash.put("b0e66a0c-2ebe-4f36-961a-9810bb26957e", String.valueOf(altitude));
+						messageHash.put("aa3fae0c-f910-4f57-a8e9-0645994d8a59", String.valueOf(atcType));
+						messageHash.put("a078b27f-57f1-4bf8-8106-d063718cafae", String.valueOf(atcID));
+						messageHash.put("93d3fe9b-2051-4b3e-b9db-609c15008e33", String.valueOf(groundspeed));
+						messageHash.put("68fbe9fd-8377-4dc2-836b-a96ef28d9047", String.valueOf(stall));
+						messageHash.put("7db9deb1-caee-4dfc-8066-620a3a66b71f", String.valueOf(overspeed));
+						messageHash.put("009ce1d1-ef2d-4e42-9d45-204a6ff2109d", String.valueOf(aoA));
 						
 						System.out.println("Message Hash Sent to Controller: " + messageHash);
 						

@@ -21,24 +21,35 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 		xmlns:ct="urn:import:com.google.gwt.user.cellview.client"
 		xmlns:vspy="urn:import:com.velisphere.tigerspice.client.properties"
-		xmlns:vsch="urn:import:com.velisphere.tigerspice.client.checks">
+		xmlns:vsch="urn:import:com.velisphere.tigerspice.client.checks"
+		xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
 		<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images'/>
 	<g:HTMLPanel>
             <b:Breadcrumbs divider=">" ui:field="brdMain">
 		</b:Breadcrumbs>
-	    <b:Row>
-			
+
+            <b:Row>
+
+
 			<b:Column size="12" offset="0">
-				<b:PageHeader ui:field="pghEndpointName">Endpoint</b:PageHeader>				
+				<b:PageHeader ui:field="pghEndpointName">Loading...</b:PageHeader>
 			</b:Column>
-			
 		</b:Row>
-		
-	    <b:Row>
-				        
-	        <b:Column size="2" offset="0">
-			<b:Well>
-			<b:Strong ui:field="pgpInformHeader">Endpoint Information</b:Strong>
+
+
+
+
+
+		<b:Row>
+
+			<b:Column size="10" offset="0">
+
+
+
+				<b:TabPanel tabPosition="above" ui:field="tabPanel">
+
+					<b:TabPane heading="General" active="true">
+		   <b:Strong ui:field="pgpInformHeader">Endpoint Information</b:Strong>
 			<b:Paragraph addStyleNames="smalltext">Type:</b:Paragraph>
 			<b:Paragraph addStyleNames="smalltext" ui:field="pgpEndpointClassName">loading...</b:Paragraph>
 			<b:Paragraph addStyleNames="smalltext">Last heard of:</b:Paragraph>
@@ -54,62 +65,57 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			<b:Paragraph addStyleNames="smalltext">Reset:</b:Paragraph>
 			<b:Button type="DANGER" size="MINI" addStyleNames="btn-block">Reboot Now</b:Button>
 			
-			</b:Well>
+					
+					</b:TabPane>
+
+
+					<b:TabPane heading="Sensors" active="false">
+						
+							    <vspy:PropertyEditorWidget ui:field="vpyPropertyEditor" />
+					</b:TabPane>
+					
+					<b:TabPane heading="Actors" active="false">
+						
+						
+					</b:TabPane>
+					
+					<b:TabPane heading="Alerts" active="false">
+						<b:Heading size="4">Spheres: OK</b:Heading>
+
+						<b:Paragraph addStyleNames="smalltext-black">No errors reported in any
+							sphere.</b:Paragraph>
+						<b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
+					</b:TabPane>
+					<b:TabPane heading="Configuration" active="false">
+						<b:Heading size="4">Endpoints: OK</b:Heading>
+
+						<b:Paragraph addStyleNames="smalltext-black">All endpoints are
+							functioning.</b:Paragraph>
+						<b:Paragraph addStyleNames="smalltext-black">Maximum time out of
+							contact: 14 min for endpoint X</b:Paragraph>
+
+					</b:TabPane>
+					
+
+				</b:TabPanel>
+
+
+
 			</b:Column>
-				        
-			<b:Column size="9" offset="0">
-		
-			    	
-			    	<b:Row>
-				    <b:Column size="4" offset="0">
-			    	<b:Paragraph addStyleNames="smalltext">Properties:</b:Paragraph>
-			
-					</b:Column>
-					
-				    <b:Column size="4" offset="0">
-				    			    
-				    <b:Paragraph addStyleNames="smalltext">Checks:</b:Paragraph>
-			
-					</b:Column>
-			
-				    
-					</b:Row>
-					<b:Row>
-					    
-					    
-					    
-				    <b:Column size="4" offset="0">
-				        
-				    <vspy:PropertyEditorWidget ui:field="vpyPropertyEditor" />
-					</b:Column>
-					
-				    
-					<b:Column size="4" offset="0">
-				    				    
-				    <vsch:CheckEditorWidget />
-				    
-					</b:Column>
-					</b:Row>		
-				
-					
-					
-			
+
+			<b:Column size="2" offset="0">
+			<vssb:General></vssb:General>
+
 			</b:Column>
-			<b:Column size="1" offset="0">
-				<b:Heading size="4">Additional Resources</b:Heading>
-				
-			<b:Paragraph addStyleNames="smalltext">Device Provisioning Wizard</b:Paragraph>
-			
-			<b:Paragraph addStyleNames="smalltext">Getting Started</b:Paragraph>
-			
-			<b:Paragraph addStyleNames="smalltext">Best Practices</b:Paragraph>
-			
-			<b:Paragraph addStyleNames="smalltext">Market Place</b:Paragraph>
-			
-			
-			</b:Column>	
+
 		</b:Row>
-		
+            
+            
+            
+            
+            
+            		
+	    
 	    
 	    
 		

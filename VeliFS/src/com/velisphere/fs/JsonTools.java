@@ -17,8 +17,6 @@ package com.velisphere.fs;
  *  from Thorsten Meudt.
  ******************************************************************************/
 import java.io.IOException;
-import java.io.StringWriter;
-
 import org.json.simple.JSONObject;
 
 
