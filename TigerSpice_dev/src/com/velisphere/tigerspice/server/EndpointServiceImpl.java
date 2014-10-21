@@ -48,6 +48,7 @@ import org.voltdb.VoltTable;
 import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
+import org.voltdb.types.TimestampType;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
@@ -99,6 +100,8 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 							.getString("ENDPOINTNAME");
 					endpointData.endpointclassId = result
 							.getString("ENDPOINTCLASSID");
+					endpointData.endpointProvDate = result
+							.getString("ENDPOINTPROVDATE");
 					allEndPoints.add(endpointData);
 
 				}
@@ -157,6 +160,8 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 							.getString("ENDPOINTNAME");
 					endpointData.endpointclassId = result
 							.getString("ENDPOINTCLASSID");
+					endpointData.endpointProvDate = result
+							.getTimestampAsTimestamp("ENDPOINTPROVDATE").toString();
 					endPointsforSphere.add(endpointData);
 
 				}
@@ -292,6 +297,8 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 							.getString("ENDPOINTNAME");
 					endpointData.endpointclassId = result
 							.getString("ENDPOINTCLASSID");
+					endpointData.endpointProvDate = result
+							.getTimestampAsTimestamp("ENDPOINTPROVDATE").toString();
 					endPointsforUser.add(endpointData);
 
 				}
@@ -350,6 +357,8 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 							.getString("ENDPOINTNAME");
 					endpointForEndpointID.endpointclassId = result
 							.getString("ENDPOINTCLASSID");
+					endpointForEndpointID.endpointProvDate = result
+							.getTimestampAsTimestamp("ENDPOINTPROVDATE").toString();
 					
 
 				}
@@ -529,7 +538,8 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		
 		try {
 		
-			voltCon.montanaClient.callProcedure("ENDPOINT.insert", endpointID, endpointName, endpointclassID);
+			
+			voltCon.montanaClient.callProcedure("ENDPOINT.insert", endpointID, endpointName, endpointclassID, new TimestampType());
 			voltCon.montanaClient.callProcedure("ENDPOINT_USER_LINK.insert", linkID, endpointID, userID);
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block

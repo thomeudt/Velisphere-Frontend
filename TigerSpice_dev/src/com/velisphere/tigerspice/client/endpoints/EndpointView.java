@@ -37,6 +37,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -48,6 +49,7 @@ import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.properties.PropertyEditorWidget;
+import com.velisphere.tigerspice.client.rules.CheckpathEditorWidget;
 import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
 import com.velisphere.tigerspice.client.spheres.SphereView;
@@ -80,7 +82,8 @@ public class EndpointView extends Composite {
 	@UiField
 	Breadcrumbs brdMain;
 	@UiField
-	Paragraph pgpEndpointClassName;
+	Image imgEPCImage;
+
 	
 	private String endpointClassID;
 	private String endpointID;
@@ -162,7 +165,7 @@ public class EndpointView extends Composite {
 			}
 		});
 
-		
+		setEndpointImage(this.endpointID);
 		
 		
 		pghEndpointName.setText(endpointName);
@@ -247,36 +250,45 @@ public class EndpointView extends Composite {
 		pghEndpointName.add(ancEditEndpointName);
 	
 		
-		
-		
-
-		
-		setEndpointClassName(endpointID);
-
 	}
-
-	private void setEndpointClassName(String endpointID) {
+	
+	
+	private void setEndpointImage(String endpointID) {
 
 		final AnimationLoading animationLoading = new AnimationLoading();
-		showLoadAnimation(animationLoading);
+		
+		animationLoading.showLoadAnimation("Loading Image");
 	
-
-		rpcServiceEndpoint.getEndpointForEndpointID(endpointID,
+		EndpointServiceAsync endpointService = GWT
+				.create(EndpointService.class);
+		
+		
+		endpointService.getEndpointForEndpointID(endpointID,
 				new AsyncCallback<EndpointData>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
-						removeLoadAnimation(animationLoading);
+						animationLoading.removeLoadAnimation();
 					}
 
 					@Override
 					public void onSuccess(EndpointData result) {
 						// TODO Auto-generated method stub
-
-						rpcServiceEndpointClass
+						
+						animationLoading.removeLoadAnimation();
+						
+						EPCServiceAsync epcService = GWT
+								.create(EPCService.class);
+						
+						final AnimationLoading animationLoading = new AnimationLoading();
+						
+						animationLoading.showLoadAnimation("Loading Class");
+					
+						
+						epcService
 								.getEndpointClassForEndpointClassID(
-										result.getEpcId(),
+										result.endpointclassId,
 										new AsyncCallback<EPCData>() {
 
 											@Override
@@ -284,7 +296,7 @@ public class EndpointView extends Composite {
 													Throwable caught) {
 												// TODO Auto-generated method
 												// stub
-												removeLoadAnimation(animationLoading);
+												animationLoading.removeLoadAnimation();
 											}
 
 											@Override
@@ -292,24 +304,26 @@ public class EndpointView extends Composite {
 												// TODO Auto-generated method
 												// stub
 
-												pgpEndpointClassName
-														.setText(result.endpointclassName);
 												
-												
-												removeLoadAnimation(animationLoading);
-												
+												imgEPCImage.setUrl(result.endpointclassImageURL);
+												imgEPCImage.setWidth("250px");
+												animationLoading.removeLoadAnimation();
+																								
 												
 											}
 
 										});
 
-					}
+
+		
+											}
 
 				});
 
 	
 	}
 
+	
 	private void showLoadAnimation(AnimationLoading animationLoading) {
 		RootPanel rootPanel = RootPanel.get("main");
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
@@ -328,7 +342,13 @@ public class EndpointView extends Composite {
 	@UiFactory CheckEditorWidget makeCheckEditor() { // method name is insignificant
 	    return new CheckEditorWidget(this.endpointID);
 	  }
-	
+
+
+	@UiFactory EndpointInformationWidget makeEndpointInformationWidget() { // method name is insignificant
+	    return new EndpointInformationWidget(this.endpointClassID, this.endpointID);
+	  }
+
+
 	
 
 }

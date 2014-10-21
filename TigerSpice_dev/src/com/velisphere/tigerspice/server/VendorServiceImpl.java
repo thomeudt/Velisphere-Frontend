@@ -143,7 +143,7 @@ public class VendorServiceImpl extends RemoteServiceServlet implements
 					
 					vendor.vendorName = result.getString("VENDORNAME");
 					vendor.vendorID = result.getString("VENDORID");
-					vendor.vendorPath = result.getString("VENDORMAGEURL");
+					vendor.vendorPath = result.getString("VENDORIMAGEURL");
 					vendor.vendorImageURL = getServletContext().getContextPath()+"/tigerspiceDownloads?privateURL="+result.getString("VENDORIMAGEURL")
 							+ "&outboundFileName=VENDOR_image&persist=1";
 
@@ -268,6 +268,62 @@ public class VendorServiceImpl extends RemoteServiceServlet implements
 	}
 
 	
+	public VendorData getVendorForEpcID(String epcID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		VendorData vendor = new VendorData();
+		try {
+
+			final ClientResponse findVendor = voltCon.montanaClient
+					.callProcedure("UI_SelectVendorForEpcID", epcID);
+
+			final VoltTable findVendorResults[] = findVendor.getResults();
+
+			VoltTable result = findVendorResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					
+					vendor.vendorName = result.getString("VENDORNAME");
+					vendor.vendorID = result.getString("VENDORID");
+					vendor.vendorPath = result.getString("VENDORIMAGEURL");
+					vendor.vendorImageURL = getServletContext().getContextPath()+"/tigerspiceDownloads?privateURL="+result.getString("VENDORIMAGEURL")
+							+ "&outboundFileName=VENDOR_image&persist=1";
+
+
+				}
+			}
+
+			
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return vendor;
+	}
 
 
 

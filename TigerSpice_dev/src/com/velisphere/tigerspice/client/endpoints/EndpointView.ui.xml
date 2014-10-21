@@ -21,7 +21,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 		xmlns:ct="urn:import:com.google.gwt.user.cellview.client"
 		xmlns:vspy="urn:import:com.velisphere.tigerspice.client.properties"
-		xmlns:vsch="urn:import:com.velisphere.tigerspice.client.checks"
+		xmlns:vsep="urn:import:com.velisphere.tigerspice.client.endpoints"
 		xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
 		<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images'/>
 	<g:HTMLPanel>
@@ -42,28 +42,23 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 
 		<b:Row>
 
-			<b:Column size="10" offset="0">
+		    <b:Column size="2">
+				<g:Image ui:field="imgEPCImage" />
+			</b:Column>
+		    
+			<b:Column size="8" offset="0">
 
 
 
 				<b:TabPanel tabPosition="above" ui:field="tabPanel">
 
 					<b:TabPane heading="General" active="true">
-		   <b:Strong ui:field="pgpInformHeader">Endpoint Information</b:Strong>
-			<b:Paragraph addStyleNames="smalltext">Type:</b:Paragraph>
-			<b:Paragraph addStyleNames="smalltext" ui:field="pgpEndpointClassName">loading...</b:Paragraph>
-			<b:Paragraph addStyleNames="smalltext">Last heard of:</b:Paragraph>
-			<b:Paragraph addStyleNames="smalltext">Manufacturer:</b:Paragraph>
-			<b:Paragraph addStyleNames="smalltext">Statistics:</b:Paragraph>
-			<b:Button type="PRIMARY" size="MINI" addStyleNames="btn-block">View Usage Stats</b:Button>
-			<b:Paragraph addStyleNames="smalltext">Update available:</b:Paragraph>
-			<b:Button type="PRIMARY" size="MINI" addStyleNames="btn-block">Apply Update</b:Button>
-			<b:Paragraph addStyleNames="smalltext">Ping for Status Update:</b:Paragraph>
-			<b:Button type="PRIMARY" size="MINI" addStyleNames="btn-block">Ping Now</b:Button>
-			<b:Paragraph addStyleNames="smalltext">Configuration:</b:Paragraph>
-			<b:Button type="PRIMARY" size="MINI" addStyleNames="btn-block">Configuration Wizard</b:Button>
-			<b:Paragraph addStyleNames="smalltext">Reset:</b:Paragraph>
-			<b:Button type="DANGER" size="MINI" addStyleNames="btn-block">Reboot Now</b:Button>
+					    
+					     <vsep:EndpointInformationWidget ui:field="vepEndpointInfo" />
+					    
+					    
+					    
+
 			
 					
 					</b:TabPane>

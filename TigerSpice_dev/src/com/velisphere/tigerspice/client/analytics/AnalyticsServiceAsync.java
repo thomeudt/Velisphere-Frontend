@@ -10,6 +10,9 @@ import com.velisphere.tigerspice.shared.TableRowData;
 
 public interface AnalyticsServiceAsync {
 	void getEndpointLog(String EndpointID, String PropertyID, AsyncCallback<LinkedList<AnalyticsRawData>> callback);
+	void getLastEndpointLogTime(String endpointID, AsyncCallback<String> callback);
+	void getEndpointLogCount(String endpointID, AsyncCallback<String> callback);
+	void getActionLogCount(String endpointID, AsyncCallback<String> callback);
 	void getActionExecutedLog(String EndpointID, String PropertyID, AsyncCallback<LinkedList<AnalyticsRawData>> callback);
 	void getEndpointLogAsFile(LinkedList<TableRowData> table, AsyncCallback<String> callback);
 	void getEndpointLogChartAsFile(String htmlData, AsyncCallback<String> callback);

@@ -2,6 +2,7 @@ package com.velisphere.montana.manager;
 
 import org.voltdb.*;
 import org.voltdb.client.*;
+import org.voltdb.types.TimestampType;
 
 public class PreLoadNeu {
 
@@ -41,10 +42,10 @@ public class PreLoadNeu {
 	        
 	        System.out.println("Endpointclasses loaded");
 	        
-	        preLoader.callProcedure("ENDPOINT.insert", "E1", "PiPhidget", "EPC2");
-	        preLoader.callProcedure("ENDPOINT.insert", "E2", "Blubber Thorsten", "EPC1");
-	        preLoader.callProcedure("ENDPOINT.insert", "E3", "Blubber Ute", "EPC1");
-	        preLoader.callProcedure("ENDPOINT.insert", "E4", "Reference Home Controller App", "EPC3");
+	        preLoader.callProcedure("ENDPOINT.insert", "E1", "PiPhidget", "EPC2", new TimestampType());
+	        preLoader.callProcedure("ENDPOINT.insert", "E2", "Blubber Thorsten", "EPC1", new TimestampType());
+	        preLoader.callProcedure("ENDPOINT.insert", "E3", "Blubber Ute", "EPC1", new TimestampType());
+	        preLoader.callProcedure("ENDPOINT.insert", "E4", "Reference Home Controller App", "EPC3", new TimestampType());
 	        
 	        System.out.println("Endpoints loaded");
 	        
