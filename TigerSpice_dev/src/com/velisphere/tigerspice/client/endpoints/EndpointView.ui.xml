@@ -65,7 +65,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 
 
 					<b:TabPane heading="Sensors" active="false">
-						
+						<vsep:EndpointSensorWidget ui:field="vepEndpointSensors" />
 							    <vspy:PropertyEditorWidget ui:field="vpyPropertyEditor" />
 					</b:TabPane>
 					

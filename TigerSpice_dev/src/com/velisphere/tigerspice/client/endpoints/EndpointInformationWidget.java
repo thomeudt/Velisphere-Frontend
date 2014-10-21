@@ -54,9 +54,9 @@ public class EndpointInformationWidget extends Composite {
 			UiBinder<Widget, EndpointInformationWidget> {
 	}
 
-	public EndpointInformationWidget(String epcID, String endpointID) {
+	public EndpointInformationWidget(String endpointID) {
 		this.endpointID = endpointID;
-		this.epcID = epcID;
+		
 		initWidget(uiBinder.createAndBindUi(this));
 		setEndpointBaseData(endpointID);
 		setAnalyticsData(endpointID);

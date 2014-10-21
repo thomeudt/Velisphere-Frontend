@@ -345,10 +345,12 @@ public class EndpointView extends Composite {
 
 
 	@UiFactory EndpointInformationWidget makeEndpointInformationWidget() { // method name is insignificant
-	    return new EndpointInformationWidget(this.endpointClassID, this.endpointID);
+	    return new EndpointInformationWidget(this.endpointID);
 	  }
 
-
+	@UiFactory EndpointSensorWidget makeEndpointSensorWidget() { // method name is insignificant
+	    return new EndpointSensorWidget(this.endpointID);
+	  }
 	
 
 }
