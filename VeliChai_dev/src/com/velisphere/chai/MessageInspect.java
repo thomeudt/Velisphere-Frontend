@@ -83,11 +83,13 @@ public class MessageInspect implements Runnable {
 						    
 						    for (Iterator<Entry<String, String>> aIT = triggeredActions.entrySet().iterator(); aIT
 									.hasNext();) {
-								executedActions = ActionManipulationEngine.executeActionItems(aIT.next(), forEvaluation);
+								executedActions.addAll(ActionManipulationEngine.executeActionItems(aIT.next(), forEvaluation));
 								
 								aIT.remove();
 							}
 						    //LoggerEngine.writeEndpointLog(EPID, e.getKey(), e.getValue());
+						    
+						    
 						    
 						    VelisphereMart.insertTransactionLog(transactionID, EPID, e.getKey(), e.getValue(), executedActions, bleResult.getChecks(), bleResult.getCheckpaths() );		    
 						    
