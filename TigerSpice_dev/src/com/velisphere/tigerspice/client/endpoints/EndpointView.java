@@ -352,5 +352,9 @@ public class EndpointView extends Composite {
 	    return new EndpointSensorWidget(this.endpointID);
 	  }
 	
+	@UiFactory EndpointActorWidget makeEndpointActorWidget() { // method name is insignificant
+	    return new EndpointActorWidget(this.endpointID);
+	  }
+	
 
 }

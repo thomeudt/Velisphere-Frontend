@@ -24,6 +24,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.UnknownHostException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -191,8 +195,48 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 			e.printStackTrace();
 		}
 
-		return "OK";
+				
+		// second add to Vertica
 
+				Connection conn;
+
+				try {
+					Class.forName("com.vertica.jdbc.Driver");
+				} catch (ClassNotFoundException e) {
+					System.err.println("Could not find the JDBC driver class.\n");
+					e.printStackTrace();
+
+				}
+				try {
+					conn = DriverManager.getConnection("jdbc:vertica://"
+							+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+							"vertica", "1Suplies!");
+
+					conn.setAutoCommit(true);
+					System.out.println(" [OK] Connected to Vertica on address: "
+							+ ServerParameters.vertica_ip);
+
+					Statement myInsert = conn.createStatement();
+
+					Iterator<ActionObject> it = actions.iterator();
+					while (it.hasNext()) {
+						ActionObject action = it.next();
+						myInsert.executeUpdate("INSERT INTO VLOGGER.ACTION VALUES ('"
+								+ action.actionID + "','" + action.actionName + "','"
+								+ action.endpointID + "','','0','" + checkId + "','"
+								+ "" + "','" + checkpathID + "')");
+
+					}
+
+					myInsert.close();
+
+				} catch (SQLException e) {
+					System.err.println("Could not connect to the database.\n");
+					e.printStackTrace();
+
+				}
+
+				return "OK";
 	}
 
 	
@@ -652,6 +696,48 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		// second update in Vertica
+
+		Connection conn;
+
+		try {
+			Class.forName("com.vertica.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Could not find the JDBC driver class.\n");
+			e.printStackTrace();
+
+		}
+		try {
+			conn = DriverManager.getConnection("jdbc:vertica://"
+					+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+					"vertica", "1Suplies!");
+
+			conn.setAutoCommit(true);
+			System.out.println(" [OK] Connected to Vertica on address: "
+					+ ServerParameters.vertica_ip);
+
+			Statement myUpdate = conn.createStatement();
+
+			Iterator<ActionObject> itV = actions.iterator();
+			while (itV.hasNext()) {
+				ActionObject action = itV.next();
+				myUpdate.executeUpdate("UPDATE VLOGGER.ACTION SET ACTIONNAME = '" 
+						+ action.actionName + "', TARGETENDPOINTID = '"
+						+ action.endpointID + "', TGTEPIDFROMINBOUNDPROP = '', EXPIRED = '0' WHERE CHECKID = '" + multicheckID + "'");
+
+			}
+
+			myUpdate.close();
+
+		} catch (SQLException e) {
+			System.err.println("Could not connect to the database.\n");
+			e.printStackTrace();
+
+		}
+		
+		
+		
 
 		return "OK";
 

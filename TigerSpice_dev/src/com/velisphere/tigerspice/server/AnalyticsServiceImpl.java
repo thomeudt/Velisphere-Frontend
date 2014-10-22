@@ -402,4 +402,111 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 		return logItem;
 	}
 	
+	@Override
+	public AnalyticsRawData getCurrentActorState(String endpointID,
+			String propertyID) {
+
+		Connection conn;
+		AnalyticsRawData logItem = new AnalyticsRawData();
+
+		try {
+			Class.forName("com.vertica.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Could not find the JDBC driver class.\n");
+			e.printStackTrace();
+
+		}
+		try {
+			conn = DriverManager.getConnection("jdbc:vertica://"
+					+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+					"vertica", "1Suplies!");
+
+			conn.setAutoCommit(true);
+			System.out.println(" [OK] Connected to Vertica on address: "
+					+ "16.1.1.113");
+
+			Statement mySelect = conn.createStatement();
+
+			ResultSet myResult = mySelect
+					.executeQuery("SELECT actionid, sensorid, payload, time_stamp FROM vlogger.actionexecutedlog "
+							+ "WHERE vlogger.actionexecutedlog.actorid = '"
+							+ endpointID 
+							+ "' AND vlogger.actionexecutedlog.propertyid = '"
+							+ propertyID
+							+ "' ORDER BY time_stamp DESC LIMIT 1");
+
+
+			while (myResult.next()) {
+				
+				logItem.addPropertyValuePair(propertyID, myResult.getString(3));
+				logItem.setTimeStamp(myResult.getString(4));
+				logItem.setSource(myResult.getString(2));
+				logItem.setProcessedByID(myResult.getString(1));
+				
+				// System.out.println("Retrieved: " + logItem.getValue());
+			}
+
+			mySelect.close();
+
+		} catch (SQLException e) {
+			System.err.println("Could not connect to the database.\n");
+			e.printStackTrace();
+
+		}
+
+		return logItem;
+	}
+	
+	@Override
+	public String getActionNameForActionID(String actionID) {
+
+		Connection conn;
+		String actionName = new String();
+
+		try {
+			Class.forName("com.vertica.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Could not find the JDBC driver class.\n");
+			e.printStackTrace();
+
+		}
+		try {
+			conn = DriverManager.getConnection("jdbc:vertica://"
+					+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+					"vertica", "1Suplies!");
+
+			conn.setAutoCommit(true);
+			System.out.println(" [OK] Connected to Vertica on address: "
+					+ "16.1.1.113");
+
+			Statement mySelect = conn.createStatement();
+
+			ResultSet myResult = mySelect
+					.executeQuery("SELECT actionname FROM vlogger.action "
+							+ "WHERE vlogger.action.actionid = '"
+							+ actionID 
+							+ "' ORDER BY actionname DESC LIMIT 1");
+
+
+			while (myResult.next()) {
+				
+				
+				actionName = myResult.getString(1);
+								
+				// System.out.println("Retrieved: " + logItem.getValue());
+			}
+
+			mySelect.close();
+
+		} catch (SQLException e) {
+			System.err.println("Could not connect to the database.\n");
+			e.printStackTrace();
+
+		}
+
+		return actionName;
+	}
+
+
+	
 }

@@ -35,7 +35,7 @@ public interface CheckServiceAsync {
 	void updateCheck(String checkID, String name, String checkValue, String operator, String checkpathID, LinkedList<ActionObject> actions, AsyncCallback<String> callback );
 	void deleteCheck(String checkID, AsyncCallback<String> callback );
 	void getChecksForUserID(String userID, AsyncCallback<Vector<CheckData>> callback);
-	void getCheckNameForCheckID(String userID, AsyncCallback<String> callback);
+	void getCheckNameForCheckID(String checkID, AsyncCallback<String> callback);
 	void getActionsForCheckID(String checkID, String checkpathID, AsyncCallback<LinkedList<ActionObject>> callback);
 	void deleteAllActionsForCheckId(String checkID, AsyncCallback<String> callback );
 }

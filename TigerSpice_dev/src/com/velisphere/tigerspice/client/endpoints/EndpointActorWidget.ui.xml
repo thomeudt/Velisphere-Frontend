@@ -22,10 +22,47 @@
 				
 				<b:Row>
 					<b:Column size="3">
-						<b:Paragraph text="Last known value" ui:field="pgpLastValueHeader"/>
+						<b:Paragraph text="Last value sent to Actor" ui:field="pgpLastValueHeader" />
 					</b:Column>
 					<b:Column size="3">
 						<b:Paragraph ui:field="pgpLastValue" text="Last Loading..." />
+					</b:Column>
+				</b:Row>
+				
+				<b:Row>
+					<b:Column size="3">
+						<b:Paragraph text="Processed by Action" ui:field="pgpActionHeader" />
+					</b:Column>
+					<b:Column size="3">
+						<b:Paragraph ui:field="pgpAction" text="Last Loading..." />
+					</b:Column>
+				</b:Row>
+				
+				
+				<b:Row>
+					<b:Column size="3">
+						<b:Paragraph text="Action linked to Check" ui:field="pgpCheckHeader" />
+					</b:Column>
+					<b:Column size="3">
+						<b:Paragraph ui:field="pgpCheck" text="Last Loading..." />
+					</b:Column>
+				</b:Row>
+				
+				<b:Row>
+					<b:Column size="3">
+						<b:Paragraph text="In the following logic Design" ui:field="pgpLogicHeader" />
+					</b:Column>
+					<b:Column size="3">
+						<b:Paragraph ui:field="pgpLogic" text="Last Loading..." />
+					</b:Column>
+				</b:Row>
+				
+				<b:Row>
+					<b:Column size="3">
+						<b:Paragraph text="Triggered by Input Value from Sensor" ui:field="pgpTriggerHeader" />
+					</b:Column>
+					<b:Column size="3">
+						<b:Paragraph ui:field="pgpTrigger" text="Last Loading..." />
 					</b:Column>
 				</b:Row>
 				
@@ -52,6 +89,8 @@
 						<b:Button type="PRIMARY" size="MINI" addStyleNames="btn-block" ui:field="btnDataTrail">View Datatrail</b:Button>
 					</b:Column>
 				</b:Row>
+				
+				
 
 			</b:Column>
 

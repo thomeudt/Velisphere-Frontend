@@ -34,11 +34,19 @@ public class Recv implements Runnable {
     String QUEUE_NAME = ServerParameters.my_queue_name;
 
 	try {
-    ConnectionFactory factory = new ConnectionFactory();
-    factory.setHost(ServerParameters.bunny_ip);
-    Connection connection;
-		connection = factory.newConnection();
 	
+		
+		ConnectionFactory factory = new ConnectionFactory();
+		factory.setHost(ServerParameters.bunny_ip);
+		factory.setUsername("dummy");
+		factory.setPassword("dummy");
+		
+		factory.setVirtualHost("hClients");
+		Connection connection = factory.newConnection();
+
+		
+		
+		
     Channel channel = connection.createChannel();
 
     channel.queueDeclare(QUEUE_NAME, false, false, false, null);

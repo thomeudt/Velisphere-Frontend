@@ -71,7 +71,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 					
 					<b:TabPane heading="Actors" active="false">
 						
-						
+						<vsep:EndpointActorWidget ui:field="vepEndpointActors" />
 					</b:TabPane>
 					
 					<b:TabPane heading="Alerts" active="false">

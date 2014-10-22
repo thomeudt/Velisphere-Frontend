@@ -15,8 +15,12 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.actions.ActionService;
+import com.velisphere.tigerspice.client.actions.ActionServiceAsync;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
+import com.velisphere.tigerspice.client.checks.CheckService;
+import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
@@ -26,7 +30,7 @@ import com.velisphere.tigerspice.shared.AnalyticsRawData;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.velisphere.tigerspice.shared.PropertyData;
 
-public class EndpointSensorWidget extends Composite {
+public class EndpointActorWidget extends Composite {
 
 	String endpointID;
 	@UiField
@@ -40,22 +44,39 @@ public class EndpointSensorWidget extends Composite {
 	@UiField
 	Paragraph pgpUnit;
 	@UiField
+	Paragraph pgpAction;
+	@UiField
+	Paragraph pgpCheck;
+	@UiField
+	Paragraph pgpLogic;
+	@UiField
+	Paragraph pgpTrigger;
+	@UiField
 	Paragraph pgpLastValueHeader;
 	@UiField
 	Paragraph pgpLastUpdateHeader;
 	@UiField
 	Paragraph pgpUnitHeader;
 	@UiField
+	Paragraph pgpActionHeader;
+	@UiField
+	Paragraph pgpCheckHeader;
+	@UiField
+	Paragraph pgpLogicHeader;
+	@UiField
+	Paragraph pgpTriggerHeader;
+	@UiField
 	Button btnDataTrail;
-	
+
+
 	private static EndpointSensorWidgetUiBinder uiBinder = GWT
 			.create(EndpointSensorWidgetUiBinder.class);
 
 	interface EndpointSensorWidgetUiBinder extends
-			UiBinder<Widget, EndpointSensorWidget> {
+			UiBinder<Widget, EndpointActorWidget> {
 	}
 
-	public EndpointSensorWidget(String endpointID) {
+	public EndpointActorWidget(String endpointID) {
 		this.endpointID = endpointID;
 		initWidget(uiBinder.createAndBindUi(this));
 		populateSensorList();
@@ -78,7 +99,7 @@ public class EndpointSensorWidget extends Composite {
 		PropertyServiceAsync propertyService = GWT
 				.create(PropertyService.class);
 
-		propertyService.getSensorPropertiesForEndpointID(endpointID,
+		propertyService.getActorPropertiesForEndpointID(endpointID,
 				new AsyncCallback<LinkedList<PropertyData>>() {
 
 					@Override
@@ -93,16 +114,23 @@ public class EndpointSensorWidget extends Composite {
 						animationLoading.removeLoadAnimation();
 						Iterator<PropertyData> it = result.iterator();
 						if (it.hasNext() == false) {
-							
-							pgpPropertyName.setText("This endpoint does not contain sensors.");
+
+							pgpPropertyName.setText("This endpoint can't perform any actions.");
 							pgpUnitHeader.setText("");
 							pgpLastValueHeader.setText("");
 							pgpLastUpdateHeader.setText("");
 							pgpUnit.setText("");
+							pgpCheckHeader.setText("");
+							pgpActionHeader.setText("");
+							pgpLogicHeader.setText("");
+							pgpTriggerHeader.setText("");							
 							pgpLastValue.setText("");
 							pgpLastUpdate.setText("");
+							pgpCheck.setText("");
+							pgpAction.setText("");
+							pgpLogic.setText("");
+							pgpTrigger.setText("");
 							btnDataTrail.setVisible(false);
-
 						}
 						while (it.hasNext()) {
 
@@ -134,7 +162,7 @@ public class EndpointSensorWidget extends Composite {
 		AnalyticsServiceAsync analyticsService = GWT
 				.create(AnalyticsService.class);
 
-		analyticsService.getCurrentSensorState(endpointID, propertyID,
+		analyticsService.getCurrentActorState(endpointID, propertyID,
 				new AsyncCallback<AnalyticsRawData>() {
 
 					@Override
@@ -151,11 +179,17 @@ public class EndpointSensorWidget extends Composite {
 						{
 							pgpLastValue.setText("no values received yet");
 							pgpLastUpdate.setText("no values received yet");
+							pgpCheck.setText("no values received yet");
+							pgpAction.setText("no values received yet");
+							pgpLogic.setText("no values received yet");
+							pgpTrigger.setText("no values received yet");
 						}
 						else					
 						{
 							pgpLastValue.setText(result.getPropertyValuePairs().get(propertyID));
 							pgpLastUpdate.setText(result.getTimeStamp());
+							populateActionData(result.getProcessedByID());
+							pgpTrigger.setText(result.getSource());
 						}
 						
 						animationLoading.removeLoadAnimation();
@@ -218,6 +252,35 @@ public class EndpointSensorWidget extends Composite {
 						animationLoading.removeLoadAnimation();
 
 						pgpUnit.setText(result.getUnit());
+					}
+
+				});
+	}
+	
+	private void populateActionData(final String actionID) {
+
+		final AnimationLoading animationLoading = new AnimationLoading();
+
+		animationLoading.showLoadAnimation("Loading Action-specific Data");
+
+		
+
+		AnalyticsServiceAsync analyticsService = GWT
+				.create(AnalyticsService.class);
+
+		analyticsService.getActionNameForActionID(actionID, new AsyncCallback<String>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						animationLoading.removeLoadAnimation();
+						
+						pgpAction.setText(result);
 					}
 
 				});

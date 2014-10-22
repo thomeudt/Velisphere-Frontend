@@ -101,7 +101,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 					endpointData.endpointclassId = result
 							.getString("ENDPOINTCLASSID");
 					endpointData.endpointProvDate = result
-							.getString("ENDPOINTPROVDATE");
+							.getTimestampAsTimestamp("ENDPOINTPROVDATE").toString();
 					allEndPoints.add(endpointData);
 
 				}
