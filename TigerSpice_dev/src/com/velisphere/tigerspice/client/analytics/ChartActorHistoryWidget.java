@@ -56,10 +56,21 @@ public class ChartActorHistoryWidget extends Composite {
 	LinkedList<TableRowData> tableData;
 	LineChart lines;
 	Row graphRow;
-	SimpleLineChart sensorHistoryChart;
-	
+	SimpleLineChart actorHistoryChart;
 
-	public ChartActorHistoryWidget(String userID) {
+	
+	
+	
+	
+	public ChartActorHistoryWidget(String userID, String sphereID, String endpointID, String propertyID, String endpointName, String propertyName) {
+
+		buildWidget(userID);
+		System.out.println("EPID " + endpointID);
+		createGraph(endpointID, propertyID, endpointName, propertyName, null, null);
+	}
+
+
+	public void buildWidget(String userID) {
 		// initWidget(uiBinder.createAndBindUi(this));
 
 		final VerticalPanel vp = new VerticalPanel();
@@ -173,7 +184,7 @@ public class ChartActorHistoryWidget extends Composite {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				sensorHistoryChart.getImage(lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), 
+				actorHistoryChart.getImage(lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), 
 						lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex()));
 				
 				
@@ -192,7 +203,7 @@ public class ChartActorHistoryWidget extends Composite {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				sensorHistoryChart.startDownload(lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), 
+				actorHistoryChart.startDownload(lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), 
 						lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex()));
 				
 				
@@ -454,13 +465,14 @@ public class ChartActorHistoryWidget extends Composite {
 				public void onSuccess(LinkedList<AnalyticsRawData> result) {
 
 					graphRow.clear();
-					sensorHistoryChart = new SimpleLineChart(result, endpointID, propertyID, propertyName, endpointName, startDate, endDate);
+					actorHistoryChart = new SimpleLineChart(result, endpointID, propertyID, propertyName, endpointName, startDate, endDate);
 					
 					
-					graphRow.add(sensorHistoryChart.getGraphColumn());
+					graphRow.add(actorHistoryChart.getGraphColumn());
 					
 				}
 		});
+	
 	}
 	
 }

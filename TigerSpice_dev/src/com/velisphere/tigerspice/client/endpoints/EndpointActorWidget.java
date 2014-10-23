@@ -10,6 +10,9 @@ import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -19,6 +22,7 @@ import com.velisphere.tigerspice.client.actions.ActionService;
 import com.velisphere.tigerspice.client.actions.ActionServiceAsync;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
@@ -67,6 +71,7 @@ public class EndpointActorWidget extends Composite {
 	Paragraph pgpTriggerHeader;
 	@UiField
 	Button btnDataTrail;
+	HandlerRegistration dataTrailClickReg;
 
 
 	private static EndpointSensorWidgetUiBinder uiBinder = GWT
@@ -152,6 +157,26 @@ public class EndpointActorWidget extends Composite {
 
 
 	}
+	
+	private void addTrailClickhandler(final String endpointID, final String propertyID, final String endpointName, final String propertyName)
+	{
+		if (dataTrailClickReg != null)
+		{
+			dataTrailClickReg.removeHandler();	
+		}
+		
+		
+		dataTrailClickReg = btnDataTrail.addClickHandler(new ClickHandler()
+		{
+
+			@Override
+			public void onClick(ClickEvent event) {
+				AppController.openAnalyticsForDataTrail("", endpointID, propertyID, endpointName, propertyName, false);
+				System.out.println("EPID source " + endpointID);
+			}
+			
+		});
+	}
 
 	private void populateCurrentState(final String propertyID) {
 
@@ -221,6 +246,7 @@ public class EndpointActorWidget extends Composite {
 						animationLoading.removeLoadAnimation();
 						pgpPropertyName.setText(result.getPropertyName());
 						populatePropertyClassData(result.propertyclassId);
+						addTrailClickhandler(endpointID, result.propertyId, null, result.propertyName);
 						
 						
 						

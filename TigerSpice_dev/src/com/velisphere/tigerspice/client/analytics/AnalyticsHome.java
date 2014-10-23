@@ -37,52 +37,59 @@ public class AnalyticsHome extends Composite {
 	RootPanel rootPanelHeader;
 	VerticalPanel mainPanel;
 	NavBar navBar;
-	@UiField PageHeader pageHeader;
+	@UiField
+	PageHeader pageHeader;
 
+	@UiField
+	Breadcrumbs brdMain;
 
-	@UiField Breadcrumbs brdMain;
-	
 	NavLink bread0;
 	NavLink bread1;
 	String userName;
 	String userID;
-	
+	String sphereIDActor;
+	String endpointIDActor;
+	String endpointNameActor;
+	String propertyIDActor;
+	String propertyNameActor;
 	
 	public AnalyticsHome() {
 		this.userID = SessionHelper.getCurrentUserID();
 		initWidget(uiBinder.createAndBindUi(this));
-		
+
 		loadContent();
 	}
 	
-public void loadContent(){
+	public AnalyticsHome(String sphereID, String endpointID, String propertyID, String endpointName, String propertyName, boolean sensor) {
+		this.userID = SessionHelper.getCurrentUserID();
+		
+		
+		if(sensor != true){
+			this.sphereIDActor = sphereID; 
+			this.endpointIDActor = endpointID;
+			this.endpointNameActor = endpointName;
+			this.propertyIDActor = propertyID;
+			this.propertyNameActor = propertyName;
+		}
+		
+		initWidget(uiBinder.createAndBindUi(this));
 
-		
-		
-		
-		
+		loadContent();
+	}
+
+	public void loadContent() {
+
 		// set page header welcome back message
-    	pageHeader.setText("VeliSphere Analytics");
-    	
-    	final LogServiceAsync logService = GWT
-				.create(LogService.class);
-		
-    	    	
+		pageHeader.setText("VeliSphere Analytics");
 
-    	
+		final LogServiceAsync logService = GWT.create(LogService.class);
 
-    	
+		/**
+		 * NavBar navBar = new NavBar(); navBar = (NavBar)
+		 * RootPanel.get("stockList").getWidget(0);
+		 * navBar.activateForCurrentUser();
+		 **/
 
-    	
-    	
-    	
-    	
-    	/**
-		NavBar navBar = new NavBar();
-		navBar = (NavBar) RootPanel.get("stockList").getWidget(0);
-		navBar.activateForCurrentUser();
-		**/
-    	
 		bread0 = new NavLink();
 		bread0.setText("Home");
 		brdMain.add(bread0);
@@ -90,7 +97,7 @@ public void loadContent(){
 		bread1.setText("Analytics");
 		brdMain.add(bread1);
 		bread0.addClickHandler(new ClickHandler() {
-		public void onClick(ClickEvent event) {
+			public void onClick(ClickEvent event) {
 
 				RootPanel.get("main").clear();
 				LoginSuccess loginSuccess = new LoginSuccess();
@@ -101,13 +108,16 @@ public void loadContent(){
 		});
 	}
 
-@UiFactory ChartSensorHistoryWidget makeSensorHistory() { // method name is insignificant
-    return new ChartSensorHistoryWidget(userID);
-  }
+	@UiFactory
+	ChartSensorHistoryWidget makeSensorHistory() { // method name is
+													// insignificant
+		return new ChartSensorHistoryWidget(userID);
+	}
 
-@UiFactory ChartActorHistoryWidget makeActorHistory() { // method name is insignificant
-    return new ChartActorHistoryWidget(userID);
-  }
-
+	@UiFactory
+	ChartActorHistoryWidget makeActorHistory() { // method name is insignificant
+		return new ChartActorHistoryWidget(userID, sphereIDActor, endpointIDActor, propertyIDActor, endpointNameActor, propertyNameActor);
+		
+	}
 
 }

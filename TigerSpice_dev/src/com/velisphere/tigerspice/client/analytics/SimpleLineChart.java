@@ -79,7 +79,7 @@ public class SimpleLineChart {
 			options.setFontName("Source Sans Pro");
 			options.setLineWidth(2);
 
-			System.out.println(endpointID + " / " + propertyID);
+			//System.out.println(endpointID + " / " + propertyID);
 
 			// prep the datatable for celltable
 
@@ -193,7 +193,7 @@ public class SimpleLineChart {
 				// check if column content is numeric to arrange for proper
 				// sorting behavior
 				if (ConversionHelpers.isNumeric(columnContent)) {
-					System.out.println(columnHeader + " is numeric.");
+					//System.out.println(columnHeader + " is numeric.");
 					final int entryNo = iColNo;
 					com.google.gwt.user.cellview.client.Column<SensorTrail, Number> valueColumn = new com.google.gwt.user.cellview.client.Column<SensorTrail, Number>(
 							new NumberCell()) {
@@ -213,8 +213,7 @@ public class SimpleLineChart {
 
 					// Add sort handler to column
 
-					System.out
-							.println("creating value sort handler for numeric cells");
+					//System.out.println("creating value sort handler for numeric cells");
 
 					columnSortHandler.setComparator(valueColumn,
 							new Comparator<SensorTrail>() {
@@ -258,8 +257,7 @@ public class SimpleLineChart {
 
 					// Add sort handler to column
 
-					System.out
-							.println("creating value sort handler for HTML cells");
+					//System.out.println("creating value sort handler for HTML cells");
 
 					columnSortHandler.setComparator(valueColumn,
 							new Comparator<SensorTrail>() {
@@ -443,7 +441,7 @@ public class SimpleLineChart {
 
 			}
 
-			System.out.println(tableExportData.toString());
+			//System.out.println(tableExportData.toString());
 
 			// Create a line chart visualization.
 			lines = new LineChart(data, options);
@@ -527,7 +525,7 @@ public class SimpleLineChart {
 	}
 
 	public void getImage(final String endpointName, final String propertyName) {
-		System.out.println(lines.getElement().getInnerHTML());
+		//System.out.println(lines.getElement().getInnerHTML());
 
 		final AnalyticsServiceAsync analyticsService = GWT
 				.create(AnalyticsService.class);

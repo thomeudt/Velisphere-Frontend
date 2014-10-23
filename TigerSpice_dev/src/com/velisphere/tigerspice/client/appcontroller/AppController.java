@@ -337,6 +337,26 @@ public class AppController {
 	});
 	}
 
+	
+	public static void openAnalyticsForDataTrail(final String sphereID, final String endpointID, final String propertyID, final String endpointName, final String propertyName, final boolean sensor)
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			//AnalyticsHome analytics = new AnalyticsHome();
+			
+			AnalyticsHome analytics = new AnalyticsHome(sphereID, endpointID, propertyID, endpointName, propertyName, sensor);
+			openWithHistoryHandler("analytics_home", analytics);
+		}		
+	});
+	}
+
+	
+	
+	
 	public static void openDirectLink(final String URL)
 	{	
 		SessionHelper.validateCurrentSession();

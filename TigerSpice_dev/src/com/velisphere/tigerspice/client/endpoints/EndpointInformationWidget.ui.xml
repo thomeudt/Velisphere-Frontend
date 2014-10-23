@@ -61,7 +61,7 @@
 
 		<b:Row>
 			<b:Column size="2">
-				<b:Paragraph text="Total message count (Received from this Endpoint)" />
+				<b:Paragraph text="Total messages received from this endpoint" />
 			</b:Column>
 			<b:Column size="4">
 			    <b:Paragraph ui:field="pgpEndpointLogCount" text="Loading..." />
@@ -70,7 +70,7 @@
 		
 		<b:Row>
 			<b:Column size="2">
-				<b:Paragraph text="Total message count (Sent to this Endpoint)" />
+				<b:Paragraph text="Total messages sent to this endpoint" />
 			</b:Column>
 			<b:Column size="4">
 			     <b:Paragraph ui:field="pgpActionLogCount" text="Loading..." />
