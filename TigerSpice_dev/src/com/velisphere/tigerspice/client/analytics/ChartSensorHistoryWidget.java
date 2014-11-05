@@ -1,94 +1,34 @@
 package com.velisphere.tigerspice.client.analytics;
 
-
-
-
-
 import java.sql.Timestamp;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
-
-
-
-
-import org.apache.james.mime4j.field.datetime.DateTime;
-
 import com.github.gwtbootstrap.client.ui.Button;
-import com.github.gwtbootstrap.client.ui.CellTable;
 import com.github.gwtbootstrap.client.ui.Column;
-import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.Row;
 import com.github.gwtbootstrap.client.ui.constants.AlternateSize;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
-import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.resources.ButtonSize;
 import com.github.gwtbootstrap.datetimepicker.client.ui.DateTimeBox;
-import com.github.gwtbootstrap.datetimepicker.client.ui.DateTimeBoxAppended;
-import com.google.gwt.canvas.client.Canvas;
-import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
-import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
-import com.google.gwt.user.cellview.client.RowStyles;
-import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.CellPreviewEvent;
-import com.google.gwt.view.client.DefaultSelectionEventManager;
-import com.google.gwt.view.client.DefaultSelectionEventManager.SelectAction;
-import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.MultiSelectionModel;
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SelectionModel;
-import com.google.gwt.view.client.SingleSelectionModel;
-import com.google.gwt.visualization.client.AbstractDataTable;
-import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
-import com.google.gwt.visualization.client.ChartArea;
-import com.google.gwt.visualization.client.Query.Callback;
-import com.google.gwt.visualization.client.Query.SendMethod;
 import com.google.gwt.visualization.client.DataTable;
-import com.google.gwt.visualization.client.Query;
-import com.google.gwt.visualization.client.QueryResponse;
-import com.google.gwt.visualization.client.Selection;
 import com.google.gwt.visualization.client.VisualizationUtils;
-import com.google.gwt.visualization.client.events.PageHandler;
-import com.google.gwt.visualization.client.events.SelectHandler;
-import com.google.gwt.visualization.client.events.SelectHandler.SelectEvent;
-import com.google.gwt.visualization.client.formatters.ArrowFormat;
-import com.google.gwt.visualization.client.visualizations.Table;
-import com.google.gwt.visualization.client.visualizations.corechart.CoreChart;
 import com.google.gwt.visualization.client.visualizations.corechart.LineChart;
-import com.google.gwt.visualization.client.visualizations.corechart.Options;
-import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
-import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.spheres.SphereService;
@@ -113,15 +53,33 @@ public class ChartSensorHistoryWidget extends Composite {
 	LineChart lines;
 	Row graphRow;
 	SimpleLineChart sensorHistoryChart;
-	
+	String userID;
+	String sphereID;
+	String endpointID;
+	String propertyID;
+	String endpointName;
+	String propertyName;
 
-	public ChartSensorHistoryWidget(String userID) {
+	public ChartSensorHistoryWidget(String userID, String sphereID,
+			String endpointID, String propertyID, String endpointName,
+			String propertyName) {
+
+		this.userID = userID;
+		this.sphereID = sphereID;
+		this.endpointID = endpointID;
+		this.propertyID = propertyID;
+		this.propertyName = propertyName;
+		this.endpointName = endpointName;
+		buildWidget();
+		System.out.println("EPID " + endpointID);
+
+	}
+
+	public void buildWidget() {
 		// initWidget(uiBinder.createAndBindUi(this));
 
 		final VerticalPanel vp = new VerticalPanel();
 
-		
-		
 		initWidget(vp);
 
 		tableData = new LinkedList<TableRowData>();
@@ -191,13 +149,12 @@ public class ChartSensorHistoryWidget extends Composite {
 		dtbStart.setAlternateSize(AlternateSize.MEDIUM);
 		dtbStart.setShowTodayButton(true);
 		dtbStart.setHighlightToday(true);
-		//dtbStart.setBaseIcon(IconType.CALENDAR);
+		// dtbStart.setBaseIcon(IconType.CALENDAR);
 		dtbStart.setAutoClose(true);
-		
-		filterCol8.add(dtbStart);				
+
+		filterCol8.add(dtbStart);
 		filterRow8.add(filterCol8);
 
-		
 		Row filterRow9 = new Row();
 		Column filterCol9 = new Column(2);
 		Label lblEndTimeFilter = new Label("Range end");
@@ -210,9 +167,9 @@ public class ChartSensorHistoryWidget extends Composite {
 		dtbEnd.setAlternateSize(AlternateSize.MEDIUM);
 		dtbEnd.setShowTodayButton(true);
 		dtbEnd.setHighlightToday(true);
-		//dtbEnd.setBaseIcon(IconType.CALENDAR);
+		// dtbEnd.setBaseIcon(IconType.CALENDAR);
 		dtbEnd.setAutoClose(true);
-		
+
 		filterCol10.add(dtbEnd);
 		filterRow10.add(filterCol10);
 
@@ -223,46 +180,43 @@ public class ChartSensorHistoryWidget extends Composite {
 		btnDownloadChart.setType(ButtonType.PRIMARY);
 		filterCol11.add(btnDownloadChart);
 		filterRow11.add(filterCol11);
-		
-		btnDownloadChart.addClickHandler(new ClickHandler()
-		{
+
+		btnDownloadChart.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				sensorHistoryChart.getImage(lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), 
-						lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex()));
-				
-				
+				sensorHistoryChart.getImage(lbxEndpointFilter
+						.getItemText(lbxEndpointFilter.getSelectedIndex()),
+						lbxPropertyFilter.getItemText(lbxPropertyFilter
+								.getSelectedIndex()));
+
 			}
-			
+
 		});
-		
-		
+
 		Row filterRow12 = new Row();
 		Column filterCol12 = new Column(2);
 		Button btnDownloadTable = new Button("Download Data");
 		btnDownloadTable.setSize(ButtonSize.SMALL);
 		btnDownloadTable.setType(ButtonType.PRIMARY);
-		btnDownloadTable.addClickHandler(new ClickHandler()
-		{
+		btnDownloadTable.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				sensorHistoryChart.startDownload(lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), 
-						lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex()));
-				
-				
+				sensorHistoryChart.startDownload(lbxEndpointFilter
+						.getItemText(lbxEndpointFilter.getSelectedIndex()),
+						lbxPropertyFilter.getItemText(lbxPropertyFilter
+								.getSelectedIndex()));
+
 			}
-			
+
 		});
-		
+
 		filterCol12.add(new Paragraph(" "));
 		filterCol12.add(btnDownloadTable);
 		filterRow12.add(filterCol12);
-		
+
 		graphRow = new Row();
-		
-		
 
 		leftCol.add(filterRow1);
 		leftCol.add(filterRow2);
@@ -280,7 +234,20 @@ public class ChartSensorHistoryWidget extends Composite {
 		rightCol.add(graphRow);
 
 		populateSphereList(userID);
+
 		
+		// show message if nothing is selected or injected
+		
+				graphRow.add(new Paragraph("Please make a selection in the menu to the left."));
+
+		// build graph if selection parameters were injected
+
+				if (endpointID != null) {
+					createGraph(endpointID, propertyID, endpointName, propertyName,
+							null, null);
+				}
+		
+		// add change handlers
 		
 		lbxSphereFilter.addChangeHandler(new ChangeHandler() {
 			@Override
@@ -301,56 +268,36 @@ public class ChartSensorHistoryWidget extends Composite {
 			@Override
 			public void onChange(ChangeEvent event) {
 
-				graphRow.clear();
-				graphRow.add(new Paragraph("Preparing Chart, please wait..."));
+				createGraph(lbxEndpointFilter.getValue(),
+								lbxPropertyFilter.getValue(), lbxEndpointFilter
+										.getItemText(lbxEndpointFilter
+												.getSelectedIndex()),
+								lbxPropertyFilter.getItemText(lbxPropertyFilter
+										.getSelectedIndex()), null, null);
 
-				Runnable onLoadCallback = new Runnable() {
-					public void run() {
-						
-						createGraph(lbxEndpointFilter.getValue(), lbxPropertyFilter.getValue(), lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), 
-								lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex()), null, null);
-						
-						
-						/**
-						populateChart(lbxEndpointFilter
-								.getItemText(lbxEndpointFilter
-										.getSelectedIndex()), lbxPropertyFilter
-								.getItemText(lbxPropertyFilter
-										.getSelectedIndex()));
-						**/
-					}
-				};
-
-				VisualizationUtils.loadVisualizationApi(onLoadCallback,
-						LineChart.PACKAGE);
-				
-				
 			}
 		});
-		
-		
-		
+
 		dtbStart.addValueChangeHandler(new ValueChangeHandler<Date>() {
 			@Override
 			public void onValueChange(ValueChangeEvent event) {
 
-				
 				Timestamp tsStart = new Timestamp(dtbStart.getValue().getTime());
 				Timestamp tsEnd = new Timestamp(dtbEnd.getValue().getTime());
-				
-				
-				createGraph(lbxEndpointFilter.getValue(), lbxPropertyFilter.getValue(), lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), 
-						lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex()), tsStart, tsEnd);
-				
-				
-				/**
-				populateChartForRange(lbxEndpointFilter
-						.getItemText(lbxEndpointFilter
-								.getSelectedIndex()), lbxPropertyFilter
-						.getItemText(lbxPropertyFilter
+
+				createGraph(lbxEndpointFilter.getValue(), lbxPropertyFilter
+						.getValue(), lbxEndpointFilter
+						.getItemText(lbxEndpointFilter.getSelectedIndex()),
+						lbxPropertyFilter.getItemText(lbxPropertyFilter
 								.getSelectedIndex()), tsStart, tsEnd);
-				**/
-				
+
+				/**
+				 * populateChartForRange(lbxEndpointFilter
+				 * .getItemText(lbxEndpointFilter .getSelectedIndex()),
+				 * lbxPropertyFilter .getItemText(lbxPropertyFilter
+				 * .getSelectedIndex()), tsStart, tsEnd);
+				 **/
+
 			}
 		});
 
@@ -360,25 +307,22 @@ public class ChartSensorHistoryWidget extends Composite {
 
 				Timestamp tsStart = new Timestamp(dtbStart.getValue().getTime());
 				Timestamp tsEnd = new Timestamp(dtbEnd.getValue().getTime());
-				
-				createGraph(lbxEndpointFilter.getValue(), lbxPropertyFilter.getValue(), lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), 
-						lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex()), tsStart, tsEnd);
-				
-				
-				
-				
-				/**
-				populateChartForRange(lbxEndpointFilter
-						.getItemText(lbxEndpointFilter
-								.getSelectedIndex()), lbxPropertyFilter
-						.getItemText(lbxPropertyFilter
+
+				createGraph(lbxEndpointFilter.getValue(), lbxPropertyFilter
+						.getValue(), lbxEndpointFilter
+						.getItemText(lbxEndpointFilter.getSelectedIndex()),
+						lbxPropertyFilter.getItemText(lbxPropertyFilter
 								.getSelectedIndex()), tsStart, tsEnd);
-					**/		
+
+				/**
+				 * populateChartForRange(lbxEndpointFilter
+				 * .getItemText(lbxEndpointFilter .getSelectedIndex()),
+				 * lbxPropertyFilter .getItemText(lbxPropertyFilter
+				 * .getSelectedIndex()), tsStart, tsEnd);
+				 **/
 			}
 		});
 
-		
-		
 	}
 
 	private void populateSphereList(String userID) {
@@ -403,6 +347,13 @@ public class ChartSensorHistoryWidget extends Composite {
 									sphere.getId());
 
 						}
+						
+						if (sphereID != null) {
+							lbxSphereFilter.setSelectedValue(sphereID);
+
+						}
+
+						
 						populateEndpointList(lbxSphereFilter.getValue());
 
 					}
@@ -434,6 +385,12 @@ public class ChartSensorHistoryWidget extends Composite {
 									endpoint.getId());
 
 						}
+						
+						if (endpointID != null) {
+							lbxEndpointFilter.setSelectedValue(endpointID);
+
+						}
+
 						populateSensorList(lbxEndpointFilter.getValue());
 					}
 				});
@@ -465,57 +422,67 @@ public class ChartSensorHistoryWidget extends Composite {
 									property.getId());
 
 						}
-						
-						createGraph(lbxEndpointFilter.getValue(), lbxPropertyFilter.getValue(), lbxEndpointFilter.getItemText(lbxEndpointFilter.getSelectedIndex()), 
-								lbxPropertyFilter.getItemText(lbxPropertyFilter.getSelectedIndex()), null, null);
-						
-						
-						
 
-						/**
-						populateChart(lbxEndpointFilter
-								.getItemText(lbxEndpointFilter
-										.getSelectedIndex()), lbxPropertyFilter
-								.getItemText(lbxPropertyFilter
-										.getSelectedIndex()));
-						**/
+						createGraph(lbxEndpointFilter.getValue(),
+								lbxPropertyFilter.getValue(), lbxEndpointFilter
+										.getItemText(lbxEndpointFilter
+												.getSelectedIndex()),
+								lbxPropertyFilter.getItemText(lbxPropertyFilter
+										.getSelectedIndex()), null, null);
+						
+						if (propertyID != null) {
+							lbxPropertyFilter.setSelectedValue(propertyID);
+
+						}
+
 					}
 				});
 
 	}
 
-	private void createGraph(final String endpointID, final String propertyID, final String endpointName, final String propertyName, final Timestamp startDate, final Timestamp endDate)
-	{
-	
-		
-		
-	final AnalyticsServiceAsync analyticsService = GWT
-			.create(AnalyticsService.class);
+	private void createGraph(final String endpointID, final String propertyID,
+			final String endpointName, final String propertyName,
+			final Timestamp startDate, final Timestamp endDate) {
 
-	System.out.println(endpointID + " / "
-			+ propertyID);
-	
-	analyticsService.getEndpointLog(endpointID,
-			propertyID,
-			new AsyncCallback<LinkedList<AnalyticsRawData>>() {
-				@Override
-				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
-					System.out.println("VERTICA Error " + caught);
+		graphRow.clear();
+		graphRow.add(new Paragraph("Preparing Chart, please wait..."));
 
-				}
+		Runnable onLoadCallback = new Runnable() {
+			public void run() {
 
-				@Override
-				public void onSuccess(LinkedList<AnalyticsRawData> result) {
+				final AnalyticsServiceAsync analyticsService = GWT
+						.create(AnalyticsService.class);
 
-					graphRow.clear();
-					sensorHistoryChart = new SimpleLineChart(result, endpointID, propertyID, propertyName, endpointName, startDate, endDate);
-					
-					
-					graphRow.add(sensorHistoryChart.getGraphColumn());
-					
-				}
-		});
+				System.out.println(endpointID + " / " + propertyID);
+
+				analyticsService.getEndpointLog(endpointID, propertyID,
+						new AsyncCallback<LinkedList<AnalyticsRawData>>() {
+							@Override
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+								System.out.println("VERTICA Error " + caught);
+
+							}
+
+							@Override
+							public void onSuccess(
+									LinkedList<AnalyticsRawData> result) {
+
+								graphRow.clear();
+								sensorHistoryChart = new SimpleLineChart(
+										result, endpointID, propertyID,
+										propertyName, endpointName, startDate,
+										endDate);
+
+								graphRow.add(sensorHistoryChart
+										.getGraphColumn());
+
+							}
+						});
+			}
+		};
+		VisualizationUtils.loadVisualizationApi(onLoadCallback,
+				LineChart.PACKAGE);
 	}
-	
+
 }

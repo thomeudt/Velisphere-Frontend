@@ -10,6 +10,9 @@ import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -17,6 +20,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
@@ -29,6 +33,7 @@ import com.velisphere.tigerspice.shared.PropertyData;
 public class EndpointSensorWidget extends Composite {
 
 	String endpointID;
+	String sphereID;
 	@UiField
 	ListBox lstSensors;
 	@UiField
@@ -47,6 +52,8 @@ public class EndpointSensorWidget extends Composite {
 	Paragraph pgpUnitHeader;
 	@UiField
 	Button btnDataTrail;
+	HandlerRegistration dataTrailClickReg;
+
 	
 	private static EndpointSensorWidgetUiBinder uiBinder = GWT
 			.create(EndpointSensorWidgetUiBinder.class);
@@ -55,8 +62,9 @@ public class EndpointSensorWidget extends Composite {
 			UiBinder<Widget, EndpointSensorWidget> {
 	}
 
-	public EndpointSensorWidget(String endpointID) {
+	public EndpointSensorWidget(String sphereID, String endpointID) {
 		this.endpointID = endpointID;
+		this.sphereID = sphereID;
 		initWidget(uiBinder.createAndBindUi(this));
 		populateSensorList();
 
@@ -124,6 +132,25 @@ public class EndpointSensorWidget extends Composite {
 
 
 	}
+	
+	
+	private void addTrailClickhandler(final String propertyID, final String endpointName,
+			final String propertyName) {
+		if (dataTrailClickReg != null) {
+			dataTrailClickReg.removeHandler();
+		}
+
+		dataTrailClickReg = btnDataTrail.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				AppController.openAnalyticsForDataTrail(sphereID, endpointID,
+						propertyID, endpointName, propertyName, true);
+				System.out.println("EPID source " + endpointID);
+			}
+
+		});
+	}
 
 	private void populateCurrentState(final String propertyID) {
 
@@ -187,7 +214,8 @@ public class EndpointSensorWidget extends Composite {
 						animationLoading.removeLoadAnimation();
 						pgpPropertyName.setText(result.getPropertyName());
 						populatePropertyClassData(result.propertyclassId);
-						
+						addTrailClickhandler(result.propertyId,
+								null, result.propertyName);
 						
 						
 					}

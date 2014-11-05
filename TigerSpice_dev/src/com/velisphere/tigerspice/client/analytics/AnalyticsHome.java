@@ -8,6 +8,7 @@ import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.StackProgressBar;
+import com.github.gwtbootstrap.client.ui.TabPanel;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -42,7 +43,11 @@ public class AnalyticsHome extends Composite {
 
 	@UiField
 	Breadcrumbs brdMain;
+	@UiField
+	TabPanel tabPanel;
 
+	
+	
 	NavLink bread0;
 	NavLink bread1;
 	String userName;
@@ -52,6 +57,11 @@ public class AnalyticsHome extends Composite {
 	String endpointNameActor;
 	String propertyIDActor;
 	String propertyNameActor;
+	String sphereIDSensor;
+	String endpointIDSensor;
+	String endpointNameSensor;
+	String propertyIDSensor;
+	String propertyNameSensor;
 	
 	public AnalyticsHome() {
 		this.userID = SessionHelper.getCurrentUserID();
@@ -64,15 +74,34 @@ public class AnalyticsHome extends Composite {
 		this.userID = SessionHelper.getCurrentUserID();
 		
 		
+	
 		if(sensor != true){
-			this.sphereIDActor = sphereID; 
+			
+			this.sphereIDActor = sphereID;
+			
 			this.endpointIDActor = endpointID;
 			this.endpointNameActor = endpointName;
 			this.propertyIDActor = propertyID;
 			this.propertyNameActor = propertyName;
+			initWidget(uiBinder.createAndBindUi(this));
+			tabPanel.selectTab(1);
+		} else 
+		{
+			this.sphereIDSensor = sphereID;
+			this.endpointIDSensor = endpointID;
+			this.endpointNameSensor = endpointName;
+			this.propertyIDSensor = propertyID;
+			this.propertyNameSensor = propertyName;
+			initWidget(uiBinder.createAndBindUi(this));
+			
 		}
 		
-		initWidget(uiBinder.createAndBindUi(this));
+		
+			
+		
+		
+		
+	
 
 		loadContent();
 	}
@@ -111,11 +140,13 @@ public class AnalyticsHome extends Composite {
 	@UiFactory
 	ChartSensorHistoryWidget makeSensorHistory() { // method name is
 													// insignificant
-		return new ChartSensorHistoryWidget(userID);
+		System.out.println("SPIDS: " + sphereIDSensor);
+		return new ChartSensorHistoryWidget(userID, sphereIDSensor, endpointIDSensor, propertyIDSensor, endpointNameSensor, propertyNameSensor);
 	}
 
 	@UiFactory
 	ChartActorHistoryWidget makeActorHistory() { // method name is insignificant
+		System.out.println("SPIDA: " + sphereIDActor);
 		return new ChartActorHistoryWidget(userID, sphereIDActor, endpointIDActor, propertyIDActor, endpointNameActor, propertyNameActor);
 		
 	}

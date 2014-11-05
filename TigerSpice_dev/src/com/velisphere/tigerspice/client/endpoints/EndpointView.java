@@ -85,8 +85,9 @@ public class EndpointView extends Composite {
 	Image imgEPCImage;
 
 	
-	private String endpointClassID;
-	private String endpointID;
+	String endpointClassID;
+	String endpointID;
+	String sphereID;
 	NavLink bread0;
 	NavLink bread1;
 	NavLink bread2;
@@ -108,11 +109,12 @@ public class EndpointView extends Composite {
 	public EndpointView(final String sphereID, final String sphereName,
 			final String endpointID, String endpointName, final String endpointClassID) {
 
+		
 		rpcServiceEndpoint = GWT.create(EndpointService.class);
 		rpcServiceEndpointClass = GWT.create(EPCService.class);
 		this.endpointClassID = endpointClassID;
 		this.endpointID = endpointID;
-
+		this.sphereID = sphereID;
 		
 		
 		initWidget(uiBinder.createAndBindUi(this));
@@ -349,11 +351,11 @@ public class EndpointView extends Composite {
 	  }
 
 	@UiFactory EndpointSensorWidget makeEndpointSensorWidget() { // method name is insignificant
-	    return new EndpointSensorWidget(this.endpointID);
+	    return new EndpointSensorWidget(this.sphereID, this.endpointID);
 	  }
 	
 	@UiFactory EndpointActorWidget makeEndpointActorWidget() { // method name is insignificant
-	    return new EndpointActorWidget(this.endpointID);
+	    return new EndpointActorWidget(this.sphereID, this.endpointID);
 	  }
 	
 

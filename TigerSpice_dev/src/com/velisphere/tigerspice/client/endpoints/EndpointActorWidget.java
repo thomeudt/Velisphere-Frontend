@@ -18,13 +18,9 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
-import com.velisphere.tigerspice.client.actions.ActionService;
-import com.velisphere.tigerspice.client.actions.ActionServiceAsync;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
-import com.velisphere.tigerspice.client.checks.CheckService;
-import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
@@ -37,6 +33,7 @@ import com.velisphere.tigerspice.shared.PropertyData;
 public class EndpointActorWidget extends Composite {
 
 	String endpointID;
+	String sphereID;
 	@UiField
 	ListBox lstSensors;
 	@UiField
@@ -73,7 +70,6 @@ public class EndpointActorWidget extends Composite {
 	Button btnDataTrail;
 	HandlerRegistration dataTrailClickReg;
 
-
 	private static EndpointSensorWidgetUiBinder uiBinder = GWT
 			.create(EndpointSensorWidgetUiBinder.class);
 
@@ -81,8 +77,9 @@ public class EndpointActorWidget extends Composite {
 			UiBinder<Widget, EndpointActorWidget> {
 	}
 
-	public EndpointActorWidget(String endpointID) {
+	public EndpointActorWidget(String sphereID, String endpointID) {
 		this.endpointID = endpointID;
+		this.sphereID = sphereID;
 		initWidget(uiBinder.createAndBindUi(this));
 		populateSensorList();
 
@@ -120,7 +117,8 @@ public class EndpointActorWidget extends Composite {
 						Iterator<PropertyData> it = result.iterator();
 						if (it.hasNext() == false) {
 
-							pgpPropertyName.setText("This endpoint can't perform any actions.");
+							pgpPropertyName
+									.setText("This endpoint can't perform any actions.");
 							pgpUnitHeader.setText("");
 							pgpLastValueHeader.setText("");
 							pgpLastUpdateHeader.setText("");
@@ -128,7 +126,7 @@ public class EndpointActorWidget extends Composite {
 							pgpCheckHeader.setText("");
 							pgpActionHeader.setText("");
 							pgpLogicHeader.setText("");
-							pgpTriggerHeader.setText("");							
+							pgpTriggerHeader.setText("");
 							pgpLastValue.setText("");
 							pgpLastUpdate.setText("");
 							pgpCheck.setText("");
@@ -155,26 +153,23 @@ public class EndpointActorWidget extends Composite {
 
 		lstSensors.setVisibleItemCount(10);
 
-
 	}
-	
-	private void addTrailClickhandler(final String endpointID, final String propertyID, final String endpointName, final String propertyName)
-	{
-		if (dataTrailClickReg != null)
-		{
-			dataTrailClickReg.removeHandler();	
+
+	private void addTrailClickhandler(final String propertyID, final String endpointName,
+			final String propertyName) {
+		if (dataTrailClickReg != null) {
+			dataTrailClickReg.removeHandler();
 		}
-		
-		
-		dataTrailClickReg = btnDataTrail.addClickHandler(new ClickHandler()
-		{
+
+		dataTrailClickReg = btnDataTrail.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				AppController.openAnalyticsForDataTrail("", endpointID, propertyID, endpointName, propertyName, false);
+				AppController.openAnalyticsForDataTrail(sphereID, endpointID,
+						propertyID, endpointName, propertyName, false);
 				System.out.println("EPID source " + endpointID);
 			}
-			
+
 		});
 	}
 
@@ -198,42 +193,38 @@ public class EndpointActorWidget extends Composite {
 
 					@Override
 					public void onSuccess(AnalyticsRawData result) {
-						
-						
-						if (result.getPropertyValuePairs().get(propertyID) == null)
-						{
+
+						if (result.getPropertyValuePairs().get(propertyID) == null) {
 							pgpLastValue.setText("no values received yet");
 							pgpLastUpdate.setText("no values received yet");
 							pgpCheck.setText("no values received yet");
 							pgpAction.setText("no values received yet");
 							pgpLogic.setText("no values received yet");
 							pgpTrigger.setText("no values received yet");
-						}
-						else					
-						{
-							pgpLastValue.setText(result.getPropertyValuePairs().get(propertyID));
+						} else {
+							pgpLastValue.setText(result.getPropertyValuePairs()
+									.get(propertyID));
 							pgpLastUpdate.setText(result.getTimeStamp());
 							populateActionData(result.getProcessedByID());
 							pgpTrigger.setText(result.getSource());
 						}
-						
+
 						animationLoading.removeLoadAnimation();
 					}
 				});
 	}
-	
-	
+
 	private void populatePropertyData(final String propertyID) {
 
 		final AnimationLoading animationLoading = new AnimationLoading();
 
 		animationLoading.showLoadAnimation("Loading Class-specific Data");
 
-
 		PropertyServiceAsync propertyService = GWT
 				.create(PropertyService.class);
 
-		propertyService.getPropertyDetailsForPropertyID(propertyID, new AsyncCallback<PropertyData>() {
+		propertyService.getPropertyDetailsForPropertyID(propertyID,
+				new AsyncCallback<PropertyData>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -246,26 +237,25 @@ public class EndpointActorWidget extends Composite {
 						animationLoading.removeLoadAnimation();
 						pgpPropertyName.setText(result.getPropertyName());
 						populatePropertyClassData(result.propertyclassId);
-						addTrailClickhandler(endpointID, result.propertyId, null, result.propertyName);
-						
-						
-						
+						addTrailClickhandler(result.propertyId,
+								null, result.propertyName);
+
 					}
 
 				});
 	}
-	
+
 	private void populatePropertyClassData(final String propertyClassID) {
 
 		final AnimationLoading animationLoading = new AnimationLoading();
 
 		animationLoading.showLoadAnimation("Loading Class-specific Data");
 
-
 		PropertyClassServiceAsync propertyClassService = GWT
 				.create(PropertyClassService.class);
 
-		propertyClassService.getPropertyClassForPropertyClassID(propertyClassID, new AsyncCallback<PropertyClassData>() {
+		propertyClassService.getPropertyClassForPropertyClassID(
+				propertyClassID, new AsyncCallback<PropertyClassData>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -282,19 +272,18 @@ public class EndpointActorWidget extends Composite {
 
 				});
 	}
-	
+
 	private void populateActionData(final String actionID) {
 
 		final AnimationLoading animationLoading = new AnimationLoading();
 
 		animationLoading.showLoadAnimation("Loading Action-specific Data");
 
-		
-
 		AnalyticsServiceAsync analyticsService = GWT
 				.create(AnalyticsService.class);
 
-		analyticsService.getActionNameForActionID(actionID, new AsyncCallback<String>() {
+		analyticsService.getActionNameForActionID(actionID,
+				new AsyncCallback<String>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -305,13 +294,11 @@ public class EndpointActorWidget extends Composite {
 					@Override
 					public void onSuccess(String result) {
 						animationLoading.removeLoadAnimation();
-						
+
 						pgpAction.setText(result);
 					}
 
 				});
 	}
-
-
 
 }
