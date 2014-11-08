@@ -41,7 +41,7 @@
              <b:NavLink ui:field="btnHome" icon="TASKS">Status</b:NavLink>
              <b:NavLink ui:field="btnSpheres" icon="WRENCH">Manage</b:NavLink>
              <b:NavLink ui:field="btnRules" icon="SHARE_ALT">Interact</b:NavLink>
-             <b:NavLink ui:field="btnMaps" icon="LOCATION_ARROW">Locate</b:NavLink>
+             <b:NavLink ui:field="btnLocator" icon="LOCATION_ARROW">Locate</b:NavLink>
              <b:NavLink ui:field="btnAnalytics" icon="BAR_CHART">Analyze</b:NavLink>
              
              

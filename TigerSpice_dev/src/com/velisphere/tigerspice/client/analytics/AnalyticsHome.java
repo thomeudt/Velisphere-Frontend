@@ -21,7 +21,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.velisphere.tigerspice.client.NavBar;
+import com.velisphere.tigerspice.client.appcontroller.NavBar;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.rules.CheckpathEditorWidget;
 import com.velisphere.tigerspice.client.users.LoginSuccess;

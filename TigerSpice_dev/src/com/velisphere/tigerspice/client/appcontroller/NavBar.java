@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client;
+package com.velisphere.tigerspice.client.appcontroller;
 
 import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Brand;
@@ -43,9 +43,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.LoggedOutHome;
+import com.velisphere.tigerspice.client.Login;
 import com.velisphere.tigerspice.client.admin.Overviewer;
-import com.velisphere.tigerspice.client.appcontroller.AppController;
-import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.dashboard.Dashboard;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
@@ -68,7 +68,7 @@ public class NavBar extends Composite implements HasText {
 	@UiField Dropdown dpdAccount;
 	@UiField Dropdown dpdAdmin;
 	@UiField NavLink btnSearch;
-	@UiField NavLink btnMaps;
+	@UiField NavLink btnLocator;
 	@UiField NavLink btnManageEPC;
 	@UiField NavLink btnSpheres;
 	@UiField NavLink btnRules;
@@ -106,7 +106,7 @@ public class NavBar extends Composite implements HasText {
    	 btnHome.setVisible(false);
    	 dpdAccount.setVisible(false);
    	 dpdAdmin.setVisible(false);
-   	 btnMaps.setVisible(false);
+   	 btnLocator.setVisible(false);
    	 btnManageEPC.setVisible(false);
    	 
    	 
@@ -184,6 +184,15 @@ public class NavBar extends Composite implements HasText {
 		}	
 			
 	}
+	
+	@UiHandler("btnLocator")
+	void openLocator (ClickEvent event) {
+		
+		AppController.openGeoLocator();
+		
+		
+	}
+	
 
 	@UiHandler("btnSpheres")
 	void openSpheres (ClickEvent event) {
@@ -354,7 +363,7 @@ public class NavBar extends Composite implements HasText {
 	    	 btnHome.setVisible(true);
 	    	 dpdAccount.setVisible(true);
 	       	 dpdAdmin.setVisible(true);
-	       	 btnMaps.setVisible(true);
+	       	 btnLocator.setVisible(true);
 	       	 btnManageEPC.setVisible(true);
 	       	 dpdAccount.setText(SessionHelper.getCurrentUserName());
 			 

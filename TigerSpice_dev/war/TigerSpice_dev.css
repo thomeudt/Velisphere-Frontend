@@ -9,6 +9,10 @@ body {
 
 html { background:  transparent }
 
+
+ 
+#map_canvas img { max-width: none; }
+
 /* stock list header row */
 .watchListHeader {
   background-color: #2062B8;

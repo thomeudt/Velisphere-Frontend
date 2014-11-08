@@ -1,34 +1,24 @@
-<!--
-  CONFIDENTIAL INFORMATION
-   __________________
-   
-    Copyright (C) 2014 Thorsten Meudt / Connected Things Lab
-    All Rights Reserved.
-   
-   NOTICE:  All information contained herein is, and remains
-   the property of Thorsten Meudt and its suppliers,
-   if any.  The intellectual and technical concepts contained
-   herein are proprietary to Thorsten Meudt
-   and its suppliers and may be covered by Patents,
-   patents in process, and are protected by trade secret or copyright law.
-   Dissemination of this information or reproduction of this material
-   is strictly forbidden unless prior written permission is obtained
-   from Thorsten Meudt.
--->
+<?xml version="1.0" encoding="UTF-8"?><!-- CONFIDENTIAL INFORMATION __________________ 
+	Copyright (C) 2014 Thorsten Meudt / Connected Things Lab All Rights Reserved. 
+	NOTICE: All information contained herein is, and remains the property of 
+	Thorsten Meudt and its suppliers, if any. The intellectual and technical 
+	concepts contained herein are proprietary to Thorsten Meudt and its suppliers 
+	and may be covered by Patents, patents in process, and are protected by trade 
+	secret or copyright law. Dissemination of this information or reproduction 
+	of this material is strictly forbidden unless prior written permission is 
+	obtained from Thorsten Meudt. -->
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-		xmlns:ct="urn:import:com.google.gwt.user.cellview.client"
-		xmlns:vspy="urn:import:com.velisphere.tigerspice.client.properties"
-		xmlns:vsep="urn:import:com.velisphere.tigerspice.client.endpoints"
-		xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
-		<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images'/>
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:ct="urn:import:com.google.gwt.user.cellview.client" xmlns:vspy="urn:import:com.velisphere.tigerspice.client.properties"
+	xmlns:vsep="urn:import:com.velisphere.tigerspice.client.endpoints"
+	xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
+	<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images' />
 	<g:HTMLPanel>
-            <b:Breadcrumbs divider=">" ui:field="brdMain">
-		</b:Breadcrumbs>
+		<b:Breadcrumbs divider="&gt;" ui:field="brdMain" />
 
-            <b:Row>
+
+		<b:Row>
 
 
 			<b:Column size="12" offset="0">
@@ -42,10 +32,10 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 
 		<b:Row>
 
-		    <b:Column size="2">
+			<b:Column size="2">
 				<g:Image ui:field="imgEPCImage" />
 			</b:Column>
-		    
+
 			<b:Column size="8" offset="0">
 
 
@@ -53,32 +43,32 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 				<b:TabPanel tabPosition="above" ui:field="tabPanel">
 
 					<b:TabPane heading="General" active="true">
-					    
-					     <vsep:EndpointInformationWidget ui:field="vepEndpointInfo" />
-					    
-					    
-					    
 
-			
-					
+						<vsep:EndpointInformationWidget
+							ui:field="vepEndpointInfo" />
+
+
+
+
+
+
 					</b:TabPane>
 
 
 					<b:TabPane heading="Sensors" active="false">
 						<vsep:EndpointSensorWidget ui:field="vepEndpointSensors" />
-							   
+
 					</b:TabPane>
-					
+
 					<b:TabPane heading="Actors" active="false">
-						
+
 						<vsep:EndpointActorWidget ui:field="vepEndpointActors" />
 					</b:TabPane>
-					
+
 					<b:TabPane heading="Alerts" active="false">
 						<b:Heading size="4">Spheres: OK</b:Heading>
 
-						<b:Paragraph addStyleNames="smalltext-black">No errors reported in any
-							sphere.</b:Paragraph>
+						<b:Paragraph addStyleNames="smalltext-black">eMail, SMS Alert</b:Paragraph>
 						<b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
 					</b:TabPane>
 					<b:TabPane heading="Configuration" active="false">
@@ -90,7 +80,15 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 							contact: 14 min for endpoint X</b:Paragraph>
 
 					</b:TabPane>
-					
+					<b:TabPane heading="Connections" active="false">
+						<b:Heading size="4">Endpoints: OK</b:Heading>
+
+						<b:Paragraph addStyleNames="smalltext-black">All endpoints are
+							functioning.</b:Paragraph>
+						<b:Paragraph addStyleNames="smalltext-black">List all checkpaths of which this is part</b:Paragraph>
+
+					</b:TabPane>
+
 
 				</b:TabPanel>
 
@@ -99,24 +97,24 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 			</b:Column>
 
 			<b:Column size="2" offset="0">
-			<vssb:General></vssb:General>
+				<vssb:General />
 
 			</b:Column>
 
 		</b:Row>
-            
-            
-            
-            
-            
-            		
-	    
-	    
-	    
-		
-	
+
+
+
+
+
+
+
+
+
+
+
 	</g:HTMLPanel>
-	  		            
+
 
 </ui:UiBinder> 
 

@@ -4,6 +4,7 @@ import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.velisphere.tigerspice.client.appcontroller.NavBar;
 import com.velisphere.tigerspice.client.users.NewAccountWidget;
 
 public class LoggedOutHome {

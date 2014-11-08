@@ -33,7 +33,8 @@
 	<!-- any one of the following lines.                            -->
 	<!--   <inherits name='com.google.gwt.user.theme.clean.Clean'/> -->
 <!-- 	<inherits name='com.google.gwt.user.theme.standard.Standard' /> -->
-	<inherits name ="com.github.gwtbootstrap.Bootstrap"/>
+	<inherits name="org.gwtbootstrap3.GwtBootstrap3"/>
+	<!-- <inherits name ="com.github.gwtbootstrap.Bootstrap"/> -->
 	<inherits name='com.github.gwtbootstrap.datepicker.Datepicker' />
 	<inherits name='com.github.gwtbootstrap.datetimepicker.Datetimepicker' />
 	<!--   <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
@@ -53,7 +54,7 @@
 	<inherits name='com.orange.links.Links' />
     <inherits name='com.google.gwt.widgetideas.WidgetIdeas' />   
     <inherits name='com.google.gwt.libideas.LibIdeas' />
-    <inherits name='com.google.maps.gwt.GoogleMaps' />
+    <inherits name='com.google.gwt.maps.Maps'/>
 
     <!-- 
                 If you want to deploy this application outside of localhost, 
