@@ -17,16 +17,13 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client.appcontroller;
 
-import com.github.gwtbootstrap.client.ui.Alert;
+
+
 import com.github.gwtbootstrap.client.ui.Brand;
 import com.github.gwtbootstrap.client.ui.Dropdown;
-import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.NavForm;
 import com.github.gwtbootstrap.client.ui.NavLink;
-import com.github.gwtbootstrap.client.ui.NavText;
 import com.github.gwtbootstrap.client.ui.Navbar;
-import com.github.gwtbootstrap.client.ui.ResponsiveNavbar;
-import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.NavbarPosition;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
@@ -61,7 +58,7 @@ import com.velisphere.tigerspice.shared.UserData;
 
 public class NavBar extends Composite implements HasText {
 
-	@UiField ResponsiveNavbar navbar;
+	@UiField Navbar navbar;
 	@UiField NavLink btnLister;
 	@UiField NavLink btnLogout;
 	@UiField NavLink btnAccount;
@@ -88,7 +85,7 @@ public class NavBar extends Composite implements HasText {
 	}
 
 	public NavBar() {
-		navbar = new ResponsiveNavbar();
+		navbar = new Navbar();
 		initWidget(uiBinder.createAndBindUi(this));
 		navbar.setPosition(NavbarPosition.TOP);
 		//navbar.setWidth(RootPanel.get("main").getElement().getStyle().getWidth());
@@ -337,7 +334,7 @@ public class NavBar extends Composite implements HasText {
 			
 
 								sessionHandler.removeHandler();
-								dpdAccount.setText(SessionHelper.getCurrentUserName());
+								dpdAccount.setTitle(SessionHelper.getCurrentUserName());
 		}
 		});
 
@@ -365,7 +362,7 @@ public class NavBar extends Composite implements HasText {
 	       	 dpdAdmin.setVisible(true);
 	       	 btnLocator.setVisible(true);
 	       	 btnManageEPC.setVisible(true);
-	       	 dpdAccount.setText(SessionHelper.getCurrentUserName());
+	       	 dpdAccount.setTitle(SessionHelper.getCurrentUserName());
 			 
 	    
 	}

@@ -60,9 +60,6 @@ img {
   /* Responsive images (ensure images don't scale beyond their parents) */
 
   max-width: 100%;
-  
-  /* MAPS  sonst zurück zu 100%*/
-  
   /* Part 1: Set a maxium relative to the parent */
 
   width: auto\9;
@@ -75,11 +72,10 @@ img {
   border: 0;
   -ms-interpolation-mode: bicubic;
 }
-
-#map_canvas img { max-width: none; }
-#map-canvas img { max-width: none; }
-#mapCanvas img { max-width: none; }
-
+#map_canvas img,
+.google-maps img {
+  max-width: none;
+}
 button,
 input,
 select,
@@ -4966,13 +4962,13 @@ a.badge:hover {
 }
 .accordion-heading .accordion-toggle {
   display: block;
-  padding: 2px 5px;
+  padding: 8px 15px;
 }
 .accordion-toggle {
   cursor: pointer;
 }
 .accordion-inner {
-  padding: 3px 5px;
+  padding: 9px 15px;
   border-top: 1px solid #e5e5e5;
 }
 .carousel {

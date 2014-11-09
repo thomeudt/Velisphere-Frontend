@@ -41,7 +41,6 @@ import javax.ws.rs.core.Response;
 
 import nl.captcha.Captcha;
 
-import org.apache.commons.lang.time.DateUtils;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.mindrot.BCrypt;
 import org.voltdb.VoltTable;

@@ -33,8 +33,7 @@
 	<!-- any one of the following lines.                            -->
 	<!--   <inherits name='com.google.gwt.user.theme.clean.Clean'/> -->
 <!-- 	<inherits name='com.google.gwt.user.theme.standard.Standard' /> -->
-	<inherits name="org.gwtbootstrap3.GwtBootstrap3"/>
-	<!-- <inherits name ="com.github.gwtbootstrap.Bootstrap"/> -->
+	<inherits name="com.github.gwtbootstrap.Bootstrap" />
 	<inherits name='com.github.gwtbootstrap.datepicker.Datepicker' />
 	<inherits name='com.github.gwtbootstrap.datetimepicker.Datetimepicker' />
 	<!--   <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
@@ -54,6 +53,7 @@
 	<inherits name='com.orange.links.Links' />
     <inherits name='com.google.gwt.widgetideas.WidgetIdeas' />   
     <inherits name='com.google.gwt.libideas.LibIdeas' />
+    
     <inherits name='com.google.gwt.maps.Maps'/>
 
     <!-- 
@@ -67,7 +67,9 @@
          <!-- You can usually run under localhost without a key --> 
          <script src="http://maps.google.com/maps?
              gwt=1&amp;file=api&amp;v=2&amp;key=ABQIAAAAYoCcpT5eK4RhbA3gS1NPNhT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQnNpBGVHff63uyhRABeY3eVBZaGQ" /> 
-	
+    
+    
+    	
 	<!-- Specify the app entry point class.                         -->
 	<entry-point class="com.velisphere.tigerspice.client.Start" />
 

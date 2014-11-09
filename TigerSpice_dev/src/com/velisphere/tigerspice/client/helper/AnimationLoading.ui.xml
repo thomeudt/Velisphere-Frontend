@@ -23,7 +23,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 
 <b:Container>
 
-    <b:Column size="2" offset="5" addStyleNames="wellsilver">
+    <b:Column size="2" offset="5">
       
 		<g:HorizontalPanel>         
            <b:Paragraph addStyleNames="textright"><b:Icon type="SPINNER" size="TWO_TIMES" spin="true" alignment="LEFT"/> 

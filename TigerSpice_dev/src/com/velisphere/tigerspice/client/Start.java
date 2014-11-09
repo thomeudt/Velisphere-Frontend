@@ -17,7 +17,7 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client;
 
-import com.github.gwtbootstrap.client.ui.Paragraph;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
