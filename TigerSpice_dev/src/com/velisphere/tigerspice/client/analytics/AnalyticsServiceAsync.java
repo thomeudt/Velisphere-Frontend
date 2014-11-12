@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.velisphere.tigerspice.shared.AnalyticsRawData;
+import com.velisphere.tigerspice.shared.GeoLocationData;
 import com.velisphere.tigerspice.shared.TableRowData;
 
 
@@ -19,5 +20,6 @@ public interface AnalyticsServiceAsync {
 	void getCurrentSensorState(String endpointID, String propertyID, AsyncCallback<AnalyticsRawData> callback);
 	void getCurrentActorState(String endpointID, String propertyID, AsyncCallback<AnalyticsRawData> callback);
 	void getActionNameForActionID(String actionID, AsyncCallback<String> callback);
+	void getAllGeoLocations(String userID, AsyncCallback<LinkedList<GeoLocationData>> callback);
 }
 

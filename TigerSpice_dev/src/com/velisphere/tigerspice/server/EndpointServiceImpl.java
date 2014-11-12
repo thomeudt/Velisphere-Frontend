@@ -608,7 +608,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			Client rabbitClient = ClientBuilder.newClient();
 			HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic("veliadmin2014", "4GfQ2xgIwVsJ9g3wZIQE");
 			rabbitClient.register(feature);
-			WebTarget target = rabbitClient.target( "http://h2209363.stratoserver.net:15672/api/users/"+endpointID );
+			WebTarget target = rabbitClient.target( "http://16.1.1.107:15672/api/users/"+endpointID );
 			Response response = target.request().put( Entity.json("{\"password\":\""+endpointID+"\",\"tags\":\"\"}") ); // replace endpoint ID with API Key later on
 
 	
@@ -616,14 +616,14 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			
 			 // allow access to clients virtual host
 			
-			target = rabbitClient.target( "http://h2209363.stratoserver.net:15672/api/permissions/hClients/"+endpointID );
+			target = rabbitClient.target( "http://16.1.1.107:15672/api/permissions/hClients/"+endpointID );
 			response = target.request().put( Entity.json("{\"configure\":\"\",\"write\":\"\",\"read\":\""+endpointID+".*\"}") );
 			System.out.println("[IN] RabbitMQ read permission for clients queue requested, result: "+ response );
 
 			
 			 // allow access to controller virtual host
 			
-			target = rabbitClient.target( "http://h2209363.stratoserver.net:15672/api/permissions/hController/"+endpointID );
+			target = rabbitClient.target( "http://16.1.1.107:15672/api/permissions/hController/"+endpointID );
 			response = target.request().put( Entity.json("{\"configure\":\"\",\"write\":\"controller\",\"read\":\"\"}") );
 			System.out.println("[IN] RabbitMQ write permission for controller queue requested, result: "+ response );
 			

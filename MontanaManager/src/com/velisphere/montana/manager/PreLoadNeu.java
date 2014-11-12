@@ -23,6 +23,8 @@ public class PreLoadNeu {
 	         * Load the database.
 	         */
 	        
+	        
+	        
 	        preLoader.callProcedure("SPHERE.insert", "1000", "Home Tübingen", "0");
 	        preLoader.callProcedure("SPHERE.insert", "1001", "My Car", "0");
 	       
@@ -67,6 +69,8 @@ public class PreLoadNeu {
 	        System.out.println("Spheres and Users linked");
 	        **/
 	        
+	       
+	        
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC1", "Text", "String", "");
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC2", "Generic Digital Port", "Byte", "");
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC3", "Brightness", "Double", "lux");
@@ -75,7 +79,14 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC6", "Touch", "Double", "");
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC7", "Rotation", "Double", "");
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC8", "Pressure", "Double", "");
-	        	        
+	        
+	        
+	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC_GEO_LAT", "Latitude", "String", "");
+	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC_GEO_LON", "Longitude", "String", "");
+	        
+	       
+	        
+	        
 	        System.out.println("Property Classes loaded");
 	        
 	        preLoader.callProcedure("PROPERTY.insert", "PR1", "Switch 1", "PC4", "EPC3", 0, 1, 0, 0);
@@ -91,6 +102,8 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("PROPERTY.insert", "PR11", "Measured Rotation", "PC7", "EPC2", 0, 1, 0, 0);
 	        preLoader.callProcedure("PROPERTY.insert", "PR12", "Measured Touch", "PC6", "EPC2", 0, 1, 0, 0);
 	        preLoader.callProcedure("PROPERTY.insert", "PR13", "Measured Brightness", "PC3", "EPC2", 0, 1, 0, 0);
+	        preLoader.callProcedure("PROPERTY.insert", "PR13", "Measured Brightness", "PC3", "EPC2", 0, 1, 0, 0);
+	        
 	        	        	        
 	        System.out.println("Properties loaded");
 	        
@@ -115,8 +128,7 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("CHECK.insert", "C9", "E1", "PR1", "5", "<", "0", "0", "Switch 1 is less than 5", "CP1"); // Checks if switch 1 is on
 	        preLoader.callProcedure("CHECKSTATE.insert", "C9", 0, "CP1");
 	        
-	        /* megastress
-	       */
+	        
 	        int i = 0;
 	        
 	        while (i<3){
@@ -139,7 +151,7 @@ public class PreLoadNeu {
 	        	e = e + 1;
 	        }
 	        
-	        /**/
+	        
 	        
 	        System.out.println("Checks loaded");
 	        
@@ -214,16 +226,7 @@ public class PreLoadNeu {
 	        	        
 	        System.out.println("Checkpaths and MultiChecks linked");
 	      
-	        /**
-	        preLoader.callProcedure("RULE.insert", "R1", "Button 1 gedrückt", "C1", "", "CP1"); 
-	        preLoader.callProcedure("RULE.insert", "R2", "Button 1 und 2 gedrückt", "", "MC1", "CP1");
-	        preLoader.callProcedure("RULE.insert", "R3", "Button 3 und 4 gedrückt", "", "MC2", "CP1");
-	        preLoader.callProcedure("RULE.insert", "R4", "Button 1,2, 3 und 4 gedrückt", "", "MC3", "CP1");
-	        preLoader.callProcedure("RULE.insert", "R5", "Chat von Thorsten", "C6", "", "CP2");	           
-	        preLoader.callProcedure("RULE.insert", "R6", "Chat von Ute", "C7", "", "CP2");
 	        
-	        System.out.println("Rules loaded");
-	 	    **/
 	 	        
 	        preLoader.callProcedure("ACTION.insert", "A1", "Forward Chat to Zielendpoint", "", "PR6", 0, "C6", "", "CP2"); 
 	        preLoader.callProcedure("ACTION.insert", "A2", "Licht an im Arbeitszimmer", "E2", "", 0, "C1", "", "CP1");
@@ -237,13 +240,6 @@ public class PreLoadNeu {
 	        
 	        System.out.println("Outbound Property Actions loaded");
 	        	        
-	       /**
-	        preLoader.callProcedure("RULE_ACTION_LINK.insert", "1000", "R5", "A1");
-	        preLoader.callProcedure("RULE_ACTION_LINK.insert", "1001", "R1", "A2");
-	        preLoader.callProcedure("RULE_ACTION_LINK.insert", "1002", "R6", "A1");
-	        
-	        System.out.println("Outbound Rules and Actions linked");
-	        **/
 	        
 	        preLoader.callProcedure("ITEMCOST.insert", "ACCOUNT", "PAYPERUSE", "Account fee per user account, per month", 0);
 	        preLoader.callProcedure("ITEMCOST.insert", "CHECK_HIT", "PAYPERUSE", "Cost per Check Hit", 0.01);

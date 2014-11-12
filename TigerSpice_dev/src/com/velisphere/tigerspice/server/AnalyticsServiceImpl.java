@@ -27,6 +27,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.shared.AnalyticsRawData;
+import com.velisphere.tigerspice.shared.GeoLocationData;
 import com.velisphere.tigerspice.shared.TableRowData;
 
 public class AnalyticsServiceImpl extends RemoteServiceServlet implements
@@ -506,6 +507,62 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 
 		return actionName;
 	}
+	
+	@Override
+	public LinkedList<GeoLocationData> getAllGeoLocations(String userID) {
+
+		Connection conn;
+		LinkedList<GeoLocationData> geoItems = new LinkedList<GeoLocationData>();
+
+		try {
+			Class.forName("com.vertica.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Could not find the JDBC driver class.\n");
+			e.printStackTrace();
+
+		}
+		try {
+			conn = DriverManager.getConnection("jdbc:vertica://"
+					+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+					"vertica", "1Suplies!");
+
+			conn.setAutoCommit(true);
+			System.out.println(" [OK] Connected to Vertica on address: "
+					+ "16.1.1.113");
+
+			Statement mySelect = conn.createStatement();
+
+			ResultSet myResult = mySelect
+					.executeQuery("SELECT DISTINCT vlogger.endpoint_user_link.userid, vlogger.endpoint.endpointname, vlogger.endpoint.endpointclassid, vlogger.endpoint.endpointid, vlogger.endpointpropertylog.propertyid, vlogger.propertyclass.propertyclassid, LAST_VALUE(vlogger.endpointpropertylog.propertyentry)      OVER (PARTITION BY vlogger.endpointpropertylog.propertyid ORDER BY vlogger.endpointpropertylog.time_stamp ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) FROM vlogger.endpointpropertylog JOIN vlogger.endpoint ON vlogger.endpoint.endpointid = vlogger.endpointpropertylog.endpointid JOIN vlogger.property ON vlogger.property.propertyid = vlogger.endpointpropertylog.propertyid JOIN vlogger.propertyclass on vlogger.propertyclass.propertyclassid = vlogger.property.propertyclassid JOIN vlogger.endpoint_user_link ON vlogger.endpoint_user_link.endpointid = vlogger.endpoint.endpointid JOIN vlogger.user ON vlogger.user.userid = vlogger.endpoint_user_link.userid WHERE vlogger.user.userid = 'f6c21db0-2c34-4b13-81c4-832a0a6fd78b' AND (vlogger.property.propertyclassid = 'PC_GEO_LON' OR vlogger.property.propertyclassid = 'PC_GEO_LAT')");
+
+			
+			
+			while (myResult.next()) {
+			
+				GeoLocationData geoItem = new GeoLocationData();
+				geoItem.setUserID(myResult.getString(1));
+				geoItem.setEndpointID(myResult.getString(4));
+				geoItem.setEndpointName(myResult.getString(2));
+				geoItem.setEndpointClassID(myResult.getString(3));
+				geoItem.setPropertyClassID(myResult.getString(6));
+				geoItem.setValue(myResult.getString(7));
+				
+				geoItems.add(geoItem);
+				
+				System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue());
+			}
+
+			mySelect.close();
+
+		} catch (SQLException e) {
+			System.err.println("Could not connect to the database.\n");
+			e.printStackTrace();
+
+		}
+
+		return geoItems;
+	}
+
 
 
 	

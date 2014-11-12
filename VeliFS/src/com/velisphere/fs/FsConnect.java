@@ -35,7 +35,7 @@ public class FsConnect {
 		try {
 			
 			// Start AMQP Listener
-			ServerParameters.my_queue_name = "d48f2294-d022-44b9-8676-28de01c169a5";
+			ServerParameters.my_queue_name = "cd24cbbc-f163-4e80-8004-2ff626042cc0";
 			
 			
 			
@@ -51,6 +51,8 @@ public class FsConnect {
 			sc.addToDataDefinition(dataDefID, "STALL WARNING", null, SimConnectDataType.INT32);
 			sc.addToDataDefinition(dataDefID, "OVERSPEED WARNING", null, SimConnectDataType.INT32);
 			sc.addToDataDefinition(dataDefID, "INCIDENCE ALPHA", null, SimConnectDataType.FLOAT32);		
+			sc.addToDataDefinition(dataDefID, "PLANE LATITUDE", null, SimConnectDataType.FLOAT32);
+			sc.addToDataDefinition(dataDefID, "PLANE LONGITUDE", null, SimConnectDataType.FLOAT32);
 						
 			
 			// get warned every 4 seconds when in sim mode
@@ -96,6 +98,9 @@ public class FsConnect {
 					Integer stall = e.getDataInt32();
 					Integer overspeed = e.getDataInt32();
 					Float aoA = (float) (e.getDataFloat32() * 57.2957795);
+					Float lat = (float) ((e.getDataFloat32()*180)/Math.PI);
+					Float lon = (float) ((e.getDataFloat32()*180)/Math.PI);
+					
 					// print to users
 					System.out.println("Plane id#" + e.getObjectID() + " no " + e.getEntryNumber() + "/" + e.getOutOf());
 					System.out.println("\tPosition: " + position.toString());
@@ -105,6 +110,8 @@ public class FsConnect {
 					System.out.println("\tStall: " + stall.toString());
 					System.out.println("\tOverspeed: " + overspeed.toString());
 					System.out.println("\tAoA: " + aoA.toString());
+					System.out.println("\tLatitude: " + lat.toString());
+					System.out.println("\tLogitude: " + lon.toString());
 					// line separator
 					if (e.getEntryNumber() == e.getOutOf()) System.out.println();
 					
@@ -115,14 +122,16 @@ public class FsConnect {
 						
 						HashMap<String, String> messageHash = new HashMap<String, String>();
 						
-						messageHash.put("4dbfba15-7297-4349-b152-b32ca81b2bd4", position.toString());
-						messageHash.put("b0e66a0c-2ebe-4f36-961a-9810bb26957e", String.valueOf(altitude));
-						messageHash.put("aa3fae0c-f910-4f57-a8e9-0645994d8a59", String.valueOf(atcType));
-						messageHash.put("a078b27f-57f1-4bf8-8106-d063718cafae", String.valueOf(atcID));
-						messageHash.put("93d3fe9b-2051-4b3e-b9db-609c15008e33", String.valueOf(groundspeed));
-						messageHash.put("68fbe9fd-8377-4dc2-836b-a96ef28d9047", String.valueOf(stall));
-						messageHash.put("7db9deb1-caee-4dfc-8066-620a3a66b71f", String.valueOf(overspeed));
-						messageHash.put("009ce1d1-ef2d-4e42-9d45-204a6ff2109d", String.valueOf(aoA));
+						// messageHash.put("4dbfba15-7297-4349-b152-b32ca81b2bd4", position.toString());
+						// messageHash.put("b0e66a0c-2ebe-4f36-961a-9810bb26957e", String.valueOf(altitude));
+						messageHash.put("b13dbdbb-e355-467e-8c13-0ade7d6b5d93", String.valueOf(atcType));
+						//messageHash.put("a078b27f-57f1-4bf8-8106-d063718cafae", String.valueOf(atcID));
+						messageHash.put("7e4da755-77de-4943-95d9-f15e778da8e5", String.valueOf(groundspeed));
+						//messageHash.put("68fbe9fd-8377-4dc2-836b-a96ef28d9047", String.valueOf(stall));
+						//messageHash.put("7db9deb1-caee-4dfc-8066-620a3a66b71f", String.valueOf(overspeed));
+						//messageHash.put("009ce1d1-ef2d-4e42-9d45-204a6ff2109d", String.valueOf(aoA));
+						messageHash.put("5e9c6361-913a-4b63-a6b9-a5d2b1a530c0", String.valueOf(lat));
+						messageHash.put("55167544-c84c-41ad-83fb-9960efdf5a88", String.valueOf(lon));
 						
 						System.out.println("Message Hash Sent to Controller: " + messageHash);
 						

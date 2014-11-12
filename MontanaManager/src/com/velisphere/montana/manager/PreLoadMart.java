@@ -30,12 +30,12 @@ public class PreLoadMart {
 	         {
 	         conn = DriverManager.getConnection
 	            (
-	            "jdbc:vertica://16.1.1.113:5433/VelisphereMart", "vertica", "1Suplies!"
+	            "jdbc:vertica://16.1.1.116:5433/VelisphereMart", "vertica", "1Suplies!"
 	            );
 	         
 	         conn.setAutoCommit(true);
 	 		System.out.println(" [OK] Connected to Vertica on address: "
-	 				+ "16.1.1.113");
+	 				+ "16.1.1.116");
 	         
 	         } catch (SQLException e)
 	            {
@@ -102,11 +102,17 @@ public class PreLoadMart {
 	        myInsert.addBatch("INSERT INTO VLOGGER.PROPERTYCLASS VALUES ('PC5', 'On Off Indicator', 'Byte', '')");
 	        myInsert.addBatch("INSERT INTO VLOGGER.PROPERTYCLASS VALUES ('PC6', 'Touch', 'Double', '')");
 	        myInsert.addBatch("INSERT INTO VLOGGER.PROPERTYCLASS VALUES ('PC7', 'Rotation', 'Double', '')");
+	        */
 	        myInsert.addBatch("INSERT INTO VLOGGER.PROPERTYCLASS VALUES ('PC8', 'Pressure', 'Double', '')");
-	        	        	        	        
+	        /*
+	        
+	      myInsert.addBatch("INSERT INTO VLOGGER.PROPERTYCLASS VALUES ('PC_GEO_LAT', 'Latitude', 'String', '')");
+	      myInsert.addBatch("INSERT INTO VLOGGER.PROPERTYCLASS VALUES ('PC_GEO_LON', 'Longitude', 'String', '')");
+	        
+	                	        	        
 	        System.out.println("Property Classes loaded");
 	        
-	        **/
+	       
 	        myInsert.addBatch("INSERT INTO VLOGGER.PROPERTY VALUES ('PR1', 'Switch 1', 'PC4', 'EPC3', 0, 1, 0, 0)");
 	        myInsert.addBatch("INSERT INTO VLOGGER.PROPERTY VALUES ('PR2', 'Switch 2', 'PC4', 'EPC3', 0, 1, 0, 0)");
 	        myInsert.addBatch("INSERT INTO VLOGGER.PROPERTY VALUES ('PR3', 'Switch 3', 'PC4', 'EPC3', 0, 1, 0, 0)");
@@ -123,7 +129,7 @@ public class PreLoadMart {
 	              
 	        	        	        
 	        System.out.println("Properties loaded");
-	        /**
+	        
 	        	        
 	        myInsert.addBatch("INSERT INTO VLOGGER.CHECKPATH VALUES ('CP1', 'Dummy 1', '', '')");
 	        myInsert.addBatch("INSERT INTO VLOGGER.CHECKPATH VALUES ('CP1', 'Dummy 2', '', '')");

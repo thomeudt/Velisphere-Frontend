@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.velisphere.tigerspice.shared.AnalyticsRawData;
+import com.velisphere.tigerspice.shared.GeoLocationData;
 import com.velisphere.tigerspice.shared.TableRowData;
 
 	@RemoteServiceRelativePath("verticaAnalytics")
@@ -20,6 +21,7 @@ import com.velisphere.tigerspice.shared.TableRowData;
 		AnalyticsRawData getCurrentSensorState(String endpointID, String propertyID);
 		AnalyticsRawData getCurrentActorState(String endpointID, String propertyID);
 		String getActionNameForActionID(String actionID);
+		LinkedList<GeoLocationData> getAllGeoLocations(String userID);
 	}
 
 	

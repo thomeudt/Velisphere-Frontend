@@ -20,6 +20,12 @@ package com.velisphere.tigerspice.client.locator.maps;
  * #L%
  */
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -43,16 +49,23 @@ import com.google.gwt.maps.client.overlays.InfoWindowOptions;
 import com.google.gwt.maps.client.overlays.Marker;
 import com.google.gwt.maps.client.overlays.MarkerOptions;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.velisphere.tigerspice.client.analytics.AnalyticsService;
+import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
+import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
+import com.velisphere.tigerspice.client.locator.GeoDataForMap;
+import com.velisphere.tigerspice.shared.GeoLocationData;
 
 public class InfoWindowMapWidget extends Composite {
 
   private VerticalPanel pWidget;
   private MapWidget mapWidget;
-  
+  private HashMap<String, GeoDataForMap> allGeoDataForMap;
 
   public InfoWindowMapWidget() {
     
@@ -77,12 +90,14 @@ public class InfoWindowMapWidget extends Composite {
 	   {
 		   
 		   drawMap(LatLng.newInstance(result.getCoordinates().getLatitude(), result.getCoordinates().getLongitude()));
+		   getMarkersForMap();
+		   drawInfoWindowOnMapCenter();
 	   }
 	    
 	   @Override
 	   public void onFailure(PositionError reason)
 	   {
-		   drawMap(LatLng.newInstance(49.496675, -102.65625));
+		   
 	    Window.alert(reason.getMessage());
 	   }
 	  });
@@ -90,32 +105,72 @@ public class InfoWindowMapWidget extends Composite {
     
     
    
-    drawMarker1();
+    
   }
 
   
-  private void drawMarker1() {
-    LatLng center = LatLng.newInstance(47.8, -121.4);
-    MarkerOptions options = MarkerOptions.newInstance();
-    options.setPosition(center);
-    options.setTitle("Hello World");
+  private void drawMarker( HashMap<String, GeoDataForMap> geoLocations) {
+	  
+	    HTML html = new HTML("LAT ... ... " + geoLocations.size());
+	    RootPanel.get().add(html);
+		Iterator<Entry<String, GeoDataForMap>> it = geoLocations.entrySet().iterator();
+		while (it.hasNext()) {
+	        Map.Entry<String, GeoDataForMap> locationPair = (Map.Entry<String, GeoDataForMap>)it.next();
+	        final GeoDataForMap geoDataForMap = locationPair.getValue();
+	        html = new HTML("LAT ... ... " + geoDataForMap.getLat());
+	        RootPanel.get().add(html);
+	        //drawMarker(Double.valueOf(geoDataForMap.getLat()), Double.valueOf(geoDataForMap.getLon()));
+	        //drawMarker(-76.3, 37.08);
+	   
+	        
+	        LatLng center = LatLng.newInstance(Double.valueOf(geoDataForMap.getLat()), Double.valueOf(geoDataForMap.getLon()));
+		    MarkerOptions options = MarkerOptions.newInstance();
+		    options.setPosition(center);
+		    options.setTitle("Hello World");
 
-    final Marker marker = Marker.newInstance(options);
-    marker.setMap(mapWidget);
+		    final Marker marker = Marker.newInstance(options);
+		    marker.setMap(mapWidget);
 
-    marker.addClickHandler(new ClickMapHandler() {
-      public void onEvent(ClickMapEvent event) {
-        drawInfoWindow(marker, event.getMouseEvent());
+		    marker.addClickHandler(new ClickMapHandler() {
+		      public void onEvent(ClickMapEvent event) {
+		        drawInfoWindow(marker, event.getMouseEvent(), geoDataForMap.getEndpointName());
+		      }
+		    });
+
+	        
+	        
+	        
+	        
+	        
+	        
+	        
+	        it.remove();
+		}
+	  
+       	  
+	  
+	  	  
       }
-    });
-  }
 
-  protected void drawInfoWindow(final Marker marker, MouseEvent mouseEvent) {
+  
+  private void drawInfoWindowOnMapCenter() {
+	    HTML html = new HTML("Center: " + mapWidget.getCenter().getToString());
+
+	    InfoWindowOptions options = InfoWindowOptions.newInstance();
+	    options.setContent(html);
+	    options.setPosition(mapWidget.getCenter());
+
+	    InfoWindow iw = InfoWindow.newInstance(options);
+	    iw.open(mapWidget);
+	  }
+
+  
+  protected void drawInfoWindow(final Marker marker, MouseEvent mouseEvent, String endpointName) {
     if (marker == null || mouseEvent == null) {
       return;
     }
 
-    HTML html = new HTML("Why did you click on me? <br/> You clicked on: " + mouseEvent.getLatLng().getToString());
+    HTML html = new HTML("Why did you click on me? <br/> This is: " + endpointName + " at " + mouseEvent.getLatLng().getToString());
 
     Button b1 = new Button("b1");
     b1.addClickHandler(new ClickHandler() {
@@ -148,11 +203,7 @@ public class InfoWindowMapWidget extends Composite {
   }
 
   private void drawMap(LatLng center) {
-	  
-	 
-	 
-	   
-  
+	 	 
     MapOptions opts = MapOptions.newInstance();
     opts.setZoom(4);
     opts.setScaleControl(true);
@@ -184,5 +235,117 @@ public class InfoWindowMapWidget extends Composite {
       }
     });
   }
+  
+  
+  private void getMarkersForMap() {
+		allGeoDataForMap = new HashMap<String, GeoDataForMap>();
+
+		AnalyticsServiceAsync analyticsService = GWT
+				.create(AnalyticsService.class);
+
+		analyticsService.getAllGeoLocations(SessionHelper.getCurrentUserID(),
+				new AsyncCallback<LinkedList<GeoLocationData>>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						System.out.println(caught);
+					}
+
+					@Override
+					public void onSuccess(LinkedList<GeoLocationData> result) {
+						// TODO Auto-generated method stub
+
+						Iterator<GeoLocationData> it = result.iterator();
+						// RootPanel.get().add(new HTML("Length of List" +
+						// result.size()));
+
+						while (it.hasNext()) {
+
+							GeoLocationData geoFromServer = new GeoLocationData();
+
+							geoFromServer = it.next();
+
+							RootPanel
+									.get()
+									.add(new HTML("Just iterated... "
+											+ geoFromServer
+													.getPropertyClassID()
+											+ "... " + geoFromServer.getValue()));
+
+							if (allGeoDataForMap.containsKey(geoFromServer
+									.getEndpointID())) {
+								GeoDataForMap geoDataPoint = allGeoDataForMap
+										.get(geoFromServer.getEndpointID());
+								if (geoFromServer.getPropertyClassID() == "PC_GEO_LON") {
+									geoDataPoint.setLon(geoFromServer
+											.getValue());
+									RootPanel
+											.get()
+											.add(new HTML(
+													geoFromServer
+															.getPropertyClassID()
+															+ "Added Lon to existing Lat"
+															+ geoFromServer
+																	.getValue()));
+
+								} else {
+									geoDataPoint.setLat(geoFromServer
+											.getValue());
+									RootPanel
+											.get()
+											.add(new HTML(
+													geoFromServer
+															.getPropertyClassID()
+															+ "Added Lat to existing Lon"
+															+ geoFromServer
+																	.getValue()));
+								}
+								allGeoDataForMap.put(
+										geoFromServer.getEndpointID(),
+										geoDataPoint);
+
+							} else {
+
+								GeoDataForMap geoDataPoint = new GeoDataForMap();
+								geoDataPoint.setEndpointID(geoFromServer
+										.getEndpointID());
+								geoDataPoint.setEndpointName(geoFromServer
+										.getEndpointName());
+								if (geoFromServer.getPropertyClassID() == "PC_GEO_LON") {
+									geoDataPoint.setLon(geoFromServer
+											.getValue());
+									RootPanel
+											.get()
+											.add(new HTML(geoFromServer
+													.getPropertyClassID()
+													+ "Added new Lon"
+													+ geoFromServer.getValue()));
+								} else {
+									geoDataPoint.setLat(geoFromServer
+											.getValue());
+									RootPanel
+											.get()
+											.add(new HTML(geoFromServer
+													.getPropertyClassID()
+													+ "Added new Lat"
+													+ geoFromServer.getValue()));
+								}
+
+								allGeoDataForMap.put(
+										geoFromServer.getEndpointID(),
+										geoDataPoint);
+
+							}
+
+						}
+
+						drawMarker(allGeoDataForMap);
+						
+					}
+
+				});
+
+	}
 
 }
