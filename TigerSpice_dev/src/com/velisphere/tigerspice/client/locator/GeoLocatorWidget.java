@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
+import com.velisphere.tigerspice.client.locator.helpers.GeoDataForMap;
 import com.velisphere.tigerspice.client.locator.maps.HeatMapLayerWidget;
 import com.velisphere.tigerspice.client.locator.maps.InfoWindowMapWidget;
 import com.velisphere.tigerspice.shared.AnalyticsRawData;

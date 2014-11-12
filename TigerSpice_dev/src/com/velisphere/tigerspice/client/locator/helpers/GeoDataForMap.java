@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.locator;
+package com.velisphere.tigerspice.client.locator.helpers;
 
 public class GeoDataForMap {
 
@@ -6,6 +6,7 @@ public class GeoDataForMap {
 	private String endpointName;
 	private String lat;
 	private String lon;
+	private String timeStamp;
 	
 	public void setEndpointID(String endpointID){
 		this.endpointID = endpointID;
@@ -22,6 +23,11 @@ public class GeoDataForMap {
 	public void setLon(String lon){
 		this.lon = lon;
 	}
+	
+	public void setTimeStamp(String timeStamp){
+		this.timeStamp = timeStamp;
+	}
+	
 	
 	public String getEndpointID()
 	{
@@ -41,6 +47,10 @@ public class GeoDataForMap {
 	public String getLon()
 	{
 		return this.lon;
+	}
+	
+	public String getTimeStamp(){
+		return this.timeStamp;
 	}
 	
 }

@@ -48,6 +48,9 @@ import com.google.gwt.maps.client.overlays.InfoWindow;
 import com.google.gwt.maps.client.overlays.InfoWindowOptions;
 import com.google.gwt.maps.client.overlays.Marker;
 import com.google.gwt.maps.client.overlays.MarkerOptions;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -57,8 +60,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
-import com.velisphere.tigerspice.client.locator.GeoDataForMap;
+import com.velisphere.tigerspice.client.locator.helpers.GeoDataForMap;
 import com.velisphere.tigerspice.shared.GeoLocationData;
 
 public class InfoWindowMapWidget extends Composite {
@@ -133,7 +137,7 @@ public class InfoWindowMapWidget extends Composite {
 
 		    marker.addClickHandler(new ClickMapHandler() {
 		      public void onEvent(ClickMapEvent event) {
-		        drawInfoWindow(marker, event.getMouseEvent(), geoDataForMap.getEndpointName());
+		        drawInfoWindow(marker, event.getMouseEvent(), geoDataForMap);
 		      }
 		    });
 
@@ -165,24 +169,36 @@ public class InfoWindowMapWidget extends Composite {
 	  }
 
   
-  protected void drawInfoWindow(final Marker marker, MouseEvent mouseEvent, String endpointName) {
+  protected void drawInfoWindow(final Marker marker, MouseEvent mouseEvent, final GeoDataForMap geoDataForMap) {
     if (marker == null || mouseEvent == null) {
       return;
     }
+    
+    
+    SafeHtmlBuilder endpointInfoBuilder = new SafeHtmlBuilder();
+    endpointInfoBuilder.appendHtmlConstant("This is: <b>");
+    endpointInfoBuilder.appendEscaped(geoDataForMap.getEndpointName());
+    endpointInfoBuilder.appendHtmlConstant("</b><br> Last known position: Latitude ");
+    endpointInfoBuilder.appendEscaped(geoDataForMap.getLat());
+    endpointInfoBuilder.appendHtmlConstant("&deg;, Longitude ");
+    endpointInfoBuilder.appendEscaped(geoDataForMap.getLon());
+    endpointInfoBuilder.appendHtmlConstant("&deg; <br>Last position update: ");
+    endpointInfoBuilder.appendEscaped(geoDataForMap.getTimeStamp());
 
-    HTML html = new HTML("Why did you click on me? <br/> This is: " + endpointName + " at " + mouseEvent.getLatLng().getToString());
-
-    Button b1 = new Button("b1");
+    HTML html = new HTML(endpointInfoBuilder.toSafeHtml());
+        
+    
+    Button b1 = new Button("Manage " + geoDataForMap.getEndpointName());
     b1.addClickHandler(new ClickHandler() {
       public void onClick(ClickEvent event) {
-        Window.alert("b1 clicked");
+    	  AppController.openEndpoint(geoDataForMap.getEndpointID());
       }
     });
 
-    Button b2 = new Button("b2");
+    Button b2 = new Button("Analyze");
     b2.addClickHandler(new ClickHandler() {
       public void onClick(ClickEvent event) {
-        Window.alert("b2 clicked");
+    	  AppController.openAnalytics();
       }
     });
 
@@ -266,40 +282,21 @@ public class InfoWindowMapWidget extends Composite {
 
 							geoFromServer = it.next();
 
-							RootPanel
-									.get()
-									.add(new HTML("Just iterated... "
-											+ geoFromServer
-													.getPropertyClassID()
-											+ "... " + geoFromServer.getValue()));
-
+							
 							if (allGeoDataForMap.containsKey(geoFromServer
 									.getEndpointID())) {
 								GeoDataForMap geoDataPoint = allGeoDataForMap
 										.get(geoFromServer.getEndpointID());
+								
 								if (geoFromServer.getPropertyClassID() == "PC_GEO_LON") {
 									geoDataPoint.setLon(geoFromServer
 											.getValue());
-									RootPanel
-											.get()
-											.add(new HTML(
-													geoFromServer
-															.getPropertyClassID()
-															+ "Added Lon to existing Lat"
-															+ geoFromServer
-																	.getValue()));
-
+									
+							
 								} else {
 									geoDataPoint.setLat(geoFromServer
 											.getValue());
-									RootPanel
-											.get()
-											.add(new HTML(
-													geoFromServer
-															.getPropertyClassID()
-															+ "Added Lat to existing Lon"
-															+ geoFromServer
-																	.getValue()));
+									
 								}
 								allGeoDataForMap.put(
 										geoFromServer.getEndpointID(),
@@ -312,25 +309,14 @@ public class InfoWindowMapWidget extends Composite {
 										.getEndpointID());
 								geoDataPoint.setEndpointName(geoFromServer
 										.getEndpointName());
+								geoDataPoint.setTimeStamp(geoFromServer.getTimeStamp());
 								if (geoFromServer.getPropertyClassID() == "PC_GEO_LON") {
 									geoDataPoint.setLon(geoFromServer
 											.getValue());
-									RootPanel
-											.get()
-											.add(new HTML(geoFromServer
-													.getPropertyClassID()
-													+ "Added new Lon"
-													+ geoFromServer.getValue()));
 								} else {
 									geoDataPoint.setLat(geoFromServer
 											.getValue());
-									RootPanel
-											.get()
-											.add(new HTML(geoFromServer
-													.getPropertyClassID()
-													+ "Added new Lat"
-													+ geoFromServer.getValue()));
-								}
+															}
 
 								allGeoDataForMap.put(
 										geoFromServer.getEndpointID(),

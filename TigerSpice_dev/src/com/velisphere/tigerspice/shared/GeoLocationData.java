@@ -9,6 +9,7 @@ public class GeoLocationData implements IsSerializable{
 	String endpointClassID;
 	String propertyClassID;
 	String value;
+	String timeStamp;
 	
 	
 	public void setUserID(String userID){
@@ -35,6 +36,10 @@ public class GeoLocationData implements IsSerializable{
 		this.value = value;
 	}
 	
+	public void setTimeStamp(String timeStamp){
+		this.timeStamp = timeStamp;
+	}
+	
 	public String getUserID(){
 		return this.userID;
 	}
@@ -59,7 +64,10 @@ public class GeoLocationData implements IsSerializable{
 		return this.value;
 	}
 	
-	
+	public String getTimeStamp(){
+		return this.timeStamp;
+	}
+		
 	
 	
 	
