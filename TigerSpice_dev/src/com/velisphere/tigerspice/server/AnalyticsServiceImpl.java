@@ -533,7 +533,17 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
-					.executeQuery("SELECT DISTINCT vlogger.endpoint_user_link.userid, vlogger.endpoint.endpointname, vlogger.endpoint.endpointclassid, vlogger.endpoint.endpointid, vlogger.endpointpropertylog.propertyid, vlogger.propertyclass.propertyclassid, LAST_VALUE(vlogger.endpointpropertylog.propertyentry)      OVER (PARTITION BY vlogger.endpointpropertylog.propertyid ORDER BY vlogger.endpointpropertylog.time_stamp ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING), LAST_VALUE(vlogger.endpointpropertylog.time_stamp)      OVER (PARTITION BY vlogger.endpointpropertylog.propertyid ORDER BY vlogger.endpointpropertylog.time_stamp ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) FROM vlogger.endpointpropertylog JOIN vlogger.endpoint ON vlogger.endpoint.endpointid = vlogger.endpointpropertylog.endpointid JOIN vlogger.property ON vlogger.property.propertyid = vlogger.endpointpropertylog.propertyid JOIN vlogger.propertyclass on vlogger.propertyclass.propertyclassid = vlogger.property.propertyclassid JOIN vlogger.endpoint_user_link ON vlogger.endpoint_user_link.endpointid = vlogger.endpoint.endpointid JOIN vlogger.user ON vlogger.user.userid = vlogger.endpoint_user_link.userid WHERE vlogger.user.userid = 'f6c21db0-2c34-4b13-81c4-832a0a6fd78b' AND (vlogger.property.propertyclassid = 'PC_GEO_LON' OR vlogger.property.propertyclassid = 'PC_GEO_LAT')");
+					.executeQuery("SELECT vlogger.user.userid, vlogger.endpoint.endpointname, vlogger.endpoint.endpointclassid, "
+							+ "vlogger.endpoint.endpointid, maxvals.propertyid, maxvals.propclass, maxvals.maxentry, maxvals.maxtime_stamp "
+							+ "FROM "
+							+ "(SELECT endpointid, vlogger.endpointpropertylog.propertyid, properties.propertyclassid as propclass, max(time_stamp) as maxtime_stamp, max(propertyentry) as maxentry "
+							+ "FROM vlogger.endpointpropertylog "
+							+ "JOIN (select propertyid, propertyclassid from vlogger.property where propertyclassid = 'PC_GEO_LAT' or propertyclassid = 'PC_GEO_LON') as properties "
+							+ "ON properties.propertyid = vlogger.endpointpropertylog.propertyid "
+							+ "GROUP BY endpointid, propclass, vlogger.endpointpropertylog.propertyid) AS maxvals "
+							+ "JOIN vlogger.endpoint ON vlogger.endpoint.endpointid = maxvals.endpointid "
+							+ "JOIN vlogger.endpoint_user_link ON vlogger.endpoint_user_link.endpointid = vlogger.endpoint.endpointid "
+							+ "JOIN vlogger.user ON vlogger.user.userid = vlogger.endpoint_user_link.userid WHERE vlogger.user.userid = '"+userID+"'");
 
 			
 			
@@ -550,7 +560,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 				
 				geoItems.add(geoItem);
 				
-				System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue());
+				System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue() + " for: " + geoItem.getEndpointName());
 			}
 
 			mySelect.close();

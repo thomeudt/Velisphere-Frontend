@@ -35,7 +35,7 @@ public class FsConnect {
 		try {
 			
 			// Start AMQP Listener
-			ServerParameters.my_queue_name = "cd24cbbc-f163-4e80-8004-2ff626042cc0";
+			ServerParameters.my_queue_name = "4b533acf-c486-4bd8-9f9d-873a0cd6b29a";
 			
 			
 			
