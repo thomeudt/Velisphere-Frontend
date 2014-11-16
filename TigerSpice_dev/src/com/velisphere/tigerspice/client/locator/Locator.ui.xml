@@ -48,7 +48,22 @@
 						
 					</b:TabPane>
 
+					<b:TabPane heading="Heatmap" active="false">
+					    
+					    <b:Row>
+							<b:Column size="10" offset="0">
+							
+							</b:Column>
 
+						</b:Row>
+					    
+						
+					</b:TabPane>
+					
+					<b:TabPane heading="Trail" active="false">
+						
+					</b:TabPane>
+					
 					<b:TabPane heading="Logical Location" active="false">
 						
 					</b:TabPane>

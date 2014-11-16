@@ -534,16 +534,19 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 
 			ResultSet myResult = mySelect
 					.executeQuery("SELECT vlogger.user.userid, vlogger.endpoint.endpointname, vlogger.endpoint.endpointclassid, "
-							+ "vlogger.endpoint.endpointid, maxvals.propertyid, maxvals.propclass, maxvals.maxentry, maxvals.maxtime_stamp "
-							+ "FROM "
-							+ "(SELECT endpointid, vlogger.endpointpropertylog.propertyid, properties.propertyclassid as propclass, max(time_stamp) as maxtime_stamp, max(propertyentry) as maxentry "
+							+ "vlogger.endpoint.endpointid, maxvals.maxtime_stamp, maxvals.propertyclassid, vlogger.endpointpropertylog.propertyentry "
 							+ "FROM vlogger.endpointpropertylog "
-							+ "JOIN (select propertyid, propertyclassid from vlogger.property where propertyclassid = 'PC_GEO_LAT' or propertyclassid = 'PC_GEO_LON') as properties "
-							+ "ON properties.propertyid = vlogger.endpointpropertylog.propertyid "
-							+ "GROUP BY endpointid, propclass, vlogger.endpointpropertylog.propertyid) AS maxvals "
-							+ "JOIN vlogger.endpoint ON vlogger.endpoint.endpointid = maxvals.endpointid "
+							+ "JOIN"
+							+ "(SELECT max(time_stamp) as maxtime_stamp, property.propertyclassid as propertyclassid FROM vlogger.endpointpropertylog "
+							+ "JOIN vlogger.property on vlogger.property.propertyid = vlogger.endpointpropertylog.propertyid "
+							+ "JOIN vlogger.propertyclass on vlogger.propertyclass.propertyclassid = vlogger.property.propertyclassid "
+							+ "WHERE property.propertyclassid = 'PC_GEO_LAT' or property.propertyclassid = 'PC_GEO_LON' "
+							+ "GROUP BY endpointid, property.propertyid, property.propertyclassid) as maxvals "
+							+ "ON maxvals.maxtime_stamp = vlogger.endpointpropertylog.time_stamp "
+							+ "JOIN vlogger.endpoint ON vlogger.endpoint.endpointid = endpointpropertylog.endpointid "
 							+ "JOIN vlogger.endpoint_user_link ON vlogger.endpoint_user_link.endpointid = vlogger.endpoint.endpointid "
-							+ "JOIN vlogger.user ON vlogger.user.userid = vlogger.endpoint_user_link.userid WHERE vlogger.user.userid = '"+userID+"'");
+							+ "JOIN vlogger.user ON vlogger.user.userid = vlogger.endpoint_user_link.userid "
+							+ "WHERE vlogger.user.userid = '"+userID+"'");
 
 			
 			
@@ -556,7 +559,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 				geoItem.setEndpointClassID(myResult.getString(3));
 				geoItem.setPropertyClassID(myResult.getString(6));
 				geoItem.setValue(myResult.getString(7));
-				geoItem.setTimeStamp(myResult.getString(8));
+				geoItem.setTimeStamp(myResult.getString(5));
 				
 				geoItems.add(geoItem);
 				
