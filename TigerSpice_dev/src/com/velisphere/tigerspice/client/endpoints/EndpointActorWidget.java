@@ -68,6 +68,8 @@ public class EndpointActorWidget extends Composite {
 	Paragraph pgpTriggerHeader;
 	@UiField
 	Button btnDataTrail;
+	@UiField
+	Button btnSetNewValue;
 	HandlerRegistration dataTrailClickReg;
 
 	private static EndpointSensorWidgetUiBinder uiBinder = GWT
@@ -134,6 +136,7 @@ public class EndpointActorWidget extends Composite {
 							pgpLogic.setText("");
 							pgpTrigger.setText("");
 							btnDataTrail.setVisible(false);
+							btnSetNewValue.setVisible(false);
 						}
 						while (it.hasNext()) {
 

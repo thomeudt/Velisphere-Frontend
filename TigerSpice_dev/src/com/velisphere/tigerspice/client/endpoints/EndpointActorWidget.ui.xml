@@ -88,6 +88,9 @@
 					<b:Column size="1">
 						<b:Button type="PRIMARY" size="MINI" addStyleNames="btn-block" ui:field="btnDataTrail">View Datatrail</b:Button>
 					</b:Column>
+					<b:Column size="2">
+						<b:Button type="SUCCESS" size="MINI" addStyleNames="btn-block" ui:field="btnSetNewValue">Send / Set Value</b:Button>
+					</b:Column>
 				</b:Row>
 				
 				

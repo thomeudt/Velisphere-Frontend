@@ -32,17 +32,18 @@ import com.velisphere.tigerspice.client.locator.maps.InfoWindowMapWidget;
 import com.velisphere.tigerspice.shared.AnalyticsRawData;
 import com.velisphere.tigerspice.shared.GeoLocationData;
 
-public class GeoLocatorWidget extends Composite {
+public class GeoLocatorWidget_UNUSED extends Composite {
 
 	private FlowPanel vp;
 	HashMap<String, GeoDataForMap> allGeoDataForMap;
 
-	public GeoLocatorWidget() {
+	public GeoLocatorWidget_UNUSED() {
 		loadMapApi();
 		vp = new FlowPanel();
 		initWidget(vp);
 
 	}
+
 
 	private void loadMapApi() {
 		boolean sensor = true;
@@ -66,6 +67,7 @@ public class GeoLocatorWidget extends Composite {
 
 		LoadApi.go(onLoad, loadLibraries, sensor);
 	}
+	
 
 	/**
 	 * See the map widgets for different map configurations

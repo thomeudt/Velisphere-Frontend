@@ -20,6 +20,7 @@ package com.velisphere.tigerspice.client.locator.maps;
  * #L%
  */
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -56,13 +57,20 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
+import com.velisphere.tigerspice.client.endpointclasses.EPCService;
+import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
+import com.velisphere.tigerspice.client.event.EventUtils;
+
+import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.locator.helpers.GeoDataForMap;
+import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.GeoLocationData;
 
 public class InfoWindowMapWidget extends Composite {
@@ -175,16 +183,22 @@ public class InfoWindowMapWidget extends Composite {
     }
     
     
+    
+    
+    
+    
     SafeHtmlBuilder endpointInfoBuilder = new SafeHtmlBuilder();
-    endpointInfoBuilder.appendHtmlConstant("This is: <b>");
+    endpointInfoBuilder.appendHtmlConstant("<b>");
     endpointInfoBuilder.appendEscaped(geoDataForMap.getEndpointName());
-    endpointInfoBuilder.appendHtmlConstant("</b><br> Last known position: Latitude ");
+    endpointInfoBuilder.appendHtmlConstant("</b><br>Latitude: ");
     endpointInfoBuilder.appendEscaped(geoDataForMap.getLat());
-    endpointInfoBuilder.appendHtmlConstant("&deg;, Longitude ");
+    endpointInfoBuilder.appendHtmlConstant("&deg;<br>Longitude ");
     endpointInfoBuilder.appendEscaped(geoDataForMap.getLon());
     endpointInfoBuilder.appendHtmlConstant("&deg; <br>Last position update: ");
     endpointInfoBuilder.appendEscaped(geoDataForMap.getTimeStamp());
+    Timestamp.valueOf(geoDataForMap.getTimeStamp());
 
+   
     HTML html = new HTML(endpointInfoBuilder.toSafeHtml());
         
     
@@ -202,10 +216,15 @@ public class InfoWindowMapWidget extends Composite {
       }
     });
 
+    Image epcImage = new Image();
     VerticalPanel vp = new VerticalPanel();
+        
+    vp.add(epcImage);
     vp.add(html);
     vp.add(b1);
     vp.add(b2);
+    
+    loadClassImage (epcImage, geoDataForMap.getEndpointClassID());
 
     InfoWindowOptions options = InfoWindowOptions.newInstance();
     options.setContent(vp);
@@ -309,6 +328,8 @@ public class InfoWindowMapWidget extends Composite {
 										.getEndpointID());
 								geoDataPoint.setEndpointName(geoFromServer
 										.getEndpointName());
+								geoDataPoint.setEndpointClassID(geoFromServer
+										.getEndpointClassID());
 								geoDataPoint.setTimeStamp(geoFromServer.getTimeStamp());
 								if (geoFromServer.getPropertyClassID() == "PC_GEO_LON") {
 									geoDataPoint.setLon(geoFromServer
@@ -333,5 +354,48 @@ public class InfoWindowMapWidget extends Composite {
 				});
 
 	}
+  
+  
+  private void loadClassImage(final Image epcImage, String epcId)
+  {
+		EPCServiceAsync epcService = GWT
+				.create(EPCService.class);
+		
+		final AnimationLoading animationLoading = new AnimationLoading();
+		
+		animationLoading.showLoadAnimation("Loading Class");
+	
+		
+		epcService
+				.getEndpointClassForEndpointClassID(
+						epcId,
+						new AsyncCallback<EPCData>() {
+
+							@Override
+							public void onFailure(
+									Throwable caught) {
+								// TODO Auto-generated method
+								// stub
+								animationLoading.removeLoadAnimation();
+							}
+
+							@Override
+							public void onSuccess(EPCData result) {
+								// TODO Auto-generated method
+								// stub
+
+								
+								epcImage.setUrl(result.endpointclassImageURL);
+								epcImage.setWidth("125px");
+								animationLoading.removeLoadAnimation();
+																				
+								
+							}
+
+						});
+  }
+  
+  
+  
 
 }

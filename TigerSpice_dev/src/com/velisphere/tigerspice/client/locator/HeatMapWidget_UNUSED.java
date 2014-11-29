@@ -32,28 +32,49 @@ import com.velisphere.tigerspice.client.locator.maps.InfoWindowMapWidget;
 import com.velisphere.tigerspice.shared.AnalyticsRawData;
 import com.velisphere.tigerspice.shared.GeoLocationData;
 
-public class HeatMapWidget extends Composite {
+public class HeatMapWidget_UNUSED extends Composite {
 
 	private FlowPanel vp;
 	HashMap<String, GeoDataForMap> allGeoDataForMap;
 
-	public HeatMapWidget() {
+	public HeatMapWidget_UNUSED() {
 		
 		vp = new FlowPanel();
 		initWidget(vp);
-		drawHeatMap();
+		loadMapApi();
 
 
 	}
 
 	
+	private void loadMapApi() {
+		boolean sensor = true;
+
+		draw();
+	}
+	
+
+	/**
+	 * See the map widgets for different map configurations
+	 */
+	private void draw() {
+
+		drawBasicMap();
+
+	}
+
+	/**
+	 * Add the widget to the demos
+	 * 
+	 * 
+	 */
 	private void addMapWidget(Widget widget) {
 		vp.add(widget);
 		// RootPanel.get().add(widget);
 	}
 
-	private void drawHeatMap() {
-		HeatMapLayerWidget wMap = new HeatMapLayerWidget();
+	private void drawBasicMap() {
+		InfoWindowMapWidget wMap = new InfoWindowMapWidget();
 		addMapWidget(wMap);
 		
 	        
@@ -62,3 +83,7 @@ public class HeatMapWidget extends Composite {
 	
 
 }
+
+	
+
+

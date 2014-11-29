@@ -28,6 +28,8 @@ import com.google.gwt.maps.client.MapOptions;
 import com.google.gwt.maps.client.MapTypeId;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.base.LatLng;
+import com.google.gwt.maps.client.events.tiles.TilesLoadedMapEvent;
+import com.google.gwt.maps.client.events.tiles.TilesLoadedMapHandler;
 import com.google.gwt.maps.client.geometrylib.EncodingUtils;
 import com.google.gwt.maps.client.layers.TransitLayer;
 import com.google.gwt.maps.client.visualizationlib.HeatMapLayer;
@@ -74,8 +76,19 @@ public class HeatMapLayerWidget extends Composite {
 
     mapWidget = new MapWidget(opts);
     pWidget.add(mapWidget);
-    mapWidget.setSize("750px", "500px");
-
+    mapWidget.setSize("700px", "350px");
+    mapWidget.setStyleName("map_canvas");
+    
+    mapWidget.addTilesLoadedHandler(new TilesLoadedMapHandler() {
+        public void onEvent(TilesLoadedMapEvent event) {
+          // Load something after the tiles load
+      	  
+      	  mapWidget.triggerResize();
+      	  mapWidget.setZoom(mapWidget.getZoom());
+      	  
+        }
+      });
+    
     // show transit layer
     TransitLayer transitLayer = TransitLayer.newInstance();
     transitLayer.setMap(mapWidget);

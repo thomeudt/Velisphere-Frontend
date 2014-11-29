@@ -88,6 +88,15 @@
 						<b:Paragraph addStyleNames="smalltext-black">List all checkpaths of which this is part</b:Paragraph>
 
 					</b:TabPane>
+					
+					<b:TabPane heading="Geolocation" active="false">
+						<b:Heading size="4">Endpoints: OK</b:Heading>
+
+						<b:Paragraph addStyleNames="smalltext-black">All endpoints are
+							functioning.</b:Paragraph>
+						<b:Paragraph addStyleNames="smalltext-black">List all checkpaths of which this is part</b:Paragraph>
+
+					</b:TabPane>
 
 
 				</b:TabPanel>

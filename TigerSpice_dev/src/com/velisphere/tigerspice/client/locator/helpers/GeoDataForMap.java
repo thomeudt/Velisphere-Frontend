@@ -7,6 +7,7 @@ public class GeoDataForMap {
 	private String lat;
 	private String lon;
 	private String timeStamp;
+	private String endpointClassID;
 	
 	public void setEndpointID(String endpointID){
 		this.endpointID = endpointID;
@@ -28,6 +29,9 @@ public class GeoDataForMap {
 		this.timeStamp = timeStamp;
 	}
 	
+	public void setEndpointClassID(String endpointClassID){
+		this.endpointClassID = endpointClassID;
+	}
 	
 	public String getEndpointID()
 	{
@@ -51,6 +55,11 @@ public class GeoDataForMap {
 	
 	public String getTimeStamp(){
 		return this.timeStamp;
+	}
+	
+	public String getEndpointClassID()
+	{
+		return this.endpointClassID;
 	}
 	
 }

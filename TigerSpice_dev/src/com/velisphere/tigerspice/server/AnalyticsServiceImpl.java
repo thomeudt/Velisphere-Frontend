@@ -561,6 +561,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 				geoItem.setValue(myResult.getString(7));
 				geoItem.setTimeStamp(myResult.getString(5));
 				
+				
 				geoItems.add(geoItem);
 				
 				System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue() + " for: " + geoItem.getEndpointName());

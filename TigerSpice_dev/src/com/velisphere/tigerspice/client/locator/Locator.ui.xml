@@ -36,29 +36,23 @@
 
 				<b:TabPanel tabPosition="above" ui:field="tabPanel">
 
-					<b:TabPane heading="Geographical Location" active="true">
+					<b:TabLink text="Geographical Location" icon="MAP_MARKER" dataTarget="tbpMap" createTabPane="false"  ui:field="tblGeoLocation">
+        					
+   					 </b:TabLink>
+
+					<b:TabLink text="Heatmap" icon="FIRE" dataTarget="tbpMap" createTabPane="false"  ui:field="tblHeatMap">
+        					
+   					 </b:TabLink>
+					
+										 
+					 <b:TabPane href="tbpMap" createTabLink="false" ui:field="tbpMap">
+        				
+    				</b:TabPane>
+
+   					 
 						
-						<b:Row>
-							<b:Column size="10" offset="0">
-							<vslo:GeoLocatorWidget />    
-							</b:Column>
+				
 
-						</b:Row>
-
-						
-					</b:TabPane>
-
-					<b:TabPane heading="Heatmap" active="false">
-					    
-					    <b:Row>
-							<b:Column size="10" offset="0">
-							
-							</b:Column>
-
-						</b:Row>
-					    
-						
-					</b:TabPane>
 					
 					<b:TabPane heading="Trail" active="false">
 						
