@@ -43,6 +43,15 @@
 					<b:TabLink text="Heatmap" icon="FIRE" dataTarget="tbpMap" createTabPane="false"  ui:field="tblHeatMap">
         					
    					 </b:TabLink>
+   					 
+					<b:TabLink text="Trail" icon="ROAD" dataTarget="tbpMap" createTabPane="false"  ui:field="tblTrailMap">
+        					
+   					 </b:TabLink>
+					
+					<b:TabLink text="Connections" icon="EXCHANGE" dataTarget="tbpMap" createTabPane="false"  ui:field="tblConnectionMap">
+        					
+   					 </b:TabLink>
+					
 					
 										 
 					 <b:TabPane href="tbpMap" createTabLink="false" ui:field="tbpMap">
@@ -54,13 +63,7 @@
 				
 
 					
-					<b:TabPane heading="Trail" active="false">
-						
-					</b:TabPane>
 					
-					<b:TabPane heading="Logical Location" active="false">
-						
-					</b:TabPane>
 					
 
 				</b:TabPanel>

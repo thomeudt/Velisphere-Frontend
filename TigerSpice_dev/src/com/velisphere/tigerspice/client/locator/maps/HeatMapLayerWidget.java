@@ -37,7 +37,9 @@ import com.google.gwt.maps.client.visualizationlib.HeatMapLayerOptions;
 import com.google.gwt.maps.client.visualizationlib.WeightedLocation;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.velisphere.tigerspice.client.helper.FilterSphereEndpointWidget;
 
 /**
  * See <a href=
@@ -46,11 +48,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class HeatMapLayerWidget extends Composite {
 
-  private final VerticalPanel pWidget;
+  private final HorizontalPanel pWidget;
   private MapWidget mapWidget;
 
   public HeatMapLayerWidget() {
-    pWidget = new VerticalPanel();
+    pWidget = new HorizontalPanel();
     initWidget(pWidget);
 
     draw();
@@ -59,10 +61,11 @@ public class HeatMapLayerWidget extends Composite {
   private void draw() {
 
     pWidget.clear();
-    pWidget
-        .add(new HTML(
-            "<br>HeatMap Layers Example:<br>3981 NYC Homicides 2003-2011 (<a href='http://graphics8.nytimes.com/packages/xml/map_feed_incidents.txt?c=1906'>source NYTimes</a>)"));
-
+    FilterSphereEndpointWidget endpointFilter = new FilterSphereEndpointWidget();
+        
+    
+    pWidget.add(endpointFilter);
+   
     drawMap();
   }
 

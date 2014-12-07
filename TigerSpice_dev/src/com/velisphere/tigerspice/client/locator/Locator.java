@@ -32,6 +32,8 @@ import com.velisphere.tigerspice.client.event.CheckpathCalculatedEventHandler;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.locator.maps.HeatMapLayerWidget;
 import com.velisphere.tigerspice.client.locator.maps.InfoWindowMapWidget;
+import com.velisphere.tigerspice.client.locator.maps.LogicalMapWidget;
+import com.velisphere.tigerspice.client.locator.maps.PolylineMapWidget;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 
 public class Locator extends Composite {
@@ -52,6 +54,10 @@ public class Locator extends Composite {
 	TabPane tbpMap;
 	@UiField
 	TabLink tblHeatMap;
+	@UiField
+	TabLink tblTrailMap;
+	@UiField
+	TabLink tblConnectionMap;
 
 	HandlerRegistration mapCompleted;
 	
@@ -146,6 +152,24 @@ public class Locator extends Composite {
 	          public void onClick(ClickEvent event) {
 	        	  tbpMap.clear();
 	        	  HeatMapLayerWidget gMap = new HeatMapLayerWidget();
+	        		tbpMap.add(gMap);
+	              
+	          }
+	      });
+		
+		tblTrailMap.addClickHandler(new ClickHandler() {
+	          public void onClick(ClickEvent event) {
+	        	  tbpMap.clear();
+	        	  PolylineMapWidget gMap = new PolylineMapWidget();
+	        		tbpMap.add(gMap);
+	              
+	          }
+	      });
+		
+		tblConnectionMap.addClickHandler(new ClickHandler() {
+	          public void onClick(ClickEvent event) {
+	        	  tbpMap.clear();
+	        	  LogicalMapWidget gMap = new LogicalMapWidget();
 	        		tbpMap.add(gMap);
 	              
 	          }
