@@ -21,5 +21,6 @@ public interface AnalyticsServiceAsync {
 	void getCurrentActorState(String endpointID, String propertyID, AsyncCallback<AnalyticsRawData> callback);
 	void getActionNameForActionID(String actionID, AsyncCallback<String> callback);
 	void getAllGeoLocations(String userID, AsyncCallback<LinkedList<GeoLocationData>> callback);
+	void getAllGeoLocationTrails(String userID, AsyncCallback<LinkedList<GeoLocationData>> callback);
 }
 

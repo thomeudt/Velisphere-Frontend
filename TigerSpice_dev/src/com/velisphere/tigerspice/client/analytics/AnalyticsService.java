@@ -22,6 +22,7 @@ import com.velisphere.tigerspice.shared.TableRowData;
 		AnalyticsRawData getCurrentActorState(String endpointID, String propertyID);
 		String getActionNameForActionID(String actionID);
 		LinkedList<GeoLocationData> getAllGeoLocations(String userID);
+		LinkedList<GeoLocationData> getAllGeoLocationTrails(String userID);
 	}
 
 	
