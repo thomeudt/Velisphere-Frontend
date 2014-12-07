@@ -35,7 +35,7 @@ public class FsConnect {
 		try {
 			
 			// Start AMQP Listener
-			ServerParameters.my_queue_name = "4b533acf-c486-4bd8-9f9d-873a0cd6b29a";
+			ServerParameters.my_queue_name = "826bd9ff-0efc-47ba-8485-05511b8aeb52";
 			
 			
 			
@@ -132,6 +132,7 @@ public class FsConnect {
 						//messageHash.put("009ce1d1-ef2d-4e42-9d45-204a6ff2109d", String.valueOf(aoA));
 						messageHash.put("5e9c6361-913a-4b63-a6b9-a5d2b1a530c0", String.valueOf(lat));
 						messageHash.put("55167544-c84c-41ad-83fb-9960efdf5a88", String.valueOf(lon));
+						messageHash.put("0dc38678-5aad-4564-9ec6-c5ec440ce4ed", "{"+String.valueOf(lat)+"}"+"["+String.valueOf(lon)+"]");
 						
 						System.out.println("Message Hash Sent to Controller: " + messageHash);
 						

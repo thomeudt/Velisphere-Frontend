@@ -102,14 +102,16 @@ public class PreLoadMart {
 	        myInsert.addBatch("INSERT INTO VLOGGER.PROPERTYCLASS VALUES ('PC5', 'On Off Indicator', 'Byte', '')");
 	        myInsert.addBatch("INSERT INTO VLOGGER.PROPERTYCLASS VALUES ('PC6', 'Touch', 'Double', '')");
 	        myInsert.addBatch("INSERT INTO VLOGGER.PROPERTYCLASS VALUES ('PC7', 'Rotation', 'Double', '')");
-	        */
+	        
 	        myInsert.addBatch("INSERT INTO VLOGGER.PROPERTYCLASS VALUES ('PC8', 'Pressure', 'Double', '')");
-	        /*
+	        
 	        
 	      myInsert.addBatch("INSERT INTO VLOGGER.PROPERTYCLASS VALUES ('PC_GEO_LAT', 'Latitude', 'String', '')");
 	      myInsert.addBatch("INSERT INTO VLOGGER.PROPERTYCLASS VALUES ('PC_GEO_LON', 'Longitude', 'String', '')");
-	        
-	                	        	        
+	        */
+	      myInsert.addBatch("INSERT INTO VLOGGER.PROPERTYCLASS VALUES ('PC_GEO_LATLON', 'Composite Lat/Lon', 'String', '')");
+	      
+	          /*      	        	        
 	        System.out.println("Property Classes loaded");
 	        
 	       

@@ -83,7 +83,7 @@ public class PreLoadNeu {
 	        
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC_GEO_LAT", "Latitude", "String", "");
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC_GEO_LON", "Longitude", "String", "");
-	        
+	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC_GEO_LATLON", "Composite Lat/Lon", "String", "");
 	       
 	        
 	        

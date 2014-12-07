@@ -63,7 +63,8 @@ public class HeatMapLayerWidget extends Composite {
 
   private final HorizontalPanel pWidget;
   private MapWidget mapWidget;
-  private HashMap<String, GeoDataForMap> allGeoDataForMap;
+  //private HashMap<String, GeoDataForMap> allGeoDataForMap;
+  private LinkedList<GeoLocationData> allGeoDataForMap;
 
   public HeatMapLayerWidget() {
     pWidget = new HorizontalPanel();
@@ -122,7 +123,9 @@ public class HeatMapLayerWidget extends Composite {
 
     HeatMapLayer heatMapLayer = HeatMapLayer.newInstance(options);
     // set data
+    
     JsArray<LatLng> dataPoints = compileHeatMapData();
+    
     heatMapLayer.setData(dataPoints);
 
     // the other way to set data
@@ -152,7 +155,7 @@ public class HeatMapLayerWidget extends Composite {
   
   
   private void getMarkersForMap() {
-		allGeoDataForMap = new HashMap<String, GeoDataForMap>();
+
 
 		AnalyticsServiceAsync analyticsService = GWT
 				.create(AnalyticsService.class);
@@ -170,62 +173,10 @@ public class HeatMapLayerWidget extends Composite {
 					public void onSuccess(LinkedList<GeoLocationData> result) {
 						// TODO Auto-generated method stub
 
-						Iterator<GeoLocationData> it = result.iterator();
 						// RootPanel.get().add(new HTML("Length of List" +
 						// result.size()));
 
-						while (it.hasNext()) {
-
-							GeoLocationData geoFromServer = new GeoLocationData();
-
-							geoFromServer = it.next();
-
-							
-							if (allGeoDataForMap.containsKey(geoFromServer
-									.getEndpointID())) {
-								GeoDataForMap geoDataPoint = allGeoDataForMap
-										.get(geoFromServer.getEndpointID());
-								
-								if (geoFromServer.getPropertyClassID() == "PC_GEO_LON") {
-									geoDataPoint.setLon(geoFromServer
-											.getValue());
-									
-							
-								} else {
-									geoDataPoint.setLat(geoFromServer
-											.getValue());
-									
-								}
-								allGeoDataForMap.put(
-										geoFromServer.getEndpointID(),
-										geoDataPoint);
-
-							} else {
-
-								GeoDataForMap geoDataPoint = new GeoDataForMap();
-								geoDataPoint.setEndpointID(geoFromServer
-										.getEndpointID());
-								geoDataPoint.setEndpointName(geoFromServer
-										.getEndpointName());
-								geoDataPoint.setEndpointClassID(geoFromServer
-										.getEndpointClassID());
-								geoDataPoint.setTimeStamp(geoFromServer.getTimeStamp());
-								if (geoFromServer.getPropertyClassID() == "PC_GEO_LON") {
-									geoDataPoint.setLon(geoFromServer
-											.getValue());
-								} else {
-									geoDataPoint.setLat(geoFromServer
-											.getValue());
-															}
-
-								allGeoDataForMap.put(
-										geoFromServer.getEndpointID(),
-										geoDataPoint);
-
-							}
-
-						}
-
+						allGeoDataForMap = result;
 						compileHeatMapData();
 						drawMap();
 						
@@ -247,36 +198,22 @@ public class HeatMapLayerWidget extends Composite {
    */
   private JsArray<LatLng> compileHeatMapData() {
     
-	JsArray<LatLng> allPoints = JavaScriptObject.createArray().cast();
-	Iterator<Entry<String, GeoDataForMap>> it = allGeoDataForMap.entrySet().iterator();
+	JsArray<LatLng> allPointCoords = JavaScriptObject.createArray().cast();
+	Iterator<GeoLocationData> it = allGeoDataForMap.iterator();
 	while(it.hasNext()){
 	
-		Map.Entry<String, GeoDataForMap> pair = (Map.Entry<String, GeoDataForMap>)it.next();
-		LatLng point = LatLng.newInstance(Double.parseDouble(pair.getValue().getLat()), Double.parseDouble(pair.getValue().getLon()));
+		GeoLocationData point = it.next();
+		LatLng pointCoord = LatLng.newInstance(Double.parseDouble(point.getValue().substring(point.getValue().indexOf("{") + 1, point.getValue().indexOf("}"))), Double.parseDouble(point.getValue().substring(point.getValue().indexOf("[") + 1, point.getValue().indexOf("]"))));
 		
 		
-		allPoints.push(point);
+		allPointCoords.push(pointCoord);
 				
 	}
     
 	
-	return allPoints;
+	return allPointCoords;
   }
 
-  /**
-   * Get (randomly_ weighted spatial data for use in tests
-   * 
-   * @return
-   */
-  @SuppressWarnings("unused")
-  // here as an example of WeightedDataPoints
-  private JsArray<WeightedLocation> getSampleWeightedData() {
-    JsArray<LatLng> samplePoints = compileHeatMapData();
-    JsArray<WeightedLocation> sampleLocations = ArrayHelper.toJsArray(new WeightedLocation[] {});
-    for (int n = 0, len = samplePoints.length(); n < len; n++) {
-      sampleLocations.push(WeightedLocation.newInstance(samplePoints.get(n), 10 * Math.random()));
-    }
-    return sampleLocations;
-  }
+
 
 }
