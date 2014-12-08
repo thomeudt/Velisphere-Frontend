@@ -31,6 +31,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayString;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.maps.client.MapOptions;
 import com.google.gwt.maps.client.MapTypeId;
 import com.google.gwt.maps.client.MapWidget;
@@ -46,11 +47,17 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
-import com.velisphere.tigerspice.client.helper.FilterSphereEndpointWidget;
+import com.velisphere.tigerspice.client.event.CheckpathCalculatedEvent;
+import com.velisphere.tigerspice.client.event.CheckpathCalculatedEventHandler;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.FilterAppliedEvent;
+import com.velisphere.tigerspice.client.event.FilterAppliedEventHandler;
+import com.velisphere.tigerspice.client.helper.widgets.FilterSphereEndpointWidget;
 import com.velisphere.tigerspice.client.locator.helpers.GeoDataForMap;
 import com.velisphere.tigerspice.shared.GeoLocationData;
 
@@ -65,10 +72,12 @@ public class HeatMapLayerWidget extends Composite {
   private MapWidget mapWidget;
   //private HashMap<String, GeoDataForMap> allGeoDataForMap;
   private LinkedList<GeoLocationData> allGeoDataForMap;
+  private HandlerRegistration applyFilterHandler;
 
   public HeatMapLayerWidget() {
     pWidget = new HorizontalPanel();
     initWidget(pWidget);
+    setFilterHandlerListener();
 
     draw();
   }
@@ -152,6 +161,21 @@ public class HeatMapLayerWidget extends Composite {
     return ArrayHelper.toJsArrayString(sampleColors);
   }
 
+  
+  
+  private void setFilterHandlerListener()
+  {
+	  applyFilterHandler = EventUtils.EVENT_BUS.addHandler(FilterAppliedEvent.TYPE, new FilterAppliedEventHandler()     {
+			@Override
+		    public void onFilterApplied(FilterAppliedEvent filterAppliedEvent) {
+				HTML html = new HTML("FILTER APPLIED!!!!!!!");
+			    RootPanel.get().add(html);
+				//applyFilterHandler.removeHandler();
+				
+								
+			}		
+		});
+  }
   
   
   private void getMarkersForMap() {

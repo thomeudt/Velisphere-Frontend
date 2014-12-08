@@ -57,6 +57,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -67,21 +68,21 @@ import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.event.EventUtils;
-
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.helper.widgets.FilterSphereEndpointWidget;
 import com.velisphere.tigerspice.client.locator.helpers.GeoDataForMap;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.GeoLocationData;
 
 public class InfoWindowMapWidget extends Composite {
 
-  private VerticalPanel pWidget;
+  private HorizontalPanel pWidget;
   private MapWidget mapWidget;
   private HashMap<String, GeoDataForMap> allGeoDataForMap;
 
   public InfoWindowMapWidget() {
     
-	pWidget = new VerticalPanel();
+	pWidget = new HorizontalPanel();
     initWidget(pWidget);
 
     draw();
@@ -90,6 +91,9 @@ public class InfoWindowMapWidget extends Composite {
 
   private void draw() {
     pWidget.clear();
+    
+    FilterSphereEndpointWidget endpointFilter = new FilterSphereEndpointWidget();
+    pWidget.add(endpointFilter);
     
     Geolocation geolocation = Geolocation.getIfSupported();
 	

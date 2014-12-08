@@ -48,7 +48,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
-import com.velisphere.tigerspice.client.helper.FilterSphereEndpointWidget;
+import com.velisphere.tigerspice.client.helper.widgets.FilterSphereEndpointWidget;
 import com.velisphere.tigerspice.shared.GeoLocationData;
 
 /** 
@@ -183,7 +183,7 @@ public class PolylineMapWidget extends Composite {
     PolylineOptions opts = PolylineOptions.newInstance();
     // opts.setMap(mapWidget); // you can attach it to the map here
     opts.setPath(simpleLatLngArr);
-    opts.setStrokeColor("#0000FF");
+    opts.setStrokeColor("#FFC000");
     opts.setStrokeOpacity(1.0);
     opts.setStrokeWeight(2);
 	//opts.setIcons(iconsArr);

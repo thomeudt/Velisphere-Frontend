@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.helper;
+package com.velisphere.tigerspice.client.helper.widgets;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -27,9 +27,13 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.visualization.client.DataTable;
 import com.google.gwt.visualization.client.VisualizationUtils;
+import com.google.gwt.visualization.client.visualizations.OrgChart.Size;
 import com.google.gwt.visualization.client.visualizations.corechart.LineChart;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
+import com.velisphere.tigerspice.client.event.CheckpathCalculatedEvent;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.FilterAppliedEvent;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.spheres.SphereService;
@@ -46,6 +50,7 @@ public class FilterSphereEndpointWidget extends Composite {
 
 	ListBox lbxSphereFilter;
 	ListBox lbxEndpointFilter;
+	Button btnApply;
 
 	String userID;
 	String sphereID;
@@ -101,13 +106,25 @@ public class FilterSphereEndpointWidget extends Composite {
 
 		filterRow4.add(filterCol4);
 
+		Row filterRow5 = new Row();
+		Column filterCol5 = new Column(2);
+		btnApply = new Button();
+		btnApply.setSize(ButtonSize.SMALL);
+		btnApply.setText("Apply");
+		filterCol5.add(btnApply);
 
+		filterRow5.add(filterCol5);
+
+
+		
+		
 		
 
 		vp.add(filterRow1);
 		vp.add(filterRow2);
 		vp.add(filterRow3);
 		vp.add(filterRow4);
+		vp.add(filterRow5);
 
 		
 		populateSphereList(userID);
@@ -126,10 +143,18 @@ public class FilterSphereEndpointWidget extends Composite {
 			@Override
 			public void onChange(ChangeEvent event) {
 
-				//populateActorList(lbxEndpointFilter.getValue());
+		
 			}
 		});
 
+		btnApply.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event){
+				EventUtils.EVENT_BUS.fireEvent(new FilterAppliedEvent());		
+			}
+		});
+		
+		
 
 	}
 
