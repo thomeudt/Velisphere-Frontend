@@ -32,10 +32,10 @@ public class FsConnect {
 		final int fourSeceventID = 1;
 		// connect to simconnect
 		SimConnect sc;
-		try {
+		//try {
 			
 			// Start AMQP Listener
-			ServerParameters.my_queue_name = "826bd9ff-0efc-47ba-8485-05511b8aeb52";
+			ServerParameters.my_queue_name = "26999b45-f90f-4f3e-8e83-457ccdb1298d";
 			
 			
 			
@@ -123,16 +123,16 @@ public class FsConnect {
 						HashMap<String, String> messageHash = new HashMap<String, String>();
 						
 						// messageHash.put("4dbfba15-7297-4349-b152-b32ca81b2bd4", position.toString());
-						// messageHash.put("b0e66a0c-2ebe-4f36-961a-9810bb26957e", String.valueOf(altitude));
-						messageHash.put("b13dbdbb-e355-467e-8c13-0ade7d6b5d93", String.valueOf(atcType));
-						//messageHash.put("a078b27f-57f1-4bf8-8106-d063718cafae", String.valueOf(atcID));
-						messageHash.put("7e4da755-77de-4943-95d9-f15e778da8e5", String.valueOf(groundspeed));
-						//messageHash.put("68fbe9fd-8377-4dc2-836b-a96ef28d9047", String.valueOf(stall));
-						//messageHash.put("7db9deb1-caee-4dfc-8066-620a3a66b71f", String.valueOf(overspeed));
-						//messageHash.put("009ce1d1-ef2d-4e42-9d45-204a6ff2109d", String.valueOf(aoA));
-						messageHash.put("5e9c6361-913a-4b63-a6b9-a5d2b1a530c0", String.valueOf(lat));
-						messageHash.put("55167544-c84c-41ad-83fb-9960efdf5a88", String.valueOf(lon));
-						messageHash.put("0dc38678-5aad-4564-9ec6-c5ec440ce4ed", "{"+String.valueOf(lat)+"}"+"["+String.valueOf(lon)+"]");
+						messageHash.put("713524b6-d77a-45e3-aead-82e786ac2f15", String.valueOf(altitude));
+						messageHash.put("725bd22e-c912-4d54-8c42-09c4935611e5", String.valueOf(atcType));
+						messageHash.put("c5994de5-9762-4df4-840e-a30109784c8a", String.valueOf(atcID));
+						messageHash.put("acd4fc06-d01b-4ec0-a17c-13d2d1d89a2a", String.valueOf(groundspeed));
+						messageHash.put("229da09b-8b1c-46a4-8ada-3f72f30a7b19", String.valueOf(stall));
+						messageHash.put("1fb601dc-f3c2-4f12-8dd0-8f6a590681f6", String.valueOf(overspeed));
+						messageHash.put("224365cc-5973-4510-bb8a-8bd7b249e451", String.valueOf(aoA));
+						messageHash.put("fbafb133-9b4a-4104-a140-0eecb99e11f0", String.valueOf(lat));
+						messageHash.put("a9225f76-b326-48b4-93e3-b878ca4a8ad1", String.valueOf(lon));
+						messageHash.put("3ddb8d2e-75dc-4375-8ba1-7d9c0694487e", "{"+String.valueOf(lat)+"}"+"["+String.valueOf(lon)+"]");
 						
 						System.out.println("Message Hash Sent to Controller: " + messageHash);
 						
@@ -168,13 +168,13 @@ public class FsConnect {
 
 			
 			
-			
+			/*
 			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+		*/
 				
 	}
 	

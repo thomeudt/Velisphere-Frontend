@@ -98,7 +98,7 @@ public class EndpointView extends Composite {
 	// @UiField EndpointsForSphereListerWidget_unused endpointList;
 
 	private EndpointServiceAsync rpcServiceEndpoint;
-	private EPCServiceAsync rpcServiceEndpointClass;
+	
 
 	interface SphereOverviewUiBinder extends UiBinder<Widget, SphereView> {
 	}
@@ -111,7 +111,7 @@ public class EndpointView extends Composite {
 
 		
 		rpcServiceEndpoint = GWT.create(EndpointService.class);
-		rpcServiceEndpointClass = GWT.create(EPCService.class);
+	
 		this.endpointClassID = endpointClassID;
 		this.endpointID = endpointID;
 		this.sphereID = sphereID;
@@ -147,10 +147,7 @@ public class EndpointView extends Composite {
 
 		}
 	
-		bread3 = new NavLink();
-		bread3.setText(endpointName);
-		brdMain.add(bread3);
-
+		
 
 		bread0.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -175,10 +172,11 @@ public class EndpointView extends Composite {
 		});
 
 		
-		setEndpointImage(this.endpointID);
+		setEndpointNameAndImage(this.endpointID);
 		
 		
-		pghEndpointName.setText(endpointName);
+		
+		//pghEndpointName.setText(endpointName);
 		
 		Icon icnEditEndpointName = new Icon();
 		icnEditEndpointName.setType(IconType.EDIT);
@@ -263,7 +261,7 @@ public class EndpointView extends Composite {
 	}
 	
 	
-	private void setEndpointImage(String endpointID) {
+	private void setEndpointNameAndImage(String endpointID) {
 
 		final AnimationLoading animationLoading = new AnimationLoading();
 		
@@ -287,6 +285,12 @@ public class EndpointView extends Composite {
 						// TODO Auto-generated method stub
 						
 						animationLoading.removeLoadAnimation();
+
+						bread3 = new NavLink();
+						bread3.setText(result.getName());
+						brdMain.add(bread3);
+						pghEndpointName.setText(result.getName());
+
 						
 						EPCServiceAsync epcService = GWT
 								.create(EPCService.class);
@@ -318,6 +322,8 @@ public class EndpointView extends Composite {
 												imgEPCImage.setUrl(result.endpointclassImageURL);
 												imgEPCImage.setWidth("250px");
 												animationLoading.removeLoadAnimation();
+											
+
 																								
 												
 											}
@@ -344,6 +350,7 @@ public class EndpointView extends Composite {
 		if (animationLoading != null)
 			animationLoading.removeFromParent();
 	}
+	
 	
 	@UiFactory PropertyEditorWidget makePropertyEditor() { // method name is insignificant
 	    return new PropertyEditorWidget(this.endpointClassID, this.endpointID);
