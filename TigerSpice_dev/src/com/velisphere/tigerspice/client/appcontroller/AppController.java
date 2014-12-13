@@ -98,7 +98,7 @@ public class AppController {
 	{
 		History.newItem(token);
 		RootPanel.get("main").clear();
-		RootPanel.get("main").add((Widget) new SphereView(sphereId, sphereName));
+		RootPanel.get("main").add((Widget) new SphereView(sphereId));
 				
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {
 
@@ -111,7 +111,7 @@ public class AppController {
 
 	          if (historyToken.equals(token)) {
 	        	  RootPanel.get("main").clear();
-	        	  RootPanel.get("main").add((Widget) new SphereView(sphereId, sphereName));
+	        	  RootPanel.get("main").add((Widget) new SphereView(sphereId));
 		        }
 			}
 		    });
@@ -145,7 +145,7 @@ public class AppController {
 	{
 		History.newItem(token);
 		RootPanel.get("main").clear();
-		RootPanel.get("main").add((Widget) new EndpointView("0", "0",
+		RootPanel.get("main").add((Widget) new EndpointView("", "",
 				endpointID, "", ""));
 				 
 		

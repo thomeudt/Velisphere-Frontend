@@ -125,9 +125,28 @@ public class EndpointView extends Composite {
 		bread1 = new NavLink();
 		bread1.setText("Endpoint Manager");
 		brdMain.add(bread1);
-		bread2 = new NavLink();
-		bread2.setText(sphereName);
-		brdMain.add(bread2);
+	
+		
+		// do not add breadcrumb for sphere if not redirected to endpoint via sphere
+		
+		if (sphereName.length() != 0)
+		{
+			bread2 = new NavLink();
+			bread2.setText(sphereName);
+			brdMain.add(bread2);
+			bread2.addClickHandler(new ClickHandler() {
+				public void onClick(ClickEvent event) {
+
+					RootPanel mainPanel = RootPanel.get("main");
+					mainPanel.clear();
+					SphereView sphereOverview = new SphereView(sphereID);
+					mainPanel.add(sphereOverview);
+
+				}
+			});
+
+		}
+	
 		bread3 = new NavLink();
 		bread3.setText(endpointName);
 		brdMain.add(bread3);
@@ -155,18 +174,7 @@ public class EndpointView extends Composite {
 			}
 		});
 
-		bread2.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-
-				RootPanel mainPanel = RootPanel.get("main");
-				mainPanel.clear();
-				SphereView sphereOverview = new SphereView(sphereID,
-						sphereName);
-				mainPanel.add(sphereOverview);
-
-			}
-		});
-
+		
 		setEndpointImage(this.endpointID);
 		
 		

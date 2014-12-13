@@ -69,13 +69,13 @@ public class SphereView extends Composite {
 	interface SphereOverviewUiBinder extends UiBinder<Widget, SphereView> {
 	}
 
-	public SphereView(final String sphereID, String sphereName) {
+	public SphereView(final String sphereID) {
 		
 		this.sphereID = sphereID;
-		this.sphereName = sphereName;
+		
 		rpcServiceSphere = GWT.create(SphereService.class);
 		initWidget(uiBinder.createAndBindUi(this));
-		pghSphereNameHeader.setText(sphereName);
+		
 		
 		bread0 = new NavLink();
 		bread0.setText("Home");
@@ -83,9 +83,8 @@ public class SphereView extends Composite {
 		bread1 = new NavLink();
 		bread1.setText("Endpoint Manager");
 		brdMain.add(bread1);
-		bread2 = new NavLink();
-		bread2.setText(sphereName);
-		brdMain.add(bread2);
+		
+		
 
 		bread0.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -192,12 +191,41 @@ public class SphereView extends Composite {
 		
 		
 	
+		setSphereName();
 		
-				
 	
 	
 	}
 
+	private void setSphereName(){
+		rpcServiceSphere.getSphereNameForSphereID(sphereID,
+				new AsyncCallback<String>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						// TODO Auto-generated method stub
+						pghSphereNameHeader.setText(result);
+						bread2 = new NavLink();
+						bread2.setText(result);
+						brdMain.add(bread2);
+						sphereName = result;
+								
+						
+						
+
+					}
+
+				});
+
+		
+	}
+	
 	private void showLoadAnimation(AnimationLoading animationLoading) {
 		RootPanel rootPanel = RootPanel.get("main");
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);

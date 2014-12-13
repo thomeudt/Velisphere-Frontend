@@ -105,7 +105,7 @@ public class SphereListerWidgetUnused extends Composite {
 								// label.setText(ancToEndpoint.getStringQueryFirst());
 								// verticalPanel.add(label);
 									RootPanel.get("main").clear();
-								    RootPanel.get("main").add(new SphereView(currentItem.sphereId, currentItem.sphereName));
+								    RootPanel.get("main").add(new SphereView(currentItem.sphereId));
 									//RootPanel.get("main").add(new EndpointsForSphereListerWidget(currentItem.sphereId));
 								}
 							});

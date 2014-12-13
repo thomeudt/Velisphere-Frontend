@@ -97,7 +97,8 @@ public class SphereEditorWidget extends Composite {
 		// SphereOverview class
 		super();
 		this.sphereID = sphereID;
-		this.sphereName = sphereName;
+		// this.sphereName = sphereName;
+		setSphereName();
 
 		FlowLayoutContainer con = new FlowLayoutContainer();
 		initWidget(con);
@@ -623,7 +624,31 @@ public class SphereEditorWidget extends Composite {
 
 	}
 
+	private void setSphereName(){
+		SphereServiceAsync rpcServiceSphere = GWT.create(SphereService.class);
+		rpcServiceSphere.getSphereNameForSphereID(sphereID,
+				new AsyncCallback<String>() {
 
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						// TODO Auto-generated method stub
+						sphereName = result;
+						
+						
+
+					}
+
+				});
+
+		
+	}
+	
 
 
 }

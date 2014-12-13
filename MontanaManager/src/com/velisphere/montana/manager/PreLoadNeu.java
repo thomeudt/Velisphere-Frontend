@@ -102,8 +102,7 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("PROPERTY.insert", "PR11", "Measured Rotation", "PC7", "EPC2", 0, 1, 0, 0);
 	        preLoader.callProcedure("PROPERTY.insert", "PR12", "Measured Touch", "PC6", "EPC2", 0, 1, 0, 0);
 	        preLoader.callProcedure("PROPERTY.insert", "PR13", "Measured Brightness", "PC3", "EPC2", 0, 1, 0, 0);
-	        preLoader.callProcedure("PROPERTY.insert", "PR13", "Measured Brightness", "PC3", "EPC2", 0, 1, 0, 0);
-	        
+    
 	        	        	        
 	        System.out.println("Properties loaded");
 	        

@@ -42,6 +42,7 @@ public interface SphereService extends RemoteService {
 	LinkedList<SphereData> getAllSpheresForUserID(String userID);
 	String updateSpherenameForSphereID(String sphereID, String sphereName);
 	String addSphere(String sphereName);
+	String getSphereNameForSphereID(String sphereID);
 }
 
 
