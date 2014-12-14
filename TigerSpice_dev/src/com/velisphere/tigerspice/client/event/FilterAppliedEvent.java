@@ -26,8 +26,17 @@ public class FilterAppliedEvent extends GwtEvent<FilterAppliedEventHandler> {
 
 		
 		public static Type<FilterAppliedEventHandler> TYPE = new Type<FilterAppliedEventHandler>();
+		
+		private String sphereID;
+		private String endpointID;
 
-		  @Override
+		public FilterAppliedEvent(String sphereID, String endpointID)
+		{
+			this.sphereID = sphereID;
+			this.endpointID = endpointID;
+		}
+		
+		@Override
 		public Type<FilterAppliedEventHandler> getAssociatedType() {
 		    return TYPE;
 		}
@@ -35,5 +44,15 @@ public class FilterAppliedEvent extends GwtEvent<FilterAppliedEventHandler> {
 		@Override
 		protected void dispatch(FilterAppliedEventHandler handler) {
 		    handler.onFilterApplied(this);
+		}
+		
+		public String getSphereID()
+		{
+			return this.sphereID;
+		}
+		
+		public String getEndpointID()
+		{
+			return this.endpointID;
 		}
 }

@@ -90,7 +90,7 @@
 			<b:Column size="4" offset="0">
 						<b:Heading size="3">Public Spheres</b:Heading>
 						<b:HelpBlock addStyleNames="smalltext">These are Spheres of users that contain endpoints
-							available to you.</b:HelpBlock>
+							available to you. Mechanism: by User ---> by Sphere ---> by Device</b:HelpBlock>
 
 
 			</b:Column>

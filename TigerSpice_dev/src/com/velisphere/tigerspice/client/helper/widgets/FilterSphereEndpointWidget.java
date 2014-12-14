@@ -150,7 +150,7 @@ public class FilterSphereEndpointWidget extends Composite {
 		btnApply.addClickHandler(new ClickHandler() {
 			
 			public void onClick(ClickEvent event){
-				EventUtils.EVENT_BUS.fireEvent(new FilterAppliedEvent());		
+				EventUtils.EVENT_BUS.fireEvent(new FilterAppliedEvent(lbxSphereFilter.getValue(), lbxEndpointFilter.getValue()));		
 			}
 		});
 		

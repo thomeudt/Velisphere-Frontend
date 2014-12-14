@@ -168,7 +168,7 @@ public class HeatMapLayerWidget extends Composite {
 	  applyFilterHandler = EventUtils.EVENT_BUS.addHandler(FilterAppliedEvent.TYPE, new FilterAppliedEventHandler()     {
 			@Override
 		    public void onFilterApplied(FilterAppliedEvent filterAppliedEvent) {
-				HTML html = new HTML("FILTER APPLIED!!!!!!!");
+				HTML html = new HTML("FILTER APPLIED. Sphere ID: "+ filterAppliedEvent.getSphereID() + ", Endpoint ID: " + filterAppliedEvent.getEndpointID());
 			    RootPanel.get().add(html);
 				//applyFilterHandler.removeHandler();
 				
