@@ -22,5 +22,8 @@ public interface AnalyticsServiceAsync {
 	void getActionNameForActionID(String actionID, AsyncCallback<String> callback);
 	void getAllGeoLocations(String userID, AsyncCallback<LinkedList<GeoLocationData>> callback);
 	void getAllGeoLocationTrails(String userID, AsyncCallback<LinkedList<GeoLocationData>> callback);
+	void getGeoLocationTrailSingleEndpoint(String userID, String endpointID, AsyncCallback<LinkedList<GeoLocationData>> callback);
+	void getGeoLocationTrailSphere(String userID, String sphereID, AsyncCallback<LinkedList<GeoLocationData>> callback);
+	
 }
 

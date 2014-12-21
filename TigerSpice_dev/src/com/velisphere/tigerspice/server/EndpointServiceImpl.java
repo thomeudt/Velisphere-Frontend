@@ -196,9 +196,11 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			e1.printStackTrace();
 		}
 
+		String uuid = UUID.randomUUID().toString();
+		
 		try {
 			voltCon.montanaClient.callProcedure("ENDPOINT_SPHERE_LINK.insert",
-					UUID.randomUUID().toString(), endpointID, sphereID);
+					uuid, endpointID, sphereID);
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -216,6 +218,40 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		// second add to Vertica
+
+					Connection conn;
+
+					try {
+						Class.forName("com.vertica.jdbc.Driver");
+					} catch (ClassNotFoundException e) {
+						System.err.println("Could not find the JDBC driver class.\n");
+						e.printStackTrace();
+
+					}
+					try {
+						conn = DriverManager.getConnection("jdbc:vertica://"
+								+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+								"vertica", "1Suplies!");
+
+						conn.setAutoCommit(true);
+						System.out.println(" [OK] Connected to Vertica on address: "
+								+ "16.1.1.113");
+
+						Statement myInsert = conn.createStatement();
+						myInsert.executeUpdate("INSERT INTO vlogger.ENDPOINT_SPHERE_LINK VALUES ('"
+								+ uuid + "','" + endpointID + "','"+ sphereID + "') ");
+
+						myInsert.close();
+
+					} catch (SQLException e) {
+						System.err.println("Could not connect to the database.\n");
+						e.printStackTrace();
+
+					}
+
+		
 
 		return "OK";
 
@@ -257,6 +293,38 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			e.printStackTrace();
 		}
 
+		// second delete from Vertica
+
+		Connection conn;
+
+		try {
+			Class.forName("com.vertica.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Could not find the JDBC driver class.\n");
+			e.printStackTrace();
+
+		}
+		try {
+			conn = DriverManager.getConnection("jdbc:vertica://"
+					+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+					"vertica", "1Suplies!");
+
+			conn.setAutoCommit(true);
+			System.out.println(" [OK] Connected to Vertica on address: "
+					+ "16.1.1.113");
+
+			Statement myDelete = conn.createStatement();
+			myDelete.executeUpdate("DELETE FROM vlogger.ENDPOINT_SPHERE_LINK WHERE ENDPOINTID = '"
+					 + endpointID + "' AND SPHEREID = '"+ sphereID + "'");
+
+			myDelete.close();
+
+		} catch (SQLException e) {
+			System.err.println("Could not connect to the database.\n");
+			e.printStackTrace();
+
+		}
+		
 		return "OK";
 
 	}

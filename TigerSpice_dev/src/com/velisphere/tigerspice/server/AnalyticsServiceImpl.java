@@ -649,7 +649,147 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 		return geoItems;
 	}
 
+	@Override
+	public LinkedList<GeoLocationData> getGeoLocationTrailSingleEndpoint(String userID, String endpointID) {
 
+		Connection conn;
+		LinkedList<GeoLocationData> geoItems = new LinkedList<GeoLocationData>();
+
+		try {
+			Class.forName("com.vertica.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Could not find the JDBC driver class.\n");
+			e.printStackTrace();
+
+		}
+		try {
+			conn = DriverManager.getConnection("jdbc:vertica://"
+					+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+					"vertica", "1Suplies!");
+
+			conn.setAutoCommit(true);
+			System.out.println(" [OK] Connected to Vertica on address: "
+					+ "16.1.1.113");
+
+			Statement mySelect = conn.createStatement();
+
+			ResultSet myResult = mySelect
+					.executeQuery("SELECT vlogger.user.userid, vlogger.endpoint.endpointname, vlogger.endpoint.endpointclassid, "
+							+ "vlogger.endpoint.endpointid, timestamps.time_stamp, timestamps.propertyclassid, vlogger.endpointpropertylog.propertyentry "
+							+ "FROM vlogger.endpointpropertylog "
+							+ "JOIN"
+							+ "(SELECT time_stamp, property.propertyclassid as propertyclassid FROM vlogger.endpointpropertylog "
+							+ "JOIN vlogger.property on vlogger.property.propertyid = vlogger.endpointpropertylog.propertyid "
+							+ "JOIN vlogger.propertyclass on vlogger.propertyclass.propertyclassid = vlogger.property.propertyclassid "
+							+ "WHERE property.propertyclassid = 'PC_GEO_LATLON' "
+							+ "GROUP BY time_stamp, endpointid, property.propertyid, property.propertyclassid) as timestamps "
+							+ "ON timestamps.time_stamp = vlogger.endpointpropertylog.time_stamp "
+							+ "JOIN vlogger.endpoint ON vlogger.endpoint.endpointid = endpointpropertylog.endpointid "
+							+ "JOIN vlogger.endpoint_user_link ON vlogger.endpoint_user_link.endpointid = vlogger.endpoint.endpointid "
+							+ "JOIN vlogger.user ON vlogger.user.userid = vlogger.endpoint_user_link.userid "
+							+ "WHERE vlogger.user.userid = '"+userID+"' AND vlogger.endpoint.endpointid = '"+endpointID+"' ORDER BY time_stamp");
+
+			
+			
+			while (myResult.next()) {
+			
+				GeoLocationData geoItem = new GeoLocationData();
+				geoItem.setUserID(myResult.getString(1));
+				geoItem.setEndpointID(myResult.getString(4));
+				geoItem.setEndpointName(myResult.getString(2));
+				geoItem.setEndpointClassID(myResult.getString(3));
+				geoItem.setPropertyClassID(myResult.getString(6));
+				geoItem.setValue(myResult.getString(7));
+				geoItem.setTimeStamp(myResult.getString(5));
+				
+				
+				geoItems.add(geoItem);
+				
+				System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue() + " for: " + geoItem.getEndpointName());
+			}
+
+			mySelect.close();
+
+		} catch (SQLException e) {
+			System.err.println("Could not connect to the database.\n");
+			e.printStackTrace();
+
+		}
+
+		return geoItems;
+	}
+
+	@Override
+	public LinkedList<GeoLocationData> getGeoLocationTrailSphere(String userID, String sphereID) {
+
+		Connection conn;
+		LinkedList<GeoLocationData> geoItems = new LinkedList<GeoLocationData>();
+
+		try {
+			Class.forName("com.vertica.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Could not find the JDBC driver class.\n");
+			e.printStackTrace();
+
+		}
+		try {
+			conn = DriverManager.getConnection("jdbc:vertica://"
+					+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+					"vertica", "1Suplies!");
+
+			conn.setAutoCommit(true);
+			System.out.println(" [OK] Connected to Vertica on address: "
+					+ "16.1.1.113");
+
+			Statement mySelect = conn.createStatement();
+
+			ResultSet myResult = mySelect
+					.executeQuery("SELECT vlogger.user.userid, vlogger.endpoint.endpointname, vlogger.endpoint.endpointclassid, "
+							+ "vlogger.endpoint.endpointid, timestamps.time_stamp, timestamps.propertyclassid, vlogger.endpointpropertylog.propertyentry "
+							+ "FROM vlogger.endpointpropertylog "
+							+ "JOIN"
+							+ "(SELECT time_stamp, property.propertyclassid as propertyclassid FROM vlogger.endpointpropertylog "
+							+ "JOIN vlogger.property on vlogger.property.propertyid = vlogger.endpointpropertylog.propertyid "
+							+ "JOIN vlogger.propertyclass on vlogger.propertyclass.propertyclassid = vlogger.property.propertyclassid "
+							+ "WHERE property.propertyclassid = 'PC_GEO_LATLON' "
+							+ "GROUP BY time_stamp, endpointid, property.propertyid, property.propertyclassid) as timestamps "
+							+ "ON timestamps.time_stamp = vlogger.endpointpropertylog.time_stamp "
+							+ "JOIN vlogger.endpoint ON vlogger.endpoint.endpointid = endpointpropertylog.endpointid "
+							+ "JOIN vlogger.endpoint_sphere_link ON vlogger.endpoint_sphere_link.endpointid = vlogger.endpoint.endpointid "
+							+ "JOIN vlogger.endpoint_user_link ON vlogger.endpoint_user_link.endpointid = vlogger.endpoint.endpointid "
+							+ "JOIN vlogger.user ON vlogger.user.userid = vlogger.endpoint_user_link.userid "
+							+ "WHERE vlogger.user.userid = '"+userID+"' AND vlogger.endpoint_sphere_link.sphereid = '"+sphereID+"' ORDER BY time_stamp");
+
+			
+			
+			while (myResult.next()) {
+			
+				GeoLocationData geoItem = new GeoLocationData();
+				geoItem.setUserID(myResult.getString(1));
+				geoItem.setEndpointID(myResult.getString(4));
+				geoItem.setEndpointName(myResult.getString(2));
+				geoItem.setEndpointClassID(myResult.getString(3));
+				geoItem.setPropertyClassID(myResult.getString(6));
+				geoItem.setValue(myResult.getString(7));
+				geoItem.setTimeStamp(myResult.getString(5));
+				
+				
+				geoItems.add(geoItem);
+				
+				System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue() + " for: " + geoItem.getEndpointName());
+			}
+			
+
+			mySelect.close();
+
+		} catch (SQLException e) {
+			System.err.println("Could not connect to the database.\n");
+			e.printStackTrace();
+
+		}
+
+		return geoItems;
+	}
 
 	
 }

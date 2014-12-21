@@ -23,6 +23,9 @@ import com.velisphere.tigerspice.shared.TableRowData;
 		String getActionNameForActionID(String actionID);
 		LinkedList<GeoLocationData> getAllGeoLocations(String userID);
 		LinkedList<GeoLocationData> getAllGeoLocationTrails(String userID);
+		LinkedList<GeoLocationData> getGeoLocationTrailSingleEndpoint(String userID, String endpointID);
+		LinkedList<GeoLocationData> getGeoLocationTrailSphere(String userID, String sphereID);
+		
 	}
 
 	

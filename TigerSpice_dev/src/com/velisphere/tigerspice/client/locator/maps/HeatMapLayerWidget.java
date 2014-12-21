@@ -171,8 +171,18 @@ public class HeatMapLayerWidget extends Composite {
 				HTML html = new HTML("FILTER APPLIED. Sphere ID: "+ filterAppliedEvent.getSphereID() + ", Endpoint ID: " + filterAppliedEvent.getEndpointID());
 			    RootPanel.get().add(html);
 				//applyFilterHandler.removeHandler();
-				
-								
+			    pWidget.clear();
+			    FilterSphereEndpointWidget endpointFilter = new FilterSphereEndpointWidget();
+			    pWidget.add(endpointFilter);
+			    if (filterAppliedEvent.getEndpointID() == "0"){
+			    	getMarkersForMapSphere(filterAppliedEvent.getSphereID());
+			    	
+			    } else
+			    {
+			    	getMarkersForMapSingleEndpoint(filterAppliedEvent.getEndpointID());		
+			    	
+			    }
+			    				
 			}		
 		});
   }
@@ -209,7 +219,71 @@ public class HeatMapLayerWidget extends Composite {
 				});
 
 	}
+
   
+  private void getMarkersForMapSingleEndpoint(String endpointID) {
+
+
+		AnalyticsServiceAsync analyticsService = GWT
+				.create(AnalyticsService.class);
+
+		analyticsService.getGeoLocationTrailSingleEndpoint(SessionHelper.getCurrentUserID(), endpointID, 
+				new AsyncCallback<LinkedList<GeoLocationData>>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						System.out.println(caught);
+					}
+
+					@Override
+					public void onSuccess(LinkedList<GeoLocationData> result) {
+						// TODO Auto-generated method stub
+
+						// RootPanel.get().add(new HTML("Length of List" +
+						// result.size()));
+
+						allGeoDataForMap = result;
+						compileHeatMapData();
+						drawMap();
+						
+					}
+
+				});
+
+	}
+
+  private void getMarkersForMapSphere(String sphereID) {
+
+
+		AnalyticsServiceAsync analyticsService = GWT
+				.create(AnalyticsService.class);
+
+		analyticsService.getGeoLocationTrailSphere(SessionHelper.getCurrentUserID(), sphereID, 
+				new AsyncCallback<LinkedList<GeoLocationData>>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						System.out.println(caught);
+					}
+
+					@Override
+					public void onSuccess(LinkedList<GeoLocationData> result) {
+						// TODO Auto-generated method stub
+
+						// RootPanel.get().add(new HTML("Length of List" +
+						// result.size()));
+
+						allGeoDataForMap = result;
+						compileHeatMapData();
+						drawMap();
+						
+					}
+
+				});
+
+	}
   
   
   
