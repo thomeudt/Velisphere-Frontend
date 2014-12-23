@@ -172,16 +172,23 @@ public class HeatMapLayerWidget extends Composite {
 			    RootPanel.get().add(html);
 				//applyFilterHandler.removeHandler();
 			    pWidget.clear();
-			    FilterSphereEndpointWidget endpointFilter = new FilterSphereEndpointWidget();
+			    FilterSphereEndpointWidget endpointFilter = new FilterSphereEndpointWidget(filterAppliedEvent.getSphereID(), filterAppliedEvent.getEndpointID());
 			    pWidget.add(endpointFilter);
-			    if (filterAppliedEvent.getEndpointID() == "0"){
-			    	getMarkersForMapSphere(filterAppliedEvent.getSphereID());
+			    
+			    
+			    if (filterAppliedEvent.getEndpointID() != "0"){
+			    	getMarkersForMapSingleEndpoint(filterAppliedEvent.getEndpointID());
 			    	
-			    } else
+			    	
+			    } else if (filterAppliedEvent.getSphereID() != "0")
+			    		
 			    {
-			    	getMarkersForMapSingleEndpoint(filterAppliedEvent.getEndpointID());		
+			    	getMarkersForMapSphere(filterAppliedEvent.getSphereID());		
 			    	
 			    }
+			    
+			    else getMarkersForMap(); 
+			    	
 			    				
 			}		
 		});

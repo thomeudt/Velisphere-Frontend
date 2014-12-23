@@ -62,10 +62,21 @@ public class FilterSphereEndpointWidget extends Composite {
 	public FilterSphereEndpointWidget() {
 
 		this.userID = SessionHelper.getCurrentUserID();
-		
+		this.sphereID = "0";
+		this.endpointID = "0";
 		buildWidget();
 
 	}
+	
+	public FilterSphereEndpointWidget(String sphereID, String endpointID) {
+
+		this.userID = SessionHelper.getCurrentUserID();
+		this.sphereID = sphereID;
+		this.endpointID = endpointID;
+		buildWidget();
+
+	}
+
 
 	public void buildWidget() {
 		// initWidget(uiBinder.createAndBindUi(this));
@@ -189,7 +200,7 @@ public class FilterSphereEndpointWidget extends Composite {
 						}
 						
 						
-						lbxSphereFilter.setSelectedValue("0");
+						lbxSphereFilter.setSelectedValue(sphereID);
 						
 						populateEndpointList(lbxSphereFilter.getValue());
 
@@ -230,7 +241,7 @@ public class FilterSphereEndpointWidget extends Composite {
 						}
 
 						
-						lbxEndpointFilter.setSelectedValue("0");
+						lbxEndpointFilter.setSelectedValue(endpointID);
 	
 					}
 				});
@@ -238,7 +249,7 @@ public class FilterSphereEndpointWidget extends Composite {
 	}
 
 
-
+	
 	
 
 }

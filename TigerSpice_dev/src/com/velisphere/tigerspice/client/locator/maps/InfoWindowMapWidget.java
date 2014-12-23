@@ -31,6 +31,7 @@ import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.geolocation.client.Geolocation;
 import com.google.gwt.geolocation.client.Geolocation.PositionOptions;
 import com.google.gwt.geolocation.client.Position;
@@ -68,6 +69,8 @@ import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.FilterAppliedEvent;
+import com.velisphere.tigerspice.client.event.FilterAppliedEventHandler;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.widgets.FilterSphereEndpointWidget;
 import com.velisphere.tigerspice.client.locator.helpers.GeoDataForMap;
@@ -78,23 +81,28 @@ public class InfoWindowMapWidget extends Composite {
 
   private HorizontalPanel pWidget;
   private MapWidget mapWidget;
-  private HashMap<String, GeoDataForMap> allGeoDataForMap;
+  //private HashMap<String, GeoDataForMap> allGeoDataForMap;
+  private LinkedList<GeoLocationData> allGeoDataForMap;
+  private HandlerRegistration applyFilterHandler;
 
   public InfoWindowMapWidget() {
     
 	pWidget = new HorizontalPanel();
     initWidget(pWidget);
-
+    setFilterHandlerListener();
     draw();
     
   }
-
+  
+  
+  
   private void draw() {
     pWidget.clear();
     
     FilterSphereEndpointWidget endpointFilter = new FilterSphereEndpointWidget();
     pWidget.add(endpointFilter);
-    
+    getMarkersForMap();
+    /*
     Geolocation geolocation = Geolocation.getIfSupported();
 	
 	   
@@ -117,7 +125,7 @@ public class InfoWindowMapWidget extends Composite {
 	    Window.alert(reason.getMessage());
 	   }
 	  });
-    
+    */
     
     
    
@@ -125,23 +133,56 @@ public class InfoWindowMapWidget extends Composite {
   }
 
   
-  private void drawMarker( HashMap<String, GeoDataForMap> geoLocations) {
+  private void setFilterHandlerListener()
+  {
+	  applyFilterHandler = EventUtils.EVENT_BUS.addHandler(FilterAppliedEvent.TYPE, new FilterAppliedEventHandler()     {
+			@Override
+		    public void onFilterApplied(FilterAppliedEvent filterAppliedEvent) {
+				HTML html = new HTML("FILTER APPLIED. Sphere ID: "+ filterAppliedEvent.getSphereID() + ", Endpoint ID: " + filterAppliedEvent.getEndpointID());
+			    RootPanel.get().add(html);
+				//applyFilterHandler.removeHandler();
+			    pWidget.clear();
+			    FilterSphereEndpointWidget endpointFilter = new FilterSphereEndpointWidget(filterAppliedEvent.getSphereID(), filterAppliedEvent.getEndpointID());
+			    pWidget.add(endpointFilter);
+			    
+			    
+			    if (filterAppliedEvent.getEndpointID() != "0"){
+			    	getMarkersForMapSingleEndpoint(filterAppliedEvent.getEndpointID());
+			    	
+			    	
+			    } else if (filterAppliedEvent.getSphereID() != "0")
+			    		
+			    {
+			    	getMarkersForMapSphere(filterAppliedEvent.getSphereID());		
+			    	
+			    }
+			    
+			    else getMarkersForMap(); 
+			    	
+			    				
+			}		
+		});
+  }
+
+  
+  private void drawMarker( LinkedList<GeoLocationData> geoLocations) {
 	  
-	    HTML html = new HTML("LAT ... ... " + geoLocations.size());
+	    HTML html = new HTML("LAT Size... ... " + geoLocations.size());
 	    RootPanel.get().add(html);
-		Iterator<Entry<String, GeoDataForMap>> it = geoLocations.entrySet().iterator();
+		Iterator<GeoLocationData> it = geoLocations.iterator();
 		while (it.hasNext()) {
-	        Map.Entry<String, GeoDataForMap> locationPair = (Map.Entry<String, GeoDataForMap>)it.next();
-	        final GeoDataForMap geoDataForMap = locationPair.getValue();
-	        html = new HTML("LAT ... ... " + geoDataForMap.getLat());
+			final GeoLocationData point = it.next();
+	        //Map.Entry<String, GeoDataForMap> locationPair = (Map.Entry<String, GeoDataForMap>)it.next();
+	        //final GeoDataForMap geoDataForMap = locationPair.getValue();
+	        html = new HTML("LAT/LON ... ... " + point.getValue());
 	        RootPanel.get().add(html);
 	        //drawMarker(Double.valueOf(geoDataForMap.getLat()), Double.valueOf(geoDataForMap.getLon()));
 	        //drawMarker(-76.3, 37.08);
 	   
 	        
-	        LatLng center = LatLng.newInstance(Double.valueOf(geoDataForMap.getLat()), Double.valueOf(geoDataForMap.getLon()));
+	        LatLng markerPosition = LatLng.newInstance(Double.parseDouble(point.getValue().substring(point.getValue().indexOf("{") + 1, point.getValue().indexOf("}"))), Double.parseDouble(point.getValue().substring(point.getValue().indexOf("[") + 1, point.getValue().indexOf("]"))));
 		    MarkerOptions options = MarkerOptions.newInstance();
-		    options.setPosition(center);
+		    options.setPosition(markerPosition);
 		    options.setTitle("Hello World");
 
 		    final Marker marker = Marker.newInstance(options);
@@ -149,7 +190,7 @@ public class InfoWindowMapWidget extends Composite {
 
 		    marker.addClickHandler(new ClickMapHandler() {
 		      public void onEvent(ClickMapEvent event) {
-		        drawInfoWindow(marker, event.getMouseEvent(), geoDataForMap);
+		        drawInfoWindow(marker, event.getMouseEvent(), point);
 		      }
 		    });
 
@@ -170,7 +211,7 @@ public class InfoWindowMapWidget extends Composite {
 
   
   private void drawInfoWindowOnMapCenter() {
-	    HTML html = new HTML("Center: " + mapWidget.getCenter().getToString());
+	    HTML html = new HTML("You are here");
 
 	    InfoWindowOptions options = InfoWindowOptions.newInstance();
 	    options.setContent(html);
@@ -181,7 +222,7 @@ public class InfoWindowMapWidget extends Composite {
 	  }
 
   
-  protected void drawInfoWindow(final Marker marker, MouseEvent mouseEvent, final GeoDataForMap geoDataForMap) {
+  protected void drawInfoWindow(final Marker marker, MouseEvent mouseEvent, final GeoLocationData point) {
     if (marker == null || mouseEvent == null) {
       return;
     }
@@ -193,23 +234,23 @@ public class InfoWindowMapWidget extends Composite {
     
     SafeHtmlBuilder endpointInfoBuilder = new SafeHtmlBuilder();
     endpointInfoBuilder.appendHtmlConstant("<b>");
-    endpointInfoBuilder.appendEscaped(geoDataForMap.getEndpointName());
+    endpointInfoBuilder.appendEscaped(point.getEndpointName());
     endpointInfoBuilder.appendHtmlConstant("</b><br>Latitude: ");
-    endpointInfoBuilder.appendEscaped(geoDataForMap.getLat());
+    endpointInfoBuilder.appendEscaped(point.getValue().substring(point.getValue().indexOf("{") + 1, point.getValue().indexOf("}")));
     endpointInfoBuilder.appendHtmlConstant("&deg;<br>Longitude ");
-    endpointInfoBuilder.appendEscaped(geoDataForMap.getLon());
+    endpointInfoBuilder.appendEscaped(point.getValue().substring(point.getValue().indexOf("[") + 1, point.getValue().indexOf("]")));
     endpointInfoBuilder.appendHtmlConstant("&deg; <br>Last position update: ");
-    endpointInfoBuilder.appendEscaped(geoDataForMap.getTimeStamp());
-    Timestamp.valueOf(geoDataForMap.getTimeStamp());
+    endpointInfoBuilder.appendEscaped(point.getTimeStamp());
+    //Timestamp.valueOf(geoDataForMap.getTimeStamp());
 
    
     HTML html = new HTML(endpointInfoBuilder.toSafeHtml());
         
     
-    Button b1 = new Button("Manage " + geoDataForMap.getEndpointName());
+    Button b1 = new Button("Manage " + point.getEndpointName());
     b1.addClickHandler(new ClickHandler() {
       public void onClick(ClickEvent event) {
-    	  AppController.openEndpoint(geoDataForMap.getEndpointID());
+    	  AppController.openEndpoint(point.getEndpointID());
       }
     });
 
@@ -228,7 +269,7 @@ public class InfoWindowMapWidget extends Composite {
     vp.add(b1);
     vp.add(b2);
     
-    loadClassImage (epcImage, geoDataForMap.getEndpointClassID());
+    loadClassImage (epcImage, point.getEndpointClassID());
 
     InfoWindowOptions options = InfoWindowOptions.newInstance();
     options.setContent(vp);
@@ -277,7 +318,7 @@ public class InfoWindowMapWidget extends Composite {
   
   
   private void getMarkersForMap() {
-		allGeoDataForMap = new HashMap<String, GeoDataForMap>();
+		allGeoDataForMap = new LinkedList<GeoLocationData>();
 
 		AnalyticsServiceAsync analyticsService = GWT
 				.create(AnalyticsService.class);
@@ -295,69 +336,150 @@ public class InfoWindowMapWidget extends Composite {
 					public void onSuccess(LinkedList<GeoLocationData> result) {
 						// TODO Auto-generated method stub
 
-						Iterator<GeoLocationData> it = result.iterator();
-						// RootPanel.get().add(new HTML("Length of List" +
-						// result.size()));
+					
+						
+						allGeoDataForMap = result;
 
-						while (it.hasNext()) {
-
-							GeoLocationData geoFromServer = new GeoLocationData();
-
-							geoFromServer = it.next();
-
-							
-							if (allGeoDataForMap.containsKey(geoFromServer
-									.getEndpointID())) {
-								GeoDataForMap geoDataPoint = allGeoDataForMap
-										.get(geoFromServer.getEndpointID());
-								
-								if (geoFromServer.getPropertyClassID() == "PC_GEO_LON") {
-									geoDataPoint.setLon(geoFromServer
-											.getValue());
-									
-							
-								} else {
-									geoDataPoint.setLat(geoFromServer
-											.getValue());
-									
-								}
-								allGeoDataForMap.put(
-										geoFromServer.getEndpointID(),
-										geoDataPoint);
-
-							} else {
-
-								GeoDataForMap geoDataPoint = new GeoDataForMap();
-								geoDataPoint.setEndpointID(geoFromServer
-										.getEndpointID());
-								geoDataPoint.setEndpointName(geoFromServer
-										.getEndpointName());
-								geoDataPoint.setEndpointClassID(geoFromServer
-										.getEndpointClassID());
-								geoDataPoint.setTimeStamp(geoFromServer.getTimeStamp());
-								if (geoFromServer.getPropertyClassID() == "PC_GEO_LON") {
-									geoDataPoint.setLon(geoFromServer
-											.getValue());
-								} else {
-									geoDataPoint.setLat(geoFromServer
-											.getValue());
-															}
-
-								allGeoDataForMap.put(
-										geoFromServer.getEndpointID(),
-										geoDataPoint);
-
-							}
-
-						}
-
-						drawMarker(allGeoDataForMap);
+						Geolocation geolocation = Geolocation.getIfSupported();						
+						   
+						  geolocation.getCurrentPosition(new Callback<Position, PositionError>()
+						  {
+						    
+						   @Override
+						   public void onSuccess(Position result)
+						   {
+							   
+							   drawMap(LatLng.newInstance(result.getCoordinates().getLatitude(), result.getCoordinates().getLongitude()));
+							   drawMarker(allGeoDataForMap);
+							   drawInfoWindowOnMapCenter();
+						   }
+						    
+						   @Override
+						   public void onFailure(PositionError reason)
+						   {
+							   
+						    Window.alert(reason.getMessage());
+						   }
+						  });
+					    
+						
+						
+						
 						
 					}
 
 				});
 
 	}
+  
+  private void getMarkersForMapSingleEndpoint(String endpointID) {
+
+
+		AnalyticsServiceAsync analyticsService = GWT
+				.create(AnalyticsService.class);
+
+		analyticsService.getGeoLocationSingleEndpoint(SessionHelper.getCurrentUserID(), endpointID, 
+				new AsyncCallback<LinkedList<GeoLocationData>>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						System.out.println(caught);
+					}
+
+					@Override
+					public void onSuccess(LinkedList<GeoLocationData> result) {
+						// TODO Auto-generated method stub
+
+						// RootPanel.get().add(new HTML("Length of List" +
+						// result.size()));
+
+						allGeoDataForMap = result;
+						
+						
+						Geolocation geolocation = Geolocation.getIfSupported();						
+						   
+						  geolocation.getCurrentPosition(new Callback<Position, PositionError>()
+						  {
+						    
+						   @Override
+						   public void onSuccess(Position result)
+						   {
+							   
+							   drawMap(LatLng.newInstance(result.getCoordinates().getLatitude(), result.getCoordinates().getLongitude()));
+							   drawMarker(allGeoDataForMap);
+							   drawInfoWindowOnMapCenter();
+						   }
+						    
+						   @Override
+						   public void onFailure(PositionError reason)
+						   {
+							   
+						    Window.alert(reason.getMessage());
+						   }
+						  });
+					    
+						
+						
+					}
+
+				});
+
+	}
+
+private void getMarkersForMapSphere(String sphereID) {
+
+
+		AnalyticsServiceAsync analyticsService = GWT
+				.create(AnalyticsService.class);
+
+		analyticsService.getGeoLocationSphere(SessionHelper.getCurrentUserID(), sphereID, 
+				new AsyncCallback<LinkedList<GeoLocationData>>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						System.out.println(caught);
+					}
+
+					@Override
+					public void onSuccess(LinkedList<GeoLocationData> result) {
+						// TODO Auto-generated method stub
+
+						// RootPanel.get().add(new HTML("Length of List" +
+						// result.size()));
+
+						allGeoDataForMap = result;
+						Geolocation geolocation = Geolocation.getIfSupported();						
+						   
+						  geolocation.getCurrentPosition(new Callback<Position, PositionError>()
+						  {
+						    
+						   @Override
+						   public void onSuccess(Position result)
+						   {
+							   
+							   drawMap(LatLng.newInstance(result.getCoordinates().getLatitude(), result.getCoordinates().getLongitude()));
+							   drawMarker(allGeoDataForMap);
+							   drawInfoWindowOnMapCenter();
+						   }
+						    
+						   @Override
+						   public void onFailure(PositionError reason)
+						   {
+							   
+						    Window.alert(reason.getMessage());
+						   }
+						  });
+					    
+					}
+
+				});
+
+	}
+
+
+  
   
   
   private void loadClassImage(final Image epcImage, String epcId)
