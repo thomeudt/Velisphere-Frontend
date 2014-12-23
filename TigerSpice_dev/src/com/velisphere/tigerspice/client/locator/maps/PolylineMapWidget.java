@@ -28,6 +28,7 @@ import com.google.gwt.ajaxloader.client.ArrayHelper;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.maps.client.MapOptions;
 import com.google.gwt.maps.client.MapTypeId;
 import com.google.gwt.maps.client.MapWidget;
@@ -44,10 +45,14 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.FilterAppliedEvent;
+import com.velisphere.tigerspice.client.event.FilterAppliedEventHandler;
 import com.velisphere.tigerspice.client.helper.widgets.FilterSphereEndpointWidget;
 import com.velisphere.tigerspice.shared.GeoLocationData;
 
@@ -64,6 +69,7 @@ public class PolylineMapWidget extends Composite {
   private HorizontalPanel pWidget;
   private MapWidget mapWidget;
   private LinkedList<GeoLocationData> allGeoDataForMap;
+  private HandlerRegistration applyFilterHandler;
 
 
   public PolylineMapWidget() {
@@ -76,7 +82,7 @@ public class PolylineMapWidget extends Composite {
    
     
     initWidget(pWidget);
-
+    setFilterHandlerListener();
     draw();
   }
 
@@ -92,6 +98,40 @@ public class PolylineMapWidget extends Composite {
 
     
   }
+  
+  
+  private void setFilterHandlerListener()
+  {
+	  applyFilterHandler = EventUtils.EVENT_BUS.addHandler(FilterAppliedEvent.TYPE, new FilterAppliedEventHandler()     {
+			@Override
+		    public void onFilterApplied(FilterAppliedEvent filterAppliedEvent) {
+				HTML html = new HTML("FILTER APPLIED. Sphere ID: "+ filterAppliedEvent.getSphereID() + ", Endpoint ID: " + filterAppliedEvent.getEndpointID());
+			    RootPanel.get().add(html);
+				//applyFilterHandler.removeHandler();
+			    pWidget.clear();
+			    FilterSphereEndpointWidget endpointFilter = new FilterSphereEndpointWidget(filterAppliedEvent.getSphereID(), filterAppliedEvent.getEndpointID());
+			    pWidget.add(endpointFilter);
+			    
+			    
+			    if (filterAppliedEvent.getEndpointID() != "0"){
+			    	getMarkersForMapSingleEndpoint(filterAppliedEvent.getEndpointID());
+			    	
+			    	
+			    } else if (filterAppliedEvent.getSphereID() != "0")
+			    		
+			    {
+			    	getMarkersForMapSphere(filterAppliedEvent.getSphereID());		
+			    	
+			    }
+			    
+			    else getMarkersForMap(); 
+			    	
+			    				
+			}		
+		});
+  }
+
+  
 
   /**
    * Place map in the widget
@@ -148,7 +188,7 @@ public class PolylineMapWidget extends Composite {
     a[10] = LatLng.newInstance(35.871369, -78.756759);
     a[11] = LatLng.newInstance(35.874168, -78.756781);
     */
-    JsArray<LatLng> simpleLatLngArr = compileHeatMapData();
+    JsArray<LatLng> simpleLatLngArr = compilePolyLineData();
     
     /**
     // Draw various recurring symbols on the map
@@ -194,7 +234,8 @@ public class PolylineMapWidget extends Composite {
     // this allows you to make polylines with no map, and then display them as
     // needed
 
-    /*** (2) Another simple line reusing some of the above ***/
+    /*
+    /*** (2) Another simple line reusing some of the above ***
     LatLng[] b = new LatLng[12];
     b[0] = LatLng.newInstance(35.864535, -78.761544);
     b[1] = LatLng.newInstance(35.864048, -78.761458);
@@ -220,7 +261,7 @@ public class PolylineMapWidget extends Composite {
     @SuppressWarnings("unused")
     Polyline polyLine2 = Polyline.newInstance(opts3);
 
-    /*** (2) A longer line ***/
+    /*** (2) A longer line ***
     // NOTE: this is just an example - usually you would pull these values from
     // a database via RPC/XHR or from an XML file
     double[] lngPoints = new double[] { -78.759110, -78.758900, -78.758660, -78.758530, -78.758340, -78.758230,
@@ -282,6 +323,7 @@ public class PolylineMapWidget extends Composite {
 
     Polyline bigPolyLine = Polyline.newInstance(opts2);
     mapWidget.setCenter(getPolyLineCenter(bigPolyLine));
+    */
 
   }
 
@@ -362,9 +404,74 @@ public class PolylineMapWidget extends Composite {
 				});
 
 	}
+  
+  private void getMarkersForMapSingleEndpoint(String endpointID) {
+
+
+		AnalyticsServiceAsync analyticsService = GWT
+				.create(AnalyticsService.class);
+
+		analyticsService.getGeoLocationTrailSingleEndpoint(SessionHelper.getCurrentUserID(), endpointID, 
+				new AsyncCallback<LinkedList<GeoLocationData>>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						System.out.println(caught);
+					}
+
+					@Override
+					public void onSuccess(LinkedList<GeoLocationData> result) {
+						// TODO Auto-generated method stub
+
+						// RootPanel.get().add(new HTML("Length of List" +
+						// result.size()));
+
+						allGeoDataForMap = result;
+						drawMap();
+					    drawPolyline();
+						
+					}
+
+				});
+
+	}
+
+private void getMarkersForMapSphere(String sphereID) {
+
+
+		AnalyticsServiceAsync analyticsService = GWT
+				.create(AnalyticsService.class);
+
+		analyticsService.getGeoLocationTrailSphere(SessionHelper.getCurrentUserID(), sphereID, 
+				new AsyncCallback<LinkedList<GeoLocationData>>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						System.out.println(caught);
+					}
+
+					@Override
+					public void onSuccess(LinkedList<GeoLocationData> result) {
+						// TODO Auto-generated method stub
+
+						// RootPanel.get().add(new HTML("Length of List" +
+						// result.size()));
+
+						allGeoDataForMap = result;
+						drawMap();
+					    drawPolyline();
+						
+					}
+
+				});
+
+	}
+
 
   
-  private JsArray<LatLng> compileHeatMapData() {
+  private JsArray<LatLng> compilePolyLineData() {
 	    
 		JsArray<LatLng> allPointCoords = JavaScriptObject.createArray().cast();
 		Iterator<GeoLocationData> it = allGeoDataForMap.iterator();
