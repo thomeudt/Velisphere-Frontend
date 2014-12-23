@@ -21,6 +21,7 @@ package com.velisphere.tigerspice.client.locator.maps;
  */
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -36,9 +37,11 @@ import com.google.gwt.geolocation.client.Geolocation;
 import com.google.gwt.geolocation.client.Geolocation.PositionOptions;
 import com.google.gwt.geolocation.client.Position;
 import com.google.gwt.geolocation.client.PositionError;
+import com.google.gwt.maps.client.LoadApi;
 import com.google.gwt.maps.client.MapOptions;
 import com.google.gwt.maps.client.MapTypeId;
 import com.google.gwt.maps.client.MapWidget;
+import com.google.gwt.maps.client.LoadApi.LoadLibrary;
 import com.google.gwt.maps.client.base.LatLng;
 import com.google.gwt.maps.client.controls.ScaleControlOptions;
 import com.google.gwt.maps.client.events.MouseEvent;
@@ -94,7 +97,34 @@ public class InfoWindowMapWidget extends Composite {
     
   }
   
-  
+  public InfoWindowMapWidget(final String endpointID) {
+	
+	  		pWidget = new HorizontalPanel();
+	  		initWidget(pWidget);
+	    
+	  
+			boolean sensor = true;
+
+			// load all the libs for use in the maps
+			ArrayList<LoadLibrary> loadLibraries = new ArrayList<LoadApi.LoadLibrary>();
+			loadLibraries.add(LoadLibrary.ADSENSE);
+			loadLibraries.add(LoadLibrary.DRAWING);
+			loadLibraries.add(LoadLibrary.GEOMETRY);
+			loadLibraries.add(LoadLibrary.PANORAMIO);
+			loadLibraries.add(LoadLibrary.PLACES);
+			loadLibraries.add(LoadLibrary.WEATHER);
+			loadLibraries.add(LoadLibrary.VISUALIZATION);
+
+			Runnable onLoad = new Runnable() {
+				@Override
+				public void run() {
+					getMarkersForMapSingleEndpoint(endpointID);
+				}
+			};
+
+			LoadApi.go(onLoad, loadLibraries, sensor);
+		
+	  }
   
   private void draw() {
     pWidget.clear();
@@ -210,16 +240,7 @@ public class InfoWindowMapWidget extends Composite {
       }
 
   
-  private void drawInfoWindowOnMapCenter() {
-	    HTML html = new HTML("You are here");
-
-	    InfoWindowOptions options = InfoWindowOptions.newInstance();
-	    options.setContent(html);
-	    options.setPosition(mapWidget.getCenter());
-
-	    InfoWindow iw = InfoWindow.newInstance(options);
-	    iw.open(mapWidget);
-	  }
+ 
 
   
   protected void drawInfoWindow(final Marker marker, MouseEvent mouseEvent, final GeoLocationData point) {
@@ -351,7 +372,7 @@ public class InfoWindowMapWidget extends Composite {
 							   
 							   drawMap(LatLng.newInstance(result.getCoordinates().getLatitude(), result.getCoordinates().getLongitude()));
 							   drawMarker(allGeoDataForMap);
-							   drawInfoWindowOnMapCenter();
+							   
 						   }
 						    
 						   @Override
@@ -395,31 +416,12 @@ public class InfoWindowMapWidget extends Composite {
 						// result.size()));
 
 						allGeoDataForMap = result;
+						GeoLocationData point = result.getFirst();
 						
-						
-						Geolocation geolocation = Geolocation.getIfSupported();						
+						drawMap(LatLng.newInstance(Double.parseDouble(point.getValue().substring(point.getValue().indexOf("{") + 1, point.getValue().indexOf("}"))), Double.parseDouble(point.getValue().substring(point.getValue().indexOf("[") + 1, point.getValue().indexOf("]")))));
+						   drawMarker(allGeoDataForMap);
 						   
-						  geolocation.getCurrentPosition(new Callback<Position, PositionError>()
-						  {
-						    
-						   @Override
-						   public void onSuccess(Position result)
-						   {
-							   
-							   drawMap(LatLng.newInstance(result.getCoordinates().getLatitude(), result.getCoordinates().getLongitude()));
-							   drawMarker(allGeoDataForMap);
-							   drawInfoWindowOnMapCenter();
-						   }
-						    
-						   @Override
-						   public void onFailure(PositionError reason)
-						   {
-							   
-						    Window.alert(reason.getMessage());
-						   }
-						  });
-					    
-						
+														
 						
 					}
 
@@ -461,7 +463,7 @@ private void getMarkersForMapSphere(String sphereID) {
 							   
 							   drawMap(LatLng.newInstance(result.getCoordinates().getLatitude(), result.getCoordinates().getLongitude()));
 							   drawMarker(allGeoDataForMap);
-							   drawInfoWindowOnMapCenter();
+							   
 						   }
 						    
 						   @Override

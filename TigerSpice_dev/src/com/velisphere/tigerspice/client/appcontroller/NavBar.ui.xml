@@ -44,7 +44,7 @@
              <b:NavLink ui:field="btnLocator" icon="LOCATION_ARROW">Locate</b:NavLink>
              <b:NavLink ui:field="btnAnalytics" icon="BAR_CHART">Analyze</b:NavLink>
              
-             
+           
              <b:Dropdown ui:field="dpdAdmin" icon="TERMINAL" text="Admin">
              	<b:NavLink ui:field="btnLister">Overviewer</b:NavLink>    
              	<b:NavLink ui:field="btnManageEPC">Endpoint Class Manager</b:NavLink>
@@ -53,6 +53,7 @@
              	<b:NavLink ui:field="btnManageVendor">Vendor Manager</b:NavLink>
              	<b:NavLink ui:field="btnManagePlan">Billing Plan Manager</b:NavLink>
              </b:Dropdown>
+             
              
              
          </b:Nav>

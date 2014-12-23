@@ -12,6 +12,7 @@
 	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:ct="urn:import:com.google.gwt.user.cellview.client" xmlns:vspy="urn:import:com.velisphere.tigerspice.client.properties"
 	xmlns:vsep="urn:import:com.velisphere.tigerspice.client.endpoints"
+	xmlns:vsma="urn:import:com.velisphere.tigerspice.client.locator.maps"
 	xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
 	<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images' />
 	<g:HTMLPanel>
@@ -90,11 +91,7 @@
 					</b:TabPane>
 					
 					<b:TabPane heading="Geolocation" active="false">
-						<b:Heading size="4">Endpoints: OK</b:Heading>
-
-						<b:Paragraph addStyleNames="smalltext-black">All endpoints are
-							functioning.</b:Paragraph>
-						<b:Paragraph addStyleNames="smalltext-black">List all checkpaths of which this is part</b:Paragraph>
+						<vsma:InfoWindowMapWidget ui:field="mapCurrent" />
 
 					</b:TabPane>
 

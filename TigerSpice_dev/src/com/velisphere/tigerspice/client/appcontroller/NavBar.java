@@ -107,6 +107,7 @@ public class NavBar extends Composite implements HasText {
    	 btnManageEPC.setVisible(false);
    	 
    	 
+   	 
 	    //checkWithServerIfSessionIdIsStillLegal();
 		   
 		
@@ -359,7 +360,7 @@ public class NavBar extends Composite implements HasText {
 	    	 forSearch.setVisible(false);
 	    	 btnHome.setVisible(true);
 	    	 dpdAccount.setVisible(true);
-	       	 dpdAdmin.setVisible(true);
+	       	 //dpdAdmin.setVisible(true);
 	       	 btnLocator.setVisible(true);
 	       	 btnManageEPC.setVisible(true);
 	       	 dpdAccount.setTitle(SessionHelper.getCurrentUserName());

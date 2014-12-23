@@ -17,6 +17,8 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client.endpoints;
 
+import java.util.ArrayList;
+
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Icon;
@@ -28,6 +30,8 @@ import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.maps.client.LoadApi;
+import com.google.gwt.maps.client.LoadApi.LoadLibrary;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
@@ -48,6 +52,7 @@ import com.velisphere.tigerspice.client.dataproviders.EndpointAsyncDataProvider;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.locator.maps.InfoWindowMapWidget;
 import com.velisphere.tigerspice.client.properties.PropertyEditorWidget;
 import com.velisphere.tigerspice.client.rules.CheckpathEditorWidget;
 import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
@@ -338,6 +343,8 @@ public class EndpointView extends Composite {
 
 	
 	}
+	
+	
 
 	
 	private void showLoadAnimation(AnimationLoading animationLoading) {
@@ -372,6 +379,9 @@ public class EndpointView extends Composite {
 	@UiFactory EndpointActorWidget makeEndpointActorWidget() { // method name is insignificant
 	    return new EndpointActorWidget(this.sphereID, this.endpointID);
 	  }
-	
+
+	@UiFactory InfoWindowMapWidget makeMapWidget() { // method name is insignificant
+	    return new InfoWindowMapWidget(this.endpointID);
+	  }
 
 }
