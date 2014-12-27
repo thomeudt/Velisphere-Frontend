@@ -1,2 +1,16 @@
 # Module tigerspice_dev
 # RPC service class, partial path of RPC policy file
+com.velisphere.tigerspice.client.analytics.AnalyticsService, 730A9CF9225FED76ED17E6E3DD17A0AD.gwt.rpc
+com.velisphere.tigerspice.client.analytics.LogService, AD4919E64118ACB384593A52A7941FAC.gwt.rpc
+com.velisphere.tigerspice.client.endpointclasses.EPCService, 19FB19279953B72D010B42F1BC429625.gwt.rpc
+com.velisphere.tigerspice.client.users.LoginService, BFDC1AC69E750AC71E777E990371A77F.gwt.rpc
+com.velisphere.tigerspice.client.vendors.VendorService, 11EBC6F25AB44AD148FEA362F135F46E.gwt.rpc
+com.velisphere.tigerspice.client.checks.CheckService, B9EDE4A41FDFCA17F46DCBC332F38EE4.gwt.rpc
+com.velisphere.tigerspice.client.endpoints.EndpointService, 5BFC5F2B4FF9AE5523EB54420F5C8884.gwt.rpc
+com.velisphere.tigerspice.client.rules.CheckPathService, E929330490FAD8FFB202F32353AF0B1C.gwt.rpc
+com.velisphere.tigerspice.client.users.UserService, 4EE7998AB3ED19A583FEDDB53C70E4C9.gwt.rpc
+com.velisphere.tigerspice.client.helper.HelperService, F72E5F6DD787EE9408E8C1925E452956.gwt.rpc
+com.velisphere.tigerspice.client.spheres.SphereService, 7F100CD387AF7E6290DA8995B09A106B.gwt.rpc
+com.velisphere.tigerspice.client.properties.PropertyService, B3961DD18B4CD063A5200A0F919C789B.gwt.rpc
+com.velisphere.tigerspice.client.propertyclasses.PropertyClassService, 0CF6743EB5FD84695DB3626230CD92AB.gwt.rpc
+com.velisphere.tigerspice.client.helper.UuidService, 2172C6809B6608B43A130781BBEE3C8B.gwt.rpc
