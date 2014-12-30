@@ -30,9 +30,9 @@ import com.velisphere.tigerspice.client.endpoints.EndpointActorWidget;
 import com.velisphere.tigerspice.client.event.CheckpathCalculatedEvent;
 import com.velisphere.tigerspice.client.event.CheckpathCalculatedEventHandler;
 import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.locator.logical.LogicalMapWidget;
 import com.velisphere.tigerspice.client.locator.maps.HeatMapLayerWidget;
 import com.velisphere.tigerspice.client.locator.maps.InfoWindowMapWidget;
-import com.velisphere.tigerspice.client.locator.maps.LogicalMapWidget;
 import com.velisphere.tigerspice.client.locator.maps.PolylineMapWidget;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 
