@@ -9,7 +9,7 @@ import java.util.Date;
 
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.gen2.datepicker.client.CalendarUtil;
+
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.rpc.AsyncCallback;

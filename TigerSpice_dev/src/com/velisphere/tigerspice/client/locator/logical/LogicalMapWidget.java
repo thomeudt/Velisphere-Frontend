@@ -14,8 +14,10 @@ import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.orange.links.client.DiagramController;
 import com.orange.links.client.connection.Connection;
@@ -88,7 +90,7 @@ public class LogicalMapWidget extends Composite {
 						
 						Iterator<EndpointData> it = result.iterator();
 						
-						LinkedList<Label> labelList = new LinkedList<Label>();
+						LinkedList<LabelWithMenu> labelList = new LinkedList<LabelWithMenu>();
 						
 						int xPos = 10;
 						int yPos = 10;
@@ -97,25 +99,14 @@ public class LogicalMapWidget extends Composite {
 						while (it.hasNext())
 						{
 							final EndpointData endpoint = it.next();
-							Label endpointLabel = new Label(endpoint.endpointName);
-							endpointLabel.setType(LabelType.INFO);
+							final LabelWithMenu endpointLabel = new LabelWithMenu(endpoint.endpointId, endpoint.endpointName);
+							
 							labelList.add(endpointLabel);
-							
-							endpointLabel.addMouseOverHandler(new MouseOverHandler(){
-
-								@Override
-								public void onMouseOver(MouseOverEvent event) {
-									AppController.openEndpoint(endpoint.endpointId);
-									
-								}
-								
-							});
-							
 							controller.addWidget(endpointLabel, xPos, yPos);
 							
 							dragController.makeDraggable(endpointLabel);
 							
-							yPos = yPos + 30;
+							yPos = yPos + 60;
 							// increment horizontally only if element is a multiple of 5
 							
 							if (count % 5 == 0){
@@ -129,14 +120,14 @@ public class LogicalMapWidget extends Composite {
 
 						// dummy linking, real linking will have to happen based on action table
 						
-						Iterator<Label> lIt = labelList.iterator();
+						Iterator<LabelWithMenu> lIt = labelList.iterator();
 						
 						while(lIt.hasNext()){
-							Iterator<Label> tIt = labelList.iterator();
-							Label master = lIt.next();
+							Iterator<LabelWithMenu> tIt = labelList.iterator();
+							LabelWithMenu master = lIt.next();
 							
 							while(tIt.hasNext()){
-								Label slave = tIt.next();
+								LabelWithMenu slave = tIt.next();
 								Connection c1 = controller.drawStraightArrowConnection(master, slave);		
 							}
 						}
@@ -153,5 +144,7 @@ public class LogicalMapWidget extends Composite {
 		
 		
 	}
+	
+
 
 }
