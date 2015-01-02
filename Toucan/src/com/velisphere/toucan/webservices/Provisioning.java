@@ -1,4 +1,4 @@
-package com.velisphere.toucan;
+package com.velisphere.toucan.webservices;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -19,6 +19,8 @@ import javax.ws.rs.core.Response;
 
 
 
+
+
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
@@ -30,6 +32,7 @@ import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.GetResponse;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
+import com.velisphere.toucan.amqp.VoltConnector;
 
 
 

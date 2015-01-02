@@ -52,8 +52,7 @@
 	<!-- Other module inherits                                      -->
 	<inherits name='com.google.web.bindery.requestfactory.RequestFactory' />
 	<inherits name='com.orange.links.Links' />
-    <inherits name='com.google.gwt.widgetideas.WidgetIdeas' />   
-    <inherits name='com.google.gwt.libideas.LibIdeas' />
+  
     
     <inherits name='com.google.gwt.maps.Maps'/>
 

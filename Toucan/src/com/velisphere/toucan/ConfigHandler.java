@@ -24,6 +24,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
+import com.velisphere.toucan.amqp.ServerParameters;
+
 
 
 public class ConfigHandler {

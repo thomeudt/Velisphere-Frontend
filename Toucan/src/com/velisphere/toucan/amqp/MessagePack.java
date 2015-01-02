@@ -1,4 +1,4 @@
-package com.velisphere.toucan;
+package com.velisphere.toucan.amqp;
 /*******************************************************************************
  * CONFIDENTIAL INFORMATION
  *  __________________

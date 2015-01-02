@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.toucan;
+package com.velisphere.toucan.amqp;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -27,6 +27,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.AMQP.BasicProperties;
+import com.velisphere.toucan.ConfigHandler;
 
 public class Send {
 

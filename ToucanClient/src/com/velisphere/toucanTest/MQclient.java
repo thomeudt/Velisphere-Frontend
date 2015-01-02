@@ -20,7 +20,7 @@ import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
 
 
-public class client {
+public class MQclient {
 
 
 	public static void main(String[] args) {

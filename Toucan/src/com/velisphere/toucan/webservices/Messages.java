@@ -1,4 +1,4 @@
-package com.velisphere.toucan;
+package com.velisphere.toucan.webservices;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,6 +21,11 @@ import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.GetResponse;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
+import com.velisphere.toucan.ConfigHandler;
+import com.velisphere.toucan.Todo;
+import com.velisphere.toucan.amqp.MessagePack;
+import com.velisphere.toucan.amqp.Send;
+import com.velisphere.toucan.amqp.ServerParameters;
 
 
 @Path("/messages")

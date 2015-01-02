@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.toucan;
+package com.velisphere.toucan.amqp;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
