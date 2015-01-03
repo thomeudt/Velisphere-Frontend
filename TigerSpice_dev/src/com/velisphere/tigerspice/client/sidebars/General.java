@@ -41,7 +41,7 @@ public class General extends Composite {
 	
 	void populateShortcuts(){
 		EndpointServiceAsync rpcServiceEndpoint = GWT.create(EndpointService.class);
-		ddlShortcut.setWidth("150px");
+		//ddlShortcut.setWidth("150px");
 		ddlShortcut.addItem("Select Endpoint");
 		rpcServiceEndpoint.getEndpointsForUser(SessionHelper.getCurrentUserID(), new AsyncCallback<LinkedList<EndpointData>>(){
 

@@ -52,7 +52,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 
-	public Vector<CheckData> getChecksForEndpointID(String endpointID)
+	public LinkedList<CheckData> getChecksForEndpointID(String endpointID)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -67,7 +67,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 			e1.printStackTrace();
 		}
 
-		Vector<CheckData> checksForEndpointID = new Vector<CheckData>();
+		LinkedList<CheckData> checksForEndpointID = new LinkedList<CheckData>();
 		try {
 
 			final ClientResponse findCheck = voltCon.montanaClient
@@ -87,6 +87,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 					check.endpointId = result.getString("ENDPOINTID");
 					check.checkName = result.getString("NAME");
 					check.checkValue = result.getString("CHECKVALUE");
+					check.checkpathId = result.getString("CHECKPATHID");
 
 					Byte expired;
 					expired = (Byte) result.get("EXPIRED", VoltType.TINYINT);

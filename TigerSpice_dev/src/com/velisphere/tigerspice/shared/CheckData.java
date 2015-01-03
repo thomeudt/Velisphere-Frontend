@@ -32,6 +32,7 @@ public class CheckData implements IsSerializable, Comparable <CheckData>
 	public Byte state;
 	public Byte expired;
 	public String checkName;
+	public String checkpathId;
 	
 	@Override
 	public int compareTo(CheckData arg0) {

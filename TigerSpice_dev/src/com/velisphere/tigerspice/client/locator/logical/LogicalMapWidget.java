@@ -16,8 +16,10 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.orange.links.client.DiagramController;
 import com.orange.links.client.connection.Connection;
@@ -26,9 +28,12 @@ import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
+import com.velisphere.tigerspice.client.checks.CheckService;
+import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.helper.widgets.FilterSphereEndpointWidget;
+import com.velisphere.tigerspice.shared.CheckData;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.GeoLocationData;
 
@@ -125,6 +130,7 @@ public class LogicalMapWidget extends Composite {
 						while(lIt.hasNext()){
 							Iterator<LabelWithMenu> tIt = labelList.iterator();
 							LabelWithMenu master = lIt.next();
+							getLinkedEndpoints(master);
 							
 							while(tIt.hasNext()){
 								LabelWithMenu slave = tIt.next();
@@ -145,6 +151,41 @@ public class LogicalMapWidget extends Composite {
 		
 	}
 	
+	
+private void getLinkedEndpoints(LabelWithMenu label) {
+		
+		HTML seperator = new HTML("---- Checks for Endpoint -------> " + label.endpointID);
+		RootPanel.get().add(seperator);
+		
+	
+		CheckServiceAsync checkService = GWT
+				.create(CheckService.class);
+		
+		checkService.getChecksForEndpointID(label.endpointID,
+				new AsyncCallback<LinkedList<CheckData>>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(LinkedList<CheckData> result) {
+						HTML headML = new HTML("---- Found -------> " + result.toString());
+						RootPanel.get().add(headML);
+						Iterator<CheckData> it = result.iterator();
+						while (it.hasNext()){
+							CheckData check = it.next();
+							HTML checkML = new HTML("Checked by " + check.checkName + " in CP " + check.checkpathId);
+							RootPanel.get().add(checkML);
+						}
+						
+					}
+				
+				});
+	}
 
 
 }

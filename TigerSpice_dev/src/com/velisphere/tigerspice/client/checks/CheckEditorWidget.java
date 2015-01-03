@@ -18,6 +18,7 @@
 package com.velisphere.tigerspice.client.checks;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Vector;
 
 import com.github.gwtbootstrap.client.ui.Accordion;
@@ -162,7 +163,7 @@ public class CheckEditorWidget extends Composite {
 
 		rpcService.getChecksForEndpointID(
 
-		endpointID, new AsyncCallback<Vector<CheckData>>() {
+		endpointID, new AsyncCallback<LinkedList<CheckData>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -172,7 +173,7 @@ public class CheckEditorWidget extends Composite {
 			}
 
 			@Override
-			public void onSuccess(Vector<CheckData> result) {
+			public void onSuccess(LinkedList<CheckData> result) {
 
 				Iterator<CheckData> it = result.iterator();
 
@@ -656,6 +657,8 @@ public class CheckEditorWidget extends Composite {
 				container.add(accordion);
 
 				removeLoadAnimation(animationLoading);
+
+		
 
 			}
 

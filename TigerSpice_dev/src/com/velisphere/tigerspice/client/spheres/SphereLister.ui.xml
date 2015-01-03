@@ -55,8 +55,8 @@
 		   
 
 					<b:Row>
-							<b:Column size="4">
-								<b:ListBox styleName="span4" ui:field="lstPrivateSpheres" />
+							<b:Column size="6">
+								<b:ListBox styleName="span6" ui:field="lstPrivateSpheres" />
 							</b:Column>
 						</b:Row>		
 			    

@@ -30,7 +30,7 @@ import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.UserData;
 
 public interface CheckServiceAsync {
-	void getChecksForEndpointID(String endpointID, AsyncCallback<Vector<CheckData>> callback);
+	void getChecksForEndpointID(String endpointID, AsyncCallback<LinkedList<CheckData>> callback);
 	void addNewCheck(String checkID, String endpointID, String propertyID, String checkValue, String operator, String name, String checkpathID, LinkedList<ActionObject> actions, AsyncCallback<String> callback );
 	void updateCheck(String checkID, String name, String checkValue, String operator, String checkpathID, LinkedList<ActionObject> actions, AsyncCallback<String> callback );
 	void deleteCheck(String checkID, AsyncCallback<String> callback );

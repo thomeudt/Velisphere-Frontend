@@ -138,7 +138,7 @@ public class ChecksByEndpointWidget extends Composite {
 	private void addChecksToEndpoint(final AccordionGroup endpoint, String endpointID){
 
 		loadAnimation.showLoadAnimation("Loading sensors");
-		rpcServiceCheck.getChecksForEndpointID(endpointID, new AsyncCallback<Vector<CheckData>>(){
+		rpcServiceCheck.getChecksForEndpointID(endpointID, new AsyncCallback<LinkedList<CheckData>>(){
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -147,7 +147,7 @@ public class ChecksByEndpointWidget extends Composite {
 			}
 
 			@Override
-			public void onSuccess(Vector<CheckData> result) {
+			public void onSuccess(LinkedList<CheckData> result) {
 				// TODO Auto-generated method stub
 				loadAnimation.removeLoadAnimation();
 				Iterator<CheckData> it = result.iterator();

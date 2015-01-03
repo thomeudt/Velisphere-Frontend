@@ -10,10 +10,12 @@ import com.velisphere.tigerspice.client.appcontroller.AppController;
 
 public class LabelWithMenu extends BoxLabel implements HasContextMenu {
     
-    ContextMenu customMenu;
+    String endpointID;
+	ContextMenu customMenu;
     
     public LabelWithMenu(final String endpointID, String endpointName) {
         super(endpointName);
+        this.endpointID = endpointID;
         customMenu = new ContextMenu();
         customMenu.addItem(new MenuItem("Manage "+ endpointName + "... ", new Command() {
                 @Override
