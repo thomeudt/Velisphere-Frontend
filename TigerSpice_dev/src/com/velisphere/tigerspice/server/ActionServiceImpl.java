@@ -48,6 +48,7 @@ import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.rules.CheckPathService;
 import com.velisphere.tigerspice.client.rules.MulticheckColumn;
+import com.velisphere.tigerspice.shared.ActionData;
 import com.velisphere.tigerspice.shared.CheckData;
 import com.velisphere.tigerspice.shared.CheckPathData;
 import com.velisphere.tigerspice.shared.CheckPathObjectTree;
@@ -59,11 +60,61 @@ import com.velisphere.tigerspice.shared.SphereData;
 public class ActionServiceImpl extends RemoteServiceServlet implements
 		ActionService {
 
-	 
-	/**
-	 * 
-	 */
+	public LinkedList<ActionData> getActionsForCheckpathID(String checkpathID){
+		
+		VoltConnector voltCon = new VoltConnector();
 
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		LinkedList<ActionData> actionsForCheckpathID = new LinkedList<ActionData>();
+		try {
+
+			final ClientResponse findAction = voltCon.montanaClient
+					.callProcedure("UI_SelectActionsForCheckpathID", checkpathID);
+
+			final VoltTable findActionResult[] = findAction.getResults();
+
+			VoltTable result = findActionResult[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+
+					ActionData action = new ActionData();
+					action.setActionID(result.getString("ACTIONID"));
+					action.setTargetEndpointID(result.getString("TARGETENDPOINTID"));
+					actionsForCheckpathID.add(action);
+				}
+			}
+
+			// System.out.println(endPointsforSphere);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		
+		return actionsForCheckpathID;
+		
+	}
 
 	
 	

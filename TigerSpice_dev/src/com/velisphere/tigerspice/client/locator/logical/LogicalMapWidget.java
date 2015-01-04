@@ -24,6 +24,8 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.orange.links.client.DiagramController;
 import com.orange.links.client.connection.Connection;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
+import com.velisphere.tigerspice.client.actions.ActionService;
+import com.velisphere.tigerspice.client.actions.ActionServiceAsync;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
@@ -33,6 +35,7 @@ import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.helper.widgets.FilterSphereEndpointWidget;
+import com.velisphere.tigerspice.shared.ActionData;
 import com.velisphere.tigerspice.shared.CheckData;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.GeoLocationData;
@@ -179,6 +182,7 @@ private void getLinkedEndpoints(LabelWithMenu label) {
 						while (it.hasNext()){
 							CheckData check = it.next();
 							HTML checkML = new HTML("Checked by " + check.checkName + " in CP " + check.checkpathId);
+							getLinkedEndpoints(check.checkpathId);
 							RootPanel.get().add(checkML);
 						}
 						
@@ -187,5 +191,40 @@ private void getLinkedEndpoints(LabelWithMenu label) {
 				});
 	}
 
+private void getLinkedEndpoints(String checkpathID)
+{
+	HTML seperator = new HTML("---- Linked Targets for Endpoint -------> " + checkpathID);
+	RootPanel.get().add(seperator);
+	
+
+	ActionServiceAsync actionService = GWT
+			.create(ActionService.class);
+	
+	actionService.getActionsForCheckpathID(checkpathID,
+			new AsyncCallback<LinkedList<ActionData>>()
+			{
+
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onSuccess(LinkedList<ActionData> result) {
+					HTML headML = new HTML("---- Found -------> " + result.toString());
+					RootPanel.get().add(headML);
+					Iterator<ActionData> it = result.iterator();
+					while (it.hasNext()){
+						ActionData action = it.next();
+						HTML checkML = new HTML("Linked to " + action.getTargetEndpointID() + " via action " + action.getActionID());
+						RootPanel.get().add(checkML);
+					}
+					
+				}
+			
+			});
+	
+}
 
 }
