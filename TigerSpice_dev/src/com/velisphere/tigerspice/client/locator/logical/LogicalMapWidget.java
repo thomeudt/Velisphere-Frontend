@@ -1,7 +1,10 @@
 package com.velisphere.tigerspice.client.locator.logical;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.github.gwtbootstrap.client.ui.Label;
@@ -45,6 +48,9 @@ public class LogicalMapWidget extends Composite {
 	
 	HorizontalPanel pWidget;
 	ScrollPanel scrollWidget;
+	DiagramController controller;
+	HashMap<String, LabelWithMenu> labelDirectory;
+	HashMap<String, LinkedList<String>> linkDirectory;
 	
 	
 	public LogicalMapWidget()
@@ -52,12 +58,17 @@ public class LogicalMapWidget extends Composite {
 		
 		
 		 pWidget = new HorizontalPanel();
+		 linkDirectory = new HashMap<String, LinkedList<String>>();
+		 labelDirectory = new HashMap<String, LabelWithMenu>();
+		 controller = createDiagramController();
 		 initWidget(pWidget);
+		 
+		 
 
 		 FilterSphereEndpointWidget endpointFilter = new FilterSphereEndpointWidget();
 		 pWidget.add(endpointFilter);
 
-		 DiagramController controller = createDiagramController();
+		 
 		
 		 scrollWidget = new ScrollPanel();
 		 scrollWidget.add(controller.getView());
@@ -98,7 +109,7 @@ public class LogicalMapWidget extends Composite {
 						
 						Iterator<EndpointData> it = result.iterator();
 						
-						LinkedList<LabelWithMenu> labelList = new LinkedList<LabelWithMenu>();
+						
 						
 						int xPos = 10;
 						int yPos = 10;
@@ -109,7 +120,7 @@ public class LogicalMapWidget extends Composite {
 							final EndpointData endpoint = it.next();
 							final LabelWithMenu endpointLabel = new LabelWithMenu(endpoint.endpointId, endpoint.endpointName);
 							
-							labelList.add(endpointLabel);
+							labelDirectory.put(endpoint.endpointId, endpointLabel);
 							controller.addWidget(endpointLabel, xPos, yPos);
 							
 							dragController.makeDraggable(endpointLabel);
@@ -128,18 +139,18 @@ public class LogicalMapWidget extends Composite {
 
 						// dummy linking, real linking will have to happen based on action table
 						
-						Iterator<LabelWithMenu> lIt = labelList.iterator();
+						
+						
+						Iterator<Entry<String, LabelWithMenu>> lIt = labelDirectory.entrySet().iterator();
 						
 						while(lIt.hasNext()){
-							Iterator<LabelWithMenu> tIt = labelList.iterator();
-							LabelWithMenu master = lIt.next();
-							getLinkedEndpoints(master);
+							Map.Entry<String, LabelWithMenu> pair = (Map.Entry<String, LabelWithMenu>)lIt.next();
 							
-							while(tIt.hasNext()){
-								LabelWithMenu slave = tIt.next();
-								Connection c1 = controller.drawStraightArrowConnection(master, slave);		
-							}
+							getLinkedCheckpaths(pair.getValue());
+							
+							
 						}
+						
 						
 						
 						
@@ -155,7 +166,7 @@ public class LogicalMapWidget extends Composite {
 	}
 	
 	
-private void getLinkedEndpoints(LabelWithMenu label) {
+private void getLinkedCheckpaths(final LabelWithMenu label) {
 		
 		HTML seperator = new HTML("---- Checks for Endpoint -------> " + label.endpointID);
 		RootPanel.get().add(seperator);
@@ -182,7 +193,7 @@ private void getLinkedEndpoints(LabelWithMenu label) {
 						while (it.hasNext()){
 							CheckData check = it.next();
 							HTML checkML = new HTML("Checked by " + check.checkName + " in CP " + check.checkpathId);
-							getLinkedEndpoints(check.checkpathId);
+							getLinkedEndpoints(label.endpointID, check.checkpathId);
 							RootPanel.get().add(checkML);
 						}
 						
@@ -191,7 +202,7 @@ private void getLinkedEndpoints(LabelWithMenu label) {
 				});
 	}
 
-private void getLinkedEndpoints(String checkpathID)
+private void getLinkedEndpoints(final String endpointID, String checkpathID)
 {
 	HTML seperator = new HTML("---- Linked Targets for Endpoint -------> " + checkpathID);
 	RootPanel.get().add(seperator);
@@ -210,8 +221,11 @@ private void getLinkedEndpoints(String checkpathID)
 					
 				}
 
+				
+				
 				@Override
 				public void onSuccess(LinkedList<ActionData> result) {
+					 
 					HTML headML = new HTML("---- Found -------> " + result.toString());
 					RootPanel.get().add(headML);
 					Iterator<ActionData> it = result.iterator();
@@ -219,11 +233,47 @@ private void getLinkedEndpoints(String checkpathID)
 						ActionData action = it.next();
 						HTML checkML = new HTML("Linked to " + action.getTargetEndpointID() + " via action " + action.getActionID());
 						RootPanel.get().add(checkML);
+						if (linkDirectory.containsKey(endpointID)){
+							linkDirectory.get(endpointID).add(action.getTargetEndpointID());
+						} else
+						{
+							LinkedList<String> entry = new LinkedList<String>();
+							entry.add(action.getTargetEndpointID());
+							linkDirectory.put(endpointID, entry);
+						}
 					}
 					
+					RootPanel.get().add(new HTML("Added to directory: " + linkDirectory.values()));
+					drawLinks();
 				}
 			
 			});
+	
+	
+	
+}
+
+private void drawLinks()
+{
+
+	Iterator<Entry<String, LabelWithMenu>> it = labelDirectory.entrySet().iterator();
+		
+	
+	while (it.hasNext()){
+	
+		Map.Entry<String, LabelWithMenu> pair = (Map.Entry<String, LabelWithMenu>)it.next();
+		
+		LabelWithMenu originLabel = pair.getValue();
+		LinkedList<String> targets = linkDirectory.get(originLabel.endpointID);
+		Iterator<String> tIt = targets.iterator();
+		while (tIt.hasNext()){
+			String target = tIt.next();
+			LabelWithMenu targetLabel = labelDirectory.get(target);
+			Connection c1 = controller.drawStraightArrowConnection(originLabel, targetLabel);	
+		}
+		
+		
+	}
 	
 }
 
