@@ -8,6 +8,8 @@ import java.util.Map.Entry;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
@@ -16,8 +18,10 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.orange.links.client.DiagramController;
 import com.orange.links.client.connection.Connection;
+import com.orange.links.client.shapes.DecorationShape;
 import com.velisphere.tigerspice.client.actions.ActionService;
 import com.velisphere.tigerspice.client.actions.ActionServiceAsync;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
@@ -27,6 +31,7 @@ import com.velisphere.tigerspice.client.helper.widgets.FilterSphereEndpointWidge
 import com.velisphere.tigerspice.shared.ActionData;
 import com.velisphere.tigerspice.shared.CheckData;
 import com.velisphere.tigerspice.shared.EndpointData;
+import com.velisphere.tigerspice.shared.LogicLinkTargetData;
 
 public class LogicalMapWidget extends Composite {
 	
@@ -273,7 +278,7 @@ private void drawLinksFromServer()
 	
 	
 	endpointService.getLinksForEndpointList(sourceEndpointIDs,
-			new AsyncCallback<HashMap<String, LinkedList<String>>>()
+			new AsyncCallback<HashMap<String, LinkedList<LogicLinkTargetData>>>()
 			{
 
 				@Override
@@ -283,7 +288,7 @@ private void drawLinksFromServer()
 				}
 
 				@Override
-				public void onSuccess(HashMap<String, LinkedList<String>> result) {
+				public void onSuccess(HashMap<String, LinkedList<LogicLinkTargetData>> result) {
 
 					RootPanel.get().add(new HTML("Raw data " + result.toString()));
 					
@@ -297,18 +302,29 @@ private void drawLinksFromServer()
 						
 						RootPanel.get().add(new HTML("Origin data " + originPair.getValue().endpointID));
 						
-						LinkedList<String> targetEndpoints = result.get(originPair.getKey());
+						LinkedList<LogicLinkTargetData> targetEndpoints = result.get(originPair.getKey());
 						
 						RootPanel.get().add(new HTML("Raw target data " + targetEndpoints.toString()));
 												
-						Iterator<String> iTt = targetEndpoints.iterator();
+						Iterator<LogicLinkTargetData> iTt = targetEndpoints.iterator();
 						
 						while (iTt.hasNext()){
 							
-							
-							LabelWithMenu targetLabel = labelDirectory.get(iTt.next());
+							final LogicLinkTargetData targetEndpoint =  iTt.next();
+							LabelWithMenu targetLabel = labelDirectory.get(targetEndpoint.getTargetEndpointID());
 							RootPanel.get().add(new HTML("Connecting " + originLabel.endpointID + " with " + targetLabel.endpointID));
 							Connection c1 = controller.drawStraightArrowConnection(originLabel, targetLabel);	
+							HTML decorationLabel = new HTML("<a>" + targetEndpoint.getCheckpathName()+"</a>");
+							controller.addDecoration(decorationLabel, c1);
+							decorationLabel.addClickHandler(new ClickHandler(){
+
+								@Override
+								public void onClick(ClickEvent event) {
+									AppController.openLogicDesign(targetEndpoint.getCheckpathID());
+									
+								}
+								
+							});
 						}
 						
 						

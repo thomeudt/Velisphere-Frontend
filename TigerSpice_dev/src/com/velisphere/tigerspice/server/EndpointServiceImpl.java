@@ -58,6 +58,7 @@ import com.velisphere.tigerspice.client.helper.ErrorCodes;
 import com.velisphere.tigerspice.shared.ActionData;
 import com.velisphere.tigerspice.shared.CheckData;
 import com.velisphere.tigerspice.shared.EndpointData;
+import com.velisphere.tigerspice.shared.LogicLinkTargetData;
 import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
 
 public class EndpointServiceImpl extends RemoteServiceServlet implements
@@ -717,7 +718,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 	}
 
 	@Override
-	public HashMap<String, LinkedList<String>> getLinksForEndpointList(
+	public HashMap<String, LinkedList<LogicLinkTargetData>> getLinksForEndpointList(
 			LinkedList<String> endpointIDs) {
 
 		/*
@@ -744,7 +745,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		 * executed in this checkpath
 		 */
 
-		HashMap<String, LinkedList<String>> linkedEndpointsForEndpointID = new HashMap<String, LinkedList<String>>();
+		HashMap<String, LinkedList<LogicLinkTargetData>> linkedEndpointsForEndpointID = new HashMap<String, LinkedList<LogicLinkTargetData>>();
 	
 		Iterator<String> it = endpointIDs.iterator();
 
@@ -754,7 +755,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			
 			System.out.println("[DB] Looking for links belonging to " + endpointID);
 			
-			LinkedList<String> targetsForEndpointID = new LinkedList<String>();
+			LinkedList<LogicLinkTargetData> targetsForEndpointID = new LinkedList<LogicLinkTargetData>();
 
 			try {
 
@@ -777,14 +778,17 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 
 						//LinkedList<String> targetsForCheckpathID = new LinkedList<String>();
 
-						System.out.println("[DB] Looking for actions in checkpath " + result.getString("CHECKPATHID"));
+						String checkpathID = result.getString("CHECKPATHID");
+						
+					
+						System.out.println("[DB] Looking for actions in checkpath " + checkpathID);
 					
 						try {
 
 							final ClientResponse findAction = voltCon.montanaClient
 									.callProcedure(
 											"UI_SelectActionsForCheckpathID",
-											result.getString("CHECKPATHID"));
+											checkpathID);
 
 							final VoltTable findActionResult[] = findAction
 									.getResults();
@@ -797,13 +801,16 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 								
 								if (resultActionQuery.getString("TARGETENDPOINTID").length()>0)
 								{
-									targetsForEndpointID.add(resultActionQuery
-											.getString("TARGETENDPOINTID"));
-									System.out.println("[DB] Found and adding to target list " + resultActionQuery.getString("TARGETENDPOINTID"));
+																		
+									LogicLinkTargetData targetData = new LogicLinkTargetData();
+									targetData.setCheckpathID(checkpathID);
+									targetData.setCheckpathName(resultActionQuery.getString("CHECKPATHNAME"));
+									targetData.setTargetEndpointID(resultActionQuery.getString("TARGETENDPOINTID"));
+									targetsForEndpointID.add(targetData);
+									System.out.println("[DB] Found and adding to target list " + targetData.toString());
 	
 								} else
 									System.out.println("[DB] Discarding emptry result: " + resultActionQuery.getString("TARGETENDPOINTID"));
-
 								
 								}
 							

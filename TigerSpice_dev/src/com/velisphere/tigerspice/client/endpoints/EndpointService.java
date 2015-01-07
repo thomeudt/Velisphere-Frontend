@@ -33,6 +33,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.EndpointData;
+import com.velisphere.tigerspice.shared.LogicLinkTargetData;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
 import com.velisphere.tigerspice.shared.UserData;
@@ -48,7 +49,7 @@ public interface EndpointService extends RemoteService {
 	String updateEndpointNameForEndpointID(String endpointID, String endpointName);
 	UnprovisionedEndpointData getUnprovisionedEndpoints(String endpointID, String captchaWord);
 	String addNewEndpoint(String endpointID, String endpointName, String endpointclassID, String userID);
-	HashMap<String, LinkedList<String>> getLinksForEndpointList(LinkedList<String> endpointID);
+	HashMap<String, LinkedList<LogicLinkTargetData>> getLinksForEndpointList(LinkedList<String> endpointID);
 }
 
 

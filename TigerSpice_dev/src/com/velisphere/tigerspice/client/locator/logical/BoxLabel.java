@@ -26,7 +26,7 @@ public class BoxLabel extends Label implements HasAllTouchHandlers,IsDiagramSeri
                 this.content = text;
                 
                 getElement().getStyle().setBackgroundColor("aliceblue");
-            	addStyleName("roundborders");
+            	//addStyleName("roundborders");
                 
             	getElement().getStyle().setPadding(10, Unit.PX);
                 getElement().getStyle().setBorderStyle(BorderStyle.SOLID);
