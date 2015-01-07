@@ -45,6 +45,7 @@ import com.google.gwt.maps.client.visualizationlib.HeatMapLayerOptions;
 import com.google.gwt.maps.client.visualizationlib.WeightedLocation;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -77,6 +78,8 @@ public class HeatMapLayerWidget extends Composite {
   public HeatMapLayerWidget() {
     pWidget = new HorizontalPanel();
     initWidget(pWidget);
+    
+    this.addStyleName("span8");
     setFilterHandlerListener();
 
     draw();
@@ -89,7 +92,10 @@ public class HeatMapLayerWidget extends Composite {
         
     
     pWidget.add(endpointFilter);
-   
+    FlowPanel spacer = new FlowPanel();
+    spacer.setWidth("10px");
+    pWidget.add(spacer);
+
     getMarkersForMap();
     
     //drawMap();
@@ -105,7 +111,7 @@ public class HeatMapLayerWidget extends Composite {
 
     mapWidget = new MapWidget(opts);
     pWidget.add(mapWidget);
-    mapWidget.setSize("700px", "350px");
+    mapWidget.setSize(this.getOffsetWidth()-10+"px", "350px");
     mapWidget.setStyleName("map_canvas");
     
     mapWidget.addTilesLoadedHandler(new TilesLoadedMapHandler() {

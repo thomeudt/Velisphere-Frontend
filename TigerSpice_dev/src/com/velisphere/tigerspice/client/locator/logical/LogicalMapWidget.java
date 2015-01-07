@@ -14,6 +14,7 @@ import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -39,7 +40,7 @@ public class LogicalMapWidget extends Composite {
 	
 	
 	HorizontalPanel pWidget;
-	ScrollPanel scrollWidget;
+    ScrollPanel scrollWidget;
 	DiagramController controller;
 	HashMap<String, LabelWithMenu> labelDirectory;
 	HashMap<String, LinkedList<String>> linkDirectory;
@@ -54,25 +55,27 @@ public class LogicalMapWidget extends Composite {
 		 labelDirectory = new HashMap<String, LabelWithMenu>();
 		 controller = createDiagramController();
 		 initWidget(pWidget);
+		 this.addStyleName("span8");
 		 
-		 
-
 		 FilterSphereEndpointWidget endpointFilter = new FilterSphereEndpointWidget();
 		 pWidget.add(endpointFilter);
+		 
+		 FlowPanel spacer = new FlowPanel();
+		 spacer.setWidth("10px");
+		 pWidget.add(spacer);
 
-		 
-		
-		 scrollWidget = new ScrollPanel();
-		 scrollWidget.add(controller.getView());
-		 pWidget.add(scrollWidget);
-		 
+
+		 HorizontalPanel subWidget = new HorizontalPanel();
+		//TODO clean up panel mess here
+		 subWidget.add(controller.getView());
+		 pWidget.add(subWidget);
 		 populateDiagram(controller);
 	}
 	
 	
 	private DiagramController createDiagramController()
 	{
-		 DiagramController controller = new DiagramController(1000, 400);
+		 DiagramController controller = new DiagramController(800, 500);
 		 controller.showGrid(true); // Display a background grid
 		 return controller;
 	}
@@ -103,9 +106,16 @@ public class LogicalMapWidget extends Composite {
 						
 						
 						
-						int xPos = 10;
-						int yPos = 10;
-						int count = 1;
+						int xPosCenter = 200;
+						int yPosCenter = 200;
+						int totalLabelCount = result.size();
+						int radius = 170;
+						
+						double seperationDegrees = 360 / totalLabelCount;    
+						
+						RootPanel.get().add(new HTML("Seperation Degrees " + seperationDegrees));
+						
+						int counter = 1;
 						
 						while (it.hasNext())
 						{
@@ -113,23 +123,23 @@ public class LogicalMapWidget extends Composite {
 							final LabelWithMenu endpointLabel = new LabelWithMenu(endpoint.endpointId, endpoint.endpointName, endpoint.getEpcId());
 							
 							
-							RootPanel.get().add(new HTML("EPC " + endpoint.getEpcId()));
-
-
+							
+							
+							double radians = (seperationDegrees * counter * Math.PI)/180;
+							RootPanel.get().add(new HTML("Degrees " + seperationDegrees * counter));
+						    int x = (int) (xPosCenter + radius * Math.cos(radians));
+						    int y = (int) (yPosCenter + radius * Math.sin(radians));
+						    
+						    RootPanel.get().add(new HTML("x Pos " + x + "y Pos " + y));
+						
+						    counter++;
 							
 							labelDirectory.put(endpoint.endpointId, endpointLabel);
-							controller.addWidget(endpointLabel, xPos, yPos);
+							controller.addWidget(endpointLabel, x, y);
 							
 							dragController.makeDraggable(endpointLabel);
 							
-							yPos = yPos + 60;
-							// increment horizontally only if element is a multiple of 5
 							
-							if (count % 5 == 0){
-								xPos = xPos + 150;
-								yPos = 10;
-							}
-							count++;
 						}
 						
 						drawLinksFromServer();

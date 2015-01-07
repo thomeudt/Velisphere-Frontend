@@ -30,6 +30,7 @@ import java.util.Map.Entry;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -60,6 +61,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -90,8 +92,12 @@ public class InfoWindowMapWidget extends Composite {
 
   public InfoWindowMapWidget() {
     
+	
 	pWidget = new HorizontalPanel();
     initWidget(pWidget);
+    this.addStyleName("span8");
+   
+    
     setFilterHandlerListener();
     draw();
     
@@ -131,34 +137,11 @@ public class InfoWindowMapWidget extends Composite {
     
     FilterSphereEndpointWidget endpointFilter = new FilterSphereEndpointWidget();
     pWidget.add(endpointFilter);
+    FlowPanel spacer = new FlowPanel();
+    spacer.setWidth("10px");
+    pWidget.add(spacer);
     getMarkersForMap();
-    /*
-    Geolocation geolocation = Geolocation.getIfSupported();
-	
-	   
-	  geolocation.getCurrentPosition(new Callback<Position, PositionError>()
-	  {
-	    
-	   @Override
-	   public void onSuccess(Position result)
-	   {
-		   
-		   drawMap(LatLng.newInstance(result.getCoordinates().getLatitude(), result.getCoordinates().getLongitude()));
-		   getMarkersForMap();
-		   drawInfoWindowOnMapCenter();
-	   }
-	    
-	   @Override
-	   public void onFailure(PositionError reason)
-	   {
-		   
-	    Window.alert(reason.getMessage());
-	   }
-	  });
-    */
-    
-    
-   
+  
     
   }
 
@@ -311,11 +294,12 @@ public class InfoWindowMapWidget extends Composite {
     opts.setZoomControl(true);
     opts.setCenter(center);
     opts.setMapTypeId(MapTypeId.HYBRID);
+   
 
     mapWidget = new MapWidget(opts);
     pWidget.add(mapWidget);
     
-    mapWidget.setSize("700px", "350px");
+    mapWidget.setSize(this.getOffsetWidth()-10+"px", "350px");
     mapWidget.setStyleName("map_canvas");
     
     

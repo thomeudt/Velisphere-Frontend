@@ -43,7 +43,15 @@ public class DragBox extends FocusPanel implements HasAllTouchHandlers,
 		super();
 
 		HorizontalPanel hPanel = new HorizontalPanel();
+		
+		if (text.length() > 25)
+			this.content = text.substring(0, 24) + "(...)";
+		else
+			this.content = text;
+		
 		this.content = text;
+		
+		this.setSize("130px", "35px");
 		Label label = new Label();
 		label.setText(text);
 		epcImage = new Image();
@@ -82,7 +90,7 @@ public class DragBox extends FocusPanel implements HasAllTouchHandlers,
 						RootPanel.get().add(new HTML("EPC URL " + result.endpointclassImageURL));
 						epcImage.setUrl(result.endpointclassImageURL);
 						epcImage.setWidth("40px");
-						
+						epcImage.setHeight("30px");
 						
 
 					}

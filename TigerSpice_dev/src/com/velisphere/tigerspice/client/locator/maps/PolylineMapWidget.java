@@ -43,6 +43,7 @@ import com.google.gwt.maps.client.overlays.SymbolPath;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -82,6 +83,7 @@ public class PolylineMapWidget extends Composite {
    
     
     initWidget(pWidget);
+    this.addStyleName("span8");
     setFilterHandlerListener();
     draw();
   }
@@ -92,7 +94,10 @@ public class PolylineMapWidget extends Composite {
     
     FilterSphereEndpointWidget endpointFilter = new FilterSphereEndpointWidget();
     pWidget.add(endpointFilter);
-   
+    FlowPanel spacer = new FlowPanel();
+    spacer.setWidth("10px");
+    pWidget.add(spacer);
+
    
    getMarkersForMap();
 
@@ -145,7 +150,7 @@ public class PolylineMapWidget extends Composite {
 
     mapWidget = new MapWidget(opts);
     pWidget.add(mapWidget);
-    mapWidget.setSize("700px", "350px");
+    mapWidget.setSize(this.getOffsetWidth()-10+"px", "350px");
     mapWidget.setStyleName("map_canvas");
     
     mapWidget.addTilesLoadedHandler(new TilesLoadedMapHandler() {

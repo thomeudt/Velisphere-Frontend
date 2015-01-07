@@ -97,7 +97,8 @@ public class FilterSphereEndpointWidget extends Composite {
 		Row filterRow2 = new Row();
 		Column filterCol2 = new Column(2);
 		lbxSphereFilter = new ListBox();
-		lbxSphereFilter.setAlternateSize(AlternateSize.MEDIUM);
+		//lbxSphereFilter.setAlternateSize(AlternateSize.MEDIUM);
+		lbxSphereFilter.addStyleName("span2");
 		filterCol2.add(lbxSphereFilter);
 
 		filterRow2.add(filterCol2);
@@ -112,7 +113,9 @@ public class FilterSphereEndpointWidget extends Composite {
 		Row filterRow4 = new Row();
 		Column filterCol4 = new Column(2);
 		lbxEndpointFilter = new ListBox();
-		lbxEndpointFilter.setAlternateSize(AlternateSize.MEDIUM);
+		//lbxEndpointFilter.setAlternateSize(AlternateSize.MEDIUM);
+		lbxEndpointFilter.addStyleName("span2");
+		
 		filterCol4.add(lbxEndpointFilter);
 
 		filterRow4.add(filterCol4);

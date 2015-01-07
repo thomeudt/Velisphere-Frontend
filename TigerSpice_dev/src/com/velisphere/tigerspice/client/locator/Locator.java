@@ -171,6 +171,7 @@ public class Locator extends Composite {
 	        	  tbpMap.clear();
 	        	  LogicalMapWidget gMap = new LogicalMapWidget();
 	        		tbpMap.add(gMap);
+	        		
 	              
 	          }
 	      });
