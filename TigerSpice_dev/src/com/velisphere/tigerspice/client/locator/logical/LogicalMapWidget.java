@@ -10,6 +10,8 @@ import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
@@ -108,7 +110,12 @@ public class LogicalMapWidget extends Composite {
 						while (it.hasNext())
 						{
 							final EndpointData endpoint = it.next();
-							final LabelWithMenu endpointLabel = new LabelWithMenu(endpoint.endpointId, endpoint.endpointName);
+							final LabelWithMenu endpointLabel = new LabelWithMenu(endpoint.endpointId, endpoint.endpointName, endpoint.getEpcId());
+							
+							
+							RootPanel.get().add(new HTML("EPC " + endpoint.getEpcId()));
+
+
 							
 							labelDirectory.put(endpoint.endpointId, endpointLabel);
 							controller.addWidget(endpointLabel, xPos, yPos);
@@ -126,26 +133,6 @@ public class LogicalMapWidget extends Composite {
 						}
 						
 						drawLinksFromServer();
-
-						// dummy linking, real linking will have to happen based on action table
-						/*
-						
-						
-						Iterator<Entry<String, LabelWithMenu>> lIt = labelDirectory.entrySet().iterator();
-						
-						while(lIt.hasNext()){
-							Map.Entry<String, LabelWithMenu> pair = (Map.Entry<String, LabelWithMenu>)lIt.next();
-							
-							getLinkedCheckpaths(pair.getValue());
-							
-							
-						}
-						*/
-						
-						
-						
-						
-						
 					}
 			
 				});
@@ -157,116 +144,7 @@ public class LogicalMapWidget extends Composite {
 	}
 	
 	
-private void getLinkedCheckpaths(final LabelWithMenu label) {
-		
-		HTML seperator = new HTML("---- Checks for Endpoint -------> " + label.endpointID);
-		RootPanel.get().add(seperator);
-		
-	
-		CheckServiceAsync checkService = GWT
-				.create(CheckService.class);
-		
-		checkService.getChecksForEndpointID(label.endpointID,
-				new AsyncCallback<LinkedList<CheckData>>()
-				{
 
-					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void onSuccess(LinkedList<CheckData> result) {
-						HTML headML = new HTML("---- Found -------> " + result.toString());
-						RootPanel.get().add(headML);
-						Iterator<CheckData> it = result.iterator();
-						while (it.hasNext()){
-							CheckData check = it.next();
-							HTML checkML = new HTML("Checked by " + check.checkName + " in CP " + check.checkpathId);
-							getLinkedEndpoints(label.endpointID, check.checkpathId);
-							RootPanel.get().add(checkML);
-						}
-						
-					}
-				
-				});
-	}
-
-private void getLinkedEndpoints(final String endpointID, String checkpathID)
-{
-	HTML seperator = new HTML("---- Linked Targets for Endpoint -------> " + checkpathID);
-	RootPanel.get().add(seperator);
-	
-
-	ActionServiceAsync actionService = GWT
-			.create(ActionService.class);
-	
-	actionService.getActionsForCheckpathID(checkpathID,
-			new AsyncCallback<LinkedList<ActionData>>()
-			{
-
-				@Override
-				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				
-				
-				@Override
-				public void onSuccess(LinkedList<ActionData> result) {
-					 
-					HTML headML = new HTML("---- Found -------> " + result.toString());
-					RootPanel.get().add(headML);
-					Iterator<ActionData> it = result.iterator();
-					while (it.hasNext()){
-						ActionData action = it.next();
-						HTML checkML = new HTML("Linked to " + action.getTargetEndpointID() + " via action " + action.getActionID());
-						RootPanel.get().add(checkML);
-						if (linkDirectory.containsKey(endpointID)){
-							linkDirectory.get(endpointID).add(action.getTargetEndpointID());
-						} else
-						{
-							LinkedList<String> entry = new LinkedList<String>();
-							entry.add(action.getTargetEndpointID());
-							linkDirectory.put(endpointID, entry);
-						}
-					}
-					
-					RootPanel.get().add(new HTML("Added to directory: " + linkDirectory.values()));
-					drawLinks();
-				}
-			
-			});
-	
-	
-	
-}
-
-private void drawLinks()
-{
-
-	Iterator<Entry<String, LabelWithMenu>> it = labelDirectory.entrySet().iterator();
-		
-	
-	while (it.hasNext()){
-	
-		Map.Entry<String, LabelWithMenu> pair = (Map.Entry<String, LabelWithMenu>)it.next();
-		
-		LabelWithMenu originLabel = pair.getValue();
-		LinkedList<String> targets = linkDirectory.get(originLabel.endpointID);
-		Iterator<String> tIt = targets.iterator();
-		while (tIt.hasNext()){
-			String target = tIt.next();
-			LabelWithMenu targetLabel = labelDirectory.get(target);
-			Connection c1 = controller.drawStraightArrowConnection(originLabel, targetLabel);	
-		}
-		
-		
-	}
-	
-}
 
 private void drawLinksFromServer()
 {
@@ -337,7 +215,5 @@ private void drawLinksFromServer()
 	
 }
 
-
-// MOVE ALL THIS CRAP (to build the links) TO THE SERVER SIDE AND MAKE IT ONE SINGLE CALLBACK THAT GETS CALLED ONCE ALL LABELS ARE DRAWN!
 
 }
