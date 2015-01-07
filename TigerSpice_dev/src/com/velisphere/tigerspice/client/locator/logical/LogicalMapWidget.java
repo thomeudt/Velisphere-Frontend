@@ -7,31 +7,17 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
-import com.github.gwtbootstrap.client.ui.Label;
-import com.github.gwtbootstrap.client.ui.constants.LabelType;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.orange.links.client.DiagramController;
 import com.orange.links.client.connection.Connection;
-import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.velisphere.tigerspice.client.actions.ActionService;
 import com.velisphere.tigerspice.client.actions.ActionServiceAsync;
-import com.velisphere.tigerspice.client.analytics.AnalyticsService;
-import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
-import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
@@ -41,7 +27,6 @@ import com.velisphere.tigerspice.client.helper.widgets.FilterSphereEndpointWidge
 import com.velisphere.tigerspice.shared.ActionData;
 import com.velisphere.tigerspice.shared.CheckData;
 import com.velisphere.tigerspice.shared.EndpointData;
-import com.velisphere.tigerspice.shared.GeoLocationData;
 
 public class LogicalMapWidget extends Composite {
 	
@@ -135,10 +120,10 @@ public class LogicalMapWidget extends Composite {
 							count++;
 						}
 						
-						
+						drawLinksFromServer();
 
 						// dummy linking, real linking will have to happen based on action table
-						
+						/*
 						
 						
 						Iterator<Entry<String, LabelWithMenu>> lIt = labelDirectory.entrySet().iterator();
@@ -150,6 +135,7 @@ public class LogicalMapWidget extends Composite {
 							
 							
 						}
+						*/
 						
 						
 						
@@ -276,5 +262,66 @@ private void drawLinks()
 	}
 	
 }
+
+private void drawLinksFromServer()
+{
+
+	LinkedList<String> sourceEndpointIDs = new LinkedList<String>(labelDirectory.keySet());
+	
+	EndpointServiceAsync endpointService = GWT
+			.create(EndpointService.class);
+	
+	
+	endpointService.getLinksForEndpointList(sourceEndpointIDs,
+			new AsyncCallback<HashMap<String, LinkedList<String>>>()
+			{
+
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onSuccess(HashMap<String, LinkedList<String>> result) {
+
+					RootPanel.get().add(new HTML("Raw data " + result.toString()));
+					
+					Iterator<Entry<String, LabelWithMenu>> it = labelDirectory.entrySet().iterator();
+					
+					
+					while (it.hasNext()){
+					
+						Map.Entry<String, LabelWithMenu> originPair = (Map.Entry<String, LabelWithMenu>)it.next();
+						LabelWithMenu originLabel = originPair.getValue();
+						
+						RootPanel.get().add(new HTML("Origin data " + originPair.getValue().endpointID));
+						
+						LinkedList<String> targetEndpoints = result.get(originPair.getKey());
+						
+						RootPanel.get().add(new HTML("Raw target data " + targetEndpoints.toString()));
+												
+						Iterator<String> iTt = targetEndpoints.iterator();
+						
+						while (iTt.hasNext()){
+							
+							
+							LabelWithMenu targetLabel = labelDirectory.get(iTt.next());
+							RootPanel.get().add(new HTML("Connecting " + originLabel.endpointID + " with " + targetLabel.endpointID));
+							Connection c1 = controller.drawStraightArrowConnection(originLabel, targetLabel);	
+						}
+						
+						
+					}
+					
+					
+				}
+		
+			});
+	
+}
+
+
+// MOVE ALL THIS CRAP (to build the links) TO THE SERVER SIDE AND MAKE IT ONE SINGLE CALLBACK THAT GETS CALLED ONCE ALL LABELS ARE DRAWN!
 
 }

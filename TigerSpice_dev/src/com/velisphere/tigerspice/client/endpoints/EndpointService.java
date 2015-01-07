@@ -18,6 +18,7 @@
 package com.velisphere.tigerspice.client.endpoints;
 
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 
@@ -47,6 +48,7 @@ public interface EndpointService extends RemoteService {
 	String updateEndpointNameForEndpointID(String endpointID, String endpointName);
 	UnprovisionedEndpointData getUnprovisionedEndpoints(String endpointID, String captchaWord);
 	String addNewEndpoint(String endpointID, String endpointName, String endpointclassID, String userID);
+	HashMap<String, LinkedList<String>> getLinksForEndpointList(LinkedList<String> endpointID);
 }
 
 

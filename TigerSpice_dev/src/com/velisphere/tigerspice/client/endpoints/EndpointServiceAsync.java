@@ -17,6 +17,7 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client.endpoints;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Vector;
@@ -38,5 +39,5 @@ public interface EndpointServiceAsync {
 	void updateEndpointNameForEndpointID(String endpointID, String endpointName, AsyncCallback<String> callback);
 	void getUnprovisionedEndpoints(String endpointID, String captchaWord, AsyncCallback<UnprovisionedEndpointData> callback);
 	void addNewEndpoint(String endpointID, String endpointName, String endpointclassID, String userID, AsyncCallback<String> callback);
-	
+	void getLinksForEndpointList(LinkedList<String> endpointID, AsyncCallback<HashMap<String, LinkedList<String>>> callback); 
 }
