@@ -103,7 +103,8 @@ public class ChartActorHistoryWidget extends Composite {
 		Row filterRow2 = new Row();
 		Column filterCol2 = new Column(2);
 		lbxSphereFilter = new ListBox();
-		lbxSphereFilter.setAlternateSize(AlternateSize.MEDIUM);
+		
+		lbxSphereFilter.addStyleName("span2");
 		filterCol2.add(lbxSphereFilter);
 
 		filterRow2.add(filterCol2);
@@ -118,7 +119,8 @@ public class ChartActorHistoryWidget extends Composite {
 		Row filterRow4 = new Row();
 		Column filterCol4 = new Column(2);
 		lbxEndpointFilter = new ListBox();
-		lbxEndpointFilter.setAlternateSize(AlternateSize.MEDIUM);
+		
+		lbxEndpointFilter.addStyleName("span2");
 		filterCol4.add(lbxEndpointFilter);
 
 		filterRow4.add(filterCol4);
@@ -133,7 +135,8 @@ public class ChartActorHistoryWidget extends Composite {
 		Row filterRow6 = new Row();
 		Column filterCol6 = new Column(2);
 		lbxPropertyFilter = new ListBox();
-		lbxPropertyFilter.setAlternateSize(AlternateSize.MEDIUM);
+		
+		lbxPropertyFilter.addStyleName("span2");
 		filterCol6.add(lbxPropertyFilter);
 		filterRow6.add(filterCol6);
 
@@ -146,7 +149,7 @@ public class ChartActorHistoryWidget extends Composite {
 		Row filterRow8 = new Row();
 		Column filterCol8 = new Column(2);
 		dtbStart = new DateTimeBox();
-		dtbStart.setAlternateSize(AlternateSize.MEDIUM);
+		dtbStart.addStyleName("span2");
 		dtbStart.setShowTodayButton(true);
 		dtbStart.setHighlightToday(true);
 		// dtbStart.setBaseIcon(IconType.CALENDAR);
@@ -164,7 +167,7 @@ public class ChartActorHistoryWidget extends Composite {
 		Row filterRow10 = new Row();
 		Column filterCol10 = new Column(2);
 		dtbEnd = new DateTimeBox();
-		dtbEnd.setAlternateSize(AlternateSize.MEDIUM);
+		dtbEnd.addStyleName("span2");
 		dtbEnd.setShowTodayButton(true);
 		dtbEnd.setHighlightToday(true);
 		// dtbEnd.setBaseIcon(IconType.CALENDAR);
@@ -178,6 +181,7 @@ public class ChartActorHistoryWidget extends Composite {
 		Button btnDownloadChart = new Button("Download Chart");
 		btnDownloadChart.setSize(ButtonSize.SMALL);
 		btnDownloadChart.setType(ButtonType.PRIMARY);
+		
 		filterCol11.add(btnDownloadChart);
 		filterRow11.add(filterCol11);
 
@@ -199,6 +203,7 @@ public class ChartActorHistoryWidget extends Composite {
 		Button btnDownloadTable = new Button("Download Data");
 		btnDownloadTable.setSize(ButtonSize.SMALL);
 		btnDownloadTable.setType(ButtonType.PRIMARY);
+		
 		btnDownloadTable.addClickHandler(new ClickHandler() {
 
 			@Override

@@ -44,6 +44,7 @@ import com.google.gwt.maps.client.visualizationlib.HeatMapLayer;
 import com.google.gwt.maps.client.visualizationlib.HeatMapLayerOptions;
 import com.google.gwt.maps.client.visualizationlib.WeightedLocation;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -79,7 +80,7 @@ public class HeatMapLayerWidget extends Composite {
     pWidget = new HorizontalPanel();
     initWidget(pWidget);
     
-    this.addStyleName("span8");
+   
     setFilterHandlerListener();
 
     draw();
@@ -92,9 +93,7 @@ public class HeatMapLayerWidget extends Composite {
         
     
     pWidget.add(endpointFilter);
-    FlowPanel spacer = new FlowPanel();
-    spacer.setWidth("10px");
-    pWidget.add(spacer);
+    
 
     getMarkersForMap();
     
@@ -110,9 +109,18 @@ public class HeatMapLayerWidget extends Composite {
     opts.setMapTypeId(MapTypeId.TERRAIN);
 
     mapWidget = new MapWidget(opts);
-    pWidget.add(mapWidget);
-    mapWidget.setSize(this.getOffsetWidth()-10+"px", "350px");
+    
+    AbsolutePanel aPanel = new AbsolutePanel();
+    aPanel.setHeight("350px");
+    aPanel.addStyleName("span8");
+    mapWidget.setSize("100%", "100%");
+    aPanel.add(mapWidget);
+    
+    
+    pWidget.add(aPanel);
+  
     mapWidget.setStyleName("map_canvas");
+
     
     mapWidget.addTilesLoadedHandler(new TilesLoadedMapHandler() {
         public void onEvent(TilesLoadedMapEvent event) {

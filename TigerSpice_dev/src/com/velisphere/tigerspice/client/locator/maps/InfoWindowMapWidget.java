@@ -59,6 +59,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -95,7 +96,7 @@ public class InfoWindowMapWidget extends Composite {
 	
 	pWidget = new HorizontalPanel();
     initWidget(pWidget);
-    this.addStyleName("span8");
+    //this.addStyleName("span8");
    
     
     setFilterHandlerListener();
@@ -137,9 +138,7 @@ public class InfoWindowMapWidget extends Composite {
     
     FilterSphereEndpointWidget endpointFilter = new FilterSphereEndpointWidget();
     pWidget.add(endpointFilter);
-    FlowPanel spacer = new FlowPanel();
-    spacer.setWidth("10px");
-    pWidget.add(spacer);
+  
     getMarkersForMap();
   
     
@@ -295,12 +294,25 @@ public class InfoWindowMapWidget extends Composite {
     opts.setCenter(center);
     opts.setMapTypeId(MapTypeId.HYBRID);
    
+    
 
     mapWidget = new MapWidget(opts);
-    pWidget.add(mapWidget);
     
-    mapWidget.setSize(this.getOffsetWidth()-10+"px", "350px");
+    AbsolutePanel aPanel = new AbsolutePanel();
+    //aPanel.setSize("100%","350px");
+    aPanel.setHeight("350px");
+    aPanel.addStyleName("span8");
+    mapWidget.setSize("100%", "100%");
+    aPanel.add(mapWidget);
+    
+    
+    pWidget.add(aPanel);
+    
+    //mapWidget.setSize(this.getOffsetWidth()-10+"px", "350px");
+    
+    //mapWidget.addStyleName("span4");
     mapWidget.setStyleName("map_canvas");
+    //mapWidget.setWidth("100%");
     
     
     

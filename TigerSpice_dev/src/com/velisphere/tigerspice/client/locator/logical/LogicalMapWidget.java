@@ -55,7 +55,7 @@ public class LogicalMapWidget extends Composite {
 		 labelDirectory = new HashMap<String, LabelWithMenu>();
 		 controller = createDiagramController();
 		 initWidget(pWidget);
-		 this.addStyleName("span8");
+		 //this.addStyleName("span8");
 		 
 		 FilterSphereEndpointWidget endpointFilter = new FilterSphereEndpointWidget();
 		 pWidget.add(endpointFilter);
@@ -76,6 +76,7 @@ public class LogicalMapWidget extends Composite {
 	private DiagramController createDiagramController()
 	{
 		 DiagramController controller = new DiagramController(800, 500);
+		 controller.getView().addStyleName("span8");
 		 controller.showGrid(true); // Display a background grid
 		 return controller;
 	}

@@ -86,7 +86,8 @@ public class FilterSphereEndpointWidget extends Composite {
 		initWidget(vp);
 
 		// setup special filter layout
-
+		
+		
 		Row filterRow1 = new Row();
 		Column filterCol1 = new Column(2);
 		Label lblSphereFilter = new Label("Sphere");
