@@ -71,7 +71,7 @@ public class PolylineMapWidget extends Composite {
   private HorizontalPanel pWidget;
   private MapWidget mapWidget;
   private LinkedList<GeoLocationData> allGeoDataForMap;
-  private HandlerRegistration applyFilterHandler;
+  
 
 
   public PolylineMapWidget() {
@@ -106,6 +106,7 @@ public class PolylineMapWidget extends Composite {
   
   private void setFilterHandlerListener()
   {
+	  HandlerRegistration applyFilterHandler;
 	  applyFilterHandler = EventUtils.EVENT_BUS.addHandler(FilterAppliedEvent.TYPE, new FilterAppliedEventHandler()     {
 			@Override
 		    public void onFilterApplied(FilterAppliedEvent filterAppliedEvent) {

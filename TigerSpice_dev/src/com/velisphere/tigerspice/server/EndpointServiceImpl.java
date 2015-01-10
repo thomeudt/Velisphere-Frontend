@@ -23,9 +23,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -44,9 +42,7 @@ import javax.ws.rs.core.Response;
 import nl.captcha.Captcha;
 
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.mindrot.BCrypt;
 import org.voltdb.VoltTable;
-import org.voltdb.VoltType;
 import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
@@ -55,8 +51,6 @@ import org.voltdb.types.TimestampType;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.helper.ErrorCodes;
-import com.velisphere.tigerspice.shared.ActionData;
-import com.velisphere.tigerspice.shared.CheckData;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.LogicLinkTargetData;
 import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
@@ -746,15 +740,16 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		 */
 
 		HashMap<String, LinkedList<LogicLinkTargetData>> linkedEndpointsForEndpointID = new HashMap<String, LinkedList<LogicLinkTargetData>>();
-	
+
 		Iterator<String> it = endpointIDs.iterator();
 
 		while (it.hasNext()) {
-			
+
 			final String endpointID = it.next();
-			
-			System.out.println("[DB] Looking for links belonging to " + endpointID);
-			
+
+			System.out.println("[DB] Looking for links belonging to "
+					+ endpointID);
+
 			LinkedList<LogicLinkTargetData> targetsForEndpointID = new LinkedList<LogicLinkTargetData>();
 
 			try {
@@ -767,88 +762,88 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 				VoltTable result = findCheckResults[0];
 				// check if any rows have been returned
 
-				while (result.advanceRow()) 
-					{
-						/*
-						 * Next we retrieve the query the actions to retrieve
-						 * the contained target endpoints
-						 */
+				while (result.advanceRow()) {
+					/*
+					 * Next we retrieve the query the actions to retrieve the
+					 * contained target endpoints
+					 */
 
-						// checkpathsForEndpointID.add(result.getString("CHECKPATHID"));
+					// checkpathsForEndpointID.add(result.getString("CHECKPATHID"));
 
-						//LinkedList<String> targetsForCheckpathID = new LinkedList<String>();
+					// LinkedList<String> targetsForCheckpathID = new
+					// LinkedList<String>();
 
-						String checkpathID = result.getString("CHECKPATHID");
-						
-					
-						System.out.println("[DB] Looking for actions in checkpath " + checkpathID);
-					
-						try {
+					String checkpathID = result.getString("CHECKPATHID");
 
-							final ClientResponse findAction = voltCon.montanaClient
-									.callProcedure(
-											"UI_SelectActionsForCheckpathID",
-											checkpathID);
+					System.out.println("[DB] Looking for actions in checkpath "
+							+ checkpathID);
 
-							final VoltTable findActionResult[] = findAction
-									.getResults();
+					try {
 
-							VoltTable resultActionQuery = findActionResult[0];
-							// check if any rows have been returned
+						final ClientResponse findAction = voltCon.montanaClient
+								.callProcedure(
+										"UI_SelectActionsForCheckpathID",
+										checkpathID);
 
-							while (resultActionQuery.advanceRow()) 
-								{
-								
-								if (resultActionQuery.getString("TARGETENDPOINTID").length()>0)
-								{
-																		
-									LogicLinkTargetData targetData = new LogicLinkTargetData();
-									targetData.setCheckpathID(checkpathID);
-									targetData.setCheckpathName(resultActionQuery.getString("CHECKPATHNAME"));
-									targetData.setTargetEndpointID(resultActionQuery.getString("TARGETENDPOINTID"));
-									targetsForEndpointID.add(targetData);
-									System.out.println("[DB] Found and adding to target list " + targetData.toString());
-	
-								} else
-									System.out.println("[DB] Discarding emptry result: " + resultActionQuery.getString("TARGETENDPOINTID"));
-								
-								}
-							
+						final VoltTable findActionResult[] = findAction
+								.getResults();
 
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+						VoltTable resultActionQuery = findActionResult[0];
+						// check if any rows have been returned
+
+						while (resultActionQuery.advanceRow()) {
+
+							if (resultActionQuery.getString("TARGETENDPOINTID")
+									.length() > 0) {
+
+								LogicLinkTargetData targetData = new LogicLinkTargetData();
+								targetData.setCheckpathID(checkpathID);
+								targetData.setCheckpathName(resultActionQuery
+										.getString("CHECKPATHNAME"));
+								targetData
+										.setTargetEndpointID(resultActionQuery
+												.getString("TARGETENDPOINTID"));
+								targetsForEndpointID.add(targetData);
+								System.out
+										.println("[DB] Found and adding to target list "
+												+ targetData.toString());
+
+							} else
+								System.out
+										.println("[DB] Discarding emptry result: "
+												+ resultActionQuery
+														.getString("TARGETENDPOINTID"));
+
 						}
 
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-					
-					
-					
-				
+
+				}
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
-			
-			
-			
-		
-			if (linkedEndpointsForEndpointID.containsKey(endpointID)){
-				System.out.println("[DB] Appending list of " + targetsForEndpointID.toString() + " to Key " + endpointID);
+
+			if (linkedEndpointsForEndpointID.containsKey(endpointID)) {
+				System.out.println("[DB] Appending list of "
+						+ targetsForEndpointID.toString() + " to Key "
+						+ endpointID);
 				System.out.println("[DB] >>>>");
-				linkedEndpointsForEndpointID.get(endpointID).addAll(targetsForEndpointID);
-			}
-			else
-			{
-				System.out.println("[DB] Creating full list of " + targetsForEndpointID.toString() + " to Key " + endpointID);
+				linkedEndpointsForEndpointID.get(endpointID).addAll(
+						targetsForEndpointID);
+			} else {
+				System.out.println("[DB] Creating full list of "
+						+ targetsForEndpointID.toString() + " to Key "
+						+ endpointID);
 				System.out.println("[DB] >>>>");
-				linkedEndpointsForEndpointID.put(endpointID, targetsForEndpointID);
+				linkedEndpointsForEndpointID.put(endpointID,
+						targetsForEndpointID);
 			}
-		
-			
+
 		}
 
 		try {
@@ -858,8 +853,82 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			e.printStackTrace();
 		}
 
-		System.out.println("[DB] Returning " + linkedEndpointsForEndpointID.toString());
+		System.out.println("[DB] Returning "
+				+ linkedEndpointsForEndpointID.toString());
 		return linkedEndpointsForEndpointID;
+	}
+
+	@Override
+	public LinkedList<EndpointData> getEndpointsForMultipleIDs(
+			LinkedList<String> endpointIDs) {
+
+		LinkedList<EndpointData> endpointsForMultipleEndpointIDs = new LinkedList<EndpointData>();
+
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		Iterator<String> it = endpointIDs.iterator();
+		while (it.hasNext()) {
+
+			String endpointID = it.next();
+
+			EndpointData endpointForEndpointID = new EndpointData();
+
+			try {
+
+				final ClientResponse findEndpoint = voltCon.montanaClient
+						.callProcedure("UI_SelectEndpointForEndpointID",
+								endpointID);
+
+				final VoltTable findEndpointResults[] = findEndpoint
+						.getResults();
+
+				VoltTable result = findEndpointResults[0];
+				// check if any rows have been returned
+
+				while (result.advanceRow()) {
+					{
+						// extract the value in column checkid
+
+						endpointForEndpointID.endpointId = result
+								.getString("ENDPOINTID");
+						endpointForEndpointID.endpointName = result
+								.getString("ENDPOINTNAME");
+						endpointForEndpointID.endpointclassId = result
+								.getString("ENDPOINTCLASSID");
+						endpointForEndpointID.endpointProvDate = result
+								.getTimestampAsTimestamp("ENDPOINTPROVDATE")
+								.toString();
+						endpointsForMultipleEndpointIDs
+								.add(endpointForEndpointID);
+
+					}
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return endpointsForMultipleEndpointIDs;
+
 	}
 
 }

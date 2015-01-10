@@ -89,7 +89,7 @@ public class InfoWindowMapWidget extends Composite {
   private MapWidget mapWidget;
   //private HashMap<String, GeoDataForMap> allGeoDataForMap;
   private LinkedList<GeoLocationData> allGeoDataForMap;
-  private HandlerRegistration applyFilterHandler;
+  
 
   public InfoWindowMapWidget() {
     
@@ -147,6 +147,7 @@ public class InfoWindowMapWidget extends Composite {
   
   private void setFilterHandlerListener()
   {
+	  HandlerRegistration applyFilterHandler;
 	  applyFilterHandler = EventUtils.EVENT_BUS.addHandler(FilterAppliedEvent.TYPE, new FilterAppliedEventHandler()     {
 			@Override
 		    public void onFilterApplied(FilterAppliedEvent filterAppliedEvent) {

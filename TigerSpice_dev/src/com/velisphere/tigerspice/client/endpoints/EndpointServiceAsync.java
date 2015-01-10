@@ -34,6 +34,7 @@ public interface EndpointServiceAsync {
 	void getAllEndpointDetails(AsyncCallback<Vector<EndpointData>> callback);
 	void getEndpointsForSphere(String sphereID, AsyncCallback<LinkedList<EndpointData>> callback);
 	void addEndpointToSphere(String endpointID, String sphereID, AsyncCallback<String> callback);
+	void getEndpointsForMultipleIDs(LinkedList<String> endpointIDs, AsyncCallback<LinkedList<EndpointData>> callback);
 	void removeEndpointFromSphere(String endpointID, String sphereID, AsyncCallback<String> callback);
 	void getEndpointsForUser(String userID, AsyncCallback<LinkedList<EndpointData>> callback);
 	void getEndpointForEndpointID(String endpointID, AsyncCallback<EndpointData> callback);
