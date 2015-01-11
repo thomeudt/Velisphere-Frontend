@@ -27,6 +27,7 @@ import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.locator.Locator;
+import com.velisphere.tigerspice.client.marketplace.MarketPlace;
 import com.velisphere.tigerspice.client.provisioning.ProvisioningSuccess;
 import com.velisphere.tigerspice.client.provisioning.ProvisioningWizard;
 import com.velisphere.tigerspice.client.provisioning.TakeOwnership;
@@ -583,6 +584,19 @@ public class AppController {
 	});
 	}
 		
-	
+	public static void openMarket()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			MarketPlace marketPlace = new MarketPlace();
+			openWithHistoryHandler("marketplace", marketPlace);
+		}		
+	});
+	}
+		
 
 }

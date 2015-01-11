@@ -2,7 +2,6 @@ package com.velisphere.tigerspice.client.locator.logical;
 
 
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.orange.links.client.menu.ContextMenu;
 import com.orange.links.client.menu.HasContextMenu;

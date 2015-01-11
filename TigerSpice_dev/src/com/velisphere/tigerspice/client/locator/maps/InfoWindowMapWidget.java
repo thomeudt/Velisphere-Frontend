@@ -91,6 +91,8 @@ public class InfoWindowMapWidget extends Composite {
   private LinkedList<GeoLocationData> allGeoDataForMap;
   
 
+  
+  // general constructor to display all endpoints 
   public InfoWindowMapWidget() {
     
 	
@@ -104,8 +106,11 @@ public class InfoWindowMapWidget extends Composite {
     
   }
   
+  // constructor for calls from endpoint management view 
+  
   public InfoWindowMapWidget(final String endpointID) {
 	
+	  		
 	  		pWidget = new HorizontalPanel();
 	  		initWidget(pWidget);
 	    

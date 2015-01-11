@@ -126,7 +126,7 @@ public class Locator extends Composite {
 		Runnable onLoad = new Runnable() {
 			@Override
 			public void run() {
-				draw();
+				buildMaps();
 			}
 		};
 
@@ -137,7 +137,7 @@ public class Locator extends Composite {
 	/**
 	 * See the map widgets for different map configurations
 	 */
-	private void draw() {
+	private void buildMaps() {
 
 		tblGeoLocation.addClickHandler(new ClickHandler() {
 	          public void onClick(ClickEvent event) {
@@ -186,33 +186,6 @@ public class Locator extends Composite {
 		tblGeoLocation.setActive(true);
 		
 		
-		/**
-		
-		mapCompleted = EventUtils.EVENT_BUS.addHandler(MapCompletedEvent.TYPE, new MapCompletedEventHandler()     {
-	        @Override
-	        public void onMapCompleted(MapCompletedEvent mapCompletedEvent) {
-	    		//tbpGeoLocation.setActive(false);
-	    		tbpHeatmap.setActive(true);	        	
-	    		HeatMapLayerWidget hMap = new HeatMapLayerWidget();
-	    		tbpHeatmap.add(hMap);
-	    		mapCompleted.removeHandler();
-	    		//tbpHeatmap.setActive(false);
-	    		//tbpGeoLocation.setActive(true);
-	    		
-	    		        
-	        }
-	    });
-		
-		**/
-		
 	}
-	
-	
-	
-	
-	
-
-
-	
 
 }

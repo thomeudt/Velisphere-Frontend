@@ -17,60 +17,46 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client.endpoints;
 
-import java.util.ArrayList;
-
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
-import com.github.gwtbootstrap.client.ui.Paragraph;
-import com.github.gwtbootstrap.client.ui.Strong;
+import com.github.gwtbootstrap.client.ui.TabLink;
+import com.github.gwtbootstrap.client.ui.TabPane;
+import com.github.gwtbootstrap.client.ui.TabPanel;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.maps.client.LoadApi;
-import com.google.gwt.maps.client.LoadApi.LoadLibrary;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.velisphere.tigerspice.client.LoginDialogBox;
 import com.velisphere.tigerspice.client.checks.CheckEditorWidget;
-import com.velisphere.tigerspice.client.dataproviders.EndpointAsyncDataProvider;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.locator.logical.LogicalMapWidget;
+import com.velisphere.tigerspice.client.locator.maps.HeatMapLayerWidget;
 import com.velisphere.tigerspice.client.locator.maps.InfoWindowMapWidget;
+import com.velisphere.tigerspice.client.locator.maps.PolylineMapWidget;
 import com.velisphere.tigerspice.client.properties.PropertyEditorWidget;
-import com.velisphere.tigerspice.client.rules.CheckpathEditorWidget;
-import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
 import com.velisphere.tigerspice.client.spheres.SphereView;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.EndpointData;
-import com.velisphere.tigerspice.shared.PropertyData;
-import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 
 // THIS WIDGET IS USING UIBINDER!!!
 
@@ -88,6 +74,24 @@ public class EndpointView extends Composite {
 	Breadcrumbs brdMain;
 	@UiField
 	Image imgEPCImage;
+	@UiField
+	TabPanel tabPanel;
+	@UiField
+	TabPane tbpEndpoint;
+	@UiField
+	TabLink tblGeneral;
+	@UiField
+	TabLink tblSensors;
+	@UiField
+	TabLink tblActors;
+	@UiField
+	TabLink tblAlerts;
+	@UiField
+	TabLink tblConfiguration;
+	@UiField
+	TabLink tblConnectionMap;
+	@UiField
+	TabLink tblLocationMap;
 
 	
 	String endpointClassID;
@@ -178,21 +182,18 @@ public class EndpointView extends Composite {
 
 		
 		setEndpointNameAndImage(this.endpointID);
+		buildTabPanes();
 		
 		
 		
-		//pghEndpointName.setText(endpointName);
 		
 		Icon icnEditEndpointName = new Icon();
 		icnEditEndpointName.setType(IconType.EDIT);
-		// RootPanel.get().add(icnEditClassName, pghEndpointName..getAbsoluteLeft(), pghEndpointName.getAbsoluteTop());
 		pghEndpointName.add(icnEditEndpointName);
 		final Anchor ancEditEndpointName = new Anchor();
 		ancEditEndpointName.setText(" Change Name of this Endpoint");
 		ancEditEndpointName.setHref("#");
-	
-		// endpointChangeNameDialogBox = new EndpointChangeNameDialogBox();
-		// endpointChangeNameDialogBox.addValueChangeHandler(new ValueChangeHandler<String>() {
+
 			
 		endpointChangeNameField = new TextBox();
 		final Button okButton = new Button();
@@ -325,7 +326,7 @@ public class EndpointView extends Composite {
 
 												
 												imgEPCImage.setUrl(result.endpointclassImageURL);
-												imgEPCImage.setWidth("250px");
+												imgEPCImage.addStyleName("span2");
 												animationLoading.removeLoadAnimation();
 											
 
@@ -345,6 +346,85 @@ public class EndpointView extends Composite {
 	}
 	
 	
+	private void buildTabPanes() {
+
+		tblGeneral.addClickHandler(new ClickHandler() {
+	          public void onClick(ClickEvent event) {
+	        	    tbpEndpoint.clear();
+	        	    EndpointInformationWidget informationWidget = new EndpointInformationWidget(endpointID);
+	        		tbpEndpoint.add(informationWidget);
+	              
+	          }
+	      });
+		
+		tblSensors.addClickHandler(new ClickHandler() {
+	          public void onClick(ClickEvent event) {
+	        	  tbpEndpoint.clear();
+	        	  EndpointSensorWidget sensorWidget = new EndpointSensorWidget(sphereID, endpointID);
+	        	  tbpEndpoint.add(sensorWidget);
+	              
+	          }
+	      });
+		
+		tblActors.addClickHandler(new ClickHandler() {
+	          public void onClick(ClickEvent event) {
+	        	  tbpEndpoint.clear();
+	        	  EndpointActorWidget actorWidget = new EndpointActorWidget(sphereID, endpointID);
+	        	  tbpEndpoint.add(actorWidget);
+	              
+	          }
+	      });
+		
+		tblAlerts.addClickHandler(new ClickHandler() {
+	          public void onClick(ClickEvent event) {
+	        	  tbpEndpoint.clear();
+	        	 
+	        		
+	              
+	          }
+	      });
+		
+		tblConfiguration.addClickHandler(new ClickHandler() {
+	          public void onClick(ClickEvent event) {
+	        	  tbpEndpoint.clear();
+	        	 	
+	              
+	          }
+	      });
+		
+		
+		tblConnectionMap.addClickHandler(new ClickHandler() {
+	          public void onClick(ClickEvent event) {
+	        	  tbpEndpoint.clear();
+	        	  LogicalMapWidget gMap = new LogicalMapWidget(endpointID);
+	        	  tbpEndpoint.add(gMap);
+	        		
+	              
+	          }
+	      });
+		
+		tblLocationMap.addClickHandler(new ClickHandler() {
+	          public void onClick(ClickEvent event) {
+	        	  tbpEndpoint.clear();
+	        	  InfoWindowMapWidget gMap = new InfoWindowMapWidget(endpointID);
+	        		tbpEndpoint.add(gMap);
+	        		
+	              
+	          }
+	      });
+		
+		// load default
+		
+		  tbpEndpoint.clear();
+  	    EndpointInformationWidget informationWidget = new EndpointInformationWidget(endpointID);
+  		tbpEndpoint.add(informationWidget);
+		tabPanel.selectTab(0);
+			
+		
+		
+	}
+
+	
 
 	
 	private void showLoadAnimation(AnimationLoading animationLoading) {
@@ -359,29 +439,5 @@ public class EndpointView extends Composite {
 	}
 	
 	
-	@UiFactory PropertyEditorWidget makePropertyEditor() { // method name is insignificant
-	    return new PropertyEditorWidget(this.endpointClassID, this.endpointID);
-	  }
 	
-	@UiFactory CheckEditorWidget makeCheckEditor() { // method name is insignificant
-	    return new CheckEditorWidget(this.endpointID);
-	  }
-
-
-	@UiFactory EndpointInformationWidget makeEndpointInformationWidget() { // method name is insignificant
-	    return new EndpointInformationWidget(this.endpointID);
-	  }
-
-	@UiFactory EndpointSensorWidget makeEndpointSensorWidget() { // method name is insignificant
-	    return new EndpointSensorWidget(this.sphereID, this.endpointID);
-	  }
-	
-	@UiFactory EndpointActorWidget makeEndpointActorWidget() { // method name is insignificant
-	    return new EndpointActorWidget(this.sphereID, this.endpointID);
-	  }
-
-	@UiFactory InfoWindowMapWidget makeMapWidget() { // method name is insignificant
-	    return new InfoWindowMapWidget(this.endpointID);
-	  }
-
 }

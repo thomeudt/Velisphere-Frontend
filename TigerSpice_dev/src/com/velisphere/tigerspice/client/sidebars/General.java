@@ -24,6 +24,7 @@ import com.velisphere.tigerspice.shared.EndpointData;
 public class General extends Composite {
 
 	@UiField Anchor ancProvisioning;
+	@UiField Anchor ancMarket;
 	@UiField ListBox ddlShortcut;
 	
 	private static GeneralUiBinder uiBinder = GWT.create(GeneralUiBinder.class);
@@ -34,6 +35,7 @@ public class General extends Composite {
 	public General() {
 		initWidget(uiBinder.createAndBindUi(this));
 		ancProvisioning.setHref("#");
+		ancMarket.setHref("#");
 		populateShortcuts();
 
 	}
@@ -78,6 +80,14 @@ public class General extends Composite {
 	void openProvisioning (ClickEvent event) {
 	
 		AppController.openProvisioningWizard();
+		
+		
+	}
+	
+	@UiHandler("ancMarket")
+	void openMarket (ClickEvent event) {
+	
+		AppController.openMarket();
 		
 		
 	}

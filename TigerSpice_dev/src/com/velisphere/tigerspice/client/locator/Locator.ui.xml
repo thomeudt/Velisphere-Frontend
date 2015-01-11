@@ -57,15 +57,6 @@
 					 <b:TabPane href="tbpMap" createTabLink="false" ui:field="tbpMap">
         				
     				</b:TabPane>
-
-   					 
-						
-				
-
-					
-					
-					
-
 				</b:TabPanel>
 
 

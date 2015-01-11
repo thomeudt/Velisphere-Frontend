@@ -279,14 +279,7 @@ public class NavBar extends Composite implements HasText {
 	
 	@UiHandler("btnShop")
 	void openMarketplace (ClickEvent event) {
-		RootPanel mainPanel = RootPanel.get("main");
-		mainPanel.clear();
-		clearBandarole();
-		// CheckpathView ruleOverview = new CheckpathView(); 		
-		// mainPanel.add(ruleOverview);
-
-		MarketPlace marketPlace = new MarketPlace();
-		mainPanel.add(marketPlace);
+		AppController.openMarket();
 	
 		
 	}

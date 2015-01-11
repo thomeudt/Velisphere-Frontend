@@ -13,6 +13,7 @@
 	xmlns:ct="urn:import:com.google.gwt.user.cellview.client" xmlns:vspy="urn:import:com.velisphere.tigerspice.client.properties"
 	xmlns:vsep="urn:import:com.velisphere.tigerspice.client.endpoints"
 	xmlns:vsma="urn:import:com.velisphere.tigerspice.client.locator.maps"
+	xmlns:vslg="urn:import:com.velisphere.tigerspice.client.locator.logical"
 	xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
 	<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images' />
 	<g:HTMLPanel>
@@ -33,73 +34,55 @@
 
 		<b:Row>
 
-			<b:Column size="2">
+			<b:Column size="2" offset="0">
 				<g:Image ui:field="imgEPCImage" />
 			</b:Column>
 
 			<b:Column size="8" offset="0">
 
 
-
 				<b:TabPanel tabPosition="above" ui:field="tabPanel">
 
-					<b:TabPane heading="General" active="true">
+					<b:TabLink text="General" icon="MAP_MARKER"
+						dataTarget="tbpEndpoint" createTabPane="false" ui:field="tblGeneral">
 
-						<vsep:EndpointInformationWidget
-							ui:field="vepEndpointInfo" />
+					</b:TabLink>
 
+					<b:TabLink text="Sensors" icon="FIRE" dataTarget="tbpEndpoint"
+						createTabPane="false" ui:field="tblSensors">
 
+					</b:TabLink>
 
+					<b:TabLink text="Actors" icon="ROAD" dataTarget="tbpEndpoint"
+						createTabPane="false" ui:field="tblActors">
 
+					</b:TabLink>
 
+					<b:TabLink text="Alerts" icon="EXCHANGE" dataTarget="tbpEndpoint"
+						createTabPane="false" ui:field="tblAlerts">
 
-					</b:TabPane>
-
-
-					<b:TabPane heading="Sensors" active="false">
-						<vsep:EndpointSensorWidget ui:field="vepEndpointSensors" />
-
-					</b:TabPane>
-
-					<b:TabPane heading="Actors" active="false">
-
-						<vsep:EndpointActorWidget ui:field="vepEndpointActors" />
-					</b:TabPane>
-
-					<b:TabPane heading="Alerts" active="false">
-						<b:Heading size="4">Spheres: OK</b:Heading>
-
-						<b:Paragraph addStyleNames="smalltext-black">eMail, SMS Alert</b:Paragraph>
-						<b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
-					</b:TabPane>
-					<b:TabPane heading="Configuration" active="false">
-						<b:Heading size="4">Endpoints: OK</b:Heading>
-
-						<b:Paragraph addStyleNames="smalltext-black">All endpoints are
-							functioning.</b:Paragraph>
-						<b:Paragraph addStyleNames="smalltext-black">Maximum time out of
-							contact: 14 min for endpoint X</b:Paragraph>
-
-					</b:TabPane>
-					<b:TabPane heading="Connections" active="false">
-						<b:Heading size="4">Endpoints: OK</b:Heading>
-
-						<b:Paragraph addStyleNames="smalltext-black">All endpoints are
-							functioning.</b:Paragraph>
-						<b:Paragraph addStyleNames="smalltext-black">List all checkpaths of which this is part</b:Paragraph>
-
-					</b:TabPane>
+					</b:TabLink>
 					
-					<b:TabPane heading="Geolocation" active="false">
-						<vsma:InfoWindowMapWidget ui:field="mapCurrent" />
+					<b:TabLink text="Configuration" icon="EXCHANGE" dataTarget="tbpEndpoint"
+						createTabPane="false" ui:field="tblConfiguration">
+
+					</b:TabLink>
+					
+					<b:TabLink text="Connections" icon="EXCHANGE" dataTarget="tbpEndpoint"
+						createTabPane="false" ui:field="tblConnectionMap">
+
+					</b:TabLink>
+					
+					<b:TabLink text="Geolocation" icon="EXCHANGE" dataTarget="tbpEndpoint"
+						createTabPane="false" ui:field="tblLocationMap">
+
+					</b:TabLink>
+					
+
+					<b:TabPane href="tbpEndpoint" createTabLink="false" ui:field="tbpEndpoint">
 
 					</b:TabPane>
-
-
 				</b:TabPanel>
-
-
-
 			</b:Column>
 
 			<b:Column size="2" offset="0">

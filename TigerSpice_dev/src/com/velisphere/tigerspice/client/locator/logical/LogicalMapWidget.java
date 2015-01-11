@@ -5,38 +5,27 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.orange.links.client.DiagramController;
 import com.orange.links.client.connection.Connection;
-import com.orange.links.client.shapes.DecorationShape;
-import com.velisphere.tigerspice.client.actions.ActionService;
-import com.velisphere.tigerspice.client.actions.ActionServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
-import com.velisphere.tigerspice.client.checks.CheckService;
-import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.FilterAppliedEvent;
 import com.velisphere.tigerspice.client.event.FilterAppliedEventHandler;
 import com.velisphere.tigerspice.client.helper.widgets.FilterSphereEndpointWidget;
-import com.velisphere.tigerspice.shared.ActionData;
-import com.velisphere.tigerspice.shared.CheckData;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.LogicLinkTargetData;
 
@@ -49,6 +38,9 @@ public class LogicalMapWidget extends Composite {
 	HashMap<String, LinkedList<String>> linkDirectory;
 	HorizontalPanel diagramContainer;
 	PickupDragController dragController;
+	
+	
+	// general constructor showing all endpoints per default
 	
 	public LogicalMapWidget() {
 
@@ -68,6 +60,26 @@ public class LogicalMapWidget extends Composite {
 		diagramContainer.add(controller.getView());
 		populateDiagramAllEndpoints();
 	}
+	
+	
+	// constructor for calls from endpoint manager, to display only a single endpoint
+	
+	public LogicalMapWidget(String endpointID) {
+
+		pWidget = new HorizontalPanel();
+		diagramContainer = new HorizontalPanel();
+		linkDirectory = new HashMap<String, LinkedList<String>>();
+		labelDirectory = new HashMap<String, LabelWithMenu>();
+		initWidget(pWidget);
+		controller = createDiagramController();
+		dragController = new PickupDragController(
+				controller.getView(), true);
+		controller.registerDragController(dragController);
+		pWidget.add(diagramContainer);
+		diagramContainer.add(controller.getView());
+		populateDiagramSingleEndpoint(endpointID);
+	}
+
 
 	private DiagramController createDiagramController() {
 		DiagramController controller = new DiagramController(800, 500);
