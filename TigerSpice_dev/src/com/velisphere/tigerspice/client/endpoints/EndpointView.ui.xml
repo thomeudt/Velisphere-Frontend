@@ -22,8 +22,8 @@
 
 		<b:Row>
 
-
-			<b:Column size="12" offset="0">
+			
+			<b:Column size="10" offset="0">
 				<b:PageHeader ui:field="pghEndpointName">Loading...</b:PageHeader>
 			</b:Column>
 		</b:Row>
@@ -34,36 +34,37 @@
 
 		<b:Row>
 
-			<b:Column size="2" offset="0">
+		    <b:Column size="2" offset="0" ui:field="imageColumn">
 				<g:Image ui:field="imgEPCImage" />
 			</b:Column>
-
+		    
+			
 			<b:Column size="8" offset="0">
 
 
 				<b:TabPanel tabPosition="above" ui:field="tabPanel">
 
-					<b:TabLink text="General" icon="MAP_MARKER"
+					<b:TabLink text="General" icon="INFO"
 						dataTarget="tbpEndpoint" createTabPane="false" ui:field="tblGeneral">
 
 					</b:TabLink>
 
-					<b:TabLink text="Sensors" icon="FIRE" dataTarget="tbpEndpoint"
+					<b:TabLink text="Sensors" icon="RSS" dataTarget="tbpEndpoint"
 						createTabPane="false" ui:field="tblSensors">
 
 					</b:TabLink>
 
-					<b:TabLink text="Actors" icon="ROAD" dataTarget="tbpEndpoint"
+					<b:TabLink text="Actors" icon="GEARS" dataTarget="tbpEndpoint"
 						createTabPane="false" ui:field="tblActors">
 
 					</b:TabLink>
 
-					<b:TabLink text="Alerts" icon="EXCHANGE" dataTarget="tbpEndpoint"
+					<b:TabLink text="Alerts" icon="EXCLAMATION" dataTarget="tbpEndpoint"
 						createTabPane="false" ui:field="tblAlerts">
 
 					</b:TabLink>
 					
-					<b:TabLink text="Configuration" icon="EXCHANGE" dataTarget="tbpEndpoint"
+					<b:TabLink text="Configuration" icon="WRENCH" dataTarget="tbpEndpoint"
 						createTabPane="false" ui:field="tblConfiguration">
 
 					</b:TabLink>
@@ -73,7 +74,7 @@
 
 					</b:TabLink>
 					
-					<b:TabLink text="Geolocation" icon="EXCHANGE" dataTarget="tbpEndpoint"
+					<b:TabLink text="Geolocation" icon="MAP_MARKER" dataTarget="tbpEndpoint"
 						createTabPane="false" ui:field="tblLocationMap">
 
 					</b:TabLink>

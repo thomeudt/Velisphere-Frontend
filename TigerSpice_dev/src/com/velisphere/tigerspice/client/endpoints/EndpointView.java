@@ -19,6 +19,7 @@ package com.velisphere.tigerspice.client.endpoints;
 
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
@@ -92,6 +93,8 @@ public class EndpointView extends Composite {
 	TabLink tblConnectionMap;
 	@UiField
 	TabLink tblLocationMap;
+	@UiField
+	Column imageColumn;
 
 	
 	String endpointClassID;
@@ -326,7 +329,8 @@ public class EndpointView extends Composite {
 
 												
 												imgEPCImage.setUrl(result.endpointclassImageURL);
-												imgEPCImage.addStyleName("span2");
+												Integer imageWidth = imageColumn.getOffsetWidth()-15;
+												imgEPCImage.setWidth("100%");
 												animationLoading.removeLoadAnimation();
 											
 
