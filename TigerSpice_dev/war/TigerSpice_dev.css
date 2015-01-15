@@ -224,10 +224,15 @@ background: #334A6F; /* Old browsers */
 
 .vcenter{
     vertical-align: middle;
+    background-color: #fff;
 }
 
 .ontop{
     z-index: 10;
+}
+
+.span4.nospace{
+margin-left:0;
 }
 
 

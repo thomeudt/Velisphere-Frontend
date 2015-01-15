@@ -110,12 +110,17 @@ public class SphereEditorWidget extends Composite {
 		hpHeader.setSpacing(10);
 
 		container.setBorders(true);
-		container.setWidth((int)((RootPanel.get().getOffsetWidth())/4));
+		//container.setWidth((int)((RootPanel.get().getOffsetWidth())/4));
+		container.addStyleName("span4");
 		container.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
 		container.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
 
 		sourceContainer = new VerticalLayoutContainer();
-		sourceContainer.setWidth((int)((RootPanel.get().getOffsetWidth())/4));
+		//sourceContainer.setWidth((int)((RootPanel.get().getOffsetWidth())/4));
+		sourceContainer.addStyleName("span4");
+		sourceContainer.addStyleName("nospace");
+		
+		
 		sourceContainer.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
 		sourceContainer.setBorders(true);
 		sourceContainer.setPosition(50, 0);
@@ -222,7 +227,7 @@ public class SphereEditorWidget extends Composite {
 		final VerticalLayoutContainer leftHeader = new VerticalLayoutContainer();
 		leftHeader.setPixelSize((int)(RootPanel.get().getOffsetWidth()/4)+50, 30);
 		Paragraph leftP = new Paragraph();
-		leftP.setText("Endpoints currently assigned to " + this.sphereName + ":");
+		leftP.setText("Endpoints currently in this Sphere:");
 		leftP.addStyleName("smalltext");
 		leftHeader.add(leftP);
 		
@@ -231,7 +236,7 @@ public class SphereEditorWidget extends Composite {
 		final VerticalLayoutContainer rightHeader = new VerticalLayoutContainer();
 		rightHeader.setPixelSize(350, 30);
 		Paragraph rightP = new Paragraph();
-		rightP.setText("Unassigned endpoints available to you:");
+		rightP.setText("Endpoints currently outside of this Sphere:");
 		rightP.addStyleName("smalltext");
 		rightHeader.add(rightP);
 

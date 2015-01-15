@@ -66,7 +66,7 @@
 							sphere.</b:Paragraph>
 						<b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
 					</b:TabPane>
-					<b:TabPane heading="Correlations" active="false">
+					<b:TabPane heading="Custom Analytics" active="false">
 						<b:Heading size="4">Endpoints: OK</b:Heading>
 
 						<b:Paragraph addStyleNames="smalltext-black">All endpoints are

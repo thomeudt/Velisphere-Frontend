@@ -48,7 +48,7 @@
 			   
 			<b:TabPanel tabPosition="above" ui:field="tabPanel">
 		
-		    <b:TabPane heading="My Private Spheres" active="true">
+		    <b:TabPane heading="My Spheres" active="true">
 
 		        
 			

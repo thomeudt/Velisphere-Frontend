@@ -23,6 +23,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.orange.links.client.save.IsDiagramSerializable;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
+import com.velisphere.tigerspice.client.helper.widgets.Circle;
+import com.velisphere.tigerspice.client.helper.widgets.RenderingContext;
 import com.velisphere.tigerspice.shared.EPCData;
 
 public class DragBox extends FocusPanel implements HasAllTouchHandlers,
@@ -53,7 +55,6 @@ public class DragBox extends FocusPanel implements HasAllTouchHandlers,
 		this.add(hPanel);
 		addImage(epcID);
 		
-	
 		getElement().getStyle().setBackgroundColor("aliceblue");
 		addStyleName("roundborders");
 

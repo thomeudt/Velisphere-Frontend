@@ -8,9 +8,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.velisphere.tigerspice.client.Start;
 import com.velisphere.tigerspice.client.admin.ManagePlan;
-import com.velisphere.tigerspice.client.admin.ManageProperty;
 import com.velisphere.tigerspice.client.admin.epc.AddPropertyToEPC;
 import com.velisphere.tigerspice.client.admin.epc.CreateEPC;
 import com.velisphere.tigerspice.client.admin.epc.EditEPC;
@@ -20,8 +18,9 @@ import com.velisphere.tigerspice.client.admin.propertyclass.CreatePropertyClass;
 import com.velisphere.tigerspice.client.admin.propertyclass.EditPropertyClass;
 import com.velisphere.tigerspice.client.admin.vendor.CreateVendor;
 import com.velisphere.tigerspice.client.analytics.AnalyticsHome;
-import com.velisphere.tigerspice.client.analytics.ChartSensorHistoryWidget;
 import com.velisphere.tigerspice.client.dashboard.Dashboard;
+import com.velisphere.tigerspice.client.documentation.BestPractices;
+import com.velisphere.tigerspice.client.documentation.GettingStarted;
 import com.velisphere.tigerspice.client.endpoints.EndpointView;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
@@ -75,7 +74,7 @@ public class AppController {
 	{
 		History.newItem(token);
 		RootPanel.get("main").clear();
-		RootPanel.get("main").add((Widget) new CheckpathEditView(checkpathID, userID));
+		RootPanel.get("main").add(new CheckpathEditView(checkpathID, userID));
 				
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {
 
@@ -88,7 +87,7 @@ public class AppController {
 
 	          if (historyToken.equals(token)) {
 	        	  RootPanel.get("main").clear();
-	        	  RootPanel.get("main").add((Widget) new CheckpathEditView(checkpathID, userID));
+	        	  RootPanel.get("main").add(new CheckpathEditView(checkpathID, userID));
 		        }
 			}
 		    });
@@ -99,7 +98,7 @@ public class AppController {
 	{
 		History.newItem(token);
 		RootPanel.get("main").clear();
-		RootPanel.get("main").add((Widget) new SphereView(sphereId));
+		RootPanel.get("main").add(new SphereView(sphereId));
 				
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {
 
@@ -112,7 +111,7 @@ public class AppController {
 
 	          if (historyToken.equals(token)) {
 	        	  RootPanel.get("main").clear();
-	        	  RootPanel.get("main").add((Widget) new SphereView(sphereId));
+	        	  RootPanel.get("main").add(new SphereView(sphereId));
 		        }
 			}
 		    });
@@ -122,7 +121,7 @@ public class AppController {
 	{
 		History.newItem(token);
 		RootPanel.get("main").clear();
-		RootPanel.get("main").add((Widget) new TakeOwnership(uEPID, identifier, endpointclassID, endpointclassName));
+		RootPanel.get("main").add(new TakeOwnership(uEPID, identifier, endpointclassID, endpointclassName));
 				 
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {
 
@@ -135,7 +134,7 @@ public class AppController {
 
 	          if (historyToken.equals(token)) {
 	        	  RootPanel.get("main").clear();
-	        	  RootPanel.get("main").add((Widget) new TakeOwnership(uEPID, identifier, endpointclassID, endpointclassName));
+	        	  RootPanel.get("main").add(new TakeOwnership(uEPID, identifier, endpointclassID, endpointclassName));
 		        }
 			}
 		    });
@@ -146,7 +145,7 @@ public class AppController {
 	{
 		History.newItem(token);
 		RootPanel.get("main").clear();
-		RootPanel.get("main").add((Widget) new EndpointView("", "",
+		RootPanel.get("main").add(new EndpointView("", "",
 				endpointID, "", ""));
 				 
 		
@@ -161,7 +160,7 @@ public class AppController {
 
 	          if (historyToken.equals(token)) {
 	        	  RootPanel.get("main").clear();
-	        	  RootPanel.get("main").add((Widget) new EndpointView("0", "0",
+	        	  RootPanel.get("main").add(new EndpointView("0", "0",
 	      				endpointID, "", ""));
 		        }
 			}
@@ -173,7 +172,7 @@ public class AppController {
 	{
 		History.newItem(token);
 		RootPanel.get("main").clear();
-		RootPanel.get("main").add((Widget) new EditEPCInputPage(id, message));
+		RootPanel.get("main").add(new EditEPCInputPage(id, message));
 				 
 		
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {
@@ -187,7 +186,7 @@ public class AppController {
 
 	          if (historyToken.equals(token)) {
 	        	  RootPanel.get("main").clear();
-	        	  RootPanel.get("main").add((Widget) new EditEPCInputPage(id, ""));
+	        	  RootPanel.get("main").add(new EditEPCInputPage(id, ""));
 		        }
 			}
 		    });
@@ -197,7 +196,7 @@ public class AppController {
 	{
 		History.newItem(token);
 		RootPanel.get("main").clear();
-		RootPanel.get("main").add((Widget) new AddPropertyToEPC(EPCId));
+		RootPanel.get("main").add(new AddPropertyToEPC(EPCId));
 				 
 		
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {
@@ -211,7 +210,7 @@ public class AppController {
 
 	          if (historyToken.equals(token)) {
 	        	  RootPanel.get("main").clear();
-	        	  RootPanel.get("main").add((Widget) new AddPropertyToEPC(EPCId));
+	        	  RootPanel.get("main").add(new AddPropertyToEPC(EPCId));
 		        }
 			}
 		    });
@@ -290,7 +289,7 @@ public class AppController {
 			String userID = SessionHelper.getCurrentUserID();
 			
 			RootPanel.get("main").clear();
-			RootPanel.get("main").add((Widget) new CheckpathCreateView(userID));
+			RootPanel.get("main").add(new CheckpathCreateView(userID));
 		}		
 	});
 	}
@@ -598,5 +597,31 @@ public class AppController {
 	});
 	}
 		
+	public static void openGettingStarted()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			GettingStarted gettingStarted = new GettingStarted();
+			openWithHistoryHandler("gettingStarted", gettingStarted);
+		}		
+	});
+	}
 
+	public static void openBestPractices()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			BestPractices bestPractices = new BestPractices();
+			openWithHistoryHandler("bestPractices", bestPractices);
+		}		
+	});
+	}
 }

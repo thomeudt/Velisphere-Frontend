@@ -15,9 +15,9 @@
 				
 			<g:Anchor ui:field="ancProvisioning">Device Provisioning Wizard<br></br></g:Anchor>
 			
-			<g:Anchor>Getting Started<br></br></g:Anchor>
+			<g:Anchor ui:field="ancGettingStarted">Getting Started<br></br></g:Anchor>
 			
-			<g:Anchor>Best Practices<br></br></g:Anchor>
+			<g:Anchor ui:field="ancBestPractices">Best Practices<br></br></g:Anchor>
 			
 			<g:Anchor ui:field="ancMarket">Market Place<br></br></g:Anchor>
 			<g:Anchor>Logic Simulator<br></br></g:Anchor>

@@ -19,6 +19,7 @@ package com.velisphere.tigerspice.client.spheres;
 
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.CheckBox;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
@@ -35,6 +36,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -52,8 +55,10 @@ public class SphereView extends Composite {
 	
 	@UiField Breadcrumbs brdMain;
 	
-	
+	@UiField CheckBox cbxPublic;
 	@UiField PageHeader pghSphereNameHeader;
+	
+
 	
 	private SphereServiceAsync rpcServiceSphere;
 	
@@ -109,6 +114,8 @@ public class SphereView extends Composite {
 					}
 				});
 
+		
+		addShareToggleListener();
 	
 		// Change button for header
 		
@@ -195,6 +202,31 @@ public class SphereView extends Composite {
 		
 	
 	
+	}
+	
+	
+	private void addShareToggleListener(){
+		
+		cbxPublic.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				DialogBox warningBox = new DialogBox();
+				HTML html = new HTML("<b>Warning</b><br>Activating this option will allow other users to access all endpoints allocated to this sphere and read sensor values. Use this option with extreme caution");
+				warningBox.add(html);
+				warningBox.addStyleName("vcenter");
+				warningBox.setAutoHideEnabled(true);
+				warningBox.addStyleName("span3");
+				
+				
+			
+				warningBox.center();
+			
+			}
+			
+		});
+		
 	}
 
 	private void setSphereName(){

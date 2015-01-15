@@ -25,6 +25,8 @@ public class General extends Composite {
 
 	@UiField Anchor ancProvisioning;
 	@UiField Anchor ancMarket;
+	@UiField Anchor ancGettingStarted;
+	@UiField Anchor ancBestPractices;
 	@UiField ListBox ddlShortcut;
 	
 	private static GeneralUiBinder uiBinder = GWT.create(GeneralUiBinder.class);
@@ -36,6 +38,8 @@ public class General extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		ancProvisioning.setHref("#");
 		ancMarket.setHref("#");
+		ancGettingStarted.setHref("#");
+		ancBestPractices.setHref("#");
 		populateShortcuts();
 
 	}
@@ -88,8 +92,18 @@ public class General extends Composite {
 	void openMarket (ClickEvent event) {
 	
 		AppController.openMarket();
-		
-		
+	}
+	
+	@UiHandler("ancGettingStarted")
+	void openGettingStarted (ClickEvent event) {
+	
+		AppController.openGettingStarted();		
+	}
+
+	@UiHandler("ancBestPractices")
+	void openBestPractices (ClickEvent event) {
+	
+		AppController.openBestPractices();		
 	}
 
 }
