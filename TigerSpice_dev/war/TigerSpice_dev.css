@@ -225,13 +225,14 @@ background: #334A6F; /* Old browsers */
 .vcenter{
     vertical-align: middle;
     background-color: #fff;
+    padding:10px;
 }
 
 .ontop{
     z-index: 10;
 }
 
-.span4.nospace{
+.nospace{
 margin-left:0;
 }
 

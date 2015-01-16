@@ -103,27 +103,28 @@ public class SphereEditorWidget extends Composite {
 		FlowLayoutContainer con = new FlowLayoutContainer();
 		initWidget(con);
 
-		HorizontalPanel hpMain = new HorizontalPanel();
-		hpMain.setSpacing(10);
+		Row hpMain = new Row();
+		
 
-		HorizontalPanel hpHeader = new HorizontalPanel();
-		hpHeader.setSpacing(10);
-
+		Row hpHeader = new Row();
+		
+		Column mainCol1 = new Column(5, 0);
+		Column mainCol2 = new Column(5, 0);
+		Column headerCol1 = new Column(5, 0);
+		Column headerCol2 = new Column(5, 0);
+		
 		container.setBorders(true);
 		//container.setWidth((int)((RootPanel.get().getOffsetWidth())/4));
-		container.addStyleName("span4");
+		container.setWidth("100%");
 		container.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
 		container.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
 
 		sourceContainer = new VerticalLayoutContainer();
 		//sourceContainer.setWidth((int)((RootPanel.get().getOffsetWidth())/4));
-		sourceContainer.addStyleName("span4");
-		sourceContainer.addStyleName("nospace");
-		
+		sourceContainer.setWidth("100%");
 		
 		sourceContainer.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
 		sourceContainer.setBorders(true);
-		sourceContainer.setPosition(50, 0);
 		sourceContainer.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
 
 
@@ -224,30 +225,25 @@ public class SphereEditorWidget extends Composite {
 
 		// refreshSourceEndpoints(this.sphereID, sourceContainer);
 
-		final VerticalLayoutContainer leftHeader = new VerticalLayoutContainer();
-		leftHeader.setPixelSize((int)(RootPanel.get().getOffsetWidth()/4)+50, 30);
-		Paragraph leftP = new Paragraph();
-		leftP.setText("Endpoints currently in this Sphere:");
-		leftP.addStyleName("smalltext");
-		leftHeader.add(leftP);
+		HTML leftP = new HTML("Endpoints currently in this Sphere:");
+		headerCol1.add(leftP);
 		
 		
 
-		final VerticalLayoutContainer rightHeader = new VerticalLayoutContainer();
-		rightHeader.setPixelSize(350, 30);
-		Paragraph rightP = new Paragraph();
-		rightP.setText("Endpoints currently outside of this Sphere:");
-		rightP.addStyleName("smalltext");
-		rightHeader.add(rightP);
+		HTML rightP = new HTML("Endpoints currently outside of this Sphere:");
+		headerCol2.add(rightP);
 
 		
 		
-		hpHeader.add(leftHeader);
-		hpHeader.add(rightHeader);
+		hpHeader.add(headerCol1);
+		hpHeader.add(headerCol2);
 		
-		hpMain.add(container);
 		
-		hpMain.add(sourceContainer);
+		mainCol1.add(container);
+		mainCol2.add(sourceContainer);
+		hpMain.add(mainCol1);
+		hpMain.add(mainCol2);
+			
 		con.add(hpHeader);
 		con.add(hpMain);
 
