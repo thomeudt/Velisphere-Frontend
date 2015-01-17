@@ -352,7 +352,7 @@ public class InfoWindowMapWidget extends Composite {
 					@Override
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
-						System.out.println(caught);
+						
 					}
 
 					@Override
@@ -360,7 +360,6 @@ public class InfoWindowMapWidget extends Composite {
 						// TODO Auto-generated method stub
 
 					
-						
 						allGeoDataForMap = result;
 
 						Geolocation geolocation = Geolocation.getIfSupported();						
@@ -416,13 +415,22 @@ public class InfoWindowMapWidget extends Composite {
 
 						// RootPanel.get().add(new HTML("Length of List" +
 						// result.size()));
-
-						allGeoDataForMap = result;
-						GeoLocationData point = result.getFirst();
 						
-						drawMap(LatLng.newInstance(Double.parseDouble(point.getValue().substring(point.getValue().indexOf("{") + 1, point.getValue().indexOf("}"))), Double.parseDouble(point.getValue().substring(point.getValue().indexOf("[") + 1, point.getValue().indexOf("]")))));
-						   drawMarker(allGeoDataForMap);
-						   
+						if (result.size() == 0){
+							pWidget.add(new HTML("<b>No location data found</b><br><br>"
+									+ "Possible reasons are that your selected endpoint do not contain any geolocation,"
+									+ "has not reported its dynamic geolocation yet or the data is temporarily not available."));
+						} else
+						{
+							allGeoDataForMap = result;
+							GeoLocationData point = result.getFirst();
+							
+							drawMap(LatLng.newInstance(Double.parseDouble(point.getValue().substring(point.getValue().indexOf("{") + 1, point.getValue().indexOf("}"))), Double.parseDouble(point.getValue().substring(point.getValue().indexOf("[") + 1, point.getValue().indexOf("]")))));
+							   drawMarker(allGeoDataForMap);
+						
+						}
+
+							   
 														
 						
 					}
