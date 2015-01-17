@@ -23,13 +23,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
-import java.util.Vector;
-
 import org.voltdb.VoltTable;
 import org.voltdb.VoltType;
 import org.voltdb.client.ClientResponse;
@@ -37,15 +32,8 @@ import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.velisphere.tigerspice.client.endpointclasses.EPCService;
-import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.spheres.SphereService;
-import com.velisphere.tigerspice.client.users.UserService;
-import com.velisphere.tigerspice.shared.EPCData;
-import com.velisphere.tigerspice.shared.EndpointData;
-import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.SphereData;
-import com.velisphere.tigerspice.shared.UserData;
 
 @SuppressWarnings("serial")
 public class SphereServiceImpl extends RemoteServiceServlet implements
@@ -174,7 +162,7 @@ public class SphereServiceImpl extends RemoteServiceServlet implements
 		try {
 
 			final ClientResponse findAllSpheres = voltCon.montanaClient
-					.callProcedure("UI_SelectAllSpheres");
+					.callProcedure("UI_SelectSpheresForUser", userID);
 
 			final VoltTable findAllSpheresResults[] = findAllSpheres.getResults();
 
@@ -217,7 +205,7 @@ public class SphereServiceImpl extends RemoteServiceServlet implements
 	
 	}
 	
-	public String addSphere(String sphereName)
+	public String addSphere(String userID, String sphereName)
 
 	{
 
@@ -226,6 +214,7 @@ public class SphereServiceImpl extends RemoteServiceServlet implements
 
 			VoltConnector voltCon = new VoltConnector();
 			String sphereID = UUID.randomUUID().toString();
+			String linkID = UUID.randomUUID().toString();
 
 			try {
 				voltCon.openDatabase();
@@ -241,6 +230,8 @@ public class SphereServiceImpl extends RemoteServiceServlet implements
 
 				voltCon.montanaClient.callProcedure("SPHERE.insert", sphereID,
 						sphereName, "0");
+				voltCon.montanaClient.callProcedure("SPHERE_USER_LINK.insert", linkID, sphereID,
+						userID);
 			} catch (NoConnectionsException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -281,7 +272,7 @@ public class SphereServiceImpl extends RemoteServiceServlet implements
 
 				Statement myInsert = conn.createStatement();
 				myInsert.executeUpdate("INSERT INTO VLOGGER.SPHERE VALUES ('"
-						+ sphereID + "','" + sphereName + "','0') ");
+						+ sphereID + "','" + sphereName + "','0')");
 
 				myInsert.close();
 
@@ -297,7 +288,7 @@ public class SphereServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	@Override
-	public String getSphereNameForSphereID(String sphereID) {
+	public SphereData getSphereForSphereID(String sphereID) {
 
 		VoltConnector voltCon = new VoltConnector();
 
@@ -311,7 +302,7 @@ public class SphereServiceImpl extends RemoteServiceServlet implements
 			e1.printStackTrace();
 		}
 
-		String sphereName = new String();
+		SphereData sphereData = new SphereData();
 		try {
 
 			final ClientResponse findAllSpheres = voltCon.montanaClient
@@ -324,8 +315,9 @@ public class SphereServiceImpl extends RemoteServiceServlet implements
 
 			while (result.advanceRow()) {
 				{
-					sphereName = result.getString("SPHERENAME");
-									}
+					sphereData.setName(result.getString("SPHERENAME"));
+					sphereData.setIsPublic((int) result.getLong("PUBLIC"));
+				}
 			}
 
 			
@@ -342,9 +334,52 @@ public class SphereServiceImpl extends RemoteServiceServlet implements
 			e.printStackTrace();
 		}
 		
-		return sphereName;
+		return sphereData;
 
 	
+	}
+
+	@Override
+	public String updatePublicStateForSphereID(String sphereID, int publicState)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			voltCon.montanaClient.callProcedure("UI_UpdatePublicStateForSphereID",
+					sphereID, publicState);
+		} catch (NoConnectionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProcCallException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		return "OK";
+
 	}
 
 

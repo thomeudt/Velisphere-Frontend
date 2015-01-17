@@ -40,4 +40,12 @@ public class SphereData implements IsSerializable
 	public Integer getIsPublic(){
 		return sphereIsPublic;
 	}
+	
+	public void setName(String sphereName){
+		this.sphereName = sphereName;
+	}
+	
+	public void setIsPublic(int sphereIsPublic){
+		this.sphereIsPublic = sphereIsPublic;
+	}
 }

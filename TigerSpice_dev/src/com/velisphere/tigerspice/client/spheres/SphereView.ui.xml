@@ -33,6 +33,11 @@
 				<b:PageHeader ui:field="pghSphereNameHeader">Sphere</b:PageHeader>
 			</b:Column>
 		</b:Row>
+		 <b:Row>
+			<b:Column size="12" offset="0" ui:field="colShareAlert">
+				
+			</b:Column>
+		</b:Row>
 		
 	    
 	    

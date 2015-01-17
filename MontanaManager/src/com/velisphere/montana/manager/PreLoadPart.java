@@ -20,7 +20,7 @@ public class PreLoadPart {
 	     // public static String volt_ip = "16.1.1.149"; // for local db
 	    	// public static String volt_ip = "ec2-54-200-208-195.us-west-2.compute.amazonaws.com"; // for aws db
 	        
-	         preLoader.createConnection("16.1.1.115");
+	         preLoader.createConnection("16.1.1.84");
 	        //preLoader.createConnection("54.200.77.57");
 	        
 	         Connection conn;
@@ -39,12 +39,12 @@ public class PreLoadPart {
 		         {
 		         conn = DriverManager.getConnection
 		            (
-		            "jdbc:vertica://16.1.1.116:5433/VelisphereMart", "vertica", "1Suplies!"
+		            "jdbc:vertica://16.1.1.83:5433/VelisphereMart", "vertica", "1Suplies!"
 		            );
 		         
 		         conn.setAutoCommit(true);
 		 		System.out.println(" [OK] Connected to Vertica on address: "
-		 				+ "16.1.1.113");
+		 				+ "16.1.1.83");
 		         
 		         } catch (SQLException e)
 		            {
@@ -68,7 +68,7 @@ public class PreLoadPart {
 	         * Load the database.
 	         */
 	        
-	        String userID = "617988db-9d22-4aaf-aa01-f2e630988a12";
+	        String userID = "55ce1cc9-b0ad-4bae-88b9-6fcd76cd09d8";
 	        	        
 	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1011", "E1", userID);
 	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1022", "E2", userID);

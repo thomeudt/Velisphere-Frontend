@@ -49,6 +49,7 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.info.Info;
 import com.velisphere.tigerspice.client.admin.propertyclass.EditPropertyClassInputWidget;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
+import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
@@ -96,7 +97,7 @@ public class SphereLister extends Composite {
 		
 		// TODO needs to be changed to show only spheres personal to user
 		rpcService = GWT.create(SphereService.class);
-		rpcService.getAllSpheres(new AsyncCallback<LinkedList<SphereData>>() {
+		rpcService.getAllSpheresForUserID(SessionHelper.getCurrentUserID(), new AsyncCallback<LinkedList<SphereData>>() {
 			
 			
 			public void onFailure(Throwable caught) {
@@ -115,7 +116,13 @@ public class SphereLister extends Composite {
 				while (it.hasNext()){
 
 					final SphereData currentItem = it.next();
-					lstPrivateSpheres.addItem(currentItem.sphereName, currentItem.sphereId);
+					
+					String suffix = new String();
+					
+					if(currentItem.sphereIsPublic==1){
+						suffix = " * PUBLIC * ";
+					}
+					lstPrivateSpheres.addItem(currentItem.sphereName.concat(suffix), currentItem.sphereId);
 					
 						
 				}

@@ -45,7 +45,7 @@ public class SphereAdder extends PopupPanel {
 		
 		//TODO Link Sphere to User!!!
 		
-		sphereService.addSphere(sphereName,
+		sphereService.addSphere(SessionHelper.getCurrentUserID(), sphereName,
 				new AsyncCallback<String>() {
 
 					@Override

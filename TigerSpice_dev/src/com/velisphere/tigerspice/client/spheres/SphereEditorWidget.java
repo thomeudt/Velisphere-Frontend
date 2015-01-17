@@ -72,6 +72,7 @@ import com.velisphere.tigerspice.client.images.Images;
 import com.velisphere.tigerspice.client.users.LoginService;
 import com.velisphere.tigerspice.client.users.NewAccountSuccessMessage;
 import com.velisphere.tigerspice.shared.EndpointData;
+import com.velisphere.tigerspice.shared.SphereData;
 import com.velisphere.tigerspice.shared.UserData;
 import com.google.gwt.user.client.ui.Label;
 
@@ -627,8 +628,8 @@ public class SphereEditorWidget extends Composite {
 
 	private void setSphereName(){
 		SphereServiceAsync rpcServiceSphere = GWT.create(SphereService.class);
-		rpcServiceSphere.getSphereNameForSphereID(sphereID,
-				new AsyncCallback<String>() {
+		rpcServiceSphere.getSphereForSphereID(sphereID,
+				new AsyncCallback<SphereData>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -637,9 +638,9 @@ public class SphereEditorWidget extends Composite {
 					}
 
 					@Override
-					public void onSuccess(String result) {
+					public void onSuccess(SphereData result) {
 						// TODO Auto-generated method stub
-						sphereName = result;
+						sphereName = result.getName();
 						
 						
 

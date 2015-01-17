@@ -17,6 +17,7 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client.spheres;
 
+import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.CheckBox;
@@ -26,6 +27,7 @@ import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
 import com.github.gwtbootstrap.client.ui.Row;
 import com.github.gwtbootstrap.client.ui.TextBox;
+import com.github.gwtbootstrap.client.ui.constants.AlertType;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.client.GWT;
@@ -49,7 +51,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.helper.widgets.AlertWidget;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
+import com.velisphere.tigerspice.shared.SphereData;
 
 
 public class SphereView extends Composite {
@@ -63,7 +67,7 @@ public class SphereView extends Composite {
 	
 	@UiField CheckBox cbxPublic;
 	@UiField PageHeader pghSphereNameHeader;
-	
+	@UiField Column colShareAlert;	
 
 	
 	private SphereServiceAsync rpcServiceSphere;
@@ -94,7 +98,9 @@ public class SphereView extends Composite {
 		bread1 = new NavLink();
 		bread1.setText("Endpoint Manager");
 		brdMain.add(bread1);
-		
+		bread2 = new NavLink();
+		bread2.setText("-");
+		brdMain.add(bread2);
 		
 
 		bread0.addClickHandler(new ClickHandler() {
@@ -204,7 +210,7 @@ public class SphereView extends Composite {
 		
 		
 	
-		setSphereName();
+		updateSphereNameAndState();
 		
 	
 	
@@ -222,7 +228,8 @@ public class SphereView extends Composite {
 				// TODO Auto-generated method stub
 				if(event.getValue() == true) {
 					showWarningBox();
-				}
+				} else 
+					setPublicState(0);
 			}
 			
 		});
@@ -269,6 +276,8 @@ public class SphereView extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				warningBox.hide();
+				setPublicState(1);
+				
 				
 			}
 			
@@ -279,6 +288,8 @@ public class SphereView extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				warningBox.hide();
+				setPublicState(0);
+				
 				cbxPublic.setValue(false);
 				
 			}
@@ -286,8 +297,52 @@ public class SphereView extends Composite {
 		});
 	}
 
-	private void setSphereName(){
-		rpcServiceSphere.getSphereNameForSphereID(sphereID,
+	private void updateSphereNameAndState(){
+		
+		
+		
+		rpcServiceSphere.getSphereForSphereID(sphereID,
+				new AsyncCallback<SphereData>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(SphereData result) {
+						// TODO Auto-generated method stub
+						pghSphereNameHeader.setText(result.getName());
+						brdMain.remove(bread2);
+						bread2.setText(result.getName());
+						brdMain.add(bread2);
+						
+						sphereName = result.getName();
+						if(result.getIsPublic() == 1){
+							RootPanel.get().add(new HTML("Shared Sphere Value " + result.getIsPublic()));
+							colShareAlert.add(new AlertWidget(new HTML("<b>&nbsp;Privacy Alert:</b> This is a shared sphere, visible to other VeliSphere users. Other user will be able to access sensor data from this Sphere."), AlertType.WARNING));
+							cbxPublic.setValue(true);
+						}
+						else
+						{
+							RootPanel.get().add(new HTML("Private Sphere Value " + result.getIsPublic()));
+							colShareAlert.clear();
+							cbxPublic.setValue(false);
+						}
+								
+						
+						
+
+					}
+
+				});
+
+		
+	}
+	
+	private void setPublicState(int publicState){
+		rpcServiceSphere.updatePublicStateForSphereID(sphereID, publicState,
 				new AsyncCallback<String>() {
 
 					@Override
@@ -299,12 +354,8 @@ public class SphereView extends Composite {
 					@Override
 					public void onSuccess(String result) {
 						// TODO Auto-generated method stub
-						pghSphereNameHeader.setText(result);
-						bread2 = new NavLink();
-						bread2.setText(result);
-						brdMain.add(bread2);
-						sphereName = result;
-								
+						
+						updateSphereNameAndState();
 						
 						
 
