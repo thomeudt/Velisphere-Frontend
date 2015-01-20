@@ -242,7 +242,7 @@ public class SphereServiceImpl extends RemoteServiceServlet implements
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-
+			
 			try {
 				voltCon.closeDatabase();
 			} catch (IOException | InterruptedException e) {

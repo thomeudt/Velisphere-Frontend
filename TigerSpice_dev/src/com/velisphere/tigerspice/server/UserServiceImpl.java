@@ -24,7 +24,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import java.util.Vector;
@@ -42,6 +45,7 @@ import nl.captcha.Captcha;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.mindrot.BCrypt;
 import org.voltdb.VoltTable;
+import org.voltdb.VoltType;
 import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
@@ -49,6 +53,7 @@ import org.voltdb.client.ProcCallException;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.users.UserService;
 import com.velisphere.tigerspice.shared.EPCData;
+import com.velisphere.tigerspice.shared.SphereData;
 import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
 import com.velisphere.tigerspice.shared.UserData;
 
@@ -209,6 +214,94 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 
 		return response;
 
+	}
+	
+	
+	@Override
+	public HashMap<String, String> getAllUsersWithPublicSpheres() {
+
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		HashMap<String, String> userHashMap = new HashMap<String, String>();
+		LinkedList<String> userIDs = new LinkedList<String>();
+		try {
+
+			final ClientResponse findUsers = voltCon.montanaClient
+					.callProcedure("UI_SelectUsersWithPublicSpheres");
+
+			final VoltTable findUsersResults[] = findUsers.getResults();
+
+			VoltTable result = findUsersResults[0];
+			// check if any rows have been returned
+
+			
+			while (result.advanceRow()) {
+				
+					// extract the value in column checkid
+					//userHashMap.put(result.getString("USERID"), result.getString("USERNAME"));
+					userIDs.add(result.getString("USERID"));
+					System.out.println("ID: " + result.getString("USERID"));
+				
+			}
+			
+			System.out.println("IDs " + userIDs.toString());
+			
+			Iterator<String> it = userIDs.iterator();
+			
+			while (it.hasNext()){
+				
+				String currentUserID = it.next();
+				System.out.println("Current: " + currentUserID);
+				
+				final ClientResponse findUserName = voltCon.montanaClient
+						.callProcedure("UI_SelectUserForUserID", currentUserID);
+
+				final VoltTable findUserNameResults[] = findUserName.getResults();
+
+				VoltTable resultName = findUserNameResults[0];
+				// check if any rows have been returned
+
+				//System.out.println(resultName.toFormattedString());
+				
+				while (resultName.advanceRow()) {
+					
+						// extract the value in column checkid
+						
+						userHashMap.put(currentUserID, resultName.getString("USERNAME"));
+						
+					
+				}
+
+				
+			}
+
+			
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return userHashMap;
+
+	
 	}
 
 }

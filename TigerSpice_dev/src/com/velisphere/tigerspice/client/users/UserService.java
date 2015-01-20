@@ -18,6 +18,7 @@
 package com.velisphere.tigerspice.client.users;
 
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 
@@ -35,6 +36,7 @@ import com.velisphere.tigerspice.shared.UserData;
 public interface UserService extends RemoteService {
 	Vector<UserData> getAllUserDetails();
 	String addNewUser(String userName, String password, String eMail, String captchaWord);
+	HashMap<String, String> getAllUsersWithPublicSpheres();
 }
 
 
