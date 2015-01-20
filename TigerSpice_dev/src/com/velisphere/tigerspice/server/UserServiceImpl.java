@@ -277,7 +277,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 					
 						// extract the value in column checkid
 						
-						userHashMap.put(currentUserID, resultName.getString("USERNAME"));
+						userHashMap.put(resultName.getString("USERNAME"), currentUserID);
 						
 					
 				}
