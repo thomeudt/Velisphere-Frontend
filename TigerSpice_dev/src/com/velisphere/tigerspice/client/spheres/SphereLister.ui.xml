@@ -78,7 +78,7 @@
 
 					<b:TabPane heading="Public Spheres" active="false">
 					
-							<vssp:PublicSphereLister />
+							<vssp:SphereListerPublic />
 
 					</b:TabPane>
 				</b:TabPanel>

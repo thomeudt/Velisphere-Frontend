@@ -31,13 +31,13 @@ import com.velisphere.tigerspice.client.users.UserService;
 import com.velisphere.tigerspice.client.users.UserServiceAsync;
 import com.velisphere.tigerspice.shared.SphereData;
 
-public class PublicSphereLister extends Composite {
+public class SphereListerPublic extends Composite {
 	
 	ListBox lstSpheres;
 	MultiWordSuggestOracle userNameOracle;
 	HashMap<String, String> userDirectory;
 	
-	public PublicSphereLister() {
+	public SphereListerPublic() {
 
 		initWidget(createBaseLayout());
 		getUsers();
@@ -101,7 +101,7 @@ public class PublicSphereLister extends Composite {
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				if(lstSpheres != null){
-					AppController.openSphere(lstSpheres.getValue(), "FIXIT!");	
+					AppController.openPublicSphere(lstSpheres.getValue());	
 				}
 				
 			}

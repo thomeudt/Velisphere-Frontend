@@ -150,7 +150,7 @@ public class SphereLister extends Composite {
 		mainPanel.add(checkpathView);
 		**/
 		
-		AppController.openSphere(lstPrivateSpheres.getValue(), lstPrivateSpheres.getValue());
+		AppController.openSphere(lstPrivateSpheres.getValue());
 		
 	}
   
