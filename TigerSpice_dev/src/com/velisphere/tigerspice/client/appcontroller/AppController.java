@@ -35,6 +35,7 @@ import com.velisphere.tigerspice.client.rules.CheckpathEditView;
 import com.velisphere.tigerspice.client.rules.CheckpathList;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
 import com.velisphere.tigerspice.client.spheres.SphereView;
+import com.velisphere.tigerspice.client.spheres.SphereViewPublic;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 
 // this class manages all navigational calls within the application
@@ -94,7 +95,7 @@ public class AppController {
 	}
 
 
-	static void openSphereWithHistoryHandler(final String token, final String sphereId, final String sphereName)
+	static void openSphereWithHistoryHandler(final String token, final String sphereId)
 	{
 		History.newItem(token);
 		RootPanel.get("main").clear();
@@ -116,6 +117,30 @@ public class AppController {
 			}
 		    });
 	}
+	
+	static void openPublicSphereWithHistoryHandler(final String token, final String sphereId)
+	{
+		History.newItem(token);
+		RootPanel.get("main").clear();
+		RootPanel.get("main").add(new SphereViewPublic(sphereId));
+				
+		History.addValueChangeHandler(new ValueChangeHandler<String>() {
+
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+
+				String historyToken = event.getValue();
+				
+		        // Parse the history token
+
+	          if (historyToken.equals(token)) {
+	        	  RootPanel.get("main").clear();
+	        	  RootPanel.get("main").add(new SphereViewPublic(sphereId));
+		        }
+			}
+		    });
+	}
+
 
 	static void openTakeDeviceOwnershipWithHistoryHandler(final String token, final String uEPID, final String identifier, final String endpointclassID, final String endpointclassName)
 	{
@@ -309,7 +334,7 @@ public class AppController {
 	});
 	}
 
-	public static void openSphere(final String sphereID, final String sphereName)
+	public static void openSphere(final String sphereID)
 	{	
 		SessionHelper.validateCurrentSession();
 		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
@@ -318,7 +343,21 @@ public class AppController {
 			sessionHandler.removeHandler();
 			//String userID = SessionHelper.getCurrentUserID();
 			
-			openSphereWithHistoryHandler("sphere"+sphereID, sphereID, sphereName);
+			openSphereWithHistoryHandler("sphere"+sphereID, sphereID);
+		}		
+	});
+	}
+	
+	public static void openPublicSphere(final String sphereID)
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			
+			openPublicSphereWithHistoryHandler("PublicSphere"+sphereID, sphereID);
 		}		
 	});
 	}

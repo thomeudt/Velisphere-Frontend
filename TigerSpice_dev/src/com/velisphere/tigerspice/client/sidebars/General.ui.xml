@@ -11,6 +11,9 @@
 			<b:Heading size="4">Quick Access</b:Heading>
 			<b:ListBox addStyleNames="smalltext span2" ui:field="ddlShortcut"></b:ListBox>
 			
+			<b:Heading size="4">Favorites</b:Heading>
+			<b:ListBox addStyleNames="smalltext span2" ui:field="ddlFavs"></b:ListBox>
+			
 			<b:Heading size="4">Shortcuts</b:Heading>
 				
 			<g:Anchor ui:field="ancProvisioning">Device Provisioning Wizard<br></br></g:Anchor>
