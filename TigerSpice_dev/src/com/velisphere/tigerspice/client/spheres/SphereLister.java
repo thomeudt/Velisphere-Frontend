@@ -29,10 +29,13 @@ import java.util.LinkedList;
 import java.util.Vector;
 
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -64,6 +67,8 @@ public class SphereLister extends Composite {
 	Breadcrumbs brdMain;
 	@UiField
 	ListBox lstPrivateSpheres;
+	@UiField
+	Button btnOpenSphere;
 	
   interface MyUiBinder extends UiBinder<Widget, SphereLister> {
   }
@@ -73,6 +78,7 @@ public class SphereLister extends Composite {
   public SphereLister() {
       
 	  initWidget(uiBinder.createAndBindUi(this));
+	  
 		bread0 = new NavLink();
 		bread0.setText("Home");
 		brdMain.add(bread0);
@@ -126,7 +132,15 @@ public class SphereLister extends Composite {
 					
 						
 				}
+				
+				if (lstPrivateSpheres.getItemCount() != 0){
+					btnOpenSphere.setEnabled(true);
+				}
+				
 				lstPrivateSpheres.setVisibleItemCount(7);
+				
+				
+			
 
 				animation.removeFromParent();
 				

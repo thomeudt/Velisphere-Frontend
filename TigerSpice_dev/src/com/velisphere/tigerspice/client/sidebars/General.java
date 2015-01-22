@@ -28,6 +28,7 @@ public class General extends Composite {
 	@UiField Anchor ancGettingStarted;
 	@UiField Anchor ancBestPractices;
 	@UiField ListBox ddlShortcut;
+	@UiField ListBox ddlFavs;
 	
 	private static GeneralUiBinder uiBinder = GWT.create(GeneralUiBinder.class);
 
@@ -40,6 +41,7 @@ public class General extends Composite {
 		ancMarket.setHref("#");
 		ancGettingStarted.setHref("#");
 		ancBestPractices.setHref("#");
+		ddlFavs.setVisibleItemCount(3);
 		populateShortcuts();
 
 	}

@@ -86,14 +86,6 @@
 			</b:Column>
 		</b:Row>
 		
-		<b:Row>
-			<b:Column size="2">
-				<b:Paragraph text="Reset Options" />
-			</b:Column>
-			<b:Column size="4">
-				<b:Button type="DANGER" size="MINI" addStyleNames="btn-block">Reboot Now</b:Button>
-			</b:Column>
-		</b:Row>						
 		
 		
 		

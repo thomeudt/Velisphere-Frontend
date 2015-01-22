@@ -59,6 +59,7 @@ import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
@@ -321,9 +322,16 @@ public class SphereEditorWidget extends Composite {
 																		true,
 																		currentItem.endpointId);
 																
-																anchorUnassigned.addClickHandler(new OpenEndpointClickHandler(
-																		sphereID, sphereName, currentItem.endpointId, currentItem.endpointName, currentItem.endpointclassId));
+																anchorUnassigned.addClickHandler(new ClickHandler(){
 
+																	@Override
+																	public void onClick(ClickEvent event) {
+																		// TODO Auto-generated method stub
+																	
+																		AppController.openEndpoint(currentItem.endpointId);
+																	}
+																	
+																});
 
 																final SafeHtmlBuilder builder = new SafeHtmlBuilder();
 																builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
@@ -427,9 +435,16 @@ public class SphereEditorWidget extends Composite {
 							final DynamicAnchor anchorAssigned = new DynamicAnchor(
 									currentItem.endpointName, true,
 									currentItem.endpointId);
-							anchorAssigned.addClickHandler(new OpenEndpointClickHandler(
-									sphereID, sphereName, currentItem.endpointId, currentItem.endpointName, currentItem.endpointclassId));
+							anchorAssigned.addClickHandler(new ClickHandler(){
 
+								@Override
+								public void onClick(ClickEvent event) {
+									// TODO Auto-generated method stub
+								
+									AppController.openEndpoint(currentItem.endpointId);
+								}
+								
+							});
 							/*
 							final Button buttonRemoveAssigned = new Button();
 							buttonRemoveAssigned.setType(ButtonType.DANGER);
@@ -555,40 +570,7 @@ public class SphereEditorWidget extends Composite {
 	}
 
 */
-	public class OpenEndpointClickHandler implements ClickHandler {
-
-		private String sphereID;
-		private String sphereName;
-		private String endpointID;
-		private String endpointName;
-		private String endpointClassID;
-		
-
-		OpenEndpointClickHandler(String sphereID, String sphereName, String endpointID, String endpointName, String endpointClassId) {
-			super();
-			this.sphereID = sphereID;
-			this.endpointID = endpointID;
-			this.sphereName = sphereName;
-			this.endpointName = endpointName;
-			this.endpointClassID = endpointClassId;
-			
-
-		}
-
-		public void onClick(ClickEvent event) {
-			// Window.alert("Hello World: " + sphereID + endpointID);
-
-			final AnimationLoading animationLoading = new AnimationLoading();
-			showLoadAnimation(animationLoading);
-
-			RootPanel.get("main").clear();
-			EndpointView endpointView = new EndpointView(sphereID, sphereName, endpointID, endpointName, endpointClassID);
-			RootPanel.get("main").add(endpointView);
-			
-			
-		}
-
-	}
+	
 	
 	public void removeAssigned(final String sphereID, String endpointID) {
 	

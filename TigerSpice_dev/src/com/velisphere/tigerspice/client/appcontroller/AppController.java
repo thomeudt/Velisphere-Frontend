@@ -22,6 +22,7 @@ import com.velisphere.tigerspice.client.dashboard.Dashboard;
 import com.velisphere.tigerspice.client.documentation.BestPractices;
 import com.velisphere.tigerspice.client.documentation.GettingStarted;
 import com.velisphere.tigerspice.client.endpoints.EndpointView;
+import com.velisphere.tigerspice.client.endpoints.EndpointViewPublic;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
@@ -187,6 +188,30 @@ public class AppController {
 	        	  RootPanel.get("main").clear();
 	        	  RootPanel.get("main").add(new EndpointView("0", "0",
 	      				endpointID, "", ""));
+		        }
+			}
+		    });
+	}
+
+	static void openEndpointPublicWithHistoryHandler(final String token, final String endpointID)
+	{
+		History.newItem(token);
+		RootPanel.get("main").clear();
+		RootPanel.get("main").add(new EndpointViewPublic(endpointID));
+				 
+		
+		History.addValueChangeHandler(new ValueChangeHandler<String>() {
+
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+
+				String historyToken = event.getValue();
+				
+		        // Parse the history token
+
+	          if (historyToken.equals(token)) {
+	        	  RootPanel.get("main").clear();
+	        	  RootPanel.get("main").add(new EndpointViewPublic(endpointID));
 		        }
 			}
 		    });
@@ -579,6 +604,19 @@ public class AppController {
 			sessionHandler.removeHandler();
 			
 			openEndpointWithHistoryHandler("view_endpoint_"+endpointID, endpointID);
+		}		
+	});
+	}
+	
+	public static void openEndpointPublic(final String endpointID)
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			
+			openEndpointPublicWithHistoryHandler("view_endpoint_public"+endpointID, endpointID);
 		}		
 	});
 	}

@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.helper.widgets.AlertWidget;
@@ -53,6 +54,7 @@ public class SphereViewPublic extends Composite {
 
 		initWidget(uiBinder.createAndBindUi(this));
 		createBaseLayout();
+		updateSphereNameAndState();
 		getEndpoints();
 
 	}
@@ -124,6 +126,20 @@ public class SphereViewPublic extends Composite {
 					lbxEndpoints.addItem(current.endpointName, current.endpointId);
 				}
 				
+				lbxEndpoints.addClickHandler(new ClickHandler(){
+
+					@Override
+					public void onClick(ClickEvent event) {
+						// TODO Auto-generated method stub
+						
+						if (lbxEndpoints.getValue() != null)
+						{
+							AppController.openEndpointPublic(lbxEndpoints.getValue());
+						}
+						
+					}
+					
+				});
 				
 				
 			}

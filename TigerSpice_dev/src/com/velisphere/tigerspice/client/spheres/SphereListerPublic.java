@@ -6,10 +6,15 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.Row;
+import com.github.gwtbootstrap.client.ui.constants.ButtonType;
+import com.github.gwtbootstrap.client.ui.resources.ButtonSize;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -46,6 +51,7 @@ public class SphereListerPublic extends Composite {
 	
 	private VerticalPanel createBaseLayout(){
 		
+		
 		Row row1 = new Row();
 		
 		Column col1 = new Column(2);
@@ -81,6 +87,17 @@ public class SphereListerPublic extends Composite {
 		
 		row2.add(col4);
 		
+		Row row3 = new Row();
+		Column col5 = new Column(2,2);
+		final Button btnOpenSphere = new Button("Open Selected Sphere");
+		btnOpenSphere.setType(ButtonType.PRIMARY);
+		btnOpenSphere.setSize(ButtonSize.SMALL);
+		btnOpenSphere.setWidth("100%");
+		btnOpenSphere.setEnabled(false);
+		col5.add(btnOpenSphere);
+		row3.add(col5);
+		
+	
 			
 		suggestBox.addSelectionHandler(new SelectionHandler<Suggestion>(){
 
@@ -95,7 +112,17 @@ public class SphereListerPublic extends Composite {
 			}
 		});
 		
-		lstSpheres.addClickHandler(new ClickHandler(){
+		lstSpheres.addChangeHandler(new ChangeHandler(){
+
+			@Override
+			public void onChange(ChangeEvent event) {
+				// TODO Auto-generated method stub
+				btnOpenSphere.setEnabled(true);
+			}
+			
+		});
+		
+		btnOpenSphere.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
@@ -109,8 +136,11 @@ public class SphereListerPublic extends Composite {
 		});
 		
 		VerticalPanel vP = new VerticalPanel();
+		
 		vP.add(row1);
 		vP.add(row2);
+		vP.add(row3);
+
 		return vP;
 		
 	}

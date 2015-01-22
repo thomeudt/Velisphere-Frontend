@@ -43,6 +43,17 @@
 				        
 			
 			<b:Column size="10" offset="0">
+			    
+
+		
+					<b:Row>
+				    <b:Column size="6" offset="0">
+				       <g:HTML><b>This sphere is shared by another user who marked it as public.<br></br></b>
+				           You are accessing this sphere and all contained endpoints as a guest. You are restricted to reading status
+				            and sensor data provided. You will not be able to configure, reset or perform actions.<br></br>&nbsp;
+				       </g:HTML> 
+				    </b:Column>
+				    </b:Row>	
 		
 					<b:Row>
 				    <b:Column size="10" offset="0">
