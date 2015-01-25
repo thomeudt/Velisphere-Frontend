@@ -52,6 +52,7 @@
              	
              	<b:NavLink ui:field="btnManageVendor">Vendor Manager</b:NavLink>
              	<b:NavLink ui:field="btnManagePlan">Billing Plan Manager</b:NavLink>
+             	<b:NavLink ui:field="btnNewLogic">New Logic Designer</b:NavLink>
              </b:Dropdown>
              
              

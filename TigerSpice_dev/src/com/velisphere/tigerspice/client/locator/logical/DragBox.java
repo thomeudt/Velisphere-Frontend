@@ -2,8 +2,11 @@ package com.velisphere.tigerspice.client.locator.logical;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.BorderStyle;
+import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasAllTouchHandlers;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.TouchCancelEvent;
 import com.google.gwt.event.dom.client.TouchCancelHandler;
 import com.google.gwt.event.dom.client.TouchEndEvent;
@@ -37,6 +40,8 @@ public class DragBox extends FocusPanel implements HasAllTouchHandlers,
 	public DragBox(String text, String epcID) {
 		super();
 
+		//removeDefaultMouseDown();
+		
 		HorizontalPanel hPanel = new HorizontalPanel();
 		
 		if (text.length() > 25)
@@ -127,4 +132,19 @@ public class DragBox extends FocusPanel implements HasAllTouchHandlers,
 	public void setContentRepresentation(String contentRepresentation) {
 		this.content = contentRepresentation;
 	}
+	
+	private void removeDefaultMouseDown()
+	{
+		this.addMouseDownHandler(new MouseDownHandler(){
+
+			@Override
+			public void onMouseDown(MouseDownEvent event) {
+				event.preventDefault();
+			}
+			
+		});
+		
+	}
+
+	
 }

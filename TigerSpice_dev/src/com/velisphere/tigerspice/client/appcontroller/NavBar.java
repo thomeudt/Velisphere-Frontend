@@ -260,6 +260,13 @@ public class NavBar extends Composite implements HasText {
 		
 	}
 	
+	@UiHandler("btnNewLogic")
+	void openNewLogicDesigner (ClickEvent event) {
+	
+		AppController.openNewLogicDesigner();
+		
+	}
+	
 	@UiHandler("btnManageVendor")
 	void openVendorManager (ClickEvent event) {
 	

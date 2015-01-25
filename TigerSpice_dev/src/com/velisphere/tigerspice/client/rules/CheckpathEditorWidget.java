@@ -83,7 +83,7 @@ public class CheckpathEditorWidget extends Composite {
 	FlowLayoutContainer con;
 	VerticalLayoutContainer addNextLevelField;
 
-	LinkedHashSet<SameLevelCheckpathObject> checkHashSet;
+	public LinkedHashSet<SameLevelCheckpathObject> checkHashSet;
 
 	public LinkedList<MulticheckColumn<SameLevelCheckpathObject>> multicheckColumns;
 	private CheckPathServiceAsync rpcServiceCheckPath;
