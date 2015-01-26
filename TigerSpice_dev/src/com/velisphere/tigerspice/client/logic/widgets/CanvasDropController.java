@@ -7,6 +7,9 @@ import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.FilterAppliedEvent;
 
 public class CanvasDropController extends AbsolutePositionDropController {
 
@@ -27,6 +30,9 @@ public class CanvasDropController extends AbsolutePositionDropController {
 		int dropTargetOffsetY = dropTargetLocation.getTop() + DOMUtil.getBorderTop(dropTarget.getElement());
 		RootPanel.get().add(new HTML("IT WAS DROPPED at " + (context.desiredDraggableX - dropTargetOffsetX) + " / " + (context.desiredDraggableY - dropTargetOffsetY)));
 		
+		int targetX = context.desiredDraggableX - dropTargetOffsetX;
+		int targetY = context.desiredDraggableY - dropTargetOffsetY;
+		EventUtils.EVENT_BUS.fireEvent(new DraggedToCanvasEvent(context, targetX, targetY));	
 	}
 
 }

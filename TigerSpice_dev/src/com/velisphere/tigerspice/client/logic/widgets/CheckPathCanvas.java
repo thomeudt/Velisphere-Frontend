@@ -27,11 +27,15 @@ import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
+import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
+import com.velisphere.tigerspice.client.event.DraggedToCanvasEventHandler;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.FilterAppliedEvent;
 import com.velisphere.tigerspice.client.event.FilterAppliedEventHandler;
 import com.velisphere.tigerspice.client.helper.widgets.FilterSphereEndpointWidget;
 import com.velisphere.tigerspice.client.locator.logical.LabelWithMenu;
+import com.velisphere.tigerspice.client.rules.MulticheckColumn;
+import com.velisphere.tigerspice.client.rules.SameLevelCheckpathObject;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.LogicLinkTargetData;
 
@@ -50,7 +54,9 @@ public class CheckPathCanvas extends Composite {
 	// general constructor showing all endpoints per default
 	
 	public CheckPathCanvas() {
-
+		
+		
+	
 		pWidget = new HorizontalPanel();
 		diagramContainer = new AbsolutePanel();
 		
@@ -62,6 +68,8 @@ public class CheckPathCanvas extends Composite {
 		pWidget.add(diagramContainer);
 		diagramContainer.add(controller.getView());
 		dropController = new CanvasDropController(controller.getView());
+		
+		setDraggedToCanvasEventListener();
 		
 	
 		
@@ -79,6 +87,38 @@ public class CheckPathCanvas extends Composite {
 		return this.dropController;
 	}
 	
+	
+	private void setDraggedToCanvasEventListener()
+	  {
+		  HandlerRegistration draggedToCanvasHandler;
+		  draggedToCanvasHandler = EventUtils.EVENT_BUS.addHandler(DraggedToCanvasEvent.TYPE, new DraggedToCanvasEventHandler()     
+		  {
+
+			@Override
+			public void onDraggedToCanvas(
+					DraggedToCanvasEvent draggedToCanvasEvent) {
+				// TODO Auto-generated method stub
+				
+				DragLabel current = (DragLabel) draggedToCanvasEvent.getContext().selectedWidgets.get(0);
+				
+				RootPanel.get().add(new HTML("***** EVENT: dropped " + current.getText() + " at X:" + draggedToCanvasEvent.getTargetX() + " Y:" + draggedToCanvasEvent.getTargetY()));
+				
+				
+
+				HTML h = new HTML (current.getText());
+				
+				controller.addWidget(h,
+						draggedToCanvasEvent.getTargetX(), draggedToCanvasEvent.getTargetY());
+				
+				dragController.makeDraggable(h);
+				
+				
+			}
+			  
+		  		
+			});
+	  }
+
 	
 }
 

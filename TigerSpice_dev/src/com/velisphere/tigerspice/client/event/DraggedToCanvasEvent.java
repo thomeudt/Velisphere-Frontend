@@ -17,6 +17,7 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client.event;
 
+import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.google.common.eventbus.EventBus;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
@@ -28,11 +29,15 @@ public class DraggedToCanvasEvent extends GwtEvent<DraggedToCanvasEventHandler> 
 		
 		public static Type<DraggedToCanvasEventHandler> TYPE = new Type<DraggedToCanvasEventHandler>();
 		
-		Widget widget;
+		DragContext context;
+		int targetX;
+		int targetY;
 	
-		public DraggedToCanvasEvent(Widget widget)
+		public DraggedToCanvasEvent(DragContext context, int targetX, int targetY)
 		{
-			this.widget = widget;
+			this.context = context;
+			this.targetX = targetX;
+			this.targetY = targetY;
 			
 		}
 		
@@ -46,9 +51,17 @@ public class DraggedToCanvasEvent extends GwtEvent<DraggedToCanvasEventHandler> 
 		    handler.onDraggedToCanvas(this);
 		}
 		
-		public Widget getWidget()
+		public DragContext getContext()
 		{
-			return this.widget;
+			return this.context;
+		}
+		
+		public int getTargetX(){
+			return this.targetX;
+		}
+		
+		public int getTargetY(){
+			return this.targetY;
 		}
 		
 }
