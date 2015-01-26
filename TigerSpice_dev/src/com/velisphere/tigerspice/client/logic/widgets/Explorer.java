@@ -20,10 +20,16 @@ package com.velisphere.tigerspice.client.logic.widgets;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import com.allen_sauer.gwt.dnd.client.DragEndEvent;
+import com.allen_sauer.gwt.dnd.client.DragHandler;
+import com.allen_sauer.gwt.dnd.client.DragStartEvent;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
+import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.github.gwtbootstrap.client.ui.Accordion;
 import com.github.gwtbootstrap.client.ui.AccordionGroup;
+import com.github.gwtbootstrap.client.ui.CheckBox;
 import com.github.gwtbootstrap.client.ui.Column;
+import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.Row;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
@@ -37,8 +43,11 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.CustomScrollPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.Tree;
+import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
@@ -67,15 +76,18 @@ public class Explorer extends Composite {
 	AbsolutePanel container;
 	ListBoxDragController dragController;
 	ListBoxDragController dragController2;
+
 	DraggableListBox dbxSensors;
 	DraggableListBox dbxActors;
+	CheckPathCanvas checkPathCanvas;
 	
 	private static final String CSS_DRAGDROPWIDGET = "DragDropWidget";
 
 	
-	public Explorer(String userID) {
+	public Explorer(String userID, CheckPathCanvas checkPathCanvas) {
 
 		this.userID = userID;
+		this.checkPathCanvas = checkPathCanvas;
 		container = new AbsolutePanel();		
 		initWidget(container);
 		
@@ -119,15 +131,52 @@ public class Explorer extends Composite {
 		scrollPanelSensors.addStyleName("wellwhite");
 		
 		scrollPanelSensors.setHorizontalScrollbar(null, 0);
+		dragController.registerDropController(this.checkPathCanvas.getDropController());
+		dragController.addDragHandler(new DragHandler(){
+
+			@Override
+			public void onDragEnd(DragEndEvent event) {
+				// TODO Auto-generated method stub
+				RootPanel.get().add(new HTML("X Coord Drop: " + String.valueOf(event.getContext().mouseX)));
+				RootPanel.get().add(new HTML("Y Coord Drop: " + String.valueOf(event.getContext().mouseY)));
+	
+				RootPanel.get().add(new HTML("Widget Class " + event.getContext().selectedWidgets.get(0).getClass()));
+				DragLabel current = (DragLabel) event.getContext().selectedWidgets.get(0);
+				RootPanel.get().add(new HTML("Widget Content " + current.getText()));
+				
+			}
+
+			@Override
+			public void onDragStart(DragStartEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onPreviewDragEnd(DragEndEvent event)
+					throws VetoDragException {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onPreviewDragStart(DragStartEvent event)
+					throws VetoDragException {
+				// TODO Auto-generated method stub
+				
+			}
+
+						
+			
+		});
 		
-		
-		col2.add(new HTML("<b>Sensors</b><br>"));
+		HorizontalPanel sensorHeader = new HorizontalPanel();
+		sensorHeader.add(new Icon(IconType.RSS));
+		sensorHeader.add(new HTML("<b>&nbsp;&nbsp;Sensors</b><br>"));
+		col2.add(sensorHeader);
 		col2.add(scrollPanelSensors);
 
 		row2.add(col2);
-		
-
-		
 		container.add(row2);
 
 		Row row3= new Row();
@@ -145,13 +194,19 @@ public class Explorer extends Composite {
 		
 		scrollPanelActors.setHorizontalScrollbar(null, 0);
 		
-		col2.add(new HTML("<b><br>Actors</b><br>"));
+		HorizontalPanel actorHeader = new HorizontalPanel();
+		actorHeader.add(new Icon(IconType.COGS));
+		actorHeader.add(new HTML("<b>&nbsp;&nbsp;Actors</b><br>"));
+		col3.add(actorHeader);
 		col3.add(scrollPanelActors);
+		
 		row3.add(col3);
 		container.add(row3);
 		
 	}
 
+	
+	
 	private void getSpheres()
 	{
 		SphereServiceAsync sphereService = GWT
@@ -251,7 +306,8 @@ public class Explorer extends Composite {
 		});
 
 	}
-
+	
+	
 	
 	private void getSensors(String endpointID)
 	{
@@ -277,6 +333,7 @@ public class Explorer extends Composite {
 				while (it.hasNext()){
 					PropertyData current = it.next();
 					
+				
 					dbxSensors.add(current.getName(), container.getOffsetWidth()+"px");
 				}
 				

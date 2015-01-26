@@ -134,6 +134,7 @@ class DraggableListBox extends Composite {
       grid.getCellFormatter().addStyleName(index, 0, CSS_DEMO_DUAL_LIST_EXAMPLE_ITEM_HAS_CONTENT);
       if (dragController != null) {
         dragController.makeDraggable(widget);
+        
       }
     }
     if (width != null) widget.setWidth(width);
