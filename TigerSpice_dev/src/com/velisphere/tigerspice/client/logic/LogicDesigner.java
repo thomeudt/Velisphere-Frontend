@@ -1,9 +1,5 @@
 package com.velisphere.tigerspice.client.logic;
 
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Column;
@@ -11,34 +7,17 @@ import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.velisphere.tigerspice.client.appcontroller.AppController;
-import com.velisphere.tigerspice.client.checks.CheckService;
-import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
-import com.velisphere.tigerspice.client.helper.AnimationLoading;
-import com.velisphere.tigerspice.client.logic.widgets.CheckPathCanvas;
+import com.velisphere.tigerspice.client.logic.widgets.CustomCanvas;
 import com.velisphere.tigerspice.client.logic.widgets.Explorer;
-import com.velisphere.tigerspice.client.rules.CheckPathService;
-import com.velisphere.tigerspice.client.rules.CheckPathServiceAsync;
-import com.velisphere.tigerspice.client.rules.CheckpathCostIndicator;
-import com.velisphere.tigerspice.client.rules.CheckpathEditorWidget;
 import com.velisphere.tigerspice.client.rules.CheckpathList;
-import com.velisphere.tigerspice.client.rules.MulticheckColumn;
-import com.velisphere.tigerspice.client.rules.SameLevelCheckpathObject;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
-import com.velisphere.tigerspice.shared.CheckPathObjectColumn;
-import com.velisphere.tigerspice.shared.CheckPathObjectData;
-import com.velisphere.tigerspice.shared.CheckPathObjectTree;
 
 public class LogicDesigner extends Composite {
 
@@ -113,11 +92,15 @@ public class LogicDesigner extends Composite {
 					}
 				});
 
-		CheckPathCanvas canvas = new CheckPathCanvas();
-		colCanvas.add(canvas);
+	
 		
-		Explorer explorer = new Explorer(this.userID, canvas);
+		CustomCanvas custom = new CustomCanvas();
+		colCanvas.add(custom);
+		
+		Explorer explorer = new Explorer(this.userID, custom);
 		colExplorer.add(explorer);
+		
+		
 		
 		
 

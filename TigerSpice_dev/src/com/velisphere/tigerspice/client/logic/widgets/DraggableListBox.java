@@ -14,6 +14,7 @@ package com.velisphere.tigerspice.client.logic.widgets;
  */
 
 
+import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
@@ -38,7 +39,7 @@ class DraggableListBox extends Composite {
 
   private static final String CSS_DEMO_DUAL_LIST_EXAMPLE_ITEM_HAS_CONTENT = "DragListBox-item-has-content";
 
-  private ListBoxDragController dragController;
+  private PickupDragController dragController;
 
   private Grid grid;
 
@@ -63,14 +64,14 @@ class DraggableListBox extends Composite {
   /**
    * Used by {@link DualListBox} to create the left and right list boxes.
    */
-  DraggableListBox(ListBoxDragController dragController, int size) {
+  DraggableListBox(PickupDragController dragController, int size) {
     this(size);
     this.dragController = dragController;
   }
 
-  void add(String text, String width) {
+  void add(String text, String endpointName, String width, String propertyID, String endpointID, String endpointClassID, String propertyClassID, byte isSensor, byte isActor) {
 	  
-    add(new DragLabel(text), width);
+    add(new ExplorerLabel(text, endpointName, propertyID,  endpointID, endpointClassID, propertyClassID, isSensor, isActor), width);
   }
 
   void add(Widget widget, String width) {
@@ -118,9 +119,12 @@ class DraggableListBox extends Composite {
 
   private Widget removeWidget(int index) {
     Widget widget = getWidget(index);
+   
+    
     if (widget != null && dragController != null && !(widget instanceof SpacerHTML)) {
       dragController.makeNotDraggable(widget);
     }
+    
     grid.getCellFormatter().removeStyleName(index, 0, CSS_DEMO_DUAL_LIST_EXAMPLE_ITEM_HAS_CONTENT);
     grid.setWidget(index, 0, new SpacerHTML());
     return widget;
@@ -132,10 +136,13 @@ class DraggableListBox extends Composite {
       widget = new SpacerHTML();
     } else {
       grid.getCellFormatter().addStyleName(index, 0, CSS_DEMO_DUAL_LIST_EXAMPLE_ITEM_HAS_CONTENT);
+      
+      
       if (dragController != null) {
         dragController.makeDraggable(widget);
         
       }
+      
     }
     if (width != null) widget.setWidth(width);
     widget.getElement().getStyle().setCursor(Cursor.POINTER);

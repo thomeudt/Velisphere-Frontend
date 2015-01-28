@@ -74,18 +74,17 @@ public class Explorer extends Composite {
 	ListBox lbxSensors;
 	ListBox lbxActors;
 	AbsolutePanel container;
-	ListBoxDragController dragController;
-	ListBoxDragController dragController2;
+	PickupDragController dragController1;
+	PickupDragController dragController2;
 
 	DraggableListBox dbxSensors;
 	DraggableListBox dbxActors;
-	CheckPathCanvas checkPathCanvas;
+	CustomCanvas checkPathCanvas;
 	
 	private static final String CSS_DRAGDROPWIDGET = "DragDropWidget";
 
 	
-	public Explorer(String userID, CheckPathCanvas checkPathCanvas) {
-
+	public Explorer(String userID, CustomCanvas checkPathCanvas) {
 		this.userID = userID;
 		this.checkPathCanvas = checkPathCanvas;
 		container = new AbsolutePanel();		
@@ -120,19 +119,20 @@ public class Explorer extends Composite {
 		Row row2 = new Row();
 		Column col2 = new Column(2);
 		
-		dragController = new ListBoxDragController(RootPanel.get());
+		dragController1 = new ListBoxDragController(RootPanel.get());
 		dragController2 = new ListBoxDragController(RootPanel.get());
 		CustomScrollPanel scrollPanelSensors = new CustomScrollPanel();
 		
-		dbxSensors = new DraggableListBox(dragController, 64);
+		dbxSensors = new DraggableListBox(dragController1, 64);
 		scrollPanelSensors.add(dbxSensors);
 		scrollPanelSensors.setHeight("100px");
 		scrollPanelSensors.addStyleName(CSS_DRAGDROPWIDGET);
 		scrollPanelSensors.addStyleName("wellwhite");
 		
 		scrollPanelSensors.setHorizontalScrollbar(null, 0);
-		dragController.registerDropController(this.checkPathCanvas.getDropController());
-		dragController.addDragHandler(new DragHandler(){
+		
+		
+		dragController1.addDragHandler(new DragHandler(){
 
 			@Override
 			public void onDragEnd(DragEndEvent event) {
@@ -141,7 +141,7 @@ public class Explorer extends Composite {
 				RootPanel.get().add(new HTML("Y Coord Drop: " + String.valueOf(event.getContext().mouseY)));
 	
 				RootPanel.get().add(new HTML("Widget Class " + event.getContext().selectedWidgets.get(0).getClass()));
-				DragLabel current = (DragLabel) event.getContext().selectedWidgets.get(0);
+				ExplorerLabel current = (ExplorerLabel) event.getContext().selectedWidgets.get(0);
 				RootPanel.get().add(new HTML("Widget Content " + current.getText()));
 				
 			}
@@ -169,6 +169,9 @@ public class Explorer extends Composite {
 						
 			
 		});
+		
+		dragController1.registerDropController(this.checkPathCanvas.getToCanvasDropController());
+
 		
 		HorizontalPanel sensorHeader = new HorizontalPanel();
 		sensorHeader.add(new Icon(IconType.RSS));
@@ -261,8 +264,8 @@ public class Explorer extends Composite {
 			public void onChange(ChangeEvent event) {
 				// TODO Auto-generated method stub
 			
-				getSensors(lbxEndpoints.getValue());
-				getActors(lbxEndpoints.getValue());
+				getSensors(lbxEndpoints.getValue(), lbxEndpoints.getItemText(lbxEndpoints.getSelectedIndex()));
+				getActors(lbxEndpoints.getValue(), lbxEndpoints.getItemText(lbxEndpoints.getSelectedIndex()));
 			}
 			
 		});
@@ -298,8 +301,8 @@ public class Explorer extends Composite {
 				
 				if (lbxEndpoints.getValue() != null)
 				{
-					getSensors(lbxEndpoints.getValue());
-					getActors(lbxEndpoints.getValue());
+					getSensors(lbxEndpoints.getValue(), lbxEndpoints.getItemText(lbxEndpoints.getSelectedIndex()));
+					getActors(lbxEndpoints.getValue(), lbxEndpoints.getItemText(lbxEndpoints.getSelectedIndex()));
 				}
 			}
 			
@@ -309,7 +312,7 @@ public class Explorer extends Composite {
 	
 	
 	
-	private void getSensors(String endpointID)
+	private void getSensors(final String endpointID, final String endpointName)
 	{
 		PropertyServiceAsync propertyService = GWT
 				.create(PropertyService.class);
@@ -334,7 +337,7 @@ public class Explorer extends Composite {
 					PropertyData current = it.next();
 					
 				
-					dbxSensors.add(current.getName(), container.getOffsetWidth()+"px");
+					dbxSensors.add(current.getName(), endpointName, container.getOffsetWidth()+"px", current.getPropertyId(), endpointID, current.getEndpointclassId(), current.getPropertyclassId(), current.isSensor, current.isActor);
 				}
 				
 			}
@@ -344,7 +347,7 @@ public class Explorer extends Composite {
 	}
 
 	
-	private void getActors(String endpointID)
+	private void getActors(final String endpointID, final String endpointName)
 	{
 		PropertyServiceAsync propertyService = GWT
 				.create(PropertyService.class);
@@ -366,7 +369,7 @@ public class Explorer extends Composite {
 				Iterator<PropertyData> it = result.iterator();
 				while (it.hasNext()){
 					PropertyData current = it.next();
-					dbxActors.add(current.getName(), container.getOffsetWidth()+"px");
+					dbxActors.add(current.getName(), endpointName, container.getOffsetWidth()+"px", current.getPropertyId(), endpointID, current.getEndpointclassId(), current.getPropertyclassId(), current.isSensor, current.isActor);
 				}
 				
 			}
