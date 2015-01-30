@@ -30,7 +30,10 @@ public class ToCanvasDropController extends AbsolutePositionDropController {
 		int dropTargetOffsetX = dropTargetLocation.getLeft()
 		        + DOMUtil.getBorderLeft(dropTarget.getElement());
 		int dropTargetOffsetY = dropTargetLocation.getTop() + DOMUtil.getBorderTop(dropTarget.getElement());
-		RootPanel.get().add(new HTML("IT WAS DROPPED at " + (context.desiredDraggableX - dropTargetOffsetX) + " / " + (context.desiredDraggableY - dropTargetOffsetY)));
+		
+		 ExplorerLabel current = (ExplorerLabel) context.selectedWidgets.get(0);
+		
+		RootPanel.get().add(new HTML(current + " WAS DROPPED at " + (context.desiredDraggableX - dropTargetOffsetX) + " / " + (context.desiredDraggableY - dropTargetOffsetY)));
 		
 		int targetX = context.desiredDraggableX - dropTargetOffsetX;
 		int targetY = context.desiredDraggableY - dropTargetOffsetY;

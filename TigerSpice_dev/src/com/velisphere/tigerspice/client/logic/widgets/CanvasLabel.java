@@ -1,5 +1,7 @@
 package com.velisphere.tigerspice.client.logic.widgets;
 
+import com.allen_sauer.gwt.dnd.client.util.DOMUtil;
+import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.BorderStyle;
 import com.google.gwt.dom.client.Style.Cursor;
@@ -26,6 +28,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 import com.orange.links.client.save.IsDiagramSerializable;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
@@ -45,6 +48,7 @@ public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers,IsDia
     	String endpointID;
     	byte isActor;
     	byte isSensor;
+    	Widget callManagementWidget;
         
         
         public CanvasLabel(String text, String endpointName, String propertyID, String endpointID, String endpointClassID, String propertyClassID, byte isSensor, byte isActor){
@@ -84,6 +88,8 @@ public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers,IsDia
                 this.getElement().getStyle().setCursor(Cursor.POINTER);
         }
         
+       
+        
         private void getEndpointClassImage(final Image imgEpcImage)
         {
         	EPCServiceAsync epcService = GWT
@@ -119,6 +125,17 @@ public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers,IsDia
 
 					});
 
+        }
+        
+       
+        public void setCallManagementWidget(Widget callManagementWidget)
+        {
+        	this.callManagementWidget = callManagementWidget;
+        }
+        
+        public Widget getCallManagementWidget()
+        {
+        	return this.callManagementWidget;
         }
         
         @Override

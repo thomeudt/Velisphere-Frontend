@@ -10,11 +10,11 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
 
-public class InCanvasDropController extends AbsolutePositionDropController {
+public class InCanvasMoveDropController extends AbsolutePositionDropController {
 
 	AbsolutePanel dropTarget;
 	
-	public InCanvasDropController(AbsolutePanel dropTarget) {
+	public InCanvasMoveDropController(AbsolutePanel dropTarget) {
 		super(dropTarget);
 		this.dropTarget = dropTarget;
 	}
@@ -30,9 +30,14 @@ public class InCanvasDropController extends AbsolutePositionDropController {
 		int dropTargetOffsetX = dropTargetLocation.getLeft()
 		        + DOMUtil.getBorderLeft(dropTarget.getElement());
 		int dropTargetOffsetY = dropTargetLocation.getTop() + DOMUtil.getBorderTop(dropTarget.getElement());
-		RootPanel.get().add(new HTML("IT WAS DROPPED at " + (context.desiredDraggableX - dropTargetOffsetX) + " / " + (context.desiredDraggableY - dropTargetOffsetY)));
+		
+		 CanvasLabel current = (CanvasLabel) context.selectedWidgets.get(0);
+		
+		RootPanel.get().add(new HTML(current.content + " WAS DROPPED at " + (context.desiredDraggableX - dropTargetOffsetX) + " / " + (context.desiredDraggableY - dropTargetOffsetY)));
 		
 			
 	}
+	
+	
 
 }
