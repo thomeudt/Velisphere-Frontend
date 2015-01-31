@@ -39,14 +39,20 @@ import com.velisphere.tigerspice.client.event.DraggedToCanvasEventHandler;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasEvent;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasEventHandler;
+import com.velisphere.tigerspice.client.logic.widgets.draggables.CanvasLabel;
+import com.velisphere.tigerspice.client.logic.widgets.draggables.ExplorerLabel;
+import com.velisphere.tigerspice.client.logic.widgets.draggables.LinkCreator;
+import com.velisphere.tigerspice.client.logic.widgets.draggables.LogicCheckAnd;
+import com.velisphere.tigerspice.client.logic.widgets.draggables.LogicCheckOr;
 
 public class CustomCanvas extends Composite {
 
 	Context2d context;
 	Canvas canvas;
 	
-	ToCanvasDropController toCanvasDropController;
+	ListToCanvasDropController listToCanvasDropController;
 	InCanvasMoveDropController inCanvasMoveDropController;
+	LogicToCanvasDropController logicToCanvasDropController;
 	PickupDragController dragController;
 	PickupDragController linkDragController;
 
@@ -63,7 +69,8 @@ public class CustomCanvas extends Composite {
 		
 		dragController = new PickupDragController(logicPanel, false);
 		linkDragController = new PickupDragController(logicPanel, false);
-		toCanvasDropController = new ToCanvasDropController(logicPanel);
+		listToCanvasDropController = new ListToCanvasDropController(logicPanel);
+		logicToCanvasDropController = new LogicToCanvasDropController(logicPanel);
 		setDraggedToCanvasEventListener();
 		setLinkedInCanvasEventListener();
 
@@ -112,10 +119,16 @@ public class CustomCanvas extends Composite {
 		
 	}
 
-	public DropController getToCanvasDropController()
+	public DropController getListToCanvasDropController()
 	{
 		
-		return this.toCanvasDropController;
+		return this.listToCanvasDropController;
+	}
+	
+	public DropController getLogicToCanvasDropController()
+	{
+		
+		return this.logicToCanvasDropController;
 	}
 	
 	
@@ -135,75 +148,43 @@ public class CustomCanvas extends Composite {
 						
 						// TODO Auto-generated method stub
 
-						final ExplorerLabel current = (ExplorerLabel) draggedToCanvasEvent
-								.getContext().selectedWidgets.get(0);
-
-						RootPanel.get().add(
-								new HTML("***** EVENT: dropped "
-										+ current.getText() + " at X:"
-										+ draggedToCanvasEvent.getTargetX()
-										+ " Y:"
-										+ draggedToCanvasEvent.getTargetY()));
-
 						
-						final CanvasLabel propertyLabel = new CanvasLabel(current.getText(), current.getEndpointName(), current.getPropertyID(), current.getEndpointID(), current.getEndpointClassID(), current.getPropertyClassID(), current.getIsSensor(), current.getIsActor());
-						
-						logicPanel.add(propertyLabel,
-								draggedToCanvasEvent.getTargetX(),
-								draggedToCanvasEvent.getTargetY());
-						
-						
-						
-						
-						dragController.makeDraggable(propertyLabel);
-						
-						
-						InCanvasLinkDropController inCanvasLinkDropController = new InCanvasLinkDropController(propertyLabel);
-						linkDragController.registerDropController(inCanvasLinkDropController);
-						
-						
-
-					
-						
-						
-						propertyLabel.addMouseOverHandler(new MouseOverHandler(){
-
-							
-							
-							@Override
-							public void onMouseOver(MouseOverEvent event) {
-								// TODO Auto-generated method stub
-
-								if(propertyLabel.getCallManagementWidget() == null)
+						if (draggedToCanvasEvent.getContext().selectedWidgets.get(0) instanceof ExplorerLabel)
+						{
+							addCanvasLabel(draggedToCanvasEvent);
+						} else 
+							if (draggedToCanvasEvent.getContext().selectedWidgets.get(0) instanceof LogicCheckAnd)
+							{
+								// do something
+								
+								LogicCheckAnd logicCheckAnd = (LogicCheckAnd) draggedToCanvasEvent.getContext().selectedWidgets.get(0);
+								
+								logicPanel.add(logicCheckAnd,
+										draggedToCanvasEvent.getTargetX(),
+										draggedToCanvasEvent.getTargetY());
+								
+								
+								dragController.makeDraggable(logicCheckAnd);
+								
+								
+							}
+							else 
+								if (draggedToCanvasEvent.getContext().selectedWidgets.get(0) instanceof LogicCheckOr)
 								{
-									WidgetLocation widgetLocation = new WidgetLocation(propertyLabel, logicPanel);
-									//final HTML link = new HTML("Manage");
+									// do something
 									
-									final LinkCreator link = new LinkCreator(propertyLabel);
+									LogicCheckOr logicCheckOr = (LogicCheckOr) draggedToCanvasEvent.getContext().selectedWidgets.get(0);
 									
-									propertyLabel.setCallManagementWidget(link);
+									logicPanel.add(logicCheckOr,
+											draggedToCanvasEvent.getTargetX(),
+											draggedToCanvasEvent.getTargetY());
 									
-									logicPanel.add(link, widgetLocation.getLeft(), widgetLocation.getTop()-15);
-									linkDragController.makeDraggable(link);
 									
-									link.addMouseOutHandler(new MouseOutHandler(){
-
-										@Override
-										public void onMouseOut(MouseOutEvent event) {
-											// TODO Auto-generated method stub
-											link.setVisible(false);
-											propertyLabel.setCallManagementWidget(null);
-										}
-										
-									});
-
+									dragController.makeDraggable(logicCheckOr);
 									
 								}
-								
-																
-							}
-		                	
-		                });
+							
+
 		                
 						
 						 
@@ -213,6 +194,83 @@ public class CustomCanvas extends Composite {
 				});
 
 	}
+
+	
+	
+	private void addCanvasLabel(DraggedToCanvasEvent draggedToCanvasEvent)
+	{
+		
+		final ExplorerLabel current = (ExplorerLabel) draggedToCanvasEvent
+				.getContext().selectedWidgets.get(0);
+
+		RootPanel.get().add(
+				new HTML("***** EVENT: dropped "
+						+ current.getText() + " at X:"
+						+ draggedToCanvasEvent.getTargetX()
+						+ " Y:"
+						+ draggedToCanvasEvent.getTargetY()));
+
+		
+		final CanvasLabel propertyLabel = new CanvasLabel(current.getText(), current.getEndpointName(), current.getPropertyID(), current.getEndpointID(), current.getEndpointClassID(), current.getPropertyClassID(), current.getIsSensor(), current.getIsActor());
+		
+		logicPanel.add(propertyLabel,
+				draggedToCanvasEvent.getTargetX(),
+				draggedToCanvasEvent.getTargetY());
+		
+		
+		
+		
+		dragController.makeDraggable(propertyLabel);
+		
+		
+		InCanvasLinkDropController inCanvasLinkDropController = new InCanvasLinkDropController(propertyLabel);
+		linkDragController.registerDropController(inCanvasLinkDropController);
+		
+		
+
+	
+		
+		
+		propertyLabel.addMouseOverHandler(new MouseOverHandler(){
+
+			
+			
+			@Override
+			public void onMouseOver(MouseOverEvent event) {
+				// TODO Auto-generated method stub
+
+				if(propertyLabel.getCallManagementWidget() == null)
+				{
+					WidgetLocation widgetLocation = new WidgetLocation(propertyLabel, logicPanel);
+					//final HTML link = new HTML("Manage");
+					
+					final LinkCreator link = new LinkCreator(propertyLabel);
+					
+					propertyLabel.setCallManagementWidget(link);
+					
+					logicPanel.add(link, widgetLocation.getLeft(), widgetLocation.getTop()-15);
+					linkDragController.makeDraggable(link);
+					
+					link.addMouseOutHandler(new MouseOutHandler(){
+
+						@Override
+						public void onMouseOut(MouseOutEvent event) {
+							// TODO Auto-generated method stub
+							link.setVisible(false);
+							propertyLabel.setCallManagementWidget(null);
+						}
+						
+					});
+
+					
+				}
+				
+												
+			}
+        	
+        });
+	}
+	
 	
 	private void setLinkedInCanvasEventListener()
 	{

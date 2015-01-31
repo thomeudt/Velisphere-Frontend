@@ -56,6 +56,9 @@ import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.logic.widgets.draggables.ExplorerLabel;
+import com.velisphere.tigerspice.client.logic.widgets.draggables.LogicCheckAnd;
+import com.velisphere.tigerspice.client.logic.widgets.draggables.LogicCheckOr;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.spheres.SphereService;
@@ -170,7 +173,7 @@ public class Explorer extends Composite {
 			
 		});
 		
-		dragController1.registerDropController(this.checkPathCanvas.getToCanvasDropController());
+		dragController1.registerDropController(this.checkPathCanvas.getListToCanvasDropController());
 
 		
 		HorizontalPanel sensorHeader = new HorizontalPanel();
@@ -205,6 +208,39 @@ public class Explorer extends Composite {
 		
 		row3.add(col3);
 		container.add(row3);
+
+		Row row4= new Row();
+		Column col4 = new Column(2);
+		HorizontalPanel logicHeader = new HorizontalPanel();
+		logicHeader.add(new Icon(IconType.LINK));
+		logicHeader.add(new HTML("<b>&nbsp;&nbsp;Logic Combinators</b>"));
+		col4.add(logicHeader);
+		row4.add(col4);
+		container.add(row4);
+		
+		Row row5= new Row();
+		Column col5 = new Column(1);
+		
+		LogicCheckAnd logicCheckAnd = new LogicCheckAnd();
+		col5.add(logicCheckAnd);
+		row5.add(col5);
+		
+		PickupDragController logicDragController = new PickupDragController(RootPanel.get(), true);
+		
+		logicDragController.makeDraggable(logicCheckAnd);
+		
+		Column col6 = new Column(1);
+		LogicCheckOr logicCheckOr = new LogicCheckOr();
+		col6.add(logicCheckOr);
+		row5.add(col6);
+	
+		logicDragController.makeDraggable(logicCheckOr);
+		logicDragController.registerDropController(this.checkPathCanvas.getLogicToCanvasDropController());
+		
+		container.add(row5);
+
+		
+		
 		
 	}
 

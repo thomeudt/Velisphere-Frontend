@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.logic.widgets;
+package com.velisphere.tigerspice.client.logic.widgets.draggables;
 
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
@@ -15,7 +15,7 @@ public class ExplorerLabel extends Label {
 	byte isSensor;
 	
 	
-	ExplorerLabel(String text, String endpointName, String propertyID, String endpointID, String endpointClassID, String propertyClassID, byte isSensor, byte isActor)
+	public ExplorerLabel(String text, String endpointName, String propertyID, String endpointID, String endpointClassID, String propertyClassID, byte isSensor, byte isActor)
 	{
 		super(text);
 		this.endpointName = endpointName;

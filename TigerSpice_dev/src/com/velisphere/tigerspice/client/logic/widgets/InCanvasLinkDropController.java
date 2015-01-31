@@ -12,6 +12,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasEvent;
+import com.velisphere.tigerspice.client.logic.widgets.draggables.CanvasLabel;
+import com.velisphere.tigerspice.client.logic.widgets.draggables.LinkCreator;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -52,7 +54,7 @@ public class InCanvasLinkDropController extends SimpleDropController {
 		
 		  LinkCreator linkCreator = (LinkCreator) context.draggable;
 	      
-	      RootPanel.get().add(new HTML(linkCreator.getSource().content + " was dropped on " + dropTarget.content));
+	      RootPanel.get().add(new HTML(linkCreator.getSource().getContentRepresentation() + " was dropped on " + dropTarget.getContentRepresentation()));
 	      
 	      EventUtils.EVENT_BUS.fireEvent(new LinkedInCanvasEvent(linkCreator.getSource(), dropTarget));
 		

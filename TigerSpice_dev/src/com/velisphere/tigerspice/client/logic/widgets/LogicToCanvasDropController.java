@@ -10,35 +10,36 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.FilterAppliedEvent;
+import com.velisphere.tigerspice.client.logic.widgets.draggables.ExplorerLabel;
+import com.velisphere.tigerspice.client.logic.widgets.draggables.LogicCheckAnd;
+import com.velisphere.tigerspice.client.logic.widgets.draggables.LogicCheckOr;
 
-public class ToCanvasDropController extends AbsolutePositionDropController {
+public class LogicToCanvasDropController extends AbsolutePositionDropController {
 
 	AbsolutePanel dropTarget;
-	
-	public ToCanvasDropController(AbsolutePanel dropTarget) {
+
+	public LogicToCanvasDropController(AbsolutePanel dropTarget) {
 		super(dropTarget);
 		this.dropTarget = dropTarget;
 	}
-	
+
 	@Override
-	public void onDrop(DragContext context)
-	{
-		//super.onDrop(context);
+	public void onDrop(DragContext context) {
+		// super.onDrop(context);
 		RootPanel.get().add(new HTML("DropController says onDrop"));
-		
+
 		WidgetLocation dropTargetLocation = new WidgetLocation(dropTarget, null);
 		int dropTargetOffsetX = dropTargetLocation.getLeft()
-		        + DOMUtil.getBorderLeft(dropTarget.getElement());
-		int dropTargetOffsetY = dropTargetLocation.getTop() + DOMUtil.getBorderTop(dropTarget.getElement());
-		
-		 ExplorerLabel current = (ExplorerLabel) context.selectedWidgets.get(0);
-		
-		RootPanel.get().add(new HTML(current + " WAS DROPPED at " + (context.desiredDraggableX - dropTargetOffsetX) + " / " + (context.desiredDraggableY - dropTargetOffsetY)));
-		
+				+ DOMUtil.getBorderLeft(dropTarget.getElement());
+		int dropTargetOffsetY = dropTargetLocation.getTop()
+				+ DOMUtil.getBorderTop(dropTarget.getElement());
+
+
 		int targetX = context.desiredDraggableX - dropTargetOffsetX;
 		int targetY = context.desiredDraggableY - dropTargetOffsetY;
-		EventUtils.EVENT_BUS.fireEvent(new DraggedToCanvasEvent(context, targetX, targetY));
-			
+		EventUtils.EVENT_BUS.fireEvent(new DraggedToCanvasEvent(context,
+				targetX, targetY));
+
 	}
 
 }

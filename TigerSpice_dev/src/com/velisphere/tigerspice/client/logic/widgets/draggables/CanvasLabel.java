@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.logic.widgets;
+package com.velisphere.tigerspice.client.logic.widgets.draggables;
 
 import com.allen_sauer.gwt.dnd.client.util.DOMUtil;
 import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
@@ -37,7 +37,7 @@ import com.velisphere.tigerspice.shared.EPCData;
 
 
 	
-public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers,IsDiagramSerializable{
+public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers {
 
         public static String identifier = "diagramlabel";
         String endpointName;
@@ -158,21 +158,12 @@ public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers,IsDia
                 return addDomHandler(handler, TouchCancelEvent.getType());
         }
 
-        @Override
-        public String getType() {
-                return this.identifier;
-        }
-
-        @Override
+      
         public String getContentRepresentation() {
                 return this.content;
         }
 
-        @Override
-        public void setContentRepresentation(String contentRepresentation) {
-                this.content = contentRepresentation;
-        }
-        
+      
         private void removeDefaultMouseDown()
     	{
         	

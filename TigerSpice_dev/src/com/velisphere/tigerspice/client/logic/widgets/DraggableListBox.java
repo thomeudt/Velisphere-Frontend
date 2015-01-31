@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.logic.widgets.draggables.ExplorerLabel;
 
 import java.util.ArrayList;
 
