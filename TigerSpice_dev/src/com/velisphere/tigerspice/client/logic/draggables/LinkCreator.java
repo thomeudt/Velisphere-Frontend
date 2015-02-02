@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.logic.widgets.draggables;
+package com.velisphere.tigerspice.client.logic.draggables;
 
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.constants.IconType;

@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client.logic.widgets;
+package com.velisphere.tigerspice.client.logic.layoutWidgets;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -56,9 +56,11 @@ import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
-import com.velisphere.tigerspice.client.logic.widgets.draggables.ExplorerLabel;
-import com.velisphere.tigerspice.client.logic.widgets.draggables.LogicCheckAnd;
-import com.velisphere.tigerspice.client.logic.widgets.draggables.LogicCheckOr;
+import com.velisphere.tigerspice.client.logic.controllers.ListBoxDragController;
+import com.velisphere.tigerspice.client.logic.draggables.DraggableListBox;
+import com.velisphere.tigerspice.client.logic.draggables.ExplorerLabel;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.spheres.SphereService;

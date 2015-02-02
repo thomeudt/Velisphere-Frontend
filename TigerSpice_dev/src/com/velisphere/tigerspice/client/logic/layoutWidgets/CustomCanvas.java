@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.logic.widgets;
+package com.velisphere.tigerspice.client.logic.layoutWidgets;
 
 import java.util.LinkedList;
 
@@ -39,11 +39,15 @@ import com.velisphere.tigerspice.client.event.DraggedToCanvasEventHandler;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasEvent;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasEventHandler;
-import com.velisphere.tigerspice.client.logic.widgets.draggables.CanvasLabel;
-import com.velisphere.tigerspice.client.logic.widgets.draggables.ExplorerLabel;
-import com.velisphere.tigerspice.client.logic.widgets.draggables.LinkCreator;
-import com.velisphere.tigerspice.client.logic.widgets.draggables.LogicCheckAnd;
-import com.velisphere.tigerspice.client.logic.widgets.draggables.LogicCheckOr;
+import com.velisphere.tigerspice.client.logic.controllers.InCanvasLinkDropController;
+import com.velisphere.tigerspice.client.logic.controllers.InCanvasMoveDropController;
+import com.velisphere.tigerspice.client.logic.controllers.ListToCanvasDropController;
+import com.velisphere.tigerspice.client.logic.controllers.LogicToCanvasDropController;
+import com.velisphere.tigerspice.client.logic.draggables.CanvasLabel;
+import com.velisphere.tigerspice.client.logic.draggables.ExplorerLabel;
+import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr;
 
 public class CustomCanvas extends Composite {
 

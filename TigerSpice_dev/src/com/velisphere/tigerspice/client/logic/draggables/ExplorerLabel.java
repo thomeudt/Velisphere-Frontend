@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.logic.widgets.draggables;
+package com.velisphere.tigerspice.client.logic.draggables;
 
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;

@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.logic.widgets;
+package com.velisphere.tigerspice.client.logic.controllers;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.drop.AbsolutePositionDropController;
@@ -12,8 +12,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasEvent;
-import com.velisphere.tigerspice.client.logic.widgets.draggables.CanvasLabel;
-import com.velisphere.tigerspice.client.logic.widgets.draggables.LinkCreator;
+import com.velisphere.tigerspice.client.logic.draggables.CanvasLabel;
+import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Label;

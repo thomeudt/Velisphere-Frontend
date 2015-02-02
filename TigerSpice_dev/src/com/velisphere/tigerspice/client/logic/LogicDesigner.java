@@ -14,8 +14,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.velisphere.tigerspice.client.logic.widgets.CustomCanvas;
-import com.velisphere.tigerspice.client.logic.widgets.Explorer;
+import com.velisphere.tigerspice.client.logic.layoutWidgets.CustomCanvas;
+import com.velisphere.tigerspice.client.logic.layoutWidgets.Explorer;
 import com.velisphere.tigerspice.client.rules.CheckpathList;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 

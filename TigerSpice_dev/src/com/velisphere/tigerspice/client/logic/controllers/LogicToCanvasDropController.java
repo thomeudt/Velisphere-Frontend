@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.logic.widgets;
+package com.velisphere.tigerspice.client.logic.controllers;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.drop.AbsolutePositionDropController;
@@ -10,9 +10,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.FilterAppliedEvent;
-import com.velisphere.tigerspice.client.logic.widgets.draggables.ExplorerLabel;
-import com.velisphere.tigerspice.client.logic.widgets.draggables.LogicCheckAnd;
-import com.velisphere.tigerspice.client.logic.widgets.draggables.LogicCheckOr;
+import com.velisphere.tigerspice.client.logic.draggables.ExplorerLabel;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr;
 
 public class LogicToCanvasDropController extends AbsolutePositionDropController {
 

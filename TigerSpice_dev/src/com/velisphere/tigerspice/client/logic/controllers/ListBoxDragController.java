@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.logic.widgets;
+package com.velisphere.tigerspice.client.logic.controllers;
 
 
 import com.google.gwt.user.client.DOM;
@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.logic.draggables.DraggableListBox;
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
@@ -17,9 +18,9 @@ import java.util.ArrayList;
 /**
  * DragController for {@link DualListExample}.
  */
-class ListBoxDragController extends PickupDragController {
+public class ListBoxDragController extends PickupDragController {
 
-  ListBoxDragController(AbsolutePanel panel) {
+  public ListBoxDragController(AbsolutePanel panel) {
     super(panel, false);
     setBehaviorDragProxy(true);
     setBehaviorMultipleSelection(true);

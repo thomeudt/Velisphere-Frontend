@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.logic.widgets.draggables;
+package com.velisphere.tigerspice.client.logic.draggables;
 
 import com.github.gwtbootstrap.client.ui.Image;
 import com.google.gwt.dom.client.Style.Unit;
@@ -6,14 +6,14 @@ import com.google.gwt.event.dom.client.HasAllTouchHandlers;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.velisphere.tigerspice.client.images.Images;
 
-public class LogicCheckAnd extends FocusPanel implements HasAllTouchHandlers {
+public class LogicCheckOr extends FocusPanel implements HasAllTouchHandlers {
 
 	
-	public LogicCheckAnd()
+	public LogicCheckOr()
 	{
 		super();
 		Image andIcon = new Image();
-		andIcon.setResource(Images.INSTANCE.and_icon());
+		andIcon.setResource(Images.INSTANCE.or_icon());
 		andIcon.setTitle("This logic check is true if all checks linked to this logic check are true");
 		this.add(andIcon);
 		
@@ -26,7 +26,6 @@ public class LogicCheckAnd extends FocusPanel implements HasAllTouchHandlers {
           //getElement().getStyle().setBorderWidth(1, Unit.PX);
           getElement().getStyle().setBackgroundColor("#ffffff");
           
-	
 	}
 	
 }

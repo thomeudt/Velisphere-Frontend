@@ -23,8 +23,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 		xmlns:vsrl="urn:import:com.velisphere.tigerspice.client.rules"
 		xmlns:vsch="urn:import:com.velisphere.tigerspice.client.checks"
 		xmlns:vsac="urn:import:com.velisphere.tigerspice.client.actions"
-		xmlns:vspr="urn:import:com.velisphere.tigerspice.client.properties"
-		xmlns:vslw="urn:import:com.velisphere.tigerspice.client.logic.widgets">
+		xmlns:vspr="urn:import:com.velisphere.tigerspice.client.properties">
 		<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images'/>
 	<g:HTMLPanel>
             <b:Breadcrumbs divider=">" ui:field="brdMain">

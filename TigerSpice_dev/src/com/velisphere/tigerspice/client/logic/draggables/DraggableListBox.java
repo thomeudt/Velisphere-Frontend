@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.logic.widgets;
+package com.velisphere.tigerspice.client.logic.draggables;
 /*
  * Copyright 2009 Fred Sauer
  * 
@@ -21,14 +21,14 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import com.velisphere.tigerspice.client.logic.widgets.draggables.ExplorerLabel;
+import com.velisphere.tigerspice.client.logic.controllers.ListBoxDragController;
 
 import java.util.ArrayList;
 
 /**
  * Either left or right hand side of a {@link DualListBox}.
  */
-class DraggableListBox extends Composite {
+public class DraggableListBox extends Composite {
 
   private static final class SpacerHTML extends HTML {
 
@@ -50,7 +50,7 @@ class DraggableListBox extends Composite {
    * Used by {@link ListBoxDragController} to create a draggable listbox containing the selected
    * items.
    */
-  DraggableListBox(int size) {
+  public DraggableListBox(int size) {
     
 	grid = new Grid(size, 1);
     initWidget(grid);
@@ -65,17 +65,17 @@ class DraggableListBox extends Composite {
   /**
    * Used by {@link DualListBox} to create the left and right list boxes.
    */
-  DraggableListBox(PickupDragController dragController, int size) {
+  public DraggableListBox(PickupDragController dragController, int size) {
     this(size);
     this.dragController = dragController;
   }
 
-  void add(String text, String endpointName, String width, String propertyID, String endpointID, String endpointClassID, String propertyClassID, byte isSensor, byte isActor) {
+  public void add(String text, String endpointName, String width, String propertyID, String endpointID, String endpointClassID, String propertyClassID, byte isSensor, byte isActor) {
 	  
     add(new ExplorerLabel(text, endpointName, propertyID,  endpointID, endpointClassID, propertyClassID, isSensor, isActor), width);
   }
 
-  void add(Widget widget, String width) {
+  public void add(Widget widget, String width) {
     setWidget(widgetCount++, widget, width);
   }
 
@@ -83,7 +83,7 @@ class DraggableListBox extends Composite {
     return widgetCount;
   }
 
-  boolean remove(Widget widget) {
+  public boolean remove(Widget widget) {
     int index = getWidgetIndex(widget);
     if (index == -1) {
       return false;
@@ -151,7 +151,7 @@ class DraggableListBox extends Composite {
   }
   
 
-  void clear()
+  public void clear()
   {
 	
 	    for (int i = 0; i <= getWidgetCount(); i++) {

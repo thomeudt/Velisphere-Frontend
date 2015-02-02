@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.logic.widgets.draggables;
+package com.velisphere.tigerspice.client.logic.draggables;
 
 import com.allen_sauer.gwt.dnd.client.util.DOMUtil;
 import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
