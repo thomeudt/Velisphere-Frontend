@@ -2,7 +2,9 @@ package com.velisphere.tigerspice.client.logic.draggables;
 
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 
 public class ExplorerLabel extends Label {
 
@@ -25,6 +27,7 @@ public class ExplorerLabel extends Label {
 		this.endpointID = endpointID;
 		this.isActor = isActor;
 		this.isSensor = isSensor;
+		RootPanel.get().add(new HTML("SENSOR..." + this.isSensor));
 		removeDefaultMouseDown();
 		
 	}

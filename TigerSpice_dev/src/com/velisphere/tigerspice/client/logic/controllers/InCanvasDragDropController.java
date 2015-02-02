@@ -7,15 +7,17 @@ import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.velisphere.tigerspice.client.event.DraggedInCanvasEvent;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.LinkedInCanvasEvent;
 import com.velisphere.tigerspice.client.logic.draggables.CanvasLabel;
 
-public class InCanvasMoveDropController extends AbsolutePositionDropController {
+public class InCanvasDragDropController extends AbsolutePositionDropController {
 
 	AbsolutePanel dropTarget;
 	
-	public InCanvasMoveDropController(AbsolutePanel dropTarget) {
+	public InCanvasDragDropController(AbsolutePanel dropTarget) {
 		super(dropTarget);
 		this.dropTarget = dropTarget;
 	}
@@ -35,7 +37,7 @@ public class InCanvasMoveDropController extends AbsolutePositionDropController {
 		 CanvasLabel current = (CanvasLabel) context.selectedWidgets.get(0);
 		
 		RootPanel.get().add(new HTML(current.getContentRepresentation() + " WAS DROPPED at " + (context.desiredDraggableX - dropTargetOffsetX) + " / " + (context.desiredDraggableY - dropTargetOffsetY)));
-		
+		EventUtils.EVENT_BUS.fireEvent(new DraggedInCanvasEvent(current));
 			
 	}
 	

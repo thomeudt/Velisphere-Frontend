@@ -2,6 +2,8 @@ package com.velisphere.tigerspice.client.logic.draggables;
 
 import com.allen_sauer.gwt.dnd.client.util.DOMUtil;
 import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
+import com.github.gwtbootstrap.client.ui.Icon;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.BorderStyle;
 import com.google.gwt.dom.client.Style.Cursor;
@@ -48,7 +50,7 @@ public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers {
     	String endpointID;
     	byte isActor;
     	byte isSensor;
-    	Widget callManagementWidget;
+    	Widget dragPointWidget;
         
         
         public CanvasLabel(String text, String endpointName, String propertyID, String endpointID, String endpointClassID, String propertyClassID, byte isSensor, byte isActor){
@@ -61,34 +63,49 @@ public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers {
         		this.endpointID = endpointID;
         		this.isActor = isActor;
         		this.isSensor = isSensor;
-                
-                HorizontalPanel h = new HorizontalPanel();
-                
-                Image imgEpcImage = new Image();
-                h.add(imgEpcImage);
-                getEndpointClassImage(imgEpcImage);
-                
-                h.add(new HTML(this.endpointName + "<br><b>"+this.content+"</b>"));
-                
-              
-                
-                
-                this.add(h);
-                this.setStyleName("wellwhite");
-                
-            
-                getElement().getStyle().setPadding(3, Unit.PX);
-                //getElement().getStyle().setBorderStyle(BorderStyle.SOLID);
-                //getElement().getStyle().setBorderColor("#bbbbbb");
-                //getElement().getStyle().setBorderWidth(1, Unit.PX);
-                getElement().getStyle().setBackgroundColor("#ffffff");
-                
+        		buildLayout();
+                     
                 removeDefaultMouseDown();
                 
-                this.getElement().getStyle().setCursor(Cursor.POINTER);
         }
         
        
+        private void buildLayout()
+        {
+        	HorizontalPanel h = new HorizontalPanel();
+    
+        	if (this.isSensor != 0){
+            	h.add(new Icon(IconType.RSS));
+            }
+            
+            if (this.isActor != 0){
+            	h.add(new Icon(IconType.COGS));
+            }
+            
+        	
+        	h.add(new HTML("&nbsp;"));
+            
+        	Image imgEpcImage = new Image();
+            h.add(imgEpcImage);
+            getEndpointClassImage(imgEpcImage);
+    
+            
+            h.add(new HTML(this.endpointName + "<br><b>"+this.content+"</b>"));
+            
+            this.add(h);
+            this.setStyleName("wellwhite");
+            
+        
+            getElement().getStyle().setPadding(3, Unit.PX);
+            //getElement().getStyle().setBorderStyle(BorderStyle.SOLID);
+            //getElement().getStyle().setBorderColor("#bbbbbb");
+            //getElement().getStyle().setBorderWidth(1, Unit.PX);
+            getElement().getStyle().setBackgroundColor("#ffffff");
+            this.getElement().getStyle().setCursor(Cursor.POINTER);
+            
+        	
+        }
+        
         
         private void getEndpointClassImage(final Image imgEpcImage)
         {
@@ -128,14 +145,14 @@ public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers {
         }
         
        
-        public void setCallManagementWidget(Widget callManagementWidget)
+        public void setDragPointWidget(Widget dragPointWidget)
         {
-        	this.callManagementWidget = callManagementWidget;
+        	this.dragPointWidget = dragPointWidget;
         }
         
-        public Widget getCallManagementWidget()
+        public Widget getDragPointWidget()
         {
-        	return this.callManagementWidget;
+        	return this.dragPointWidget;
         }
         
         @Override

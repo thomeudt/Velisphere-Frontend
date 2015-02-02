@@ -391,6 +391,15 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 							.getString("PROPERTYCLASSID");
 					propertyData.endpointclassId = result
 							.getString("ENDPOINTCLASSID");
+					propertyData.isActor = (byte) result
+							.get("ACT", VoltType.TINYINT);
+					propertyData.isSensor = (byte) result
+							.get("SENSE", VoltType.TINYINT);
+					propertyData.isConfigurable = (byte) result
+							.get("CONFIGURABLE", VoltType.TINYINT);
+					propertyData.status = (byte) result
+							.get("STATUS", VoltType.TINYINT);
+					
 					
 					actPropertiesForEndpoint.add(propertyData);
 
@@ -455,6 +464,15 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 							.getString("PROPERTYCLASSID");
 					propertyData.endpointclassId = result
 							.getString("ENDPOINTCLASSID");
+					propertyData.isActor = (byte) result
+							.get("ACT", VoltType.TINYINT);
+					propertyData.isSensor = (byte) result
+							.get("SENSE", VoltType.TINYINT);
+					propertyData.isConfigurable = (byte) result
+							.get("CONFIGURABLE", VoltType.TINYINT);
+					propertyData.status = (byte) result
+							.get("STATUS", VoltType.TINYINT);
+					
 					
 					sensePropertiesForEndpoint.add(propertyData);
 
