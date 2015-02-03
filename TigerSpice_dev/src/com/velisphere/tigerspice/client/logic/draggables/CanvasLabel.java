@@ -184,6 +184,21 @@ public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers {
         {
         	return this.isSensor;
         }
+        
+        public String getPropertyClassID()
+        {
+        	return this.propertyClassID;
+        }
+        
+        public String getPropertyID()
+        {
+        	return this.propertyID;
+        }
+        
+        public String getEndpointID()
+        {
+        	return this.endpointID;
+        }
       
         private void removeDefaultMouseDown()
     	{

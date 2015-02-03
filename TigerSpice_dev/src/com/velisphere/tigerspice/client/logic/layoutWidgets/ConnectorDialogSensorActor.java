@@ -1,14 +1,38 @@
 package com.velisphere.tigerspice.client.logic.layoutWidgets;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.Row;
 import com.github.gwtbootstrap.client.ui.TextBox;
+import com.github.gwtbootstrap.client.ui.constants.ButtonType;
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DomEvent;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.velisphere.tigerspice.client.event.ConnectionSaveEvent;
+import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.helper.ActionSourceConfig;
+import com.velisphere.tigerspice.client.helper.DatatypeConfig;
 import com.velisphere.tigerspice.client.logic.draggables.CanvasLabel;
+import com.velisphere.tigerspice.client.properties.PropertyService;
+import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
+import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
+import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
+import com.velisphere.tigerspice.client.spheres.SphereService;
+import com.velisphere.tigerspice.client.spheres.SphereServiceAsync;
+import com.velisphere.tigerspice.shared.PropertyClassData;
+import com.velisphere.tigerspice.shared.PropertyData;
 
 public class ConnectorDialogSensorActor extends PopupPanel {
 
@@ -60,6 +84,7 @@ public class ConnectorDialogSensorActor extends PopupPanel {
 		ListBox lbxOperator = new ListBox();
 		lbxOperator.setWidth("100%");
 		col2B.add(lbxOperator);
+		populateLbxOperator(lbxOperator);
 		
 		Column col2C = new Column(3);
 		TextBox txtCheckValue = new TextBox();
@@ -79,10 +104,20 @@ public class ConnectorDialogSensorActor extends PopupPanel {
 		ListBox lbxSource = new ListBox();
 		lbxSource.setWidth("100%");
 		col3B.add(lbxSource);
+		populateLbxSource(lbxSource);
 		
 		Column col3C = new Column(3);
-		TextBox dummy = new TextBox();
-		col3C.add(dummy);
+		TextBox txtManualEntry = new TextBox();
+		col3C.add(txtManualEntry);
+		
+		ListBox lbxValueFromSensor = new ListBox();
+		lbxValueFromSensor.setWidth("100%");
+		col3C.add(lbxValueFromSensor);
+		populateLbxValueFromSensor(lbxValueFromSensor);
+		
+		ListBox lbxTypicalValues = new ListBox();
+		lbxTypicalValues.setWidth("100%");
+		col3C.add(lbxTypicalValues);
 		
 		row3.add(col3A);
 		row3.add(col3B);
@@ -90,9 +125,210 @@ public class ConnectorDialogSensorActor extends PopupPanel {
 		
 		verticalPanel.add(row3);
 		
+		Row row4 = new Row();
+		Column col4A = new Column(1,2);
+		Button btnSave = new Button("Save");
+		btnSave.setType(ButtonType.SUCCESS);
+		col4A.add(btnSave);
+		
+		Column col4B = new Column(1);
+		Button btnDelete = new Button("Delete");
+		btnDelete.setType(ButtonType.DANGER);
+		col4B.add(btnDelete);
+		
+		Column col4C = new Column(1);
+		Button btnCancel = new Button("Cancel");
+		btnCancel.setType(ButtonType.DEFAULT);
+		col4C.add(btnCancel);
+		
+		final PopupPanel currentWindow = this;
+		btnCancel.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				currentWindow.hide();
+			}
+			
+		});
+		btnSave.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				currentWindow.hide();
+				EventUtils.EVENT_BUS.fireEvent(new ConnectionSaveEvent(sensor, actor));
+			}
+			
+		});
+		
+		row4.add(col4A);
+		row4.add(col4B);
+		row4.add(col4C);
+		
+		verticalPanel.add(row4);
+		
+		
 		this.add(verticalPanel);
 		
 		
+		
+	}
+	
+	private void populateLbxValueFromSensor(final ListBox lbxValueFromSensor)
+	{
+		PropertyServiceAsync propertyService = GWT
+				.create(PropertyService.class);
+		
+		propertyService.getSensorPropertiesForEndpointID(
+				sensor.getEndpointID(),
+				new AsyncCallback<LinkedList<PropertyData>>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onSuccess(LinkedList<PropertyData> result) {
+						// TODO Auto-generated method stub
+
+						Iterator<PropertyData> it = result.iterator();
+
+						while (it.hasNext()) {
+
+							PropertyData sensorProperty = new PropertyData();
+							sensorProperty = it.next();
+
+							lbxValueFromSensor.addItem(sensorProperty.propertyName,
+									sensorProperty.propertyId);
+							
+						}
+
+					}
+
+				});
+
+
+	}
+	
+	private void populateLbxSource(final ListBox lbxSource)
+	{
+		LinkedList<String> sources;
+
+		
+		sources = new ActionSourceConfig().getCheckSources();
+		
+		Iterator<String> it = sources.iterator();
+		while (it.hasNext()) {
+			lbxSource.addItem(it.next());
+		}
+
+	}
+	
+	private void populateLbxOperator(final ListBox lbxOperator)
+	{
+		PropertyClassServiceAsync propertyClassService = GWT
+				.create(PropertyClassService.class);
+		
+		propertyClassService.getPropertyClassForPropertyClassID(
+				this.sensor.getPropertyClassID(), new AsyncCallback<PropertyClassData>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(PropertyClassData result) {
+						// TODO Auto-generated method stub
+
+						DatatypeConfig dataTypeConfig = new DatatypeConfig();
+
+						if (result.propertyClassDatatype
+								.equalsIgnoreCase("string")) {
+							Iterator<String> it = dataTypeConfig
+									.getTextOperators().iterator();
+							while (it.hasNext()) {
+								String listItem = it.next();
+								lbxOperator.addItem(listItem);
+
+							}
+						}
+
+						else
+
+						if (result.propertyClassDatatype
+								.equalsIgnoreCase("byte")) {
+							Iterator<String> it = dataTypeConfig
+									.getNumberOperators().iterator();
+							while (it.hasNext()) {
+								String listItem = it.next();
+								lbxOperator.addItem(listItem);
+
+							}
+						}
+
+						else
+
+						if (result.propertyClassDatatype
+								.equalsIgnoreCase("long")) {
+							Iterator<String> it = dataTypeConfig
+									.getNumberOperators().iterator();
+							while (it.hasNext()) {
+								String listItem = it.next();
+								lbxOperator.addItem(listItem);
+
+							}
+						}
+
+						else
+
+						if (result.propertyClassDatatype
+								.equalsIgnoreCase("float")) {
+							Iterator<String> it = dataTypeConfig
+									.getNumberOperators().iterator();
+							while (it.hasNext()) {
+								String listItem = it.next();
+								lbxOperator.addItem(listItem);
+
+							}
+						}
+
+						else
+
+						if (result.propertyClassDatatype
+								.equalsIgnoreCase("double")) {
+							Iterator<String> it = dataTypeConfig
+									.getNumberOperators().iterator();
+							while (it.hasNext()) {
+								String listItem = it.next();
+								lbxOperator.addItem(listItem);
+
+							}
+						}
+
+						else
+
+						if (result.propertyClassDatatype
+								.equalsIgnoreCase("boolean")) {
+							Iterator<String> it = dataTypeConfig
+									.getBooleanOperators().iterator();
+							while (it.hasNext()) {
+								String listItem = it.next();
+								lbxOperator.addItem(listItem);
+
+							}
+						}
+						
+						else lbxOperator.addItem("Invalid Endpoint Configuration");
+
+					}
+
+				});
+
 		
 	}
 	

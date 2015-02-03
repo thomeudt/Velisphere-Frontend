@@ -6,14 +6,20 @@ import java.util.LinkedList;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.DropController;
 import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
+import com.github.gwtbootstrap.client.ui.Icon;
+import com.github.gwtbootstrap.client.ui.constants.IconSize;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.velisphere.tigerspice.client.event.ConnectionSaveEvent;
+import com.velisphere.tigerspice.client.event.ConnectionSaveEventHandler;
 import com.velisphere.tigerspice.client.event.DraggedInCanvasEvent;
 import com.velisphere.tigerspice.client.event.DraggedInCanvasEventHandler;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
@@ -39,6 +45,8 @@ public class CustomCanvas extends Composite {
 	Context2d context;
 	Canvas canvas;
 
+	HandlerRegistration connectionSaveHandler;
+	HandlerRegistration linkedInCanvasHandler;
 	
 	ListToCanvasDropController listToCanvasDropController;
 	InCanvasDragDropController inCanvasMoveDropController;
@@ -70,6 +78,7 @@ public class CustomCanvas extends Composite {
 		setDraggedToCanvasEventListener();
 		setLinkedInCanvasEventListener();
 		setDraggedInCanvasEventListener();
+		setConnectionSaveEventHandler();
 
 		
 		logicPanel.addAttachHandler(new AttachEvent.Handler() {
@@ -251,13 +260,15 @@ public class CustomCanvas extends Composite {
 	
 	private void setLinkedInCanvasEventListener()
 	{
-		HandlerRegistration linkedInCanvasHandler = EventUtils.EVENT_BUS.addHandler(
+		linkedInCanvasHandler = EventUtils.EVENT_BUS.addHandler(
 				LinkedInCanvasEvent.TYPE, new LinkedInCanvasEventHandler() {
 
 					@Override
 					public void onLinkedInCanvas(
 							LinkedInCanvasEvent linkedInCanvasEvent) {
 						// TODO Auto-generated method stub
+						
+						
 						
 						RootPanel.get().add(new HTML("LINKED IN FIRED"));
 						
@@ -291,14 +302,15 @@ public class CustomCanvas extends Composite {
 			WidgetLocation sourceLocation = new WidgetLocation(labels.getLeft(), logicPanel);
 			WidgetLocation targetLocation = new WidgetLocation(labels.getRight(), logicPanel);
 		
-			
 			context.beginPath();
-			//context.setFillStyle(CssColor.make("blue"));
-			context.moveTo(sourceLocation.getLeft(), sourceLocation.getTop());
-			context.lineTo(targetLocation.getLeft(), targetLocation.getTop());
-			context.lineTo(targetLocation.getLeft()+1, targetLocation.getTop()+1);
-			context.lineTo(sourceLocation.getLeft()+1, sourceLocation.getTop()+1);
-			context.fill();
+			 // change to red
+			 context.setStrokeStyle(CssColor.make(255,0,0));
+
+			 context.moveTo(sourceLocation.getLeft(), sourceLocation.getTop());
+			 context.lineTo(targetLocation.getLeft(), targetLocation.getTop());
+			 
+			 context.stroke();
+
 			context.closePath();
 			
 			RootPanel.get().add(new HTML("LINE FROM " + sourceLocation.getLeft() + " TO " + targetLocation.getLeft()));
@@ -340,6 +352,33 @@ public class CustomCanvas extends Composite {
 		
 	}
 	
-	
+
+	private void setConnectionSaveEventHandler()
+	{
+		connectionSaveHandler = EventUtils.EVENT_BUS.addHandler(
+				ConnectionSaveEvent.TYPE, new ConnectionSaveEventHandler() {
+
+					@Override
+					public void onConnectionSave(
+							ConnectionSaveEvent connectionSaveEvent) {
+						// TODO Auto-generated method stub
+						
+						WidgetLocation sourceLocation = new WidgetLocation(connectionSaveEvent.getSource(), logicPanel);
+						WidgetLocation targetLocation = new WidgetLocation(connectionSaveEvent.getTarget(), logicPanel);
+						
+						int xPos = (sourceLocation.getLeft() + targetLocation.getLeft()) / 2;
+						int yPos = (sourceLocation.getTop() + targetLocation.getTop()) / 2;
+						
+						
+						Icon icon = new Icon(IconType.ASTERISK);
+						icon.setSize(IconSize.FOUR_TIMES);
+						
+						logicPanel.add(icon, xPos, yPos);
+						
+					}
+				});
+		
+	}
+
 
 }
