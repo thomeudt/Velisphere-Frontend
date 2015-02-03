@@ -33,8 +33,12 @@ import com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr;
 
 public class CustomCanvas extends Composite {
 
+
+	static final int controlsOffsetY = 25;
+	
 	Context2d context;
 	Canvas canvas;
+
 	
 	ListToCanvasDropController listToCanvasDropController;
 	InCanvasDragDropController inCanvasMoveDropController;
@@ -217,7 +221,10 @@ public class CustomCanvas extends Composite {
 		
 		dragController.makeDraggable(propertyLabel);
 		
-		addDragPoint(propertyLabel);
+		// add drag point only if it is a sensor
+		
+		if (current.getIsSensor() == 1) addDragPoint(propertyLabel);
+		
 		InCanvasLinkDropController inCanvasLinkDropController = new InCanvasLinkDropController(propertyLabel);
 		linkDragController.registerDropController(inCanvasLinkDropController);
 
@@ -237,7 +244,7 @@ public class CustomCanvas extends Composite {
 		
 		propertyLabel.setDragPointWidget(link);
 		
-		logicPanel.add(link, widgetLocation.getLeft(), widgetLocation.getTop()-15);
+		logicPanel.add(link, widgetLocation.getLeft(), widgetLocation.getTop()-controlsOffsetY);
 		linkDragController.makeDraggable(link);
 		
 	}
@@ -314,9 +321,14 @@ public class CustomCanvas extends Composite {
 						
 						RootPanel.get().add(new HTML("DRAGGED FIRED"));
 					
-						WidgetLocation newLocation = new WidgetLocation(draggedInCanvasEvent.getCanvasLabel(), logicPanel);
-						draggedInCanvasEvent.getCanvasLabel().getDragPointWidget().removeFromParent();
-						logicPanel.add(draggedInCanvasEvent.getCanvasLabel().getDragPointWidget(), newLocation.getLeft(), newLocation.getTop()-15);
+						// move dragPoint if it is a sensor
+						
+						if(draggedInCanvasEvent.getCanvasLabel().getIsSensor() == 1)
+						{
+							WidgetLocation newLocation = new WidgetLocation(draggedInCanvasEvent.getCanvasLabel(), logicPanel);
+							draggedInCanvasEvent.getCanvasLabel().getDragPointWidget().removeFromParent();
+							logicPanel.add(draggedInCanvasEvent.getCanvasLabel().getDragPointWidget(), newLocation.getLeft(), newLocation.getTop()-controlsOffsetY);
+						}
 						
 						// re-draw the links
 						

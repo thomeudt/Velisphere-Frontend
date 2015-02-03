@@ -180,6 +180,10 @@ public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers {
                 return this.content;
         }
 
+        public Byte getIsSensor()
+        {
+        	return this.isSensor;
+        }
       
         private void removeDefaultMouseDown()
     	{

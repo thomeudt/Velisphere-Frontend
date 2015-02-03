@@ -80,7 +80,7 @@ public class Explorer extends Composite {
 	ListBox lbxActors;
 	AbsolutePanel container;
 	PickupDragController dragController1;
-	PickupDragController dragController2;
+	//PickupDragController dragController2;
 
 	DraggableListBox dbxSensors;
 	DraggableListBox dbxActors;
@@ -125,7 +125,7 @@ public class Explorer extends Composite {
 		Column col2 = new Column(2);
 		
 		dragController1 = new ListBoxDragController(RootPanel.get());
-		dragController2 = new ListBoxDragController(RootPanel.get());
+		//dragController2 = new ListBoxDragController(RootPanel.get());
 		CustomScrollPanel scrollPanelSensors = new CustomScrollPanel();
 		
 		dbxSensors = new DraggableListBox(dragController1, 64);
@@ -194,7 +194,7 @@ public class Explorer extends Composite {
 		
 		CustomScrollPanel scrollPanelActors = new CustomScrollPanel();
 	
-		dbxActors = new DraggableListBox(dragController2, 64);
+		dbxActors = new DraggableListBox(dragController1, 64);
 		scrollPanelActors.add(dbxActors);
 		scrollPanelActors.setHeight("100px");
 		scrollPanelActors.addStyleName(CSS_DRAGDROPWIDGET);

@@ -1,6 +1,7 @@
 package com.velisphere.tigerspice.client.logic.draggables;
 
 import com.github.gwtbootstrap.client.ui.Icon;
+import com.github.gwtbootstrap.client.ui.constants.IconSize;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
@@ -14,7 +15,10 @@ public class LinkCreator extends FocusPanel {
 	{
 		super();
 		this.source = source;
-		this.add(new Icon(IconType.BULLSEYE));
+		Icon icon = new Icon(IconType.BULLSEYE);
+		icon.setIconSize(IconSize.TWO_TIMES);
+		this.add(icon);
+		icon.getElement().setAttribute("style", "color:cornflowerblue;");
 		removeDefaultMouseDown();
 		
 	}
