@@ -6,35 +6,14 @@ import java.util.LinkedList;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.DropController;
 import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
-import com.github.gwtbootstrap.client.ui.Icon;
-import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.canvas.dom.client.CssColor;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.Widget;
-import com.orange.links.client.event.TieLinkEvent;
-import com.orange.links.client.event.TieLinkHandler;
-import com.velisphere.tigerspice.client.appcontroller.AppController;
-import com.velisphere.tigerspice.client.endpointclasses.EPCService;
-import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.event.DraggedInCanvasEvent;
 import com.velisphere.tigerspice.client.event.DraggedInCanvasEventHandler;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
@@ -285,6 +264,10 @@ public class CustomCanvas extends Composite {
 						
 						addDragPoint(linkedInCanvasEvent.getSource());
 						
+						ConnectorDialogSensorActor connectorDialog = new ConnectorDialogSensorActor(linkedInCanvasEvent.getSource(), linkedInCanvasEvent.getTarget());
+						connectorDialog.show();
+						connectorDialog.setAutoHideEnabled(true);
+						connectorDialog.center();
 					}});
 		
 	}
@@ -331,9 +314,9 @@ public class CustomCanvas extends Composite {
 						
 						RootPanel.get().add(new HTML("DRAGGED FIRED"));
 					
-						WidgetLocation newLocation = new WidgetLocation(draggedInCanvasEvent.getCurrentLabel(), logicPanel);
-						draggedInCanvasEvent.getCurrentLabel().getDragPointWidget().removeFromParent();
-						logicPanel.add(draggedInCanvasEvent.getCurrentLabel().getDragPointWidget(), newLocation.getLeft(), newLocation.getTop()-15);
+						WidgetLocation newLocation = new WidgetLocation(draggedInCanvasEvent.getCanvasLabel(), logicPanel);
+						draggedInCanvasEvent.getCanvasLabel().getDragPointWidget().removeFromParent();
+						logicPanel.add(draggedInCanvasEvent.getCanvasLabel().getDragPointWidget(), newLocation.getLeft(), newLocation.getTop()-15);
 						
 						// re-draw the links
 						

@@ -25,22 +25,34 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.logic.draggables.CanvasLabel;
 import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr;
 
 public class DraggedInCanvasEvent extends GwtEvent<DraggedInCanvasEventHandler> {
 
 		
 		public static Type<DraggedInCanvasEventHandler> TYPE = new Type<DraggedInCanvasEventHandler>();
 		
-		CanvasLabel current;
+		CanvasLabel canvasLabel;
+		LogicCheckAnd logicCheckAnd;
+		LogicCheckOr logicCheckOr;
 		
 		
-		public DraggedInCanvasEvent(CanvasLabel current)
+		public DraggedInCanvasEvent(CanvasLabel canvasLabel)
 		{
-			this.current = current;
+			this.canvasLabel = canvasLabel;
 	
 			
 		}
 		
+		public DraggedInCanvasEvent(LogicCheckAnd logicCheckAnd) {
+			this.logicCheckAnd = logicCheckAnd;
+		}
+		
+		public DraggedInCanvasEvent(LogicCheckOr logicCheckOr) {
+			this.logicCheckOr = logicCheckOr;
+		}
+
 		@Override
 		public Type<DraggedInCanvasEventHandler> getAssociatedType() {
 		    return TYPE;
@@ -51,9 +63,19 @@ public class DraggedInCanvasEvent extends GwtEvent<DraggedInCanvasEventHandler> 
 		    handler.onDraggedInCanvas(this);
 		}
 		
-		public CanvasLabel getCurrentLabel()
+		public CanvasLabel getCanvasLabel()
 		{
-			return this.current;
+			return this.canvasLabel;
+		}
+		
+		public LogicCheckAnd getLogicCheckAnd()
+		{
+			return this.logicCheckAnd;
+		}
+		
+		public LogicCheckOr getLogicCheckOr()
+		{
+			return this.logicCheckOr;
 		}
 		
 		

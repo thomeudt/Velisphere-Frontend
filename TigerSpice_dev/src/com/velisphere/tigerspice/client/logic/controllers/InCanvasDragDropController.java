@@ -12,6 +12,8 @@ import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasEvent;
 import com.velisphere.tigerspice.client.logic.draggables.CanvasLabel;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr;
 
 public class InCanvasDragDropController extends AbsolutePositionDropController {
 
@@ -27,17 +29,34 @@ public class InCanvasDragDropController extends AbsolutePositionDropController {
 	{
 		super.onDrop(context);
 		
-		RootPanel.get().add(new HTML("DropController says onDrop"));
+		RootPanel.get().add(new HTML("DropController says onDrop for class " +context.selectedWidgets.get(0).getClass().getName() ));
 		
 		WidgetLocation dropTargetLocation = new WidgetLocation(dropTarget, null);
 		int dropTargetOffsetX = dropTargetLocation.getLeft()
 		        + DOMUtil.getBorderLeft(dropTarget.getElement());
 		int dropTargetOffsetY = dropTargetLocation.getTop() + DOMUtil.getBorderTop(dropTarget.getElement());
 		
-		 CanvasLabel current = (CanvasLabel) context.selectedWidgets.get(0);
 		
-		RootPanel.get().add(new HTML(current.getContentRepresentation() + " WAS DROPPED at " + (context.desiredDraggableX - dropTargetOffsetX) + " / " + (context.desiredDraggableY - dropTargetOffsetY)));
-		EventUtils.EVENT_BUS.fireEvent(new DraggedInCanvasEvent(current));
+		if (context.selectedWidgets.get(0).getClass().getName() == "com.velisphere.tigerspice.client.logic.draggables.CanvasLabel")
+		{
+			CanvasLabel canvasLabel = (CanvasLabel) context.selectedWidgets.get(0);
+			RootPanel.get().add(new HTML(canvasLabel.getContentRepresentation() + " WAS DROPPED at " + (context.desiredDraggableX - dropTargetOffsetX) + " / " + (context.desiredDraggableY - dropTargetOffsetY)));
+			EventUtils.EVENT_BUS.fireEvent(new DraggedInCanvasEvent(canvasLabel));
+		}
+		else if (context.selectedWidgets.get(0).getClass().getName() == "com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd")
+		{
+			LogicCheckAnd logicCheckAnd = (LogicCheckAnd) context.selectedWidgets.get(0);
+			EventUtils.EVENT_BUS.fireEvent(new DraggedInCanvasEvent(logicCheckAnd));
+		}
+		else if (context.selectedWidgets.get(0).getClass().getName() == "com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr")
+		{
+			LogicCheckOr logicCheckOr = (LogicCheckOr) context.selectedWidgets.get(0);
+			EventUtils.EVENT_BUS.fireEvent(new DraggedInCanvasEvent(logicCheckOr));
+		}	
+		
+		
+		
+		
 			
 	}
 	
