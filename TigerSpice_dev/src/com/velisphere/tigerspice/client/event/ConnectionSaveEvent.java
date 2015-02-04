@@ -22,6 +22,7 @@ import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.logic.draggables.CanvasLabel;
 
 public class ConnectionSaveEvent extends GwtEvent<ConnectionSaveEventHandler> {
@@ -30,12 +31,14 @@ public class ConnectionSaveEvent extends GwtEvent<ConnectionSaveEventHandler> {
 		public static Type<ConnectionSaveEventHandler> TYPE = new Type<ConnectionSaveEventHandler>();
 		CanvasLabel source;
 		CanvasLabel target;
+		Widget connector;
 		
 		
-		public ConnectionSaveEvent(CanvasLabel source, CanvasLabel target)
+		public ConnectionSaveEvent(CanvasLabel source, CanvasLabel target, Widget connector)
 		{
 			this.source = source;
 			this.target = target;
+			this.connector = connector;
 			
 		}
 		
@@ -58,6 +61,10 @@ public class ConnectionSaveEvent extends GwtEvent<ConnectionSaveEventHandler> {
 		
 		public CanvasLabel getTarget(){
 			return this.target;
+		}
+
+		public Widget getConnector(){
+			return this.connector;
 		}
 
 }

@@ -1,14 +1,17 @@
-package com.velisphere.tigerspice.client.logic.layoutWidgets;
+package com.velisphere.tigerspice.client.logic.connectors;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Column;
+import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.Row;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
+import com.github.gwtbootstrap.client.ui.constants.IconSize;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Style.Unit;
@@ -17,6 +20,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.event.ConnectionSaveEvent;
@@ -34,17 +39,20 @@ import com.velisphere.tigerspice.client.spheres.SphereServiceAsync;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.velisphere.tigerspice.shared.PropertyData;
 
-public class ConnectorDialogSensorActor extends PopupPanel {
+public class ConnectorSensorActor extends PopupPanel {
 
 	CanvasLabel actor;
 	CanvasLabel sensor;
+	Button openingButton;
 	
-	public ConnectorDialogSensorActor (CanvasLabel sensor, CanvasLabel actor)
+	public ConnectorSensorActor (CanvasLabel sensor, CanvasLabel actor)
 	{
 		super();
 		this.sensor = sensor;
 		this.actor = actor;
 		createBaseLayout();
+		createOpenerWidget();
+		
 		
 		
 	}
@@ -61,11 +69,25 @@ public class ConnectorDialogSensorActor extends PopupPanel {
         
         VerticalPanel verticalPanel = new VerticalPanel();
         
-         
+        Row row0 = new Row();
+		Column col0a = new Column(1);
+		HorizontalPanel imageHeader = new HorizontalPanel();
+		imageHeader.add(this.sensor.getImage());
+		imageHeader.add(new Icon(IconType.CHEVRON_SIGN_RIGHT));
+		imageHeader.add(this.actor.getImage());
+		col0a.add(imageHeader);
+		row0.add(col0a);
+		Column col0b = new Column(4);	
+		col0b.add(new HTML("<b>Define Connection between "+ sensor.getContentRepresentation() + " "
+				+ "and "+ actor.getContentRepresentation()+"</b>"));
+		row0.add(col0b);
+		
+		verticalPanel.add(row0);
+		
+        
         Row row1 = new Row();
 		Column col1 = new Column(5);
-		HTML headerHTML = new HTML("<b>Define Connection between "+ sensor.getContentRepresentation() + " "
-				+ "and "+ actor.getContentRepresentation()+"</b><br><br>"
+		HTML headerHTML = new HTML("<br><br>"
 				+ "You can define the condition under which the connection will be triggered based "
 						+ "on the state of <b>"+ sensor.getContentRepresentation() + "</b>, "
 				+ "and then define what data will be send to <b>" + actor.getContentRepresentation() + "</b>. This could be a static "
@@ -76,6 +98,7 @@ public class ConnectorDialogSensorActor extends PopupPanel {
 		row1.add(col1);
 		verticalPanel.add(row1);
 		
+	
 		Row row2 = new Row();
 		Column col2A = new Column(1);
 		col2A.add(new HTML("Trigger:"));
@@ -151,13 +174,15 @@ public class ConnectorDialogSensorActor extends PopupPanel {
 			}
 			
 		});
+		
+		final ConnectorSensorActor thisWidget = this;
 		btnSave.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				currentWindow.hide();
-				EventUtils.EVENT_BUS.fireEvent(new ConnectionSaveEvent(sensor, actor));
+				EventUtils.EVENT_BUS.fireEvent(new ConnectionSaveEvent(sensor, actor, thisWidget));
 			}
 			
 		});
@@ -330,6 +355,29 @@ public class ConnectorDialogSensorActor extends PopupPanel {
 				});
 
 		
+	}
+	
+	private void createOpenerWidget()
+	{
+		openingButton = new Button();
+		openingButton.setBaseIcon(IconType.ASTERISK);
+		
+		final ConnectorSensorActor currentConnector = this;
+		openingButton.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				currentConnector.show();
+			}
+			
+		});
+
+	}
+	
+	public Button getOpenerWidget()
+	{
+		return this.openingButton;
 	}
 	
 }

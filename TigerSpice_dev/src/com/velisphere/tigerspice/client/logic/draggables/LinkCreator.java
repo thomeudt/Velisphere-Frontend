@@ -15,7 +15,7 @@ public class LinkCreator extends FocusPanel {
 	{
 		super();
 		this.source = source;
-		Icon icon = new Icon(IconType.BULLSEYE);
+		Icon icon = new Icon(IconType.CIRCLE_ARROW_RIGHT);
 		icon.setIconSize(IconSize.TWO_TIMES);
 		this.add(icon);
 		icon.getElement().setAttribute("style", "color:cornflowerblue;");

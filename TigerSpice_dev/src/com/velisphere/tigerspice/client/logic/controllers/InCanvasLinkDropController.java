@@ -1,6 +1,7 @@
 package com.velisphere.tigerspice.client.logic.controllers;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
+import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.AbsolutePositionDropController;
 import com.allen_sauer.gwt.dnd.client.drop.AbstractPositioningDropController;
 import com.allen_sauer.gwt.dnd.client.drop.SimpleDropController;
@@ -40,24 +41,32 @@ public class InCanvasLinkDropController extends SimpleDropController {
 		this.dropTarget = dropTarget;
 	}
 	
+	
+	@Override
+	public void onPreviewDrop(DragContext context) throws VetoDragException
+	{
+		
+		if (dropTarget.getIsSensor() == 1) {
+		      throw new VetoDragException();
+		    }
+	}
+	
+	
 	@Override
 	public void onDrop(DragContext context)
 	{
-		super.onDrop(context);
+	
 		
-		RootPanel.get().add(new HTML("DropController says onDrop"));
+		if (dropTarget.getIsActor() == 1)
+		{
+			super.onDrop(context);
+			RootPanel.get().add(new HTML("DropController says onDrop"));
+			LinkCreator linkCreator = (LinkCreator) context.draggable;
+		    RootPanel.get().add(new HTML(linkCreator.getSource().getContentRepresentation() + " was dropped on " + dropTarget.getContentRepresentation()));
+		    EventUtils.EVENT_BUS.fireEvent(new LinkedInCanvasEvent(linkCreator.getSource(), dropTarget));
+		}
 		
-		WidgetLocation dropTargetLocation = new WidgetLocation(dropTarget, null);
-		int dropTargetOffsetX = dropTargetLocation.getLeft()
-		        + DOMUtil.getBorderLeft(dropTarget.getElement());
-		int dropTargetOffsetY = dropTargetLocation.getTop() + DOMUtil.getBorderTop(dropTarget.getElement());
-		
-		  LinkCreator linkCreator = (LinkCreator) context.draggable;
-	      
-	      RootPanel.get().add(new HTML(linkCreator.getSource().getContentRepresentation() + " was dropped on " + dropTarget.getContentRepresentation()));
-	      
-	      EventUtils.EVENT_BUS.fireEvent(new LinkedInCanvasEvent(linkCreator.getSource(), dropTarget));
-		
+			
 			
 	}
 	

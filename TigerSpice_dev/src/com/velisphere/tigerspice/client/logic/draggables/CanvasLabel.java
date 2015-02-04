@@ -51,6 +51,8 @@ public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers {
     	byte isActor;
     	byte isSensor;
     	Widget dragPointWidget;
+    	Icon dropTargetIcon;
+    	Image imgEpcImage;
         
         
         public CanvasLabel(String text, String endpointName, String propertyID, String endpointID, String endpointClassID, String propertyClassID, byte isSensor, byte isActor){
@@ -85,7 +87,7 @@ public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers {
         	
         	h.add(new HTML("&nbsp;"));
             
-        	Image imgEpcImage = new Image();
+        	imgEpcImage = new Image();
             h.add(imgEpcImage);
             getEndpointClassImage(imgEpcImage);
     
@@ -154,6 +156,17 @@ public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers {
         {
         	return this.dragPointWidget;
         }
+   
+        public void setDropTargetIcon(Icon dropTargetIcon)
+        {
+        	this.dropTargetIcon = dropTargetIcon;
+        }
+        
+        public Icon getDropTargetIcon()
+        {
+        	return this.dropTargetIcon;
+        }
+   
         
         @Override
         public HandlerRegistration addTouchStartHandler(TouchStartHandler handler){
@@ -180,6 +193,11 @@ public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers {
                 return this.content;
         }
 
+        public Byte getIsActor()
+        {
+        	return this.isActor;
+        }
+        
         public Byte getIsSensor()
         {
         	return this.isSensor;
@@ -199,6 +217,12 @@ public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers {
         {
         	return this.endpointID;
         }
+        
+        public Image getImage()
+        {
+        	return this.imgEpcImage;
+        }
+        
       
         private void removeDefaultMouseDown()
     	{
