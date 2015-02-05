@@ -117,16 +117,6 @@ public class CustomCanvas extends Composite {
 					
 					context = canvas.getContext2d();
 				
-					/*
-					context.setFillStyle(CssColor.make("grey"));
-					context.beginPath();
-					context.setLineWidth(5);
-					context.arc(50, 50,35, 0, 320);
-					context.closePath();
-					context.fill();
-					*/
-					
-
 					
 				}
 				
@@ -280,7 +270,7 @@ public class CustomCanvas extends Composite {
 		
 		final Icon targetIcon = new Icon(IconType.BULLSEYE);
 		targetIcon.setSize(IconSize.TWO_TIMES);
-		targetIcon.getElement().setAttribute("style", "color:lawngreen;");
+		targetIcon.getElement().setAttribute("style", "color:dimgrey;");
 		propertyLabel.setDropTargetIcon(targetIcon);
 		logicPanel.add(targetIcon, widgetLocation.getLeft(), widgetLocation.getTop()-controlsOffsetY);
 		
@@ -378,6 +368,7 @@ public class CustomCanvas extends Composite {
 			int yPos = (sourceLocation.getTop() + targetLocation.getTop()) / 2;
 			logicPanel.remove(currentConnector.getOpenerWidget());
 			logicPanel.add(currentConnector.getOpenerWidget(), xPos, yPos);
+			
 		}
 			
 	}

@@ -170,7 +170,7 @@ public class ConnectorSensorActor extends PopupPanel {
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				currentWindow.hide();
+				currentWindow.removeFromParent();
 			}
 			
 		});
@@ -181,8 +181,8 @@ public class ConnectorSensorActor extends PopupPanel {
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				currentWindow.hide();
 				EventUtils.EVENT_BUS.fireEvent(new ConnectionSaveEvent(sensor, actor, thisWidget));
+				currentWindow.removeFromParent();
 			}
 			
 		});
