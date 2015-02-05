@@ -27,12 +27,16 @@ public class ActionSourceConfig {
 
 	LinkedList<String> checkSources = new LinkedList<String>();
 	LinkedList<String> multicheckSources = new LinkedList<String>();
+	public static final String manual = "Manual entry";
+	public static final String otherSensorValue = "Current value of other sensor (not implemented)";
+	public static final String currentSensorValue = "Incoming value from sensor device";
+	public static final String typicalEntries = "List of typical entries";
 	
 	public ActionSourceConfig() {
-		checkSources.add("Manual entry");
-		checkSources.add("Current value of other sensor (not implemented)");
-		checkSources.add("Incoming value from sensor device");
-		checkSources.add("List of typical entries");
+		checkSources.add(manual);
+		checkSources.add(otherSensorValue);
+		checkSources.add(currentSensorValue);
+		checkSources.add(typicalEntries);
 				
 		multicheckSources.add("Manual entry");
 		multicheckSources.add("Current value of other sensor (not implemented)");

@@ -15,9 +15,12 @@ import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DomEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -44,6 +47,7 @@ public class ConnectorSensorActor extends PopupPanel {
 	CanvasLabel actor;
 	CanvasLabel sensor;
 	Button openingButton;
+
 	
 	public ConnectorSensorActor (CanvasLabel sensor, CanvasLabel actor)
 	{
@@ -124,23 +128,25 @@ public class ConnectorSensorActor extends PopupPanel {
 		col3A.add(new HTML("Push Value:"));
 		
 		Column col3B = new Column(1);
-		ListBox lbxSource = new ListBox();
+		final ListBox lbxSource = new ListBox();
 		lbxSource.setWidth("100%");
 		col3B.add(lbxSource);
 		populateLbxSource(lbxSource);
 		
 		Column col3C = new Column(3);
-		TextBox txtManualEntry = new TextBox();
+		final TextBox txtManualEntry = new TextBox();
 		col3C.add(txtManualEntry);
 		
-		ListBox lbxValueFromSensor = new ListBox();
+		final ListBox lbxValueFromSensor = new ListBox();
 		lbxValueFromSensor.setWidth("100%");
 		col3C.add(lbxValueFromSensor);
 		populateLbxValueFromSensor(lbxValueFromSensor);
+		lbxValueFromSensor.setVisible(false);
 		
-		ListBox lbxTypicalValues = new ListBox();
+		final ListBox lbxTypicalValues = new ListBox();
 		lbxTypicalValues.setWidth("100%");
 		col3C.add(lbxTypicalValues);
+		lbxTypicalValues.setVisible(false);
 		
 		row3.add(col3A);
 		row3.add(col3B);
@@ -163,6 +169,17 @@ public class ConnectorSensorActor extends PopupPanel {
 		Button btnCancel = new Button("Cancel");
 		btnCancel.setType(ButtonType.DEFAULT);
 		col4C.add(btnCancel);
+		
+		row4.add(col4A);
+		row4.add(col4B);
+		row4.add(col4C);
+		
+		verticalPanel.add(row4);
+		
+		
+		this.add(verticalPanel);
+		
+		// set the various handlers
 		
 		final PopupPanel currentWindow = this;
 		btnCancel.addClickHandler(new ClickHandler(){
@@ -187,15 +204,46 @@ public class ConnectorSensorActor extends PopupPanel {
 			
 		});
 		
-		row4.add(col4A);
-		row4.add(col4B);
-		row4.add(col4C);
-		
-		verticalPanel.add(row4);
-		
-		
-		this.add(verticalPanel);
-		
+		lbxSource.addChangeHandler(new ChangeHandler(){
+
+			@Override
+			public void onChange(ChangeEvent event) {
+				// TODO Auto-generated method stub
+				
+				if(lbxSource.getValue() == ActionSourceConfig.manual)
+				{
+					txtManualEntry.setVisible(true);
+					lbxValueFromSensor.setVisible(false);
+					lbxTypicalValues.setVisible(false);
+					
+				}
+				
+				if(lbxSource.getValue() == ActionSourceConfig.currentSensorValue)
+				{
+					txtManualEntry.setVisible(false);
+					lbxValueFromSensor.setVisible(true);
+					lbxTypicalValues.setVisible(false);
+				}
+				
+				if(lbxSource.getValue() == ActionSourceConfig.otherSensorValue)
+				{
+					txtManualEntry.setVisible(false);
+					lbxValueFromSensor.setVisible(false);
+					lbxTypicalValues.setVisible(false);
+					
+				}
+				
+				if(lbxSource.getValue() == ActionSourceConfig.typicalEntries)
+				{
+					txtManualEntry.setVisible(false);
+					lbxValueFromSensor.setVisible(false);
+					lbxTypicalValues.setVisible(true);
+					
+				}
+				
+			}
+			
+		});
 		
 		
 	}
@@ -363,17 +411,10 @@ public class ConnectorSensorActor extends PopupPanel {
 		openingButton.setBaseIcon(IconType.ASTERISK);
 		
 		final ConnectorSensorActor currentConnector = this;
-		openingButton.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
-				currentConnector.show();
-			}
-			
-		});
-
+				
 	}
+	
+	
 	
 	public Button getOpenerWidget()
 	{

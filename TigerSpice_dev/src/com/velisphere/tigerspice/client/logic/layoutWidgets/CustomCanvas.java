@@ -124,6 +124,12 @@ public class CustomCanvas extends Composite {
 		});
 		
 	}
+	
+	public void onUnload()
+	{
+		linkedInCanvasHandler.removeHandler();
+		super.onUnload();
+	}
 
 	public DropController getListToCanvasDropController()
 	{
@@ -287,8 +293,6 @@ public class CustomCanvas extends Composite {
 							LinkedInCanvasEvent linkedInCanvasEvent) {
 						// TODO Auto-generated method stub
 						
-						
-						
 						RootPanel.get().add(new HTML("LINKED IN FIRED"));
 						
 						LinkedPair<CanvasLabel, CanvasLabel> linkedPair = new LinkedPair<CanvasLabel, CanvasLabel>(linkedInCanvasEvent.getSource(), linkedInCanvasEvent.getTarget());
@@ -300,12 +304,13 @@ public class CustomCanvas extends Composite {
 						
 						// add a connector and open the connector settings dialog
 						
-						ConnectorSensorActor connector = new ConnectorSensorActor(linkedInCanvasEvent.getSource(), linkedInCanvasEvent.getTarget());
+						final ConnectorSensorActor connector = new ConnectorSensorActor(linkedInCanvasEvent.getSource(), linkedInCanvasEvent.getTarget());
 						linkedPairConnectorMap.put(linkedPair, connector);
 						
-						connector.show();
+						//connector.show();
 						connector.setAutoHideEnabled(true);
 						connector.center();
+						
 						
 						// add button to open dialog and position on connection line 
 						
@@ -314,6 +319,16 @@ public class CustomCanvas extends Composite {
 						int xPos = (sourceLocation.getLeft() + targetLocation.getLeft()) / 2;
 						int yPos = (sourceLocation.getTop() + targetLocation.getTop()) / 2;
 						logicPanel.add(connector.getOpenerWidget(), xPos, yPos);
+						connector.getOpenerWidget().addClickHandler(new ClickHandler(){
+
+							@Override
+							public void onClick(ClickEvent event) {
+								// TODO Auto-generated method stub
+								connector.show();
+							}
+							
+						});
+
 					
 						
 						// re draw the links
@@ -361,14 +376,24 @@ public class CustomCanvas extends Composite {
 	{
 		if(linkedPairConnectorMap.containsKey(currentPair))
 		{
-			ConnectorSensorActor currentConnector = (ConnectorSensorActor) linkedPairConnectorMap.get(currentPair);
+			final ConnectorSensorActor currentConnector = (ConnectorSensorActor) linkedPairConnectorMap.get(currentPair);
 			WidgetLocation sourceLocation = new WidgetLocation(currentPair.getLeft(), logicPanel);
 			WidgetLocation targetLocation = new WidgetLocation(currentPair.getRight(), logicPanel);
 			int xPos = (sourceLocation.getLeft() + targetLocation.getLeft()) / 2;
 			int yPos = (sourceLocation.getTop() + targetLocation.getTop()) / 2;
 			logicPanel.remove(currentConnector.getOpenerWidget());
 			logicPanel.add(currentConnector.getOpenerWidget(), xPos, yPos);
-			
+			currentConnector.getOpenerWidget().addClickHandler(new ClickHandler(){
+
+				@Override
+				public void onClick(ClickEvent event) {
+					// TODO Auto-generated method stub
+					currentConnector.show();
+				}
+				
+			});
+
+			RootPanel.get().add(new HTML("Positioning opener Button for " + currentPair.getLeft().getContentRepresentation() + " > " + currentPair.getRight().getContentRepresentation()));
 		}
 			
 	}
