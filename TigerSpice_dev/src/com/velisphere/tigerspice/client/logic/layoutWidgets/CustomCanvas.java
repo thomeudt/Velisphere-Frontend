@@ -108,8 +108,6 @@ public class CustomCanvas extends Composite {
 					canvas.setCoordinateSpaceWidth(logicPanel.getOffsetWidth());
 					canvas.setCoordinateSpaceHeight(400);
 
-				
-								
 					
 					canvas.addStyleName("wellsilver");
 					
@@ -349,38 +347,58 @@ public class CustomCanvas extends Composite {
 		while (it.hasNext())
 		{
 			LinkedPair<CanvasLabel, CanvasLabel> labels = it.next();
-			WidgetLocation sourceLocation = new WidgetLocation(labels.getLeft(), logicPanel);
-			WidgetLocation targetLocation = new WidgetLocation(labels.getRight(), logicPanel);
-		
+			
+			LineCoordinateCalculator coordinates = new LineCoordinateCalculator(labels.getLeft(),labels.getRight(), logicPanel); 
+			
 			context.beginPath();
+			
+			// change to red
+			 context.setStrokeStyle(CssColor.make(255,0,0));
+
+			 context.moveTo(coordinates.getCalcSourceX(), coordinates.getCalcSourceY());
+			 context.lineTo(coordinates.getCalcTargetX(), coordinates.getCalcTargetY());
+			
+			 context.stroke();
+			 context.closePath();
+			
+			 
+			 context.beginPath();
 			 // change to red
 			 context.setStrokeStyle(CssColor.make(255,0,0));
 
-			 context.moveTo(sourceLocation.getLeft(), sourceLocation.getTop());
-			 context.lineTo(targetLocation.getLeft(), targetLocation.getTop());
-			 
+			 double endRadians=Math.atan((coordinates.getCalcTargetY()-coordinates.getCalcSourceY())/(coordinates.getCalcTargetX()-coordinates.getCalcSourceX()));
+		        //endRadians+=((this.x2>this.x1)?90:-90)*Math.PI/180;
+			 context.translate(coordinates.getCalcTargetX(), coordinates.getCalcTargetY());
+			 //context.rotate(endRadians);
+			 context.moveTo(0,0);
+			 context.lineTo(5,20);
+			 context.lineTo(-5,20);
 			 context.stroke();
-
-			context.closePath();
+			 
+			 context.translate(coordinates.getCalcTargetX()*-1, coordinates.getCalcTargetY()*-1);
+			 //context.rotate(endRadians*-1);
+			 
+			 context.closePath();
+			 
+			 
+			 
 			
-			positionConnectors(labels);
+			positionConnectors(labels, coordinates);
 			
-			RootPanel.get().add(new HTML("LINE FROM " + sourceLocation.getLeft() + " TO " + targetLocation.getLeft()));
+			
 
 			
 		}
 	
 	}
 	
-	private void positionConnectors(LinkedPair<CanvasLabel, CanvasLabel> currentPair)
+	private void positionConnectors(LinkedPair<CanvasLabel, CanvasLabel> currentPair, LineCoordinateCalculator coordinates)
 	{
 		if(linkedPairConnectorMap.containsKey(currentPair))
 		{
 			final ConnectorSensorActor currentConnector = (ConnectorSensorActor) linkedPairConnectorMap.get(currentPair);
-			WidgetLocation sourceLocation = new WidgetLocation(currentPair.getLeft(), logicPanel);
-			WidgetLocation targetLocation = new WidgetLocation(currentPair.getRight(), logicPanel);
-			int xPos = (sourceLocation.getLeft() + targetLocation.getLeft()) / 2;
-			int yPos = (sourceLocation.getTop() + targetLocation.getTop()) / 2;
+			int xPos = (coordinates.getCalcSourceX() + coordinates.getCalcTargetX()) / 2;
+			int yPos = (coordinates.getCalcSourceY() + coordinates.getCalcTargetY()) / 2;
 			logicPanel.remove(currentConnector.getOpenerWidget());
 			logicPanel.add(currentConnector.getOpenerWidget(), xPos, yPos);
 			currentConnector.getOpenerWidget().addClickHandler(new ClickHandler(){

@@ -96,6 +96,7 @@ public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers {
             
             this.add(h);
             this.setStyleName("wellwhite");
+         
             
         
             getElement().getStyle().setPadding(3, Unit.PX);
@@ -220,7 +221,9 @@ public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers {
         
         public Image getImage()
         {
-        	return this.imgEpcImage;
+        	Image tempImage = new Image();
+        	tempImage.setUrl(this.imgEpcImage.getUrl());
+        	return tempImage;
         }
         
       
