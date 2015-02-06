@@ -57,6 +57,7 @@ import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.logic.controllers.ListBoxDragController;
+import com.velisphere.tigerspice.client.logic.controllers.LogicDragController;
 import com.velisphere.tigerspice.client.logic.draggables.DraggableListBox;
 import com.velisphere.tigerspice.client.logic.draggables.ExplorerLabel;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd;
@@ -79,8 +80,11 @@ public class Explorer extends Composite {
 	ListBox lbxSensors;
 	ListBox lbxActors;
 	AbsolutePanel container;
-	PickupDragController dragController1;
-	//PickupDragController dragController2;
+	PickupDragController listBoxController;
+	PickupDragController logicDragController;
+
+	Column col5;
+	Column col6;
 
 	DraggableListBox dbxSensors;
 	DraggableListBox dbxActors;
@@ -124,11 +128,13 @@ public class Explorer extends Composite {
 		Row row2 = new Row();
 		Column col2 = new Column(2);
 		
-		dragController1 = new ListBoxDragController(RootPanel.get());
-		//dragController2 = new ListBoxDragController(RootPanel.get());
+		listBoxController = new ListBoxDragController(RootPanel.get());
+
+		logicDragController = new LogicDragController(RootPanel.get(), this);
+		
 		CustomScrollPanel scrollPanelSensors = new CustomScrollPanel();
 		
-		dbxSensors = new DraggableListBox(dragController1, 64);
+		dbxSensors = new DraggableListBox(listBoxController, 64);
 		scrollPanelSensors.add(dbxSensors);
 		scrollPanelSensors.setHeight("100px");
 		scrollPanelSensors.addStyleName(CSS_DRAGDROPWIDGET);
@@ -137,7 +143,7 @@ public class Explorer extends Composite {
 		scrollPanelSensors.setHorizontalScrollbar(null, 0);
 		
 		
-		dragController1.addDragHandler(new DragHandler(){
+		listBoxController.addDragHandler(new DragHandler(){
 
 			@Override
 			public void onDragEnd(DragEndEvent event) {
@@ -175,7 +181,7 @@ public class Explorer extends Composite {
 			
 		});
 		
-		dragController1.registerDropController(this.checkPathCanvas.getListToCanvasDropController());
+		listBoxController.registerDropController(this.checkPathCanvas.getListToCanvasDropController());
 
 		
 		HorizontalPanel sensorHeader = new HorizontalPanel();
@@ -194,7 +200,7 @@ public class Explorer extends Composite {
 		
 		CustomScrollPanel scrollPanelActors = new CustomScrollPanel();
 	
-		dbxActors = new DraggableListBox(dragController1, 64);
+		dbxActors = new DraggableListBox(listBoxController, 64);
 		scrollPanelActors.add(dbxActors);
 		scrollPanelActors.setHeight("100px");
 		scrollPanelActors.addStyleName(CSS_DRAGDROPWIDGET);
@@ -220,23 +226,16 @@ public class Explorer extends Composite {
 		row4.add(col4);
 		container.add(row4);
 		
+		
 		Row row5= new Row();
-		Column col5 = new Column(1);
-		
-		LogicCheckAnd logicCheckAnd = new LogicCheckAnd();
-		col5.add(logicCheckAnd);
+		col5 = new Column(1);
 		row5.add(col5);
-		
-		PickupDragController logicDragController = new PickupDragController(RootPanel.get(), true);
-		
-		logicDragController.makeDraggable(logicCheckAnd);
-		
-		Column col6 = new Column(1);
-		LogicCheckOr logicCheckOr = new LogicCheckOr();
-		col6.add(logicCheckOr);
+		col6 = new Column(1);
 		row5.add(col6);
-	
-		logicDragController.makeDraggable(logicCheckOr);
+
+		addLogicCheckAnd();
+		addLogicCheckOr();
+		
 		logicDragController.registerDropController(this.checkPathCanvas.getLogicToCanvasDropController());
 		
 		container.add(row5);
@@ -245,7 +244,22 @@ public class Explorer extends Composite {
 		
 		
 	}
+	
+	public void addLogicCheckAnd()
+	{
+		LogicCheckAnd logicCheckAnd = new LogicCheckAnd();
+		col5.add(logicCheckAnd);
+		logicDragController.makeDraggable(logicCheckAnd);
+		logicCheckAnd.setWidth("50px");
+	}
 
+	public void addLogicCheckOr()
+	{
+		LogicCheckOr logicCheckOr = new LogicCheckOr();
+		col6.add(logicCheckOr);
+		logicDragController.makeDraggable(logicCheckOr);
+		logicCheckOr.setWidth("50px");
+	}
 	
 	
 	private void getSpheres()

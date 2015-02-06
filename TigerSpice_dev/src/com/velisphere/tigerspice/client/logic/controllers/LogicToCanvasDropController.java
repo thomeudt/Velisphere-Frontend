@@ -37,6 +37,20 @@ public class LogicToCanvasDropController extends AbsolutePositionDropController 
 
 		int targetX = context.desiredDraggableX - dropTargetOffsetX;
 		int targetY = context.desiredDraggableY - dropTargetOffsetY;
+		
+		if (context.draggable.getClass().getName() == "com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd")
+		{
+			LogicDragController logicDragController = (LogicDragController) context.dragController;
+			logicDragController.getExplorer().addLogicCheckAnd();
+		}
+		
+		if (context.draggable.getClass().getName() == "com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr")
+		{
+			LogicDragController logicDragController = (LogicDragController) context.dragController;
+			logicDragController.getExplorer().addLogicCheckOr();
+		}
+			
+		
 		EventUtils.EVENT_BUS.fireEvent(new DraggedToCanvasEvent(context,
 				targetX, targetY));
 

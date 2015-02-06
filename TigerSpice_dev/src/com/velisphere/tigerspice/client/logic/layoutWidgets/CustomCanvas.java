@@ -236,10 +236,6 @@ public class CustomCanvas extends Composite {
 		// add drag point only if it is a sensor
 		
 		if (current.getIsSensor() == 1) addDragPoint(propertyLabel);
-		if (current.getIsActor() == 1) 
-			{
-				addLandingPoint(propertyLabel);	
-			}
 		
 		
 		InCanvasLinkDropController inCanvasLinkDropController = new InCanvasLinkDropController(propertyLabel);
@@ -267,19 +263,7 @@ public class CustomCanvas extends Composite {
 		
 	}
 	
-	private void addLandingPoint(CanvasLabel propertyLabel)
-	{
-		WidgetLocation widgetLocation = new WidgetLocation(propertyLabel, logicPanel);
-		//final HTML link = new HTML("Manage");
-		
-		final Icon targetIcon = new Icon(IconType.BULLSEYE);
-		targetIcon.setSize(IconSize.TWO_TIMES);
-		targetIcon.getElement().setAttribute("style", "color:dimgrey;");
-		propertyLabel.setDropTargetIcon(targetIcon);
-		logicPanel.add(targetIcon, widgetLocation.getLeft(), widgetLocation.getTop()-controlsOffsetY);
-		
-	}
-
+	
 	
 	private void setLinkedInCanvasEventListener()
 	{
@@ -295,6 +279,10 @@ public class CustomCanvas extends Composite {
 						
 						LinkedPair<CanvasLabel, CanvasLabel> linkedPair = new LinkedPair<CanvasLabel, CanvasLabel>(linkedInCanvasEvent.getSource(), linkedInCanvasEvent.getTarget());
 						linkedPairs.add(linkedPair);
+						
+						// get the line color
+						
+						String lineColor = linkedPair.getLeft().getDragPointWidget().getCurrentColor();
 						
 						// add new drag point to source label to allow further links
 						
@@ -331,14 +319,14 @@ public class CustomCanvas extends Composite {
 						
 						// re draw the links
 						
-						drawLinks();
+						drawLinks(lineColor);
 						
 						
 					}});
 		
 	}
 	
-	private void drawLinks()
+	private void drawLinks(String lineColor)
 	{
 	
 		context.clearRect(0, 0, canvas.getCoordinateSpaceWidth(), canvas.getCoordinateSpaceHeight());
@@ -353,43 +341,59 @@ public class CustomCanvas extends Composite {
 			context.beginPath();
 			
 			// change to red
-			 context.setStrokeStyle(CssColor.make(255,0,0));
+			
+			 context.setStrokeStyle(CssColor.make(lineColor));
 
 			 context.moveTo(coordinates.getCalcSourceX(), coordinates.getCalcSourceY());
 			 context.lineTo(coordinates.getCalcTargetX(), coordinates.getCalcTargetY());
 			
 			 context.stroke();
 			 context.closePath();
-			
 			 
-			 context.beginPath();
-			 // change to red
-			 context.setStrokeStyle(CssColor.make(255,0,0));
-
-			 double endRadians=Math.atan((coordinates.getCalcTargetY()-coordinates.getCalcSourceY())/(coordinates.getCalcTargetX()-coordinates.getCalcSourceX()));
-		        //endRadians+=((this.x2>this.x1)?90:-90)*Math.PI/180;
-			 context.translate(coordinates.getCalcTargetX(), coordinates.getCalcTargetY());
-			 //context.rotate(endRadians);
-			 context.moveTo(0,0);
-			 context.lineTo(5,20);
-			 context.lineTo(-5,20);
-			 context.stroke();
-			 
-			 context.translate(coordinates.getCalcTargetX()*-1, coordinates.getCalcTargetY()*-1);
-			 //context.rotate(endRadians*-1);
-			 
-			 context.closePath();
-			 
-			 
-			 
-			
+			 drawArrow(coordinates, lineColor);
 			positionConnectors(labels, coordinates);
-			
 			
 
 			
 		}
 	
+	}
+	
+	private void drawArrow(LineCoordinateCalculator coordinates, String lineColor)
+	{
+		
+		double angle = Math.PI/8;
+		
+		// calculate the angle of the line
+		double lineangle=Math.atan2(coordinates.getCalcTargetY() - coordinates.getCalcSourceY(),coordinates.getCalcTargetX() - coordinates.getCalcSourceX());
+		// h is the line length of a side of the arrow head
+		double h=Math.abs(10/Math.cos(angle));
+		
+		double angle1=lineangle+Math.PI+angle;
+		double topx=coordinates.getCalcTargetX()+Math.cos(angle1)*h;
+		double topy=coordinates.getCalcTargetY()+Math.sin(angle1)*h;
+		
+		double angle2=lineangle+Math.PI-angle;
+		double botx=coordinates.getCalcTargetX()+Math.cos(angle2)*h;
+		double boty=coordinates.getCalcTargetY()+Math.sin(angle2)*h;
+		  
+		 context.beginPath();
+		 
+		 context.setStrokeStyle(CssColor.make("lineColor"));
+
+		  context.save();
+		  context.beginPath();
+		  context.moveTo(topx,topy);
+		  context.lineTo(coordinates.getCalcTargetX(), coordinates.getCalcTargetY());
+		  context.stroke();
+		  context.lineTo(botx,boty);
+		  context.stroke();
+		  context.restore();
+		
+		 
+		 context.closePath();
+		 
+		
 	}
 	
 	private void positionConnectors(LinkedPair<CanvasLabel, CanvasLabel> currentPair, LineCoordinateCalculator coordinates)
@@ -438,18 +442,11 @@ public class CustomCanvas extends Composite {
 							logicPanel.add(draggedInCanvasEvent.getCanvasLabel().getDragPointWidget(), newLocation.getLeft(), newLocation.getTop()-controlsOffsetY);
 						}
 						
-						// move dropTargetIcon if it is an actor
 						
-						if(draggedInCanvasEvent.getCanvasLabel().getIsActor() == 1)
-						{
-							WidgetLocation newLocation = new WidgetLocation(draggedInCanvasEvent.getCanvasLabel(), logicPanel);
-							draggedInCanvasEvent.getCanvasLabel().getDropTargetIcon().removeFromParent();
-							logicPanel.add(draggedInCanvasEvent.getCanvasLabel().getDropTargetIcon(), newLocation.getLeft(), newLocation.getTop()-controlsOffsetY);
-						}
 						
 						// re-draw the links
 						
-						drawLinks();
+						drawLinks("cornflowerblue");
 					
 						
 						

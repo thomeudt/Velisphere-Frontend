@@ -93,7 +93,7 @@ public class LineCoordinateCalculator {
 			calcSourceX = (int) (sourceLocation.getLeft() + source.getElement().getClientWidth() * 0.5 - 20);
 			calcTargetX = (int) (targetLocation.getLeft() + target.getElement().getClientWidth() * 0.5 - 20);
 			calcSourceY = sourceLocation.getTop() - 20;
-			calcTargetY = targetLocation.getTop() + target.getElement().getClientHeight() - 20;
+			calcTargetY = targetLocation.getTop() + target.getElement().getClientHeight() - 15;
 		}
 		
 		if (targetBelowSource == true)
