@@ -33,24 +33,26 @@ public class DraggedInCanvasEvent extends GwtEvent<DraggedInCanvasEventHandler> 
 		
 		public static Type<DraggedInCanvasEventHandler> TYPE = new Type<DraggedInCanvasEventHandler>();
 		
+		DragContext context;
 		CanvasLabel canvasLabel;
 		LogicCheckAnd logicCheckAnd;
 		LogicCheckOr logicCheckOr;
 		
 		
-		public DraggedInCanvasEvent(CanvasLabel canvasLabel)
+		public DraggedInCanvasEvent(DragContext context, CanvasLabel canvasLabel)
 		{
 			this.canvasLabel = canvasLabel;
-	
-			
+			this.context = context;
 		}
 		
-		public DraggedInCanvasEvent(LogicCheckAnd logicCheckAnd) {
+		public DraggedInCanvasEvent(DragContext context, LogicCheckAnd logicCheckAnd) {
 			this.logicCheckAnd = logicCheckAnd;
+			this.context = context;
 		}
 		
-		public DraggedInCanvasEvent(LogicCheckOr logicCheckOr) {
+		public DraggedInCanvasEvent(DragContext context, LogicCheckOr logicCheckOr) {
 			this.logicCheckOr = logicCheckOr;
+			this.context = context;
 		}
 
 		@Override
@@ -78,6 +80,12 @@ public class DraggedInCanvasEvent extends GwtEvent<DraggedInCanvasEventHandler> 
 			return this.logicCheckOr;
 		}
 		
+		public DragContext getContext()
+		{
+			return this.context;
+		}
+		
+
 		
 		
 }

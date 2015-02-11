@@ -25,7 +25,7 @@ public class LogicToCanvasDropController extends AbsolutePositionDropController 
 
 	@Override
 	public void onDrop(DragContext context) {
-		// super.onDrop(context);
+		//super.onDrop(context);
 		RootPanel.get().add(new HTML("DropController says onDrop"));
 
 		WidgetLocation dropTargetLocation = new WidgetLocation(dropTarget, null);

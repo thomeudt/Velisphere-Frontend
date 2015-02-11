@@ -41,17 +41,17 @@ public class InCanvasDragDropController extends AbsolutePositionDropController {
 		{
 			CanvasLabel canvasLabel = (CanvasLabel) context.selectedWidgets.get(0);
 			RootPanel.get().add(new HTML(canvasLabel.getContentRepresentation() + " WAS DROPPED at " + (context.desiredDraggableX - dropTargetOffsetX) + " / " + (context.desiredDraggableY - dropTargetOffsetY)));
-			EventUtils.EVENT_BUS.fireEvent(new DraggedInCanvasEvent(canvasLabel));
+			EventUtils.EVENT_BUS.fireEvent(new DraggedInCanvasEvent(context, canvasLabel));
 		}
 		else if (context.selectedWidgets.get(0).getClass().getName() == "com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd")
 		{
 			LogicCheckAnd logicCheckAnd = (LogicCheckAnd) context.selectedWidgets.get(0);
-			EventUtils.EVENT_BUS.fireEvent(new DraggedInCanvasEvent(logicCheckAnd));
+			EventUtils.EVENT_BUS.fireEvent(new DraggedInCanvasEvent(context, logicCheckAnd));
 		}
 		else if (context.selectedWidgets.get(0).getClass().getName() == "com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr")
 		{
 			LogicCheckOr logicCheckOr = (LogicCheckOr) context.selectedWidgets.get(0);
-			EventUtils.EVENT_BUS.fireEvent(new DraggedInCanvasEvent(logicCheckOr));
+			EventUtils.EVENT_BUS.fireEvent(new DraggedInCanvasEvent(context, logicCheckOr));
 		}	
 		
 		

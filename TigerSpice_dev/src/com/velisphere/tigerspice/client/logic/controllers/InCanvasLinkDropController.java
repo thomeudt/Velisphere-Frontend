@@ -35,10 +35,16 @@ import java.util.ArrayList;
 public class InCanvasLinkDropController extends SimpleDropController {
 	
 	CanvasLabel dropTarget;
+	Widget genericDropTarget;
 	
 	public InCanvasLinkDropController(CanvasLabel dropTarget) {
 		super(dropTarget);
 		this.dropTarget = dropTarget;
+	}
+	
+	public InCanvasLinkDropController(Widget dropTarget) {
+		super(dropTarget);
+		this.genericDropTarget = dropTarget;
 	}
 	
 	
@@ -46,9 +52,15 @@ public class InCanvasLinkDropController extends SimpleDropController {
 	public void onPreviewDrop(DragContext context) throws VetoDragException
 	{
 		
-		if (dropTarget.getIsSensor() == 1) {
-		      throw new VetoDragException();
-		    }
+		
+		if (dropTarget != null)
+		{
+			if (dropTarget.getIsSensor() == 1) {
+			      throw new VetoDragException();
+			    }
+			
+		}
+		
 	}
 	
 	
@@ -56,15 +68,26 @@ public class InCanvasLinkDropController extends SimpleDropController {
 	public void onDrop(DragContext context)
 	{
 	
+		if (dropTarget != null)
+		{
+			if (dropTarget.getIsActor() == 1)
+			{
+				super.onDrop(context);
+				RootPanel.get().add(new HTML("DropController says onDrop"));
+				LinkCreator linkCreator = (LinkCreator) context.draggable;
+			    RootPanel.get().add(new HTML(linkCreator.getSource().getContentRepresentation() + " was dropped on " + dropTarget.getContentRepresentation()));
+			    EventUtils.EVENT_BUS.fireEvent(new LinkedInCanvasEvent(linkCreator.getSource(), dropTarget));
+			}
+			
+		}
 		
-		if (dropTarget.getIsActor() == 1)
+		if (genericDropTarget != null)
 		{
 			super.onDrop(context);
-			RootPanel.get().add(new HTML("DropController says onDrop"));
-			LinkCreator linkCreator = (LinkCreator) context.draggable;
-		    RootPanel.get().add(new HTML(linkCreator.getSource().getContentRepresentation() + " was dropped on " + dropTarget.getContentRepresentation()));
-		    EventUtils.EVENT_BUS.fireEvent(new LinkedInCanvasEvent(linkCreator.getSource(), dropTarget));
+			RootPanel.get().add(new HTML("DropController says onGENERICDrop"));
 		}
+		
+		
 		
 			
 			

@@ -1,6 +1,7 @@
 package com.velisphere.tigerspice.client.logic.draggables;
 
 import com.github.gwtbootstrap.client.ui.Image;
+import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasAllTouchHandlers;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -37,6 +38,8 @@ public class LogicCheckOr extends FocusPanel implements HasAllTouchHandlers {
           //getElement().getStyle().setBorderColor("#bbbbbb");
           //getElement().getStyle().setBorderWidth(1, Unit.PX);
           getElement().getStyle().setBackgroundColor("#ffffff");
+          
+          this.getElement().getStyle().setCursor(Cursor.POINTER);
           
 	}
 	

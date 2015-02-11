@@ -165,32 +165,16 @@ public class CustomCanvas extends Composite {
 						} else 
 							if (draggedToCanvasEvent.getContext().selectedWidgets.get(0) instanceof LogicCheckAnd)
 							{
-								// do something
 								
-								LogicCheckAnd logicCheckAnd = (LogicCheckAnd) draggedToCanvasEvent.getContext().selectedWidgets.get(0);
-								
-								logicPanel.add(logicCheckAnd,
-										draggedToCanvasEvent.getTargetX(),
-										draggedToCanvasEvent.getTargetY());
-								
-								
-								dragController.makeDraggable(logicCheckAnd);
+								addLogicCheckAnd(draggedToCanvasEvent);
 								
 								
 							}
 							else 
 								if (draggedToCanvasEvent.getContext().selectedWidgets.get(0) instanceof LogicCheckOr)
 								{
-									// do something
-									
-									LogicCheckOr logicCheckOr = (LogicCheckOr) draggedToCanvasEvent.getContext().selectedWidgets.get(0);
-									
-									logicPanel.add(logicCheckOr,
-											draggedToCanvasEvent.getTargetX(),
-											draggedToCanvasEvent.getTargetY());
-									
-									
-									dragController.makeDraggable(logicCheckOr);
+
+									addLogicCheckOr(draggedToCanvasEvent);
 									
 								}
 							
@@ -206,6 +190,47 @@ public class CustomCanvas extends Composite {
 	}
 
 	
+	
+	private void addLogicCheckAnd(DraggedToCanvasEvent draggedToCanvasEvent)
+	{
+		
+
+		draggedToCanvasEvent.getContext().selectedWidgets.get(0).removeFromParent();
+		
+		LogicCheckAnd logicCheckAnd = new LogicCheckAnd();
+		
+		logicPanel.add(logicCheckAnd,
+				draggedToCanvasEvent.getTargetX(),
+				draggedToCanvasEvent.getTargetY());
+		
+		
+		dragController.makeDraggable(logicCheckAnd);
+		
+		InCanvasLinkDropController inCanvasLinkDropController = new InCanvasLinkDropController(logicCheckAnd);
+	
+		linkDragController.registerDropController(inCanvasLinkDropController);
+	}
+
+	private void addLogicCheckOr(DraggedToCanvasEvent draggedToCanvasEvent)
+	{
+		
+
+		draggedToCanvasEvent.getContext().selectedWidgets.get(0).removeFromParent();
+		
+		LogicCheckOr logicCheckOr = new LogicCheckOr();
+		
+		logicPanel.add(logicCheckOr,
+				draggedToCanvasEvent.getTargetX(),
+				draggedToCanvasEvent.getTargetY());
+		
+		
+		dragController.makeDraggable(logicCheckOr);
+		
+		InCanvasLinkDropController inCanvasLinkDropController = new InCanvasLinkDropController(logicCheckOr);
+	
+		linkDragController.registerDropController(inCanvasLinkDropController);
+	}
+
 	
 	private void addCanvasLabel(DraggedToCanvasEvent draggedToCanvasEvent)
 	{
@@ -432,15 +457,23 @@ public class CustomCanvas extends Composite {
 						// TODO Auto-generated method stub
 						
 						RootPanel.get().add(new HTML("DRAGGED FIRED"));
-					
-						// move dragPoint if it is a sensor
 						
-						if(draggedInCanvasEvent.getCanvasLabel().getIsSensor() == 1)
+						// first check if this is a physical property or logic check
+						
+						if (draggedInCanvasEvent.getContext().selectedWidgets.get(0) instanceof CanvasLabel)
 						{
-							WidgetLocation newLocation = new WidgetLocation(draggedInCanvasEvent.getCanvasLabel(), logicPanel);
-							draggedInCanvasEvent.getCanvasLabel().getDragPointWidget().removeFromParent();
-							logicPanel.add(draggedInCanvasEvent.getCanvasLabel().getDragPointWidget(), newLocation.getLeft(), newLocation.getTop()-controlsOffsetY);
+							// move dragPoint if it is a sensor
+							
+							if(draggedInCanvasEvent.getCanvasLabel().getIsSensor() == 1)
+							{
+								WidgetLocation newLocation = new WidgetLocation(draggedInCanvasEvent.getCanvasLabel(), logicPanel);
+								draggedInCanvasEvent.getCanvasLabel().getDragPointWidget().removeFromParent();
+								logicPanel.add(draggedInCanvasEvent.getCanvasLabel().getDragPointWidget(), newLocation.getLeft(), newLocation.getTop()-controlsOffsetY);
+							}
 						}
+							
+							
+					
 						
 						
 						
