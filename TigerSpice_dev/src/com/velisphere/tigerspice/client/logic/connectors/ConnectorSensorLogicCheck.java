@@ -32,6 +32,7 @@ import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.helper.ActionSourceConfig;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheck;
 import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
@@ -42,18 +43,18 @@ import com.velisphere.tigerspice.client.spheres.SphereServiceAsync;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.velisphere.tigerspice.shared.PropertyData;
 
-public class ConnectorSensorActor extends PopupPanel {
+public class ConnectorSensorLogicCheck extends PopupPanel {
 
-	PhysicalItem actor;
+	LogicCheck logicCheck;
 	PhysicalItem sensor;
 	Button openingButton;
 
 	
-	public ConnectorSensorActor (PhysicalItem sensor, PhysicalItem actor)
+	public ConnectorSensorLogicCheck (PhysicalItem sensor, LogicCheck logicCheck)
 	{
 		super();
 		this.sensor = sensor;
-		this.actor = actor;
+		this.logicCheck = logicCheck;
 		createBaseLayout();
 		createOpenerWidget();
 		
@@ -78,12 +79,12 @@ public class ConnectorSensorActor extends PopupPanel {
 		HorizontalPanel imageHeader = new HorizontalPanel();
 		imageHeader.add(this.sensor.getImage());
 		imageHeader.add(new Icon(IconType.CHEVRON_SIGN_RIGHT));
-		imageHeader.add(this.actor.getImage());
+		imageHeader.add(this.logicCheck.getImage());
 		col0a.add(imageHeader);
 		row0.add(col0a);
 		Column col0b = new Column(4);	
 		col0b.add(new HTML("<b>Define Connection between "+ sensor.getContentRepresentation() + " "
-				+ "and "+ actor.getContentRepresentation()+"</b>"));
+				+ "and "+ logicCheck.getContentRepresentation()+"</b>"));
 		row0.add(col0b);
 		
 		verticalPanel.add(row0);
@@ -94,7 +95,7 @@ public class ConnectorSensorActor extends PopupPanel {
 		HTML headerHTML = new HTML("<br><br>"
 				+ "You can define the condition under which the connection will be triggered based "
 						+ "on the state of <b>"+ sensor.getContentRepresentation() + "</b>, "
-				+ "and then define what data will be send to <b>" + actor.getContentRepresentation() + "</b>. This could be a static "
+				+ "and then define what data will be send to <b>" + logicCheck.getContentRepresentation() + "</b>. This could be a static "
 						+ "value defined in this dialog,"
 				+ "or values dynamically pulled from either <b>"+sensor.getContentRepresentation()+"</b> or any other sensor you have access to."
 						+ "<br><br>&nbsp;");
@@ -192,13 +193,13 @@ public class ConnectorSensorActor extends PopupPanel {
 			
 		});
 		
-		final ConnectorSensorActor thisWidget = this;
+		final ConnectorSensorLogicCheck thisWidget = this;
 		btnSave.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				EventUtils.EVENT_BUS.fireEvent(new ConnectionSaveEvent(sensor, actor, thisWidget));
+				//EventUtils.EVENT_BUS.fireEvent(new ConnectionSaveEvent(sensor, logicCheck, thisWidget));
 				currentWindow.removeFromParent();
 			}
 			
@@ -410,7 +411,7 @@ public class ConnectorSensorActor extends PopupPanel {
 		openingButton = new Button();
 		openingButton.setBaseIcon(IconType.ASTERISK);
 		
-		final ConnectorSensorActor currentConnector = this;
+		final ConnectorSensorLogicCheck currentConnector = this;
 				
 	}
 	

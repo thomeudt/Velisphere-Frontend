@@ -18,20 +18,17 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.velisphere.tigerspice.client.images.Images;
 
-public class LogicCheckOr extends LogicCheck {
+public class LogicCheck extends FocusPanel implements HasAllTouchHandlers {
 
+	String content;
 	
-	public LogicCheckOr()
+	public LogicCheck()
 	{
-		//super();
-	
-		content = "Logic Check OR";
+		super();
+		removeDefaultMouseDown();
 		
-		Image andIcon = new Image();
-		andIcon.setResource(Images.INSTANCE.or_icon());
-		andIcon.setTitle("This logic check is true if all checks linked to this logic check are true");
-		this.add(andIcon);
 		
+		content = "Logic Check";
 		  this.setStyleName("wellwhite");
           
           
@@ -43,6 +40,7 @@ public class LogicCheckOr extends LogicCheck {
           
           this.getElement().getStyle().setCursor(Cursor.POINTER);
           
+	
 	}
 	
     
@@ -65,7 +63,31 @@ public class LogicCheckOr extends LogicCheck {
     public HandlerRegistration addTouchCancelHandler(TouchCancelHandler handler){
             return addDomHandler(handler, TouchCancelEvent.getType());
     }
+    
+    private void removeDefaultMouseDown()
+	{
+    	
+		this.addMouseDownHandler(new MouseDownHandler(){
 
-   
+			@Override
+			public void onMouseDown(MouseDownEvent event) {
+				event.preventDefault();
+			}
+			
+		});
+		
+	}
+    
+    public Image getImage()
+    {
+    	Image tempImage = new Image();
+    	tempImage.setUrl(Images.INSTANCE.and_icon().getSafeUri());
+    	return tempImage;
+    }
+
+    public String getContentRepresentation() {
+        return this.content;
+    }
+
 	
 }

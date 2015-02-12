@@ -25,67 +25,40 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
-import com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd;
-import com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr;
 
-public class DraggedInCanvasEvent extends GwtEvent<DraggedInCanvasEventHandler> {
+public class LinkedInCanvasP2PEvent extends GwtEvent<LinkedInCanvasP2PEventHandler> {
 
 		
-		public static Type<DraggedInCanvasEventHandler> TYPE = new Type<DraggedInCanvasEventHandler>();
+		public static Type<LinkedInCanvasP2PEventHandler> TYPE = new Type<LinkedInCanvasP2PEventHandler>();
 		
-		DragContext context;
-		PhysicalItem canvasLabel;
-		LogicCheckAnd logicCheckAnd;
-		LogicCheckOr logicCheckOr;
+		PhysicalItem source;
+		PhysicalItem target;
 		
-		
-		public DraggedInCanvasEvent(DragContext context, PhysicalItem canvasLabel)
+		public LinkedInCanvasP2PEvent(PhysicalItem source, PhysicalItem target)
 		{
-			this.canvasLabel = canvasLabel;
-			this.context = context;
+			this.source = source;
+			this.target = target;
+			
 		}
 		
-		public DraggedInCanvasEvent(DragContext context, LogicCheckAnd logicCheckAnd) {
-			this.logicCheckAnd = logicCheckAnd;
-			this.context = context;
-		}
-		
-		public DraggedInCanvasEvent(DragContext context, LogicCheckOr logicCheckOr) {
-			this.logicCheckOr = logicCheckOr;
-			this.context = context;
-		}
-
 		@Override
-		public Type<DraggedInCanvasEventHandler> getAssociatedType() {
+		public Type<LinkedInCanvasP2PEventHandler> getAssociatedType() {
 		    return TYPE;
 		}
 
 		@Override
-		protected void dispatch(DraggedInCanvasEventHandler handler) {
-		    handler.onDraggedInCanvas(this);
+		protected void dispatch(LinkedInCanvasP2PEventHandler handler) {
+		    handler.onLinkedInCanvas(this);
 		}
 		
-		public PhysicalItem getCanvasLabel()
+		public PhysicalItem getSource()
 		{
-			return this.canvasLabel;
+			return this.source;
 		}
 		
-		public LogicCheckAnd getLogicCheckAnd()
-		{
-			return this.logicCheckAnd;
+		public PhysicalItem getTarget(){
+			return this.target;
 		}
-		
-		public LogicCheckOr getLogicCheckOr()
-		{
-			return this.logicCheckOr;
-		}
-		
-		public DragContext getContext()
-		{
-			return this.context;
-		}
-		
-
 		
 		
 }

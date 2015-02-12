@@ -4,7 +4,7 @@ import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.velisphere.tigerspice.client.logic.draggables.CanvasLabel;
+import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 
 public class LineCoordinateCalculator {
 	
@@ -13,8 +13,8 @@ public class LineCoordinateCalculator {
 	int calcSourceY;
 	int calcTargetX;
 	int calcTargetY;
-	CanvasLabel source;
-	CanvasLabel target;
+	Widget source;
+	Widget target;
 	WidgetLocation sourceLocation;
 	WidgetLocation targetLocation;
 	boolean targetAboveSource;
@@ -23,7 +23,7 @@ public class LineCoordinateCalculator {
 	boolean targetRightOfSource;
 
 	
-	public LineCoordinateCalculator(CanvasLabel source, CanvasLabel target, Widget reference)
+	public LineCoordinateCalculator(Widget source, Widget target, Widget reference)
 	{
 		this.source = source;
 		this.target = target;

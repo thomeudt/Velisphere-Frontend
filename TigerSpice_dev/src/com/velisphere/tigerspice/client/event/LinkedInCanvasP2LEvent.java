@@ -23,18 +23,19 @@ import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Widget;
-import com.velisphere.tigerspice.client.logic.draggables.CanvasLabel;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheck;
+import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
 
-public class LinkedInCanvasEvent extends GwtEvent<LinkedInCanvasEventHandler> {
+public class LinkedInCanvasP2LEvent extends GwtEvent<LinkedInCanvasP2LEventHandler> {
 
 		
-		public static Type<LinkedInCanvasEventHandler> TYPE = new Type<LinkedInCanvasEventHandler>();
+		public static Type<LinkedInCanvasP2LEventHandler> TYPE = new Type<LinkedInCanvasP2LEventHandler>();
 		
-		CanvasLabel source;
-		CanvasLabel target;
+		PhysicalItem source;
+		LogicCheck target;
 		
-		public LinkedInCanvasEvent(CanvasLabel source, CanvasLabel target)
+		public LinkedInCanvasP2LEvent(PhysicalItem source, LogicCheck target)
 		{
 			this.source = source;
 			this.target = target;
@@ -42,21 +43,21 @@ public class LinkedInCanvasEvent extends GwtEvent<LinkedInCanvasEventHandler> {
 		}
 		
 		@Override
-		public Type<LinkedInCanvasEventHandler> getAssociatedType() {
+		public Type<LinkedInCanvasP2LEventHandler> getAssociatedType() {
 		    return TYPE;
 		}
 
 		@Override
-		protected void dispatch(LinkedInCanvasEventHandler handler) {
+		protected void dispatch(LinkedInCanvasP2LEventHandler handler) {
 		    handler.onLinkedInCanvas(this);
 		}
 		
-		public CanvasLabel getSource()
+		public PhysicalItem getSource()
 		{
 			return this.source;
 		}
 		
-		public CanvasLabel getTarget(){
+		public LogicCheck getTarget(){
 			return this.target;
 		}
 		

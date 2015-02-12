@@ -15,12 +15,12 @@ import com.google.gwt.user.client.ui.FocusPanel;
 
 public class LinkCreator extends FocusPanel {
 	
-	CanvasLabel source;
+	PhysicalItem source;
 	Icon icon;
 	int currentColorID;
 	LinkedList<String> colorPalette = new LinkedList<String>();
 	
-	public LinkCreator (CanvasLabel source)
+	public LinkCreator (PhysicalItem source)
 	{
 		super();
 		currentColorID=3;
@@ -43,7 +43,7 @@ public class LinkCreator extends FocusPanel {
 		colorPalette.add("cornflowerblue");
 	}
 	
-	public CanvasLabel getSource()
+	public PhysicalItem getSource()
 	{
 		return this.source;
 	}

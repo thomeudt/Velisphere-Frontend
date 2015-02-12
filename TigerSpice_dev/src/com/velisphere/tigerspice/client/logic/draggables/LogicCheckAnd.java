@@ -18,13 +18,15 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.velisphere.tigerspice.client.images.Images;
 
-public class LogicCheckAnd extends FocusPanel implements HasAllTouchHandlers {
+public class LogicCheckAnd extends LogicCheck {
 
 	
 	public LogicCheckAnd()
 	{
-		super();
-		removeDefaultMouseDown();
+		//super();
+		
+		content = "Logic Check AND";
+		
 		Image andIcon = new Image();
 		andIcon.setResource(Images.INSTANCE.and_icon());
 		andIcon.setTitle("This logic check is true if all checks linked to this logic check are true");
@@ -66,19 +68,6 @@ public class LogicCheckAnd extends FocusPanel implements HasAllTouchHandlers {
             return addDomHandler(handler, TouchCancelEvent.getType());
     }
     
-    private void removeDefaultMouseDown()
-	{
-    	
-		this.addMouseDownHandler(new MouseDownHandler(){
-
-			@Override
-			public void onMouseDown(MouseDownEvent event) {
-				event.preventDefault();
-			}
-			
-		});
-		
-	}
-
+   
 	
 }

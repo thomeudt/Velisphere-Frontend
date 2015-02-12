@@ -12,8 +12,10 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
-import com.velisphere.tigerspice.client.event.LinkedInCanvasEvent;
-import com.velisphere.tigerspice.client.logic.draggables.CanvasLabel;
+import com.velisphere.tigerspice.client.event.LinkedInCanvasP2LEvent;
+import com.velisphere.tigerspice.client.event.LinkedInCanvasP2PEvent;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheck;
+import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FocusPanel;
@@ -34,17 +36,17 @@ import java.util.ArrayList;
  */
 public class InCanvasLinkDropController extends SimpleDropController {
 	
-	CanvasLabel dropTarget;
-	Widget genericDropTarget;
+	PhysicalItem dropTarget;
+	LogicCheck genericDropTarget;
 	
-	public InCanvasLinkDropController(CanvasLabel dropTarget) {
+	public InCanvasLinkDropController(PhysicalItem dropTarget) {
 		super(dropTarget);
 		this.dropTarget = dropTarget;
 	}
 	
-	public InCanvasLinkDropController(Widget dropTarget) {
-		super(dropTarget);
-		this.genericDropTarget = dropTarget;
+	public InCanvasLinkDropController(LogicCheck genericDropTarget) {
+		super(genericDropTarget);
+		this.genericDropTarget = genericDropTarget;
 	}
 	
 	
@@ -76,7 +78,7 @@ public class InCanvasLinkDropController extends SimpleDropController {
 				RootPanel.get().add(new HTML("DropController says onDrop"));
 				LinkCreator linkCreator = (LinkCreator) context.draggable;
 			    RootPanel.get().add(new HTML(linkCreator.getSource().getContentRepresentation() + " was dropped on " + dropTarget.getContentRepresentation()));
-			    EventUtils.EVENT_BUS.fireEvent(new LinkedInCanvasEvent(linkCreator.getSource(), dropTarget));
+			    EventUtils.EVENT_BUS.fireEvent(new LinkedInCanvasP2PEvent(linkCreator.getSource(), dropTarget));
 			}
 			
 		}
@@ -85,7 +87,12 @@ public class InCanvasLinkDropController extends SimpleDropController {
 		{
 			super.onDrop(context);
 			RootPanel.get().add(new HTML("DropController says onGENERICDrop"));
+			LinkCreator linkCreator = (LinkCreator) context.draggable;
+			 EventUtils.EVENT_BUS.fireEvent(new LinkedInCanvasP2LEvent(linkCreator.getSource(), genericDropTarget));
+			
 		}
+		
+		
 		
 		
 		

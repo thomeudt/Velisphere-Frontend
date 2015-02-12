@@ -39,7 +39,7 @@ import com.velisphere.tigerspice.shared.EPCData;
 
 
 	
-public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers {
+public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
 
         public static String identifier = "diagramlabel";
         String endpointName;
@@ -55,7 +55,7 @@ public class CanvasLabel extends FocusPanel implements HasAllTouchHandlers {
     	Image imgEpcImage;
         
         
-        public CanvasLabel(String text, String endpointName, String propertyID, String endpointID, String endpointClassID, String propertyClassID, byte isSensor, byte isActor){
+        public PhysicalItem(String text, String endpointName, String propertyID, String endpointID, String endpointClassID, String propertyClassID, byte isSensor, byte isActor){
                 super();
                 this.content = text;
                 this.endpointName = endpointName;

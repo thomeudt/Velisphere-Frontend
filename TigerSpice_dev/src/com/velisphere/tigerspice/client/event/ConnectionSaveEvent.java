@@ -23,18 +23,18 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.client.ui.Widget;
-import com.velisphere.tigerspice.client.logic.draggables.CanvasLabel;
+import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 
 public class ConnectionSaveEvent extends GwtEvent<ConnectionSaveEventHandler> {
 
 
 		public static Type<ConnectionSaveEventHandler> TYPE = new Type<ConnectionSaveEventHandler>();
-		CanvasLabel source;
-		CanvasLabel target;
+		PhysicalItem source;
+		PhysicalItem target;
 		Widget connector;
 		
 		
-		public ConnectionSaveEvent(CanvasLabel source, CanvasLabel target, Widget connector)
+		public ConnectionSaveEvent(PhysicalItem source, PhysicalItem target, Widget connector)
 		{
 			this.source = source;
 			this.target = target;
@@ -54,12 +54,12 @@ public class ConnectionSaveEvent extends GwtEvent<ConnectionSaveEventHandler> {
 		
 	
 		
-		public CanvasLabel getSource()
+		public PhysicalItem getSource()
 		{
 			return this.source;
 		}
 		
-		public CanvasLabel getTarget(){
+		public PhysicalItem getTarget(){
 			return this.target;
 		}
 

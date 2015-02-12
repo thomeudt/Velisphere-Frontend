@@ -30,14 +30,18 @@ import com.velisphere.tigerspice.client.event.DraggedInCanvasEventHandler;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEventHandler;
 import com.velisphere.tigerspice.client.event.EventUtils;
-import com.velisphere.tigerspice.client.event.LinkedInCanvasEvent;
-import com.velisphere.tigerspice.client.event.LinkedInCanvasEventHandler;
+import com.velisphere.tigerspice.client.event.LinkedInCanvasP2LEvent;
+import com.velisphere.tigerspice.client.event.LinkedInCanvasP2LEventHandler;
+import com.velisphere.tigerspice.client.event.LinkedInCanvasP2PEvent;
+import com.velisphere.tigerspice.client.event.LinkedInCanvasP2PEventHandler;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorActor;
+import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorLogicCheck;
 import com.velisphere.tigerspice.client.logic.controllers.InCanvasLinkDropController;
 import com.velisphere.tigerspice.client.logic.controllers.InCanvasDragDropController;
 import com.velisphere.tigerspice.client.logic.controllers.ListToCanvasDropController;
 import com.velisphere.tigerspice.client.logic.controllers.LogicToCanvasDropController;
-import com.velisphere.tigerspice.client.logic.draggables.CanvasLabel;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheck;
+import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.logic.draggables.ExplorerLabel;
 import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd;
@@ -60,16 +64,22 @@ public class CustomCanvas extends Composite {
 	PickupDragController dragController;
 	PickupDragController linkDragController;
 
-	LinkedList<LinkedPair<CanvasLabel, CanvasLabel>> linkedPairs;
-	HashMap<LinkedPair<CanvasLabel, CanvasLabel>, Widget> linkedPairConnectorMap;
+	LinkedList<LinkedPair<PhysicalItem, PhysicalItem>> linkedP2PPairs;
+	LinkedList<LinkedPair<PhysicalItem, LogicCheck>> linkedP2LPairs;
+	HashMap<LinkedPair<PhysicalItem, PhysicalItem>, Widget> linkedP2PPairConnectorMap;
+	HashMap<LinkedPair<PhysicalItem, LogicCheck>, Widget> linkedP2LPairConnectorMap;
 	
 	AbsolutePanel logicPanel;
 	
 	public CustomCanvas()
 	{
 		
-		linkedPairs = new LinkedList<LinkedPair<CanvasLabel, CanvasLabel>>();
-		linkedPairConnectorMap = new HashMap<LinkedPair<CanvasLabel, CanvasLabel>, Widget>();
+		linkedP2PPairs = new LinkedList<LinkedPair<PhysicalItem, PhysicalItem>>();
+		linkedP2PPairConnectorMap = new HashMap<LinkedPair<PhysicalItem, PhysicalItem>, Widget>();
+
+		linkedP2LPairs = new LinkedList<LinkedPair<PhysicalItem, LogicCheck>>();
+		linkedP2LPairConnectorMap = new HashMap<LinkedPair<PhysicalItem, LogicCheck>, Widget>();
+
 		
 		logicPanel = new AbsolutePanel();
 		
@@ -85,7 +95,8 @@ public class CustomCanvas extends Composite {
 		
 		// call all event listeners
 		setDraggedToCanvasEventListener();
-		setLinkedInCanvasEventListener();
+		setLinkedInCanvasP2PEventListener();
+		setLinkedInCanvasP2LEventListener();
 		setDraggedInCanvasEventListener();
 		setConnectionSaveEventHandler();
 
@@ -247,7 +258,7 @@ public class CustomCanvas extends Composite {
 						+ " Sensor: " + current.getIsSensor()));
 
 		
-		final CanvasLabel propertyLabel = new CanvasLabel(current.getText(), current.getEndpointName(), current.getPropertyID(), current.getEndpointID(), current.getEndpointClassID(), current.getPropertyClassID(), current.getIsSensor(), current.getIsActor());
+		final PhysicalItem propertyLabel = new PhysicalItem(current.getText(), current.getEndpointName(), current.getPropertyID(), current.getEndpointID(), current.getEndpointClassID(), current.getPropertyClassID(), current.getIsSensor(), current.getIsActor());
 		
 		logicPanel.add(propertyLabel,
 				draggedToCanvasEvent.getTargetX(),
@@ -274,7 +285,7 @@ public class CustomCanvas extends Composite {
 	}
 	
 	
-	private void addDragPoint(CanvasLabel propertyLabel)
+	private void addDragPoint(PhysicalItem propertyLabel)
 	{
 		WidgetLocation widgetLocation = new WidgetLocation(propertyLabel, logicPanel);
 		//final HTML link = new HTML("Manage");
@@ -290,20 +301,82 @@ public class CustomCanvas extends Composite {
 	
 	
 	
-	private void setLinkedInCanvasEventListener()
+	private void setLinkedInCanvasP2PEventListener()
 	{
 		linkedInCanvasHandler = EventUtils.EVENT_BUS.addHandler(
-				LinkedInCanvasEvent.TYPE, new LinkedInCanvasEventHandler() {
+				LinkedInCanvasP2PEvent.TYPE, new LinkedInCanvasP2PEventHandler() {
 
 					@Override
 					public void onLinkedInCanvas(
-							LinkedInCanvasEvent linkedInCanvasEvent) {
+							LinkedInCanvasP2PEvent linkedInCanvasEvent) {
 						// TODO Auto-generated method stub
 						
 						RootPanel.get().add(new HTML("LINKED IN FIRED"));
 						
-						LinkedPair<CanvasLabel, CanvasLabel> linkedPair = new LinkedPair<CanvasLabel, CanvasLabel>(linkedInCanvasEvent.getSource(), linkedInCanvasEvent.getTarget());
-						linkedPairs.add(linkedPair);
+						LinkedPair<PhysicalItem, PhysicalItem> linkedP2PPair = new LinkedPair<PhysicalItem, PhysicalItem>(linkedInCanvasEvent.getSource(), linkedInCanvasEvent.getTarget());
+						linkedP2PPairs.add(linkedP2PPair);
+						
+						// get the line color
+						
+						String lineColor = linkedP2PPair.getLeft().getDragPointWidget().getCurrentColor();
+						
+						// add new drag point to source label to allow further links
+						
+						addDragPoint(linkedInCanvasEvent.getSource());
+						
+						// add a connector and open the connector settings dialog
+						
+						final ConnectorSensorActor connector = new ConnectorSensorActor(linkedInCanvasEvent.getSource(), linkedInCanvasEvent.getTarget());
+						linkedP2PPairConnectorMap.put(linkedP2PPair, connector);
+						
+						//connector.show();
+						connector.setAutoHideEnabled(true);
+						connector.center();
+						
+						
+						// add button to open dialog and position on connection line 
+						
+						WidgetLocation sourceLocation = new WidgetLocation(linkedP2PPair.getLeft(), logicPanel);
+						WidgetLocation targetLocation = new WidgetLocation(linkedP2PPair.getRight(), logicPanel);
+						int xPos = (sourceLocation.getLeft() + targetLocation.getLeft()) / 2;
+						int yPos = (sourceLocation.getTop() + targetLocation.getTop()) / 2;
+						logicPanel.add(connector.getOpenerWidget(), xPos, yPos);
+						connector.getOpenerWidget().addClickHandler(new ClickHandler(){
+
+							@Override
+							public void onClick(ClickEvent event) {
+								// TODO Auto-generated method stub
+								connector.show();
+							}
+							
+						});
+
+					
+						
+						// re draw the links
+						
+						drawP2PLinks(lineColor);
+						
+						
+					}});
+		
+	}
+	
+	private void setLinkedInCanvasP2LEventListener()
+	{
+		linkedInCanvasHandler = EventUtils.EVENT_BUS.addHandler(
+				LinkedInCanvasP2LEvent.TYPE, new LinkedInCanvasP2LEventHandler() {
+
+					@Override
+					public void onLinkedInCanvas(
+							LinkedInCanvasP2LEvent linkedInCanvasEvent) {
+						// TODO Auto-generated method stub
+						
+	RootPanel.get().add(new HTML("LINKED IN L FIRED"));
+						
+						LinkedPair<PhysicalItem, LogicCheck> linkedPair = new LinkedPair<PhysicalItem, LogicCheck>(linkedInCanvasEvent.getSource(), linkedInCanvasEvent.getTarget());
+						linkedP2LPairs.add(linkedPair);
+						
 						
 						// get the line color
 						
@@ -313,10 +386,10 @@ public class CustomCanvas extends Composite {
 						
 						addDragPoint(linkedInCanvasEvent.getSource());
 						
-						// add a connector and open the connector settings dialog
+// add a connector and open the connector settings dialog
 						
-						final ConnectorSensorActor connector = new ConnectorSensorActor(linkedInCanvasEvent.getSource(), linkedInCanvasEvent.getTarget());
-						linkedPairConnectorMap.put(linkedPair, connector);
+						final ConnectorSensorLogicCheck connector = new ConnectorSensorLogicCheck(linkedInCanvasEvent.getSource(), linkedInCanvasEvent.getTarget());
+						linkedP2LPairConnectorMap.put(linkedPair, connector);
 						
 						//connector.show();
 						connector.setAutoHideEnabled(true);
@@ -344,22 +417,22 @@ public class CustomCanvas extends Composite {
 						
 						// re draw the links
 						
-						drawLinks(lineColor);
+						drawP2LLinks(lineColor);
 						
 						
 					}});
 		
 	}
 	
-	private void drawLinks(String lineColor)
+	private void drawP2PLinks(String lineColor)
 	{
 	
 		context.clearRect(0, 0, canvas.getCoordinateSpaceWidth(), canvas.getCoordinateSpaceHeight());
 		
-		Iterator<LinkedPair<CanvasLabel, CanvasLabel>> it = linkedPairs.iterator();
+		Iterator<LinkedPair<PhysicalItem, PhysicalItem>> it = linkedP2PPairs.iterator();
 		while (it.hasNext())
 		{
-			LinkedPair<CanvasLabel, CanvasLabel> labels = it.next();
+			LinkedPair<PhysicalItem, PhysicalItem> labels = it.next();
 			
 			LineCoordinateCalculator coordinates = new LineCoordinateCalculator(labels.getLeft(),labels.getRight(), logicPanel); 
 			
@@ -376,13 +449,48 @@ public class CustomCanvas extends Composite {
 			 context.closePath();
 			 
 			 drawArrow(coordinates, lineColor);
-			positionConnectors(labels, coordinates);
+			positionP2PConnectors(labels, coordinates);
 			
 
 			
 		}
 	
 	}
+
+	private void drawP2LLinks(String lineColor)
+	{
+	
+		context.clearRect(0, 0, canvas.getCoordinateSpaceWidth(), canvas.getCoordinateSpaceHeight());
+		
+		Iterator<LinkedPair<PhysicalItem, LogicCheck>> it = linkedP2LPairs.iterator();
+		while (it.hasNext())
+		{
+			LinkedPair<PhysicalItem, LogicCheck> labels = it.next();
+			
+			LineCoordinateCalculator coordinates = new LineCoordinateCalculator(labels.getLeft(),labels.getRight(), logicPanel); 
+			
+			context.beginPath();
+			
+			// change to red
+			
+			 context.setStrokeStyle(CssColor.make(lineColor));
+
+			 context.moveTo(coordinates.getCalcSourceX(), coordinates.getCalcSourceY());
+			 context.lineTo(coordinates.getCalcTargetX(), coordinates.getCalcTargetY());
+			
+			 context.stroke();
+			 context.closePath();
+			 
+			 drawArrow(coordinates, lineColor);
+			positionP2LConnectors(labels, coordinates);
+			
+
+			
+		}
+	
+	}
+
+	
 	
 	private void drawArrow(LineCoordinateCalculator coordinates, String lineColor)
 	{
@@ -421,11 +529,35 @@ public class CustomCanvas extends Composite {
 		
 	}
 	
-	private void positionConnectors(LinkedPair<CanvasLabel, CanvasLabel> currentPair, LineCoordinateCalculator coordinates)
+	private void positionP2PConnectors(LinkedPair<PhysicalItem, PhysicalItem> currentPair, LineCoordinateCalculator coordinates)
 	{
-		if(linkedPairConnectorMap.containsKey(currentPair))
+		if(linkedP2PPairConnectorMap.containsKey(currentPair))
 		{
-			final ConnectorSensorActor currentConnector = (ConnectorSensorActor) linkedPairConnectorMap.get(currentPair);
+			final ConnectorSensorActor currentConnector = (ConnectorSensorActor) linkedP2PPairConnectorMap.get(currentPair);
+			int xPos = (coordinates.getCalcSourceX() + coordinates.getCalcTargetX()) / 2;
+			int yPos = (coordinates.getCalcSourceY() + coordinates.getCalcTargetY()) / 2;
+			logicPanel.remove(currentConnector.getOpenerWidget());
+			logicPanel.add(currentConnector.getOpenerWidget(), xPos, yPos);
+			currentConnector.getOpenerWidget().addClickHandler(new ClickHandler(){
+
+				@Override
+				public void onClick(ClickEvent event) {
+					// TODO Auto-generated method stub
+					currentConnector.show();
+				}
+				
+			});
+
+			RootPanel.get().add(new HTML("Positioning opener Button for " + currentPair.getLeft().getContentRepresentation() + " > " + currentPair.getRight().getContentRepresentation()));
+		}
+			
+	}
+	
+	private void positionP2LConnectors(LinkedPair<PhysicalItem, LogicCheck> currentPair, LineCoordinateCalculator coordinates)
+	{
+		if(linkedP2LPairConnectorMap.containsKey(currentPair))
+		{
+			final ConnectorSensorActor currentConnector = (ConnectorSensorActor) linkedP2PPairConnectorMap.get(currentPair);
 			int xPos = (coordinates.getCalcSourceX() + coordinates.getCalcTargetX()) / 2;
 			int yPos = (coordinates.getCalcSourceY() + coordinates.getCalcTargetY()) / 2;
 			logicPanel.remove(currentConnector.getOpenerWidget());
@@ -446,6 +578,7 @@ public class CustomCanvas extends Composite {
 	}
 	
 	
+	
 	private void setDraggedInCanvasEventListener()
 	{
 		HandlerRegistration draggedInCanvasHandler = EventUtils.EVENT_BUS.addHandler(
@@ -460,7 +593,7 @@ public class CustomCanvas extends Composite {
 						
 						// first check if this is a physical property or logic check
 						
-						if (draggedInCanvasEvent.getContext().selectedWidgets.get(0) instanceof CanvasLabel)
+						if (draggedInCanvasEvent.getContext().selectedWidgets.get(0) instanceof PhysicalItem)
 						{
 							// move dragPoint if it is a sensor
 							
@@ -479,7 +612,8 @@ public class CustomCanvas extends Composite {
 						
 						// re-draw the links
 						
-						drawLinks("cornflowerblue");
+						drawP2PLinks("cornflowerblue");
+						drawP2LLinks("cornflowerblue");
 					
 						
 						
