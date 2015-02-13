@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.LinkedInCanvasL2PEvent;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2LEvent;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2PEvent;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheck;
@@ -77,8 +78,18 @@ public class InCanvasLinkDropController extends SimpleDropController {
 				super.onDrop(context);
 				RootPanel.get().add(new HTML("DropController says onDrop"));
 				LinkCreator linkCreator = (LinkCreator) context.draggable;
-			    RootPanel.get().add(new HTML(linkCreator.getSource().getContentRepresentation() + " was dropped on " + dropTarget.getContentRepresentation()));
-			    EventUtils.EVENT_BUS.fireEvent(new LinkedInCanvasP2PEvent(linkCreator.getSource(), dropTarget));
+			    //RootPanel.get().add(new HTML(linkCreator.getSource().getContentRepresentation() + " was dropped on " + dropTarget.getContentRepresentation()));
+			    if(linkCreator.isLogic())
+			    {
+			    	RootPanel.get().add(new HTML("Was logic..."));
+			    	EventUtils.EVENT_BUS.fireEvent(new LinkedInCanvasL2PEvent((LogicCheck) linkCreator.getSource(), dropTarget));
+			    }
+			    else
+			    {
+			    	EventUtils.EVENT_BUS.fireEvent(new LinkedInCanvasP2PEvent((PhysicalItem) linkCreator.getSource(), dropTarget));	
+			    }
+				
+				
 			}
 			
 		}
@@ -86,9 +97,11 @@ public class InCanvasLinkDropController extends SimpleDropController {
 		if (genericDropTarget != null)
 		{
 			super.onDrop(context);
+			
+			
 			RootPanel.get().add(new HTML("DropController says onGENERICDrop"));
 			LinkCreator linkCreator = (LinkCreator) context.draggable;
-			 EventUtils.EVENT_BUS.fireEvent(new LinkedInCanvasP2LEvent(linkCreator.getSource(), genericDropTarget));
+			 EventUtils.EVENT_BUS.fireEvent(new LinkedInCanvasP2LEvent((PhysicalItem) linkCreator.getSource(), genericDropTarget));
 			
 		}
 		

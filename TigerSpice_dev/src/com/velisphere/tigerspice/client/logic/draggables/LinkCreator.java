@@ -12,17 +12,20 @@ import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class LinkCreator extends FocusPanel {
 	
-	PhysicalItem source;
+	Widget source;
 	Icon icon;
 	int currentColorID;
 	LinkedList<String> colorPalette = new LinkedList<String>();
+	boolean isLogic;
 	
-	public LinkCreator (PhysicalItem source)
+	public LinkCreator (Widget source, Boolean isLogic)
 	{
 		super();
+		this.isLogic = isLogic;
 		currentColorID=3;
 		this.source = source;
 	    icon = new Icon(IconType.BULLSEYE);
@@ -43,12 +46,18 @@ public class LinkCreator extends FocusPanel {
 		colorPalette.add("cornflowerblue");
 	}
 	
-	public PhysicalItem getSource()
+	public Widget getSource()
 	{
 		return this.source;
 	}
+	
+	
 
-	 private void removeDefaultMouseDown()
+	 public boolean isLogic() {
+		return isLogic;
+	}
+
+	private void removeDefaultMouseDown()
  	{
      	
  		this.addMouseDownHandler(new MouseDownHandler(){

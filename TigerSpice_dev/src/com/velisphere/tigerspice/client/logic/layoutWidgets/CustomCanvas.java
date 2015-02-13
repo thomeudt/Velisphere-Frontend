@@ -30,10 +30,13 @@ import com.velisphere.tigerspice.client.event.DraggedInCanvasEventHandler;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEventHandler;
 import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.LinkedInCanvasL2PEvent;
+import com.velisphere.tigerspice.client.event.LinkedInCanvasL2PEventHandler;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2LEvent;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2LEventHandler;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2PEvent;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2PEventHandler;
+import com.velisphere.tigerspice.client.logic.connectors.ConnectorLogicCheckActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorLogicCheck;
 import com.velisphere.tigerspice.client.logic.controllers.InCanvasLinkDropController;
@@ -65,8 +68,10 @@ public class CustomCanvas extends Composite {
 
 	LinkedList<LinkedPair<PhysicalItem, PhysicalItem>> linkedP2PPairs;
 	LinkedList<LinkedPair<PhysicalItem, LogicCheck>> linkedP2LPairs;
+	LinkedList<LinkedPair<LogicCheck, PhysicalItem>> linkedL2PPairs;
 	HashMap<LinkedPair<PhysicalItem, PhysicalItem>, Widget> linkedP2PPairConnectorMap;
 	HashMap<LinkedPair<PhysicalItem, LogicCheck>, Widget> linkedP2LPairConnectorMap;
+	HashMap<LinkedPair<LogicCheck, PhysicalItem>, Widget> linkedL2PPairConnectorMap;
 
 	AbsolutePanel logicPanel;
 
@@ -77,6 +82,8 @@ public class CustomCanvas extends Composite {
 
 		linkedP2LPairs = new LinkedList<LinkedPair<PhysicalItem, LogicCheck>>();
 		linkedP2LPairConnectorMap = new HashMap<LinkedPair<PhysicalItem, LogicCheck>, Widget>();
+		linkedL2PPairs = new LinkedList<LinkedPair<LogicCheck, PhysicalItem>>();
+		linkedL2PPairConnectorMap = new HashMap<LinkedPair<LogicCheck, PhysicalItem>, Widget>();
 
 		logicPanel = new AbsolutePanel();
 
@@ -97,6 +104,7 @@ public class CustomCanvas extends Composite {
 		setLinkedInCanvasP2LEventListener();
 		setDraggedInCanvasEventListener();
 		setConnectionSaveEventHandler();
+		setLinkedInCanvasL2PEventListener();
 
 		logicPanel.addAttachHandler(new AttachEvent.Handler() {
 
@@ -116,8 +124,9 @@ public class CustomCanvas extends Composite {
 					canvas.setCoordinateSpaceWidth(logicPanel.getOffsetWidth());
 					canvas.setCoordinateSpaceHeight(400);
 
-					canvas.addStyleName("wellsilver");
+					canvas.addStyleName("welllinen");
 
+					
 					logicPanel
 							.add(new HTML(
 									"<b>Logic Canvas</b> Drag sensors and actors here to build your logic."),
@@ -195,6 +204,8 @@ public class CustomCanvas extends Composite {
 
 		dragController.makeDraggable(logicCheckAnd);
 
+		addDragPoint(logicCheckAnd);
+		
 		InCanvasLinkDropController inCanvasLinkDropController = new InCanvasLinkDropController(
 				logicCheckAnd);
 
@@ -212,6 +223,8 @@ public class CustomCanvas extends Composite {
 				draggedToCanvasEvent.getTargetY());
 
 		dragController.makeDraggable(logicCheckOr);
+		
+		addDragPoint(logicCheckOr);
 
 		InCanvasLinkDropController inCanvasLinkDropController = new InCanvasLinkDropController(
 				logicCheckOr);
@@ -258,9 +271,24 @@ public class CustomCanvas extends Composite {
 				logicPanel);
 		// final HTML link = new HTML("Manage");
 
-		final LinkCreator link = new LinkCreator(propertyLabel);
+		final LinkCreator link = new LinkCreator(propertyLabel, false);
 
 		propertyLabel.setDragPointWidget(link);
+
+		logicPanel.add(link, widgetLocation.getLeft(), widgetLocation.getTop()
+				- controlsOffsetY);
+		linkDragController.makeDraggable(link);
+
+	}
+	
+	private void addDragPoint(LogicCheck logicCheck) {
+		WidgetLocation widgetLocation = new WidgetLocation(logicCheck,
+				logicPanel);
+		// final HTML link = new HTML("Manage");
+
+		final LinkCreator link = new LinkCreator(logicCheck, true);
+
+		logicCheck.setDragPointWidget(link);
 
 		logicPanel.add(link, widgetLocation.getLeft(), widgetLocation.getTop()
 				- controlsOffsetY);
@@ -409,6 +437,80 @@ public class CustomCanvas extends Composite {
 				});
 
 	}
+
+	
+	private void setLinkedInCanvasL2PEventListener() {
+		linkedInCanvasHandler = EventUtils.EVENT_BUS.addHandler(
+				LinkedInCanvasL2PEvent.TYPE,
+				new LinkedInCanvasL2PEventHandler() {
+
+					@Override
+					public void onLinkedInCanvas(
+							LinkedInCanvasL2PEvent linkedInCanvasEvent) {
+						// TODO Auto-generated method stub
+
+						RootPanel.get().add(new HTML("LINKED IN L FIRED"));
+
+						LinkedPair<LogicCheck, PhysicalItem> linkedPair = new LinkedPair<LogicCheck, PhysicalItem>(
+								linkedInCanvasEvent.getSource(),
+								linkedInCanvasEvent.getTarget());
+						linkedL2PPairs.add(linkedPair);
+
+						// get the line color
+
+						String lineColor = linkedPair.getLeft()
+								.getDragPointWidget().getCurrentColor();
+
+						// add new drag point to source label to allow further
+						// links
+
+						addDragPoint(linkedInCanvasEvent.getSource());
+
+						// add a connector and open the connector settings
+						// dialog
+
+						final ConnectorLogicCheckActor connector = new ConnectorLogicCheckActor(
+								linkedInCanvasEvent.getSource(),
+								linkedInCanvasEvent.getTarget());
+						linkedL2PPairConnectorMap.put(linkedPair, connector);
+
+						// connector.show();
+						connector.setAutoHideEnabled(true);
+						connector.center();
+
+						// add button to open dialog and position on connection
+						// line
+
+						WidgetLocation sourceLocation = new WidgetLocation(
+								linkedPair.getLeft(), logicPanel);
+						WidgetLocation targetLocation = new WidgetLocation(
+								linkedPair.getRight(), logicPanel);
+						int xPos = (sourceLocation.getLeft() + targetLocation
+								.getLeft()) / 2;
+						int yPos = (sourceLocation.getTop() + targetLocation
+								.getTop()) / 2;
+						logicPanel.add(connector.getOpenerWidget(), xPos, yPos);
+						connector.getOpenerWidget().addClickHandler(
+								new ClickHandler() {
+
+									@Override
+									public void onClick(ClickEvent event) {
+										// TODO Auto-generated method stub
+										connector.show();
+									}
+
+								});
+
+						// re draw the links
+
+						drawLinks("cornflowerblue");
+
+					}
+				});
+
+	}
+
+	
 	
 	private void drawLinks(String lineColor)
 	{
@@ -416,6 +518,7 @@ public class CustomCanvas extends Composite {
 				canvas.getCoordinateSpaceHeight());
 		drawP2PLinks(lineColor);
 		drawP2LLinks(lineColor);
+		drawL2PLinks(lineColor);
 		
 	}
 
@@ -479,6 +582,37 @@ public class CustomCanvas extends Composite {
 
 			drawArrow(coordinates, lineColor);
 			positionP2LConnectors(labels, coordinates);
+
+		}
+
+	}
+	
+	private void drawL2PLinks(String lineColor) {
+
+		Iterator<LinkedPair<LogicCheck, PhysicalItem>> it = linkedL2PPairs
+				.iterator();
+		while (it.hasNext()) {
+			LinkedPair<LogicCheck, PhysicalItem> labels = it.next();
+
+			LineCoordinateCalculator coordinates = new LineCoordinateCalculator(
+					labels.getLeft(), labels.getRight(), logicPanel);
+
+			context.beginPath();
+
+			// change to red
+
+			context.setStrokeStyle(CssColor.make(lineColor));
+
+			context.moveTo(coordinates.getCalcSourceX(),
+					coordinates.getCalcSourceY());
+			context.lineTo(coordinates.getCalcTargetX(),
+					coordinates.getCalcTargetY());
+
+			context.stroke();
+			context.closePath();
+
+			drawArrow(coordinates, lineColor);
+			positionL2PConnectors(labels, coordinates);
 
 		}
 
@@ -587,6 +721,40 @@ public class CustomCanvas extends Composite {
 		}
 
 	}
+	
+	private void positionL2PConnectors(
+			LinkedPair<LogicCheck, PhysicalItem> currentPair,
+			LineCoordinateCalculator coordinates) {
+		if (linkedL2PPairConnectorMap.containsKey(currentPair)) {
+			final ConnectorLogicCheckActor currentConnector = (ConnectorLogicCheckActor) linkedL2PPairConnectorMap
+					.get(currentPair);
+			int xPos = (coordinates.getCalcSourceX() + coordinates
+					.getCalcTargetX()) / 2;
+			int yPos = (coordinates.getCalcSourceY() + coordinates
+					.getCalcTargetY()) / 2;
+			logicPanel.remove(currentConnector.getOpenerWidget());
+			logicPanel.add(currentConnector.getOpenerWidget(), xPos, yPos);
+			currentConnector.getOpenerWidget().addClickHandler(
+					new ClickHandler() {
+
+						@Override
+						public void onClick(ClickEvent event) {
+							// TODO Auto-generated method stub
+							currentConnector.show();
+						}
+
+					});
+
+			RootPanel
+					.get()
+					.add(new HTML("Positioning opener Button for "
+							+ currentPair.getLeft().getContentRepresentation()
+							+ " > "
+							+ currentPair.getRight().getContentRepresentation()));
+		}
+
+	}
+
 
 	private void setDraggedInCanvasEventListener() {
 		HandlerRegistration draggedInCanvasHandler = EventUtils.EVENT_BUS
@@ -624,7 +792,51 @@ public class CustomCanvas extends Composite {
 														- controlsOffsetY);
 									}
 								}
+								
+								if (draggedInCanvasEvent.getContext().selectedWidgets
+										.get(0) instanceof LogicCheckAnd) {
+									// move dragPoint if it is a logical and check
 
+									
+										WidgetLocation newLocation = new WidgetLocation(
+												draggedInCanvasEvent
+														.getLogicCheckAnd(),
+												logicPanel);
+										draggedInCanvasEvent.getLogicCheckAnd()
+												.getDragPointWidget()
+												.removeFromParent();
+										logicPanel.add(draggedInCanvasEvent
+												.getLogicCheckAnd()
+												.getDragPointWidget(),
+												newLocation.getLeft(),
+												newLocation.getTop()
+														- controlsOffsetY);
+									
+								}
+
+
+								if (draggedInCanvasEvent.getContext().selectedWidgets
+										.get(0) instanceof LogicCheckOr) {
+									// move dragPoint if it is a logical and check
+
+									
+										WidgetLocation newLocation = new WidgetLocation(
+												draggedInCanvasEvent
+														.getLogicCheckOr(),
+												logicPanel);
+										draggedInCanvasEvent.getLogicCheckOr()
+												.getDragPointWidget()
+												.removeFromParent();
+										logicPanel.add(draggedInCanvasEvent
+												.getLogicCheckOr()
+												.getDragPointWidget(),
+												newLocation.getLeft(),
+												newLocation.getTop()
+														- controlsOffsetY);
+									
+								}
+
+								
 								// re-draw the links
 
 								

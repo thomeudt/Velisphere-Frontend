@@ -21,6 +21,7 @@ import com.velisphere.tigerspice.client.images.Images;
 public class LogicCheck extends FocusPanel implements HasAllTouchHandlers {
 
 	String content;
+	LinkCreator dragPointWidget;
 	
 	public LogicCheck()
 	{
@@ -88,6 +89,17 @@ public class LogicCheck extends FocusPanel implements HasAllTouchHandlers {
     public String getContentRepresentation() {
         return this.content;
     }
+    
+    public void setDragPointWidget(LinkCreator dragPointWidget)
+    {
+    	this.dragPointWidget = dragPointWidget;
+    }
+    
+    public LinkCreator getDragPointWidget()
+    {
+    	return this.dragPointWidget;
+    }
+
 
 	
 }
