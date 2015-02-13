@@ -49,15 +49,14 @@ import com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr;
 
 public class CustomCanvas extends Composite {
 
-
 	static final int controlsOffsetY = 25;
-	
+
 	Context2d context;
 	Canvas canvas;
 
 	HandlerRegistration connectionSaveHandler;
 	HandlerRegistration linkedInCanvasHandler;
-	
+
 	ListToCanvasDropController listToCanvasDropController;
 	InCanvasDragDropController inCanvasMoveDropController;
 	LogicToCanvasDropController logicToCanvasDropController;
@@ -68,31 +67,30 @@ public class CustomCanvas extends Composite {
 	LinkedList<LinkedPair<PhysicalItem, LogicCheck>> linkedP2LPairs;
 	HashMap<LinkedPair<PhysicalItem, PhysicalItem>, Widget> linkedP2PPairConnectorMap;
 	HashMap<LinkedPair<PhysicalItem, LogicCheck>, Widget> linkedP2LPairConnectorMap;
-	
+
 	AbsolutePanel logicPanel;
-	
-	public CustomCanvas()
-	{
-		
+
+	public CustomCanvas() {
+
 		linkedP2PPairs = new LinkedList<LinkedPair<PhysicalItem, PhysicalItem>>();
 		linkedP2PPairConnectorMap = new HashMap<LinkedPair<PhysicalItem, PhysicalItem>, Widget>();
 
 		linkedP2LPairs = new LinkedList<LinkedPair<PhysicalItem, LogicCheck>>();
 		linkedP2LPairConnectorMap = new HashMap<LinkedPair<PhysicalItem, LogicCheck>, Widget>();
 
-		
 		logicPanel = new AbsolutePanel();
-		
+
 		logicPanel.setWidth("100%");
 		logicPanel.setHeight("400px");
 		initWidget(logicPanel);
-		
+
 		dragController = new PickupDragController(logicPanel, false);
 		linkDragController = new PickupDragController(logicPanel, false);
-		
+
 		listToCanvasDropController = new ListToCanvasDropController(logicPanel);
-		logicToCanvasDropController = new LogicToCanvasDropController(logicPanel);
-		
+		logicToCanvasDropController = new LogicToCanvasDropController(
+				logicPanel);
+
 		// call all event listeners
 		setDraggedToCanvasEventListener();
 		setLinkedInCanvasP2PEventListener();
@@ -100,64 +98,60 @@ public class CustomCanvas extends Composite {
 		setDraggedInCanvasEventListener();
 		setConnectionSaveEventHandler();
 
-		
 		logicPanel.addAttachHandler(new AttachEvent.Handler() {
-			
+
 			@Override
 			public void onAttachOrDetach(AttachEvent event) {
 				// TODO Auto-generated method stub
-			
-				if (event.isAttached())
-				{
+
+				if (event.isAttached()) {
 					canvas = Canvas.createIfSupported();
 					logicPanel.add(canvas);
-					
-					
+
 					canvas.setWidth("100%");
 					canvas.setHeight("100%");
-					RootPanel.get().add(new HTML ("WIDTH OFFSET " + logicPanel.getOffsetWidth()));
+					RootPanel.get().add(
+							new HTML("WIDTH OFFSET "
+									+ logicPanel.getOffsetWidth()));
 					canvas.setCoordinateSpaceWidth(logicPanel.getOffsetWidth());
 					canvas.setCoordinateSpaceHeight(400);
 
-					
 					canvas.addStyleName("wellsilver");
-					
-					logicPanel.add(new HTML("<b>Logic Canvas</b> Drag sensors and actors here to build your logic."), 5, 5);
-					
+
+					logicPanel
+							.add(new HTML(
+									"<b>Logic Canvas</b> Drag sensors and actors here to build your logic."),
+									5, 5);
+
 					context = canvas.getContext2d();
-				
-					
+
 				}
-				
+
 			}
 		});
-		
+
 	}
-	
-	public void onUnload()
-	{
+
+	public void onUnload() {
 		linkedInCanvasHandler.removeHandler();
 		super.onUnload();
 	}
 
-	public DropController getListToCanvasDropController()
-	{
-		
+	public DropController getListToCanvasDropController() {
+
 		return this.listToCanvasDropController;
 	}
-	
-	public DropController getLogicToCanvasDropController()
-	{
-		
+
+	public DropController getLogicToCanvasDropController() {
+
 		return this.logicToCanvasDropController;
 	}
-	
-	
+
 	private void setDraggedToCanvasEventListener() {
-		
+
 		inCanvasMoveDropController = new InCanvasDragDropController(logicPanel);
 		dragController.registerDropController(inCanvasMoveDropController);
-		
+
 		HandlerRegistration draggedToCanvasHandler;
 		draggedToCanvasHandler = EventUtils.EVENT_BUS.addHandler(
 				DraggedToCanvasEvent.TYPE, new DraggedToCanvasEventHandler() {
@@ -166,464 +160,484 @@ public class CustomCanvas extends Composite {
 					public void onDraggedToCanvas(
 							DraggedToCanvasEvent draggedToCanvasEvent) {
 
-						
 						// TODO Auto-generated method stub
 
-						
-						if (draggedToCanvasEvent.getContext().selectedWidgets.get(0) instanceof ExplorerLabel)
-						{
+						if (draggedToCanvasEvent.getContext().selectedWidgets
+								.get(0) instanceof ExplorerLabel) {
 							addCanvasLabel(draggedToCanvasEvent);
-						} else 
-							if (draggedToCanvasEvent.getContext().selectedWidgets.get(0) instanceof LogicCheckAnd)
-							{
-								
-								addLogicCheckAnd(draggedToCanvasEvent);
-								
-								
-							}
-							else 
-								if (draggedToCanvasEvent.getContext().selectedWidgets.get(0) instanceof LogicCheckOr)
-								{
+						} else if (draggedToCanvasEvent.getContext().selectedWidgets
+								.get(0) instanceof LogicCheckAnd) {
 
-									addLogicCheckOr(draggedToCanvasEvent);
-									
-								}
-							
+							addLogicCheckAnd(draggedToCanvasEvent);
 
-		                
-						
-						 
+						} else if (draggedToCanvasEvent.getContext().selectedWidgets
+								.get(0) instanceof LogicCheckOr) {
+
+							addLogicCheckOr(draggedToCanvasEvent);
+
+						}
+
 					}
-					
 
 				});
 
 	}
 
-	
-	
-	private void addLogicCheckAnd(DraggedToCanvasEvent draggedToCanvasEvent)
-	{
-		
+	private void addLogicCheckAnd(DraggedToCanvasEvent draggedToCanvasEvent) {
 
-		draggedToCanvasEvent.getContext().selectedWidgets.get(0).removeFromParent();
-		
+		draggedToCanvasEvent.getContext().selectedWidgets.get(0)
+				.removeFromParent();
+
 		LogicCheckAnd logicCheckAnd = new LogicCheckAnd();
-		
-		logicPanel.add(logicCheckAnd,
-				draggedToCanvasEvent.getTargetX(),
+
+		logicPanel.add(logicCheckAnd, draggedToCanvasEvent.getTargetX(),
 				draggedToCanvasEvent.getTargetY());
-		
-		
+
 		dragController.makeDraggable(logicCheckAnd);
-		
-		InCanvasLinkDropController inCanvasLinkDropController = new InCanvasLinkDropController(logicCheckAnd);
-	
+
+		InCanvasLinkDropController inCanvasLinkDropController = new InCanvasLinkDropController(
+				logicCheckAnd);
+
 		linkDragController.registerDropController(inCanvasLinkDropController);
 	}
 
-	private void addLogicCheckOr(DraggedToCanvasEvent draggedToCanvasEvent)
-	{
-		
+	private void addLogicCheckOr(DraggedToCanvasEvent draggedToCanvasEvent) {
 
-		draggedToCanvasEvent.getContext().selectedWidgets.get(0).removeFromParent();
-		
+		draggedToCanvasEvent.getContext().selectedWidgets.get(0)
+				.removeFromParent();
+
 		LogicCheckOr logicCheckOr = new LogicCheckOr();
-		
-		logicPanel.add(logicCheckOr,
-				draggedToCanvasEvent.getTargetX(),
+
+		logicPanel.add(logicCheckOr, draggedToCanvasEvent.getTargetX(),
 				draggedToCanvasEvent.getTargetY());
-		
-		
+
 		dragController.makeDraggable(logicCheckOr);
-		
-		InCanvasLinkDropController inCanvasLinkDropController = new InCanvasLinkDropController(logicCheckOr);
-	
+
+		InCanvasLinkDropController inCanvasLinkDropController = new InCanvasLinkDropController(
+				logicCheckOr);
+
 		linkDragController.registerDropController(inCanvasLinkDropController);
 	}
 
-	
-	private void addCanvasLabel(DraggedToCanvasEvent draggedToCanvasEvent)
-	{
-		
+	private void addCanvasLabel(DraggedToCanvasEvent draggedToCanvasEvent) {
+
 		final ExplorerLabel current = (ExplorerLabel) draggedToCanvasEvent
 				.getContext().selectedWidgets.get(0);
 
 		RootPanel.get().add(
-				new HTML("***** EVENT: dropped "
-						+ current.getText() + " at X:"
-						+ draggedToCanvasEvent.getTargetX()
-						+ " Y:"
-						+ draggedToCanvasEvent.getTargetY()
-						+ " Sensor: " + current.getIsSensor()));
+				new HTML("***** EVENT: dropped " + current.getText() + " at X:"
+						+ draggedToCanvasEvent.getTargetX() + " Y:"
+						+ draggedToCanvasEvent.getTargetY() + " Sensor: "
+						+ current.getIsSensor()));
 
-		
-		final PhysicalItem propertyLabel = new PhysicalItem(current.getText(), current.getEndpointName(), current.getPropertyID(), current.getEndpointID(), current.getEndpointClassID(), current.getPropertyClassID(), current.getIsSensor(), current.getIsActor());
-		
-		logicPanel.add(propertyLabel,
-				draggedToCanvasEvent.getTargetX(),
+		final PhysicalItem propertyLabel = new PhysicalItem(current.getText(),
+				current.getEndpointName(), current.getPropertyID(),
+				current.getEndpointID(), current.getEndpointClassID(),
+				current.getPropertyClassID(), current.getIsSensor(),
+				current.getIsActor());
+
+		logicPanel.add(propertyLabel, draggedToCanvasEvent.getTargetX(),
 				draggedToCanvasEvent.getTargetY());
-		
-		
-		
-		
+
 		dragController.makeDraggable(propertyLabel);
-		
+
 		// add drag point only if it is a sensor
-		
-		if (current.getIsSensor() == 1) addDragPoint(propertyLabel);
-		
-		
-		InCanvasLinkDropController inCanvasLinkDropController = new InCanvasLinkDropController(propertyLabel);
-	
+
+		if (current.getIsSensor() == 1)
+			addDragPoint(propertyLabel);
+
+		InCanvasLinkDropController inCanvasLinkDropController = new InCanvasLinkDropController(
+				propertyLabel);
+
 		linkDragController.registerDropController(inCanvasLinkDropController);
 
+	}
 
-						
-												
-		
-	}
-	
-	
-	private void addDragPoint(PhysicalItem propertyLabel)
-	{
-		WidgetLocation widgetLocation = new WidgetLocation(propertyLabel, logicPanel);
-		//final HTML link = new HTML("Manage");
-		
+	private void addDragPoint(PhysicalItem propertyLabel) {
+		WidgetLocation widgetLocation = new WidgetLocation(propertyLabel,
+				logicPanel);
+		// final HTML link = new HTML("Manage");
+
 		final LinkCreator link = new LinkCreator(propertyLabel);
-		
+
 		propertyLabel.setDragPointWidget(link);
-		
-		logicPanel.add(link, widgetLocation.getLeft(), widgetLocation.getTop()-controlsOffsetY);
+
+		logicPanel.add(link, widgetLocation.getLeft(), widgetLocation.getTop()
+				- controlsOffsetY);
 		linkDragController.makeDraggable(link);
-		
+
 	}
-	
-	
-	
-	private void setLinkedInCanvasP2PEventListener()
-	{
+
+	private void setLinkedInCanvasP2PEventListener() {
 		linkedInCanvasHandler = EventUtils.EVENT_BUS.addHandler(
-				LinkedInCanvasP2PEvent.TYPE, new LinkedInCanvasP2PEventHandler() {
+				LinkedInCanvasP2PEvent.TYPE,
+				new LinkedInCanvasP2PEventHandler() {
 
 					@Override
 					public void onLinkedInCanvas(
 							LinkedInCanvasP2PEvent linkedInCanvasEvent) {
 						// TODO Auto-generated method stub
-						
+
 						RootPanel.get().add(new HTML("LINKED IN FIRED"));
-						
-						LinkedPair<PhysicalItem, PhysicalItem> linkedP2PPair = new LinkedPair<PhysicalItem, PhysicalItem>(linkedInCanvasEvent.getSource(), linkedInCanvasEvent.getTarget());
+
+						LinkedPair<PhysicalItem, PhysicalItem> linkedP2PPair = new LinkedPair<PhysicalItem, PhysicalItem>(
+								linkedInCanvasEvent.getSource(),
+								linkedInCanvasEvent.getTarget());
 						linkedP2PPairs.add(linkedP2PPair);
-						
+
 						// get the line color
-						
-						String lineColor = linkedP2PPair.getLeft().getDragPointWidget().getCurrentColor();
-						
-						// add new drag point to source label to allow further links
-						
+
+						String lineColor = linkedP2PPair.getLeft()
+								.getDragPointWidget().getCurrentColor();
+
+						// add new drag point to source label to allow further
+						// links
+
 						addDragPoint(linkedInCanvasEvent.getSource());
-						
-						// add a connector and open the connector settings dialog
-						
-						final ConnectorSensorActor connector = new ConnectorSensorActor(linkedInCanvasEvent.getSource(), linkedInCanvasEvent.getTarget());
+
+						// add a connector and open the connector settings
+						// dialog
+
+						final ConnectorSensorActor connector = new ConnectorSensorActor(
+								linkedInCanvasEvent.getSource(),
+								linkedInCanvasEvent.getTarget());
 						linkedP2PPairConnectorMap.put(linkedP2PPair, connector);
-						
-						//connector.show();
+
+						// connector.show();
 						connector.setAutoHideEnabled(true);
 						connector.center();
-						
-						
-						// add button to open dialog and position on connection line 
-						
-						WidgetLocation sourceLocation = new WidgetLocation(linkedP2PPair.getLeft(), logicPanel);
-						WidgetLocation targetLocation = new WidgetLocation(linkedP2PPair.getRight(), logicPanel);
-						int xPos = (sourceLocation.getLeft() + targetLocation.getLeft()) / 2;
-						int yPos = (sourceLocation.getTop() + targetLocation.getTop()) / 2;
+
+						// add button to open dialog and position on connection
+						// line
+
+						WidgetLocation sourceLocation = new WidgetLocation(
+								linkedP2PPair.getLeft(), logicPanel);
+						WidgetLocation targetLocation = new WidgetLocation(
+								linkedP2PPair.getRight(), logicPanel);
+						int xPos = (sourceLocation.getLeft() + targetLocation
+								.getLeft()) / 2;
+						int yPos = (sourceLocation.getTop() + targetLocation
+								.getTop()) / 2;
 						logicPanel.add(connector.getOpenerWidget(), xPos, yPos);
-						connector.getOpenerWidget().addClickHandler(new ClickHandler(){
+						connector.getOpenerWidget().addClickHandler(
+								new ClickHandler() {
 
-							@Override
-							public void onClick(ClickEvent event) {
-								// TODO Auto-generated method stub
-								connector.show();
-							}
-							
-						});
+									@Override
+									public void onClick(ClickEvent event) {
+										// TODO Auto-generated method stub
+										connector.show();
+									}
 
-					
-						
+								});
+
 						// re draw the links
-						
-						drawP2PLinks(lineColor);
-						
-						
-					}});
-		
+
+						drawLinks("cornflowerblue");
+
+					}
+				});
+
 	}
-	
-	private void setLinkedInCanvasP2LEventListener()
-	{
+
+	private void setLinkedInCanvasP2LEventListener() {
 		linkedInCanvasHandler = EventUtils.EVENT_BUS.addHandler(
-				LinkedInCanvasP2LEvent.TYPE, new LinkedInCanvasP2LEventHandler() {
+				LinkedInCanvasP2LEvent.TYPE,
+				new LinkedInCanvasP2LEventHandler() {
 
 					@Override
 					public void onLinkedInCanvas(
 							LinkedInCanvasP2LEvent linkedInCanvasEvent) {
 						// TODO Auto-generated method stub
-						
-	RootPanel.get().add(new HTML("LINKED IN L FIRED"));
-						
-						LinkedPair<PhysicalItem, LogicCheck> linkedPair = new LinkedPair<PhysicalItem, LogicCheck>(linkedInCanvasEvent.getSource(), linkedInCanvasEvent.getTarget());
+
+						RootPanel.get().add(new HTML("LINKED IN L FIRED"));
+
+						LinkedPair<PhysicalItem, LogicCheck> linkedPair = new LinkedPair<PhysicalItem, LogicCheck>(
+								linkedInCanvasEvent.getSource(),
+								linkedInCanvasEvent.getTarget());
 						linkedP2LPairs.add(linkedPair);
-						
-						
+
 						// get the line color
-						
-						String lineColor = linkedPair.getLeft().getDragPointWidget().getCurrentColor();
-						
-						// add new drag point to source label to allow further links
-						
+
+						String lineColor = linkedPair.getLeft()
+								.getDragPointWidget().getCurrentColor();
+
+						// add new drag point to source label to allow further
+						// links
+
 						addDragPoint(linkedInCanvasEvent.getSource());
-						
-// add a connector and open the connector settings dialog
-						
-						final ConnectorSensorLogicCheck connector = new ConnectorSensorLogicCheck(linkedInCanvasEvent.getSource(), linkedInCanvasEvent.getTarget());
+
+						// add a connector and open the connector settings
+						// dialog
+
+						final ConnectorSensorLogicCheck connector = new ConnectorSensorLogicCheck(
+								linkedInCanvasEvent.getSource(),
+								linkedInCanvasEvent.getTarget());
 						linkedP2LPairConnectorMap.put(linkedPair, connector);
-						
-						//connector.show();
+
+						// connector.show();
 						connector.setAutoHideEnabled(true);
 						connector.center();
-						
-						
-						// add button to open dialog and position on connection line 
-						
-						WidgetLocation sourceLocation = new WidgetLocation(linkedPair.getLeft(), logicPanel);
-						WidgetLocation targetLocation = new WidgetLocation(linkedPair.getRight(), logicPanel);
-						int xPos = (sourceLocation.getLeft() + targetLocation.getLeft()) / 2;
-						int yPos = (sourceLocation.getTop() + targetLocation.getTop()) / 2;
+
+						// add button to open dialog and position on connection
+						// line
+
+						WidgetLocation sourceLocation = new WidgetLocation(
+								linkedPair.getLeft(), logicPanel);
+						WidgetLocation targetLocation = new WidgetLocation(
+								linkedPair.getRight(), logicPanel);
+						int xPos = (sourceLocation.getLeft() + targetLocation
+								.getLeft()) / 2;
+						int yPos = (sourceLocation.getTop() + targetLocation
+								.getTop()) / 2;
 						logicPanel.add(connector.getOpenerWidget(), xPos, yPos);
-						connector.getOpenerWidget().addClickHandler(new ClickHandler(){
+						connector.getOpenerWidget().addClickHandler(
+								new ClickHandler() {
+
+									@Override
+									public void onClick(ClickEvent event) {
+										// TODO Auto-generated method stub
+										connector.show();
+									}
+
+								});
+
+						// re draw the links
+
+						drawLinks("cornflowerblue");
+
+					}
+				});
+
+	}
+	
+	private void drawLinks(String lineColor)
+	{
+		context.clearRect(0, 0, canvas.getCoordinateSpaceWidth(),
+				canvas.getCoordinateSpaceHeight());
+		drawP2PLinks(lineColor);
+		drawP2LLinks(lineColor);
+		
+	}
+
+	private void drawP2PLinks(String lineColor) {
+
+		
+
+		Iterator<LinkedPair<PhysicalItem, PhysicalItem>> it = linkedP2PPairs
+				.iterator();
+		while (it.hasNext()) {
+			LinkedPair<PhysicalItem, PhysicalItem> labels = it.next();
+
+			LineCoordinateCalculator coordinates = new LineCoordinateCalculator(
+					labels.getLeft(), labels.getRight(), logicPanel);
+
+			context.beginPath();
+
+			// change to red
+
+			context.setStrokeStyle(CssColor.make(lineColor));
+
+			context.moveTo(coordinates.getCalcSourceX(),
+					coordinates.getCalcSourceY());
+			context.lineTo(coordinates.getCalcTargetX(),
+					coordinates.getCalcTargetY());
+
+			context.stroke();
+			context.closePath();
+
+			drawArrow(coordinates, lineColor);
+			positionP2PConnectors(labels, coordinates);
+
+		}
+		
+
+	}
+
+	private void drawP2LLinks(String lineColor) {
+
+		Iterator<LinkedPair<PhysicalItem, LogicCheck>> it = linkedP2LPairs
+				.iterator();
+		while (it.hasNext()) {
+			LinkedPair<PhysicalItem, LogicCheck> labels = it.next();
+
+			LineCoordinateCalculator coordinates = new LineCoordinateCalculator(
+					labels.getLeft(), labels.getRight(), logicPanel);
+
+			context.beginPath();
+
+			// change to red
+
+			context.setStrokeStyle(CssColor.make(lineColor));
+
+			context.moveTo(coordinates.getCalcSourceX(),
+					coordinates.getCalcSourceY());
+			context.lineTo(coordinates.getCalcTargetX(),
+					coordinates.getCalcTargetY());
+
+			context.stroke();
+			context.closePath();
+
+			drawArrow(coordinates, lineColor);
+			positionP2LConnectors(labels, coordinates);
+
+		}
+
+	}
+
+	private void drawArrow(LineCoordinateCalculator coordinates,
+			String lineColor) {
+
+		double angle = Math.PI / 8;
+
+		// calculate the angle of the line
+		double lineangle = Math.atan2(coordinates.getCalcTargetY()
+				- coordinates.getCalcSourceY(), coordinates.getCalcTargetX()
+				- coordinates.getCalcSourceX());
+		// h is the line length of a side of the arrow head
+		double h = Math.abs(10 / Math.cos(angle));
+
+		double angle1 = lineangle + Math.PI + angle;
+		double topx = coordinates.getCalcTargetX() + Math.cos(angle1) * h;
+		double topy = coordinates.getCalcTargetY() + Math.sin(angle1) * h;
+
+		double angle2 = lineangle + Math.PI - angle;
+		double botx = coordinates.getCalcTargetX() + Math.cos(angle2) * h;
+		double boty = coordinates.getCalcTargetY() + Math.sin(angle2) * h;
+
+		context.beginPath();
+
+		context.setStrokeStyle(CssColor.make("lineColor"));
+
+		context.save();
+		context.beginPath();
+		context.moveTo(topx, topy);
+		context.lineTo(coordinates.getCalcTargetX(),
+				coordinates.getCalcTargetY());
+		context.stroke();
+		context.lineTo(botx, boty);
+		context.stroke();
+		context.restore();
+
+		context.closePath();
+
+	}
+
+	private void positionP2PConnectors(
+			LinkedPair<PhysicalItem, PhysicalItem> currentPair,
+			LineCoordinateCalculator coordinates) {
+		if (linkedP2PPairConnectorMap.containsKey(currentPair)) {
+			final ConnectorSensorActor currentConnector = (ConnectorSensorActor) linkedP2PPairConnectorMap
+					.get(currentPair);
+			int xPos = (coordinates.getCalcSourceX() + coordinates
+					.getCalcTargetX()) / 2;
+			int yPos = (coordinates.getCalcSourceY() + coordinates
+					.getCalcTargetY()) / 2;
+			logicPanel.remove(currentConnector.getOpenerWidget());
+			logicPanel.add(currentConnector.getOpenerWidget(), xPos, yPos);
+			currentConnector.getOpenerWidget().addClickHandler(
+					new ClickHandler() {
+
+						@Override
+						public void onClick(ClickEvent event) {
+							// TODO Auto-generated method stub
+							currentConnector.show();
+						}
+
+					});
+
+			RootPanel
+					.get()
+					.add(new HTML("Positioning opener Button for "
+							+ currentPair.getLeft().getContentRepresentation()
+							+ " > "
+							+ currentPair.getRight().getContentRepresentation()));
+		}
+
+	}
+
+	private void positionP2LConnectors(
+			LinkedPair<PhysicalItem, LogicCheck> currentPair,
+			LineCoordinateCalculator coordinates) {
+		if (linkedP2LPairConnectorMap.containsKey(currentPair)) {
+			final ConnectorSensorLogicCheck currentConnector = (ConnectorSensorLogicCheck) linkedP2LPairConnectorMap
+					.get(currentPair);
+			int xPos = (coordinates.getCalcSourceX() + coordinates
+					.getCalcTargetX()) / 2;
+			int yPos = (coordinates.getCalcSourceY() + coordinates
+					.getCalcTargetY()) / 2;
+			logicPanel.remove(currentConnector.getOpenerWidget());
+			logicPanel.add(currentConnector.getOpenerWidget(), xPos, yPos);
+			currentConnector.getOpenerWidget().addClickHandler(
+					new ClickHandler() {
+
+						@Override
+						public void onClick(ClickEvent event) {
+							// TODO Auto-generated method stub
+							currentConnector.show();
+						}
+
+					});
+
+			RootPanel
+					.get()
+					.add(new HTML("Positioning opener Button for "
+							+ currentPair.getLeft().getContentRepresentation()
+							+ " > "
+							+ currentPair.getRight().getContentRepresentation()));
+		}
+
+	}
+
+	private void setDraggedInCanvasEventListener() {
+		HandlerRegistration draggedInCanvasHandler = EventUtils.EVENT_BUS
+				.addHandler(DraggedInCanvasEvent.TYPE,
+						new DraggedInCanvasEventHandler() {
 
 							@Override
-							public void onClick(ClickEvent event) {
+							public void onDraggedInCanvas(
+									DraggedInCanvasEvent draggedInCanvasEvent) {
 								// TODO Auto-generated method stub
-								connector.show();
+
+								RootPanel.get().add(new HTML("DRAGGED FIRED"));
+
+								// first check if this is a physical property or
+								// logic check
+
+								if (draggedInCanvasEvent.getContext().selectedWidgets
+										.get(0) instanceof PhysicalItem) {
+									// move dragPoint if it is a sensor
+
+									if (draggedInCanvasEvent.getCanvasLabel()
+											.getIsSensor() == 1) {
+										WidgetLocation newLocation = new WidgetLocation(
+												draggedInCanvasEvent
+														.getCanvasLabel(),
+												logicPanel);
+										draggedInCanvasEvent.getCanvasLabel()
+												.getDragPointWidget()
+												.removeFromParent();
+										logicPanel.add(draggedInCanvasEvent
+												.getCanvasLabel()
+												.getDragPointWidget(),
+												newLocation.getLeft(),
+												newLocation.getTop()
+														- controlsOffsetY);
+									}
+								}
+
+								// re-draw the links
+
+								
+
+								drawLinks("cornflowerblue");
+								
+	
 							}
-							
 						});
 
-					
-						
-						// re draw the links
-						
-						drawP2LLinks(lineColor);
-						
-						
-					}});
-		
-	}
-	
-	private void drawP2PLinks(String lineColor)
-	{
-	
-		context.clearRect(0, 0, canvas.getCoordinateSpaceWidth(), canvas.getCoordinateSpaceHeight());
-		
-		Iterator<LinkedPair<PhysicalItem, PhysicalItem>> it = linkedP2PPairs.iterator();
-		while (it.hasNext())
-		{
-			LinkedPair<PhysicalItem, PhysicalItem> labels = it.next();
-			
-			LineCoordinateCalculator coordinates = new LineCoordinateCalculator(labels.getLeft(),labels.getRight(), logicPanel); 
-			
-			context.beginPath();
-			
-			// change to red
-			
-			 context.setStrokeStyle(CssColor.make(lineColor));
-
-			 context.moveTo(coordinates.getCalcSourceX(), coordinates.getCalcSourceY());
-			 context.lineTo(coordinates.getCalcTargetX(), coordinates.getCalcTargetY());
-			
-			 context.stroke();
-			 context.closePath();
-			 
-			 drawArrow(coordinates, lineColor);
-			positionP2PConnectors(labels, coordinates);
-			
-
-			
-		}
-	
 	}
 
-	private void drawP2LLinks(String lineColor)
-	{
-	
-		context.clearRect(0, 0, canvas.getCoordinateSpaceWidth(), canvas.getCoordinateSpaceHeight());
-		
-		Iterator<LinkedPair<PhysicalItem, LogicCheck>> it = linkedP2LPairs.iterator();
-		while (it.hasNext())
-		{
-			LinkedPair<PhysicalItem, LogicCheck> labels = it.next();
-			
-			LineCoordinateCalculator coordinates = new LineCoordinateCalculator(labels.getLeft(),labels.getRight(), logicPanel); 
-			
-			context.beginPath();
-			
-			// change to red
-			
-			 context.setStrokeStyle(CssColor.make(lineColor));
-
-			 context.moveTo(coordinates.getCalcSourceX(), coordinates.getCalcSourceY());
-			 context.lineTo(coordinates.getCalcTargetX(), coordinates.getCalcTargetY());
-			
-			 context.stroke();
-			 context.closePath();
-			 
-			 drawArrow(coordinates, lineColor);
-			positionP2LConnectors(labels, coordinates);
-			
-
-			
-		}
-	
-	}
-
-	
-	
-	private void drawArrow(LineCoordinateCalculator coordinates, String lineColor)
-	{
-		
-		double angle = Math.PI/8;
-		
-		// calculate the angle of the line
-		double lineangle=Math.atan2(coordinates.getCalcTargetY() - coordinates.getCalcSourceY(),coordinates.getCalcTargetX() - coordinates.getCalcSourceX());
-		// h is the line length of a side of the arrow head
-		double h=Math.abs(10/Math.cos(angle));
-		
-		double angle1=lineangle+Math.PI+angle;
-		double topx=coordinates.getCalcTargetX()+Math.cos(angle1)*h;
-		double topy=coordinates.getCalcTargetY()+Math.sin(angle1)*h;
-		
-		double angle2=lineangle+Math.PI-angle;
-		double botx=coordinates.getCalcTargetX()+Math.cos(angle2)*h;
-		double boty=coordinates.getCalcTargetY()+Math.sin(angle2)*h;
-		  
-		 context.beginPath();
-		 
-		 context.setStrokeStyle(CssColor.make("lineColor"));
-
-		  context.save();
-		  context.beginPath();
-		  context.moveTo(topx,topy);
-		  context.lineTo(coordinates.getCalcTargetX(), coordinates.getCalcTargetY());
-		  context.stroke();
-		  context.lineTo(botx,boty);
-		  context.stroke();
-		  context.restore();
-		
-		 
-		 context.closePath();
-		 
-		
-	}
-	
-	private void positionP2PConnectors(LinkedPair<PhysicalItem, PhysicalItem> currentPair, LineCoordinateCalculator coordinates)
-	{
-		if(linkedP2PPairConnectorMap.containsKey(currentPair))
-		{
-			final ConnectorSensorActor currentConnector = (ConnectorSensorActor) linkedP2PPairConnectorMap.get(currentPair);
-			int xPos = (coordinates.getCalcSourceX() + coordinates.getCalcTargetX()) / 2;
-			int yPos = (coordinates.getCalcSourceY() + coordinates.getCalcTargetY()) / 2;
-			logicPanel.remove(currentConnector.getOpenerWidget());
-			logicPanel.add(currentConnector.getOpenerWidget(), xPos, yPos);
-			currentConnector.getOpenerWidget().addClickHandler(new ClickHandler(){
-
-				@Override
-				public void onClick(ClickEvent event) {
-					// TODO Auto-generated method stub
-					currentConnector.show();
-				}
-				
-			});
-
-			RootPanel.get().add(new HTML("Positioning opener Button for " + currentPair.getLeft().getContentRepresentation() + " > " + currentPair.getRight().getContentRepresentation()));
-		}
-			
-	}
-	
-	private void positionP2LConnectors(LinkedPair<PhysicalItem, LogicCheck> currentPair, LineCoordinateCalculator coordinates)
-	{
-		if(linkedP2LPairConnectorMap.containsKey(currentPair))
-		{
-			final ConnectorSensorActor currentConnector = (ConnectorSensorActor) linkedP2PPairConnectorMap.get(currentPair);
-			int xPos = (coordinates.getCalcSourceX() + coordinates.getCalcTargetX()) / 2;
-			int yPos = (coordinates.getCalcSourceY() + coordinates.getCalcTargetY()) / 2;
-			logicPanel.remove(currentConnector.getOpenerWidget());
-			logicPanel.add(currentConnector.getOpenerWidget(), xPos, yPos);
-			currentConnector.getOpenerWidget().addClickHandler(new ClickHandler(){
-
-				@Override
-				public void onClick(ClickEvent event) {
-					// TODO Auto-generated method stub
-					currentConnector.show();
-				}
-				
-			});
-
-			RootPanel.get().add(new HTML("Positioning opener Button for " + currentPair.getLeft().getContentRepresentation() + " > " + currentPair.getRight().getContentRepresentation()));
-		}
-			
-	}
-	
-	
-	
-	private void setDraggedInCanvasEventListener()
-	{
-		HandlerRegistration draggedInCanvasHandler = EventUtils.EVENT_BUS.addHandler(
-				DraggedInCanvasEvent.TYPE, new DraggedInCanvasEventHandler() {
-
-					@Override
-					public void onDraggedInCanvas(
-							DraggedInCanvasEvent draggedInCanvasEvent) {
-						// TODO Auto-generated method stub
-						
-						RootPanel.get().add(new HTML("DRAGGED FIRED"));
-						
-						// first check if this is a physical property or logic check
-						
-						if (draggedInCanvasEvent.getContext().selectedWidgets.get(0) instanceof PhysicalItem)
-						{
-							// move dragPoint if it is a sensor
-							
-							if(draggedInCanvasEvent.getCanvasLabel().getIsSensor() == 1)
-							{
-								WidgetLocation newLocation = new WidgetLocation(draggedInCanvasEvent.getCanvasLabel(), logicPanel);
-								draggedInCanvasEvent.getCanvasLabel().getDragPointWidget().removeFromParent();
-								logicPanel.add(draggedInCanvasEvent.getCanvasLabel().getDragPointWidget(), newLocation.getLeft(), newLocation.getTop()-controlsOffsetY);
-							}
-						}
-							
-							
-					
-						
-						
-						
-						// re-draw the links
-						
-						drawP2PLinks("cornflowerblue");
-						drawP2LLinks("cornflowerblue");
-					
-						
-						
-					}});
-		
-	}
-	
-
-	private void setConnectionSaveEventHandler()
-	{
+	private void setConnectionSaveEventHandler() {
 		connectionSaveHandler = EventUtils.EVENT_BUS.addHandler(
 				ConnectionSaveEvent.TYPE, new ConnectionSaveEventHandler() {
 
@@ -631,16 +645,10 @@ public class CustomCanvas extends Composite {
 					public void onConnectionSave(
 							ConnectionSaveEvent connectionSaveEvent) {
 						// TODO Auto-generated method stub
-						
-						
-						
-						
-						
-						
+
 					}
 				});
-		
-	}
 
+	}
 
 }
