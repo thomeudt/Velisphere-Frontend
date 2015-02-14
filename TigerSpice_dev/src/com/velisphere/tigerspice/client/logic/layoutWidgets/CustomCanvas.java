@@ -383,6 +383,10 @@ public class CustomCanvas extends Composite {
 								linkedInCanvasEvent.getSource(),
 								linkedInCanvasEvent.getTarget());
 						linkedP2LPairs.add(linkedPair);
+						
+						// increment source count for logicCheck
+						
+						linkedPair.getRight().setSourceCount(linkedPair.getRight().getSourceCount()+1);
 
 						// get the line color
 

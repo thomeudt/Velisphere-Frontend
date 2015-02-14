@@ -22,10 +22,15 @@ public class LogicCheck extends FocusPanel implements HasAllTouchHandlers {
 
 	String content;
 	LinkCreator dragPointWidget;
+	int sourceCount;
+	
+
+
 	
 	public LogicCheck()
 	{
 		super();
+		sourceCount = 0;
 		removeDefaultMouseDown();
 		
 		
@@ -83,7 +88,7 @@ public class LogicCheck extends FocusPanel implements HasAllTouchHandlers {
     {
     	Image tempImage = new Image();
     	tempImage.setUrl(Images.INSTANCE.and_icon().getSafeUri());
-    	tempImage.setWidth("25px");
+    	tempImage.setWidth("100%");
     	return tempImage;
     }
 
@@ -100,6 +105,18 @@ public class LogicCheck extends FocusPanel implements HasAllTouchHandlers {
     {
     	return this.dragPointWidget;
     }
+
+    public int getSourceCount() {
+		return sourceCount;
+	}
+
+
+	public void setSourceCount(int sourceCount) {
+		this.sourceCount = sourceCount;
+	}
+
+
+
 
 
 	

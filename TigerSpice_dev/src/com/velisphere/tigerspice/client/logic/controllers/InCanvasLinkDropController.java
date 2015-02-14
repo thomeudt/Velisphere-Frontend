@@ -16,6 +16,8 @@ import com.velisphere.tigerspice.client.event.LinkedInCanvasL2PEvent;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2LEvent;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2PEvent;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheck;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr;
 import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -62,6 +64,17 @@ public class InCanvasLinkDropController extends SimpleDropController {
 			      throw new VetoDragException();
 			    }
 			
+		}
+		
+		LinkCreator linkCreator = (LinkCreator) context.draggable;
+	    if(linkCreator.isLogic())
+		{
+			LogicCheck logicCheck = (LogicCheck) linkCreator.getSource();
+			
+			if (logicCheck.getSourceCount() == 0)
+			{
+				  throw new VetoDragException();
+			}
 		}
 		
 	}

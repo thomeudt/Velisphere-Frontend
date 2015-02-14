@@ -77,7 +77,9 @@ public class ConnectorLogicCheckActor extends PopupPanel {
         Row row0 = new Row();
 		Column col0a = new Column(1);
 		HorizontalPanel imageHeader = new HorizontalPanel();
-		imageHeader.add(this.logicCheck.getImage());
+		Image tempImage = this.logicCheck.getImage();
+		tempImage.setWidth("25px");
+		imageHeader.add(tempImage);
 		imageHeader.add(new Icon(IconType.CHEVRON_SIGN_RIGHT));
 		imageHeader.add(this.actor.getImage());
 		col0a.add(imageHeader);
