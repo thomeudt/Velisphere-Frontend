@@ -408,8 +408,9 @@ public class ConnectorSensorActor extends PopupPanel {
 	private void createOpenerWidget()
 	{
 		openingButton = new Button();
-		openingButton.setBaseIcon(IconType.ASTERISK);
+		openingButton.setBaseIcon(IconType.FILTER);
 		
+		openingButton.setStyleName("connbtn");
 		final ConnectorSensorActor currentConnector = this;
 				
 	}

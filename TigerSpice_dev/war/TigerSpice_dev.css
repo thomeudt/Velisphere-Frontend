@@ -238,6 +238,34 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f85032', end
 	box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 
+		.connbtn {
+			  background: #3cd934;
+			  background-image: -webkit-linear-gradient(top, #3cd934, #1d8a0c);
+			  background-image: -moz-linear-gradient(top, #3cd934, #1d8a0c);
+			  background-image: -ms-linear-gradient(top, #3cd934, #1d8a0c);
+			  background-image: -o-linear-gradient(top, #3cd934, #1d8a0c);
+			  background-image: linear-gradient(to bottom, #3cd934, #1d8a0c);
+			  -webkit-border-radius: 60;
+			  -moz-border-radius: 60;
+			  border-radius: 60px;
+			  font-family: Arial;
+			  color: #ffffff;
+			  font-size: 20px;
+			  padding: 10px 20px 10px 20px;
+			  text-decoration: none;
+			}
+
+			.connbtn:hover {
+			  background: #3cfc63;
+			  color: #ffffff;
+			  background-image: -webkit-linear-gradient(top, #3cfc63, #55d934);
+			  background-image: -moz-linear-gradient(top, #3cfc63, #55d934);
+			  background-image: -ms-linear-gradient(top, #3cfc63, #55d934);
+			  background-image: -o-linear-gradient(top, #3cfc63, #55d934);
+			  background-image: linear-gradient(to bottom, #3cfc63, #55d934);
+			  text-decoration: none;
+			}
+
 .wellcarbon {
 
 background:

@@ -103,57 +103,30 @@ public class ConnectorLogicCheckActor extends PopupPanel {
 		row1.add(col1);
 		verticalPanel.add(row1);
 		
-	
 		Row row2 = new Row();
 		Column col2A = new Column(1);
-		col2A.add(new HTML("Trigger:"));
+		col2A.add(new HTML("Push Value:"));
 		
 		Column col2B = new Column(1);
-		ListBox lbxOperator = new ListBox();
-		lbxOperator.setWidth("100%");
-		col2B.add(lbxOperator);
-		populateLbxOperator(lbxOperator);
+		final ListBox lbxSource = new ListBox();
+		lbxSource.setWidth("100%");
+		col2B.add(lbxSource);
+		populateLbxSource(lbxSource);
 		
 		Column col2C = new Column(3);
-		TextBox txtCheckValue = new TextBox();
-		col2C.add(txtCheckValue);
+		final TextBox txtManualEntry = new TextBox();
+		col2C.add(txtManualEntry);
+				
+		final ListBox lbxTypicalValues = new ListBox();
+		lbxTypicalValues.setWidth("100%");
+		col2C.add(lbxTypicalValues);
+		lbxTypicalValues.setVisible(false);
 		
 		row2.add(col2A);
 		row2.add(col2B);
 		row2.add(col2C);
 		
 		verticalPanel.add(row2);
-		
-		Row row3 = new Row();
-		Column col3A = new Column(1);
-		col3A.add(new HTML("Push Value:"));
-		
-		Column col3B = new Column(1);
-		final ListBox lbxSource = new ListBox();
-		lbxSource.setWidth("100%");
-		col3B.add(lbxSource);
-		populateLbxSource(lbxSource);
-		
-		Column col3C = new Column(3);
-		final TextBox txtManualEntry = new TextBox();
-		col3C.add(txtManualEntry);
-		
-		final ListBox lbxValueFromSensor = new ListBox();
-		lbxValueFromSensor.setWidth("100%");
-		col3C.add(lbxValueFromSensor);
-		populateLbxValueFromSensor(lbxValueFromSensor);
-		lbxValueFromSensor.setVisible(false);
-		
-		final ListBox lbxTypicalValues = new ListBox();
-		lbxTypicalValues.setWidth("100%");
-		col3C.add(lbxTypicalValues);
-		lbxTypicalValues.setVisible(false);
-		
-		row3.add(col3A);
-		row3.add(col3B);
-		row3.add(col3C);
-		
-		verticalPanel.add(row3);
 		
 		Row row4 = new Row();
 		Column col4A = new Column(1,2);
@@ -214,22 +187,14 @@ public class ConnectorLogicCheckActor extends PopupPanel {
 				if(lbxSource.getValue() == ActionSourceConfig.manual)
 				{
 					txtManualEntry.setVisible(true);
-					lbxValueFromSensor.setVisible(false);
 					lbxTypicalValues.setVisible(false);
 					
 				}
 				
-				if(lbxSource.getValue() == ActionSourceConfig.currentSensorValue)
-				{
-					txtManualEntry.setVisible(false);
-					lbxValueFromSensor.setVisible(true);
-					lbxTypicalValues.setVisible(false);
-				}
 				
 				if(lbxSource.getValue() == ActionSourceConfig.otherSensorValue)
 				{
 					txtManualEntry.setVisible(false);
-					lbxValueFromSensor.setVisible(false);
 					lbxTypicalValues.setVisible(false);
 					
 				}
@@ -237,7 +202,6 @@ public class ConnectorLogicCheckActor extends PopupPanel {
 				if(lbxSource.getValue() == ActionSourceConfig.typicalEntries)
 				{
 					txtManualEntry.setVisible(false);
-					lbxValueFromSensor.setVisible(false);
 					lbxTypicalValues.setVisible(true);
 					
 				}
@@ -249,35 +213,22 @@ public class ConnectorLogicCheckActor extends PopupPanel {
 		
 	}
 	
-	private void populateLbxValueFromSensor(final ListBox lbxValueFromSensor)
-	{
-		
-	}
-	
 	private void populateLbxSource(final ListBox lbxSource)
 	{
-		LinkedList<String> sources;
-
+		lbxSource.addItem(ActionSourceConfig.manual);
+		lbxSource.addItem(ActionSourceConfig.typicalEntries);
 		
-		sources = new ActionSourceConfig().getCheckSources();
-		
-		Iterator<String> it = sources.iterator();
-		while (it.hasNext()) {
-			lbxSource.addItem(it.next());
-		}
-
 	}
 	
-	private void populateLbxOperator(final ListBox lbxOperator)
-	{
-		
-		
-	}
 	
 	private void createOpenerWidget()
 	{
 		openingButton = new Button();
-		openingButton.setBaseIcon(IconType.ASTERISK);
+		openingButton.setBaseIcon(IconType.FILTER);
+		
+		openingButton.setStyleName("connbtn");
+		
+
 		
 		final ConnectorLogicCheckActor currentConnector = this;
 				

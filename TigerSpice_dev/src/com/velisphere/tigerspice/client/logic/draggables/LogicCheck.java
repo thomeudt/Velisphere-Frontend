@@ -83,6 +83,7 @@ public class LogicCheck extends FocusPanel implements HasAllTouchHandlers {
     {
     	Image tempImage = new Image();
     	tempImage.setUrl(Images.INSTANCE.and_icon().getSafeUri());
+    	tempImage.setWidth("25px");
     	return tempImage;
     }
 

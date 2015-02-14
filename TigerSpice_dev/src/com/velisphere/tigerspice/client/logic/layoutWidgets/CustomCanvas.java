@@ -121,7 +121,7 @@ public class CustomCanvas extends Composite {
 					RootPanel.get().add(
 							new HTML("WIDTH OFFSET "
 									+ logicPanel.getOffsetWidth()));
-					canvas.setCoordinateSpaceWidth(logicPanel.getOffsetWidth());
+					canvas.setCoordinateSpaceWidth(logicPanel.getOffsetWidth()-10);
 					canvas.setCoordinateSpaceHeight(400);
 
 					canvas.addStyleName("welllinen");

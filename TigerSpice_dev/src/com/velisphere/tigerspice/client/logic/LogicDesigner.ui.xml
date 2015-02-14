@@ -44,7 +44,24 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 		
 			    	
 			    
-			    	 <b:Row>
+			     	    	
+			    	
+					<b:Row>
+					    
+					    
+					    
+				    <b:Column size="2" offset="0" ui:field="colExplorer">
+				  	</b:Column>
+					
+				    
+					<b:Column size="8" offset="0" ui:field="colCanvas">
+				    	
+				   
+				    
+					</b:Column>
+					</b:Row>		
+					
+						 <b:Row>
             			<b:Column size="2" offset="0">
 	    				<b:Button type="PRIMARY" ui:field="btnSaveCheckpath" size="SMALL">Save Logic and Activate</b:Button>
 	    				</b:Column>
@@ -69,27 +86,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	    				</b:Column>
 	    				
 	    		</b:Row>
-			    	 	    	
 			    	
-					<b:Row>
-					    
-					    
-					    
-				    <b:Column size="2" offset="0" ui:field="colExplorer">
-				       
-				   	
-			
-				   		
-				     
-					</b:Column>
-					
-				    
-					<b:Column size="8" offset="0" ui:field="colCanvas">
-				    	
-				   
-				    
-					</b:Column>
-					</b:Row>		
 				
 					
 					
