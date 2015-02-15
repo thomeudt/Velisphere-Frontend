@@ -41,6 +41,7 @@ import com.velisphere.tigerspice.client.event.LinkedInCanvasP2LEvent;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2LEventHandler;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2PEvent;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2PEventHandler;
+import com.velisphere.tigerspice.client.logic.JsonFactory;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorLogicCheckActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorLogicCheck;
@@ -80,8 +81,9 @@ public class LogicCanvas extends Composite {
 
 	
 	LinkedList<PhysicalItem> physicalItems;
+	LinkedList<LogicCheck> logicChecks;
 	LinkedList<LinkedPair<PhysicalItem, PhysicalItem>> linkedP2PPairs;
-	LinkedList<LinkedPair<SerializableLogicPhysicalItem, SerializableLogicPhysicalItem>> serializableLinkedP2PPairs;
+	
 	LinkedList<LinkedPair<PhysicalItem, LogicCheck>> linkedP2LPairs;
 	LinkedList<LinkedPair<LogicCheck, PhysicalItem>> linkedL2PPairs;
 	HashMap<LinkedPair<PhysicalItem, PhysicalItem>, Widget> linkedP2PPairConnectorMap;
@@ -93,13 +95,14 @@ public class LogicCanvas extends Composite {
 	public LogicCanvas() {
 
 		linkedP2PPairs = new LinkedList<LinkedPair<PhysicalItem, PhysicalItem>>();
-		serializableLinkedP2PPairs = new LinkedList<LinkedPair<SerializableLogicPhysicalItem, SerializableLogicPhysicalItem>>();
+	
 		linkedP2PPairConnectorMap = new HashMap<LinkedPair<PhysicalItem, PhysicalItem>, Widget>();
 		linkedP2LPairs = new LinkedList<LinkedPair<PhysicalItem, LogicCheck>>();
 		linkedP2LPairConnectorMap = new HashMap<LinkedPair<PhysicalItem, LogicCheck>, Widget>();
 		linkedL2PPairs = new LinkedList<LinkedPair<LogicCheck, PhysicalItem>>();
 		linkedL2PPairConnectorMap = new HashMap<LinkedPair<LogicCheck, PhysicalItem>, Widget>();
 		physicalItems = new LinkedList<PhysicalItem>();
+		logicChecks = new LinkedList<LogicCheck>();
 
 		logicPanel = new AbsolutePanel();
 
@@ -218,6 +221,11 @@ public class LogicCanvas extends Composite {
 
 		logicPanel.add(logicCheckAnd, draggedToCanvasEvent.getTargetX(),
 				draggedToCanvasEvent.getTargetY());
+		
+		logicCheckAnd.setxPos(draggedToCanvasEvent.getTargetX());
+		logicCheckAnd.setyPos(draggedToCanvasEvent.getTargetY());
+		
+		logicChecks.add(logicCheckAnd);
 
 		dragController.makeDraggable(logicCheckAnd);
 
@@ -238,6 +246,13 @@ public class LogicCanvas extends Composite {
 
 		logicPanel.add(logicCheckOr, draggedToCanvasEvent.getTargetX(),
 				draggedToCanvasEvent.getTargetY());
+		
+		logicCheckOr.setxPos(draggedToCanvasEvent.getTargetX());
+		logicCheckOr.setyPos(draggedToCanvasEvent.getTargetY());
+		
+		logicChecks.add(logicCheckOr);
+
+		
 
 		dragController.makeDraggable(logicCheckOr);
 		
@@ -269,10 +284,8 @@ public class LogicCanvas extends Composite {
 		logicPanel.add(propertyLabel, draggedToCanvasEvent.getTargetX(),
 				draggedToCanvasEvent.getTargetY());
 
-		WidgetLocation widgetLocation = new WidgetLocation(propertyLabel,
-				logicPanel);
-		propertyLabel.setxPos(widgetLocation.getLeft());
-		propertyLabel.setyPos(widgetLocation.getTop() - controlsOffsetY);
+		propertyLabel.setxPos(draggedToCanvasEvent.getTargetX());
+		propertyLabel.setyPos(draggedToCanvasEvent.getTargetY());
 		
 		physicalItems.add(propertyLabel);
 		
@@ -902,56 +915,18 @@ public class LogicCanvas extends Composite {
 	
 	public void getJson() 
 	{
-		
-		
-		//create json for all physical items
-		
-		Iterator<PhysicalItem> it = physicalItems.iterator();
-		
-		while (it.hasNext())
-		{
-		
-			PhysicalItem current = it.next();
-			
-			
-			CheckPathServiceAsync checkPathService = GWT
-					.create(CheckPathService.class);
-			
-			
-			checkPathService.createJsonFromObject(current.getSerializableRepresentation(), new AsyncCallback<String>(){
-
-				@Override
-				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
-					
-					RootPanel.get().add(new HTML("ERROR " + caught.getMessage()));
-					
-				}
-
-				@Override
-				public void onSuccess(String result) {
-					// TODO Auto-generated method stub
-					
-					RootPanel.get().add(new HTML("RUBEL " + result));
-				
-				}
-
-				
-				});
-
-
-			
-			
-		}
-		
-		
-		RootPanel.get().add(new HTML("PAIRS " + serializableLinkedP2PPairs.toString()));
-		
-		
-		
-	
-		
-	    
+		JsonFactory factory = new JsonFactory(this);
+		factory.getJSON();
 	}
-
+	
+	public LinkedList<PhysicalItem> getPhysicalItems()
+	{
+		return physicalItems;
+	}
+	
+	public LinkedList<LogicCheck> getLogicChecks()
+	{
+		return logicChecks;
+	}
+	
 }

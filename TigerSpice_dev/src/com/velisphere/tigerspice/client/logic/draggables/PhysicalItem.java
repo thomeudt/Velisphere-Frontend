@@ -56,6 +56,7 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
     	LinkCreator dragPointWidget;
     	int xPos;
     	int yPos;
+    	String id;
     
     	
 		Image imgEpcImage;
@@ -71,6 +72,7 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
         		this.endpointID = endpointID;
         		this.isActor = isActor;
         		this.isSensor = isSensor;
+        		this.id = Document.get().createUniqueId();
         		buildLayout();
                      
                 removeDefaultMouseDown();
@@ -249,7 +251,7 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
         	serializable.setIsSensor(this.isSensor);
         	serializable.setPropertyClassID(this.propertyClassID);
         	serializable.setPropertyID(this.propertyID);
-        	serializable.setId(Document.get().createUniqueId());
+        	serializable.setId(this.id);
         	serializable.setxPos(this.xPos);
         	serializable.setyPos(this.yPos);
         	return serializable;

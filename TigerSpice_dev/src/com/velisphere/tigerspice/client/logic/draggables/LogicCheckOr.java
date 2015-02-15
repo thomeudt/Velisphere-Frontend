@@ -26,7 +26,7 @@ public class LogicCheckOr extends LogicCheck {
 		//super();
 	
 		content = "Logic Check OR";
-		
+		setOr(true);
 		Image andIcon = new Image();
 		andIcon.setResource(Images.INSTANCE.or_icon());
 		andIcon.setTitle("This logic check is true if all checks linked to this logic check are true");
