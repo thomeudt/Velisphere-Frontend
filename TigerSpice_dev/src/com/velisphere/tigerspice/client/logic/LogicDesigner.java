@@ -11,10 +11,12 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.velisphere.tigerspice.client.logic.layoutWidgets.CustomCanvas;
+import com.velisphere.tigerspice.client.logic.layoutWidgets.LogicCanvas;
 import com.velisphere.tigerspice.client.logic.layoutWidgets.Explorer;
 import com.velisphere.tigerspice.client.rules.CheckpathList;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
@@ -35,6 +37,7 @@ public class LogicDesigner extends Composite {
 	NavLink bread1;
 	NavLink bread2;
 	String userID;
+	LogicCanvas canvas;
 
 	@UiField
 	Column colCanvas;
@@ -94,10 +97,10 @@ public class LogicDesigner extends Composite {
 
 	
 		
-		CustomCanvas custom = new CustomCanvas();
-		colCanvas.add(custom);
+		canvas = new LogicCanvas();
+		colCanvas.add(canvas);
 		
-		Explorer explorer = new Explorer(this.userID, custom);
+		Explorer explorer = new Explorer(this.userID, canvas);
 		colExplorer.add(explorer);
 		
 		
@@ -105,7 +108,15 @@ public class LogicDesigner extends Composite {
 		
 
 	}
-
+	
+	@UiHandler("btnSaveCheckpath")
+	void saveCheckpath(ClickEvent event) 
+	{
+		canvas.getJson();
+		
+	}
+	
+	
 	
 		
 	

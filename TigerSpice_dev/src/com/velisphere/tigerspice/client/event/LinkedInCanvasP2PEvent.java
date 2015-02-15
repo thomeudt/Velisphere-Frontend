@@ -23,8 +23,8 @@ import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Widget;
-import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
+import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 
 public class LinkedInCanvasP2PEvent extends GwtEvent<LinkedInCanvasP2PEventHandler> {
 

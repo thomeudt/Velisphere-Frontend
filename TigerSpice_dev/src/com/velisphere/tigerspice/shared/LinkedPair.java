@@ -1,6 +1,8 @@
-package com.velisphere.tigerspice.client.logic.layoutWidgets;
+package com.velisphere.tigerspice.shared;
 
-public class LinkedPair<L, R> {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class LinkedPair<L, R> implements IsSerializable {
 
 	private final L left;
 	private final R right;

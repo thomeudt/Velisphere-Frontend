@@ -11,9 +11,9 @@ import com.velisphere.tigerspice.client.event.DraggedInCanvasEvent;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2PEvent;
-import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr;
+import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 
 public class InCanvasDragDropController extends AbsolutePositionDropController {
 

@@ -24,11 +24,14 @@ import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+
 import com.velisphere.tigerspice.shared.ActionObject;
 import com.velisphere.tigerspice.shared.CheckData;
 import com.velisphere.tigerspice.shared.CheckPathData;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
 import com.velisphere.tigerspice.shared.CheckPathObjectTree;
+import com.velisphere.tigerspice.shared.LinkedPair;
+import com.velisphere.tigerspice.shared.SerializableLogicPhysicalItem;
 
 
 @RemoteServiceRelativePath("voltCheckPath")
@@ -38,6 +41,7 @@ public interface CheckPathService extends RemoteService {
 		String updateCheckpath(String checkpathId, String uiObject);
 		String addNewUiObject(CheckPathObjectData uiObject);
 		String createJsonCheckpath(CheckPathObjectTree uiObject);
+		String createJsonFromObject(SerializableLogicPhysicalItem object);
 		CheckPathObjectTree getUiObjectJSONForCheckpathID(String checkpathID);
 		String addNewMulticheck(String checkId, String operator, String multicheckName, String checkpathID, LinkedList<ActionObject> actions);
 		String addNewMulticheckCheckLink(String multiCheckId, String checkId, String checkPathId);

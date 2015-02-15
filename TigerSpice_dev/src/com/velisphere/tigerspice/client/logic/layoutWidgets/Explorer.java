@@ -88,12 +88,12 @@ public class Explorer extends Composite {
 
 	DraggableListBox dbxSensors;
 	DraggableListBox dbxActors;
-	CustomCanvas checkPathCanvas;
+	LogicCanvas checkPathCanvas;
 	
 	private static final String CSS_DRAGDROPWIDGET = "DragDropWidget";
 
 	
-	public Explorer(String userID, CustomCanvas checkPathCanvas) {
+	public Explorer(String userID, LogicCanvas checkPathCanvas) {
 		this.userID = userID;
 		this.checkPathCanvas = checkPathCanvas;
 		container = new AbsolutePanel();		

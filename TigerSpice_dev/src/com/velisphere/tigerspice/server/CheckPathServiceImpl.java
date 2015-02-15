@@ -17,47 +17,33 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.server;
 
-import java.awt.List;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.UUID;
-import java.util.Vector;
 
 import org.voltdb.VoltTable;
-import org.voltdb.VoltType;
 import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.velisphere.tigerspice.client.checks.CheckService;
-import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.rules.CheckPathService;
-import com.velisphere.tigerspice.client.rules.MulticheckColumn;
 import com.velisphere.tigerspice.shared.ActionObject;
-import com.velisphere.tigerspice.shared.CheckData;
 import com.velisphere.tigerspice.shared.CheckPathData;
 import com.velisphere.tigerspice.shared.CheckPathObjectTree;
-import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
-import com.velisphere.tigerspice.shared.SphereData;
+import com.velisphere.tigerspice.shared.LinkedPair;
+import com.velisphere.tigerspice.shared.SerializableLogicPhysicalItem;
 
 @SuppressWarnings("serial")
 public class CheckPathServiceImpl extends RemoteServiceServlet implements
@@ -108,6 +94,9 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 		return jsonCheckpathObject;
 
 	}
+
+
+	
 
 	
 	public String createJsonCheckpath(CheckPathObjectTree uiObject)
@@ -1056,6 +1045,50 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 
 	}
 
+
+
+
+
+	@Override
+	public String createJsonFromObject(
+			 SerializableLogicPhysicalItem object) {
+					
+			ObjectMapper mapper = new ObjectMapper();
+			
+			System.out.println("Intake: " + object.toString());
+		 
+			String jsonCheckpathObject = "E0"; 
+			
+			try {
+				
+				
+		 				 
+				// display to console
+				jsonCheckpathObject = mapper.writeValueAsString(object);
+				System.out.println("JSON generiert: " + jsonCheckpathObject);
+		 
+			} catch (JsonGenerationException e) {
+		 
+				e.printStackTrace();
+		 
+			} catch (JsonMappingException e) {
+		 
+				e.printStackTrace();
+		 
+			} catch (IOException e) {
+		 
+				e.printStackTrace();
+		 
+			}
+		 
+
+			return jsonCheckpathObject;
+
+		}
+	
+
+
+	
 	
 	
 	

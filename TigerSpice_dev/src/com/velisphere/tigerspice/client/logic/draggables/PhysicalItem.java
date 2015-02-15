@@ -5,6 +5,7 @@ import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Style.BorderStyle;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.dom.client.Style.Unit;
@@ -35,7 +36,9 @@ import com.orange.links.client.save.IsDiagramSerializable;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
+import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
 import com.velisphere.tigerspice.shared.EPCData;
+import com.velisphere.tigerspice.shared.SerializableLogicPhysicalItem;
 
 
 	
@@ -51,8 +54,11 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
     	byte isActor;
     	byte isSensor;
     	LinkCreator dragPointWidget;
+    	int xPos;
+    	int yPos;
     
-    	Image imgEpcImage;
+    	
+		Image imgEpcImage;
         
         
         public PhysicalItem(String text, String endpointName, String propertyID, String endpointID, String endpointClassID, String propertyClassID, byte isSensor, byte isActor){
@@ -113,7 +119,7 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
         private void getEndpointClassImage(final Image imgEpcImage)
         {
         	EPCServiceAsync epcService = GWT
-					.create(EPCService.class);
+		 			.create(EPCService.class);
         	
         	epcService
 			.getEndpointClassForEndpointClassID(
@@ -232,6 +238,42 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
     		
     	}
         
+        public SerializableLogicPhysicalItem getSerializableRepresentation()
+        {
+        	SerializableLogicPhysicalItem serializable = new SerializableLogicPhysicalItem();
+        	serializable.setContent(this.content);
+        	serializable.setEndpointClassID(this.endpointClassID);
+        	serializable.setEndpointID(this.endpointID);
+        	serializable.setEndpointName(this.endpointName);
+        	serializable.setIsActor(this.isActor);
+        	serializable.setIsSensor(this.isSensor);
+        	serializable.setPropertyClassID(this.propertyClassID);
+        	serializable.setPropertyID(this.propertyID);
+        	serializable.setId(Document.get().createUniqueId());
+        	serializable.setxPos(this.xPos);
+        	serializable.setyPos(this.yPos);
+        	return serializable;
+        	
+        }
       
+        public int getxPos() {
+			return xPos;
+		}
+
+
+		public void setxPos(int xPos) {
+			this.xPos = xPos;
+		}
+
+
+		public int getyPos() {
+			return yPos;
+		}
+
+
+		public void setyPos(int yPos) {
+			this.yPos = yPos;
+		}
+
 
 }

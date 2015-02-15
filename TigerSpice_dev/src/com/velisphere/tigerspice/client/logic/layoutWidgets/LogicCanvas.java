@@ -14,15 +14,20 @@ import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.google.web.bindery.autobean.shared.AutoBeanCodex;
+import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.velisphere.tigerspice.client.event.ConnectionSaveEvent;
 import com.velisphere.tigerspice.client.event.ConnectionSaveEventHandler;
 import com.velisphere.tigerspice.client.event.DraggedInCanvasEvent;
@@ -44,13 +49,20 @@ import com.velisphere.tigerspice.client.logic.controllers.InCanvasDragDropContro
 import com.velisphere.tigerspice.client.logic.controllers.ListToCanvasDropController;
 import com.velisphere.tigerspice.client.logic.controllers.LogicToCanvasDropController;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheck;
-import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.logic.draggables.ExplorerLabel;
 import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr;
+import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
+import com.velisphere.tigerspice.client.rules.CheckPathService;
+import com.velisphere.tigerspice.client.rules.CheckPathServiceAsync;
+import com.velisphere.tigerspice.client.spheres.SphereService;
+import com.velisphere.tigerspice.client.spheres.SphereServiceAsync;
+import com.velisphere.tigerspice.shared.LinkedPair;
+import com.velisphere.tigerspice.shared.SerializableLogicPhysicalItem;
+import com.velisphere.tigerspice.shared.SphereData;
 
-public class CustomCanvas extends Composite {
+public class LogicCanvas extends Composite {
 
 	static final int controlsOffsetY = 25;
 
@@ -66,7 +78,10 @@ public class CustomCanvas extends Composite {
 	PickupDragController dragController;
 	PickupDragController linkDragController;
 
+	
+	LinkedList<PhysicalItem> physicalItems;
 	LinkedList<LinkedPair<PhysicalItem, PhysicalItem>> linkedP2PPairs;
+	LinkedList<LinkedPair<SerializableLogicPhysicalItem, SerializableLogicPhysicalItem>> serializableLinkedP2PPairs;
 	LinkedList<LinkedPair<PhysicalItem, LogicCheck>> linkedP2LPairs;
 	LinkedList<LinkedPair<LogicCheck, PhysicalItem>> linkedL2PPairs;
 	HashMap<LinkedPair<PhysicalItem, PhysicalItem>, Widget> linkedP2PPairConnectorMap;
@@ -75,15 +90,16 @@ public class CustomCanvas extends Composite {
 
 	AbsolutePanel logicPanel;
 
-	public CustomCanvas() {
+	public LogicCanvas() {
 
 		linkedP2PPairs = new LinkedList<LinkedPair<PhysicalItem, PhysicalItem>>();
+		serializableLinkedP2PPairs = new LinkedList<LinkedPair<SerializableLogicPhysicalItem, SerializableLogicPhysicalItem>>();
 		linkedP2PPairConnectorMap = new HashMap<LinkedPair<PhysicalItem, PhysicalItem>, Widget>();
-
 		linkedP2LPairs = new LinkedList<LinkedPair<PhysicalItem, LogicCheck>>();
 		linkedP2LPairConnectorMap = new HashMap<LinkedPair<PhysicalItem, LogicCheck>, Widget>();
 		linkedL2PPairs = new LinkedList<LinkedPair<LogicCheck, PhysicalItem>>();
 		linkedL2PPairConnectorMap = new HashMap<LinkedPair<LogicCheck, PhysicalItem>, Widget>();
+		physicalItems = new LinkedList<PhysicalItem>();
 
 		logicPanel = new AbsolutePanel();
 
@@ -174,6 +190,7 @@ public class CustomCanvas extends Composite {
 						if (draggedToCanvasEvent.getContext().selectedWidgets
 								.get(0) instanceof ExplorerLabel) {
 							addCanvasLabel(draggedToCanvasEvent);
+						
 						} else if (draggedToCanvasEvent.getContext().selectedWidgets
 								.get(0) instanceof LogicCheckAnd) {
 
@@ -252,6 +269,13 @@ public class CustomCanvas extends Composite {
 		logicPanel.add(propertyLabel, draggedToCanvasEvent.getTargetX(),
 				draggedToCanvasEvent.getTargetY());
 
+		WidgetLocation widgetLocation = new WidgetLocation(propertyLabel,
+				logicPanel);
+		propertyLabel.setxPos(widgetLocation.getLeft());
+		propertyLabel.setyPos(widgetLocation.getTop() - controlsOffsetY);
+		
+		physicalItems.add(propertyLabel);
+		
 		dragController.makeDraggable(propertyLabel);
 
 		// add drag point only if it is a sensor
@@ -313,6 +337,7 @@ public class CustomCanvas extends Composite {
 								linkedInCanvasEvent.getTarget());
 						linkedP2PPairs.add(linkedP2PPair);
 
+						
 						// get the line color
 
 						String lineColor = linkedP2PPair.getLeft()
@@ -777,6 +802,14 @@ public class CustomCanvas extends Composite {
 
 								if (draggedInCanvasEvent.getContext().selectedWidgets
 										.get(0) instanceof PhysicalItem) {
+									
+									// update position data
+									
+									WidgetLocation widgetLocation = new WidgetLocation(draggedInCanvasEvent.getCanvasLabel(),
+											logicPanel);
+									draggedInCanvasEvent.getCanvasLabel().setxPos(widgetLocation.getLeft());
+									draggedInCanvasEvent.getCanvasLabel().setyPos(widgetLocation.getTop() - controlsOffsetY);
+
 									// move dragPoint if it is a sensor
 
 									if (draggedInCanvasEvent.getCanvasLabel()
@@ -865,6 +898,60 @@ public class CustomCanvas extends Composite {
 					}
 				});
 
+	}
+	
+	public void getJson() 
+	{
+		
+		
+		//create json for all physical items
+		
+		Iterator<PhysicalItem> it = physicalItems.iterator();
+		
+		while (it.hasNext())
+		{
+		
+			PhysicalItem current = it.next();
+			
+			
+			CheckPathServiceAsync checkPathService = GWT
+					.create(CheckPathService.class);
+			
+			
+			checkPathService.createJsonFromObject(current.getSerializableRepresentation(), new AsyncCallback<String>(){
+
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					
+					RootPanel.get().add(new HTML("ERROR " + caught.getMessage()));
+					
+				}
+
+				@Override
+				public void onSuccess(String result) {
+					// TODO Auto-generated method stub
+					
+					RootPanel.get().add(new HTML("RUBEL " + result));
+				
+				}
+
+				
+				});
+
+
+			
+			
+		}
+		
+		
+		RootPanel.get().add(new HTML("PAIRS " + serializableLinkedP2PPairs.toString()));
+		
+		
+		
+	
+		
+	    
 	}
 
 }
