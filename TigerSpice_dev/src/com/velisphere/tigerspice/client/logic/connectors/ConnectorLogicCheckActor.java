@@ -42,6 +42,8 @@ import com.velisphere.tigerspice.client.spheres.SphereService;
 import com.velisphere.tigerspice.client.spheres.SphereServiceAsync;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.velisphere.tigerspice.shared.PropertyData;
+import com.velisphere.tigerspice.shared.SerializableLogicConnector;
+import com.velisphere.tigerspice.shared.SerializableLogicPhysicalItem;
 
 public class ConnectorLogicCheckActor extends PopupPanel {
 
@@ -242,5 +244,14 @@ public class ConnectorLogicCheckActor extends PopupPanel {
 	{
 		return this.openingButton;
 	}
+	
+	  public SerializableLogicConnector getSerializableRepresentation()
+      {
+		SerializableLogicConnector serializable = new SerializableLogicConnector();
+      	serializable.setLeft(this.logicCheck.getId());
+      	serializable.setRight(this.actor.getEndpointID());
+      	return serializable;
+      	
+      }
 	
 }

@@ -30,6 +30,7 @@ import com.velisphere.tigerspice.shared.CheckPathData;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
 import com.velisphere.tigerspice.shared.CheckPathObjectTree;
 import com.velisphere.tigerspice.shared.LinkedPair;
+import com.velisphere.tigerspice.shared.SerializableLogicConnector;
 import com.velisphere.tigerspice.shared.SerializableLogicLogicCheck;
 import com.velisphere.tigerspice.shared.SerializableLogicPhysicalItem;
 
@@ -43,6 +44,7 @@ public interface CheckPathService extends RemoteService {
 		String createJsonCheckpath(CheckPathObjectTree uiObject);
 		String createJsonFromPhysical(SerializableLogicPhysicalItem object);
 		String createJsonFromLogical(SerializableLogicLogicCheck object);
+		String createJsonFromConnector(SerializableLogicConnector object);
 		CheckPathObjectTree getUiObjectJSONForCheckpathID(String checkpathID);
 		String addNewMulticheck(String checkId, String operator, String multicheckName, String checkpathID, LinkedList<ActionObject> actions);
 		String addNewMulticheckCheckLink(String multiCheckId, String checkId, String checkPathId);

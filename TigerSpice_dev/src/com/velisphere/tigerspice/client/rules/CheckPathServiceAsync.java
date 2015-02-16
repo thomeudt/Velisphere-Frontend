@@ -28,6 +28,7 @@ import com.velisphere.tigerspice.shared.CheckPathData;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
 import com.velisphere.tigerspice.shared.CheckPathObjectTree;
 import com.velisphere.tigerspice.shared.LinkedPair;
+import com.velisphere.tigerspice.shared.SerializableLogicConnector;
 import com.velisphere.tigerspice.shared.SerializableLogicLogicCheck;
 import com.velisphere.tigerspice.shared.SerializableLogicPhysicalItem;
 
@@ -38,9 +39,9 @@ public interface CheckPathServiceAsync {
 	void addNewCheckpath(String checkpathName, String userID, AsyncCallback<String> callback);
 	void getUiObjectJSONForCheckpathID(String checkpathID, AsyncCallback<CheckPathObjectTree> callback);
 	void createJsonCheckpath(CheckPathObjectTree uiObject, AsyncCallback<String> callback );
-
 	void createJsonFromPhysical(SerializableLogicPhysicalItem object, AsyncCallback<String> callback );
 	void createJsonFromLogical(SerializableLogicLogicCheck object, AsyncCallback<String> callback );
+	void createJsonFromConnector(SerializableLogicConnector object, AsyncCallback<String> callback );
 	void addNewMulticheck(String checkId, String operator, String multicheckName, String checkpathID, LinkedList<ActionObject> actions, AsyncCallback<String> callback );
 	void addNewMulticheckCheckLink(String multiCheckId, String checkId, String checkPathId, AsyncCallback<String> callback );
 	void addNewMulticheckMulticheckLink(String multicheckLId, String multicheckRId, String checkPathId, AsyncCallback<String> callback );

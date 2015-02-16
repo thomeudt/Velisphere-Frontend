@@ -41,7 +41,7 @@ import com.velisphere.tigerspice.client.event.LinkedInCanvasP2LEvent;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2LEventHandler;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2PEvent;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2PEventHandler;
-import com.velisphere.tigerspice.client.logic.JsonFactory;
+import com.velisphere.tigerspice.client.logic.JsonFabrik;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorLogicCheckActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorLogicCheck;
@@ -82,8 +82,11 @@ public class LogicCanvas extends Composite {
 	
 	LinkedList<PhysicalItem> physicalItems;
 	LinkedList<LogicCheck> logicChecks;
-	LinkedList<LinkedPair<PhysicalItem, PhysicalItem>> linkedP2PPairs;
+	LinkedList<ConnectorLogicCheckActor> connectorsLogicCheckActor;
+	LinkedList<ConnectorSensorActor> connectorsSensorActor;
+	LinkedList<ConnectorSensorLogicCheck> connectorsSensorLogicCheck;
 	
+	LinkedList<LinkedPair<PhysicalItem, PhysicalItem>> linkedP2PPairs;
 	LinkedList<LinkedPair<PhysicalItem, LogicCheck>> linkedP2LPairs;
 	LinkedList<LinkedPair<LogicCheck, PhysicalItem>> linkedL2PPairs;
 	HashMap<LinkedPair<PhysicalItem, PhysicalItem>, Widget> linkedP2PPairConnectorMap;
@@ -95,7 +98,6 @@ public class LogicCanvas extends Composite {
 	public LogicCanvas() {
 
 		linkedP2PPairs = new LinkedList<LinkedPair<PhysicalItem, PhysicalItem>>();
-	
 		linkedP2PPairConnectorMap = new HashMap<LinkedPair<PhysicalItem, PhysicalItem>, Widget>();
 		linkedP2LPairs = new LinkedList<LinkedPair<PhysicalItem, LogicCheck>>();
 		linkedP2LPairConnectorMap = new HashMap<LinkedPair<PhysicalItem, LogicCheck>, Widget>();
@@ -103,6 +105,10 @@ public class LogicCanvas extends Composite {
 		linkedL2PPairConnectorMap = new HashMap<LinkedPair<LogicCheck, PhysicalItem>, Widget>();
 		physicalItems = new LinkedList<PhysicalItem>();
 		logicChecks = new LinkedList<LogicCheck>();
+		
+		connectorsLogicCheckActor = new LinkedList<ConnectorLogicCheckActor>();
+		connectorsSensorActor = new LinkedList<ConnectorSensorActor>();
+		connectorsSensorLogicCheck = new LinkedList<ConnectorSensorLogicCheck>();
 
 		logicPanel = new AbsolutePanel();
 
@@ -159,6 +165,7 @@ public class LogicCanvas extends Composite {
 		});
 
 	}
+
 
 	public void onUnload() {
 		linkedInCanvasHandler.removeHandler();
@@ -368,6 +375,7 @@ public class LogicCanvas extends Composite {
 								linkedInCanvasEvent.getSource(),
 								linkedInCanvasEvent.getTarget());
 						linkedP2PPairConnectorMap.put(linkedP2PPair, connector);
+						connectorsSensorActor.add(connector);
 
 						// connector.show();
 						connector.setAutoHideEnabled(true);
@@ -443,6 +451,7 @@ public class LogicCanvas extends Composite {
 								linkedInCanvasEvent.getSource(),
 								linkedInCanvasEvent.getTarget());
 						linkedP2LPairConnectorMap.put(linkedPair, connector);
+						connectorsSensorLogicCheck.add(connector);
 
 						// connector.show();
 						connector.setAutoHideEnabled(true);
@@ -515,6 +524,7 @@ public class LogicCanvas extends Composite {
 								linkedInCanvasEvent.getSource(),
 								linkedInCanvasEvent.getTarget());
 						linkedL2PPairConnectorMap.put(linkedPair, connector);
+						connectorsLogicCheckActor.add(connector);
 
 						// connector.show();
 						connector.setAutoHideEnabled(true);
@@ -915,7 +925,7 @@ public class LogicCanvas extends Composite {
 	
 	public void getJson() 
 	{
-		JsonFactory factory = new JsonFactory(this);
+		JsonFabrik factory = new JsonFabrik(this);
 		factory.getJSON();
 	}
 	
@@ -928,5 +938,19 @@ public class LogicCanvas extends Composite {
 	{
 		return logicChecks;
 	}
+
+	public LinkedList<ConnectorLogicCheckActor> getConnectorsLogicCheckActor() {
+		return connectorsLogicCheckActor;
+	}
+
+	public LinkedList<ConnectorSensorActor> getConnectorsSensorActor() {
+		return connectorsSensorActor;
+	}
+
+	public LinkedList<ConnectorSensorLogicCheck> getConnectorsSensorLogicCheck() {
+		return connectorsSensorLogicCheck;
+	}
+
+
 	
 }
