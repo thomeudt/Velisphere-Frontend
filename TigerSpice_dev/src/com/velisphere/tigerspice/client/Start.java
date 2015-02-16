@@ -79,7 +79,7 @@ public class Start implements EntryPoint{
 			@Override
 	        public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 	        	
-				
+				reg.removeHandler();
 				RootPanel.get().clear();
 	            RootPanel rootPanelHeader = RootPanel.get("stockList");
 	        	rootPanelHeader.clear();

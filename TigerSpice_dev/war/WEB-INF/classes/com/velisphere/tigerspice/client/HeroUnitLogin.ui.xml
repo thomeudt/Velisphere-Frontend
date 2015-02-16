@@ -17,7 +17,8 @@
 -->
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:vscl="urn:import:com.velisphere.tigerspice.client">
 	<ui:style>
 		.important {
 			font-weight: bold;
@@ -38,12 +39,9 @@
                             New users can test drive VeliSphere using our demo account or sign up here.
                         </p>
                         
-                        <br></br><br></br>
-                    <g:Button styleName="btn btn-primary btn-large" text="Login »" ui:field="btnLogin" />
-                    <br></br>
-                    <br></br>
-            		<g:Anchor href="#" ui:field="ancSignup">No Account? Sign up now!</g:Anchor>
-            		<br></br>
+                        <br></br>
+                    <vscl:LoginDialogBox />
+                   
                     </div>
 
 					

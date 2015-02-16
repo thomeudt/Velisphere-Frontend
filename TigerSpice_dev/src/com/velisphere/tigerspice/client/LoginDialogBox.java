@@ -31,6 +31,7 @@ import org.voltdb.client.ProcCallException;
 
 
 
+
 import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.PasswordTextBox;
 import com.github.gwtbootstrap.client.ui.TextBox;
@@ -44,6 +45,7 @@ import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -53,7 +55,7 @@ import com.velisphere.tigerspice.client.users.LoginSuccess;
 import com.velisphere.tigerspice.client.users.NewAccountWidget;
 import com.velisphere.tigerspice.shared.UserData;
 
-public class LoginDialogBox extends PopupPanel{
+public class LoginDialogBox extends Composite{
 	
 	@UiField Alert aleError;
 	@UiField Anchor ancSignup;
@@ -70,8 +72,8 @@ public class LoginDialogBox extends PopupPanel{
 		txtUsername = new TextBox();
 		txtPassword = new PasswordTextBox();
 		
-		setStyleName("");
-		add(uiBinder.createAndBindUi(this));
+		initWidget(uiBinder.createAndBindUi(this));
+		
 		aleError.setVisible(false);
 	
 		
@@ -150,7 +152,7 @@ public class LoginDialogBox extends PopupPanel{
 		RootPanel.get("main").clear();
 		NewAccountWidget newAccount = new NewAccountWidget();
 		RootPanel.get("main").add(newAccount);
-		this.hide();
+		
 	
 	}
 

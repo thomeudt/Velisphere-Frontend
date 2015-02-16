@@ -44,24 +44,7 @@ public class HeroUnitLogin extends Composite implements HasText {
 					
 	}
 	
-	@UiHandler("btnLogin")
-	void openLoginForm (ClickEvent event) {
-		// Window.alert("Logging In");
-		RootPanel rootPanel = RootPanel.get("main");
-		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-		LoginDialogBox loginDialogBox = new LoginDialogBox();
-		loginDialogBox.setAnimationEnabled(false);
-		loginDialogBox.setAutoHideEnabled(false);
-		loginDialogBox.setAutoHideOnHistoryEventsEnabled(true);
-		loginDialogBox.show();
-		loginDialogBox.center();
-		loginDialogBox.addStyleName("ontop");
-		
-		// loginDialogBox.setVisible(false);
-		
-		
-	}
-
+	
 	@Override
 	public String getText() {
 		// TODO Auto-generated method stub
@@ -73,14 +56,6 @@ public class HeroUnitLogin extends Composite implements HasText {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	@UiHandler("ancSignup")
-	void redirectSignup (ClickEvent event)  {
-		// Window.alert("Logging In");
-		RootPanel.get("main").clear();
-		NewAccountWidget newAccount = new NewAccountWidget();
-		RootPanel.get("main").add(newAccount);
-	
-	}
+		
 	
 }
