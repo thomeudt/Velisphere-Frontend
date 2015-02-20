@@ -31,8 +31,7 @@ public class LogicDesigner extends Composite {
 	Breadcrumbs brdMain;
 	@UiField
 	TextBox txtCheckpathTitle;
-	@UiField
-	Button btnSaveCheckpath;
+
 	NavLink bread0;
 	NavLink bread1;
 	NavLink bread2;
@@ -68,8 +67,7 @@ public class LogicDesigner extends Composite {
 		bread2 = new NavLink();
 		bread2.setText("Create New Logic Design");
 		brdMain.add(bread2);
-		btnSaveCheckpath.setWidth("160px");
-		//wgtCostIndicator.setCheckpathEditor(wgtCheckpathEditor);
+	
 		
 		
 		bread0.addClickHandler(new ClickHandler() {
@@ -109,12 +107,6 @@ public class LogicDesigner extends Composite {
 
 	}
 	
-	@UiHandler("btnSaveCheckpath")
-	void saveCheckpath(ClickEvent event) 
-	{
-		canvas.getJson();
-		
-	}
 	
 	
 	

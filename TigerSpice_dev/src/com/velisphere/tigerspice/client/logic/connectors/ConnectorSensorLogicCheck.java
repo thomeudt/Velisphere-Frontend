@@ -44,7 +44,7 @@ import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.SerializableLogicConnector;
 
-public class ConnectorSensorLogicCheck extends PopupPanel {
+public class ConnectorSensorLogicCheck extends Connector {
 
 	LogicCheck logicCheck;
 	PhysicalItem sensor;

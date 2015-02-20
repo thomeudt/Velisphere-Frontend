@@ -115,6 +115,8 @@ public class JsonFabrik {
 					CheckPathServiceAsync checkPathService = GWT
 							.create(CheckPathService.class);
 					
+
+					RootPanel.get().add(new HTML("Connector UUID " + current.getUuid()));
 					
 					checkPathService.createJsonFromConnector(current.getSerializableRepresentation(), new AsyncCallback<String>(){
 
@@ -152,6 +154,8 @@ public class JsonFabrik {
 							CheckPathServiceAsync checkPathService = GWT
 									.create(CheckPathService.class);
 							
+							RootPanel.get().add(new HTML("Connector UUID " + current.getUuid()));
+							
 							
 							checkPathService.createJsonFromConnector(current.getSerializableRepresentation(), new AsyncCallback<String>(){
 
@@ -188,6 +192,8 @@ public class JsonFabrik {
 							CheckPathServiceAsync checkPathService = GWT
 									.create(CheckPathService.class);
 							
+
+							RootPanel.get().add(new HTML("Connector UUID " + current.getUuid()));
 							
 							checkPathService.createJsonFromConnector(current.getSerializableRepresentation(), new AsyncCallback<String>(){
 

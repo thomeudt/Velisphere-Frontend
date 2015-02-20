@@ -27,16 +27,22 @@ import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.github.gwtbootstrap.client.ui.Accordion;
 import com.github.gwtbootstrap.client.ui.AccordionGroup;
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.CheckBox;
 import com.github.gwtbootstrap.client.ui.Column;
+import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.Row;
+import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.resources.Bootstrap;
+import com.github.gwtbootstrap.client.ui.resources.ButtonSize;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -109,6 +115,8 @@ public class Explorer extends Composite {
 	
 	private void createBaseLayout()
 	{
+		
+		
 		Row row0 = new Row();
 		Column col0 = new Column(2);
 		lbxSpheres = new ListBox();
@@ -240,6 +248,27 @@ public class Explorer extends Composite {
 		
 		container.add(row5);
 
+		Row row7 = new Row();
+		Column col7 = new Column(2);
+		Button btnSave = new Button("Save");
+
+		btnSave.setWidth("85%");
+		btnSave.setSize(ButtonSize.SMALL);
+		btnSave.setType(ButtonType.PRIMARY);
+		col7.add(new HTML("&nbsp;<br>&nbsp;"));
+		col7.add(btnSave);
+		row7.add(col7);
+		container.add(row7);
+		
+		btnSave.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				checkPathCanvas.getJson();
+				
+			}
+			
+		});
 		
 		
 		

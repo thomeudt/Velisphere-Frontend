@@ -32,6 +32,8 @@ import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.helper.ActionSourceConfig;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
+import com.velisphere.tigerspice.client.helper.UuidService;
+import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheck;
 import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.properties.PropertyService;
@@ -45,24 +47,25 @@ import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.SerializableLogicConnector;
 import com.velisphere.tigerspice.shared.SerializableLogicPhysicalItem;
 
-public class ConnectorLogicCheckActor extends PopupPanel {
+public class ConnectorLogicCheckActor extends Connector {
 
 	PhysicalItem actor;
 	LogicCheck logicCheck;
 	Button openingButton;
+	
 
 	
 	public ConnectorLogicCheckActor (LogicCheck logicCheck, PhysicalItem actor)
 	{
 		super();
+	
 		this.logicCheck = logicCheck;
 		this.actor = actor;
 		createBaseLayout();
 		createOpenerWidget();
-		
-		
-		
 	}
+	
+	
 	
 	private void createBaseLayout()
 	{

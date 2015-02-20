@@ -23,7 +23,8 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 		xmlns:vsrl="urn:import:com.velisphere.tigerspice.client.rules"
 		xmlns:vsch="urn:import:com.velisphere.tigerspice.client.checks"
 		xmlns:vsac="urn:import:com.velisphere.tigerspice.client.actions"
-		xmlns:vspr="urn:import:com.velisphere.tigerspice.client.properties">
+		xmlns:vspr="urn:import:com.velisphere.tigerspice.client.properties"
+		xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
 		<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images'/>
 	<g:HTMLPanel>
             <b:Breadcrumbs divider=">" ui:field="brdMain">
@@ -40,7 +41,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 				        
 	        
 				        
-			<b:Column size="12" offset="0">
+			<b:Column size="10" offset="0">
 		
 			    	
 			    
@@ -62,9 +63,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 					</b:Row>		
 					
 						 <b:Row>
-            			<b:Column size="2" offset="0">
-	    				<b:Button type="PRIMARY" ui:field="btnSaveCheckpath" size="SMALL">Save Logic and Activate</b:Button>
-	    				</b:Column>
+            		
             			<b:Column size="1">
             			<b:Paragraph addStyleNames="smalltext" text="Logic Name:" />
             			</b:Column>
@@ -91,6 +90,10 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 					
 					
 			
+			</b:Column>
+			
+			<b:Column size="2" offset="0">
+<vssb:General></vssb:General>
 			</b:Column>
 		</b:Row>
 		

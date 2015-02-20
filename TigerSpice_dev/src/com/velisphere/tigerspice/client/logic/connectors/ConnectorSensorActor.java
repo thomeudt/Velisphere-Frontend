@@ -32,6 +32,8 @@ import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.helper.ActionSourceConfig;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
+import com.velisphere.tigerspice.client.helper.UuidService;
+import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
 import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
@@ -43,16 +45,22 @@ import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.SerializableLogicConnector;
 
-public class ConnectorSensorActor extends PopupPanel {
+public class ConnectorSensorActor extends Connector {
 
 	PhysicalItem actor;
 	PhysicalItem sensor;
 	Button openingButton;
-
+	ListBox lbxSource;
+	TextBox txtManualEntry;
+	ListBox lbxValueFromSensor;
+	ListBox lbxTypicalValues;
+	TextBox txtCheckValue;
+	ListBox lbxOperator;
 	
 	public ConnectorSensorActor (PhysicalItem sensor, PhysicalItem actor)
 	{
 		super();
+		
 		this.sensor = sensor;
 		this.actor = actor;
 		createBaseLayout();
@@ -61,6 +69,9 @@ public class ConnectorSensorActor extends PopupPanel {
 		
 		
 	}
+	
+	
+	
 	
 	private void createBaseLayout()
 	{
@@ -84,7 +95,7 @@ public class ConnectorSensorActor extends PopupPanel {
 		row0.add(col0a);
 		Column col0b = new Column(4);	
 		col0b.add(new HTML("<b>Define Connection between "+ sensor.getContentRepresentation() + " "
-				+ "and "+ actor.getContentRepresentation()+"</b>"));
+				+ "and "+ actor.getContentRepresentation()+"</b> "+ this.getUuid()));
 		row0.add(col0b);
 		
 		verticalPanel.add(row0);
@@ -109,13 +120,13 @@ public class ConnectorSensorActor extends PopupPanel {
 		col2A.add(new HTML("Trigger:"));
 		
 		Column col2B = new Column(1);
-		ListBox lbxOperator = new ListBox();
+		lbxOperator = new ListBox();
 		lbxOperator.setWidth("100%");
 		col2B.add(lbxOperator);
 		populateLbxOperator(lbxOperator);
 		
 		Column col2C = new Column(3);
-		TextBox txtCheckValue = new TextBox();
+		txtCheckValue = new TextBox();
 		col2C.add(txtCheckValue);
 		
 		row2.add(col2A);
@@ -129,22 +140,22 @@ public class ConnectorSensorActor extends PopupPanel {
 		col3A.add(new HTML("Push Value:"));
 		
 		Column col3B = new Column(1);
-		final ListBox lbxSource = new ListBox();
+		lbxSource = new ListBox();
 		lbxSource.setWidth("100%");
 		col3B.add(lbxSource);
 		populateLbxSource(lbxSource);
 		
 		Column col3C = new Column(3);
-		final TextBox txtManualEntry = new TextBox();
+		txtManualEntry = new TextBox();
 		col3C.add(txtManualEntry);
 		
-		final ListBox lbxValueFromSensor = new ListBox();
+		lbxValueFromSensor = new ListBox();
 		lbxValueFromSensor.setWidth("100%");
 		col3C.add(lbxValueFromSensor);
 		populateLbxValueFromSensor(lbxValueFromSensor);
 		lbxValueFromSensor.setVisible(false);
 		
-		final ListBox lbxTypicalValues = new ListBox();
+		lbxTypicalValues = new ListBox();
 		lbxTypicalValues.setWidth("100%");
 		col3C.add(lbxTypicalValues);
 		lbxTypicalValues.setVisible(false);
