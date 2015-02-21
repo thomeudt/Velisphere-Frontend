@@ -55,9 +55,9 @@ public class ConnectorLogicCheckActor extends Connector {
 	
 
 	
-	public ConnectorLogicCheckActor (LogicCheck logicCheck, PhysicalItem actor)
+	public ConnectorLogicCheckActor (String checkpathID, LogicCheck logicCheck, PhysicalItem actor)
 	{
-		super();
+		super(checkpathID);
 	
 		this.logicCheck = logicCheck;
 		this.actor = actor;

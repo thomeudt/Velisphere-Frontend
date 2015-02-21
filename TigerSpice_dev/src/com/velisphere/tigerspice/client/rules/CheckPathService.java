@@ -39,6 +39,7 @@ import com.velisphere.tigerspice.shared.SerializableLogicPhysicalItem;
 public interface CheckPathService extends RemoteService {
 		
 		String addNewCheckpath(String checkpathName, String userID);
+		String addNewCheckpath(String checkpathName, String userID, String checkpathID);
 		String updateCheckpath(String checkpathId, String uiObject);
 		String addNewUiObject(CheckPathObjectData uiObject);
 		String createJsonCheckpath(CheckPathObjectTree uiObject);

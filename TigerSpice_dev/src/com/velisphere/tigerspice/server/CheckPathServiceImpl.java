@@ -163,7 +163,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 				voltCon.montanaClient.callProcedure("ACTION.insert",
 						action.actionID, action.actionName, action.endpointID, "", 0, "", checkId, checkpathID);
 				voltCon.montanaClient.callProcedure("OUTBOUNDPROPERTYACTION.insert",
-						action.actionID, action.propertyID, action.propertyIdIndex, "", "", action.manualValue, action.actionID, checkpathID);
+						action.actionID, action.propertyID, action.propertyIdIntake, "", "", action.manualValue, action.actionID, checkpathID);
 			}
 
 			
@@ -354,6 +354,49 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 		return checkPathId;
 
 	}
+	
+	public String addNewCheckpath(String checkpathName, String userID, String checkpathID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+	
+		
+		try {
+			voltCon.montanaClient.callProcedure("CHECKPATH.insert",
+					checkpathID, checkpathName, null, userID);
+		} catch (NoConnectionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProcCallException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "OK";
+
+	}
+
 	
 	public String updateCheckpath(String checkpathID,  String uiObject)
 
@@ -662,7 +705,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 						action.actionID, action.propertyID, action.propertyIdIndex, "", "", action.manualValue, action.actionID, checkpathID);
 						**/
 				voltCon.montanaClient.callProcedure("UI_UpsertActionsForMulticheckID",
-						action.actionID, action.actionName, action.endpointID, multicheckID, checkpathID, action.propertyID, action.propertyIdIndex,action.manualValue);
+						action.actionID, action.actionName, action.endpointID, multicheckID, checkpathID, action.propertyID, action.propertyIdIntake,action.manualValue);
 			
 				
 			} catch (IOException | ProcCallException e) {
@@ -977,7 +1020,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 					action.actionName = result.getString("ACTIONNAME");
 					action.endpointID = result.getString("TARGETENDPOINTID");
 					action.propertyID = result.getString("OUTBOUNDPROPERTYID");
-					action.propertyIdIndex = result.getString("INBOUNDPROPERTYID");
+					action.propertyIdIntake = result.getString("INBOUNDPROPERTYID");
 					action.manualValue = result.getString("CUSTOMPAYLOAD");	
 					System.out.println("Inboundlentgh = " + result.getString("INBOUNDPROPERTYID").length());
 					action.settingSourceIndex = "Manual entry"; // this is the default

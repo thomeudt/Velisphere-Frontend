@@ -56,36 +56,29 @@ public class ConnectorSensorActor extends Connector {
 	ListBox lbxTypicalValues;
 	TextBox txtCheckValue;
 	ListBox lbxOperator;
-	
-	public ConnectorSensorActor (PhysicalItem sensor, PhysicalItem actor)
-	{
-		super();
-		
+
+	public ConnectorSensorActor(String checkpathID, PhysicalItem sensor,
+			PhysicalItem actor) {
+		super(checkpathID);
+
 		this.sensor = sensor;
 		this.actor = actor;
 		createBaseLayout();
 		createOpenerWidget();
-		
-		
-		
+
 	}
-	
-	
-	
-	
-	private void createBaseLayout()
-	{
-		 this.setStyleName("wellwhite");
-         getElement().getStyle().setPadding(10, Unit.PX);
-         //getElement().getStyle().setBorderStyle(BorderStyle.SOLID);
-         //getElement().getStyle().setBorderColor("#bbbbbb");
-         //getElement().getStyle().setBorderWidth(1, Unit.PX);
-         getElement().getStyle().setBackgroundColor("#ffffff");
-	
-        
-        VerticalPanel verticalPanel = new VerticalPanel();
-        
-        Row row0 = new Row();
+
+	private void createBaseLayout() {
+		this.setStyleName("wellwhite");
+		getElement().getStyle().setPadding(10, Unit.PX);
+		// getElement().getStyle().setBorderStyle(BorderStyle.SOLID);
+		// getElement().getStyle().setBorderColor("#bbbbbb");
+		// getElement().getStyle().setBorderWidth(1, Unit.PX);
+		getElement().getStyle().setBackgroundColor("#ffffff");
+
+		VerticalPanel verticalPanel = new VerticalPanel();
+
+		Row row0 = new Row();
 		Column col0a = new Column(1);
 		HorizontalPanel imageHeader = new HorizontalPanel();
 		imageHeader.add(this.sensor.getImage());
@@ -93,178 +86,177 @@ public class ConnectorSensorActor extends Connector {
 		imageHeader.add(this.actor.getImage());
 		col0a.add(imageHeader);
 		row0.add(col0a);
-		Column col0b = new Column(4);	
-		col0b.add(new HTML("<b>Define Connection between "+ sensor.getContentRepresentation() + " "
-				+ "and "+ actor.getContentRepresentation()+"</b> "+ this.getUuid()));
+		Column col0b = new Column(4);
+		col0b.add(new HTML("<b>Define Connection between "
+				+ sensor.getContentRepresentation() + " " + "and "
+				+ actor.getContentRepresentation() + "</b> " + this.getCheckUUID()));
 		row0.add(col0b);
-		
+
 		verticalPanel.add(row0);
-		
-        
-        Row row1 = new Row();
+
+		Row row1 = new Row();
 		Column col1 = new Column(5);
-		HTML headerHTML = new HTML("<br><br>"
-				+ "You can define the condition under which the connection will be triggered based "
-						+ "on the state of <b>"+ sensor.getContentRepresentation() + "</b>, "
-				+ "and then define what data will be send to <b>" + actor.getContentRepresentation() + "</b>. This could be a static "
+		HTML headerHTML = new HTML(
+				"<br><br>"
+						+ "You can define the condition under which the connection will be triggered based "
+						+ "on the state of <b>"
+						+ sensor.getContentRepresentation() + "</b>, "
+						+ "and then define what data will be send to <b>"
+						+ actor.getContentRepresentation()
+						+ "</b>. This could be a static "
 						+ "value defined in this dialog,"
-				+ "or values dynamically pulled from either <b>"+sensor.getContentRepresentation()+"</b> or any other sensor you have access to."
+						+ "or values dynamically pulled from either <b>"
+						+ sensor.getContentRepresentation()
+						+ "</b> or any other sensor you have access to."
 						+ "<br><br>&nbsp;");
 		col1.add(headerHTML);
 		row1.add(col1);
 		verticalPanel.add(row1);
-		
-	
+
 		Row row2 = new Row();
 		Column col2A = new Column(1);
 		col2A.add(new HTML("Trigger:"));
-		
+
 		Column col2B = new Column(1);
 		lbxOperator = new ListBox();
 		lbxOperator.setWidth("100%");
 		col2B.add(lbxOperator);
 		populateLbxOperator(lbxOperator);
-		
+
 		Column col2C = new Column(3);
 		txtCheckValue = new TextBox();
 		col2C.add(txtCheckValue);
-		
+
 		row2.add(col2A);
 		row2.add(col2B);
 		row2.add(col2C);
-		
+
 		verticalPanel.add(row2);
-		
+
 		Row row3 = new Row();
 		Column col3A = new Column(1);
 		col3A.add(new HTML("Push Value:"));
-		
+
 		Column col3B = new Column(1);
 		lbxSource = new ListBox();
 		lbxSource.setWidth("100%");
 		col3B.add(lbxSource);
 		populateLbxSource(lbxSource);
-		
+
 		Column col3C = new Column(3);
 		txtManualEntry = new TextBox();
 		col3C.add(txtManualEntry);
-		
+
 		lbxValueFromSensor = new ListBox();
 		lbxValueFromSensor.setWidth("100%");
 		col3C.add(lbxValueFromSensor);
 		populateLbxValueFromSensor(lbxValueFromSensor);
 		lbxValueFromSensor.setVisible(false);
-		
+
 		lbxTypicalValues = new ListBox();
 		lbxTypicalValues.setWidth("100%");
 		col3C.add(lbxTypicalValues);
 		lbxTypicalValues.setVisible(false);
-		
+
 		row3.add(col3A);
 		row3.add(col3B);
 		row3.add(col3C);
-		
+
 		verticalPanel.add(row3);
-		
+
 		Row row4 = new Row();
-		Column col4A = new Column(1,2);
+		Column col4A = new Column(1, 2);
 		Button btnSave = new Button("Save");
 		btnSave.setType(ButtonType.SUCCESS);
 		col4A.add(btnSave);
-		
+
 		Column col4B = new Column(1);
 		Button btnDelete = new Button("Delete");
 		btnDelete.setType(ButtonType.DANGER);
 		col4B.add(btnDelete);
-		
+
 		Column col4C = new Column(1);
 		Button btnCancel = new Button("Cancel");
 		btnCancel.setType(ButtonType.DEFAULT);
 		col4C.add(btnCancel);
-		
+
 		row4.add(col4A);
 		row4.add(col4B);
 		row4.add(col4C);
-		
+
 		verticalPanel.add(row4);
-		
-		
+
 		this.add(verticalPanel);
-		
+
 		// set the various handlers
-		
+
 		final PopupPanel currentWindow = this;
-		btnCancel.addClickHandler(new ClickHandler(){
+		btnCancel.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				currentWindow.removeFromParent();
 			}
-			
+
 		});
-		
+
 		final ConnectorSensorActor thisWidget = this;
-		btnSave.addClickHandler(new ClickHandler(){
+		btnSave.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				EventUtils.EVENT_BUS.fireEvent(new ConnectionSaveEvent(sensor, actor, thisWidget));
+				EventUtils.EVENT_BUS.fireEvent(new ConnectionSaveEvent(sensor,
+						actor, thisWidget));
 				currentWindow.removeFromParent();
 			}
-			
+
 		});
-		
-		lbxSource.addChangeHandler(new ChangeHandler(){
+
+		lbxSource.addChangeHandler(new ChangeHandler() {
 
 			@Override
 			public void onChange(ChangeEvent event) {
 				// TODO Auto-generated method stub
-				
-				if(lbxSource.getValue() == ActionSourceConfig.manual)
-				{
+
+				if (lbxSource.getValue() == ActionSourceConfig.manual) {
 					txtManualEntry.setVisible(true);
 					lbxValueFromSensor.setVisible(false);
 					lbxTypicalValues.setVisible(false);
-					
+
 				}
-				
-				if(lbxSource.getValue() == ActionSourceConfig.currentSensorValue)
-				{
+
+				if (lbxSource.getValue() == ActionSourceConfig.currentSensorValue) {
 					txtManualEntry.setVisible(false);
 					lbxValueFromSensor.setVisible(true);
 					lbxTypicalValues.setVisible(false);
 				}
-				
-				if(lbxSource.getValue() == ActionSourceConfig.otherSensorValue)
-				{
+
+				if (lbxSource.getValue() == ActionSourceConfig.otherSensorValue) {
 					txtManualEntry.setVisible(false);
 					lbxValueFromSensor.setVisible(false);
 					lbxTypicalValues.setVisible(false);
-					
+
 				}
-				
-				if(lbxSource.getValue() == ActionSourceConfig.typicalEntries)
-				{
+
+				if (lbxSource.getValue() == ActionSourceConfig.typicalEntries) {
 					txtManualEntry.setVisible(false);
 					lbxValueFromSensor.setVisible(false);
 					lbxTypicalValues.setVisible(true);
-					
+
 				}
-				
+
 			}
-			
+
 		});
-		
-		
+
 	}
-	
-	private void populateLbxValueFromSensor(final ListBox lbxValueFromSensor)
-	{
+
+	private void populateLbxValueFromSensor(final ListBox lbxValueFromSensor) {
 		PropertyServiceAsync propertyService = GWT
 				.create(PropertyService.class);
-		
+
 		propertyService.getSensorPropertiesForEndpointID(
 				sensor.getEndpointID(),
 				new AsyncCallback<LinkedList<PropertyData>>() {
@@ -286,44 +278,42 @@ public class ConnectorSensorActor extends Connector {
 							PropertyData sensorProperty = new PropertyData();
 							sensorProperty = it.next();
 
-							lbxValueFromSensor.addItem(sensorProperty.propertyName,
+							lbxValueFromSensor.addItem(
+									sensorProperty.propertyName,
 									sensorProperty.propertyId);
-							
+
 						}
 
 					}
 
 				});
 
-
 	}
-	
-	private void populateLbxSource(final ListBox lbxSource)
-	{
+
+	private void populateLbxSource(final ListBox lbxSource) {
 		LinkedList<String> sources;
 
-		
 		sources = new ActionSourceConfig().getCheckSources();
-		
+
 		Iterator<String> it = sources.iterator();
 		while (it.hasNext()) {
 			lbxSource.addItem(it.next());
 		}
 
 	}
-	
-	private void populateLbxOperator(final ListBox lbxOperator)
-	{
+
+	private void populateLbxOperator(final ListBox lbxOperator) {
 		PropertyClassServiceAsync propertyClassService = GWT
 				.create(PropertyClassService.class);
-		
+
 		propertyClassService.getPropertyClassForPropertyClassID(
-				this.sensor.getPropertyClassID(), new AsyncCallback<PropertyClassData>() {
+				this.sensor.getPropertyClassID(),
+				new AsyncCallback<PropertyClassData>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
-						
+
 					}
 
 					@Override
@@ -407,40 +397,65 @@ public class ConnectorSensorActor extends Connector {
 
 							}
 						}
-						
-						else lbxOperator.addItem("Invalid Endpoint Configuration");
+
+						else
+							lbxOperator
+									.addItem("Invalid Endpoint Configuration");
 
 					}
 
 				});
 
-		
 	}
-	
-	private void createOpenerWidget()
-	{
+
+	private void createOpenerWidget() {
 		openingButton = new Button();
 		openingButton.setBaseIcon(IconType.FILTER);
-		
+
 		openingButton.setStyleName("connbtn");
 		final ConnectorSensorActor currentConnector = this;
-				
+
 	}
-	
-	
-	
-	public Button getOpenerWidget()
-	{
+
+	public Button getOpenerWidget() {
 		return this.openingButton;
 	}
-	
-	 public SerializableLogicConnector getSerializableRepresentation()
-     {
+
+	public SerializableLogicConnector getSerializableRepresentation() {
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
-     	serializable.setLeft(this.sensor.getEndpointID());
-     	serializable.setRight(this.actor.getEndpointID());
-     	return serializable;
-     	
-     }
+		serializable.setLeft(this.sensor.getEndpointID());
+		serializable.setRight(this.actor.getEndpointID());
+		return serializable;
+
+	}
+
+	public PhysicalItem getSensor() {
+		return sensor;
+	}
+
+	public PhysicalItem getActor() {
+		return actor;
+	}
 	
+	public String getOperator() {
+		return lbxOperator.getValue();
+	}
+
+	public String getCheckValue() {
+		return txtCheckValue.getText();
+	}
+	
+	public String getSourceIndex() {
+		return lbxSource.getValue();
+	}
+	
+	public String getTypicalValueIndex() {
+		return lbxTypicalValues.getValue();
+	}
+	
+	public String getManualValue() {
+		return txtManualEntry.getValue();
+	}
+
+
 }

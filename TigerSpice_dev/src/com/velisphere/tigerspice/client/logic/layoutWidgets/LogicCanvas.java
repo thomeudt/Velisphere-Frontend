@@ -41,6 +41,9 @@ import com.velisphere.tigerspice.client.event.LinkedInCanvasP2LEvent;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2LEventHandler;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2PEvent;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2PEventHandler;
+import com.velisphere.tigerspice.client.helper.UuidService;
+import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
+import com.velisphere.tigerspice.client.logic.DataManager;
 import com.velisphere.tigerspice.client.logic.JsonFabrik;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorLogicCheckActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorActor;
@@ -67,6 +70,8 @@ public class LogicCanvas extends Composite {
 
 	static final int controlsOffsetY = 25;
 
+	String uuid;
+	
 	Context2d context;
 	Canvas canvas;
 
@@ -97,6 +102,7 @@ public class LogicCanvas extends Composite {
 
 	public LogicCanvas() {
 
+		createUUID();
 		linkedP2PPairs = new LinkedList<LinkedPair<PhysicalItem, PhysicalItem>>();
 		linkedP2PPairConnectorMap = new HashMap<LinkedPair<PhysicalItem, PhysicalItem>, Widget>();
 		linkedP2LPairs = new LinkedList<LinkedPair<PhysicalItem, LogicCheck>>();
@@ -141,7 +147,7 @@ public class LogicCanvas extends Composite {
 					canvas = Canvas.createIfSupported();
 					logicPanel.add(canvas);
 
-					canvas.setWidth("100%");
+					canvas.setWidth("95%");
 					canvas.setHeight("100%");
 					RootPanel.get().add(
 							new HTML("WIDTH OFFSET "
@@ -166,6 +172,29 @@ public class LogicCanvas extends Composite {
 
 	}
 
+	private void createUUID()
+	{
+		UuidServiceAsync uuidService = GWT
+				.create(UuidService.class);
+		
+		uuidService.getUuid(new AsyncCallback<String>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				// TODO Auto-generated method stub
+				uuid = result;
+			}
+			
+		});
+		
+	}
+	
 
 	public void onUnload() {
 		linkedInCanvasHandler.removeHandler();
@@ -372,6 +401,7 @@ public class LogicCanvas extends Composite {
 						// dialog
 
 						final ConnectorSensorActor connector = new ConnectorSensorActor(
+								uuid,
 								linkedInCanvasEvent.getSource(),
 								linkedInCanvasEvent.getTarget());
 						linkedP2PPairConnectorMap.put(linkedP2PPair, connector);
@@ -448,6 +478,7 @@ public class LogicCanvas extends Composite {
 						// dialog
 
 						final ConnectorSensorLogicCheck connector = new ConnectorSensorLogicCheck(
+								uuid,
 								linkedInCanvasEvent.getSource(),
 								linkedInCanvasEvent.getTarget());
 						linkedP2LPairConnectorMap.put(linkedPair, connector);
@@ -521,6 +552,7 @@ public class LogicCanvas extends Composite {
 						// dialog
 
 						final ConnectorLogicCheckActor connector = new ConnectorLogicCheckActor(
+								uuid,
 								linkedInCanvasEvent.getSource(),
 								linkedInCanvasEvent.getTarget());
 						linkedL2PPairConnectorMap.put(linkedPair, connector);
@@ -929,6 +961,13 @@ public class LogicCanvas extends Composite {
 		factory.getJSON();
 	}
 	
+	public void saveToDatabase()
+	{
+		DataManager dataManager = new DataManager(this);
+		dataManager.processP2P();
+		dataManager.processCheckPath("test");
+	}
+	
 	public LinkedList<PhysicalItem> getPhysicalItems()
 	{
 		return physicalItems;
@@ -949,6 +988,10 @@ public class LogicCanvas extends Composite {
 
 	public LinkedList<ConnectorSensorLogicCheck> getConnectorsSensorLogicCheck() {
 		return connectorsSensorLogicCheck;
+	}
+	
+	public String getUUID() {
+		return this.uuid;
 	}
 
 

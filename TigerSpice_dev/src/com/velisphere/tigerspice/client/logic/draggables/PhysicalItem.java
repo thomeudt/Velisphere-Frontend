@@ -50,7 +50,7 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
         String propertyID;
     	String propertyClassID;
     	String endpointClassID;
-    	String endpointID;
+   		String endpointID;
     	byte isActor;
     	byte isSensor;
     	LinkCreator dragPointWidget;
@@ -276,6 +276,18 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
 		public void setyPos(int yPos) {
 			this.yPos = yPos;
 		}
+		
+		public String getEndpointClassID() {
+			return endpointClassID;
+		}
+
+
+		public void setEndpointClassID(String endpointClassID) {
+			this.endpointClassID = endpointClassID;
+		}
+
+
+
 
 
 }

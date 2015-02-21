@@ -15,12 +15,12 @@ public class ActionObject  implements IsSerializable{
 	public String settingSourceIndex;
 	public String manualValue;
 	public String validValueIndex;
-	public String propertyIdIndex;
+	public String propertyIdIntake;
 	
 	public ActionObject() {
 	}
 	
-	public ActionObject(String actionID, String actionName, String endpointName, String endpointID, String endpointClassID, String propertyName, String propertyID, String settingSourceIndex, String manualValue, String validValueIndex, String propertyIdIndex, String sensorEndpointID){
+	public ActionObject(String actionID, String actionName, String endpointName, String endpointID, String endpointClassID, String propertyName, String propertyID, String settingSourceIndex, String manualValue, String validValueIndex, String propertyIdIntake, String sensorEndpointID){
 
 		this.actionID = actionID;
 		this.actionName = actionName;
@@ -33,7 +33,7 @@ public class ActionObject  implements IsSerializable{
 		this.settingSourceIndex = settingSourceIndex;
 		this.manualValue = manualValue;
 		this.validValueIndex = validValueIndex;
-		this.propertyIdIndex = propertyIdIndex;
+		this.propertyIdIntake = propertyIdIntake;
 		
 	}
 

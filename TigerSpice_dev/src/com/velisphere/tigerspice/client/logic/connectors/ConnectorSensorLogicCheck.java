@@ -51,9 +51,9 @@ public class ConnectorSensorLogicCheck extends Connector {
 	Button openingButton;
 
 	
-	public ConnectorSensorLogicCheck (PhysicalItem sensor, LogicCheck logicCheck)
+	public ConnectorSensorLogicCheck (String checkpathID, PhysicalItem sensor, LogicCheck logicCheck)
 	{
-		super();
+		super(checkpathID);
 		this.sensor = sensor;
 		this.logicCheck = logicCheck;
 		createBaseLayout();

@@ -48,7 +48,7 @@ public class PropertyData implements IsSerializable
 	}
 	
 	public String getPropertyId(){
-		return propertyName;
+		return propertyId;
 	}
 	
 	public String getPropertyclassId(){

@@ -73,7 +73,7 @@ public class ActionDialogBoxTabbed extends SimplePanel {
 
 	private void addTab(final ActionObject action) {
 
-		String orig = action.propertyIdIndex;
+		String orig = action.propertyIdIntake;
 
 		Row row0 = new Row();
 		Row row1 = new Row();
@@ -190,10 +190,10 @@ public class ActionDialogBoxTabbed extends SimplePanel {
 			@Override
 			public void onChange(ChangeEvent event) {
 				// TODO Auto-generated method stub
-				action.propertyIdIndex = lstSensorValue.getValue();
+				action.propertyIdIntake = lstSensorValue.getValue();
 
 				System.out.println("--------------------------VALUE GESETZT "
-						+ action.propertyIdIndex);
+						+ action.propertyIdIntake);
 			}
 		});
 
@@ -339,7 +339,7 @@ public class ActionDialogBoxTabbed extends SimplePanel {
 					lstSensorValue.setVisible(true);
 					lstValidValues.setVisible(false);
 					lstSensorValue.setSelectedIndex(0);
-					action.propertyIdIndex = lstSensorValue.getValue();
+					action.propertyIdIntake = lstSensorValue.getValue();
 					System.out.println("DREIER");
 
 					break;
@@ -379,7 +379,7 @@ public class ActionDialogBoxTabbed extends SimplePanel {
 	private void populateSensePropertiesDropDown(final ListBox lstSensorValue,
 			final ActionObject action) {
 
-		final String sensorPropertyID = action.propertyIdIndex;
+		final String sensorPropertyID = action.propertyIdIntake;
 
 		rpcServiceProperty.getSensorPropertiesForEndpointID(
 				action.sensorEndpointID,

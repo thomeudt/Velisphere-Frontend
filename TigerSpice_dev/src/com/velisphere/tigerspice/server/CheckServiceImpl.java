@@ -155,7 +155,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 						"", 0, checkID, "", checkpathID);
 				voltCon.montanaClient.callProcedure(
 						"OUTBOUNDPROPERTYACTION.insert", action.actionID,
-						action.propertyID, action.propertyIdIndex, "", "",
+						action.propertyID, action.propertyIdIntake, "", "",
 						action.manualValue, action.actionID, checkpathID);
 			}
 
@@ -269,9 +269,9 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 				voltCon.montanaClient.callProcedure(
 						"UI_UpsertActionsForCheckID", action.actionID,
 						action.actionName, action.endpointID, checkID,
-						checkpathID, action.propertyID, action.propertyIdIndex,
+						checkpathID, action.propertyID, action.propertyIdIntake,
 						action.manualValue);
-				System.out.println("PROPIDINDEX: " + action.propertyIdIndex);
+				System.out.println("PROPIDINDEX: " + action.propertyIdIntake);
 
 			} catch (IOException | ProcCallException e) {
 				// TODO Auto-generated catch block
@@ -570,7 +570,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 					action.actionName = result.getString("ACTIONNAME");
 					action.endpointID = result.getString("TARGETENDPOINTID");
 					action.propertyID = result.getString("OUTBOUNDPROPERTYID");
-					action.propertyIdIndex = result
+					action.propertyIdIntake = result
 							.getString("INBOUNDPROPERTYID");
 					action.manualValue = result.getString("CUSTOMPAYLOAD");
 					System.out.println("Inboundlentgh = "

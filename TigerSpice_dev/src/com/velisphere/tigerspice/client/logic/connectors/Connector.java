@@ -8,16 +8,20 @@ import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
 
 public class Connector extends PopupPanel {
 
-	String uuid;
+	String checkUUID;
+	String actionUUID;
+	String checkpathID;
 	
 	
-	public Connector()
+	public Connector(String checkpathID)
 	{
 		super();
-		createUUID();
+		this.checkpathID = checkpathID;
+		createActionUUID();
+		createCheckUUID();
 	}
 	
-	protected void createUUID()
+	protected void createActionUUID()
 	{
 		UuidServiceAsync uuidService = GWT
 				.create(UuidService.class);
@@ -33,15 +37,42 @@ public class Connector extends PopupPanel {
 			@Override
 			public void onSuccess(String result) {
 				// TODO Auto-generated method stub
-				uuid = result;
+				actionUUID = result;
 			}
 			
 		});
 		
 	}
 	
-	public String getUuid() {
-		return uuid;
+	protected void createCheckUUID()
+	{
+		UuidServiceAsync uuidService = GWT
+				.create(UuidService.class);
+		
+		uuidService.getUuid(new AsyncCallback<String>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				// TODO Auto-generated method stub
+				checkUUID = result;
+			}
+			
+		});
+		
+	}
+	
+	public String getCheckUUID() {
+		return checkUUID;
+	}
+	
+	public String getActionUUID() {
+		return actionUUID;
 	}
 
 }

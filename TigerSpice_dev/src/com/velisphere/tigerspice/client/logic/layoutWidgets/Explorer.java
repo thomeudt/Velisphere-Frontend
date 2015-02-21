@@ -265,6 +265,8 @@ public class Explorer extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				checkPathCanvas.getJson();
+				checkPathCanvas.saveToDatabase();
+				
 				
 			}
 			
