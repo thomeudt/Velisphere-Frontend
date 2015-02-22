@@ -44,6 +44,7 @@ import com.velisphere.tigerspice.shared.CheckPathObjectTree;
 import com.velisphere.tigerspice.shared.CheckPathObjectData;
 import com.velisphere.tigerspice.shared.LinkedPair;
 import com.velisphere.tigerspice.shared.SerializableLogicConnector;
+import com.velisphere.tigerspice.shared.SerializableLogicContainer;
 import com.velisphere.tigerspice.shared.SerializableLogicLogicCheck;
 import com.velisphere.tigerspice.shared.SerializableLogicPhysicalItem;
 
@@ -1209,6 +1210,41 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 
 	}
 	
+	
+	@Override
+	public String createJsonFromContainer(SerializableLogicContainer object) {
+		ObjectMapper mapper = new ObjectMapper();
+		
+		System.out.println("Intake: " + object.toString());
+	 
+		String jsonCheckpathObject = ""; 
+		
+		try {
+			
+			
+	 				 
+			// display to console
+			jsonCheckpathObject = mapper.writeValueAsString(object);
+			System.out.println("JSON generiert: " + jsonCheckpathObject);
+	 
+		} catch (JsonGenerationException e) {
+	 
+			e.printStackTrace();
+	 
+		} catch (JsonMappingException e) {
+	 
+			e.printStackTrace();
+	 
+		} catch (IOException e) {
+	 
+			e.printStackTrace();
+	 
+		}
+	 
+
+		return jsonCheckpathObject;
+
+	}
 	
 	
 	

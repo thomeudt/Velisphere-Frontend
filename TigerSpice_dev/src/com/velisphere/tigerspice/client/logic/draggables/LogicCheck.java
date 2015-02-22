@@ -46,7 +46,7 @@ public class LogicCheck extends FocusPanel implements HasAllTouchHandlers {
 	{
 		super();
 		
-		
+		createCheckUUID();
 		childConnectors = new LinkedList<ConnectorSensorLogicCheck>();
 		
 		sourceCount = 0;

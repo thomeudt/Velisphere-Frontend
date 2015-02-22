@@ -148,14 +148,14 @@ public class LogicCanvas extends Composite {
 					logicPanel.add(canvas);
 
 					canvas.setWidth("95%");
-					canvas.setHeight("100%");
+					canvas.setHeight("99%");
 					RootPanel.get().add(
 							new HTML("WIDTH OFFSET "
 									+ logicPanel.getOffsetWidth()));
 					canvas.setCoordinateSpaceWidth(logicPanel.getOffsetWidth()-10);
-					canvas.setCoordinateSpaceHeight(400);
+					canvas.setCoordinateSpaceHeight((int) (logicPanel.getOffsetHeight()*0.99));
 
-					canvas.addStyleName("welllinen");
+					canvas.addStyleName("wellapple");
 
 					
 					logicPanel

@@ -90,37 +90,37 @@ public class LineCoordinateCalculator {
 		if (targetAboveSource == true)
 		{
 			RootPanel.get().add(new HTML("ABOVE SOURCE"));
-			calcSourceX = (int) (sourceLocation.getLeft() + source.getElement().getClientWidth() * 0.5 - 20);
-			calcTargetX = (int) (targetLocation.getLeft() + target.getElement().getClientWidth() * 0.5 - 20);
-			calcSourceY = sourceLocation.getTop() - 20;
-			calcTargetY = targetLocation.getTop() + target.getElement().getClientHeight() - 15;
+			calcSourceX = (int) (sourceLocation.getLeft() + source.getElement().getClientWidth() * 0.5);
+			calcTargetX = (int) (targetLocation.getLeft() + target.getElement().getClientWidth() * 0.5);
+			calcSourceY = sourceLocation.getTop();
+			calcTargetY = targetLocation.getTop() + target.getElement().getClientHeight();
 		}
 		
 		if (targetBelowSource == true)
 		{
 			RootPanel.get().add(new HTML("BELOW SOURCE"));
-			calcSourceX = (int) (sourceLocation.getLeft() + source.getElement().getClientWidth() * 0.5 - 20);
-			calcTargetX = (int) (targetLocation.getLeft() + target.getElement().getClientWidth() * 0.5 - 20);
-			calcSourceY = sourceLocation.getTop() + source.getElement().getClientHeight() - 20;
-			calcTargetY = targetLocation.getTop() - 20;
+			calcSourceX = (int) (sourceLocation.getLeft() + source.getElement().getClientWidth() * 0.5);
+			calcTargetX = (int) (targetLocation.getLeft() + target.getElement().getClientWidth() * 0.5);
+			calcSourceY = sourceLocation.getTop() + source.getElement().getClientHeight();
+			calcTargetY = targetLocation.getTop();
 		}
 		
 		if (targetLeftOfSource == true)
 		{
 			RootPanel.get().add(new HTML("LEFT OF  SOURCE"));
-			calcSourceX = sourceLocation.getLeft() - 20;
-			calcTargetX = targetLocation.getLeft() + target.getElement().getClientWidth() - 20;
-			calcSourceY = (int) (sourceLocation.getTop() + source.getElement().getClientHeight() * 0.5 - 20);
-			calcTargetY = (int) (targetLocation.getTop() + target.getElement().getClientHeight() *0.5 - 20);
+			calcSourceX = sourceLocation.getLeft();
+			calcTargetX = targetLocation.getLeft() + target.getElement().getClientWidth();
+			calcSourceY = (int) (sourceLocation.getTop() + source.getElement().getClientHeight() * 0.5);
+			calcTargetY = (int) (targetLocation.getTop() + target.getElement().getClientHeight() *0.5);
 		}
 		
 		if (targetRightOfSource == true)
 		{
 			RootPanel.get().add(new HTML("RIGHT OF SOURCE"));
-			calcSourceX = sourceLocation.getLeft() + source.getElement().getOffsetWidth() - 20;
-			calcTargetX = targetLocation.getLeft() - 20;
-			calcSourceY = (int) (sourceLocation.getTop() + source.getElement().getOffsetHeight() * 0.5 - 20);
-			calcTargetY = (int) (targetLocation.getTop() + target.getElement().getOffsetHeight() *0.5 - 20);
+			calcSourceX = sourceLocation.getLeft() + source.getElement().getOffsetWidth();
+			calcTargetX = targetLocation.getLeft();
+			calcSourceY = (int) (sourceLocation.getTop() + source.getElement().getOffsetHeight() * 0.5);
+			calcTargetY = (int) (targetLocation.getTop() + target.getElement().getOffsetHeight() *0.5);
 		}
 	}
 	

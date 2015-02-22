@@ -14,211 +14,108 @@ import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.logic.layoutWidgets.LogicCanvas;
 import com.velisphere.tigerspice.client.rules.CheckPathService;
 import com.velisphere.tigerspice.client.rules.CheckPathServiceAsync;
+import com.velisphere.tigerspice.shared.SerializableLogicContainer;
 
 public class JsonFabrik {
 
 	LogicCanvas canvas;
-	
-	public JsonFabrik(LogicCanvas canvas)
-	{
+	SerializableLogicContainer logicContainer;
+
+	public JsonFabrik(LogicCanvas canvas) {
 		this.canvas = canvas;
-		
+		logicContainer = new SerializableLogicContainer();
+		generateContainer();
+
 	}
-	
-	public void getJSON()
-	{
-	//create json for all physical items
-		
+
+	public void generateContainer() {
+		// create json for all physical items
+
 		Iterator<PhysicalItem> it = canvas.getPhysicalItems().iterator();
-		
-		while (it.hasNext())
-		{
-		
-			PhysicalItem current = it.next();
-			
-			
-			CheckPathServiceAsync checkPathService = GWT
-					.create(CheckPathService.class);
-			
-			
-			checkPathService.createJsonFromPhysical(current.getSerializableRepresentation(), new AsyncCallback<String>(){
 
-				@Override
-				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
-					
-					RootPanel.get().add(new HTML("ERROR " + caught.getMessage()));
-					
-				}
+		while (it.hasNext()) {
 
-				@Override
-				public void onSuccess(String result) {
-					// TODO Auto-generated method stub
-					
-					RootPanel.get().add(new HTML("RUBEL " + result));
-				
-				}
+			logicContainer.addPhysicalItem(it.next()
+					.getSerializableRepresentation());
 
-				
-				});
 		}
-		
-		
-		//create json for all logic checks
-		
+
+		// create json for all logic checks
+
 		Iterator<LogicCheck> il = canvas.getLogicChecks().iterator();
-		
-		while (il.hasNext())
-		{
-		
-			LogicCheck current = il.next();
-			
-			
-			CheckPathServiceAsync checkPathService = GWT
-					.create(CheckPathService.class);
-			
-			
-			checkPathService.createJsonFromLogical(current.getSerializableRepresentation(), new AsyncCallback<String>(){
 
-				@Override
-				public void onFailure(Throwable caught) {
-					// TODO Auto-generated method stub
-					
-					RootPanel.get().add(new HTML("ERROR " + caught.getMessage()));
-					
-				}
+		while (il.hasNext()) {
 
-				@Override
-				public void onSuccess(String result) {
-					// TODO Auto-generated method stub
-					
-					RootPanel.get().add(new HTML("JUBEL " + result));
-				
-				}
+			logicContainer.addLogicCheck(il.next()
+					.getSerializableRepresentation());
 
-				
-				});
 		}
-		
-		
-		
-		//create json for L2P connectors
-		
-				Iterator<ConnectorLogicCheckActor> icl = canvas.getConnectorsLogicCheckActor().iterator();
-				
-				while (icl.hasNext())
-				{
-				
-					ConnectorLogicCheckActor current = icl.next();
-					
-					
-					CheckPathServiceAsync checkPathService = GWT
-							.create(CheckPathService.class);
-					
 
-					RootPanel.get().add(new HTML("Connector UUID " + current.getCheckUUID()));
-					
-					checkPathService.createJsonFromConnector(current.getSerializableRepresentation(), new AsyncCallback<String>(){
+		// create json for L2P connectors
 
-						@Override
-						public void onFailure(Throwable caught) {
-							// TODO Auto-generated method stub
-							
-							RootPanel.get().add(new HTML("ERROR " + caught.getMessage()));
-							
-						}
+		Iterator<ConnectorLogicCheckActor> icl = canvas
+				.getConnectorsLogicCheckActor().iterator();
 
-						@Override
-						public void onSuccess(String result) {
-							// TODO Auto-generated method stub
-							
-							RootPanel.get().add(new HTML("TRUBEL " + result));
-						
-						}
+		while (icl.hasNext()) {
 
-						
-						});
-				}
-				
+			logicContainer.addConnector(icl.next()
+					.getSerializableRepresentation());
 
-				//create json for P2P connectors
-				
-						Iterator<ConnectorSensorActor> ics = canvas.getConnectorsSensorActor().iterator();
-						
-						while (ics.hasNext())
-						{
-						
-							ConnectorSensorActor current = ics.next();
-							
-							
-							CheckPathServiceAsync checkPathService = GWT
-									.create(CheckPathService.class);
-							
-							RootPanel.get().add(new HTML("Connector UUID " + current.getCheckUUID()));
-							
-							
-							checkPathService.createJsonFromConnector(current.getSerializableRepresentation(), new AsyncCallback<String>(){
+		}
 
-								@Override
-								public void onFailure(Throwable caught) {
-									// TODO Auto-generated method stub
-									
-									RootPanel.get().add(new HTML("ERROR " + caught.getMessage()));
-									
-								}
+		// create json for P2P connectors
 
-								@Override
-								public void onSuccess(String result) {
-									// TODO Auto-generated method stub
-									
-									RootPanel.get().add(new HTML("DUBEL " + result));
-								
-								}
+		Iterator<ConnectorSensorActor> ics = canvas.getConnectorsSensorActor()
+				.iterator();
 
-								
-								});
-						}
+		while (ics.hasNext()) {
+			logicContainer.addConnector(ics.next()
+					.getSerializableRepresentation());
 
-						//create json for L2P connectors
-						
-						Iterator<ConnectorSensorLogicCheck> ict = canvas.getConnectorsSensorLogicCheck().iterator();
-						
-						while (ict.hasNext())
-						{
-						
-							ConnectorSensorLogicCheck current = ict.next();
-							
-							
-							CheckPathServiceAsync checkPathService = GWT
-									.create(CheckPathService.class);
-							
+		}
 
-							RootPanel.get().add(new HTML("Connector UUID " + current.getCheckUUID()));
-							
-							checkPathService.createJsonFromConnector(current.getSerializableRepresentation(), new AsyncCallback<String>(){
+		// create json for L2P connectors
 
-								@Override
-								public void onFailure(Throwable caught) {
-									// TODO Auto-generated method stub
-									
-									RootPanel.get().add(new HTML("ERROR " + caught.getMessage()));
-									
-								}
+		Iterator<ConnectorSensorLogicCheck> ict = canvas
+				.getConnectorsSensorLogicCheck().iterator();
 
-								@Override
-								public void onSuccess(String result) {
-									// TODO Auto-generated method stub
-									
-									RootPanel.get().add(new HTML("SUBEL " + result));
-								
-								}
+		while (ict.hasNext()) {
 
-								
-								});
-						}
+			logicContainer.addConnector(ict.next()
+					.getSerializableRepresentation());
 
-				
-		
-		
+		}
+
 	}
+
+	public void getJSON() {
+		// create json for all physical items
+
+		CheckPathServiceAsync checkPathService = GWT
+				.create(CheckPathService.class);
+
+		checkPathService.createJsonFromContainer(this.logicContainer,
+				new AsyncCallback<String>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+						RootPanel.get().add(
+								new HTML("ERROR " + caught.getMessage()));
+
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						// TODO Auto-generated method stub
+
+						RootPanel.get().add(new HTML("FULL JSON " + result));
+
+					}
+
+				});
+
+	}
+
 }
