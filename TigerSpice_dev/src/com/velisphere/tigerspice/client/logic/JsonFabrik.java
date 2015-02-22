@@ -6,6 +6,9 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.JSONreadyEvent;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorLogicCheckActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorLogicCheck;
@@ -14,21 +17,25 @@ import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.logic.layoutWidgets.LogicCanvas;
 import com.velisphere.tigerspice.client.rules.CheckPathService;
 import com.velisphere.tigerspice.client.rules.CheckPathServiceAsync;
+import com.velisphere.tigerspice.shared.SerializableLogicConnector;
 import com.velisphere.tigerspice.shared.SerializableLogicContainer;
+import com.velisphere.tigerspice.shared.SharedConstants;
 
 public class JsonFabrik {
 
 	LogicCanvas canvas;
 	SerializableLogicContainer logicContainer;
+	String checkpathJSON;
 
 	public JsonFabrik(LogicCanvas canvas) {
 		this.canvas = canvas;
 		logicContainer = new SerializableLogicContainer();
 		generateContainer();
+		generateJSON();
 
 	}
 
-	public void generateContainer() {
+	private void generateContainer() {
 		// create json for all physical items
 
 		Iterator<PhysicalItem> it = canvas.getPhysicalItems().iterator();
@@ -58,8 +65,9 @@ public class JsonFabrik {
 
 		while (icl.hasNext()) {
 
-			logicContainer.addConnector(icl.next()
-					.getSerializableRepresentation());
+			SerializableLogicConnector current = icl.next().getSerializableRepresentation();
+			current.setType(SharedConstants.CONL2P);
+			logicContainer.addConnector(current);
 
 		}
 
@@ -69,26 +77,28 @@ public class JsonFabrik {
 				.iterator();
 
 		while (ics.hasNext()) {
-			logicContainer.addConnector(ics.next()
-					.getSerializableRepresentation());
 
+			SerializableLogicConnector current = ics.next().getSerializableRepresentation();
+			current.setType(SharedConstants.CONP2P);
+			logicContainer.addConnector(current);
 		}
 
-		// create json for L2P connectors
+		// create json for P2L connectors
 
 		Iterator<ConnectorSensorLogicCheck> ict = canvas
 				.getConnectorsSensorLogicCheck().iterator();
 
 		while (ict.hasNext()) {
 
-			logicContainer.addConnector(ict.next()
-					.getSerializableRepresentation());
+			SerializableLogicConnector current = ict.next().getSerializableRepresentation();
+			current.setType(SharedConstants.CONP2L);
+			logicContainer.addConnector(current);
 
 		}
 
 	}
 
-	public void getJSON() {
+	private void generateJSON() {
 		// create json for all physical items
 
 		CheckPathServiceAsync checkPathService = GWT
@@ -110,12 +120,18 @@ public class JsonFabrik {
 					public void onSuccess(String result) {
 						// TODO Auto-generated method stub
 
-						RootPanel.get().add(new HTML("FULL JSON " + result));
+						checkpathJSON = result;
+						EventUtils.EVENT_BUS.fireEvent(new JSONreadyEvent());
 
 					}
 
 				});
 
+	}
+	
+	public String getJSON()
+	{
+		return this.checkpathJSON;
 	}
 
 }

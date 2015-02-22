@@ -39,6 +39,7 @@ public interface CheckPathServiceAsync {
 	void updateCheckpath(String checkpathId, String uiObject, AsyncCallback<String> callback );
 	void addNewCheckpath(String checkpathName, String userID, AsyncCallback<String> callback);
 	void addNewCheckpath(String checkpathName, String userID, String checkpathID, AsyncCallback<String> callback);
+	void addNewCheckpath(String checkpathName, String userID, String checkpathID, String uiObject, AsyncCallback<String> callback);
 	void getUiObjectJSONForCheckpathID(String checkpathID, AsyncCallback<CheckPathObjectTree> callback);
 	void createJsonCheckpath(CheckPathObjectTree uiObject, AsyncCallback<String> callback );
 	void createJsonFromPhysical(SerializableLogicPhysicalItem object, AsyncCallback<String> callback );

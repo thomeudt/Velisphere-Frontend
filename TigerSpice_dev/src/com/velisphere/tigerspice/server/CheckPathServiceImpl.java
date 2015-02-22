@@ -398,6 +398,50 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 
 	}
 
+
+	@Override
+	public String addNewCheckpath(String checkpathName, String userID, String checkpathID, String uiObject)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+	
+		
+		try {
+			voltCon.montanaClient.callProcedure("CHECKPATH.insert",
+					checkpathID, checkpathName, uiObject, userID);
+		} catch (NoConnectionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProcCallException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "OK";
+
+	}
+
 	
 	public String updateCheckpath(String checkpathID,  String uiObject)
 

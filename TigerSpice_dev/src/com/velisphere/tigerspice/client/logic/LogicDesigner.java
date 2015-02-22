@@ -26,11 +26,8 @@ public class LogicDesigner extends Composite {
 
 	
 	@UiField
-	Paragraph txtSaveStatus;
-	@UiField
 	Breadcrumbs brdMain;
-	@UiField
-	TextBox txtCheckpathTitle;
+	
 
 	NavLink bread0;
 	NavLink bread1;

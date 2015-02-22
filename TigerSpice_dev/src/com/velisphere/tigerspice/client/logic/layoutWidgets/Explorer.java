@@ -34,6 +34,7 @@ import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.Row;
+import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.resources.Bootstrap;
@@ -48,6 +49,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.CustomScrollPanel;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -55,6 +57,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
@@ -119,6 +122,12 @@ public class Explorer extends Composite {
 		
 		Row row0 = new Row();
 		Column col0 = new Column(2);
+		
+		HorizontalPanel explorerHeader = new HorizontalPanel();
+		explorerHeader.add(new Icon(IconType.LIST));
+		explorerHeader.add(new HTML("<b>&nbsp;&nbsp;Endpoint Explorer</b>"));
+		col0.add(explorerHeader);
+				
 		lbxSpheres = new ListBox();
 		lbxSpheres.setWidth("100%");
 		col0.add(lbxSpheres);
@@ -255,7 +264,12 @@ public class Explorer extends Composite {
 		btnSave.setWidth("85%");
 		btnSave.setSize(ButtonSize.SMALL);
 		btnSave.setType(ButtonType.PRIMARY);
-		col7.add(new HTML("&nbsp;<br>&nbsp;"));
+		btnSave.setBaseIcon(IconType.SAVE);
+		HorizontalPanel operationsHeader = new HorizontalPanel();
+		operationsHeader.add(new HTML("&nbsp;<br>"));
+		operationsHeader.add(new Icon(IconType.SAVE));
+		operationsHeader.add(new HTML("<b>&nbsp;&nbsp;Save Logic</b>"));
+		col7.add(operationsHeader);
 		col7.add(btnSave);
 		row7.add(col7);
 		container.add(row7);
@@ -264,8 +278,9 @@ public class Explorer extends Composite {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				checkPathCanvas.getJson();
-				checkPathCanvas.saveToDatabase();
+				
+							
+				createSaveDialog().center();
 				
 				
 			}
@@ -274,6 +289,33 @@ public class Explorer extends Composite {
 		
 		
 		
+	}
+	
+	private DialogBox createSaveDialog()
+	{
+		final DialogBox saveDialog = new DialogBox();
+		saveDialog.setText("Name of this logic:");
+		saveDialog.setStyleName("wellappleblue");
+		VerticalPanel panel = new VerticalPanel();
+		final TextBox txtName = new TextBox();
+		panel.add(txtName);
+		Button btnSave = new Button("Save");
+		panel.add(btnSave);
+		saveDialog.add(panel);
+		saveDialog.setAutoHideEnabled(true);
+		
+		btnSave.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				checkPathCanvas.saveToDatabase(txtName.getText());
+				saveDialog.removeFromParent();
+			}
+			
+		});
+		return saveDialog;
+
 	}
 	
 	public void addLogicCheckAnd()
@@ -288,8 +330,10 @@ public class Explorer extends Composite {
 	{
 		LogicCheckOr logicCheckOr = new LogicCheckOr();
 		col6.add(logicCheckOr);
+		
 		logicDragController.makeDraggable(logicCheckOr);
 		logicCheckOr.setWidth("50px");
+		logicCheckOr.addStyleName("pull-right");
 	}
 	
 	

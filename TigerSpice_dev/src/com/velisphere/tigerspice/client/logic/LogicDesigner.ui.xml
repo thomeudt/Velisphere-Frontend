@@ -62,29 +62,6 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 					</b:Column>
 					</b:Row>		
 					
-						 <b:Row>
-            		
-            			<b:Column size="1">
-            			<b:Paragraph addStyleNames="smalltext" text="Logic Name:" />
-            			</b:Column>
-            			<b:Column size="2">                  
-            			<b:TextBox styleName="span2" ui:field="txtCheckpathTitle" />
-            			</b:Column>
-            			
-	    				
-            		</b:Row>
-            		<b:Row>
-            			<b:Column size="3" offset="3">
-	    				<b:Paragraph addStyleNames="smalltext" ui:field="txtSaveStatus"></b:Paragraph>
-	    				</b:Column>
-					</b:Row>
-			    	 
-			    	 <b:Row>
-	    				<b:Column size="3" offset="0">
-	    				<b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
-	    				</b:Column>
-	    				
-	    		</b:Row>
 			    	
 				
 					

@@ -119,7 +119,7 @@ public class LogicCanvas extends Composite {
 		logicPanel = new AbsolutePanel();
 
 		logicPanel.setWidth("100%");
-		logicPanel.setHeight("400px");
+		logicPanel.setHeight("500px");
 		initWidget(logicPanel);
 
 		dragController = new PickupDragController(logicPanel, false);
@@ -960,16 +960,11 @@ public class LogicCanvas extends Composite {
 
 	}
 	
-	public void getJson() 
-	{
-		JsonFabrik factory = new JsonFabrik(this);
-		factory.getJSON();
-	}
 	
-	public void saveToDatabase()
+	public void saveToDatabase(String name)
 	{
 		DataManager dataManager = new DataManager(this);
-		dataManager.processCheckPath("test");
+		dataManager.processCheckPath(name);
 		dataManager.processP2P();
 		dataManager.processP2L();
 		dataManager.processL2P();
