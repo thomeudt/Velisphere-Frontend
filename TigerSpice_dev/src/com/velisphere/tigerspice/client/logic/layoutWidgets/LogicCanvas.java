@@ -463,7 +463,7 @@ public class LogicCanvas extends Composite {
 						// increment source count for logicCheck
 						
 						linkedPair.getRight().setSourceCount(linkedPair.getRight().getSourceCount()+1);
-
+																		
 						// get the line color
 
 						String lineColor = linkedPair.getLeft()
@@ -484,6 +484,11 @@ public class LogicCanvas extends Composite {
 						linkedP2LPairConnectorMap.put(linkedPair, connector);
 						connectorsSensorLogicCheck.add(connector);
 
+						
+						// add connector to child items list of target
+						
+						linkedPair.getRight().addChildConnector(connector);
+						
 						// connector.show();
 						connector.setAutoHideEnabled(true);
 						connector.center();
@@ -964,8 +969,10 @@ public class LogicCanvas extends Composite {
 	public void saveToDatabase()
 	{
 		DataManager dataManager = new DataManager(this);
-		dataManager.processP2P();
 		dataManager.processCheckPath("test");
+		dataManager.processP2P();
+		dataManager.processP2L();
+		dataManager.processL2P();
 	}
 	
 	public LinkedList<PhysicalItem> getPhysicalItems()

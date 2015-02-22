@@ -49,6 +49,8 @@ public class ConnectorSensorLogicCheck extends Connector {
 	LogicCheck logicCheck;
 	PhysicalItem sensor;
 	Button openingButton;
+	TextBox txtCheckValue;
+	ListBox lbxOperator;
 
 	
 	public ConnectorSensorLogicCheck (String checkpathID, PhysicalItem sensor, LogicCheck logicCheck)
@@ -110,13 +112,13 @@ public class ConnectorSensorLogicCheck extends Connector {
 		col2A.add(new HTML("Trigger:"));
 		
 		Column col2B = new Column(1);
-		ListBox lbxOperator = new ListBox();
+		lbxOperator = new ListBox();
 		lbxOperator.setWidth("100%");
 		col2B.add(lbxOperator);
 		populateLbxOperator(lbxOperator);
 		
 		Column col2C = new Column(3);
-		TextBox txtCheckValue = new TextBox();
+		txtCheckValue = new TextBox();
 		col2C.add(txtCheckValue);
 		
 		row2.add(col2A);
@@ -124,37 +126,7 @@ public class ConnectorSensorLogicCheck extends Connector {
 		row2.add(col2C);
 		
 		verticalPanel.add(row2);
-		
-		Row row3 = new Row();
-		Column col3A = new Column(1);
-		col3A.add(new HTML("Push Value:"));
-		
-		Column col3B = new Column(1);
-		final ListBox lbxSource = new ListBox();
-		lbxSource.setWidth("100%");
-		col3B.add(lbxSource);
-		populateLbxSource(lbxSource);
-		
-		Column col3C = new Column(3);
-		final TextBox txtManualEntry = new TextBox();
-		col3C.add(txtManualEntry);
-		
-		final ListBox lbxValueFromSensor = new ListBox();
-		lbxValueFromSensor.setWidth("100%");
-		col3C.add(lbxValueFromSensor);
-		populateLbxValueFromSensor(lbxValueFromSensor);
-		lbxValueFromSensor.setVisible(false);
-		
-		final ListBox lbxTypicalValues = new ListBox();
-		lbxTypicalValues.setWidth("100%");
-		col3C.add(lbxTypicalValues);
-		lbxTypicalValues.setVisible(false);
-		
-		row3.add(col3A);
-		row3.add(col3B);
-		row3.add(col3C);
-		
-		verticalPanel.add(row3);
+			
 		
 		Row row4 = new Row();
 		Column col4A = new Column(1,2);
@@ -206,102 +178,11 @@ public class ConnectorSensorLogicCheck extends Connector {
 			
 		});
 		
-		lbxSource.addChangeHandler(new ChangeHandler(){
-
-			@Override
-			public void onChange(ChangeEvent event) {
-				// TODO Auto-generated method stub
 				
-				if(lbxSource.getValue() == ActionSourceConfig.manual)
-				{
-					txtManualEntry.setVisible(true);
-					lbxValueFromSensor.setVisible(false);
-					lbxTypicalValues.setVisible(false);
-					
-				}
-				
-				if(lbxSource.getValue() == ActionSourceConfig.currentSensorValue)
-				{
-					txtManualEntry.setVisible(false);
-					lbxValueFromSensor.setVisible(true);
-					lbxTypicalValues.setVisible(false);
-				}
-				
-				if(lbxSource.getValue() == ActionSourceConfig.otherSensorValue)
-				{
-					txtManualEntry.setVisible(false);
-					lbxValueFromSensor.setVisible(false);
-					lbxTypicalValues.setVisible(false);
-					
-				}
-				
-				if(lbxSource.getValue() == ActionSourceConfig.typicalEntries)
-				{
-					txtManualEntry.setVisible(false);
-					lbxValueFromSensor.setVisible(false);
-					lbxTypicalValues.setVisible(true);
-					
-				}
-				
-			}
-			
-		});
-		
 		
 	}
 	
-	private void populateLbxValueFromSensor(final ListBox lbxValueFromSensor)
-	{
-		PropertyServiceAsync propertyService = GWT
-				.create(PropertyService.class);
 		
-		propertyService.getSensorPropertiesForEndpointID(
-				sensor.getEndpointID(),
-				new AsyncCallback<LinkedList<PropertyData>>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public void onSuccess(LinkedList<PropertyData> result) {
-						// TODO Auto-generated method stub
-
-						Iterator<PropertyData> it = result.iterator();
-
-						while (it.hasNext()) {
-
-							PropertyData sensorProperty = new PropertyData();
-							sensorProperty = it.next();
-
-							lbxValueFromSensor.addItem(sensorProperty.propertyName,
-									sensorProperty.propertyId);
-							
-						}
-
-					}
-
-				});
-
-
-	}
-	
-	private void populateLbxSource(final ListBox lbxSource)
-	{
-		LinkedList<String> sources;
-
-		
-		sources = new ActionSourceConfig().getCheckSources();
-		
-		Iterator<String> it = sources.iterator();
-		while (it.hasNext()) {
-			lbxSource.addItem(it.next());
-		}
-
-	}
-	
 	private void populateLbxOperator(final ListBox lbxOperator)
 	{
 		PropertyClassServiceAsync propertyClassService = GWT
@@ -433,5 +314,26 @@ public class ConnectorSensorLogicCheck extends Connector {
      	return serializable;
      	
      }
+	 
+	 public PhysicalItem getSensor() {
+			return sensor;
+		}
+
+	 public LogicCheck getLogicCheck() {
+			return logicCheck;
+		}
+
+	 
+	 
+		public String getOperator() {
+			return lbxOperator.getValue();
+		}
+
+		public String getCheckValue() {
+			return txtCheckValue.getText();
+		}
+		
+		
+
 	
 }

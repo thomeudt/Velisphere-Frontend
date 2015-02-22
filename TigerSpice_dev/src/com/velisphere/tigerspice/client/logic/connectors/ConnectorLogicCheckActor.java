@@ -52,6 +52,10 @@ public class ConnectorLogicCheckActor extends Connector {
 	PhysicalItem actor;
 	LogicCheck logicCheck;
 	Button openingButton;
+	ListBox lbxSource;
+	TextBox txtManualEntry;
+	ListBox lbxValueFromSensor;
+	ListBox lbxTypicalValues;
 	
 
 	
@@ -115,16 +119,16 @@ public class ConnectorLogicCheckActor extends Connector {
 		col2A.add(new HTML("Push Value:"));
 		
 		Column col2B = new Column(1);
-		final ListBox lbxSource = new ListBox();
+		lbxSource = new ListBox();
 		lbxSource.setWidth("100%");
 		col2B.add(lbxSource);
 		populateLbxSource(lbxSource);
 		
 		Column col2C = new Column(3);
-		final TextBox txtManualEntry = new TextBox();
+		txtManualEntry = new TextBox();
 		col2C.add(txtManualEntry);
 				
-		final ListBox lbxTypicalValues = new ListBox();
+		lbxTypicalValues = new ListBox();
 		lbxTypicalValues.setWidth("100%");
 		col2C.add(lbxTypicalValues);
 		lbxTypicalValues.setVisible(false);
@@ -256,5 +260,26 @@ public class ConnectorLogicCheckActor extends Connector {
       	return serializable;
       	
       }
+	  
+	  public LogicCheck getLogicCheck() {
+			return logicCheck;
+		}
+
+		public PhysicalItem getActor() {
+			return actor;
+		}
+						
+		public String getSourceIndex() {
+			return lbxSource.getValue();
+		}
+		
+		public String getTypicalValueIndex() {
+			return lbxTypicalValues.getValue();
+		}
+		
+		public String getManualValue() {
+			return txtManualEntry.getValue();
+		}
+
 	
 }
