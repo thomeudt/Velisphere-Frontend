@@ -1,5 +1,6 @@
 package com.velisphere.tigerspice.client.logic;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -32,10 +33,13 @@ public class JsonFabrik {
 	LogicCanvas canvas;
 	SerializableLogicContainer logicContainer;
 	String checkpathJSON;
+	HashMap<String, PhysicalItem> physicalItemHashMap;
+	
 
 	public JsonFabrik(LogicCanvas canvas) {
 		this.canvas = canvas;
-		logicContainer = new SerializableLogicContainer();
+		this.logicContainer = new SerializableLogicContainer();
+		this.physicalItemHashMap = new HashMap<String, PhysicalItem>();
 		generateContainer();
 		generateJSON();
 
@@ -149,11 +153,12 @@ public class JsonFabrik {
 
 		loadPhysicalItems();
 		loadLogicChecks();
+		loadP2PConnectors();
 		
 		
 	}
 	
-	public void loadPhysicalItems()
+	private void loadPhysicalItems()
 	{
 		
 		Iterator<SerializableLogicPhysicalItem> it = this.logicContainer.getPhysicalItems().iterator();
@@ -164,13 +169,15 @@ public class JsonFabrik {
 			PhysicalItem current = new PhysicalItem(currentSerializable.getContent(), currentSerializable.getEndpointName(), currentSerializable.getPropertyID(), currentSerializable.getEndpointID(), currentSerializable.getEndpointClassID(), currentSerializable.getPropertyClassID(), currentSerializable.getIsSensor(), currentSerializable.getIsActor());
 			current.setxPos(currentSerializable.getxPos());
 			current.setyPos(currentSerializable.getyPos());
+		
+			physicalItemHashMap.put(current.getEndpointID()+current.getPropertyID(), current);
 			canvas.loadPhysicalItem(current);
 			
 		}
 		
 	}
 	
-	public void loadLogicChecks()
+	private void loadLogicChecks()
 	{
 		
 		Iterator<SerializableLogicLogicCheck> it = this.logicContainer.getLogicChecks().iterator();
@@ -202,12 +209,36 @@ public class JsonFabrik {
 				current.setyPos(currentSerializable.getyPos());
 				canvas.loadLogicCheckOr(current);
 			}
+		}	
+	}
+	
+	
+	private void loadP2PConnectors()
+	{
 		
+		Iterator<SerializableLogicConnector> it = this.logicContainer.getConnectors().iterator();
+		
+		while (it.hasNext())
+		{
+	
+			SerializableLogicConnector currentSerializable = it.next();
+				
+			if (currentSerializable.getType()==SharedConstants.CONP2P)
+			{
+				
+			
+			//	RootPanel.get().add(new HTML("Innert " + currentSerializable.getLeftEndpointID() + ".." + lookupLeft +" -- " + lookupRight + "from "+ physicalItemHashMap.keySet().toString()));
+				
+				ConnectorSensorActor current = new ConnectorSensorActor(physicalItemHashMap.get(currentSerializable.getLeftEndpointID()+currentSerializable.getLeftPropertyID()), physicalItemHashMap.get(currentSerializable.getRightEndpointID()+currentSerializable.getRightPropertyID()));
+				canvas.loadP2PConnector(current);
+				
+				
+			}
+			
 			
 		}
 		
 	}
-	
 	
 
 	

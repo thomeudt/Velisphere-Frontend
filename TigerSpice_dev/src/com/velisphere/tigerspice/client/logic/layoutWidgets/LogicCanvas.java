@@ -461,7 +461,6 @@ public class LogicCanvas extends Composite {
 						// dialog
 
 						final ConnectorSensorActor connector = new ConnectorSensorActor(
-								uuid,
 								linkedInCanvasEvent.getSource(),
 								linkedInCanvasEvent.getTarget());
 						linkedP2PPairConnectorMap.put(linkedP2PPair, connector);
@@ -503,6 +502,63 @@ public class LogicCanvas extends Composite {
 
 	}
 
+	
+	public void loadP2PConnector(final ConnectorSensorActor connector) {
+	
+						LinkedPair<PhysicalItem, PhysicalItem> linkedP2PPair = new LinkedPair<PhysicalItem, PhysicalItem>(
+								connector.getSensor(),
+								connector.getActor());
+						linkedP2PPairs.add(linkedP2PPair);
+
+						
+						// get the line color
+
+						String lineColor = linkedP2PPair.getLeft()
+								.getDragPointWidget().getCurrentColor();
+
+						// add new drag point to source label to allow further
+						// links
+
+						addDragPoint(connector.getSensor());
+
+						// add a connector and open the connector settings
+						// dialog
+
+						
+						linkedP2PPairConnectorMap.put(linkedP2PPair, connector);
+						connectorsSensorActor.add(connector);
+
+						
+						// add button to open dialog and position on connection
+						// line
+
+						WidgetLocation sourceLocation = new WidgetLocation(
+								linkedP2PPair.getLeft(), logicPanel);
+						WidgetLocation targetLocation = new WidgetLocation(
+								linkedP2PPair.getRight(), logicPanel);
+						int xPos = (sourceLocation.getLeft() + targetLocation
+								.getLeft()) / 2;
+						int yPos = (sourceLocation.getTop() + targetLocation
+								.getTop()) / 2;
+						logicPanel.add(connector.getOpenerWidget(), xPos, yPos);
+						connector.getOpenerWidget().addClickHandler(
+								new ClickHandler() {
+
+									@Override
+									public void onClick(ClickEvent event) {
+										// TODO Auto-generated method stub
+										connector.show();
+									}
+
+								});
+
+						// re draw the links
+
+						drawLinks("cornflowerblue");
+			
+	}
+
+	
 	private void setLinkedInCanvasP2LEventListener() {
 		linkedInCanvasHandler = EventUtils.EVENT_BUS.addHandler(
 				LinkedInCanvasP2LEvent.TYPE,
@@ -538,7 +594,6 @@ public class LogicCanvas extends Composite {
 						// dialog
 
 						final ConnectorSensorLogicCheck connector = new ConnectorSensorLogicCheck(
-								uuid,
 								linkedInCanvasEvent.getSource(),
 								linkedInCanvasEvent.getTarget());
 						linkedP2LPairConnectorMap.put(linkedPair, connector);
@@ -617,7 +672,6 @@ public class LogicCanvas extends Composite {
 						// dialog
 
 						final ConnectorLogicCheckActor connector = new ConnectorLogicCheckActor(
-								uuid,
 								linkedInCanvasEvent.getSource(),
 								linkedInCanvasEvent.getTarget());
 						linkedL2PPairConnectorMap.put(linkedPair, connector);

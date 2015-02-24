@@ -59,9 +59,9 @@ public class ConnectorLogicCheckActor extends Connector {
 	
 
 	
-	public ConnectorLogicCheckActor (String checkpathID, LogicCheck logicCheck, PhysicalItem actor)
+	public ConnectorLogicCheckActor (LogicCheck logicCheck, PhysicalItem actor)
 	{
-		super(checkpathID);
+		super();
 	
 		this.logicCheck = logicCheck;
 		this.actor = actor;
@@ -255,8 +255,8 @@ public class ConnectorLogicCheckActor extends Connector {
 	  public SerializableLogicConnector getSerializableRepresentation()
       {
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
-      	serializable.setLeft(this.logicCheck.getId());
-      	serializable.setRight(this.actor.getEndpointID());
+      	serializable.setLeftEndpointID(this.logicCheck.getId());
+      	serializable.setRightEndpointID(this.actor.getEndpointID());
       	return serializable;
       	
       }

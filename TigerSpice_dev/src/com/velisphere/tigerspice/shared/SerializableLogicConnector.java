@@ -6,21 +6,23 @@ import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 
 public class SerializableLogicConnector implements IsSerializable {
 	
-	String left;
-	String right;
+	String leftEndpointID;
+	String rightEndpointID;
+	String leftPropertyID;
+	String rightPropertyID;
 	int type;
 	
-	public String getLeft() {
-		return left;
+	public String getLeftEndpointID() {
+		return leftEndpointID;
 	}
-	public void setLeft(String left) {
-		this.left = left;
+	public void setLeftEndpointID(String left) {
+		this.leftEndpointID = left;
 	}
-	public String getRight() {
-		return right;
+	public String getRightEndpointID() {
+		return rightEndpointID;
 	}
-	public void setRight(String right) {
-		this.right = right;
+	public void setRightEndpointID(String right) {
+		this.rightEndpointID = right;
 	}
 	public int getType() {
 		return type;
@@ -28,7 +30,20 @@ public class SerializableLogicConnector implements IsSerializable {
 	public void setType(int type) {
 		this.type = type;
 	}
-	
+
+	public String getRightPropertyID() {
+		return rightPropertyID;
+	}
+	public void setRightPropertyID(String rightPropertyID) {
+		this.rightPropertyID = rightPropertyID;
+	}
+
+	public String getLeftPropertyID() {
+		return leftPropertyID;
+	}
+	public void setLeftPropertyID(String leftPropertyID) {
+		this.leftPropertyID = leftPropertyID;
+	}
 	
 		
 }

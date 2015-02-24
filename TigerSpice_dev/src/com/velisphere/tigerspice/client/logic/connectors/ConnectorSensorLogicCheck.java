@@ -53,9 +53,9 @@ public class ConnectorSensorLogicCheck extends Connector {
 	ListBox lbxOperator;
 
 	
-	public ConnectorSensorLogicCheck (String checkpathID, PhysicalItem sensor, LogicCheck logicCheck)
+	public ConnectorSensorLogicCheck (PhysicalItem sensor, LogicCheck logicCheck)
 	{
-		super(checkpathID);
+		super();
 		this.sensor = sensor;
 		this.logicCheck = logicCheck;
 		createBaseLayout();
@@ -309,8 +309,8 @@ public class ConnectorSensorLogicCheck extends Connector {
 	 public SerializableLogicConnector getSerializableRepresentation()
      {
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
-     	serializable.setLeft(this.sensor.getEndpointID());
-     	serializable.setRight(this.logicCheck.getId());
+     	serializable.setLeftEndpointID(this.sensor.getEndpointID());
+     	serializable.setRightEndpointID(this.logicCheck.getId());
      	return serializable;
      	
      }

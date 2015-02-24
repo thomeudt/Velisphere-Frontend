@@ -57,9 +57,9 @@ public class ConnectorSensorActor extends Connector {
 	TextBox txtCheckValue;
 	ListBox lbxOperator;
 
-	public ConnectorSensorActor(String checkpathID, PhysicalItem sensor,
+	public ConnectorSensorActor(PhysicalItem sensor,
 			PhysicalItem actor) {
-		super(checkpathID);
+		super();
 
 		this.sensor = sensor;
 		this.actor = actor;
@@ -423,8 +423,11 @@ public class ConnectorSensorActor extends Connector {
 
 	public SerializableLogicConnector getSerializableRepresentation() {
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
-		serializable.setLeft(this.sensor.getEndpointID());
-		serializable.setRight(this.actor.getEndpointID());
+		serializable.setLeftPropertyID(this.sensor.getPropertyID());
+		serializable.setRightPropertyID(this.actor.getPropertyID());
+		serializable.setLeftEndpointID(this.sensor.getEndpointID());
+		serializable.setRightEndpointID(this.actor.getEndpointID());
+
 		return serializable;
 
 	}

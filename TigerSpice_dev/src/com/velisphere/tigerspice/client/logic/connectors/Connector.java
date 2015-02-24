@@ -10,13 +10,13 @@ public class Connector extends PopupPanel {
 
 	String checkUUID;
 	String actionUUID;
-	String checkpathID;
 	
 	
-	public Connector(String checkpathID)
+	
+	public Connector()
 	{
 		super();
-		this.checkpathID = checkpathID;
+		
 		createActionUUID();
 		createCheckUUID();
 	}
