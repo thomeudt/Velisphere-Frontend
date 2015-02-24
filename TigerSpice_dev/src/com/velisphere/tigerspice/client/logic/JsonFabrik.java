@@ -1,6 +1,7 @@
 package com.velisphere.tigerspice.client.logic;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -12,13 +13,17 @@ import com.velisphere.tigerspice.client.event.JSONreadyEvent;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorLogicCheckActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorLogicCheck;
+import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheck;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr;
 import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.logic.layoutWidgets.LogicCanvas;
 import com.velisphere.tigerspice.client.rules.CheckPathService;
 import com.velisphere.tigerspice.client.rules.CheckPathServiceAsync;
 import com.velisphere.tigerspice.shared.SerializableLogicConnector;
 import com.velisphere.tigerspice.shared.SerializableLogicContainer;
+import com.velisphere.tigerspice.shared.SerializableLogicLogicCheck;
 import com.velisphere.tigerspice.shared.SerializableLogicPhysicalItem;
 import com.velisphere.tigerspice.shared.SharedConstants;
 
@@ -141,13 +146,22 @@ public class JsonFabrik {
 		canvas.getPhysicalItems().clear();
 		
 		this.logicContainer = logicContainer;
+
+		loadPhysicalItems();
+		loadLogicChecks();
 		
-		Iterator<SerializableLogicPhysicalItem> it = logicContainer.getPhysicalItems().iterator();
+		
+	}
+	
+	public void loadPhysicalItems()
+	{
+		
+		Iterator<SerializableLogicPhysicalItem> it = this.logicContainer.getPhysicalItems().iterator();
 		
 		while (it.hasNext())
 		{
 			SerializableLogicPhysicalItem currentSerializable = it.next();
-			PhysicalItem current = new PhysicalItem(currentSerializable.getContent(), currentSerializable.getEndpointID(), currentSerializable.getPropertyID(), currentSerializable.getPropertyID(), currentSerializable.getEndpointClassID(), currentSerializable.getPropertyClassID(), currentSerializable.getIsSensor(), currentSerializable.getIsActor());
+			PhysicalItem current = new PhysicalItem(currentSerializable.getContent(), currentSerializable.getEndpointName(), currentSerializable.getPropertyID(), currentSerializable.getEndpointID(), currentSerializable.getEndpointClassID(), currentSerializable.getPropertyClassID(), currentSerializable.getIsSensor(), currentSerializable.getIsActor());
 			current.setxPos(currentSerializable.getxPos());
 			current.setyPos(currentSerializable.getyPos());
 			canvas.loadPhysicalItem(current);
@@ -155,6 +169,46 @@ public class JsonFabrik {
 		}
 		
 	}
+	
+	public void loadLogicChecks()
+	{
+		
+		Iterator<SerializableLogicLogicCheck> it = this.logicContainer.getLogicChecks().iterator();
+		
+		while (it.hasNext())
+		{
+			SerializableLogicLogicCheck currentSerializable = it.next();
+
+			if(currentSerializable.isAnd())
+			{
+				LogicCheckAnd current = new LogicCheckAnd();
+				current.setContent(currentSerializable.getContent());
+				current.setSourceCount(currentSerializable.getSourceCount());
+				current.setId(currentSerializable.getId());
+				current.setAnd(true);
+				current.setxPos(currentSerializable.getxPos());
+				current.setyPos(currentSerializable.getyPos());
+				canvas.loadLogicCheckAnd(current);
+			}
+			
+			if(currentSerializable.isOr())
+			{
+				LogicCheckOr current = new LogicCheckOr();
+				current.setContent(currentSerializable.getContent());
+				current.setSourceCount(currentSerializable.getSourceCount());
+				current.setId(currentSerializable.getId());
+				current.setOr(true);
+				current.setxPos(currentSerializable.getxPos());
+				current.setyPos(currentSerializable.getyPos());
+				canvas.loadLogicCheckOr(current);
+			}
+		
+			
+		}
+		
+	}
+	
+	
 
 	
 	public String getJSON()

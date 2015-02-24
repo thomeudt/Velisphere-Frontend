@@ -48,22 +48,13 @@ public class LogicCheck extends FocusPanel implements HasAllTouchHandlers {
 		
 		createCheckUUID();
 		childConnectors = new LinkedList<ConnectorSensorLogicCheck>();
-		
 		sourceCount = 0;
 		removeDefaultMouseDown();
 		content = "Logic Check";
-		  this.setStyleName("wellwhite");
-          
-          
-          getElement().getStyle().setPadding(1, Unit.PX);
-          //getElement().getStyle().setBorderStyle(BorderStyle.SOLID);
-          //getElement().getStyle().setBorderColor("#bbbbbb");
-          //getElement().getStyle().setBorderWidth(1, Unit.PX);
-          getElement().getStyle().setBackgroundColor("#ffffff");
-          
-          this.getElement().getStyle().setCursor(Cursor.POINTER);
-          
-	
+	    this.setStyleName("wellwhite");
+        getElement().getStyle().setPadding(1, Unit.PX);
+        getElement().getStyle().setBackgroundColor("#ffffff");
+        this.getElement().getStyle().setCursor(Cursor.POINTER);
 	}
 	
 	
@@ -205,6 +196,12 @@ public class LogicCheck extends FocusPanel implements HasAllTouchHandlers {
 	public String getId() {
 		return uuid;
 	}
+	
+	public void setId(String uuid) {
+		this.uuid = uuid;
+	}
+
+
 
 
 	

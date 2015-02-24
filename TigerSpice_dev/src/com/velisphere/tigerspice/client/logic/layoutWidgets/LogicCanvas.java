@@ -361,6 +361,40 @@ public class LogicCanvas extends Composite {
 		linkDragController.registerDropController(inCanvasLinkDropController);
 
 	}
+	
+	public void loadLogicCheckAnd(LogicCheckAnd logicCheckAnd) {
+
+		logicPanel.add(logicCheckAnd, logicCheckAnd.getxPos(),
+				logicCheckAnd.getyPos());
+	
+		logicChecks.add(logicCheckAnd);
+
+		dragController.makeDraggable(logicCheckAnd);
+
+		addDragPoint(logicCheckAnd);
+		
+		InCanvasLinkDropController inCanvasLinkDropController = new InCanvasLinkDropController(
+				logicCheckAnd);
+
+		linkDragController.registerDropController(inCanvasLinkDropController);
+	}
+
+	public void loadLogicCheckOr(LogicCheckOr logicCheckOr) {
+
+		logicPanel.add(logicCheckOr, logicCheckOr.getxPos(),
+				logicCheckOr.getyPos());
+	
+		logicChecks.add(logicCheckOr);
+
+		dragController.makeDraggable(logicCheckOr);
+
+		addDragPoint(logicCheckOr);
+		
+		InCanvasLinkDropController inCanvasLinkDropController = new InCanvasLinkDropController(
+				logicCheckOr);
+
+		linkDragController.registerDropController(inCanvasLinkDropController);
+	}
 
 
 	
