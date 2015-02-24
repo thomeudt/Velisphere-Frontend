@@ -19,6 +19,7 @@ import com.velisphere.tigerspice.client.rules.CheckPathService;
 import com.velisphere.tigerspice.client.rules.CheckPathServiceAsync;
 import com.velisphere.tigerspice.shared.SerializableLogicConnector;
 import com.velisphere.tigerspice.shared.SerializableLogicContainer;
+import com.velisphere.tigerspice.shared.SerializableLogicPhysicalItem;
 import com.velisphere.tigerspice.shared.SharedConstants;
 
 public class JsonFabrik {
@@ -34,6 +35,8 @@ public class JsonFabrik {
 		generateJSON();
 
 	}
+	
+	
 
 	private void generateContainer() {
 		// create json for all physical items
@@ -128,6 +131,31 @@ public class JsonFabrik {
 				});
 
 	}
+	
+	
+	public void unpackContainer(SerializableLogicContainer logicContainer) {
+		
+		
+		// unpack all physical items from container
+
+		canvas.getPhysicalItems().clear();
+		
+		this.logicContainer = logicContainer;
+		
+		Iterator<SerializableLogicPhysicalItem> it = logicContainer.getPhysicalItems().iterator();
+		
+		while (it.hasNext())
+		{
+			SerializableLogicPhysicalItem currentSerializable = it.next();
+			PhysicalItem current = new PhysicalItem(currentSerializable.getContent(), currentSerializable.getEndpointID(), currentSerializable.getPropertyID(), currentSerializable.getPropertyID(), currentSerializable.getEndpointClassID(), currentSerializable.getPropertyClassID(), currentSerializable.getIsSensor(), currentSerializable.getIsActor());
+			current.setxPos(currentSerializable.getxPos());
+			current.setyPos(currentSerializable.getyPos());
+			canvas.loadPhysicalItem(current);
+			
+		}
+		
+	}
+
 	
 	public String getJSON()
 	{

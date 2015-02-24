@@ -49,6 +49,7 @@ public interface CheckPathService extends RemoteService {
 		String createJsonFromLogical(SerializableLogicLogicCheck object);
 		String createJsonFromConnector(SerializableLogicConnector object);
 		String createJsonFromContainer(SerializableLogicContainer object);
+		SerializableLogicContainer loadJsonToContainer(String checkpathName);
 		CheckPathObjectTree getUiObjectJSONForCheckpathID(String checkpathID);
 		String addNewMulticheck(String checkId, String operator, String multicheckName, String checkpathID, LinkedList<ActionObject> actions);
 		String addNewMulticheckCheckLink(String multiCheckId, String checkId, String checkPathId);

@@ -248,6 +248,8 @@ public class LogicCanvas extends Composite {
 
 	}
 
+	
+	
 	private void addLogicCheckAnd(DraggedToCanvasEvent draggedToCanvasEvent) {
 
 		draggedToCanvasEvent.getContext().selectedWidgets.get(0)
@@ -338,6 +340,30 @@ public class LogicCanvas extends Composite {
 		linkDragController.registerDropController(inCanvasLinkDropController);
 
 	}
+	
+	public void loadPhysicalItem(PhysicalItem physicalItem) {
+
+		logicPanel.add(physicalItem, physicalItem.getxPos(),
+				physicalItem.getyPos());
+
+		physicalItems.add(physicalItem);
+		
+		dragController.makeDraggable(physicalItem);
+
+		// add drag point only if it is a sensor
+
+		if (physicalItem.getIsSensor() == 1)
+			addDragPoint(physicalItem);
+
+		InCanvasLinkDropController inCanvasLinkDropController = new InCanvasLinkDropController(
+				physicalItem);
+
+		linkDragController.registerDropController(inCanvasLinkDropController);
+
+	}
+
+
+	
 
 	private void addDragPoint(PhysicalItem propertyLabel) {
 		WidgetLocation widgetLocation = new WidgetLocation(propertyLabel,
@@ -968,6 +994,13 @@ public class LogicCanvas extends Composite {
 		dataManager.processP2P();
 		dataManager.processP2L();
 		dataManager.processL2P();
+	}
+	
+	public void openFromDatabase(String name)
+	{
+		DataManager dataManager = new DataManager(this);
+		dataManager.loadUI(name);
+		
 	}
 	
 	public LinkedList<PhysicalItem> getPhysicalItems()

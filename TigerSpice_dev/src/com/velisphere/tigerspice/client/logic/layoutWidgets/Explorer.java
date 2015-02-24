@@ -97,14 +97,14 @@ public class Explorer extends Composite {
 
 	DraggableListBox dbxSensors;
 	DraggableListBox dbxActors;
-	LogicCanvas checkPathCanvas;
+	LogicCanvas logicCanvas;
 	
 	private static final String CSS_DRAGDROPWIDGET = "DragDropWidget";
 
 	
 	public Explorer(String userID, LogicCanvas checkPathCanvas) {
 		this.userID = userID;
-		this.checkPathCanvas = checkPathCanvas;
+		this.logicCanvas = checkPathCanvas;
 		container = new AbsolutePanel();		
 		initWidget(container);
 		
@@ -198,7 +198,7 @@ public class Explorer extends Composite {
 			
 		});
 		
-		listBoxController.registerDropController(this.checkPathCanvas.getListToCanvasDropController());
+		listBoxController.registerDropController(this.logicCanvas.getListToCanvasDropController());
 
 		
 		HorizontalPanel sensorHeader = new HorizontalPanel();
@@ -253,7 +253,7 @@ public class Explorer extends Composite {
 		addLogicCheckAnd();
 		addLogicCheckOr();
 		
-		logicDragController.registerDropController(this.checkPathCanvas.getLogicToCanvasDropController());
+		logicDragController.registerDropController(this.logicCanvas.getLogicToCanvasDropController());
 		
 		container.add(row5);
 
@@ -287,6 +287,33 @@ public class Explorer extends Composite {
 			
 		});
 		
+		Row row8 = new Row();
+		Column col8 = new Column(2);
+		Button btnOpen = new Button("Load");
+
+		btnOpen.setWidth("85%");
+		btnOpen.setSize(ButtonSize.SMALL);
+		btnOpen.setType(ButtonType.PRIMARY);
+		btnOpen.setBaseIcon(IconType.SAVE);
+		
+		col8.add(btnOpen);
+		row8.add(col8);
+		container.add(row8);
+		
+		btnOpen.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				
+							
+				createLoadDialog().center();
+				
+				
+			}
+			
+		});
+
+		
 		
 		
 	}
@@ -309,7 +336,7 @@ public class Explorer extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				
-				checkPathCanvas.saveToDatabase(txtName.getText());
+				logicCanvas.saveToDatabase(txtName.getText());
 				saveDialog.removeFromParent();
 			}
 			
@@ -317,6 +344,34 @@ public class Explorer extends Composite {
 		return saveDialog;
 
 	}
+	
+	private DialogBox createLoadDialog()
+	{
+		final DialogBox saveDialog = new DialogBox();
+		saveDialog.setText("Logic you want to open:");
+		saveDialog.setStyleName("wellappleblue");
+		VerticalPanel panel = new VerticalPanel();
+		final TextBox txtName = new TextBox();
+		panel.add(txtName);
+		Button btnOpen = new Button("Open");
+		panel.add(btnOpen);
+		saveDialog.add(panel);
+		saveDialog.setAutoHideEnabled(true);
+		
+		btnOpen.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				logicCanvas.openFromDatabase(txtName.getText());
+				saveDialog.removeFromParent();
+			}
+			
+		});
+		return saveDialog;
+
+	}
+
 	
 	public void addLogicCheckAnd()
 	{

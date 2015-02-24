@@ -24,6 +24,7 @@ import com.velisphere.tigerspice.client.logic.layoutWidgets.LogicCanvas;
 import com.velisphere.tigerspice.client.rules.CheckPathService;
 import com.velisphere.tigerspice.client.rules.CheckPathServiceAsync;
 import com.velisphere.tigerspice.shared.ActionObject;
+import com.velisphere.tigerspice.shared.SerializableLogicContainer;
 
 public class DataManager {
 
@@ -36,7 +37,7 @@ public class DataManager {
 
 	public void processCheckPath(final String checkpathName) {
 
-		// open JSON factory
+		// create JSON factory
 
 		final JsonFabrik factory = new JsonFabrik(canvas);
 
@@ -285,6 +286,52 @@ public class DataManager {
 			}
 
 		}
+	}
+
+	public void loadUI(final String checkpathName) {
+
+		// create JSON factory
+
+		final JsonFabrik factory = new JsonFabrik(canvas);
+
+		// wait for JSON to be generated
+
+		HandlerRegistration jsonReadyHandler = EventUtils.EVENT_BUS.addHandler(
+				JSONreadyEvent.TYPE, new JSONreadyEventHandler() {
+
+					@Override
+					public void onJSONready(JSONreadyEvent jsonReadyEvent) {
+
+						// send to database
+						CheckPathServiceAsync checkpathService = GWT
+								.create(CheckPathService.class);
+
+						checkpathService.loadJsonToContainer(checkpathName,
+								new AsyncCallback<SerializableLogicContainer>() {
+
+									@Override
+									public void onFailure(Throwable caught) {
+										// TODO Auto-generated method stub
+
+									}
+
+									@Override
+									public void onSuccess(SerializableLogicContainer result) {
+										// TODO Auto-generated method stub
+										RootPanel.get().add(
+												new HTML(
+														"Result from attempt to load checkpath: "
+																+ result.toString()));
+										
+										factory.unpackContainer(result);
+									}
+
+								});
+
+					}
+
+				});
+
 	}
 
 }

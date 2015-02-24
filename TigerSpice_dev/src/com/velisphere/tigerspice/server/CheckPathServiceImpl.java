@@ -1290,6 +1290,76 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 
 	}
 	
+	@Override
+	public SerializableLogicContainer loadJsonToContainer(String checkpathID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		String uiObjectJSON = new String();
+		SerializableLogicContainer serializableLogicContainer = new SerializableLogicContainer();
+		try {
+
+			final ClientResponse findCheckpath= voltCon.montanaClient
+					.callProcedure("UI_SelectCheckpathForCheckpathID", checkpathID);
+
+			final VoltTable findCheckpathResults[] = findCheckpath.getResults();
+
+			VoltTable result = findCheckpathResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					
+					uiObjectJSON = result.getString("UIOBJECT");
+					
+				}
+			}
+
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+			        
+				serializableLogicContainer = mapper.readValue(uiObjectJSON, SerializableLogicContainer.class);
+				
+			        System.out.println(serializableLogicContainer);
+			    } catch (JsonGenerationException e) {
+			        System.out.println(e);
+			        } catch (JsonMappingException e) {
+			       System.out.println(e);
+			    } catch (IOException e) {
+			    System.out.println(e);
+			    } 
+			
+			
+			// System.out.println(endPointsforSphere);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return serializableLogicContainer;
+	}
+
+	
 	
 	
 	
