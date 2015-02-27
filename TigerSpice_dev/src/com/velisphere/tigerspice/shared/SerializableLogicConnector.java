@@ -81,5 +81,6 @@ public class SerializableLogicConnector implements IsSerializable {
 	}
 	
 	
+	
 		
 }

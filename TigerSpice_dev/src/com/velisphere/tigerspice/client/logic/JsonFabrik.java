@@ -34,12 +34,15 @@ public class JsonFabrik {
 	SerializableLogicContainer logicContainer;
 	String checkpathJSON;
 	HashMap<String, PhysicalItem> physicalItemHashMap;
-	
+	HashMap<String, LogicCheck> logicCheckHashMap;
+		
 
 	public JsonFabrik(LogicCanvas canvas) {
 		this.canvas = canvas;
 		this.logicContainer = new SerializableLogicContainer();
 		this.physicalItemHashMap = new HashMap<String, PhysicalItem>();
+		this.logicCheckHashMap = new HashMap<String, LogicCheck>();
+
 		generateContainer();
 		generateJSON();
 
@@ -153,7 +156,11 @@ public class JsonFabrik {
 
 		loadPhysicalItems();
 		loadLogicChecks();
+	
+		
 		loadP2PConnectors();
+		loadP2LConnectors();
+		loadL2PConnectors();
 		
 		
 	}
@@ -185,6 +192,7 @@ public class JsonFabrik {
 		while (it.hasNext())
 		{
 			SerializableLogicLogicCheck currentSerializable = it.next();
+					
 
 			if(currentSerializable.isAnd())
 			{
@@ -195,6 +203,7 @@ public class JsonFabrik {
 				current.setAnd(true);
 				current.setxPos(currentSerializable.getxPos());
 				current.setyPos(currentSerializable.getyPos());
+				logicCheckHashMap.put(currentSerializable.getId(), current);
 				canvas.loadLogicCheckAnd(current);
 			}
 			
@@ -207,6 +216,7 @@ public class JsonFabrik {
 				current.setOr(true);
 				current.setxPos(currentSerializable.getxPos());
 				current.setyPos(currentSerializable.getyPos());
+				logicCheckHashMap.put(currentSerializable.getId(), current);
 				canvas.loadLogicCheckOr(current);
 			}
 		}	
@@ -222,7 +232,10 @@ public class JsonFabrik {
 		{
 	
 			SerializableLogicConnector currentSerializable = it.next();
-				
+
+			RootPanel.get().add(new HTML("Trying to check P2P Type..."));
+
+			
 			if (currentSerializable.getType()==SharedConstants.CONP2P)
 			{
 				
@@ -244,11 +257,86 @@ public class JsonFabrik {
 				
 			}
 			
+			RootPanel.get().add(new HTML("Succeeded!"));
 			
 		}
 		
 	}
 	
+	private void loadP2LConnectors()
+	{
+		
+		Iterator<SerializableLogicConnector> it = this.logicContainer.getConnectors().iterator();
+		
+		while (it.hasNext())
+		{
+	
+			SerializableLogicConnector currentSerializable = it.next();
+				
+			if (currentSerializable.getType()==SharedConstants.CONP2L)
+			{
+				
+			
+			//	RootPanel.get().add(new HTML("Innert " + currentSerializable.getLeftEndpointID() + ".." + lookupLeft +" -- " + lookupRight + "from "+ physicalItemHashMap.keySet().toString()));
+				
+				
+				
+				ConnectorSensorLogicCheck current = new ConnectorSensorLogicCheck(
+						physicalItemHashMap.get(currentSerializable.getLeftID()), 
+						logicCheckHashMap.get(currentSerializable.getRightID()),
+						currentSerializable.getLbxOperatorIndex(),currentSerializable.getTxtCheckValueContent());
+				
+				
+				
+				canvas.loadP2LConnector(current);
+				
+				
+			}
+			
+			
+		}
+		
+	}
+
+
+	private void loadL2PConnectors()
+	{
+		
+		Iterator<SerializableLogicConnector> it = this.logicContainer.getConnectors().iterator();
+		
+		while (it.hasNext())
+		{
+	
+			SerializableLogicConnector currentSerializable = it.next();
+				
+			if (currentSerializable.getType()==SharedConstants.CONL2P)
+			{
+				
+			
+			//	RootPanel.get().add(new HTML("Innert " + currentSerializable.getLeftEndpointID() + ".." + lookupLeft +" -- " + lookupRight + "from "+ physicalItemHashMap.keySet().toString()));
+				
+
+				
+				
+				ConnectorLogicCheckActor current = new ConnectorLogicCheckActor(
+						logicCheckHashMap.get(currentSerializable.getLeftID()), 
+						physicalItemHashMap.get(currentSerializable.getRightID()),
+						currentSerializable.getLbxSourceIndex(),currentSerializable.getLbxTypicalValuesIndex(), currentSerializable.getLbxValueFromSensorIndex(),
+						currentSerializable.getTxtManualEntryContent());
+
+				
+				
+				
+				canvas.loadL2PConnector(current);
+				
+				
+			}
+			
+			
+		}
+		
+	}
+
 
 	
 	public String getJSON()

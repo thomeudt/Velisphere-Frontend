@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.event.ConnectionSaveEvent;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
@@ -51,6 +52,11 @@ public class ConnectorSensorLogicCheck extends Connector {
 	Button openingButton;
 	TextBox txtCheckValue;
 	ListBox lbxOperator;
+	boolean layoutCreated;
+	String txtCheckValueContent;
+	int type;
+	int lbxOperatorIndex;
+
 
 	
 	public ConnectorSensorLogicCheck (PhysicalItem sensor, LogicCheck logicCheck)
@@ -61,12 +67,50 @@ public class ConnectorSensorLogicCheck extends Connector {
 		createBaseLayout();
 		createOpenerWidget();
 		
+	}
+	
+	public ConnectorSensorLogicCheck (PhysicalItem sensor, LogicCheck logicCheck,
+			final int lbxOperatorIndex, final String txtCheckValueContent)
+	{
+		super();
+		this.sensor = sensor;
+		this.logicCheck = logicCheck;
+		this.txtCheckValueContent = txtCheckValueContent;
+		this.lbxOperatorIndex = lbxOperatorIndex;
 		
+		
+		createOpenerWidget();
 		
 	}
 	
+	@Override
+	public void show()
+	{
+		super.show();
+		if(layoutCreated == false) 
+			{
+			createBaseLayout();
+			lbxOperator.setSelectedIndex(lbxOperatorIndex);
+			txtCheckValue.setValue(txtCheckValueContent);
+			}
+	}
+	
+	@Override
+	public void center()
+	{
+		super.center();
+		if(layoutCreated == false) 
+		{
+		createBaseLayout();
+		lbxOperator.setSelectedIndex(lbxOperatorIndex);
+		txtCheckValue.setValue(txtCheckValueContent);
+		}	
+	}
+
+	
 	private void createBaseLayout()
 	{
+		this.layoutCreated = true; 
 		 this.setStyleName("wellwhite");
          getElement().getStyle().setPadding(10, Unit.PX);
          //getElement().getStyle().setBorderStyle(BorderStyle.SOLID);
@@ -308,10 +352,14 @@ public class ConnectorSensorLogicCheck extends Connector {
 	
 	 public SerializableLogicConnector getSerializableRepresentation()
      {
+		RootPanel.get().add(new HTML("Getting Rep P2L..."));
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
      	serializable.setLeftID(this.sensor.getId());
      	serializable.setRightID(this.logicCheck.getId());
-     	return serializable;
+    	serializable.setLbxOperatorIndex(this.lbxOperator.getSelectedIndex());
+		serializable.setTxtCheckValueContent(this.txtCheckValue.getValue());
+		RootPanel.get().add(new HTML("Succeeded!"));
+		return serializable;
      	
      }
 	 

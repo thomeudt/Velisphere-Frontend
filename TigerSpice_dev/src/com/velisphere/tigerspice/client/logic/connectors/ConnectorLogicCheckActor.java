@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.event.ConnectionSaveEvent;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
@@ -54,8 +55,16 @@ public class ConnectorLogicCheckActor extends Connector {
 	Button openingButton;
 	ListBox lbxSource;
 	TextBox txtManualEntry;
-	ListBox lbxValueFromSensor;
 	ListBox lbxTypicalValues;
+	boolean layoutCreated;
+	String txtManualEntryContent;	
+	String txtCheckValueContent;
+	int type;
+	int lbxSourceIndex;
+	int lbxValueFromSensorIndex;
+	int lbxTypicalValuesIndex;
+	int lbxOperatorIndex;
+
 	
 
 	
@@ -69,10 +78,61 @@ public class ConnectorLogicCheckActor extends Connector {
 		createOpenerWidget();
 	}
 	
+	public ConnectorLogicCheckActor(LogicCheck logicCheck, PhysicalItem actor, final int lbxSourceIndex, final int lbxTypicalValuesIndex, final int lbxValueFromSensorIndex, 
+			final String txtManualEntryContent) {
+		super();
+		this.logicCheck = logicCheck;
+		this.actor = actor;
+		
+		this.txtManualEntryContent = txtManualEntryContent;	
+		this.lbxSourceIndex = lbxSourceIndex;
+		this.lbxValueFromSensorIndex = lbxValueFromSensorIndex;
+		this.lbxTypicalValuesIndex = lbxTypicalValuesIndex;
+		
+		
+		createOpenerWidget();
+					
+		
+	}
+	
+	@Override
+	public void show()
+	{
+		super.show();
+		if(layoutCreated == false) 
+			{
+			createBaseLayout();
+			
+			lbxSource.setSelectedIndex(lbxSourceIndex);
+			lbxTypicalValues.setSelectedIndex(lbxTypicalValuesIndex);
+			
+			txtManualEntry.setValue(txtManualEntryContent);
+				
+			}
+	}
+	
+	@Override
+	public void center()
+	{
+		super.center();
+		if(layoutCreated == false) 
+		{
+		createBaseLayout();
+		
+		lbxSource.setSelectedIndex(lbxSourceIndex);
+		lbxTypicalValues.setSelectedIndex(lbxTypicalValuesIndex);
+		
+		txtManualEntry.setValue(txtManualEntryContent);
+			
+		}	
+	}
+
+
 	
 	
 	private void createBaseLayout()
 	{
+		this.layoutCreated = true;
 		 this.setStyleName("wellwhite");
          getElement().getStyle().setPadding(10, Unit.PX);
          //getElement().getStyle().setBorderStyle(BorderStyle.SOLID);
@@ -166,13 +226,13 @@ public class ConnectorLogicCheckActor extends Connector {
 		
 		// set the various handlers
 		
-		final PopupPanel currentWindow = this;
+		
 		btnCancel.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				currentWindow.removeFromParent();
+				close();
 			}
 			
 		});
@@ -184,8 +244,8 @@ public class ConnectorLogicCheckActor extends Connector {
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				//EventUtils.EVENT_BUS.fireEvent(new ConnectionSaveEvent(logicCheck, actor, thisWidget));
-				currentWindow.removeFromParent();
-			}
+				close();
+		}
 			
 		});
 		
@@ -240,8 +300,7 @@ public class ConnectorLogicCheckActor extends Connector {
 		openingButton.setStyleName("connbtn");
 		
 
-		
-		final ConnectorLogicCheckActor currentConnector = this;
+	
 				
 	}
 	
@@ -254,12 +313,24 @@ public class ConnectorLogicCheckActor extends Connector {
 	
 	  public SerializableLogicConnector getSerializableRepresentation()
       {
+		  
+		RootPanel.get().add(new HTML("Getting Rep L2P..."));
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
       	serializable.setLeftID(this.logicCheck.getId());
       	serializable.setRightID(this.actor.getId());
-      	return serializable;
+      	serializable.setLbxSourceIndex(this.lbxSource.getSelectedIndex());
+		serializable.setLbxTypicalValuesIndex(this.lbxTypicalValues.getSelectedIndex());
+		serializable.setTxtManualEntryContent(this.txtManualEntry.getValue());
+		RootPanel.get().add(new HTML("Succeeded!"));
+		return serializable;
       	
       }
+	  
+	  private void close()
+	  {
+		  
+		  this.removeFromParent();
+	  }
 	  
 	  public LogicCheck getLogicCheck() {
 			return logicCheck;

@@ -62,6 +62,10 @@ public class DataManager {
 									public void onFailure(Throwable caught) {
 										// TODO Auto-generated method stub
 
+										RootPanel.get().add(
+												new HTML(
+														"Error from attempt to create checkpath: "
+																+ caught.getMessage()));
 									}
 
 									@Override
