@@ -115,7 +115,8 @@ public class SphereEditorWidget extends Composite {
 		Column headerCol1 = new Column(5, 0);
 		Column headerCol2 = new Column(5, 0);
 		
-		container.setBorders(true);
+		//container.setBorders(true);
+		container.addStyleName("wellapple");
 		//container.setWidth((int)((RootPanel.get().getOffsetWidth())/4));
 		container.setWidth("100%");
 		container.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
@@ -126,7 +127,7 @@ public class SphereEditorWidget extends Composite {
 		sourceContainer.setWidth("100%");
 		
 		sourceContainer.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
-		sourceContainer.setBorders(true);
+		sourceContainer.addStyleName("wellapple");
 		sourceContainer.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
 
 

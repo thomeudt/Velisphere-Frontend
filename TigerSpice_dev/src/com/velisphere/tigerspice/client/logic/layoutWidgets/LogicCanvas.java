@@ -146,7 +146,7 @@ public class LogicCanvas extends Composite {
 					canvas = Canvas.createIfSupported();
 					logicPanel.add(canvas);
 
-					canvas.setWidth("95%");
+					canvas.setWidth("99%");
 					canvas.setHeight("99%");
 					RootPanel.get().add(
 							new HTML("WIDTH OFFSET "
