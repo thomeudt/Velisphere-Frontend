@@ -1,18 +1,11 @@
 package com.velisphere.tigerspice.client.logic.draggables;
 
-import com.allen_sauer.gwt.dnd.client.util.DOMUtil;
-import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Style.BorderStyle;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.HasAllTouchHandlers;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
@@ -30,10 +23,6 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Widget;
-import com.orange.links.client.save.IsDiagramSerializable;
-import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
@@ -57,9 +46,7 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
     	int xPos;
     	int yPos;
     	String id;
-    
-    	
-		Image imgEpcImage;
+    	Image imgEpcImage;
         
         
         public PhysicalItem(String text, String endpointName, String propertyID, String endpointID, String endpointClassID, String propertyClassID, byte isSensor, byte isActor){
@@ -74,10 +61,24 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
         		this.isSensor = isSensor;
         		this.id = Document.get().createUniqueId();
         		buildLayout();
-                     
                 removeDefaultMouseDown();
-                
         }
+        
+        public PhysicalItem(String id, String text, String endpointName, String propertyID, String endpointID, String endpointClassID, String propertyClassID, byte isSensor, byte isActor){
+            super();
+            this.content = text;
+            this.endpointName = endpointName;
+            this.propertyID = propertyID;
+    		this.propertyClassID = propertyClassID;
+    		this.endpointClassID = endpointClassID;
+    		this.endpointID = endpointID;
+    		this.isActor = isActor;
+    		this.isSensor = isSensor;
+    		this.id = id;
+    		buildLayout();
+            removeDefaultMouseDown();
+    }
+
         
        
         private void buildLayout()
@@ -144,6 +145,8 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
 							
 							imgEpcImage.setUrl(result.endpointclassImageURL);
 							imgEpcImage.setWidth("30px");
+							
+						
 							
 						
 
@@ -284,6 +287,14 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
 
 		public void setEndpointClassID(String endpointClassID) {
 			this.endpointClassID = endpointClassID;
+		}
+		
+		public String getId() {
+			return id;
+		}
+
+		public void setId(String id) {
+			this.id = id;
 		}
 
 

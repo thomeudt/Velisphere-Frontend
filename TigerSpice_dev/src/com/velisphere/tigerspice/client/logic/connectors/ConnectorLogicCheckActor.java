@@ -255,8 +255,8 @@ public class ConnectorLogicCheckActor extends Connector {
 	  public SerializableLogicConnector getSerializableRepresentation()
       {
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
-      	serializable.setLeftEndpointID(this.logicCheck.getId());
-      	serializable.setRightEndpointID(this.actor.getEndpointID());
+      	serializable.setLeftID(this.logicCheck.getId());
+      	serializable.setRightID(this.actor.getId());
       	return serializable;
       	
       }

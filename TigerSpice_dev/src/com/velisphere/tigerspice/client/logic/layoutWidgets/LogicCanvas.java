@@ -488,7 +488,7 @@ public class LogicCanvas extends Composite {
 									@Override
 									public void onClick(ClickEvent event) {
 										// TODO Auto-generated method stub
-										connector.show();
+										connector.center();
 									}
 
 								});
@@ -511,15 +511,7 @@ public class LogicCanvas extends Composite {
 						linkedP2PPairs.add(linkedP2PPair);
 
 						
-						// get the line color
-
-						String lineColor = linkedP2PPair.getLeft()
-								.getDragPointWidget().getCurrentColor();
-
-						// add new drag point to source label to allow further
-						// links
-
-						addDragPoint(connector.getSensor());
+					
 
 						// add a connector and open the connector settings
 						// dialog
@@ -547,7 +539,7 @@ public class LogicCanvas extends Composite {
 									@Override
 									public void onClick(ClickEvent event) {
 										// TODO Auto-generated method stub
-										connector.show();
+										connector.center();
 									}
 
 								});

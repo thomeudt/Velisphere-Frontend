@@ -10,37 +10,27 @@ import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.Row;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
-import com.github.gwtbootstrap.client.ui.constants.IconSize;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DomEvent;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.event.ConnectionSaveEvent;
-import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.helper.ActionSourceConfig;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
-import com.velisphere.tigerspice.client.helper.UuidService;
-import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
 import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
-import com.velisphere.tigerspice.client.spheres.SphereService;
-import com.velisphere.tigerspice.client.spheres.SphereServiceAsync;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.SerializableLogicConnector;
@@ -56,6 +46,16 @@ public class ConnectorSensorActor extends Connector {
 	ListBox lbxTypicalValues;
 	TextBox txtCheckValue;
 	ListBox lbxOperator;
+	boolean layoutCreated;
+	String txtManualEntryContent;	
+	String txtCheckValueContent;
+	int type;
+	int lbxSourceIndex;
+	int lbxValueFromSensorIndex;
+	int lbxTypicalValuesIndex;
+	int lbxOperatorIndex;
+
+	
 
 	public ConnectorSensorActor(PhysicalItem sensor,
 			PhysicalItem actor) {
@@ -67,13 +67,67 @@ public class ConnectorSensorActor extends Connector {
 		createOpenerWidget();
 
 	}
+	
+	public ConnectorSensorActor(PhysicalItem sensor,
+			PhysicalItem actor, final int lbxOperatorIndex, final int lbxSourceIndex, final int lbxTypicalValuesIndex, final int lbxValueFromSensorIndex, 
+			final String txtCheckValueContent, final String txtManualEntryContent) {
+		super();
+		this.sensor = sensor;
+		this.actor = actor;
+		this.txtManualEntryContent = txtManualEntryContent;	
+		this.txtCheckValueContent = txtCheckValueContent;
+		this.lbxSourceIndex = lbxSourceIndex;
+		this.lbxValueFromSensorIndex = lbxValueFromSensorIndex;
+		this.lbxTypicalValuesIndex = lbxTypicalValuesIndex;
+		this.lbxOperatorIndex = lbxOperatorIndex;
+		
+		createOpenerWidget();
+					
+		
+	}
+	
+
+	@Override
+	public void show()
+	{
+		super.show();
+		if(layoutCreated == false) 
+			{
+			createBaseLayout();
+			lbxOperator.setSelectedIndex(lbxOperatorIndex);
+			lbxSource.setSelectedIndex(lbxSourceIndex);
+			lbxTypicalValues.setSelectedIndex(lbxTypicalValuesIndex);
+			lbxValueFromSensor.setSelectedIndex(lbxValueFromSensorIndex);
+			txtCheckValue.setValue(txtCheckValueContent);
+			txtManualEntry.setValue(txtManualEntryContent);
+			setVisibleValueFields();	
+			}
+	}
+	
+	@Override
+	public void center()
+	{
+		super.center();
+		if(layoutCreated == false) 
+		{
+		createBaseLayout();
+		lbxOperator.setSelectedIndex(lbxOperatorIndex);
+		lbxSource.setSelectedIndex(lbxSourceIndex);
+		lbxTypicalValues.setSelectedIndex(lbxTypicalValuesIndex);
+		lbxValueFromSensor.setSelectedIndex(lbxValueFromSensorIndex);
+		txtCheckValue.setValue(txtCheckValueContent);
+		txtManualEntry.setValue(txtManualEntryContent);
+		setVisibleValueFields();	
+		}	
+	}
+
+
 
 	private void createBaseLayout() {
+		this.layoutCreated = true;
 		this.setStyleName("wellwhite");
 		getElement().getStyle().setPadding(10, Unit.PX);
-		// getElement().getStyle().setBorderStyle(BorderStyle.SOLID);
-		// getElement().getStyle().setBorderColor("#bbbbbb");
-		// getElement().getStyle().setBorderWidth(1, Unit.PX);
+	
 		getElement().getStyle().setBackgroundColor("#ffffff");
 
 		VerticalPanel verticalPanel = new VerticalPanel();
@@ -219,38 +273,43 @@ public class ConnectorSensorActor extends Connector {
 			@Override
 			public void onChange(ChangeEvent event) {
 				// TODO Auto-generated method stub
-
-				if (lbxSource.getValue() == ActionSourceConfig.manual) {
-					txtManualEntry.setVisible(true);
-					lbxValueFromSensor.setVisible(false);
-					lbxTypicalValues.setVisible(false);
-
-				}
-
-				if (lbxSource.getValue() == ActionSourceConfig.currentSensorValue) {
-					txtManualEntry.setVisible(false);
-					lbxValueFromSensor.setVisible(true);
-					lbxTypicalValues.setVisible(false);
-				}
-
-				if (lbxSource.getValue() == ActionSourceConfig.otherSensorValue) {
-					txtManualEntry.setVisible(false);
-					lbxValueFromSensor.setVisible(false);
-					lbxTypicalValues.setVisible(false);
-
-				}
-
-				if (lbxSource.getValue() == ActionSourceConfig.typicalEntries) {
-					txtManualEntry.setVisible(false);
-					lbxValueFromSensor.setVisible(false);
-					lbxTypicalValues.setVisible(true);
-
-				}
-
+				setVisibleValueFields();
+				
 			}
 
 		});
 
+	}
+	
+	private void setVisibleValueFields()
+	{
+		if (lbxSource.getValue() == ActionSourceConfig.manual) {
+			txtManualEntry.setVisible(true);
+			lbxValueFromSensor.setVisible(false);
+			lbxTypicalValues.setVisible(false);
+
+		}
+
+		if (lbxSource.getValue() == ActionSourceConfig.currentSensorValue) {
+			txtManualEntry.setVisible(false);
+			lbxValueFromSensor.setVisible(true);
+			lbxTypicalValues.setVisible(false);
+		}
+
+		if (lbxSource.getValue() == ActionSourceConfig.otherSensorValue) {
+			txtManualEntry.setVisible(false);
+			lbxValueFromSensor.setVisible(false);
+			lbxTypicalValues.setVisible(false);
+
+		}
+
+		if (lbxSource.getValue() == ActionSourceConfig.typicalEntries) {
+			txtManualEntry.setVisible(false);
+			lbxValueFromSensor.setVisible(false);
+			lbxTypicalValues.setVisible(true);
+
+		}
+		
 	}
 
 	private void populateLbxValueFromSensor(final ListBox lbxValueFromSensor) {
@@ -413,7 +472,6 @@ public class ConnectorSensorActor extends Connector {
 		openingButton.setBaseIcon(IconType.FILTER);
 
 		openingButton.setStyleName("connbtn");
-		final ConnectorSensorActor currentConnector = this;
 
 	}
 
@@ -423,11 +481,15 @@ public class ConnectorSensorActor extends Connector {
 
 	public SerializableLogicConnector getSerializableRepresentation() {
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
-		serializable.setLeftPropertyID(this.sensor.getPropertyID());
-		serializable.setRightPropertyID(this.actor.getPropertyID());
-		serializable.setLeftEndpointID(this.sensor.getEndpointID());
-		serializable.setRightEndpointID(this.actor.getEndpointID());
-
+		serializable.setLeftID(sensor.getId());
+		serializable.setRightID(actor.getId());
+		serializable.setLbxOperatorIndex(this.lbxOperator.getSelectedIndex());
+		serializable.setLbxSourceIndex(this.lbxSource.getSelectedIndex());
+		serializable.setLbxTypicalValuesIndex(this.lbxTypicalValues.getSelectedIndex());
+		serializable.setLbxValueFromSensorIndex(this.lbxValueFromSensor.getSelectedIndex());
+		serializable.setTxtCheckValueContent(this.txtCheckValue.getValue());
+		serializable.setTxtManualEntryContent(this.txtManualEntry.getValue());
+		
 		return serializable;
 
 	}

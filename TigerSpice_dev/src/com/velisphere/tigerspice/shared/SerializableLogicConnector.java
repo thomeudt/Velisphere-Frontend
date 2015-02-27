@@ -1,29 +1,27 @@
 package com.velisphere.tigerspice.shared;
 
+import com.github.gwtbootstrap.client.ui.ListBox;
+import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheck;
 import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 
 public class SerializableLogicConnector implements IsSerializable {
 	
-	String leftEndpointID;
-	String rightEndpointID;
-	String leftPropertyID;
-	String rightPropertyID;
-	int type;
 	
-	public String getLeftEndpointID() {
-		return leftEndpointID;
-	}
-	public void setLeftEndpointID(String left) {
-		this.leftEndpointID = left;
-	}
-	public String getRightEndpointID() {
-		return rightEndpointID;
-	}
-	public void setRightEndpointID(String right) {
-		this.rightEndpointID = right;
-	}
+	String txtManualEntryContent;	
+	String txtCheckValueContent;
+	int type;
+	int lbxSourceIndex;
+	int lbxValueFromSensorIndex;
+	int lbxTypicalValuesIndex;
+	int lbxOperatorIndex;
+	String leftID;
+	String rightID;
+	
+
+	
+	
 	public int getType() {
 		return type;
 	}
@@ -31,19 +29,57 @@ public class SerializableLogicConnector implements IsSerializable {
 		this.type = type;
 	}
 
-	public String getRightPropertyID() {
-		return rightPropertyID;
+		
+	public String getTxtManualEntryContent() {
+		return txtManualEntryContent;
 	}
-	public void setRightPropertyID(String rightPropertyID) {
-		this.rightPropertyID = rightPropertyID;
+	public void setTxtManualEntryContent(String txtManualEntryContent) {
+		this.txtManualEntryContent = txtManualEntryContent;
 	}
-
-	public String getLeftPropertyID() {
-		return leftPropertyID;
+	public String getTxtCheckValueContent() {
+		return txtCheckValueContent;
 	}
-	public void setLeftPropertyID(String leftPropertyID) {
-		this.leftPropertyID = leftPropertyID;
+	public void setTxtCheckValueContent(String txtCheckValueContent) {
+		this.txtCheckValueContent = txtCheckValueContent;
 	}
+	public int getLbxSourceIndex() {
+		return lbxSourceIndex;
+	}
+	public void setLbxSourceIndex(int lbxSourceIndex) {
+		this.lbxSourceIndex = lbxSourceIndex;
+	}
+	public int getLbxValueFromSensorIndex() {
+		return lbxValueFromSensorIndex;
+	}
+	public void setLbxValueFromSensorIndex(int lbxValueFromSensorIndex) {
+		this.lbxValueFromSensorIndex = lbxValueFromSensorIndex;
+	}
+	public int getLbxTypicalValuesIndex() {
+		return lbxTypicalValuesIndex;
+	}
+	public void setLbxTypicalValuesIndex(int lbxTypicalValuesIndex) {
+		this.lbxTypicalValuesIndex = lbxTypicalValuesIndex;
+	}
+	public int getLbxOperatorIndex() {
+		return lbxOperatorIndex;
+	}
+	public void setLbxOperatorIndex(int lbxOperatorIndex) {
+		this.lbxOperatorIndex = lbxOperatorIndex;
+	}
+	
+	public String getLeftID() {
+		return leftID;
+	}
+	public void setLeftID(String leftID) {
+		this.leftID = leftID;
+	}
+	public String getRightID() {
+		return rightID;
+	}
+	public void setRightID(String rightID) {
+		this.rightID = rightID;
+	}
+	
 	
 		
 }

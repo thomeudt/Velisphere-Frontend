@@ -309,8 +309,8 @@ public class ConnectorSensorLogicCheck extends Connector {
 	 public SerializableLogicConnector getSerializableRepresentation()
      {
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
-     	serializable.setLeftEndpointID(this.sensor.getEndpointID());
-     	serializable.setRightEndpointID(this.logicCheck.getId());
+     	serializable.setLeftID(this.sensor.getId());
+     	serializable.setRightID(this.logicCheck.getId());
      	return serializable;
      	
      }

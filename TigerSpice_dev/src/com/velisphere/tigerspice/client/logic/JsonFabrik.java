@@ -166,11 +166,11 @@ public class JsonFabrik {
 		while (it.hasNext())
 		{
 			SerializableLogicPhysicalItem currentSerializable = it.next();
-			PhysicalItem current = new PhysicalItem(currentSerializable.getContent(), currentSerializable.getEndpointName(), currentSerializable.getPropertyID(), currentSerializable.getEndpointID(), currentSerializable.getEndpointClassID(), currentSerializable.getPropertyClassID(), currentSerializable.getIsSensor(), currentSerializable.getIsActor());
+			PhysicalItem current = new PhysicalItem(currentSerializable.getId(), currentSerializable.getContent(), currentSerializable.getEndpointName(), currentSerializable.getPropertyID(), currentSerializable.getEndpointID(), currentSerializable.getEndpointClassID(), currentSerializable.getPropertyClassID(), currentSerializable.getIsSensor(), currentSerializable.getIsActor());
 			current.setxPos(currentSerializable.getxPos());
 			current.setyPos(currentSerializable.getyPos());
 		
-			physicalItemHashMap.put(current.getEndpointID()+current.getPropertyID(), current);
+			physicalItemHashMap.put(currentSerializable.getId(), current);
 			canvas.loadPhysicalItem(current);
 			
 		}
@@ -229,7 +229,16 @@ public class JsonFabrik {
 			
 			//	RootPanel.get().add(new HTML("Innert " + currentSerializable.getLeftEndpointID() + ".." + lookupLeft +" -- " + lookupRight + "from "+ physicalItemHashMap.keySet().toString()));
 				
-				ConnectorSensorActor current = new ConnectorSensorActor(physicalItemHashMap.get(currentSerializable.getLeftEndpointID()+currentSerializable.getLeftPropertyID()), physicalItemHashMap.get(currentSerializable.getRightEndpointID()+currentSerializable.getRightPropertyID()));
+				ConnectorSensorActor current = new ConnectorSensorActor(
+						physicalItemHashMap.get(currentSerializable.getLeftID()), 
+						physicalItemHashMap.get(currentSerializable.getRightID()),
+						currentSerializable.getLbxOperatorIndex(), currentSerializable.getLbxSourceIndex(),
+						currentSerializable.getLbxTypicalValuesIndex(), currentSerializable.getLbxValueFromSensorIndex(),
+						currentSerializable.getTxtCheckValueContent(), currentSerializable.getTxtManualEntryContent()
+						);
+				
+				
+				
 				canvas.loadP2PConnector(current);
 				
 				
