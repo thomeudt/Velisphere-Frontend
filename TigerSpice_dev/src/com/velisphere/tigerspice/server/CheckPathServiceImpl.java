@@ -154,16 +154,16 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 		}
 
 		try {
-			voltCon.montanaClient.callProcedure("MULTICHECK.insert",
+			voltCon.montanaClient.callProcedure("MULTICHECK.upsert",
 					checkId, operator, 0, 0, multicheckName, checkpathID);
 			
 			System.out.println("Adding Actions: " + actions);
 			Iterator<ActionObject> it = actions.iterator();
 			while (it.hasNext()){
 				ActionObject action = it.next();
-				voltCon.montanaClient.callProcedure("ACTION.insert",
+				voltCon.montanaClient.callProcedure("ACTION.upsert",
 						action.actionID, action.actionName, action.endpointID, "", 0, "", checkId, checkpathID);
-				voltCon.montanaClient.callProcedure("OUTBOUNDPROPERTYACTION.insert",
+				voltCon.montanaClient.callProcedure("OUTBOUNDPROPERTYACTION.upsert",
 						action.actionID, action.propertyID, action.propertyIdIntake, "", "", action.manualValue, action.actionID, checkpathID);
 			}
 
@@ -248,7 +248,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 		}
 
 		try {
-			voltCon.montanaClient.callProcedure("MULTICHECK_CHECK_LINK.insert",
+			voltCon.montanaClient.callProcedure("MULTICHECK_CHECK_LINK.upsert",
 					UUID.randomUUID().toString(), multicheckId,  checkId, checkPathId);
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
@@ -289,7 +289,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 		}
 
 		try {
-			voltCon.montanaClient.callProcedure("MULTICHECK_MULTICHECK_LINK.insert",
+			voltCon.montanaClient.callProcedure("MULTICHECK_MULTICHECK_LINK.upsert",
 					UUID.randomUUID().toString(), multicheckLId,  multicheckRId, checkPathId);
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
@@ -332,7 +332,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 		String checkPathId = UUID.randomUUID().toString();
 		
 		try {
-			voltCon.montanaClient.callProcedure("CHECKPATH.insert",
+			voltCon.montanaClient.callProcedure("CHECKPATH.upsert",
 					checkPathId, checkpathName, null, userID);
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
@@ -374,7 +374,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 	
 		
 		try {
-			voltCon.montanaClient.callProcedure("CHECKPATH.insert",
+			voltCon.montanaClient.callProcedure("CHECKPATH.upsert",
 					checkpathID, checkpathName, null, userID);
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
@@ -418,7 +418,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 	
 		
 		try {
-			voltCon.montanaClient.callProcedure("CHECKPATH.insert",
+			voltCon.montanaClient.callProcedure("CHECKPATH.upsert",
 					checkpathID, checkpathName, uiObject, userID);
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
@@ -961,7 +961,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 		}
 
 		try {
-			voltCon.montanaClient.callProcedure("CHECKPATH_CHECK_LINK.insert",
+			voltCon.montanaClient.callProcedure("CHECKPATH_CHECK_LINK.upsert",
 					UUID.randomUUID().toString(), checkpathId,  checkId);
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
@@ -1001,7 +1001,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 		}
 
 		try {
-			voltCon.montanaClient.callProcedure("CHECKPATH_MULTICHECK_LINK.insert",
+			voltCon.montanaClient.callProcedure("CHECKPATH_MULTICHECK_LINK.upsert",
 					UUID.randomUUID().toString(), checkpathId,  multicheckId);
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
