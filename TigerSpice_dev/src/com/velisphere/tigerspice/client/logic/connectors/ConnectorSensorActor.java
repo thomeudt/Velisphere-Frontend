@@ -21,6 +21,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.event.ConnectionSaveEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
@@ -34,6 +35,7 @@ import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsyn
 import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.SerializableLogicConnector;
+import com.velisphere.tigerspice.shared.SharedConstants;
 
 public class ConnectorSensorActor extends Connector {
 
@@ -47,8 +49,8 @@ public class ConnectorSensorActor extends Connector {
 	TextBox txtCheckValue;
 	ListBox lbxOperator;
 	boolean layoutCreated;
-	String txtManualEntryContent;	
-	String txtCheckValueContent;
+	String txtManualEntryContent = "";	
+	String txtCheckValueContent = "";
 	int type;
 	int lbxSourceIndex;
 	int lbxValueFromSensorIndex;
@@ -94,14 +96,14 @@ public class ConnectorSensorActor extends Connector {
 		if(layoutCreated == false) 
 			{
 			createBaseLayout();
-			lbxOperator.setSelectedIndex(lbxOperatorIndex);
-			lbxSource.setSelectedIndex(lbxSourceIndex);
-			lbxTypicalValues.setSelectedIndex(lbxTypicalValuesIndex);
-			lbxValueFromSensor.setSelectedIndex(lbxValueFromSensorIndex);
-			txtCheckValue.setValue(txtCheckValueContent);
-			txtManualEntry.setValue(txtManualEntryContent);
-			setVisibleValueFields();	
 			}
+		lbxOperator.setSelectedIndex(lbxOperatorIndex);
+		lbxSource.setSelectedIndex(lbxSourceIndex);
+		lbxTypicalValues.setSelectedIndex(lbxTypicalValuesIndex);
+		lbxValueFromSensor.setSelectedIndex(lbxValueFromSensorIndex);
+		txtCheckValue.setValue(txtCheckValueContent);
+		txtManualEntry.setValue(txtManualEntryContent);
+		setVisibleValueFields();	
 	}
 	
 	@Override
@@ -111,6 +113,7 @@ public class ConnectorSensorActor extends Connector {
 		if(layoutCreated == false) 
 		{
 		createBaseLayout();
+		}
 		lbxOperator.setSelectedIndex(lbxOperatorIndex);
 		lbxSource.setSelectedIndex(lbxSourceIndex);
 		lbxTypicalValues.setSelectedIndex(lbxTypicalValuesIndex);
@@ -118,10 +121,21 @@ public class ConnectorSensorActor extends Connector {
 		txtCheckValue.setValue(txtCheckValueContent);
 		txtManualEntry.setValue(txtManualEntryContent);
 		setVisibleValueFields();	
-		}	
+		
 	}
 
 
+	public void save()
+	{
+		
+		RootPanel.get().add(new HTML("Connector: Saving"));
+		lbxOperatorIndex = lbxOperator.getSelectedIndex();
+		lbxSourceIndex = lbxSource.getSelectedIndex();
+		lbxTypicalValuesIndex = lbxTypicalValues.getSelectedIndex();
+		lbxValueFromSensorIndex = lbxValueFromSensor.getSelectedIndex();
+		txtCheckValueContent = txtCheckValue.getValue();
+		txtManualEntryContent = txtManualEntry.getValue();	
+	}
 
 	private void createBaseLayout() {
 		this.layoutCreated = true;
@@ -244,26 +258,26 @@ public class ConnectorSensorActor extends Connector {
 
 		// set the various handlers
 
-		final PopupPanel currentWindow = this;
+		
 		btnCancel.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				currentWindow.removeFromParent();
+				close();
 			}
 
 		});
 
-		final ConnectorSensorActor thisWidget = this;
+		
 		btnSave.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				EventUtils.EVENT_BUS.fireEvent(new ConnectionSaveEvent(sensor,
-						actor, thisWidget));
-				currentWindow.removeFromParent();
+				
+				save();
+				close();
 			}
 
 		});
@@ -480,16 +494,28 @@ public class ConnectorSensorActor extends Connector {
 	}
 
 	public SerializableLogicConnector getSerializableRepresentation() {
+				
+		RootPanel.get().add(new HTML("Connector: Serialization Requested"));
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
+		RootPanel.get().add(new HTML("Connector: Serialized rep initialized"));
 		serializable.setLeftID(sensor.getId());
+		RootPanel.get().add(new HTML("Connector: Got sensor"));
 		serializable.setRightID(actor.getId());
-		serializable.setLbxOperatorIndex(this.lbxOperator.getSelectedIndex());
-		serializable.setLbxSourceIndex(this.lbxSource.getSelectedIndex());
-		serializable.setLbxTypicalValuesIndex(this.lbxTypicalValues.getSelectedIndex());
-		serializable.setLbxValueFromSensorIndex(this.lbxValueFromSensor.getSelectedIndex());
-		serializable.setTxtCheckValueContent(this.txtCheckValue.getValue());
-		serializable.setTxtManualEntryContent(this.txtManualEntry.getValue());
-		
+		RootPanel.get().add(new HTML("Connector: Got actor"));
+		serializable.setLbxOperatorIndex(this.lbxOperatorIndex);
+		RootPanel.get().add(new HTML("Connector: Got operator"));
+		serializable.setLbxSourceIndex(this.lbxSourceIndex);
+		RootPanel.get().add(new HTML("Connector: Got source"));
+		serializable.setLbxTypicalValuesIndex(this.lbxTypicalValuesIndex);
+		RootPanel.get().add(new HTML("Connector: Got typical"));
+		serializable.setLbxValueFromSensorIndex(this.lbxValueFromSensorIndex);
+		RootPanel.get().add(new HTML("Connector: Got valusesnse"));
+		serializable.setTxtCheckValueContent(this.txtCheckValueContent);
+		RootPanel.get().add(new HTML("Connector: Got checkval"));
+		serializable.setTxtManualEntryContent(this.txtManualEntryContent);
+		RootPanel.get().add(new HTML("Connector: Got manual " +this.txtManualEntryContent ));
+		serializable.setType(SharedConstants.CONP2P);
+		RootPanel.get().add(new HTML("Connector: Got type"));
 		return serializable;
 
 	}

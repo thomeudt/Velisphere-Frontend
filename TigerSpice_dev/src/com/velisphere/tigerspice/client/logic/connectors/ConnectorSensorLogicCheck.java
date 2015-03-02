@@ -44,6 +44,7 @@ import com.velisphere.tigerspice.client.spheres.SphereServiceAsync;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.SerializableLogicConnector;
+import com.velisphere.tigerspice.shared.SharedConstants;
 
 public class ConnectorSensorLogicCheck extends Connector {
 
@@ -90,9 +91,9 @@ public class ConnectorSensorLogicCheck extends Connector {
 		if(layoutCreated == false) 
 			{
 			createBaseLayout();
-			lbxOperator.setSelectedIndex(lbxOperatorIndex);
-			txtCheckValue.setValue(txtCheckValueContent);
 			}
+		lbxOperator.setSelectedIndex(lbxOperatorIndex);
+		txtCheckValue.setValue(txtCheckValueContent);
 	}
 	
 	@Override
@@ -102,11 +103,21 @@ public class ConnectorSensorLogicCheck extends Connector {
 		if(layoutCreated == false) 
 		{
 		createBaseLayout();
+		}
 		lbxOperator.setSelectedIndex(lbxOperatorIndex);
 		txtCheckValue.setValue(txtCheckValueContent);
-		}	
 	}
 
+	
+	public void save()
+	{
+		
+		lbxOperatorIndex = lbxOperator.getSelectedIndex();
+		txtCheckValueContent = txtCheckValue.getValue();
+		
+	}
+
+	
 	
 	private void createBaseLayout()
 	{
@@ -199,25 +210,26 @@ public class ConnectorSensorLogicCheck extends Connector {
 		
 		// set the various handlers
 		
-		final PopupPanel currentWindow = this;
+		
 		btnCancel.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				currentWindow.removeFromParent();
+				close();
 			}
 			
 		});
 		
-		final ConnectorSensorLogicCheck thisWidget = this;
+		
 		btnSave.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				//EventUtils.EVENT_BUS.fireEvent(new ConnectionSaveEvent(sensor, logicCheck, thisWidget));
-				currentWindow.removeFromParent();
+				save();
+				close();
 			}
 			
 		});
@@ -356,8 +368,9 @@ public class ConnectorSensorLogicCheck extends Connector {
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
      	serializable.setLeftID(this.sensor.getId());
      	serializable.setRightID(this.logicCheck.getId());
-    	serializable.setLbxOperatorIndex(this.lbxOperator.getSelectedIndex());
-		serializable.setTxtCheckValueContent(this.txtCheckValue.getValue());
+    	serializable.setLbxOperatorIndex(this.lbxOperatorIndex);
+		serializable.setTxtCheckValueContent(this.txtCheckValueContent);
+		serializable.setType(SharedConstants.CONP2L);
 		RootPanel.get().add(new HTML("Succeeded!"));
 		return serializable;
      	

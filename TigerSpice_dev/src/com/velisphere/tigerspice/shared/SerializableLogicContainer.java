@@ -9,7 +9,10 @@ public class SerializableLogicContainer implements IsSerializable{
 	LinkedList<SerializableLogicConnector> connectors;
 	LinkedList<SerializableLogicLogicCheck> logicChecks;
 	LinkedList<SerializableLogicPhysicalItem> physicalItems;
-	
+	String uuid;
+	String name;
+		
+
 	public SerializableLogicContainer()
 	{
 		
@@ -37,6 +40,21 @@ public class SerializableLogicContainer implements IsSerializable{
 	}
 	public void addPhysicalItem(SerializableLogicPhysicalItem physicalItem) {
 		this.physicalItems.add(physicalItem);
+	}
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

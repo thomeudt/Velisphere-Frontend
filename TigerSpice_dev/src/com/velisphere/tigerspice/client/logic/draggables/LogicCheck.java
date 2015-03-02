@@ -21,6 +21,8 @@ import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.velisphere.tigerspice.client.helper.UuidService;
 import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
 import com.velisphere.tigerspice.client.images.Images;
@@ -129,14 +131,23 @@ public class LogicCheck extends FocusPanel implements HasAllTouchHandlers {
     
     public SerializableLogicLogicCheck getSerializableRepresentation()
     {
+    	RootPanel.get().add(new HTML("Logic Check: getSerializable called."));
     	SerializableLogicLogicCheck serializable = new SerializableLogicLogicCheck();
+    	RootPanel.get().add(new HTML("Logic Check: Init..."));
     	serializable.setAnd(this.and);
+    	RootPanel.get().add(new HTML("Logic Check: And set."));
     	serializable.setContent(this.content);
+    	RootPanel.get().add(new HTML("Logic Check: Content set."));
     	serializable.setId(this.uuid);
+    	RootPanel.get().add(new HTML("Logic Check: UUID set."));
     	serializable.setOr(this.or);
+    	RootPanel.get().add(new HTML("Logic Check: Or set."));
     	serializable.setSourceCount(this.sourceCount);
+    	RootPanel.get().add(new HTML("Logic Check: Source Count set."));
     	serializable.setxPos(this.xPos);
+    	RootPanel.get().add(new HTML("Logic Check: xPos set."));
     	serializable.setyPos(this.yPos);
+    	RootPanel.get().add(new HTML("Logic Check: yPos set."));
     	return serializable;
     	
     }

@@ -74,5 +74,11 @@ public class Connector extends PopupPanel {
 	public String getActionUUID() {
 		return actionUUID;
 	}
+	
+	  public void close()
+	  {
+		  
+		  this.removeFromParent();
+	  }
 
 }

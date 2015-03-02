@@ -133,7 +133,6 @@ public class LogicCanvas extends Composite {
 		setLinkedInCanvasP2PEventListener();
 		setLinkedInCanvasP2LEventListener();
 		setDraggedInCanvasEventListener();
-		setConnectionSaveEventHandler();
 		setLinkedInCanvasL2PEventListener();
 
 		logicPanel.addAttachHandler(new AttachEvent.Handler() {
@@ -358,7 +357,7 @@ public class LogicCanvas extends Composite {
 
 		logicPanel.add(logicCheckAnd, logicCheckAnd.getxPos(),
 				logicCheckAnd.getyPos());
-
+				
 		logicChecks.add(logicCheckAnd);
 
 		dragController.makeDraggable(logicCheckAnd);
@@ -1115,19 +1114,7 @@ public class LogicCanvas extends Composite {
 
 	}
 
-	private void setConnectionSaveEventHandler() {
-		connectionSaveHandler = EventUtils.EVENT_BUS.addHandler(
-				ConnectionSaveEvent.TYPE, new ConnectionSaveEventHandler() {
-
-					@Override
-					public void onConnectionSave(
-							ConnectionSaveEvent connectionSaveEvent) {
-						// TODO Auto-generated method stub
-
-					}
-				});
-
-	}
+	
 
 	public void saveToDatabase(String name) {
 		DataManager dataManager = new DataManager(this);
@@ -1166,5 +1153,10 @@ public class LogicCanvas extends Composite {
 	public String getUUID() {
 		return this.uuid;
 	}
+	
+	public void setUUID(String uuid) {
+		this.uuid = uuid;
+	}
+
 
 }

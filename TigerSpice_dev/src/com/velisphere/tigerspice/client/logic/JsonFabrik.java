@@ -43,46 +43,69 @@ public class JsonFabrik {
 		this.physicalItemHashMap = new HashMap<String, PhysicalItem>();
 		this.logicCheckHashMap = new HashMap<String, LogicCheck>();
 
+		RootPanel.get().add(new HTML("Fabrik initialized."));
+				
 		generateContainer();
+		
+		RootPanel.get().add(new HTML("Fabrik: Container generated."));
 		generateJSON();
+		RootPanel.get().add(new HTML("Fabrik: JSON generated."));
 
 	}
 	
 	
 
 	private void generateContainer() {
+		
+		// set UUID
+		
+		logicContainer.setUuid(canvas.getUUID());
+		
+		
+		
 		// create json for all physical items
 
-		Iterator<PhysicalItem> it = canvas.getPhysicalItems().iterator();
+			Iterator<PhysicalItem> it = canvas.getPhysicalItems().iterator();
 
-		while (it.hasNext()) {
+			while (it.hasNext()) {
 
-			logicContainer.addPhysicalItem(it.next()
-					.getSerializableRepresentation());
-
-		}
+				logicContainer.addPhysicalItem(it.next()
+						.getSerializableRepresentation());
+				RootPanel.get().add(new HTML("Container: Physical item added."));			
+			}
+				
+		
 
 		// create json for all logic checks
 
-		Iterator<LogicCheck> il = canvas.getLogicChecks().iterator();
+			Iterator<LogicCheck> il = canvas.getLogicChecks().iterator();
+			
+			RootPanel.get().add(new HTML("Container: Iterator for Logic Check created: " + canvas.getLogicChecks().size()));
 
-		while (il.hasNext()) {
+			while (il.hasNext()) {
 
-			logicContainer.addLogicCheck(il.next()
-					.getSerializableRepresentation());
+				RootPanel.get().add(new HTML("Container: Processing " + il.next().getContent()));
 
-		}
+				logicContainer.addLogicCheck(il.next()
+						.getSerializableRepresentation());
+				RootPanel.get().add(new HTML("Container: Logical item added."));
 
+			}
+		
+		
 		// create json for L2P connectors
 
 		Iterator<ConnectorLogicCheckActor> icl = canvas
 				.getConnectorsLogicCheckActor().iterator();
 
+		RootPanel.get().add(new HTML("Container: Iterator for L2P created: " + canvas.getConnectorsLogicCheckActor().size()));
+		
 		while (icl.hasNext()) {
 
 			SerializableLogicConnector current = icl.next().getSerializableRepresentation();
-			current.setType(SharedConstants.CONL2P);
+			
 			logicContainer.addConnector(current);
+			RootPanel.get().add(new HTML("Container: L2P connector added."));
 
 		}
 
@@ -90,12 +113,16 @@ public class JsonFabrik {
 
 		Iterator<ConnectorSensorActor> ics = canvas.getConnectorsSensorActor()
 				.iterator();
+		
+		RootPanel.get().add(new HTML("Container: Iterator for P2P created: " + canvas.getConnectorsSensorActor().size()));
 
 		while (ics.hasNext()) {
-
+			RootPanel.get().add(new HTML("Container: P2P traversed."));
 			SerializableLogicConnector current = ics.next().getSerializableRepresentation();
-			current.setType(SharedConstants.CONP2P);
+			RootPanel.get().add(new HTML("Container: P2P serialized."));
+			
 			logicContainer.addConnector(current);
+			RootPanel.get().add(new HTML("Container: P2P connector added."));
 		}
 
 		// create json for P2L connectors
@@ -103,12 +130,16 @@ public class JsonFabrik {
 		Iterator<ConnectorSensorLogicCheck> ict = canvas
 				.getConnectorsSensorLogicCheck().iterator();
 
+		RootPanel.get().add(new HTML("Container: Iterator for P2L created: " + canvas.getConnectorsSensorLogicCheck().size()));
+
+		
 		while (ict.hasNext()) {
-
+			RootPanel.get().add(new HTML("Container: P2L traversed."));
 			SerializableLogicConnector current = ict.next().getSerializableRepresentation();
-			current.setType(SharedConstants.CONP2L);
+			RootPanel.get().add(new HTML("Container: P2L serialized."));
+			
 			logicContainer.addConnector(current);
-
+			RootPanel.get().add(new HTML("Container: P2L connector added."));
 		}
 
 	}
@@ -116,6 +147,8 @@ public class JsonFabrik {
 	private void generateJSON() {
 		// create json for all physical items
 
+		RootPanel.get().add(new HTML("JSON: Requested."));
+				
 		CheckPathServiceAsync checkPathService = GWT
 				.create(CheckPathService.class);
 
@@ -146,11 +179,15 @@ public class JsonFabrik {
 	
 	
 	public void unpackContainer(SerializableLogicContainer logicContainer) {
-		
-		
-		// unpack all physical items from container
 
 		canvas.getPhysicalItems().clear();
+		canvas.getLogicChecks().clear();
+		canvas.getConnectorsLogicCheckActor().clear();
+		canvas.getConnectorsSensorActor().clear();
+		canvas.getConnectorsSensorLogicCheck().clear();
+		
+		// unpack all physical items from container
+		
 		
 		this.logicContainer = logicContainer;
 
@@ -161,6 +198,8 @@ public class JsonFabrik {
 		loadP2PConnectors();
 		loadP2LConnectors();
 		loadL2PConnectors();
+		
+		canvas.setUUID(logicContainer.getUuid());
 		
 		
 	}
@@ -201,6 +240,7 @@ public class JsonFabrik {
 				current.setSourceCount(currentSerializable.getSourceCount());
 				current.setId(currentSerializable.getId());
 				current.setAnd(true);
+				current.setOr(false);
 				current.setxPos(currentSerializable.getxPos());
 				current.setyPos(currentSerializable.getyPos());
 				logicCheckHashMap.put(currentSerializable.getId(), current);
@@ -214,6 +254,7 @@ public class JsonFabrik {
 				current.setSourceCount(currentSerializable.getSourceCount());
 				current.setId(currentSerializable.getId());
 				current.setOr(true);
+				current.setAnd(false);
 				current.setxPos(currentSerializable.getxPos());
 				current.setyPos(currentSerializable.getyPos());
 				logicCheckHashMap.put(currentSerializable.getId(), current);

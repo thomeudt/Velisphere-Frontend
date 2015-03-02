@@ -47,6 +47,7 @@ import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.SerializableLogicConnector;
 import com.velisphere.tigerspice.shared.SerializableLogicPhysicalItem;
+import com.velisphere.tigerspice.shared.SharedConstants;
 
 public class ConnectorLogicCheckActor extends Connector {
 
@@ -58,13 +59,11 @@ public class ConnectorLogicCheckActor extends Connector {
 	ListBox lbxTypicalValues;
 	boolean layoutCreated;
 	String txtManualEntryContent;	
-	String txtCheckValueContent;
-	int type;
 	int lbxSourceIndex;
 	int lbxValueFromSensorIndex;
 	int lbxTypicalValuesIndex;
-	int lbxOperatorIndex;
-
+	
+	
 	
 
 	
@@ -102,13 +101,12 @@ public class ConnectorLogicCheckActor extends Connector {
 		if(layoutCreated == false) 
 			{
 			createBaseLayout();
-			
-			lbxSource.setSelectedIndex(lbxSourceIndex);
-			lbxTypicalValues.setSelectedIndex(lbxTypicalValuesIndex);
-			
-			txtManualEntry.setValue(txtManualEntryContent);
-				
 			}
+		lbxSource.setSelectedIndex(lbxSourceIndex);
+		lbxTypicalValues.setSelectedIndex(lbxTypicalValuesIndex);
+		txtManualEntry.setValue(txtManualEntryContent);
+			
+
 	}
 	
 	@Override
@@ -118,16 +116,20 @@ public class ConnectorLogicCheckActor extends Connector {
 		if(layoutCreated == false) 
 		{
 		createBaseLayout();
-		
+		}
 		lbxSource.setSelectedIndex(lbxSourceIndex);
 		lbxTypicalValues.setSelectedIndex(lbxTypicalValuesIndex);
-		
 		txtManualEntry.setValue(txtManualEntryContent);
-			
-		}	
+	
 	}
 
 
+	public void save()
+	{
+		lbxSourceIndex = lbxSource.getSelectedIndex();
+		lbxTypicalValuesIndex = lbxTypicalValues.getSelectedIndex();
+		txtManualEntryContent = txtManualEntry.getValue();
+	}
 	
 	
 	private void createBaseLayout()
@@ -244,6 +246,7 @@ public class ConnectorLogicCheckActor extends Connector {
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				//EventUtils.EVENT_BUS.fireEvent(new ConnectionSaveEvent(logicCheck, actor, thisWidget));
+				save();
 				close();
 		}
 			
@@ -318,19 +321,16 @@ public class ConnectorLogicCheckActor extends Connector {
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
       	serializable.setLeftID(this.logicCheck.getId());
       	serializable.setRightID(this.actor.getId());
-      	serializable.setLbxSourceIndex(this.lbxSource.getSelectedIndex());
-		serializable.setLbxTypicalValuesIndex(this.lbxTypicalValues.getSelectedIndex());
-		serializable.setTxtManualEntryContent(this.txtManualEntry.getValue());
+      	serializable.setLbxSourceIndex(this.lbxSourceIndex);
+		serializable.setLbxTypicalValuesIndex(this.lbxTypicalValuesIndex);
+		serializable.setTxtManualEntryContent(this.txtManualEntryContent);
+		serializable.setType(SharedConstants.CONL2P);
 		RootPanel.get().add(new HTML("Succeeded!"));
 		return serializable;
       	
       }
 	  
-	  private void close()
-	  {
-		  
-		  this.removeFromParent();
-	  }
+	
 	  
 	  public LogicCheck getLogicCheck() {
 			return logicCheck;
