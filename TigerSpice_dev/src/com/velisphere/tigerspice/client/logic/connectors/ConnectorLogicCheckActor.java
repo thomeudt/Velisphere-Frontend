@@ -62,9 +62,6 @@ public class ConnectorLogicCheckActor extends Connector {
 	int lbxSourceIndex;
 	int lbxValueFromSensorIndex;
 	int lbxTypicalValuesIndex;
-	
-	
-	
 
 	
 	public ConnectorLogicCheckActor (LogicCheck logicCheck, PhysicalItem actor)
@@ -320,7 +317,7 @@ public class ConnectorLogicCheckActor extends Connector {
 		RootPanel.get().add(new HTML("Getting Rep L2P..."));
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
       	serializable.setLeftID(this.logicCheck.getId());
-      	serializable.setRightID(this.actor.getId());
+      	serializable.setRightID(this.actor.getUUID());
       	serializable.setLbxSourceIndex(this.lbxSourceIndex);
 		serializable.setLbxTypicalValuesIndex(this.lbxTypicalValuesIndex);
 		serializable.setTxtManualEntryContent(this.txtManualEntryContent);
@@ -341,15 +338,15 @@ public class ConnectorLogicCheckActor extends Connector {
 		}
 						
 		public String getSourceIndex() {
-			return lbxSource.getValue();
+			return String.valueOf(lbxSourceIndex);
 		}
 		
 		public String getTypicalValueIndex() {
-			return lbxTypicalValues.getValue();
+			return String.valueOf(lbxTypicalValuesIndex);
 		}
 		
 		public String getManualValue() {
-			return txtManualEntry.getValue();
+			return txtManualEntryContent;
 		}
 
 	

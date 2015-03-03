@@ -498,9 +498,9 @@ public class ConnectorSensorActor extends Connector {
 		RootPanel.get().add(new HTML("Connector: Serialization Requested"));
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
 		RootPanel.get().add(new HTML("Connector: Serialized rep initialized"));
-		serializable.setLeftID(sensor.getId());
+		serializable.setLeftID(sensor.getUUID());
 		RootPanel.get().add(new HTML("Connector: Got sensor"));
-		serializable.setRightID(actor.getId());
+		serializable.setRightID(actor.getUUID());
 		RootPanel.get().add(new HTML("Connector: Got actor"));
 		serializable.setLbxOperatorIndex(this.lbxOperatorIndex);
 		RootPanel.get().add(new HTML("Connector: Got operator"));
@@ -529,24 +529,26 @@ public class ConnectorSensorActor extends Connector {
 	}
 	
 	public String getOperator() {
-		return lbxOperator.getValue();
+		return String.valueOf(lbxOperatorIndex);
 	}
 
 	public String getCheckValue() {
-		return txtCheckValue.getText();
+		return txtCheckValueContent;
 	}
 	
 	public String getSourceIndex() {
-		return lbxSource.getValue();
+		return String.valueOf(lbxSourceIndex);
 	}
 	
 	public String getTypicalValueIndex() {
-		return lbxTypicalValues.getValue();
+		return String.valueOf(lbxTypicalValuesIndex);
 	}
 	
 	public String getManualValue() {
-		return txtManualEntry.getValue();
+		return txtManualEntryContent;
 	}
 
+	
+	
 
 }

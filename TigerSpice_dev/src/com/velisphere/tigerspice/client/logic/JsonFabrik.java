@@ -84,7 +84,7 @@ public class JsonFabrik {
 
 			while (il.hasNext()) {
 
-				RootPanel.get().add(new HTML("Container: Processing " + il.next().getContent()));
+				RootPanel.get().add(new HTML("Container: Processing "));
 
 				logicContainer.addLogicCheck(il.next()
 						.getSerializableRepresentation());

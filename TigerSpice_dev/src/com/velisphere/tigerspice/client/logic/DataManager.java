@@ -28,6 +28,7 @@ import com.velisphere.tigerspice.shared.SerializableLogicContainer;
 
 public class DataManager {
 
+	HandlerRegistration jsonReadyHandler;
 	LogicCanvas canvas;
 
 	public DataManager(LogicCanvas canvas) {
@@ -89,23 +90,40 @@ public class DataManager {
 		Iterator<ConnectorSensorActor> it = canvas.getConnectorsSensorActor()
 				.iterator();
 
+		RootPanel.get().add(new HTML("P2P: started"));
+		
 		while (it.hasNext()) {
 
 			ConnectorSensorActor current = it.next();
+			
+			RootPanel.get().add(new HTML("P2P: fetched connector"));
 
 			// build action object
 			ActionObject action = new ActionObject();
 			action.actionID = current.getActionUUID();
+			RootPanel.get().add(new HTML("P2P: ID processed"));
 			action.actionName = "unused";
+			RootPanel.get().add(new HTML("P2P: Name processed"));
 			action.endpointClassID = current.getActor().getEndpointClassID();
+			RootPanel.get().add(new HTML("P2P: EPC processed"));
 			action.endpointID = current.getActor().getEndpointID();
+			RootPanel.get().add(new HTML("P2P: AEPID processed"));
 			action.endpointName = current.getActor().getContentRepresentation();
+			RootPanel.get().add(new HTML("P2P: Content processed"));
 			action.propertyID = current.getActor().getPropertyID();
+			RootPanel.get().add(new HTML("P2P: APID processed"));
 			action.propertyIdIntake = current.getSensor().getPropertyID();
+			RootPanel.get().add(new HTML("P2P: SPID processed"));
 			action.sensorEndpointID = current.getSensor().getEndpointID();
+			RootPanel.get().add(new HTML("P2P: SEPID processed"));
 			action.settingSourceIndex = current.getSourceIndex();
+			RootPanel.get().add(new HTML("P2P: Source processed"));
 			action.validValueIndex = current.getTypicalValueIndex();
+			RootPanel.get().add(new HTML("P2P: Typical processed"));
 			action.manualValue = current.getManualValue();
+			RootPanel.get().add(new HTML("P2P: Manual processed"));
+			
+			RootPanel.get().add(new HTML("P2P: built action object"));
 
 			// TODO this can be simplified - we do not need to take care of
 			// multiple actions in new setup
@@ -113,6 +131,8 @@ public class DataManager {
 			LinkedList<ActionObject> actions = new LinkedList<ActionObject>();
 
 			actions.add(action);
+			
+			RootPanel.get().add(new HTML("P2P: built action object list"));
 
 			// send to database
 
@@ -149,10 +169,14 @@ public class DataManager {
 
 		Iterator<ConnectorSensorLogicCheck> it = canvas
 				.getConnectorsSensorLogicCheck().iterator();
+		
+		RootPanel.get().add(new HTML("P2L: started"));
 
 		while (it.hasNext()) {
 
 			ConnectorSensorLogicCheck current = it.next();
+			
+			RootPanel.get().add(new HTML("P2L: fetched connector"));
 
 			// TODO this can be simplified - we do not need to take care of
 			// multiple actions in new setup
@@ -162,10 +186,18 @@ public class DataManager {
 
 			LinkedList<ActionObject> actions = new LinkedList<ActionObject>();
 
+			RootPanel.get().add(new HTML("P2L: created empty actions list"));
+			
 			// send check to database
 
 			CheckServiceAsync checkService = GWT.create(CheckService.class);
 
+			RootPanel.get().add(new HTML("P2L: processing UUID " + current.getCheckUUID()));
+			RootPanel.get().add(new HTML("P2L: processing sensor EPID " + current.getSensor().getEndpointID()));
+			RootPanel.get().add(new HTML("P2L: processing sensor PID " + current.getSensor().getPropertyID()));
+			RootPanel.get().add(new HTML("P2L: processing check value " + current.getCheckValue()));
+			RootPanel.get().add(new HTML("P2L: processing operator " + current.getOperator()));
+			
 			checkService.addNewCheck(current.getCheckUUID(), current
 					.getSensor().getEndpointID(), current.getSensor()
 					.getPropertyID(), current.getCheckValue(), current
@@ -294,17 +326,24 @@ public class DataManager {
 
 	public void loadUI(final String checkpathName) {
 
+		RootPanel.get().add(
+				new HTML(
+						"UILOAD--- "));
+
+		
 		// create JSON factory
 
 		final JsonFabrik factory = new JsonFabrik(canvas);
 
 		// wait for JSON to be generated
 
-		HandlerRegistration jsonReadyHandler = EventUtils.EVENT_BUS.addHandler(
+		jsonReadyHandler = EventUtils.EVENT_BUS.addHandler(
 				JSONreadyEvent.TYPE, new JSONreadyEventHandler() {
 
 					@Override
 					public void onJSONready(JSONreadyEvent jsonReadyEvent) {
+						
+						jsonReadyHandler.removeHandler();
 
 						// send to database
 						CheckPathServiceAsync checkpathService = GWT

@@ -25,6 +25,8 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
+import com.velisphere.tigerspice.client.helper.UuidService;
+import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
 import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.SerializableLogicPhysicalItem;
@@ -45,7 +47,7 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
     	LinkCreator dragPointWidget;
     	int xPos;
     	int yPos;
-    	String id;
+    	String uuid;
     	Image imgEpcImage;
         
         
@@ -59,12 +61,12 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
         		this.endpointID = endpointID;
         		this.isActor = isActor;
         		this.isSensor = isSensor;
-        		this.id = Document.get().createUniqueId();
+        		createUiItemUUID();
         		buildLayout();
                 removeDefaultMouseDown();
         }
         
-        public PhysicalItem(String id, String text, String endpointName, String propertyID, String endpointID, String endpointClassID, String propertyClassID, byte isSensor, byte isActor){
+        public PhysicalItem(String uuid, String text, String endpointName, String propertyID, String endpointID, String endpointClassID, String propertyClassID, byte isSensor, byte isActor){
             super();
             this.content = text;
             this.endpointName = endpointName;
@@ -74,11 +76,33 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
     		this.endpointID = endpointID;
     		this.isActor = isActor;
     		this.isSensor = isSensor;
-    		this.id = id;
+    		this.uuid = uuid;
     		buildLayout();
             removeDefaultMouseDown();
     }
 
+        protected void createUiItemUUID()
+    	{
+    		UuidServiceAsync uuidService = GWT
+    				.create(UuidService.class);
+    		
+    		uuidService.getUuid(new AsyncCallback<String>(){
+
+    			@Override
+    			public void onFailure(Throwable caught) {
+    				// TODO Auto-generated method stub
+    				
+    			}
+
+    			@Override
+    			public void onSuccess(String result) {
+    				// TODO Auto-generated method stub
+    				uuid = result;
+    			}
+    			
+    		});
+    		
+    	}
         
        
         private void buildLayout()
@@ -254,7 +278,7 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
         	serializable.setIsSensor(this.isSensor);
         	serializable.setPropertyClassID(this.propertyClassID);
         	serializable.setPropertyID(this.propertyID);
-        	serializable.setId(this.id);
+        	serializable.setId(this.uuid);
         	serializable.setxPos(this.xPos);
         	serializable.setyPos(this.yPos);
         	return serializable;
@@ -289,12 +313,12 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
 			this.endpointClassID = endpointClassID;
 		}
 		
-		public String getId() {
-			return id;
+		public String getUUID() {
+			return uuid;
 		}
 
-		public void setId(String id) {
-			this.id = id;
+		public void setUUID(String id) {
+			this.uuid = id;
 		}
 
 

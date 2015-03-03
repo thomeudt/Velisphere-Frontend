@@ -366,7 +366,7 @@ public class ConnectorSensorLogicCheck extends Connector {
      {
 		RootPanel.get().add(new HTML("Getting Rep P2L..."));
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
-     	serializable.setLeftID(this.sensor.getId());
+     	serializable.setLeftID(this.sensor.getUUID());
      	serializable.setRightID(this.logicCheck.getId());
     	serializable.setLbxOperatorIndex(this.lbxOperatorIndex);
 		serializable.setTxtCheckValueContent(this.txtCheckValueContent);
@@ -387,11 +387,11 @@ public class ConnectorSensorLogicCheck extends Connector {
 	 
 	 
 		public String getOperator() {
-			return lbxOperator.getValue();
+			return String.valueOf(lbxOperatorIndex);
 		}
 
 		public String getCheckValue() {
-			return txtCheckValue.getText();
+			return txtCheckValueContent;
 		}
 		
 		

@@ -75,8 +75,9 @@ public class LogicCanvas extends Composite {
 	Context2d context;
 	Canvas canvas;
 
-	HandlerRegistration connectionSaveHandler;
+	
 	HandlerRegistration linkedInCanvasHandler;
+	HandlerRegistration draggedToCanvasHandler;
 
 	ListToCanvasDropController listToCanvasDropController;
 	InCanvasDragDropController inCanvasMoveDropController;
@@ -101,6 +102,7 @@ public class LogicCanvas extends Composite {
 
 	public LogicCanvas() {
 
+		
 		createUUID();
 		linkedP2PPairs = new LinkedList<LinkedPair<PhysicalItem, PhysicalItem>>();
 		linkedP2PPairConnectorMap = new HashMap<LinkedPair<PhysicalItem, PhysicalItem>, Widget>();
@@ -170,6 +172,13 @@ public class LogicCanvas extends Composite {
 
 	}
 
+	@Override
+	public void onUnload()
+	{
+		linkedInCanvasHandler.removeHandler();
+		super.onUnload();				
+	}
+	
 	private void createUUID() {
 		UuidServiceAsync uuidService = GWT.create(UuidService.class);
 
@@ -191,11 +200,7 @@ public class LogicCanvas extends Composite {
 
 	}
 
-	public void onUnload() {
-		linkedInCanvasHandler.removeHandler();
-		super.onUnload();
-	}
-
+	
 	public DropController getListToCanvasDropController() {
 
 		return this.listToCanvasDropController;
@@ -211,7 +216,7 @@ public class LogicCanvas extends Composite {
 		inCanvasMoveDropController = new InCanvasDragDropController(logicPanel);
 		dragController.registerDropController(inCanvasMoveDropController);
 
-		HandlerRegistration draggedToCanvasHandler;
+		
 		draggedToCanvasHandler = EventUtils.EVENT_BUS.addHandler(
 				DraggedToCanvasEvent.TYPE, new DraggedToCanvasEventHandler() {
 
@@ -221,21 +226,26 @@ public class LogicCanvas extends Composite {
 
 						// TODO Auto-generated method stub
 
+						
+						
 						if (draggedToCanvasEvent.getContext().selectedWidgets
 								.get(0) instanceof ExplorerLabel) {
 							addCanvasLabel(draggedToCanvasEvent);
+							
 
 						} else if (draggedToCanvasEvent.getContext().selectedWidgets
 								.get(0) instanceof LogicCheckAnd) {
-
 							addLogicCheckAnd(draggedToCanvasEvent);
+							
 
 						} else if (draggedToCanvasEvent.getContext().selectedWidgets
 								.get(0) instanceof LogicCheckOr) {
-
 							addLogicCheckOr(draggedToCanvasEvent);
+							
 
 						}
+						
+						
 
 					}
 
@@ -266,6 +276,9 @@ public class LogicCanvas extends Composite {
 				logicCheckAnd);
 
 		linkDragController.registerDropController(inCanvasLinkDropController);
+		
+		
+		
 	}
 
 	private void addLogicCheckOr(DraggedToCanvasEvent draggedToCanvasEvent) {
@@ -291,6 +304,8 @@ public class LogicCanvas extends Composite {
 				logicCheckOr);
 
 		linkDragController.registerDropController(inCanvasLinkDropController);
+		
+		
 	}
 
 	private void addCanvasLabel(DraggedToCanvasEvent draggedToCanvasEvent) {
@@ -329,6 +344,8 @@ public class LogicCanvas extends Composite {
 				propertyLabel);
 
 		linkDragController.registerDropController(inCanvasLinkDropController);
+		
+		
 
 	}
 
@@ -426,6 +443,8 @@ public class LogicCanvas extends Composite {
 					public void onLinkedInCanvas(
 							LinkedInCanvasP2PEvent linkedInCanvasEvent) {
 						// TODO Auto-generated method stub
+						
+						linkedInCanvasHandler.removeHandler();
 
 						RootPanel.get().add(new HTML("LINKED IN FIRED"));
 
@@ -454,7 +473,7 @@ public class LogicCanvas extends Composite {
 						connectorsSensorActor.add(connector);
 
 						// connector.show();
-						connector.setAutoHideEnabled(true);
+						
 						connector.center();
 
 						// add button to open dialog and position on connection
@@ -475,6 +494,7 @@ public class LogicCanvas extends Composite {
 									@Override
 									public void onClick(ClickEvent event) {
 										// TODO Auto-generated method stub
+										RootPanel.get().add(new HTML("Click on Opener..."));
 										connector.center();
 									}
 
@@ -631,6 +651,8 @@ public class LogicCanvas extends Composite {
 					public void onLinkedInCanvas(
 							LinkedInCanvasP2LEvent linkedInCanvasEvent) {
 						// TODO Auto-generated method stub
+						
+						linkedInCanvasHandler.removeHandler();
 
 						RootPanel.get().add(new HTML("LINKED IN L FIRED"));
 
@@ -707,12 +729,16 @@ public class LogicCanvas extends Composite {
 		linkedInCanvasHandler = EventUtils.EVENT_BUS.addHandler(
 				LinkedInCanvasL2PEvent.TYPE,
 				new LinkedInCanvasL2PEventHandler() {
+					
+					
 
 					@Override
 					public void onLinkedInCanvas(
 							LinkedInCanvasL2PEvent linkedInCanvasEvent) {
 						// TODO Auto-generated method stub
 
+						linkedInCanvasHandler.removeHandler();
+						
 						RootPanel.get().add(new HTML("LINKED IN L FIRED"));
 
 						LinkedPair<LogicCheck, PhysicalItem> linkedPair = new LinkedPair<LogicCheck, PhysicalItem>(
