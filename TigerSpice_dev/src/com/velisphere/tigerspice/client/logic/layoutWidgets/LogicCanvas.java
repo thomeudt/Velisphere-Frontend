@@ -72,6 +72,7 @@ public class LogicCanvas extends Composite {
 
 	String uuid;
 
+	
 	Context2d context;
 	Canvas canvas;
 
@@ -102,8 +103,11 @@ public class LogicCanvas extends Composite {
 
 	public LogicCanvas() {
 
-		
+	
+		EventUtils.EVENT_BUS.removeHandlers();
 		createUUID();
+		linkedInCanvasHandler = null;
+		
 		linkedP2PPairs = new LinkedList<LinkedPair<PhysicalItem, PhysicalItem>>();
 		linkedP2PPairConnectorMap = new HashMap<LinkedPair<PhysicalItem, PhysicalItem>, Widget>();
 		linkedP2LPairs = new LinkedList<LinkedPair<PhysicalItem, LogicCheck>>();
@@ -176,6 +180,7 @@ public class LogicCanvas extends Composite {
 	public void onUnload()
 	{
 		linkedInCanvasHandler.removeHandler();
+		linkedInCanvasHandler = null;
 		super.onUnload();				
 	}
 	
@@ -443,8 +448,7 @@ public class LogicCanvas extends Composite {
 					public void onLinkedInCanvas(
 							LinkedInCanvasP2PEvent linkedInCanvasEvent) {
 						// TODO Auto-generated method stub
-						
-						linkedInCanvasHandler.removeHandler();
+												
 
 						RootPanel.get().add(new HTML("LINKED IN FIRED"));
 
@@ -652,7 +656,7 @@ public class LogicCanvas extends Composite {
 							LinkedInCanvasP2LEvent linkedInCanvasEvent) {
 						// TODO Auto-generated method stub
 						
-						linkedInCanvasHandler.removeHandler();
+					
 
 						RootPanel.get().add(new HTML("LINKED IN L FIRED"));
 
@@ -737,7 +741,7 @@ public class LogicCanvas extends Composite {
 							LinkedInCanvasL2PEvent linkedInCanvasEvent) {
 						// TODO Auto-generated method stub
 
-						linkedInCanvasHandler.removeHandler();
+						
 						
 						RootPanel.get().add(new HTML("LINKED IN L FIRED"));
 

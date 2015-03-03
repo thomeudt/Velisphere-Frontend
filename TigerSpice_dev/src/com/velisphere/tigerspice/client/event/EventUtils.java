@@ -26,7 +26,7 @@ import com.google.gwt.event.shared.SimpleEventBus;
 
 public class EventUtils {
 	 
-	public static EventBus EVENT_BUS = GWT.create(SimpleEventBus.class);
+	public static ResettableEventBus EVENT_BUS = new ResettableEventBus(new SimpleEventBus());
 	
 	
 }
