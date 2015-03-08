@@ -58,6 +58,7 @@ import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr;
 import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
+import com.velisphere.tigerspice.client.logic.draggables.TrashCan;
 import com.velisphere.tigerspice.client.rules.CheckPathService;
 import com.velisphere.tigerspice.client.rules.CheckPathServiceAsync;
 import com.velisphere.tigerspice.client.spheres.SphereService;
@@ -75,6 +76,9 @@ public class LogicCanvas extends Composite {
 	
 	Context2d context;
 	Canvas canvas;
+	TrashCan trashCan;
+	int trashCanXPos;
+	int trashCanYPos;
 
 	
 	HandlerRegistration linkedInCanvasHandler;
@@ -104,7 +108,9 @@ public class LogicCanvas extends Composite {
 	public LogicCanvas() {
 
 	
-		EventUtils.EVENT_BUS.removeHandlers();
+		EventUtils.EVENT_BUS.removeHandlers();	
+		
+		
 		createUUID();
 		linkedInCanvasHandler = null;
 		
@@ -168,21 +174,29 @@ public class LogicCanvas extends Composite {
 									5, 5);
 
 					context = canvas.getContext2d();
+					addTrashCan();
 
 				}
 
 			}
 		});
+		
+		
 
 	}
 
-	@Override
-	public void onUnload()
-	{
-		linkedInCanvasHandler.removeHandler();
-		linkedInCanvasHandler = null;
-		super.onUnload();				
+	
+	
+	private void addTrashCan() {
+		
+		trashCan = new TrashCan();
+		trashCanXPos = 10;
+		trashCanYPos = canvas.getCoordinateSpaceHeight()-60;
+		logicPanel.add(trashCan, trashCanXPos, trashCanYPos);
+		
+
 	}
+
 	
 	private void createUUID() {
 		UuidServiceAsync uuidService = GWT.create(UuidService.class);
@@ -1074,6 +1088,20 @@ public class LogicCanvas extends Composite {
 											.setyPos(
 													widgetLocation.getTop()
 															- controlsOffsetY);
+									
+									
+									
+									
+									
+									// check if moved to trash
+									
+									if ((draggedInCanvasEvent.getCanvasLabel().getyPos() > trashCanYPos - 20) &&
+											(draggedInCanvasEvent.getCanvasLabel().getxPos() < trashCanXPos + 50))
+																		
+									{
+										draggedInCanvasEvent.getContext().selectedWidgets
+										.get(0).removeFromParent();																		
+									}
 
 									// move dragPoint if it is a sensor
 
@@ -1099,6 +1127,34 @@ public class LogicCanvas extends Composite {
 										.get(0) instanceof LogicCheckAnd) {
 									// move dragPoint if it is a logical and
 									// check
+									
+									// update position data
+
+									WidgetLocation widgetLocation = new WidgetLocation(
+											draggedInCanvasEvent
+													.getLogicCheckAnd(),
+											logicPanel);
+									draggedInCanvasEvent.getLogicCheckAnd()
+											.setxPos(widgetLocation.getLeft());
+									draggedInCanvasEvent.getLogicCheckAnd()
+											.setyPos(
+													widgetLocation.getTop()
+															- controlsOffsetY);
+									
+									
+									
+									
+									// check if moved to trash
+									
+									if ((draggedInCanvasEvent.getLogicCheckAnd().getyPos() > trashCanYPos - 20) &&
+											(draggedInCanvasEvent.getLogicCheckAnd().getxPos() < trashCanXPos + 50))
+																		
+									{
+										draggedInCanvasEvent.getContext().selectedWidgets
+										.get(0).removeFromParent();																		
+									}
+
+									
 
 									WidgetLocation newLocation = new WidgetLocation(
 											draggedInCanvasEvent
@@ -1117,9 +1173,38 @@ public class LogicCanvas extends Composite {
 
 								if (draggedInCanvasEvent.getContext().selectedWidgets
 										.get(0) instanceof LogicCheckOr) {
+									
+									// update position data
+
+									WidgetLocation widgetLocation = new WidgetLocation(
+											draggedInCanvasEvent
+													.getLogicCheckOr(),
+											logicPanel);
+									draggedInCanvasEvent.getLogicCheckOr()
+											.setxPos(widgetLocation.getLeft());
+									draggedInCanvasEvent.getLogicCheckOr()
+											.setyPos(
+													widgetLocation.getTop()
+															- controlsOffsetY);
+									
+
+
 									// move dragPoint if it is a logical and
 									// check
 
+									RootPanel.get().add(new HTML("x"+draggedInCanvasEvent.getLogicCheckOr().getyPos()));
+									RootPanel.get().add(new HTML("y"+draggedInCanvasEvent.getLogicCheckOr().getxPos()));
+									RootPanel.get().add(new HTML("xT"+trashCanXPos));
+									RootPanel.get().add(new HTML("yT"+trashCanYPos));
+									
+									if ((draggedInCanvasEvent.getLogicCheckOr().getyPos() > trashCanYPos - 20) &&
+											(draggedInCanvasEvent.getLogicCheckOr().getxPos() < trashCanXPos + 50))
+																		
+									{
+										draggedInCanvasEvent.getContext().selectedWidgets
+										.get(0).removeFromParent();																		
+									}
+									
 									WidgetLocation newLocation = new WidgetLocation(
 											draggedInCanvasEvent
 													.getLogicCheckOr(),
