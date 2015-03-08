@@ -102,6 +102,7 @@ public class LogicCanvas extends Composite {
 	HashMap<LinkedPair<PhysicalItem, PhysicalItem>, Widget> linkedP2PPairConnectorMap;
 	HashMap<LinkedPair<PhysicalItem, LogicCheck>, Widget> linkedP2LPairConnectorMap;
 	HashMap<LinkedPair<LogicCheck, PhysicalItem>, Widget> linkedL2PPairConnectorMap;
+	LinkedList<ConnectorSensorActor> deletedConnectorsSensorActor;
 
 	AbsolutePanel logicPanel;
 
@@ -126,6 +127,8 @@ public class LogicCanvas extends Composite {
 		connectorsLogicCheckActor = new LinkedList<ConnectorLogicCheckActor>();
 		connectorsSensorActor = new LinkedList<ConnectorSensorActor>();
 		connectorsSensorLogicCheck = new LinkedList<ConnectorSensorLogicCheck>();
+		
+		deletedConnectorsSensorActor = new LinkedList<ConnectorSensorActor>();
 
 		logicPanel = new AbsolutePanel();
 
@@ -249,7 +252,7 @@ public class LogicCanvas extends Composite {
 						
 						if (draggedToCanvasEvent.getContext().selectedWidgets
 								.get(0) instanceof ExplorerLabel) {
-							addCanvasLabel(draggedToCanvasEvent);
+							addPhysicalItem(draggedToCanvasEvent);
 							
 
 						} else if (draggedToCanvasEvent.getContext().selectedWidgets
@@ -327,7 +330,7 @@ public class LogicCanvas extends Composite {
 		
 	}
 
-	private void addCanvasLabel(DraggedToCanvasEvent draggedToCanvasEvent) {
+	private void addPhysicalItem(DraggedToCanvasEvent draggedToCanvasEvent) {
 
 		final ExplorerLabel current = (ExplorerLabel) draggedToCanvasEvent
 				.getContext().selectedWidgets.get(0);
@@ -1099,8 +1102,7 @@ public class LogicCanvas extends Composite {
 											(draggedInCanvasEvent.getCanvasLabel().getxPos() < trashCanXPos + 50))
 																		
 									{
-										draggedInCanvasEvent.getContext().selectedWidgets
-										.get(0).removeFromParent();																		
+										removePhysicalItem(draggedInCanvasEvent.getCanvasLabel());																		
 									}
 
 									// move dragPoint if it is a sensor
@@ -1227,6 +1229,33 @@ public class LogicCanvas extends Composite {
 							}
 						});
 
+	}
+	
+	private void removePhysicalItem(PhysicalItem physicalItem)
+	{
+		physicalItem.removeFromParent();
+
+		
+		Iterator<LinkedPair<PhysicalItem, PhysicalItem>> ip = linkedP2PPairs.iterator();
+		while (ip.hasNext())
+		{
+			LinkedPair<PhysicalItem, PhysicalItem> pair = ip.next();
+			if (pair.getLeft() == physicalItem || pair.getRight() == physicalItem)
+			{
+				linkedP2PPairs.remove(pair);
+				ConnectorSensorActor connector = (ConnectorSensorActor) linkedP2PPairConnectorMap.get(pair);
+				deletedConnectorsSensorActor.add(connector);
+				connectorsSensorActor.remove(connector);
+				linkedP2PPairConnectorMap.remove(pair);
+				logicPanel.remove(connector.getOpenerWidget());
+				RootPanel.get().add(new HTML("Removed P2P connector added to list " + connector.getCheckUUID()));
+				drawLinks("cornflowerblue");
+			}
+		}
+		
+		
+	
+				
 	}
 
 	

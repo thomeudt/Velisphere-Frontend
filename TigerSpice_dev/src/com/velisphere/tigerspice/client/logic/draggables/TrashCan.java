@@ -41,6 +41,7 @@ public class TrashCan extends FocusPanel implements HasAllTouchHandlers {
     	
     	Icon icnTrash = new Icon(IconType.TRASH);
     	icnTrash.setSize(IconSize.FOUR_TIMES);
+    
     	h.add(icnTrash);
             	
         this.add(h);

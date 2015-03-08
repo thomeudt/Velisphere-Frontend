@@ -1,5 +1,7 @@
 package com.velisphere.tigerspice.client.logic.draggables;
 
+import java.util.LinkedList;
+
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.client.GWT;
@@ -29,6 +31,7 @@ import com.velisphere.tigerspice.client.helper.UuidService;
 import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
 import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
 import com.velisphere.tigerspice.shared.EPCData;
+import com.velisphere.tigerspice.shared.LinkedPair;
 import com.velisphere.tigerspice.shared.SerializableLogicPhysicalItem;
 
 
@@ -49,6 +52,7 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
     	int yPos;
     	String uuid;
     	Image imgEpcImage;
+
         
         
         public PhysicalItem(String text, String endpointName, String propertyID, String endpointID, String endpointClassID, String propertyClassID, byte isSensor, byte isActor){
@@ -104,7 +108,7 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
     		
     	}
         
-       
+     
         private void buildLayout()
         {
         	HorizontalPanel h = new HorizontalPanel();
