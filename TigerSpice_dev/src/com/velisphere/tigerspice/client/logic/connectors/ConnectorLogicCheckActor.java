@@ -35,6 +35,7 @@ import com.velisphere.tigerspice.client.helper.ActionSourceConfig;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
 import com.velisphere.tigerspice.client.helper.UuidService;
 import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
+import com.velisphere.tigerspice.client.logic.draggables.DraggableButton;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheck;
 import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.properties.PropertyService;
@@ -53,7 +54,7 @@ public class ConnectorLogicCheckActor extends Connector {
 
 	PhysicalItem actor;
 	LogicCheck logicCheck;
-	Button openingButton;
+	DraggableButton openingButton;
 	ListBox lbxSource;
 	TextBox txtManualEntry;
 	ListBox lbxTypicalValues;
@@ -294,7 +295,7 @@ public class ConnectorLogicCheckActor extends Connector {
 	
 	private void createOpenerWidget()
 	{
-		openingButton = new Button();
+		openingButton = new DraggableButton(this, this.getClass());
 		openingButton.setBaseIcon(IconType.FILTER);
 		
 		openingButton.setStyleName("connbtn");
@@ -306,7 +307,7 @@ public class ConnectorLogicCheckActor extends Connector {
 	
 	
 	
-	public Button getOpenerWidget()
+	public DraggableButton getOpenerWidget()
 	{
 		return this.openingButton;
 	}

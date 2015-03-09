@@ -42,6 +42,7 @@ public class LogicCheck extends FocusPanel implements HasAllTouchHandlers {
 	boolean or;
 	boolean and;
 	LinkedList<ConnectorSensorLogicCheck> childConnectors;
+	LinkedList<ConnectorSensorLogicCheck> deletedChildConnectors;
 	InCanvasLinkDropController linkDropController;
 	
 
@@ -54,6 +55,7 @@ public class LogicCheck extends FocusPanel implements HasAllTouchHandlers {
 		
 		createCheckUUID();
 		childConnectors = new LinkedList<ConnectorSensorLogicCheck>();
+		deletedChildConnectors = new LinkedList<ConnectorSensorLogicCheck>();
 		sourceCount = 0;
 		removeDefaultMouseDown();
 		content = "Logic Check";
@@ -246,10 +248,20 @@ public class LogicCheck extends FocusPanel implements HasAllTouchHandlers {
 		return childConnectors;
 	}
 
+	public LinkedList<ConnectorSensorLogicCheck> getDeletedChildConnectors() {
+		return deletedChildConnectors;
+	}
+
 
 	public void addChildConnector(
 			ConnectorSensorLogicCheck childConnector) {
 		this.childConnectors.add(childConnector);
+	}
+	
+	public void removeChildConnector(
+			ConnectorSensorLogicCheck childConnector) {
+		this.childConnectors.remove(childConnector);
+		this.deletedChildConnectors.add(childConnector);
 	}
 	
 	public InCanvasLinkDropController getLinkDropController() {

@@ -10,7 +10,7 @@ public class Connector extends PopupPanel {
 
 	String checkUUID;
 	String actionUUID;
-	boolean hasOpener;
+
 	
 	
 	public Connector()

@@ -27,6 +27,7 @@ import com.velisphere.tigerspice.client.event.ConnectionSaveEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.helper.ActionSourceConfig;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
+import com.velisphere.tigerspice.client.logic.draggables.DraggableButton;
 import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
@@ -41,7 +42,7 @@ public class ConnectorSensorActor extends Connector {
 
 	PhysicalItem actor;
 	PhysicalItem sensor;
-	Button openingButton;
+	DraggableButton openingButton;
 	ListBox lbxSource;
 	TextBox txtManualEntry;
 	ListBox lbxValueFromSensor;
@@ -482,14 +483,14 @@ public class ConnectorSensorActor extends Connector {
 	}
 
 	private void createOpenerWidget() {
-		openingButton = new Button();
+		openingButton = new DraggableButton(this, this.getClass());
 		openingButton.setBaseIcon(IconType.FILTER);
 
 		openingButton.setStyleName("connbtn");
 
 	}
 
-	public Button getOpenerWidget() {
+	public DraggableButton getOpenerWidget() {
 		return this.openingButton;
 	}
 

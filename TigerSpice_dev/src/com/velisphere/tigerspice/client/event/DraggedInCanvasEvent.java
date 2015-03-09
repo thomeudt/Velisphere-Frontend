@@ -18,11 +18,13 @@
 package com.velisphere.tigerspice.client.event;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
+import com.github.gwtbootstrap.client.ui.Button;
 import com.google.common.eventbus.EventBus;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.logic.draggables.DraggableButton;
 import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr;
@@ -37,6 +39,7 @@ public class DraggedInCanvasEvent extends GwtEvent<DraggedInCanvasEventHandler> 
 		PhysicalItem canvasLabel;
 		LogicCheckAnd logicCheckAnd;
 		LogicCheckOr logicCheckOr;
+		DraggableButton button;
 		
 		
 		public DraggedInCanvasEvent(DragContext context, PhysicalItem canvasLabel)
@@ -55,6 +58,11 @@ public class DraggedInCanvasEvent extends GwtEvent<DraggedInCanvasEventHandler> 
 			this.context = context;
 		}
 
+		public DraggedInCanvasEvent(DragContext context, DraggableButton button) {
+			this.button = button;
+			this.context = context;
+		}
+		
 		@Override
 		public Type<DraggedInCanvasEventHandler> getAssociatedType() {
 		    return TYPE;
@@ -78,6 +86,11 @@ public class DraggedInCanvasEvent extends GwtEvent<DraggedInCanvasEventHandler> 
 		public LogicCheckOr getLogicCheckOr()
 		{
 			return this.logicCheckOr;
+		}
+		
+		public DraggableButton getButton()
+		{
+			return this.button;
 		}
 		
 		public DragContext getContext()

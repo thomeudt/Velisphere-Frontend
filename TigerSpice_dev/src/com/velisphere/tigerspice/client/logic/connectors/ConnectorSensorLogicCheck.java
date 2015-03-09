@@ -33,6 +33,7 @@ import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.helper.ActionSourceConfig;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
+import com.velisphere.tigerspice.client.logic.draggables.DraggableButton;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheck;
 import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.properties.PropertyService;
@@ -50,7 +51,7 @@ public class ConnectorSensorLogicCheck extends Connector {
 
 	LogicCheck logicCheck;
 	PhysicalItem sensor;
-	Button openingButton;
+	DraggableButton openingButton;
 	TextBox txtCheckValue;
 	ListBox lbxOperator;
 	boolean layoutCreated;
@@ -346,18 +347,18 @@ public class ConnectorSensorLogicCheck extends Connector {
 	
 	private void createOpenerWidget()
 	{
-		openingButton = new Button();
+		openingButton = new DraggableButton(this, this.getClass());
+		
 		openingButton.setBaseIcon(IconType.FILTER);
 		
 		openingButton.setStyleName("connbtn");
 		
-		final ConnectorSensorLogicCheck currentConnector = this;
-				
+	
 	}
 	
 	
 	
-	public Button getOpenerWidget()
+	public DraggableButton getOpenerWidget()
 	{
 		return this.openingButton;
 	}

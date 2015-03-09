@@ -3,6 +3,8 @@ package com.velisphere.tigerspice.client.logic.layoutWidgets;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.DropController;
@@ -52,6 +54,7 @@ import com.velisphere.tigerspice.client.logic.controllers.InCanvasLinkDropContro
 import com.velisphere.tigerspice.client.logic.controllers.InCanvasDragDropController;
 import com.velisphere.tigerspice.client.logic.controllers.ListToCanvasDropController;
 import com.velisphere.tigerspice.client.logic.controllers.LogicToCanvasDropController;
+import com.velisphere.tigerspice.client.logic.draggables.DraggableButton;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheck;
 import com.velisphere.tigerspice.client.logic.draggables.ExplorerLabel;
 import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
@@ -141,6 +144,7 @@ public class LogicCanvas extends Composite {
 		initWidget(logicPanel);
 
 		dragController = new PickupDragController(logicPanel, false);
+		dragController.setBehaviorDragStartSensitivity(5);
 		linkDragController = new PickupDragController(logicPanel, false);
 
 		listToCanvasDropController = new ListToCanvasDropController(logicPanel);
@@ -528,6 +532,8 @@ public class LogicCanvas extends Composite {
 
 								});
 
+						
+						dragController.makeDraggable(connector.getOpenerWidget());
 						// re draw the links
 
 						drawLinks("cornflowerblue");
@@ -744,6 +750,8 @@ public class LogicCanvas extends Composite {
 
 								});
 
+						dragController.makeDraggable(connector.getOpenerWidget());
+						
 						// re draw the links
 
 						drawLinks("cornflowerblue");
@@ -819,6 +827,8 @@ public class LogicCanvas extends Composite {
 									}
 
 								});
+						
+						dragController.makeDraggable(connector.getOpenerWidget());
 
 						// re draw the links
 
@@ -992,6 +1002,8 @@ public class LogicCanvas extends Composite {
 
 					});
 
+			
+			
 			RootPanel
 					.get()
 					.add(new HTML("Positioning opener Button for "
@@ -1132,6 +1144,8 @@ public class LogicCanvas extends Composite {
 									}
 								}
 
+								// logic check and
+								
 								if (draggedInCanvasEvent.getContext().selectedWidgets
 										.get(0) instanceof LogicCheckAnd) {
 									// move dragPoint if it is a logical and
@@ -1179,6 +1193,8 @@ public class LogicCanvas extends Composite {
 
 								}
 
+								// logic check or
+								
 								if (draggedInCanvasEvent.getContext().selectedWidgets
 										.get(0) instanceof LogicCheckOr) {
 									
@@ -1229,6 +1245,44 @@ public class LogicCanvas extends Composite {
 											- controlsOffsetY);
 
 								}
+								
+								
+								// connector
+								
+								RootPanel.get().add(new HTML("Class " + draggedInCanvasEvent.getContext().selectedWidgets
+										.get(0).getClass()));
+								
+								
+								if (draggedInCanvasEvent.getContext().selectedWidgets
+										.get(0) instanceof DraggableButton) {
+									
+									WidgetLocation newLocation = new WidgetLocation(
+											draggedInCanvasEvent.getButton(),
+											logicPanel);
+																		
+									
+									RootPanel.get().add(new HTML("Button to trash"));
+									
+									RootPanel.get().add(new HTML("Button to trash X " + newLocation.getLeft()));
+									RootPanel.get().add(new HTML("Button to trash Y " + newLocation.getTop()));
+									RootPanel.get().add(new HTML("Button to trash target X " + (trashCanXPos + 50)));
+									RootPanel.get().add(new HTML("Button to trash target Y " + (trashCanYPos - 20)));
+									
+									
+									// check if moved to trash
+									
+									if ((newLocation.getTop() > trashCanYPos - 20) &&
+											(newLocation.getLeft() < trashCanXPos + 50))
+																		
+									{
+										
+										RootPanel.get().add(new HTML("Remove!"));
+										
+										removeConnector(draggedInCanvasEvent.getButton());
+										
+									}
+								}
+
 
 								// re-draw the links
 
@@ -1298,6 +1352,7 @@ public class LogicCanvas extends Composite {
 				deletedConnectorsSensorLogicCheck.add(connector);
 				connectorsSensorLogicCheck.remove(connector);
 				linkedP2LPairConnectorMap.remove(pair);
+				pair.getRight().removeChildConnector(connector);
 				logicPanel.remove(connector.getOpenerWidget());
 				RootPanel.get().add(new HTML("Removed P2L connector added to list " + connector.getCheckUUID()));
 				drawLinks("cornflowerblue");
@@ -1357,6 +1412,90 @@ public class LogicCanvas extends Composite {
 		}
 	}
 
+
+	private void removeConnector(DraggableButton draggableButton)
+	{
+		
+		if (draggableButton.getConnectorType() == ConnectorLogicCheckActor.class)
+		{
+			ConnectorLogicCheckActor connector = (ConnectorLogicCheckActor) draggableButton.getConnector();
+			connectorsLogicCheckActor.remove(connector);
+		
+			Iterator<Entry<LinkedPair<LogicCheck, PhysicalItem>, Widget>> l2pIT =  linkedL2PPairConnectorMap.entrySet().iterator();
+			while(l2pIT.hasNext())
+			{
+				  Map.Entry<LinkedPair<LogicCheck, PhysicalItem>, Widget> pair = l2pIT.next();
+				  if(pair.getValue() == connector)
+				  {
+					  linkedL2PPairs.remove(pair.getKey());
+					  linkedL2PPairConnectorMap.remove(pair.getKey());
+				  }
+				  
+			}
+			
+			deletedConnectorsLogicCheckActor.add(connector);
+			connectorsLogicCheckActor.remove(connector);
+			logicPanel.remove(connector.getOpenerWidget());
+			RootPanel.get().add(new HTML("Removed L2P connector added to list " + connector.getCheckUUID()));
+			drawLinks("cornflowerblue");
+			
+		}
+		
+		if (draggableButton.getConnectorType() == ConnectorSensorActor.class)
+		{
+
+			ConnectorSensorActor connector = (ConnectorSensorActor) draggableButton.getConnector();
+			connectorsLogicCheckActor.remove(connector);
+	
+			Iterator<Entry<LinkedPair<PhysicalItem, PhysicalItem>, Widget>> p2pIT =  linkedP2PPairConnectorMap.entrySet().iterator();
+			while(p2pIT.hasNext())
+			{
+				  Map.Entry<LinkedPair<PhysicalItem, PhysicalItem>, Widget> pair = p2pIT.next();
+				  if(pair.getValue() == connector)
+				  {
+					  linkedP2PPairs.remove(pair.getKey());
+					  linkedP2PPairConnectorMap.remove(pair.getKey());
+				  }
+				  
+			}
+		
+			deletedConnectorsSensorActor.add(connector);
+			connectorsSensorActor.remove(connector);
+			logicPanel.remove(connector.getOpenerWidget());
+			RootPanel.get().add(new HTML("Removed P2P connector added to list " + connector.getCheckUUID()));
+			drawLinks("cornflowerblue");
+		
+		
+		}
+		
+		if (draggableButton.getConnectorType() == ConnectorSensorLogicCheck.class)
+		{
+			ConnectorSensorLogicCheck connector = (ConnectorSensorLogicCheck) draggableButton.getConnector();
+			connectorsSensorLogicCheck.remove(connector);
+
+			Iterator<Entry<LinkedPair<PhysicalItem, LogicCheck>, Widget>> p2lIT =  linkedP2LPairConnectorMap.entrySet().iterator();
+			while(p2lIT.hasNext())
+			{
+				  Map.Entry<LinkedPair<PhysicalItem, LogicCheck>, Widget> pair = p2lIT.next();
+				  if(pair.getValue() == connector)
+				  {
+					  linkedP2LPairs.remove(pair.getKey());
+					  linkedP2LPairConnectorMap.remove(pair.getKey());
+				  }
+				  
+			}
+			
+			deletedConnectorsSensorLogicCheck.add(connector);
+			connectorsSensorLogicCheck.remove(connector);
+			logicPanel.remove(connector.getOpenerWidget());
+			RootPanel.get().add(new HTML("Removed P2L connector added to list " + connector.getCheckUUID()));
+			drawLinks("cornflowerblue");
+		}
+		
+
+	}
+
+	
 	
 
 	public void saveToDatabase(String name) {
