@@ -27,6 +27,7 @@ import com.velisphere.tigerspice.client.helper.UuidService;
 import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
 import com.velisphere.tigerspice.client.images.Images;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorLogicCheck;
+import com.velisphere.tigerspice.client.logic.controllers.InCanvasLinkDropController;
 import com.velisphere.tigerspice.shared.SerializableLogicLogicCheck;
 import com.velisphere.tigerspice.shared.SerializableLogicPhysicalItem;
 
@@ -41,9 +42,12 @@ public class LogicCheck extends FocusPanel implements HasAllTouchHandlers {
 	boolean or;
 	boolean and;
 	LinkedList<ConnectorSensorLogicCheck> childConnectors;
+	InCanvasLinkDropController linkDropController;
 	
 
 	
+	
+
 	public LogicCheck()
 	{
 		super();
@@ -247,6 +251,16 @@ public class LogicCheck extends FocusPanel implements HasAllTouchHandlers {
 			ConnectorSensorLogicCheck childConnector) {
 		this.childConnectors.add(childConnector);
 	}
+	
+	public InCanvasLinkDropController getLinkDropController() {
+		return linkDropController;
+	}
+
+
+	public void setLinkDropController(InCanvasLinkDropController linkDropController) {
+		this.linkDropController = linkDropController;
+	}
+
 
 
 

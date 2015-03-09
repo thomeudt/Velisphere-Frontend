@@ -29,6 +29,7 @@ import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.helper.UuidService;
 import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
+import com.velisphere.tigerspice.client.logic.controllers.InCanvasLinkDropController;
 import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.LinkedPair;
@@ -52,6 +53,7 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
     	int yPos;
     	String uuid;
     	Image imgEpcImage;
+    	InCanvasLinkDropController linkDropController;
 
         
         
@@ -323,6 +325,15 @@ public class PhysicalItem extends FocusPanel implements HasAllTouchHandlers {
 
 		public void setUUID(String id) {
 			this.uuid = id;
+		}
+		
+		public InCanvasLinkDropController getLinkDropController() {
+			return linkDropController;
+		}
+
+
+		public void setLinkDropController(InCanvasLinkDropController linkDropController) {
+			this.linkDropController = linkDropController;
 		}
 
 
