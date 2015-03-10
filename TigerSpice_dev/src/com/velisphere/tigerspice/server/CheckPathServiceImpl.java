@@ -232,7 +232,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 	}
 
 	
-	public String addNewMulticheckCheckLink(String multicheckId, String checkId, String checkPathId)
+	public String addNewMulticheckCheckLink(String linkId, String multicheckId, String checkId, String checkPathId)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -249,7 +249,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 
 		try {
 			voltCon.montanaClient.callProcedure("MULTICHECK_CHECK_LINK.upsert",
-					UUID.randomUUID().toString(), multicheckId,  checkId, checkPathId);
+					linkId, multicheckId,  checkId, checkPathId);
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -863,7 +863,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 
 	}
 	
-	public String deleteMulticheckCheckLink(String parentMulticheckID)
+	public String deleteMulticheckCheckLink(String linkId)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -881,7 +881,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 		
 		try {
 			voltCon.montanaClient.callProcedure("UI_DeleteMulticheckCheckLink",
-					parentMulticheckID);
+					linkId);
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

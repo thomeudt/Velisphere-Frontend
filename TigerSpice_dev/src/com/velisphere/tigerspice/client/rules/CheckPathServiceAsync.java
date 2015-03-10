@@ -48,7 +48,7 @@ public interface CheckPathServiceAsync {
 	void createJsonFromContainer(SerializableLogicContainer object, AsyncCallback<String> callback );
 	void loadJsonToContainer(String checkpathName, AsyncCallback<SerializableLogicContainer> callback );
 	void addNewMulticheck(String checkId, String operator, String multicheckName, String checkpathID, LinkedList<ActionObject> actions, AsyncCallback<String> callback );
-	void addNewMulticheckCheckLink(String multiCheckId, String checkId, String checkPathId, AsyncCallback<String> callback );
+	void addNewMulticheckCheckLink(String linkId, String multiCheckId, String checkId, String checkPathId, AsyncCallback<String> callback );
 	void addNewMulticheckMulticheckLink(String multicheckLId, String multicheckRId, String checkPathId, AsyncCallback<String> callback );
 	void getAllCheckpaths(String userID, AsyncCallback<LinkedHashMap<String, String>> callback);
 	void getCheckpathDetails(String checkpathId, AsyncCallback<CheckPathData> callback);

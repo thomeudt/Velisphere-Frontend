@@ -52,13 +52,13 @@ public interface CheckPathService extends RemoteService {
 		SerializableLogicContainer loadJsonToContainer(String checkpathName);
 		CheckPathObjectTree getUiObjectJSONForCheckpathID(String checkpathID);
 		String addNewMulticheck(String checkId, String operator, String multicheckName, String checkpathID, LinkedList<ActionObject> actions);
-		String addNewMulticheckCheckLink(String multiCheckId, String checkId, String checkPathId);
+		String addNewMulticheckCheckLink(String linkId, String multiCheckId, String checkId, String checkPathId);
 		String addNewMulticheckMulticheckLink(String multicheckLId, String multicheckRId, String checkPathId);
 		LinkedHashMap<String, String> getAllCheckpaths(String userID);
 		CheckPathData getCheckpathDetails(String checkpathId);
 		String updateCheckpathName(String checkpathId, String checkpathName);
 		String updateMulticheck(String multicheckID, String multicheckOperator, String multicheckName,String checkpathID, LinkedList<ActionObject> actions);
-		String deleteMulticheckCheckLink(String parentMulticheckID);
+		String deleteMulticheckCheckLink(String linkID);
 		String deleteMulticheckMulticheckLink(String parentMulticheckID);
 		String deleteMulticheck(String multicheckID);
 		String addNewCheckpathCheckLink(String checkpathID, String checkID);

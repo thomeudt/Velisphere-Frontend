@@ -555,7 +555,7 @@ public class CheckpathEditView extends Composite {
 						final AnimationLoading animationChecks = new AnimationLoading();
 						animation.showLoadAnimation("Saving Checks...");
 
-						rpcServiceCheckPath.addNewMulticheckCheckLink(
+						rpcServiceCheckPath.addNewMulticheckCheckLink(null,
 								checkpathObject.checkId,
 								childCheck.checkId,
 								checkpathID,
@@ -813,7 +813,7 @@ public class CheckpathEditView extends Composite {
 														
 														animation.showLoadAnimation("Linking...");
 
-														rpcServiceCheckPath.addNewMulticheckCheckLink(
+														rpcServiceCheckPath.addNewMulticheckCheckLink(null,
 																currentCheckpathObject.checkId,
 																childCheck.checkId,
 																checkpathID,

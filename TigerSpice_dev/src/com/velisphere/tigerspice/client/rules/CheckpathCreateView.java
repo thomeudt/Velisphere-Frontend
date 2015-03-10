@@ -329,7 +329,7 @@ public class CheckpathCreateView extends Composite {
 
 								// now write to database
 
-								rpcServiceCheckPath.addNewMulticheckCheckLink(
+								rpcServiceCheckPath.addNewMulticheckCheckLink(null,
 										checkpathObject.checkId,
 										childCheck.checkId,
 										checkPathId,

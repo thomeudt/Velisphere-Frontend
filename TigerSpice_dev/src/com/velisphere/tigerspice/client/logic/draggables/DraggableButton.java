@@ -1,6 +1,7 @@
 package com.velisphere.tigerspice.client.logic.draggables;
 
 import com.github.gwtbootstrap.client.ui.Button;
+import com.google.gwt.dom.client.Style.Cursor;
 import com.velisphere.tigerspice.client.logic.connectors.Connector;
 
 public class DraggableButton extends Button {
@@ -14,7 +15,8 @@ public class DraggableButton extends Button {
 		super();
 		this.connector = connector;
 		this.connectorType = connectorType;
-		
+		this.getElement().getStyle().setCursor(Cursor.POINTER);
+        
 	}
 	
 	public Connector getConnector() {

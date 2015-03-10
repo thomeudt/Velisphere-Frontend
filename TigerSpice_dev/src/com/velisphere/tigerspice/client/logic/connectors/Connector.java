@@ -10,6 +10,7 @@ public class Connector extends PopupPanel {
 
 	String checkUUID;
 	String actionUUID;
+	String uuid;
 
 	
 	
@@ -19,6 +20,7 @@ public class Connector extends PopupPanel {
 		
 		createActionUUID();
 		createCheckUUID();
+		createUUID();
 	}
 	
 	protected void createActionUUID()
@@ -67,12 +69,40 @@ public class Connector extends PopupPanel {
 		
 	}
 	
+	protected void createUUID()
+	{
+		UuidServiceAsync uuidService = GWT
+				.create(UuidService.class);
+		
+		uuidService.getUuid(new AsyncCallback<String>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				// TODO Auto-generated method stub
+				uuid = result;
+			}
+			
+		});
+		
+	}
+
+	
 	public String getCheckUUID() {
 		return checkUUID;
 	}
 	
 	public String getActionUUID() {
 		return actionUUID;
+	}
+	
+	public String getUUID() {
+		return uuid;
 	}
 	
 	  public void close()

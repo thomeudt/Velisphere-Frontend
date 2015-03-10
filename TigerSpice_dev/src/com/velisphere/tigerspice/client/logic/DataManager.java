@@ -299,8 +299,11 @@ public class DataManager {
 					.getChildConnectors().iterator();
 
 			while (pit.hasNext()) {
+				
+				ConnectorSensorLogicCheck childConnector = pit.next();
+				
 				checkpathService.addNewMulticheckCheckLink(
-						current.getCheckUUID(), pit.next().getCheckUUID(),
+						childConnector.getUUID(), current.getCheckUUID(), childConnector.getCheckUUID(),
 						canvas.getUUID(), new AsyncCallback<String>() {
 
 							@Override
@@ -324,6 +327,233 @@ public class DataManager {
 		}
 	}
 
+	public void processDeletedL2P() {
+		Iterator<ConnectorLogicCheckActor> it = canvas
+				.getDeletedConnectorsLogicCheckActor().iterator();
+
+		while (it.hasNext()) {
+
+			ConnectorLogicCheckActor current = it.next();
+
+			
+			// delete multicheck from database
+
+			CheckPathServiceAsync checkpathService = GWT
+					.create(CheckPathService.class);
+
+			checkpathService.deleteMulticheck(current.getCheckUUID(),
+					new AsyncCallback<String>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void onSuccess(String result) {
+							// TODO Auto-generated method stub
+
+							RootPanel.get().add(
+									new HTML(
+											"Result from attempt to delete check L2P: "
+													+ result));
+						}
+
+					});
+
+			// delete actions from database
+
+			checkpathService.deleteAllActionsForMulticheckId(current.getCheckUUID(),
+					new AsyncCallback<String>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void onSuccess(String result) {
+							// TODO Auto-generated method stub
+
+							RootPanel.get().add(
+									new HTML(
+											"Result from attempt to delete actions L2P: "
+													+ result));
+						}
+
+					});
+
+			
+			
+			// delete links to checks
+
+			Iterator<ConnectorSensorLogicCheck> pit = current.getLogicCheck()
+					.getDeletedChildConnectors().iterator();
+
+			while (pit.hasNext()) {
+				checkpathService.deleteMulticheckCheckLink(pit.next().getUUID(),
+						new AsyncCallback<String>() {
+
+							@Override
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+
+							}
+
+							@Override
+							public void onSuccess(String result) {
+								// TODO Auto-generated method stub
+								RootPanel.get().add(
+										new HTML(
+												"Result from attempt to delete link between check and multicheck: "
+														+ result));
+							}
+
+						});
+			}
+
+		}
+	}
+
+	
+	public void processDeletedP2P() {
+		Iterator<ConnectorSensorActor> it = canvas.getDeletedConnectorsSensorActor()
+				.iterator();
+
+		RootPanel.get().add(new HTML("Deleted P2P: started"));
+		
+		while (it.hasNext()) {
+
+			ConnectorSensorActor current = it.next();
+			
+			RootPanel.get().add(new HTML("P2P: fetched connector"));
+
+			
+			// delete from database
+
+			CheckServiceAsync checkService = GWT.create(CheckService.class);
+
+			checkService.deleteCheck(current.getCheckUUID(),
+					new AsyncCallback<String>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void onSuccess(String result) {
+							// TODO Auto-generated method stub
+
+							RootPanel.get().add(
+									new HTML(
+											"Result from attempt to delere check P2P: "
+													+ result));
+						}
+
+					});
+			
+			// delete actions from database
+
+						checkService.deleteAllActionsForCheckId(current.getCheckUUID(),
+								new AsyncCallback<String>() {
+
+									@Override
+									public void onFailure(Throwable caught) {
+										// TODO Auto-generated method stub
+
+									}
+
+									@Override
+									public void onSuccess(String result) {
+										// TODO Auto-generated method stub
+
+										RootPanel.get().add(
+												new HTML(
+														"Result from attempt to delete actions P2P: "
+																+ result));
+									}
+
+								});
+
+
+
+		}
+	}
+
+	
+	public void processDeletedP2L() {
+
+		Iterator<ConnectorSensorLogicCheck> it = canvas
+				.getConnectorsSensorLogicCheck().iterator();
+		
+		RootPanel.get().add(new HTML("Deleted P2L: started"));
+
+		while (it.hasNext()) {
+
+			ConnectorSensorLogicCheck current = it.next();
+			
+			RootPanel.get().add(new HTML("P2L: fetched connector"));
+			
+			// send check to database
+
+			CheckServiceAsync checkService = GWT.create(CheckService.class);
+			
+			checkService.deleteCheck(current.getCheckUUID(), 
+					new AsyncCallback<String>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void onSuccess(String result) {
+							// TODO Auto-generated method stub
+
+							RootPanel.get().add(
+									new HTML(
+											"Result from attempt to delete check P2L: "
+													+ result));
+						}
+
+					});
+			
+			// delete actions from database
+
+			checkService.deleteAllActionsForCheckId(current.getCheckUUID(),
+					new AsyncCallback<String>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void onSuccess(String result) {
+							// TODO Auto-generated method stub
+
+							RootPanel.get().add(
+									new HTML(
+											"Result from attempt to delete actions P2L: "
+													+ result));
+						}
+
+					});
+
+
+
+		}
+	}
+
+	
+	
+	
 	public void loadUI(final String checkpathName) {
 
 		RootPanel.get().add(
