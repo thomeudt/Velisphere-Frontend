@@ -1068,8 +1068,8 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 					action.propertyIdIntake = result.getString("INBOUNDPROPERTYID");
 					action.manualValue = result.getString("CUSTOMPAYLOAD");	
 					System.out.println("Inboundlentgh = " + result.getString("INBOUNDPROPERTYID").length());
-					action.settingSourceIndex = "Manual entry"; // this is the default
-					if (result.getString("INBOUNDPROPERTYID").length() > 0) action.settingSourceIndex = "Incoming value from sensor device";
+					action.valueFromInboundPropertyID = "Manual entry"; // this is the default
+					if (result.getString("INBOUNDPROPERTYID").length() > 0) action.valueFromInboundPropertyID = "Incoming value from sensor device";
 					
 					actions.add(action);
 				}

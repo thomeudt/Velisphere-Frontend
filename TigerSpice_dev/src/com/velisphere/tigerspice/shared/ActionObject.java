@@ -12,7 +12,7 @@ public class ActionObject  implements IsSerializable{
 	public String endpointClassID;
 	public String propertyName;
 	public String propertyID;
-	public String settingSourceIndex;
+	public String valueFromInboundPropertyID;
 	public String manualValue;
 	public String validValueIndex;
 	public String propertyIdIntake;
@@ -30,7 +30,7 @@ public class ActionObject  implements IsSerializable{
 		this.endpointClassID = endpointClassID;
 		this.propertyName = propertyName;
 		this.propertyID = propertyID;
-		this.settingSourceIndex = settingSourceIndex;
+		this.valueFromInboundPropertyID = settingSourceIndex;
 		this.manualValue = manualValue;
 		this.validValueIndex = validValueIndex;
 		this.propertyIdIntake = propertyIdIntake;

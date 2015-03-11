@@ -81,6 +81,8 @@ public class MessageInspect implements Runnable {
 						    BLEResultObject bleResult = BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), (byte) 0);
 						    triggeredActions.putAll(bleResult.getTriggerActions());
 						    
+						    System.out.println(bleResult.getTriggerActions().values());
+						    
 						    for (Iterator<Entry<String, String>> aIT = triggeredActions.entrySet().iterator(); aIT
 									.hasNext();) {
 								executedActions.addAll(ActionManipulationEngine.executeActionItems(aIT.next(), forEvaluation));

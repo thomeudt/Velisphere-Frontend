@@ -16,6 +16,7 @@ import com.velisphere.tigerspice.client.event.DraggedInCanvasEventHandler;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.JSONreadyEvent;
 import com.velisphere.tigerspice.client.event.JSONreadyEventHandler;
+import com.velisphere.tigerspice.client.helper.ActionSourceConfig;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorLogicCheckActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorLogicCheck;
@@ -116,14 +117,26 @@ public class DataManager {
 			RootPanel.get().add(new HTML("P2P: SPID processed"));
 			action.sensorEndpointID = current.getSensor().getEndpointID();
 			RootPanel.get().add(new HTML("P2P: SEPID processed"));
-			action.settingSourceIndex = current.getSourceIndex();
-			RootPanel.get().add(new HTML("P2P: Source processed"));
-			action.validValueIndex = current.getTypicalValueIndex();
+			action.validValueIndex = current.getTypicalValueValue();
 			RootPanel.get().add(new HTML("P2P: Typical processed"));
 			action.manualValue = current.getManualValue();
 			RootPanel.get().add(new HTML("P2P: Manual processed"));
 			
+			if (current.getSourceValue() == ActionSourceConfig.currentSensorValue)
+			{
+				action.valueFromInboundPropertyID = current.getSourceValue();
+				RootPanel.get().add(new HTML("P2P: Source processed"));				
+			}
+			else
+			{
+				action.valueFromInboundPropertyID = "no";
+				RootPanel.get().add(new HTML("P2P: Source processed - empty"));
+			}
+			
+			
 			RootPanel.get().add(new HTML("P2P: built action object"));
+			
+			
 
 			// TODO this can be simplified - we do not need to take care of
 			// multiple actions in new setup
@@ -246,7 +259,7 @@ public class DataManager {
 			action.propertyID = current.getActor().getPropertyID();
 			action.propertyIdIntake = "";
 			action.sensorEndpointID = "";
-			action.settingSourceIndex = current.getSourceIndex();
+			action.valueFromInboundPropertyID = current.getSourceIndex();
 			action.validValueIndex = current.getTypicalValueIndex();
 			action.manualValue = current.getManualValue();
 

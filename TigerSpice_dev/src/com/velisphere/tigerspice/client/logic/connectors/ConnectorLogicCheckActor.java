@@ -60,9 +60,9 @@ public class ConnectorLogicCheckActor extends Connector {
 	ListBox lbxTypicalValues;
 	boolean layoutCreated;
 	String txtManualEntryContent;	
-	int lbxSourceIndex;
-	int lbxValueFromSensorIndex;
-	int lbxTypicalValuesIndex;
+	String lbxSourceValue;
+	String lbxValueFromSensorValue;
+	String lbxTypicalValuesValue;
 
 	
 	public ConnectorLogicCheckActor (LogicCheck logicCheck, PhysicalItem actor)
@@ -75,16 +75,16 @@ public class ConnectorLogicCheckActor extends Connector {
 		createOpenerWidget();
 	}
 	
-	public ConnectorLogicCheckActor(LogicCheck logicCheck, PhysicalItem actor, final int lbxSourceIndex, final int lbxTypicalValuesIndex, final int lbxValueFromSensorIndex, 
+	public ConnectorLogicCheckActor(LogicCheck logicCheck, PhysicalItem actor, final String lbxSourceValue, final String lbxTypicalValuesValue, final String lbxValueFromSensorValue, 
 			final String txtManualEntryContent) {
 		super();
 		this.logicCheck = logicCheck;
 		this.actor = actor;
 		
 		this.txtManualEntryContent = txtManualEntryContent;	
-		this.lbxSourceIndex = lbxSourceIndex;
-		this.lbxValueFromSensorIndex = lbxValueFromSensorIndex;
-		this.lbxTypicalValuesIndex = lbxTypicalValuesIndex;
+		this.lbxSourceValue = lbxSourceValue;
+		this.lbxValueFromSensorValue = lbxValueFromSensorValue;
+		this.lbxTypicalValuesValue = lbxTypicalValuesValue;
 		
 		
 		createOpenerWidget();
@@ -100,8 +100,8 @@ public class ConnectorLogicCheckActor extends Connector {
 			{
 			createBaseLayout();
 			}
-		lbxSource.setSelectedIndex(lbxSourceIndex);
-		lbxTypicalValues.setSelectedIndex(lbxTypicalValuesIndex);
+		lbxSource.setSelectedValue(lbxSourceValue);
+		lbxTypicalValues.setSelectedValue(lbxTypicalValuesValue);
 		txtManualEntry.setValue(txtManualEntryContent);
 			
 
@@ -115,8 +115,8 @@ public class ConnectorLogicCheckActor extends Connector {
 		{
 		createBaseLayout();
 		}
-		lbxSource.setSelectedIndex(lbxSourceIndex);
-		lbxTypicalValues.setSelectedIndex(lbxTypicalValuesIndex);
+		lbxSource.setSelectedValue(lbxSourceValue);
+		lbxTypicalValues.setSelectedValue(lbxTypicalValuesValue);
 		txtManualEntry.setValue(txtManualEntryContent);
 	
 	}
@@ -124,8 +124,8 @@ public class ConnectorLogicCheckActor extends Connector {
 
 	public void save()
 	{
-		lbxSourceIndex = lbxSource.getSelectedIndex();
-		lbxTypicalValuesIndex = lbxTypicalValues.getSelectedIndex();
+		lbxSourceValue = lbxSource.getValue();
+		lbxTypicalValuesValue = lbxTypicalValues.getValue();
 		txtManualEntryContent = txtManualEntry.getValue();
 	}
 	
@@ -319,8 +319,8 @@ public class ConnectorLogicCheckActor extends Connector {
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
       	serializable.setLeftID(this.logicCheck.getId());
       	serializable.setRightID(this.actor.getUUID());
-      	serializable.setLbxSourceIndex(this.lbxSourceIndex);
-		serializable.setLbxTypicalValuesIndex(this.lbxTypicalValuesIndex);
+      	serializable.setLbxSourceValue(this.lbxSourceValue);
+		serializable.setLbxTypicalValuesValue(this.lbxTypicalValuesValue);
 		serializable.setTxtManualEntryContent(this.txtManualEntryContent);
 		serializable.setType(SharedConstants.CONL2P);
 		RootPanel.get().add(new HTML("Succeeded!"));
@@ -339,11 +339,11 @@ public class ConnectorLogicCheckActor extends Connector {
 		}
 						
 		public String getSourceIndex() {
-			return String.valueOf(lbxSourceIndex);
+			return String.valueOf(lbxSourceValue);
 		}
 		
 		public String getTypicalValueIndex() {
-			return String.valueOf(lbxTypicalValuesIndex);
+			return String.valueOf(lbxTypicalValuesValue);
 		}
 		
 		public String getManualValue() {

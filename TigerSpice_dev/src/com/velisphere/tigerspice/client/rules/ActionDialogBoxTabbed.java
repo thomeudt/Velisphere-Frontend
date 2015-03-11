@@ -166,7 +166,7 @@ public class ActionDialogBoxTabbed extends SimplePanel {
 			@Override
 			public void onChange(ChangeEvent event) {
 				// TODO Auto-generated method stub
-				action.settingSourceIndex = lstSettingSource.getValue();
+				action.valueFromInboundPropertyID = lstSettingSource.getValue();
 			}
 		});
 
@@ -264,7 +264,7 @@ public class ActionDialogBoxTabbed extends SimplePanel {
 		} else {
 			// if not new, set the action source index accordingly
 
-			lstSettingSource.setSelectedValue(action.settingSourceIndex);
+			lstSettingSource.setSelectedValue(action.valueFromInboundPropertyID);
 
 			// also then get the name of the target endpoint
 			rpcServiceEndpoint.getEndpointForEndpointID(action.endpointID,
@@ -358,7 +358,7 @@ public class ActionDialogBoxTabbed extends SimplePanel {
 		});
 
 		// set settingSource to correct value
-		lstSettingSource.setSelectedValue(action.settingSourceIndex);
+		lstSettingSource.setSelectedValue(action.valueFromInboundPropertyID);
 		DomEvent.fireNativeEvent(Document.get().createChangeEvent(),
 				lstSettingSource);
 

@@ -40,6 +40,8 @@ public class ActionManipulationEngine {
 				
 		LinkedList<ActionObject> executedActions = new LinkedList<ActionObject>();
 		
+		System.out.println("Executing action: " + actionHash.getKey());
+		
 		final ClientResponse findActionDetails = BusinessLogicEngine.montanaClient
 				.callProcedure("AME_DetailsForAction", actionHash.getValue(), actionHash.getKey());
 		
@@ -64,19 +66,32 @@ public class ActionManipulationEngine {
 				}
 				
 				
-				if (actionDetails.getString("INBOUNDPROPERTYID").isEmpty() == false){
+				if (actionDetails.getString("INBOUNDPROPERTYID").equals("no")){
+					System.out.println("Payload from inbound property ID:" + actionDetails.getString("INBOUNDPROPERTYID"));
 					payload = inboundMessageMap.get(actionDetails.getString("INBOUNDPROPERTYID"));
 				}
 				else
-					if (actionDetails.getString("CURRENTSTATEPROPERTYID").isEmpty() == false){
+					
+					if (actionDetails.getString("CURRENTSTATEPROPERTYID").equals("no")){
+						System.out.println("Payload from current state property ID:" + actionDetails.getString("CURRENTSTATEPROPERTYID"));
 						//TODO This is still to be implemented in version 1.0!
 					}
 					else
+					{
 						payload = actionDetails.getString("CUSTOMPAYLOAD");
+						System.out.println("Custom payload:" + actionDetails.getString("CUSTOMPAYLOAD"));
+					}
+					
 				
 				outboundMessageMap.put(actionDetails.getString("OUTBOUNDPROPERTYID"), payload);
 								
 				// execute action via AMQP
+		
+				System.out.println("Executing via AMQP:");
+				System.out.println("Outbound Message Map:" + outboundMessageMap);
+				System.out.println("Target Endpoint:" + targetEPID);
+				System.out.println("Source Endpoint:" + inboundMessageMap.get("EPID"));
+				
 				
 				Send.sendHashTable(outboundMessageMap, targetEPID, inboundMessageMap.get("EPID"));
 				

@@ -53,11 +53,11 @@ public class ConnectorSensorActor extends Connector {
 	String txtManualEntryContent = "";	
 	String txtCheckValueContent = "";
 	int type;
-	int lbxSourceIndex;
-	int lbxValueFromSensorIndex;
-	int lbxTypicalValuesIndex;
-	int lbxOperatorIndex;
-
+	String lbxSourceValue;
+	String lbxValueFromSensorValue;
+	String lbxTypicalValuesValue;
+	String lbxOperatorValue;
+	
 	
 
 	public ConnectorSensorActor(PhysicalItem sensor,
@@ -72,17 +72,17 @@ public class ConnectorSensorActor extends Connector {
 	}
 	
 	public ConnectorSensorActor(PhysicalItem sensor,
-			PhysicalItem actor, final int lbxOperatorIndex, final int lbxSourceIndex, final int lbxTypicalValuesIndex, final int lbxValueFromSensorIndex, 
+			PhysicalItem actor, final String lbxOperatorValue, final String lbxSourceValue, final String lbxTypicalValuesValue, final String lbxValueFromSensorValue, 
 			final String txtCheckValueContent, final String txtManualEntryContent) {
 		super();
 		this.sensor = sensor;
 		this.actor = actor;
 		this.txtManualEntryContent = txtManualEntryContent;	
 		this.txtCheckValueContent = txtCheckValueContent;
-		this.lbxSourceIndex = lbxSourceIndex;
-		this.lbxValueFromSensorIndex = lbxValueFromSensorIndex;
-		this.lbxTypicalValuesIndex = lbxTypicalValuesIndex;
-		this.lbxOperatorIndex = lbxOperatorIndex;
+		this.lbxSourceValue = lbxSourceValue;
+		this.lbxValueFromSensorValue = lbxValueFromSensorValue;
+		this.lbxTypicalValuesValue = lbxTypicalValuesValue;
+		this.lbxOperatorValue = lbxOperatorValue;
 		
 		createOpenerWidget();
 					
@@ -98,10 +98,10 @@ public class ConnectorSensorActor extends Connector {
 			{
 			createBaseLayout();
 			}
-		lbxOperator.setSelectedIndex(lbxOperatorIndex);
-		lbxSource.setSelectedIndex(lbxSourceIndex);
-		lbxTypicalValues.setSelectedIndex(lbxTypicalValuesIndex);
-		lbxValueFromSensor.setSelectedIndex(lbxValueFromSensorIndex);
+		lbxOperator.setSelectedValue(lbxOperatorValue);
+		lbxSource.setSelectedValue(lbxSourceValue);
+		lbxTypicalValues.setSelectedValue(lbxTypicalValuesValue);
+		lbxValueFromSensor.setSelectedValue(lbxValueFromSensorValue);
 		txtCheckValue.setValue(txtCheckValueContent);
 		txtManualEntry.setValue(txtManualEntryContent);
 		setVisibleValueFields();	
@@ -115,10 +115,10 @@ public class ConnectorSensorActor extends Connector {
 		{
 		createBaseLayout();
 		}
-		lbxOperator.setSelectedIndex(lbxOperatorIndex);
-		lbxSource.setSelectedIndex(lbxSourceIndex);
-		lbxTypicalValues.setSelectedIndex(lbxTypicalValuesIndex);
-		lbxValueFromSensor.setSelectedIndex(lbxValueFromSensorIndex);
+		lbxOperator.setSelectedValue(lbxOperatorValue);
+		lbxSource.setSelectedValue(lbxSourceValue);
+		lbxTypicalValues.setSelectedValue(lbxTypicalValuesValue);
+		lbxValueFromSensor.setSelectedValue(lbxValueFromSensorValue);
 		txtCheckValue.setValue(txtCheckValueContent);
 		txtManualEntry.setValue(txtManualEntryContent);
 		setVisibleValueFields();	
@@ -130,10 +130,10 @@ public class ConnectorSensorActor extends Connector {
 	{
 		
 		RootPanel.get().add(new HTML("Connector: Saving"));
-		lbxOperatorIndex = lbxOperator.getSelectedIndex();
-		lbxSourceIndex = lbxSource.getSelectedIndex();
-		lbxTypicalValuesIndex = lbxTypicalValues.getSelectedIndex();
-		lbxValueFromSensorIndex = lbxValueFromSensor.getSelectedIndex();
+		lbxOperatorValue = lbxOperator.getValue();
+		lbxSourceValue = lbxSource.getValue();
+		lbxTypicalValuesValue = lbxTypicalValues.getValue();
+		lbxValueFromSensorValue = lbxValueFromSensor.getValue();
 		txtCheckValueContent = txtCheckValue.getValue();
 		txtManualEntryContent = txtManualEntry.getValue();	
 	}
@@ -503,13 +503,13 @@ public class ConnectorSensorActor extends Connector {
 		RootPanel.get().add(new HTML("Connector: Got sensor"));
 		serializable.setRightID(actor.getUUID());
 		RootPanel.get().add(new HTML("Connector: Got actor"));
-		serializable.setLbxOperatorIndex(this.lbxOperatorIndex);
+		serializable.setLbxOperatorValue(this.lbxOperatorValue);
 		RootPanel.get().add(new HTML("Connector: Got operator"));
-		serializable.setLbxSourceIndex(this.lbxSourceIndex);
+		serializable.setLbxSourceValue(this.lbxSourceValue);
 		RootPanel.get().add(new HTML("Connector: Got source"));
-		serializable.setLbxTypicalValuesIndex(this.lbxTypicalValuesIndex);
+		serializable.setLbxTypicalValuesValue(this.lbxTypicalValuesValue);
 		RootPanel.get().add(new HTML("Connector: Got typical"));
-		serializable.setLbxValueFromSensorIndex(this.lbxValueFromSensorIndex);
+		serializable.setLbxValueFromSensorValue(this.lbxValueFromSensorValue);
 		RootPanel.get().add(new HTML("Connector: Got valusesnse"));
 		serializable.setTxtCheckValueContent(this.txtCheckValueContent);
 		RootPanel.get().add(new HTML("Connector: Got checkval"));
@@ -530,19 +530,19 @@ public class ConnectorSensorActor extends Connector {
 	}
 	
 	public String getOperator() {
-		return String.valueOf(lbxOperatorIndex);
+		return String.valueOf(lbxOperatorValue);
 	}
 
 	public String getCheckValue() {
 		return txtCheckValueContent;
 	}
 	
-	public String getSourceIndex() {
-		return String.valueOf(lbxSourceIndex);
+	public String getSourceValue() {
+		return String.valueOf(lbxSourceValue);
 	}
 	
-	public String getTypicalValueIndex() {
-		return String.valueOf(lbxTypicalValuesIndex);
+	public String getTypicalValueValue() {
+		return String.valueOf(lbxTypicalValuesValue);
 	}
 	
 	public String getManualValue() {

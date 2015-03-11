@@ -57,7 +57,7 @@ public class ConnectorSensorLogicCheck extends Connector {
 	boolean layoutCreated;
 	String txtCheckValueContent;
 	int type;
-	int lbxOperatorIndex;
+	String lbxOperatorValue;
 
 
 	
@@ -72,13 +72,13 @@ public class ConnectorSensorLogicCheck extends Connector {
 	}
 	
 	public ConnectorSensorLogicCheck (PhysicalItem sensor, LogicCheck logicCheck,
-			final int lbxOperatorIndex, final String txtCheckValueContent)
+			final String lbxOperatorValue, final String txtCheckValueContent)
 	{
 		super();
 		this.sensor = sensor;
 		this.logicCheck = logicCheck;
 		this.txtCheckValueContent = txtCheckValueContent;
-		this.lbxOperatorIndex = lbxOperatorIndex;
+		this.lbxOperatorValue = lbxOperatorValue;
 		
 		
 		createOpenerWidget();
@@ -93,7 +93,7 @@ public class ConnectorSensorLogicCheck extends Connector {
 			{
 			createBaseLayout();
 			}
-		lbxOperator.setSelectedIndex(lbxOperatorIndex);
+		lbxOperator.setSelectedValue(lbxOperatorValue);
 		txtCheckValue.setValue(txtCheckValueContent);
 	}
 	
@@ -105,7 +105,7 @@ public class ConnectorSensorLogicCheck extends Connector {
 		{
 		createBaseLayout();
 		}
-		lbxOperator.setSelectedIndex(lbxOperatorIndex);
+		lbxOperator.setSelectedValue(lbxOperatorValue);
 		txtCheckValue.setValue(txtCheckValueContent);
 	}
 
@@ -113,7 +113,7 @@ public class ConnectorSensorLogicCheck extends Connector {
 	public void save()
 	{
 		
-		lbxOperatorIndex = lbxOperator.getSelectedIndex();
+		lbxOperatorValue = lbxOperator.getValue();
 		txtCheckValueContent = txtCheckValue.getValue();
 		
 	}
@@ -369,7 +369,7 @@ public class ConnectorSensorLogicCheck extends Connector {
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
      	serializable.setLeftID(this.sensor.getUUID());
      	serializable.setRightID(this.logicCheck.getId());
-    	serializable.setLbxOperatorIndex(this.lbxOperatorIndex);
+    	serializable.setLbxOperatorValue(this.lbxOperatorValue);
 		serializable.setTxtCheckValueContent(this.txtCheckValueContent);
 		serializable.setType(SharedConstants.CONP2L);
 		RootPanel.get().add(new HTML("Succeeded!"));
@@ -388,7 +388,7 @@ public class ConnectorSensorLogicCheck extends Connector {
 	 
 	 
 		public String getOperator() {
-			return String.valueOf(lbxOperatorIndex);
+			return String.valueOf(lbxOperatorValue);
 		}
 
 		public String getCheckValue() {

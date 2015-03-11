@@ -12,10 +12,10 @@ public class SerializableLogicConnector implements IsSerializable {
 	String txtManualEntryContent;	
 	String txtCheckValueContent;
 	int type;
-	int lbxSourceIndex;
-	int lbxValueFromSensorIndex;
-	int lbxTypicalValuesIndex;
-	int lbxOperatorIndex;
+	String lbxSourceValue;
+	String lbxValueFromSensorValue;
+	String lbxTypicalValuesValue;
+	String lbxOperatorValue;
 	String leftID;
 	String rightID;
 	
@@ -42,29 +42,29 @@ public class SerializableLogicConnector implements IsSerializable {
 	public void setTxtCheckValueContent(String txtCheckValueContent) {
 		this.txtCheckValueContent = txtCheckValueContent;
 	}
-	public int getLbxSourceIndex() {
-		return lbxSourceIndex;
+	public String getLbxSourceValue() {
+		return lbxSourceValue;
 	}
-	public void setLbxSourceIndex(int lbxSourceIndex) {
-		this.lbxSourceIndex = lbxSourceIndex;
+	public void setLbxSourceValue(String lbxSourceValue) {
+		this.lbxSourceValue = lbxSourceValue;
 	}
-	public int getLbxValueFromSensorIndex() {
-		return lbxValueFromSensorIndex;
+	public String getLbxValueFromSensorValue() {
+		return lbxValueFromSensorValue;
 	}
-	public void setLbxValueFromSensorIndex(int lbxValueFromSensorIndex) {
-		this.lbxValueFromSensorIndex = lbxValueFromSensorIndex;
+	public void setLbxValueFromSensorValue(String lbxValueFromSensorValue) {
+		this.lbxValueFromSensorValue = lbxValueFromSensorValue;
 	}
-	public int getLbxTypicalValuesIndex() {
-		return lbxTypicalValuesIndex;
+	public String getLbxTypicalValuesValue() {
+		return lbxTypicalValuesValue;
 	}
-	public void setLbxTypicalValuesIndex(int lbxTypicalValuesIndex) {
-		this.lbxTypicalValuesIndex = lbxTypicalValuesIndex;
+	public void setLbxTypicalValuesValue(String lbxTypicalValuesValue) {
+		this.lbxTypicalValuesValue = lbxTypicalValuesValue;
 	}
-	public int getLbxOperatorIndex() {
-		return lbxOperatorIndex;
+	public String getLbxOperatorValue() {
+		return lbxOperatorValue;
 	}
-	public void setLbxOperatorIndex(int lbxOperatorIndex) {
-		this.lbxOperatorIndex = lbxOperatorIndex;
+	public void setLbxOperatorValue(String lbxOperatorValue) {
+		this.lbxOperatorValue = lbxOperatorValue;
 	}
 	
 	public String getLeftID() {
