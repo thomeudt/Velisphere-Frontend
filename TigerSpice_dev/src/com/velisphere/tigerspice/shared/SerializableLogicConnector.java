@@ -18,10 +18,24 @@ public class SerializableLogicConnector implements IsSerializable {
 	String lbxOperatorValue;
 	String leftID;
 	String rightID;
+	String actionID;
+	String checkID;
 	
 
 	
 	
+	public String getCheckID() {
+		return checkID;
+	}
+	public void setCheckID(String checkID) {
+		this.checkID = checkID;
+	}
+	public String getActionID() {
+		return actionID;
+	}
+	public void setActionID(String actionID) {
+		this.actionID = actionID;
+	}
 	public int getType() {
 		return type;
 	}

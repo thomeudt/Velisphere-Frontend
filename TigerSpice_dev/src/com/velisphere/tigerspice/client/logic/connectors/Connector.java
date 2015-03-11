@@ -18,8 +18,7 @@ public class Connector extends PopupPanel {
 	{
 		super();
 		
-		createActionUUID();
-		createCheckUUID();
+		
 		createUUID();
 	}
 	

@@ -286,6 +286,7 @@ public class JsonFabrik {
 				ConnectorSensorActor current = new ConnectorSensorActor(
 						physicalItemHashMap.get(currentSerializable.getLeftID()), 
 						physicalItemHashMap.get(currentSerializable.getRightID()),
+						currentSerializable.getActionID(), currentSerializable.getCheckID(),
 						currentSerializable.getLbxOperatorValue(), currentSerializable.getLbxSourceValue(),
 						currentSerializable.getLbxTypicalValuesValue(), currentSerializable.getLbxValueFromSensorValue(),
 						currentSerializable.getTxtCheckValueContent(), currentSerializable.getTxtManualEntryContent()
@@ -325,6 +326,7 @@ public class JsonFabrik {
 				ConnectorSensorLogicCheck current = new ConnectorSensorLogicCheck(
 						physicalItemHashMap.get(currentSerializable.getLeftID()), 
 						logicCheckHashMap.get(currentSerializable.getRightID()),
+						currentSerializable.getActionID(), currentSerializable.getCheckID(),
 						currentSerializable.getLbxOperatorValue(),currentSerializable.getTxtCheckValueContent());
 				
 				
@@ -362,6 +364,7 @@ public class JsonFabrik {
 				ConnectorLogicCheckActor current = new ConnectorLogicCheckActor(
 						logicCheckHashMap.get(currentSerializable.getLeftID()), 
 						physicalItemHashMap.get(currentSerializable.getRightID()),
+						currentSerializable.getActionID(), currentSerializable.getCheckID(),
 						currentSerializable.getLbxSourceValue(),currentSerializable.getLbxTypicalValuesValue(), currentSerializable.getLbxValueFromSensorValue(),
 						currentSerializable.getTxtManualEntryContent());
 

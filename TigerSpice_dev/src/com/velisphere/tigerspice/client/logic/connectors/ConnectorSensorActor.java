@@ -63,16 +63,18 @@ public class ConnectorSensorActor extends Connector {
 	public ConnectorSensorActor(PhysicalItem sensor,
 			PhysicalItem actor) {
 		super();
+		createActionUUID();
+		createCheckUUID();
 
 		this.sensor = sensor;
 		this.actor = actor;
 		createBaseLayout();
 		createOpenerWidget();
-
+		
 	}
 	
 	public ConnectorSensorActor(PhysicalItem sensor,
-			PhysicalItem actor, final String lbxOperatorValue, final String lbxSourceValue, final String lbxTypicalValuesValue, final String lbxValueFromSensorValue, 
+			PhysicalItem actor, String actionID, String checkID, final String lbxOperatorValue, final String lbxSourceValue, final String lbxTypicalValuesValue, final String lbxValueFromSensorValue, 
 			final String txtCheckValueContent, final String txtManualEntryContent) {
 		super();
 		this.sensor = sensor;
@@ -83,7 +85,8 @@ public class ConnectorSensorActor extends Connector {
 		this.lbxValueFromSensorValue = lbxValueFromSensorValue;
 		this.lbxTypicalValuesValue = lbxTypicalValuesValue;
 		this.lbxOperatorValue = lbxOperatorValue;
-		
+		this.actionUUID = actionID;
+		this.checkUUID = checkID;
 		createOpenerWidget();
 					
 		
@@ -517,6 +520,8 @@ public class ConnectorSensorActor extends Connector {
 		RootPanel.get().add(new HTML("Connector: Got manual " +this.txtManualEntryContent ));
 		serializable.setType(SharedConstants.CONP2P);
 		RootPanel.get().add(new HTML("Connector: Got type"));
+		serializable.setActionID(actionUUID);
+		serializable.setCheckID(checkUUID);
 		return serializable;
 
 	}

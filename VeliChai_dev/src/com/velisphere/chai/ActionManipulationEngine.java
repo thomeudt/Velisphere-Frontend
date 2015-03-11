@@ -66,17 +66,18 @@ public class ActionManipulationEngine {
 				}
 				
 				
-				if (actionDetails.getString("INBOUNDPROPERTYID").equals("no")){
+				if (actionDetails.getString("INBOUNDPROPERTYID").equals("no") == false){
 					System.out.println("Payload from inbound property ID:" + actionDetails.getString("INBOUNDPROPERTYID"));
 					payload = inboundMessageMap.get(actionDetails.getString("INBOUNDPROPERTYID"));
 				}
 				else
-					
-					if (actionDetails.getString("CURRENTSTATEPROPERTYID").equals("no")){
+					/*
+					if (actionDetails.getString("CURRENTSTATEPROPERTYID").equals("no") == false){
 						System.out.println("Payload from current state property ID:" + actionDetails.getString("CURRENTSTATEPROPERTYID"));
 						//TODO This is still to be implemented in version 1.0!
 					}
 					else
+					*/
 					{
 						payload = actionDetails.getString("CUSTOMPAYLOAD");
 						System.out.println("Custom payload:" + actionDetails.getString("CUSTOMPAYLOAD"));

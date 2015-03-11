@@ -64,6 +64,8 @@ public class ConnectorSensorLogicCheck extends Connector {
 	public ConnectorSensorLogicCheck (PhysicalItem sensor, LogicCheck logicCheck)
 	{
 		super();
+		createActionUUID();
+		createCheckUUID();
 		this.sensor = sensor;
 		this.logicCheck = logicCheck;
 		createBaseLayout();
@@ -71,7 +73,7 @@ public class ConnectorSensorLogicCheck extends Connector {
 		
 	}
 	
-	public ConnectorSensorLogicCheck (PhysicalItem sensor, LogicCheck logicCheck,
+	public ConnectorSensorLogicCheck (PhysicalItem sensor, LogicCheck logicCheck, String actionID, String checkID,
 			final String lbxOperatorValue, final String txtCheckValueContent)
 	{
 		super();
@@ -79,8 +81,8 @@ public class ConnectorSensorLogicCheck extends Connector {
 		this.logicCheck = logicCheck;
 		this.txtCheckValueContent = txtCheckValueContent;
 		this.lbxOperatorValue = lbxOperatorValue;
-		
-		
+		this.actionUUID = actionID;
+		this.checkUUID = checkID;
 		createOpenerWidget();
 		
 	}
@@ -372,6 +374,8 @@ public class ConnectorSensorLogicCheck extends Connector {
     	serializable.setLbxOperatorValue(this.lbxOperatorValue);
 		serializable.setTxtCheckValueContent(this.txtCheckValueContent);
 		serializable.setType(SharedConstants.CONP2L);
+		serializable.setActionID(actionUUID);
+		serializable.setCheckID(checkUUID);
 		RootPanel.get().add(new HTML("Succeeded!"));
 		return serializable;
      	
