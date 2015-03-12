@@ -17,17 +17,20 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client.helper;
 
+
 import com.github.gwtbootstrap.client.ui.Paragraph;
-import com.github.gwtbootstrap.client.ui.Strong;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.CustomScrollPanel.Style;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class AnimationLoading extends Composite {
+public class AnimationLoading extends DialogBox {
 
 	@UiField Paragraph stgLoading;
 	
@@ -39,21 +42,45 @@ public class AnimationLoading extends Composite {
 	}
 
 	public AnimationLoading() {
-		initWidget(uiBinder.createAndBindUi(this));
+		
+		setWidget(uiBinder.createAndBindUi(this));
+		setGlassEnabled(true);
 		stgLoading.addStyleName("vcenter");
+		
+		
+	}
+	
+	public AnimationLoading(String text) {
+		
+		setWidget(uiBinder.createAndBindUi(this));
+		setGlassEnabled(true);
+		stgLoading.addStyleName("vcenter");
+		this.addStyleName("vcenter");
+		stgLoading.setText(text);
+		//this.setPopupPosition(50, 50);
+		//RootPanel rootPanel = RootPanel.get();
+		//rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
+		//rootPanel.add(this);
+		
+		
+		
 	}
 	
 	public void showLoadAnimation() {
 		RootPanel rootPanel = RootPanel.get("main");
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 		rootPanel.add(this, 25, 40);
+		
 	}
+
 
 	public void showLoadAnimation(String text) {
 		stgLoading.setText(text);
 		RootPanel rootPanel = RootPanel.get("main");
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 		rootPanel.add(this, 25, 40);
+		
+		
 	}
 
 	public void removeLoadAnimation() {

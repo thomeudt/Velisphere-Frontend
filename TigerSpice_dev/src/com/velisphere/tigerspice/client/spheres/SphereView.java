@@ -17,30 +17,43 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client.spheres;
 
+import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.CheckBox;
+import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
+import com.github.gwtbootstrap.client.ui.Row;
 import com.github.gwtbootstrap.client.ui.TextBox;
+import com.github.gwtbootstrap.client.ui.constants.AlertType;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.helper.widgets.AlertWidget;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
+import com.velisphere.tigerspice.shared.SphereData;
 
 
 public class SphereView extends Composite {
@@ -52,8 +65,10 @@ public class SphereView extends Composite {
 	
 	@UiField Breadcrumbs brdMain;
 	
-	
+	@UiField CheckBox cbxPublic;
 	@UiField PageHeader pghSphereNameHeader;
+	@UiField Column colShareAlert;	
+
 	
 	private SphereServiceAsync rpcServiceSphere;
 	
@@ -69,13 +84,13 @@ public class SphereView extends Composite {
 	interface SphereOverviewUiBinder extends UiBinder<Widget, SphereView> {
 	}
 
-	public SphereView(final String sphereID, String sphereName) {
+	public SphereView(final String sphereID) {
 		
 		this.sphereID = sphereID;
-		this.sphereName = sphereName;
+		
 		rpcServiceSphere = GWT.create(SphereService.class);
 		initWidget(uiBinder.createAndBindUi(this));
-		pghSphereNameHeader.setText(sphereName);
+		
 		
 		bread0 = new NavLink();
 		bread0.setText("Home");
@@ -84,8 +99,9 @@ public class SphereView extends Composite {
 		bread1.setText("Endpoint Manager");
 		brdMain.add(bread1);
 		bread2 = new NavLink();
-		bread2.setText(sphereName);
+		bread2.setText("-");
 		brdMain.add(bread2);
+		
 
 		bread0.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -110,6 +126,8 @@ public class SphereView extends Composite {
 					}
 				});
 
+		
+		addShareToggleListener();
 	
 		// Change button for header
 		
@@ -192,12 +210,162 @@ public class SphereView extends Composite {
 		
 		
 	
+		updateSphereNameAndState();
 		
-				
 	
 	
 	}
+	
+	
+	private void addShareToggleListener(){
+		
+		cbxPublic.addValueChangeHandler(new ValueChangeHandler<Boolean>(){
 
+		
+
+			@Override
+			public void onValueChange(ValueChangeEvent<Boolean> event) {
+				// TODO Auto-generated method stub
+				if(event.getValue() == true) {
+					showWarningBox();
+				} else 
+					setPublicState(0);
+			}
+			
+		});
+		
+	}
+	
+	private void showWarningBox(){
+		final DialogBox warningBox = new DialogBox();
+		HTML html = new HTML("<b>Privacy Warning</b><br><br>Activating this option will allow other users to access all endpoints allocated to this sphere and read sensor values. <br><br>Use this option with extreme caution<br>&nbsp;");
+		Row row1 = new Row();
+		Column col1 = new Column(3, 0);
+		col1.add(html);
+		row1.add(col1);
+		
+		Button btnConfirm = new Button();
+		btnConfirm.setText("Confirm");
+		btnConfirm.setType(ButtonType.WARNING);
+		
+		Button btnCancel = new Button();
+		btnCancel.setText("Cancel");
+		btnCancel.setType(ButtonType.DEFAULT);
+		
+		
+		Row row2 = new Row();
+		Column col2 = new Column(1, 0);
+		Column col3 = new Column(1, 1);
+		col2.add(btnConfirm);
+		col3.add(btnCancel);
+		row2.add(col2);
+		row2.add(col3);
+		
+		VerticalPanel contentPanel = new VerticalPanel();
+		contentPanel.add(row1);
+		contentPanel.add(row2);
+		
+		warningBox.add(contentPanel);
+		warningBox.addStyleName("vcenter well");
+		
+
+		warningBox.center();
+		
+		btnConfirm.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				warningBox.hide();
+				setPublicState(1);
+				
+				
+			}
+			
+		});
+	
+		btnCancel.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				warningBox.hide();
+				setPublicState(0);
+				
+				cbxPublic.setValue(false);
+				
+			}
+			
+		});
+	}
+
+	private void updateSphereNameAndState(){
+		
+		
+		
+		rpcServiceSphere.getSphereForSphereID(sphereID,
+				new AsyncCallback<SphereData>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(SphereData result) {
+						// TODO Auto-generated method stub
+						pghSphereNameHeader.setText(result.getName());
+						brdMain.remove(bread2);
+						bread2.setText(result.getName());
+						brdMain.add(bread2);
+						
+						sphereName = result.getName();
+						if(result.getIsPublic() == 1){
+							RootPanel.get().add(new HTML("Shared Sphere Value " + result.getIsPublic()));
+							colShareAlert.add(new AlertWidget(new HTML("<b>&nbsp;Privacy Alert:</b> This is a shared sphere, visible to other VeliSphere users. Other user will be able to access sensor data from this Sphere."), AlertType.WARNING));
+							cbxPublic.setValue(true);
+						}
+						else
+						{
+							RootPanel.get().add(new HTML("Private Sphere Value " + result.getIsPublic()));
+							colShareAlert.clear();
+							cbxPublic.setValue(false);
+						}
+								
+						
+						
+
+					}
+
+				});
+
+		
+	}
+	
+	private void setPublicState(int publicState){
+		rpcServiceSphere.updatePublicStateForSphereID(sphereID, publicState,
+				new AsyncCallback<String>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						// TODO Auto-generated method stub
+						
+						updateSphereNameAndState();
+						
+						
+
+					}
+
+				});
+
+		
+	}
+	
 	private void showLoadAnimation(AnimationLoading animationLoading) {
 		RootPanel rootPanel = RootPanel.get("main");
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);

@@ -46,12 +46,11 @@ public class ChaiWorker {
 		 */
 
 		System.out.println();
-		System.out.println("*     * VeliSphere Chai v0.62 - VeliSphere Controller");
-		System.out
-				.println(" *   *  Copyright (C) 2014 Thorsten Meudt/Connected Things Lab. All rights reserved.");
+		System.out.println("    * *    VeliSphere Chai v0.7.7d - VeliSphere Worker Node");
+		System.out.println("    * * *  Copyright (C) 2014 Thorsten Meudt/Connected Things Lab. All rights reserved.");
+		System.out.println("**   *    ");
 		System.out.println("  * *   ");
-		System.out
-				.println("   *    VeliSphere Chai is part of the VeliSphere IoTS ecosystem.");
+		System.out.println("   *       VeliSphere Chai is part of the VeliSphere IoTS ecosystem.");
 		System.out.println();
 
 		/*
@@ -73,11 +72,14 @@ public class ChaiWorker {
 
 		//System.out.println(" [IN] Selected VoltDB: " + ServerParameters.volt_ip);
 		BusinessLogicEngine.openDatabase();
+		VelisphereMart.connect();
 
 		System.out.println(" [IN] Connecting completed.");
 		System.out.println(" [IN] Waiting for messages on queue: "
 				+ ServerParameters.controllerQueueName
 				+ ". To exit press CTRL+C");
+		
+		
 
 		
 		ExecutorService unpacker = Executors

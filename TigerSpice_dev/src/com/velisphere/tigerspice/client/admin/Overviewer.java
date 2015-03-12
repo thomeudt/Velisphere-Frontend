@@ -33,8 +33,8 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.Login;
 import com.velisphere.tigerspice.client.LoginDialogBox;
-import com.velisphere.tigerspice.client.NavBar;
-import com.velisphere.tigerspice.client.endpointclasses.EPCList;
+import com.velisphere.tigerspice.client.admin.epc.EPCList;
+import com.velisphere.tigerspice.client.appcontroller.NavBar;
 import com.velisphere.tigerspice.client.endpoints.EndpointList;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.Banderole;
@@ -54,16 +54,7 @@ public class Overviewer {
 	NavBar navBar;
 	AnimationLoading animationLoading;
 
-	public void onModuleLoad() {
-		String sessionID = Cookies.getCookie("sid");
-		System.out.println("Session ID: " + sessionID);
-		if (sessionID == null) {
-			Login loginScreen = new Login();
-			loginScreen.onModuleLoad();
-		} else {
-			checkWithServerIfSessionIdIsStillLegal(sessionID);
-		}
-	}
+	
 
 	public void loadContent() {
 
@@ -72,20 +63,11 @@ public class Overviewer {
 		rootPanel.clear();
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
 
-		rootPanelHeader = RootPanel.get("stockList");
-		rootPanelHeader.clear();
-		rootPanelHeader.getElement().getStyle().setPosition(Position.RELATIVE);
-		navBar = new NavBar();
-		rootPanelHeader.add(navBar);
-
+	
 		mainPanel = new VerticalPanel();
 		rootPanel.add(mainPanel);
 
-		RootPanel banderolePanel = RootPanel.get("banderole");
-		banderolePanel.clear();
-		Banderole banderole = new Banderole();
-		banderolePanel.add(banderole);
-
+	
 		UserList userClassList = new UserList();
 		mainPanel.add(userClassList);
 
@@ -98,52 +80,9 @@ public class Overviewer {
 		PropertyList propertyList = new PropertyList();
 		mainPanel.add(propertyList);
 		
-				
-		removeLoadAnimation();
-
-	}
-
-	private void checkWithServerIfSessionIdIsStillLegal(String sessionID) {
-
-		showLoadAnimation();
-		LoginService.Util.getInstance().loginFromSessionServer(
-				new AsyncCallback<UserData>() {
-					@Override
-					public void onFailure(Throwable caught) {
-						Login loginScreen = new Login();
-						loginScreen.onModuleLoad();
-					}
-
-					@Override
-					public void onSuccess(UserData result) {
-						if (result == null) {
-							Login loginScreen = new Login();
-							loginScreen.onModuleLoad();
-						} else {
-							if (result.getLoggedIn()) {
-								loadContent();
-							} else {
-								Login loginScreen = new Login();
-								loginScreen.onModuleLoad();
-							}
-						}
-					}
-
-				});
-	}
-
-	private void showLoadAnimation() {
-		RootPanel rootPanel = RootPanel.get("main");
-		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-		animationLoading = new AnimationLoading();
-		rootPanel.add(animationLoading, 25, 40);
-	}
-	
-	private void removeLoadAnimation() {
-		if (animationLoading != null) animationLoading.removeFromParent();
-	}
 	
 
+	}
 
 	
 }

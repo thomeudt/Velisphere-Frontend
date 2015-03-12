@@ -1,0 +1,121 @@
+<!-- CONFIDENTIAL INFORMATION __________________ Copyright (C) 2014 Thorsten 
+	Meudt / Connected Things Lab All Rights Reserved. NOTICE: All information 
+	contained herein is, and remains the property of Thorsten Meudt and its suppliers, 
+	if any. The intellectual and technical concepts contained herein are proprietary 
+	to Thorsten Meudt and its suppliers and may be covered by Patents, patents 
+	in process, and are protected by trade secret or copyright law. Dissemination 
+	of this information or reproduction of this material is strictly forbidden 
+	unless prior written permission is obtained from Thorsten Meudt. -->
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:gu="urn:import:gwtupload.client"  xmlns:vsad="urn:import:com.velisphere.tigerspice.client.admin.epc" 
+	xmlns:vsepc="urn:import:com.velisphere.tigerspice.client.endpointclasses">
+	
+	<g:HTMLPanel>
+
+		<b:Row>
+			<b:Column size="12" offset="0">
+				<b:PageHeader>Modify Endpoint Class</b:PageHeader>
+			</b:Column>
+		</b:Row>
+  
+
+
+		<b:Row>
+
+			<b:Column size="2" offset="0">
+				<vsad:AdminMenuEPC ui:field="menu"></vsad:AdminMenuEPC>
+			</b:Column>
+
+
+			<b:Column size="8" offset="0">
+			    
+			
+
+			    				
+			    
+				<b:Form type="HORIZONTAL">
+
+					<b:Alert type="ERROR" close="false" ui:field="aleError">
+
+					</b:Alert>
+
+					<b:Fieldset>
+						<b:ControlGroup>
+							<b:ControlLabel>Name</b:ControlLabel>
+
+							<b:Controls>
+								<b:TextBox b:id="txtEPCName" ui:field="txtEPCName" />
+
+							</b:Controls>
+						
+						</b:ControlGroup>
+						
+						<b:ControlGroup>
+							<b:ControlLabel>Vendor</b:ControlLabel>
+								
+							<b:Controls>
+								<b:ListBox b:id="lbxVendorID" ui:field="lbxVendorID" />
+
+							</b:Controls>
+						</b:ControlGroup>
+						
+						<b:ControlGroup>
+							<b:ControlLabel>Image</b:ControlLabel>
+
+							<b:Controls>
+								<g:Image ui:field="imgEPCImage" />
+								<br>&nbsp;</br>		
+								<gu:SingleUploader type="BUTTON" ui:field="imageUploader"></gu:SingleUploader>
+						
+
+							</b:Controls>
+						</b:ControlGroup>
+
+						<b:ControlGroup>
+						    	<b:Controls>
+						    	    <vsad:EpcPropertyList ui:field="propertyList"></vsad:EpcPropertyList>
+						    	    
+							</b:Controls>
+						</b:ControlGroup>
+						
+						<b:ControlGroup>
+						    	<b:Controls>
+						    	    <b:Button styleName="btn btn-success btn-mini" text=" + Add Property"
+									ui:field="btnAddProperty" />
+							</b:Controls>
+						</b:ControlGroup>
+												
+						
+						<b:ControlGroup>
+						    	<b:Controls>
+								<b:Button styleName="btn btn-primary" text="Save Endpoint Class"
+									ui:field="btnUpload" />
+							</b:Controls>
+						</b:ControlGroup>
+						
+						
+						
+						
+						
+
+					</b:Fieldset>
+				</b:Form>
+					
+			
+		
+
+			    
+			</b:Column>
+		</b:Row>
+
+
+
+	</g:HTMLPanel>
+    
+	
+	
+	
+	
+</ui:UiBinder> 

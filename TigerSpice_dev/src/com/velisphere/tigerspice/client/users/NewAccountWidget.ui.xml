@@ -1,0 +1,116 @@
+<!--
+  CONFIDENTIAL INFORMATION
+   __________________
+   
+    Copyright (C) 2014 Thorsten Meudt / Connected Things Lab
+    All Rights Reserved.
+   
+   NOTICE:  All information contained herein is, and remains
+   the property of Thorsten Meudt and its suppliers,
+   if any.  The intellectual and technical concepts contained
+   herein are proprietary to Thorsten Meudt
+   and its suppliers and may be covered by Patents,
+   patents in process, and are protected by trade secret or copyright law.
+   Dissemination of this information or reproduction of this material
+   is strictly forbidden unless prior written permission is obtained
+   from Thorsten Meudt.
+-->
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<g:HTMLPanel>
+
+		<b:Row>
+			<b:Column size="12" offset="0">
+				<b:PageHeader>Create a new VeliSphere Account</b:PageHeader>
+			</b:Column>
+		</b:Row>
+
+		
+		
+	    <b:Row>
+				        
+	       
+			
+		
+			<b:Column size="8" offset="0">
+
+				<b:Form type="HORIZONTAL">
+
+					<b:Alert type="ERROR" close="false" ui:field="aleError" >
+						
+					</b:Alert>
+
+<b:Fieldset>
+    <b:ControlGroup>
+					<b:ControlLabel>Name</b:ControlLabel>
+
+					<b:Controls>
+					<b:TextBox b:id="txtUsername" ui:field="txtUsername" />
+
+					</b:Controls>
+	</b:ControlGroup>
+  
+<b:ControlGroup>
+					<b:ControlLabel>E-Mail Address</b:ControlLabel>
+
+					<b:Controls>
+					<b:TextBox b:id="txtEmail" ui:field="txtEmail" />
+
+					</b:Controls>
+	</b:ControlGroup>
+    
+    	
+	<b:ControlGroup>			
+					<b:ControlLabel>Password</b:ControlLabel>
+						<b:Controls>
+						<b:PasswordTextBox b:id="txtPassword" ui:field="txtPassword" />
+					</b:Controls>
+	</b:ControlGroup>
+
+		<b:ControlGroup>			
+					<b:ControlLabel>Please enter the word below to verify you are a human being.</b:ControlLabel>
+						<b:Controls>
+						
+						<b:TextBox ui:field="txtCaptchaWord"></b:TextBox>
+												
+					</b:Controls>
+					
+	</b:ControlGroup>
+	<b:ControlGroup>			
+					<b:ControlLabel><g:Anchor addStyleNames="smalltext-black" ui:field="ancReloadCaptcha">(If you can't read the current image, click here to load a new one.)</g:Anchor></b:ControlLabel>
+						<b:Controls>
+						<b:Image ui:field="imgCaptchaImage"></b:Image>			
+														
+					</b:Controls>
+					
+	</b:ControlGroup>
+	
+	
+	
+	
+	
+  				
+<b:ControlGroup>
+    		<b:Controls>
+				
+					<b:CheckBox ui:field="cbxAgreeTandC">I agree with the Terms of Use</b:CheckBox>
+	</b:Controls>
+	</b:ControlGroup>
+<b:ControlGroup>
+    		<b:Controls>
+
+					<b:Button styleName="btn btn-primary" text="Create Account" ui:field="btnLogin" />
+						</b:Controls>
+	</b:ControlGroup>
+  				
+</b:Fieldset>
+  			</b:Form>
+
+			</b:Column>
+		</b:Row>
+
+
+
+	</g:HTMLPanel>
+</ui:UiBinder> 

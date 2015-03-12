@@ -21,17 +21,13 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class SphereData implements IsSerializable, Comparable <SphereData>
+public class SphereData implements IsSerializable
 {
 	public String sphereId;
 	public String sphereName;
 	public Integer sphereIsPublic;
 	
-	@Override
-	public int compareTo(SphereData arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
 	
 	public String getId(){
 		return sphereId;
@@ -43,5 +39,13 @@ public class SphereData implements IsSerializable, Comparable <SphereData>
 	
 	public Integer getIsPublic(){
 		return sphereIsPublic;
+	}
+	
+	public void setName(String sphereName){
+		this.sphereName = sphereName;
+	}
+	
+	public void setIsPublic(int sphereIsPublic){
+		this.sphereIsPublic = sphereIsPublic;
 	}
 }

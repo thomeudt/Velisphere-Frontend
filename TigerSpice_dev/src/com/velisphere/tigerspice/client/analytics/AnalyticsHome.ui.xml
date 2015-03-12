@@ -1,0 +1,117 @@
+<!-- CONFIDENTIAL INFORMATION __________________ Copyright (C) 2014 Thorsten 
+	Meudt / Connected Things Lab All Rights Reserved. NOTICE: All information 
+	contained herein is, and remains the property of Thorsten Meudt and its suppliers, 
+	if any. The intellectual and technical concepts contained herein are proprietary 
+	to Thorsten Meudt and its suppliers and may be covered by Patents, patents 
+	in process, and are protected by trade secret or copyright law. Dissemination 
+	of this information or reproduction of this material is strictly forbidden 
+	unless prior written permission is obtained from Thorsten Meudt. -->
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:vsan="urn:import:com.velisphere.tigerspice.client.analytics"
+	xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
+	<g:HTMLPanel>
+
+		<b:Breadcrumbs divider=">" ui:field="brdMain">
+		</b:Breadcrumbs>
+
+		<b:Row>
+
+
+			<b:Column size="12" offset="0">
+				<b:PageHeader ui:field="pageHeader">Loading...</b:PageHeader>
+			</b:Column>
+		</b:Row>
+
+
+
+
+
+		<b:Row>
+
+			<b:Column size="10" offset="0">
+
+
+
+				<b:TabPanel tabPosition="above" ui:field="tabPanel">
+
+					<b:TabPane heading="Sensor Data Trail" active="true">
+						
+						<b:Row>
+							<b:Column size="10" offset="0">
+								<vsan:ChartSensorHistoryWidget />
+							    
+							</b:Column>
+
+						</b:Row>
+
+						<b:Row>
+							<b:Column size="6" offset="0">
+								<b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
+							</b:Column>
+						</b:Row>
+
+					</b:TabPane>
+
+
+					<b:TabPane heading="Action Data Trail" active="false">
+						
+						<vsan:ChartActorHistoryWidget />
+					</b:TabPane>
+					<b:TabPane heading="Anomalies" active="false">
+						<b:Heading size="4">Spheres: OK</b:Heading>
+
+						<b:Paragraph addStyleNames="smalltext-black">No errors reported in any
+							sphere.</b:Paragraph>
+						<b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
+					</b:TabPane>
+					<b:TabPane heading="Custom Analytics" active="false">
+						<b:Heading size="4">Endpoints: OK</b:Heading>
+
+						<b:Paragraph addStyleNames="smalltext-black">All endpoints are
+							functioning.</b:Paragraph>
+						<b:Paragraph addStyleNames="smalltext-black">Maximum time out of
+							contact: 14 min for endpoint X</b:Paragraph>
+
+					</b:TabPane>
+					<b:TabPane heading="Time of Day" active="false">
+						<b:Heading size="4">Logic Designs: OK</b:Heading>
+
+						<b:Paragraph addStyleNames="smalltext-black">All logic designs function
+							properly.</b:Paragraph>
+						<b:Paragraph addStyleNames="smalltext-black">No failed actions reported.</b:Paragraph>
+
+					</b:TabPane>
+					<b:TabPane heading="Most active Sensors" active="false">
+						<b:Heading size="4">News</b:Heading>
+
+						<b:Paragraph addStyleNames="smalltext-black">New pricing model
+							available. Click here for more (...)</b:Paragraph>
+						<b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
+					</b:TabPane>
+					<b:TabPane heading="Most active Actors" active="false">
+						<b:Heading size="4">Task list</b:Heading>
+
+						<b:Paragraph addStyleNames="smalltext-black">No open
+							tasks.</b:Paragraph>
+						<b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
+
+					</b:TabPane>
+
+
+				</b:TabPanel>
+
+
+
+			</b:Column>
+
+			<b:Column size="2" offset="0">
+			<vssb:General></vssb:General>
+
+			</b:Column>
+
+		</b:Row>
+
+	</g:HTMLPanel>
+</ui:UiBinder> 

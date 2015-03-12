@@ -20,11 +20,13 @@ package com.velisphere.tigerspice.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.velisphere.tigerspice.client.helper.SessionHelper;
+import com.velisphere.tigerspice.client.appcontroller.NavBar;
+import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 
 public class Login implements EntryPoint {
@@ -33,7 +35,7 @@ public class Login implements EntryPoint {
 	RootPanel rootPanelMain;
 	RootPanel rootPanelBanderole;
 	VerticalPanel headerPanel;
-	VerticalPanel mainPanel;
+	HorizontalPanel mainPanel;
 	NavBar navBar;
 	
 	public void onModuleLoad() {
@@ -89,23 +91,29 @@ public class Login implements EntryPoint {
 		headerPanel.add(navBar);
 		
 		
-		mainPanel = new VerticalPanel();
+		mainPanel = new HorizontalPanel();
 		rootPanelMain.add(mainPanel);
 		
 		
 		// the following is just a temp work around for damn IE
-		int rootPanelWidth = RootPanel.get().getOffsetWidth();
-		rootPanelWidth = (rootPanelWidth * 70) / 100;
-		if (rootPanelWidth < 940) rootPanelWidth = 940;
-		String rootPanelWidthPx = rootPanelWidth + "px"; 
 		
-		SplashCarouselWidget splashCarouselWidget = new SplashCarouselWidget();
-		splashCarouselWidget.setWidth(rootPanelWidthPx);
-		mainPanel.add(splashCarouselWidget);
+		/**
+		int rootPanelWidth = RootPanel.get().getOffsetWidth();
+		
+		if (rootPanelWidth < 740) {
+			rootPanelWidth = 740; 
+		}else rootPanelWidth = (rootPanelWidth * 33) / 100;
+		
+		String rootPanelWidthPx = rootPanelWidth + "px"; 
+		**/
+		//SplashCarouselWidget splashCarouselWidget = new SplashCarouselWidget();
+		//splashCarouselWidget.setWidth("550px");
+		//mainPanel.add(splashCarouselWidget);
 		
 			
 		HeroUnitLogin heroUnitLogin = new HeroUnitLogin();
-		heroUnitLogin.setWidth(rootPanelWidthPx);
+		//heroUnitLogin.setWidth("550px");
+		//heroUnitLogin.setHeight("450px");
 		mainPanel.add(heroUnitLogin);
 
 	}

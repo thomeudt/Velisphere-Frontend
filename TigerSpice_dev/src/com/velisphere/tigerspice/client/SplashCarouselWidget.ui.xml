@@ -24,10 +24,10 @@
 		}
 	</ui:style>
 	<g:HTMLPanel>
-		<div class="carousel slide" id="carousel-532445">
+		<div class="carousel slide" id="carousel-532445" style="width: 550px; height: 394px">
 		<div class="carousel-inner">
 			<div class="item active">
-				<img alt="" src="./images/canvas_hotel.png" />
+				<img alt="" src="http://lorempixel.com/550/450/transport/2" />
 				<div class="carousel-caption">
 					<h4>
 						VeliSphere Makes the Internet of Things Interactive.
@@ -45,7 +45,7 @@
 				</div>
 			</div>
 			<div class="item">
-				<img alt="" src="http://lorempixel.com/1600/500/transport/1" />
+				<img alt="" src="http://lorempixel.com/550/450/business/1" />
 				<div class="carousel-caption">
 					<h4>
 						VeliSphere is Multi Protocol Capable.
@@ -62,7 +62,7 @@
 				</div>
 			</div>
 			<div class="item">
-				<img alt="" src="http://lorempixel.com/1600/500/sports/3" />
+				<img alt="" src="http://lorempixel.com/550/450/sports/3" />
 				<div class="carousel-caption">
 					<h4>
 						VeliSphere Enables Devices Virtualization.

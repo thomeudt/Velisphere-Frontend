@@ -17,7 +17,8 @@
 -->
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
 	<g:HTMLPanel>
 
 		<b:Breadcrumbs divider=">" ui:field="brdMain">
@@ -27,121 +28,71 @@
 
 		    
 		    <b:Column size="12" offset="0">
-				<b:PageHeader ui:field="pageHeader">Welcome Back.</b:PageHeader>
+				<b:PageHeader ui:field="pageHeader">Welcome back.</b:PageHeader>
 			</b:Column>
 		</b:Row>
 			
-		<b:Row>
-			<b:Column size="8" offset="0">
-				<b:Paragraph addStyleNames="smalltext">This is the VeliSphere Dashboard. We recommend that you get started by following our "Getting Started Guide"
-				    - don't forget to take a look at our "Best Practice" tutorial, too. </b:Paragraph>
-				    <b:Paragraph addStyleNames="smalltext">To add new devices to your account, please follow the "Device Provisioning Wizard".
-				    </b:Paragraph>
-				
-			</b:Column>
-		</b:Row>
+		
 
 		<b:Row>
 		
-		<b:Column size="8" offset="0">
+		<b:Column size="9" offset="0">
+		
+		    <b:Row>
+			<b:Column size="8" offset="0">
+			    	<b:Heading size="3" >Debug/Version Information</b:Heading>
+				    <b:Paragraph>VeliSphere TigerSpice 0.8.0</b:Paragraph>
+				    <b:Paragraph>VeliSphere Montana Database Version 0.7.9 or newer required</b:Paragraph>
+				    <b:Paragraph>VoltDB 4.9.2 or newer required</b:Paragraph>
+				    <b:Paragraph>VeliSphere Mart Version 0.7.6 or newer required</b:Paragraph>
+				    <b:Paragraph>Vertica 7.0.1 or newer required</b:Paragraph>
+				    <b:Paragraph>Optimized for Apache Tomcat 8</b:Paragraph>
+				    <b:Paragraph ui:field="voltIP">... </b:Paragraph>
+				    <b:Paragraph ui:field="voltHostID">... </b:Paragraph>
+				    <b:Paragraph ui:field="voltHostName">... </b:Paragraph>
+				    <b:Paragraph ui:field="voltConnHostName">... </b:Paragraph>
+				    <b:Paragraph ui:field="voltConnID">... </b:Paragraph>
+				    <b:Paragraph ui:field="voltBytesRead">... </b:Paragraph>
+				    <b:Paragraph ui:field="voltBytesWritten">... </b:Paragraph>
+				    <b:Paragraph ui:field="voltMsgRead">... </b:Paragraph>
+				    <b:Paragraph ui:field="voltMsgWritten">... </b:Paragraph>
+				    <b:Paragraph ui:field="voltTimestamp">... </b:Paragraph>
+				   	    
+				    
+				    
+				    <b:Heading size="3" >Welcome Message</b:Heading>
+				<b:Paragraph>This is VeliSphere. We recommend that you get started by following our "Getting Started Guide"
+				    - don't forget to take a look at our "Best Practice" tutorial, too.</b:Paragraph> 
+				    <b:Paragraph>To add new devices to your account, please follow the "Device Provisioning Wizard".</b:Paragraph>
+				    
+				</b:Column>
+			
+		</b:Row>
 		    
 		<b:Row>
-		<b:Column size="6" offset="0">
-				<b:Heading size="4">Subscription Status</b:Heading>
+		<b:Column size="8" offset="0">
+				<b:Heading size="3" >News</b:Heading>
+				
+				<b:Paragraph addStyleNames="smalltext-black">New pricing model available. Click here for more (...)</b:Paragraph>
+				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
+				 
+				 	<b:Heading size="3">Task list</b:Heading>
+				
+				<b:Paragraph addStyleNames="smalltext-black" >No open tasks.</b:Paragraph>
+				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
+				
 			</b:Column>	
 		</b:Row>
 		
+					    
 		
 		
-		<b:Row>
-			<b:Column size="8" offset="0">
-				<b:StackProgressBar ui:field="pgbUtilization">
-					<b:Bar color="SUCCESS" ui:field="pgbGreen" text="green" percent="0" />
-					<b:Bar color="WARNING" ui:field="pgbYellow" text="" percent="0" />
-					<b:Bar color="DANGER" ui:field="pgbRed" text="" percent="0" />
-				</b:StackProgressBar>
-			</b:Column>
-			
-		</b:Row>
-		
-		<b:Row>
-		<b:Column size="6" offset="0">
-			 <b:Paragraph addStyleNames="smalltext">Upgrade your subscription to increase your endpoint limit.</b:Paragraph>
-			</b:Column>
-		</b:Row>
-		
-		<b:Row>
-			<b:Column size="2" offset="0">
-			    <b:Well>
-				<b:Heading size="5">Spheres:</b:Heading>
-				<b:Paragraph addStyleNames="smalltext">Sphere X:</b:Paragraph>
-				<b:Paragraph addStyleNames="smalltext">Endpoint Y</b:Paragraph>
-				</b:Well>
-			</b:Column>			
-			<b:Column size="2" offset="0">
-			    <b:Well>
-				<b:Heading size="5">Active Endpoints:</b:Heading>
-				<b:Paragraph addStyleNames="smalltext">Sphere X:</b:Paragraph>
-				<b:Paragraph addStyleNames="smalltext">Endpoint Y</b:Paragraph>
-				</b:Well>
-			</b:Column>
-			<b:Column size="2" offset="0">
-				<b:Well styleName="wellred">
-				<b:Heading size="5">Critical Endpoints:</b:Heading>
-				<b:Paragraph addStyleNames="smalltext">Sphere X:</b:Paragraph>
-				<b:Paragraph addStyleNames="smalltext">Endpoint Y</b:Paragraph>
-				</b:Well>
-			</b:Column>
-			<b:Column size="2" offset="0">
-			    <b:Well styleName="wellsilver">
-				<b:Heading size="5">Inactive Endpoints:</b:Heading>
-				<b:Paragraph addStyleNames="smalltext">Sphere X:</b:Paragraph>
-				<b:Paragraph addStyleNames="smalltext">Endpoint Y</b:Paragraph>
-				</b:Well>
-			</b:Column>
-			</b:Row>
-			<b:Row>
-			    <b:Column size="2" offset="0">
-				<b:Well>
-				<b:Heading size="5">Rules + Logic</b:Heading>
-				<b:Paragraph addStyleNames="smalltext">Sphere X:</b:Paragraph>
-				<b:Paragraph addStyleNames="smalltext">Endpoint Y</b:Paragraph>
-				</b:Well>
-			</b:Column>
-			<b:Column size="2" offset="0">
-				<b:Well styleName="wellsilver">
-				<b:Heading size="5">Tasklist:</b:Heading>
-				<b:Paragraph addStyleNames="smalltext">Sphere X:</b:Paragraph>
-				<b:Paragraph addStyleNames="smalltext">Endpoint Y</b:Paragraph>
-				</b:Well>
-			</b:Column>
-			<b:Column size="2" offset="0">
-				<b:Well styleName="wellsilver">
-				<b:Heading size="5">Update Availability:</b:Heading>
-				<b:Paragraph addStyleNames="smalltext">Sphere X:</b:Paragraph>
-				<b:Paragraph addStyleNames="smalltext">Endpoint Y</b:Paragraph>
-				</b:Well>
-			</b:Column>
-			<b:Column size="2" offset="0">
-				<b:Well styleName="wellsilver">
-				<b:Heading size="5">System Information:</b:Heading>
-				<b:Paragraph addStyleNames="smalltext">Sphere X:</b:Paragraph>
-				<b:Paragraph addStyleNames="smalltext">Endpoint Y</b:Paragraph>
-				</b:Well>
-			</b:Column>
-		</b:Row>
-</b:Column>
+	</b:Column>
 
-<b:Column size="2" offset="0">
-				<b:Heading size="4">Additional Resources</b:Heading>
-				
-			<b:Paragraph addStyleNames="smalltext">Device Provisioning Wizard</b:Paragraph>
+<b:Column size="2" offset="1">
 			
-			<b:Paragraph addStyleNames="smalltext">Getting Started</b:Paragraph>
+			<vssb:General></vssb:General>
 			
-			<b:Paragraph addStyleNames="smalltext">Best Practices</b:Paragraph>
-			
-			<b:Paragraph addStyleNames="smalltext">Market Place</b:Paragraph>
 			
 			
 			</b:Column>	

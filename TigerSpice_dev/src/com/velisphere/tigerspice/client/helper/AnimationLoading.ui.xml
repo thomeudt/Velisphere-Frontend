@@ -24,13 +24,19 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 <b:Container>
 
     <b:Column size="2" offset="5">
-      <b:Well size="LARGE">
-         
-           <b:Paragraph addStyleNames="text-left"><b:Icon type="SPINNER" size="TWO_TIMES" spin="true" alignment="LEFT"/><b:Paragraph ui:field="stgLoading">Accessing Data...</b:Paragraph></b:Paragraph>
+      
+		<g:HorizontalPanel>         
+           <b:Paragraph addStyleNames="textright"><b:Icon type="SPINNER" size="TWO_TIMES" spin="true" alignment="LEFT"/> 
+               </b:Paragraph>
             
-      </b:Well>
+            
+           <b:Paragraph  addStyleNames="textright" ui:field="stgLoading">Accessing Data...</b:Paragraph>
+                  </g:HorizontalPanel>
     </b:Column>
 
 </b:Container>
+
+
+
 	</g:HTMLPanel>
 </ui:UiBinder> 

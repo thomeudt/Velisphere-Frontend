@@ -17,17 +17,25 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client;
 
-import com.github.gwtbootstrap.client.ui.Paragraph;
+
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
+import com.velisphere.tigerspice.client.appcontroller.NavBar;
+import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
+import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
-import com.velisphere.tigerspice.client.helper.EventUtils;
-import com.velisphere.tigerspice.client.helper.SessionHelper;
-import com.velisphere.tigerspice.client.helper.SessionVerifiedEvent;
-import com.velisphere.tigerspice.client.helper.SessionVerifiedEventHandler;
+import com.velisphere.tigerspice.client.helper.HelperService;
+import com.velisphere.tigerspice.client.helper.HelperServiceAsync;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
+import com.velisphere.tigerspice.client.users.UserService;
+import com.velisphere.tigerspice.client.users.UserServiceAsync;
 
 public class Start implements EntryPoint{
 	
@@ -36,18 +44,43 @@ public class Start implements EntryPoint{
 	public void onModuleLoad() {
     
 		
+		
 		AnimationLoading loading = new AnimationLoading();
 		loading.showLoadAnimation("Loading App");
+		
+
+		final HelperServiceAsync helperService = GWT
+				.create(HelperService.class);
+		
+		helperService.autoConfMontana(new AsyncCallback<String>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				System.out.println("[ER] Failed to complete Montana or VeliMart database auto configuration. Error: " + caught);
+				
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				// TODO Auto-generated method stub
+				System.out.println("[IN] Successfully completed Montana and VeliMart database auto configuration, stats context: " + result);
+				
+			}
+			
+		});
 		   	
 		
 		SessionHelper.validateCurrentSession();
 		
 	       
-		reg = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		reg = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 			
 			@Override
 	        public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
-	        	RootPanel.get().clear();
+	        	
+				reg.removeHandler();
+				RootPanel.get().clear();
 	            RootPanel rootPanelHeader = RootPanel.get("stockList");
 	        	rootPanelHeader.clear();
 	        	rootPanelHeader.getElement().getStyle().setPosition(Position.RELATIVE);
@@ -58,9 +91,13 @@ public class Start implements EntryPoint{
 	        	rootPanelMain.clear();
 	        	rootPanelMain.getElement().getStyle().setPosition(Position.RELATIVE);
 	        	
+	        	//NavBar navBar = new NavBar();
+	    		//navBar = (NavBar) RootPanel.get("stockList").getWidget(0);
+	    		
+	    		
 	        	
 	        	rootPanelMain.add(new LoginSuccess(reg));
-	        	
+	        	navBar.activateForCurrentUser();	        	
 	        	
 				}
 	    }); 

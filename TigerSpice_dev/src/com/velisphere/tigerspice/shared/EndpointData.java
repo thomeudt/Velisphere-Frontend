@@ -21,17 +21,13 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class EndpointData implements IsSerializable, Comparable <EndpointData>
+public class EndpointData implements IsSerializable
 {
 	public String endpointId;
 	public String endpointName;
 	public String endpointclassId;
+	public String endpointProvDate;
 	
-	@Override
-	public int compareTo(EndpointData arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
 	public String getId(){
 		return endpointId;
@@ -45,6 +41,10 @@ public class EndpointData implements IsSerializable, Comparable <EndpointData>
 		return endpointclassId;
 	}
 	
+	public String getEndpointProvDate(){
+		return endpointProvDate;
+	}
+	
 	public void setId(String endpointID){
 		this.endpointId = endpointID;
 	}
@@ -55,5 +55,9 @@ public class EndpointData implements IsSerializable, Comparable <EndpointData>
 	
 	public void  setEpcId(String endpointclassId){
 		this.endpointclassId = endpointclassId;
+	}
+	
+	public void  setEndpointProvDate(String endpointProvDate){
+		this.endpointProvDate = endpointProvDate;
 	}
 }

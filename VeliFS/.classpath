@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Downloads/ant-1.7.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/rabbitmq-client.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/java-json.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Downloads/jsimconnect-0.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/fsuipc/fsuipc-0.9.3.jar" sourcepath="C:/Users/thorsten/.m2/repository/de/newsarea/homecockpit/fsuipc/0.9.3/fsuipc-0.9.3-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/fsuipc/slf4j-1.7.9/slf4j-api-1.7.9.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/fsuipc/slf4j-1.7.9/slf4j-simple-1.7.9.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/fsuipc/kryonet-debug-2.18.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/fsuipc/commons-el-1.0/commons-el.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/fsuipc/commons-lang3-3.3.2/commons-lang3-3.3.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

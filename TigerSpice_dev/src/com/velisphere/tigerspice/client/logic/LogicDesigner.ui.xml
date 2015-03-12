@@ -1,0 +1,82 @@
+<!--
+  CONFIDENTIAL INFORMATION
+   __________________
+   
+    Copyright (C) 2014 Thorsten Meudt / Connected Things Lab
+    All Rights Reserved.
+   
+   NOTICE:  All information contained herein is, and remains
+   the property of Thorsten Meudt and its suppliers,
+   if any.  The intellectual and technical concepts contained
+   herein are proprietary to Thorsten Meudt
+   and its suppliers and may be covered by Patents,
+   patents in process, and are protected by trade secret or copyright law.
+   Dissemination of this information or reproduction of this material
+   is strictly forbidden unless prior written permission is obtained
+   from Thorsten Meudt.
+-->
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+		xmlns:ct="urn:import:com.google.gwt.user.cellview.client"
+		xmlns:vsrl="urn:import:com.velisphere.tigerspice.client.rules"
+		xmlns:vsch="urn:import:com.velisphere.tigerspice.client.checks"
+		xmlns:vsac="urn:import:com.velisphere.tigerspice.client.actions"
+		xmlns:vspr="urn:import:com.velisphere.tigerspice.client.properties"
+		xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
+		<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images'/>
+	<g:HTMLPanel>
+            <b:Breadcrumbs divider=">" ui:field="brdMain">
+		</b:Breadcrumbs>
+	    <b:Row>
+			
+			<b:Column size="12" offset="0">
+				<b:PageHeader ui:field="pghRuleName">Create Logic Design</b:PageHeader>				
+			</b:Column>
+			
+		</b:Row>
+		
+	    <b:Row>
+				        
+	        
+				        
+			<b:Column size="10" offset="0">
+		
+			    	
+			    
+			     	    	
+			    	
+					<b:Row>
+					    
+					    
+					    
+				    <b:Column size="2" offset="0" ui:field="colExplorer">
+				  	</b:Column>
+					
+				    
+					<b:Column size="8" offset="0" ui:field="colCanvas">
+				    	
+				   
+				    
+					</b:Column>
+					</b:Row>		
+					
+			    	
+				
+					
+					
+			
+			</b:Column>
+			
+			<b:Column size="2" offset="0">
+<vssb:General></vssb:General>
+			</b:Column>
+		</b:Row>
+		
+	    
+	
+	</g:HTMLPanel>
+	  		            
+
+</ui:UiBinder> 

@@ -41,7 +41,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	    <b:Row>
 				        
 	        <b:Column size="2" offset="0">
-			<b:Well>
+			<b:Well addStyleNames="wellsilver">
 			<b:Strong ui:field="pgpInformHeader">Market Place Tasks</b:Strong>
 			<b:Paragraph addStyleNames="smalltext">Buy Things</b:Paragraph>
 			<b:Paragraph addStyleNames="smalltext">Sell Things</b:Paragraph>

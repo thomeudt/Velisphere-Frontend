@@ -19,7 +19,8 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"  xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	xmlns:vsep='urn:import:com.velisphere.tigerspice.client.endpoints'
-	xmlns:vssp='urn:import:com.velisphere.tigerspice.client.spheres'>
+	xmlns:vssp='urn:import:com.velisphere.tigerspice.client.spheres'
+	xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
 	<ui:style>
 		
 	</ui:style>
@@ -28,31 +29,28 @@
 	    <b:Breadcrumbs divider=">" ui:field="brdMain">
 		</b:Breadcrumbs>
 	    <b:Row>
-			
 			<b:Column size="12" offset="0">
 				<b:PageHeader ui:field="pghSphereNameHeader">Sphere</b:PageHeader>
 			</b:Column>
 		</b:Row>
+		 <b:Row>
+			<b:Column size="12" offset="0" ui:field="colShareAlert">
+				
+			</b:Column>
+		</b:Row>
 		
+	    
+	    
 	    
 	    <b:Row>
 				        
-	        <b:Column size="2" offset="0">
-			<b:Well>
-			<b:Strong ui:field="pgpInformHeader">Sphere Information</b:Strong>
-			<b:Paragraph addStyleNames="smalltext">Geo location:</b:Paragraph>
-			<b:Paragraph addStyleNames="smalltext">Endpoint #:</b:Paragraph>
-			<b:Paragraph addStyleNames="smalltext">Critical Endpoints:</b:Paragraph>
-			<b:Paragraph addStyleNames="smalltext">Add Endpoint:</b:Paragraph>
-			<b:Button type="SUCCESS" size="MINI">Autoprovisioned</b:Button>
-			</b:Well>
-			</b:Column>
+	       
 				        
 			
-			<b:Column size="9" offset="0">
+			<b:Column size="10" offset="0">
 		
 					<b:Row>
-				    <b:Column size="9" offset="0">
+				    <b:Column size="10" offset="0">
 				    <vssp:SphereEditorWidget ui:field="sphereEditor" />
 				    </b:Column>
 					</b:Row>		
@@ -61,6 +59,21 @@
 					
 			
 			</b:Column>
+			
+			<b:Column size="2" offset="0">
+		
+			    <b:Row>
+			<b:Column size="2" offset="0">
+			    <b:Heading size="4">Sphere Options</b:Heading>
+				<b:CheckBox ui:field="cbxPublic"> Make this a Public Sphere to Share with Others.</b:CheckBox>  
+		
+			</b:Column>
+		</b:Row>
+			    
+			  <vssb:General></vssb:General>
+			
+			</b:Column>	
+			
 		
 			
 		</b:Row>

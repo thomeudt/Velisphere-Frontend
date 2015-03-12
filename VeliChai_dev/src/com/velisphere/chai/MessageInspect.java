@@ -22,11 +22,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.Map.Entry;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.velisphere.chai.dataObjects.ActionObject;
+import com.velisphere.chai.dataObjects.BLEResultObject;
 
 public class MessageInspect implements Runnable {
 
@@ -44,92 +48,62 @@ public class MessageInspect implements Runnable {
 
 	public void run() {
 
-		/*
-		 * This is the old chat example
-		 * 
-		 * 
-		 * String ChatMessage = null; String DestQueueName = null; try {
-		 * ChatMessage = MessagePack.extractProperty(messageBody, "1");
-		 * DestQueueName = MessagePack.extractProperty(messageBody, "0"); }
-		 * catch (JsonProcessingException e) { e.printStackTrace(); } catch
-		 * (IOException e) { e.printStackTrace(); }
-		 */
-
-		// First, we discard all messages where the controller queue is
-		// addressed as the target queue in the messagepack
-
-		String DestQueueName = null;
-
-		try {
-			DestQueueName = MessagePack.extractProperty(messageBody, "0");
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		if (DestQueueName.equals(ServerParameters.controllerQueueName)) {
-			System.out.println("False send to controller queue!!!");
-		} else {
-
-			HashMap<String, String> forEvaluation = new HashMap<String, String>();
 			try {
+
+				String transactionID = UUID.randomUUID().toString();
+				
+				
+				HashMap<String, String> forEvaluation = new HashMap<String, String>();
 				forEvaluation = MessagePack.extractKeyPropertyPair(messageBody);
 
 				String EPID = forEvaluation.get("EPID");
 
-				// TODO RESETTING HAS BEEN MOVED TO MONTANA AND IS DONE ON CHECK LEVEL, NOT ENDPOINT LEVEL
-				// BusinessLogicEngine.resetChecksForEndpoint(EPID);
-
-				// System.out.println("**************************** IMDB CHECK INITIATED ************************************");
-
-				HashSet<String> triggeredRules = new HashSet<String>();
+		
+				HashMap<String, String> triggeredActions = new HashMap<String, String>();
 
 				Iterator<Map.Entry<String, String>> it = forEvaluation
 						.entrySet().iterator();
 
-				// for ( Map.Entry<String, String> e : forEvaluation.entrySet()
-				// )
 				while (it.hasNext()) {
-					// System.out.println( e.getKey() + "="+ e.getValue() );
-
+		
 					Map.Entry<String, String> e = (Map.Entry<String, String>) it
 							.next();
-
 					
+					LinkedList<ActionObject> executedActions = new LinkedList<ActionObject>();
 					
 					if (e.getKey() != "EPID" && e.getKey() != null
 							&& e.getKey() != "SECTOK"
 							&& e.getKey() != "TIMESTAMP"
 							&& e.getKey() != "TYPE") {
+						
 							
-							triggeredRules.addAll(BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), (byte) 0));
-							LoggerEngine.writeEndpointLog(EPID, e.getKey(), e.getValue());		
-							//BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), (byte) 0);
+							
+						    BLEResultObject bleResult = BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), (byte) 0);
+						    triggeredActions.putAll(bleResult.getTriggerActions());
+						    
+						    System.out.println(bleResult.getTriggerActions().values());
+						    
+						    for (Iterator<Entry<String, String>> aIT = triggeredActions.entrySet().iterator(); aIT
+									.hasNext();) {
+								executedActions.addAll(ActionManipulationEngine.executeActionItems(aIT.next(), forEvaluation));
+								
+								aIT.remove();
+							}
+						    //LoggerEngine.writeEndpointLog(EPID, e.getKey(), e.getValue());
+						    
+						    
+						    
+						    VelisphereMart.insertTransactionLog(transactionID, EPID, e.getKey(), e.getValue(), executedActions, bleResult.getChecks(), bleResult.getCheckpaths() );		    
+						    
+							// BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), (byte) 0);
 						
 							
 							
 					}
-				}
-
-				HashSet<String> actionItems = new HashSet<String>();
 				
-				for (Iterator<String> rIT = triggeredRules.iterator(); rIT
-						.hasNext();) {
-					actionItems.addAll(ActionManipulationEngine.getActionItems( rIT.next()));
-					rIT.remove();
 				}
+								
 				
-				// System.out.println("Aktionen: " + actionItems);
-				
-				for (Iterator<String> aIT = actionItems.iterator(); aIT
-						.hasNext();) {
-					ActionManipulationEngine.executeActionItems(aIT.next(), forEvaluation);
-					
-					aIT.remove();
-				}
 
 	
 			} catch (JsonProcessingException e) {
@@ -143,7 +117,7 @@ public class MessageInspect implements Runnable {
 				e1.printStackTrace();
 			}
 
-		}
+		
 		return;
 
 	}

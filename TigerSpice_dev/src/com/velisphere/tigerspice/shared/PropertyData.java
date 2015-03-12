@@ -22,18 +22,18 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class PropertyData implements IsSerializable, Comparable <PropertyData>
+public class PropertyData implements IsSerializable
 {
 	public String propertyId;
 	public String propertyName;
+	public String propertyclassName;
 	public String propertyclassId;
 	public String endpointclassId;
+	public byte isActor;
+	public byte isSensor;
+	public byte isConfigurable;
+	public byte status;
 	
-	@Override
-	public int compareTo(PropertyData arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
 	public String getId(){
 		return propertyId;
@@ -48,7 +48,7 @@ public class PropertyData implements IsSerializable, Comparable <PropertyData>
 	}
 	
 	public String getPropertyId(){
-		return propertyName;
+		return propertyId;
 	}
 	
 	public String getPropertyclassId(){
@@ -63,7 +63,25 @@ public class PropertyData implements IsSerializable, Comparable <PropertyData>
 		return endpointclassId;
 	}
 	
+	public byte getIsConfigurable(){
+		return isConfigurable;
+	}
 	
+	public byte getIsActor(){
+		return isActor;
+	}
+	
+	public byte getIsSensor(){
+		return isSensor;
+	}
+	
+	public byte getStatus(){
+		return status;
+	}
+	
+	public String getPropertyclassName(){
+		return propertyclassName;
+	}
 	 
 	
 }

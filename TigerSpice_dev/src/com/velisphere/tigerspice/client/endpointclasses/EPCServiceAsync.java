@@ -18,6 +18,7 @@
 package com.velisphere.tigerspice.client.endpointclasses;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -25,7 +26,9 @@ import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.UserData;
 
 public interface EPCServiceAsync {
-	void getAllEndpointClassDetails(AsyncCallback<Vector<EPCData>> callback);
+	void getAllEndpointClassDetails(AsyncCallback<LinkedList<EPCData>> callback);
 	void getEndpointClassForEndpointClassID(String endpointClassID, AsyncCallback<EPCData> callback);
+	void addEndpointClass(String epcName, String epcImageURL, String vendorID, AsyncCallback<String> callback);
+	void updateEndpointClass(String epcID, String epcName, String epcImageURL, String vendorID, AsyncCallback<String> callback);
 	
 }

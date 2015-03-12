@@ -27,7 +27,7 @@ public class HomeController {
 	 */
 	public static void main(String[] args) {
 		
-		ServerParameters.my_queue_name="E1";
+		ServerParameters.my_queue_name="E4";
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

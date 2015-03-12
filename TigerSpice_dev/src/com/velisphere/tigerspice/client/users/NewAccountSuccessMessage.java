@@ -35,6 +35,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.LoginDialogBox;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.helper.Banderole;
 
 
@@ -65,15 +66,7 @@ interface MyBinder extends UiBinder<Widget, NewAccountSuccessMessage>{}
 
 	@UiHandler("btnLogin")
 	void openLoginForm (ClickEvent event) {
-		// Window.alert("Logging In");
-		RootPanel rootPanel = RootPanel.get("main");
-		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-		LoginDialogBox loginDialogBox = new LoginDialogBox();
-		rootPanel.add(loginDialogBox, 250, 250);
-		
-		
-		
-		// loginDialogBox.setVisible(false);
+		AppController.openHome();
 		
 		
 	}

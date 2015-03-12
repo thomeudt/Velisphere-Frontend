@@ -22,13 +22,13 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	<g:HTMLPanel>
 
 <div class="row">
-    <div class="span4 offset0">
+    <div class="span6 offset0">
       <div class="well" style="background-color: rgba(245, 245, 245, 0.95)">
-        <legend>Sign in to Perspectives</legend>
+        <legend>Sign in</legend>
           <div id="login-form">
             <b:Alert type="ERROR" close="false" ui:field="aleError" />      
-            <b:TextBox styleName="span3" ui:field="txtUsername" name="username" />
-            <b:PasswordTextBox styleName="span3" ui:field="txtPassword" name="password" /> 
+            <b:TextBox styleName="span5" ui:field="txtUsername" name="username" />
+            <b:PasswordTextBox styleName="span5" ui:field="txtPassword" name="password" /> 
             <label class="checkbox">
             <b:CheckBox name="remember" value="true"> Remember Me </b:CheckBox>
             </label>
@@ -37,7 +37,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
             <g:Anchor href="#" ui:field="ancSignup">No Account? Sign up now!</g:Anchor>
             <br></br>
             <br></br>
-            <b:Button styleName="btn-success btn" text="Login" ui:field="btnLogin" />      
+            <b:Button styleName="btn-primary btn" text="Login" ui:field="btnLogin" />      
         </div>    
       </div>
     </div>

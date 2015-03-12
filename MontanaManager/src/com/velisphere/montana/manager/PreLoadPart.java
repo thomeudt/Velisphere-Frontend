@@ -1,5 +1,10 @@
 package com.velisphere.montana.manager;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import org.voltdb.*;
 import org.voltdb.client.*;
 
@@ -15,21 +20,84 @@ public class PreLoadPart {
 	     // public static String volt_ip = "16.1.1.149"; // for local db
 	    	// public static String volt_ip = "ec2-54-200-208-195.us-west-2.compute.amazonaws.com"; // for aws db
 	        
-	         preLoader.createConnection("16.1.1.110");
-	        //preLoader.createConnection("ec2-54-186-85-248.us-west-2.compute.amazonaws.com");
+	         preLoader.createConnection("16.1.1.84");
+	        //preLoader.createConnection("54.200.77.57");
+	        
+	         Connection conn;
+	         
+	         
+	         try
+		        {
+		        Class.forName("com.vertica.jdbc.Driver");
+		        } catch (ClassNotFoundException e)
+		           {
+		           System.err.println("Could not find the JDBC driver class.\n");
+		           e.printStackTrace();
+		           return;
+		           }
+		      try
+		         {
+		         conn = DriverManager.getConnection
+		            (
+		            "jdbc:vertica://16.1.1.83:5433/VelisphereMart", "vertica", "1Suplies!"
+		            );
+		         
+		         conn.setAutoCommit(true);
+		 		System.out.println(" [OK] Connected to Vertica on address: "
+		 				+ "16.1.1.83");
+		         
+		         } catch (SQLException e)
+		            {
+		            System.err.println("Could not connect to the database.\n");
+		            e.printStackTrace();
+		            return;
+		            }
+			 
+			 
+			 
+		         
+		        /*
+		         * Load the database.
+		         */
+		      
+		      
+	         
+	         
 	        
 	        /*
 	         * Load the database.
 	         */
 	        
-	        String userID = "9b7df343-801a-4ef6-a6ed-4586b80e8e1f";
+	        String userID = "b714c243-b4b7-4144-9a90-4b50cbde18eb";
 	        	        
-	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1007", "E1", userID);
-	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1006", "E2", userID);
-	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1008", "E3", userID);
-	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1009", "E4", userID);
+	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1011", "E1", userID);
+	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1022", "E2", userID);
+	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1023", "E3", userID);
+	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1024", "E4", userID);
+	        
+	        System.out.println("Endpoints and Users linked");
 	        
 	        
+	        preLoader.callProcedure("SPHERE_USER_LINK.insert", "1002", "1000", userID);
+	        preLoader.callProcedure("SPHERE_USER_LINK.insert", "1003", "1001", userID);
+	                
+	        
+	        
+	        System.out.println("Spheres and Users linked");
+	        
+	        
+	        
+	        Statement myInsert = conn.createStatement();
+		      
+		    myInsert.addBatch("INSERT INTO VLOGGER.ENDPOINT_USER_LINK VALUES ('1021', 'E1', '"+userID+"')");
+		    myInsert.addBatch("INSERT INTO VLOGGER.ENDPOINT_USER_LINK VALUES ('1022', 'E2', '"+userID+"')");
+		    myInsert.addBatch("INSERT INTO VLOGGER.ENDPOINT_USER_LINK VALUES ('1023', 'E3', '"+userID+"')");
+		    myInsert.addBatch("INSERT INTO VLOGGER.ENDPOINT_USER_LINK VALUES ('1024', 'E4', '"+userID+"')");
+	        
+		    myInsert.executeBatch();
+		    
+		    myInsert.close();
+		    conn.close();
 	        
 	        System.out.println("Endpoints and Users linked");
 	        

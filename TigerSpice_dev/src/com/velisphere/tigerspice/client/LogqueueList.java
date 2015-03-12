@@ -36,6 +36,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.web.bindery.requestfactory.shared.Receiver;
+import com.velisphere.tigerspice.client.analytics.LogService;
+import com.velisphere.tigerspice.client.analytics.LogServiceAsync;
 import com.velisphere.tigerspice.client.users.UserService;
 import com.velisphere.tigerspice.client.users.UserServiceAsync;
 import com.velisphere.tigerspice.server.VoltConnector;

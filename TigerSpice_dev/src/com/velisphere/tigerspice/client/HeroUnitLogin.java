@@ -29,6 +29,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.users.NewAccountWidget;
 
 public class HeroUnitLogin extends Composite implements HasText {
 
@@ -43,22 +44,7 @@ public class HeroUnitLogin extends Composite implements HasText {
 					
 	}
 	
-	@UiHandler("btnLogin")
-	void openLoginForm (ClickEvent event) {
-		// Window.alert("Logging In");
-		RootPanel rootPanel = RootPanel.get("main");
-		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-		LoginDialogBox loginDialogBox = new LoginDialogBox();
-		loginDialogBox.setAnimationEnabled(true);
-		loginDialogBox.setAutoHideEnabled(true);
-		loginDialogBox.setPopupPosition((int) ((RootPanel.get().getOffsetWidth())/2.5), (RootPanel.get().getOffsetHeight())/5);
-		loginDialogBox.show();
-		
-		// loginDialogBox.setVisible(false);
-		
-		
-	}
-
+	
 	@Override
 	public String getText() {
 		// TODO Auto-generated method stub
@@ -70,5 +56,6 @@ public class HeroUnitLogin extends Composite implements HasText {
 		// TODO Auto-generated method stub
 		
 	}
+		
 	
 }

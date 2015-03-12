@@ -42,17 +42,17 @@ import com.sencha.gxt.dnd.core.client.DndDragStartEvent;
 import com.sencha.gxt.dnd.core.client.DragSource;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
+import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
-import com.velisphere.tigerspice.client.helper.DragobjectContainer;
+import com.velisphere.tigerspice.client.helper.DragobjectContainerUNUSED;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
-import com.velisphere.tigerspice.client.helper.EventUtils;
-import com.velisphere.tigerspice.client.helper.SessionHelper;
-import com.velisphere.tigerspice.client.helper.SessionVerifiedEvent;
-import com.velisphere.tigerspice.client.helper.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.images.Images;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.EndpointData;
@@ -85,7 +85,7 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 	container.setBorders(false);
 	container.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
 	// container.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
-	container.setWidth(180);
+	//container.setWidth(180);
 	con.add(container);
 	accordion = new Accordion();
 	container.add(accordion);
@@ -94,7 +94,7 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 	SessionHelper.validateCurrentSession();
 
 	
-	sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+	sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 	    	
 	@Override
     public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
@@ -103,7 +103,7 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 		userID = SessionHelper.getCurrentUserID();
 
 	loadAnimation.showLoadAnimation("Loading endpoints");
-	rpcServiceEndpoint.getEndpointsForUser(userID, new AsyncCallback<Vector<EndpointData>>(){
+	rpcServiceEndpoint.getEndpointsForUser(userID, new AsyncCallback<LinkedList<EndpointData>>(){
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -112,7 +112,7 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 		}
 
 		@Override
-		public void onSuccess(Vector<EndpointData> result) {
+		public void onSuccess(LinkedList<EndpointData> result) {
 			
 			loadAnimation.removeLoadAnimation();
 			Iterator<EndpointData> it = result.iterator();
@@ -122,19 +122,19 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 				EndpointData current = it.next();
 				String shortName;
 				
-				if (current.getName().length() < 22){
+				if (current.getName().length() < 21){
 					shortName = current.getName();	
 				} else
 				{
-					shortName = current.getName().substring(0, 17)+"(...)";
+					shortName = current.getName().substring(0, 16)+"(...)";
 				}
 				endpoint.setHeading(shortName);
 				endpoint.setTitle(current.getName());
 				endpoint.addStyleName("style.icon");
 				endpoint.setBaseIcon(IconType.RSS);
-				addActPropertiesToEndpoint(endpoint, current.getId(), current.getName());
+				addSensePropertiesToEndpoint(endpoint, current.getId(), current.getName());
 				//System.out.println("momentane ID: " + current.getId());
-				
+				endpoint.addStyleName("bgsilver");
 				accordion.add(endpoint);
 			}
 			
@@ -145,7 +145,7 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 	});
 	}
 	
-	private void addActPropertiesToEndpoint(final AccordionGroup endpoint, final String endpointID, final String endpointName){
+	private void addSensePropertiesToEndpoint(final AccordionGroup endpoint, final String endpointID, final String endpointName){
 
 		
 		loadAnimation.showLoadAnimation("Loading sensors");
@@ -223,11 +223,11 @@ public class SensorPropertiesByEndpointWidget extends Composite {
 				// is
 				// allowed
 				
-				DragobjectContainer dragAccordion = new DragobjectContainer();
+				DragobjectContainerUNUSED dragAccordion = new DragobjectContainerUNUSED();
 				dragAccordion.endpointID = endpointID;
 				dragAccordion.propertyID = propertyID;
 				dragAccordion.propertyName = propertyName;
-				dragAccordion.properyClassID = propertyClassId;
+				dragAccordion.propertyClassID = propertyClassId;
 				dragAccordion.endpointName = endpointName;
 			
 				event.setData(dragAccordion);

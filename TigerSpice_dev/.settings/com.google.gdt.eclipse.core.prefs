@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
-launchConfigExternalUrlPrefix=h2209363.stratoserver.net
+lastWarOutDir=C\:/Users/thorsten/git/velisphere/TigerSpice_dev/war
+launchConfigExternalUrlPrefix=https\://www.connectedthingslab.com\:8443/tigerspice/
 warSrcDir=war
 warSrcDirIsOutput=true 

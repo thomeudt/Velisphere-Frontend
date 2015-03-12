@@ -18,6 +18,7 @@
 package com.velisphere.tigerspice.client.spheres;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Vector;
 
 import com.github.gwtbootstrap.client.ui.Button;
@@ -58,19 +59,21 @@ import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
+import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointView;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
+import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
-import com.velisphere.tigerspice.client.helper.EventUtils;
-import com.velisphere.tigerspice.client.helper.SessionHelper;
-import com.velisphere.tigerspice.client.helper.SessionVerifiedEvent;
-import com.velisphere.tigerspice.client.helper.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.images.Images;
 import com.velisphere.tigerspice.client.users.LoginService;
 import com.velisphere.tigerspice.client.users.NewAccountSuccessMessage;
 import com.velisphere.tigerspice.shared.EndpointData;
+import com.velisphere.tigerspice.shared.SphereData;
 import com.velisphere.tigerspice.shared.UserData;
 import com.google.gwt.user.client.ui.Label;
 
@@ -96,27 +99,35 @@ public class SphereEditorWidget extends Composite {
 		// SphereOverview class
 		super();
 		this.sphereID = sphereID;
-		this.sphereName = sphereName;
+		// this.sphereName = sphereName;
+		setSphereName();
 
 		FlowLayoutContainer con = new FlowLayoutContainer();
 		initWidget(con);
 
-		HorizontalPanel hpMain = new HorizontalPanel();
-		hpMain.setSpacing(10);
+		Row hpMain = new Row();
+		
 
-		HorizontalPanel hpHeader = new HorizontalPanel();
-		hpHeader.setSpacing(10);
-
-		container.setBorders(true);
-		container.setWidth((int)((RootPanel.get().getOffsetWidth())/4));
+		Row hpHeader = new Row();
+		
+		Column mainCol1 = new Column(5, 0);
+		Column mainCol2 = new Column(5, 0);
+		Column headerCol1 = new Column(5, 0);
+		Column headerCol2 = new Column(5, 0);
+		
+		//container.setBorders(true);
+		container.addStyleName("wellapple");
+		//container.setWidth((int)((RootPanel.get().getOffsetWidth())/4));
+		container.setWidth("100%");
 		container.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
 		container.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
 
 		sourceContainer = new VerticalLayoutContainer();
-		sourceContainer.setWidth((int)((RootPanel.get().getOffsetWidth())/4));
+		//sourceContainer.setWidth((int)((RootPanel.get().getOffsetWidth())/4));
+		sourceContainer.setWidth("100%");
+		
 		sourceContainer.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
-		sourceContainer.setBorders(true);
-		sourceContainer.setPosition(50, 0);
+		sourceContainer.addStyleName("wellapple");
 		sourceContainer.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
 
 
@@ -217,30 +228,25 @@ public class SphereEditorWidget extends Composite {
 
 		// refreshSourceEndpoints(this.sphereID, sourceContainer);
 
-		final VerticalLayoutContainer leftHeader = new VerticalLayoutContainer();
-		leftHeader.setPixelSize((int)(RootPanel.get().getOffsetWidth()/4)+50, 30);
-		Paragraph leftP = new Paragraph();
-		leftP.setText("Endpoints currently assigned to " + this.sphereName + ":");
-		leftP.addStyleName("smalltext");
-		leftHeader.add(leftP);
+		HTML leftP = new HTML("Endpoints currently in this Sphere:");
+		headerCol1.add(leftP);
 		
 		
 
-		final VerticalLayoutContainer rightHeader = new VerticalLayoutContainer();
-		rightHeader.setPixelSize(350, 30);
-		Paragraph rightP = new Paragraph();
-		rightP.setText("Unassigned endpoints available to you:");
-		rightP.addStyleName("smalltext");
-		rightHeader.add(rightP);
+		HTML rightP = new HTML("Endpoints currently outside of this Sphere:");
+		headerCol2.add(rightP);
 
 		
 		
-		hpHeader.add(leftHeader);
-		hpHeader.add(rightHeader);
+		hpHeader.add(headerCol1);
+		hpHeader.add(headerCol2);
 		
-		hpMain.add(container);
 		
-		hpMain.add(sourceContainer);
+		mainCol1.add(container);
+		mainCol2.add(sourceContainer);
+		hpMain.add(mainCol1);
+		hpMain.add(mainCol2);
+			
 		con.add(hpHeader);
 		con.add(hpMain);
 
@@ -260,7 +266,7 @@ public class SphereEditorWidget extends Composite {
 		
 		SessionHelper.validateCurrentSession();
 	
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		    	
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
@@ -273,7 +279,7 @@ public class SphereEditorWidget extends Composite {
 								rpcService
 										.getEndpointsForUser(
 												SessionHelper.getCurrentUserID(),
-												new AsyncCallback<Vector<EndpointData>>() {
+												new AsyncCallback<LinkedList<EndpointData>>() {
 													public void onFailure(
 															Throwable caught) {
 														Window.alert("Error"
@@ -282,7 +288,7 @@ public class SphereEditorWidget extends Composite {
 
 													@Override
 													public void onSuccess(
-															Vector<EndpointData> result) {
+															LinkedList<EndpointData> result) {
 
 														Iterator<EndpointData> it = result
 																.iterator();
@@ -317,9 +323,16 @@ public class SphereEditorWidget extends Composite {
 																		true,
 																		currentItem.endpointId);
 																
-																anchorUnassigned.addClickHandler(new OpenEndpointClickHandler(
-																		sphereID, sphereName, currentItem.endpointId, currentItem.endpointName, currentItem.endpointclassId));
+																anchorUnassigned.addClickHandler(new ClickHandler(){
 
+																	@Override
+																	public void onClick(ClickEvent event) {
+																		// TODO Auto-generated method stub
+																	
+																		AppController.openEndpoint(currentItem.endpointId);
+																	}
+																	
+																});
 
 																final SafeHtmlBuilder builder = new SafeHtmlBuilder();
 																builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
@@ -392,13 +405,13 @@ public class SphereEditorWidget extends Composite {
 		// query endpoints that are already part of the current sphere
 
 		rpcService.getEndpointsForSphere(sphereID,
-				new AsyncCallback<Vector<EndpointData>>() {
+				new AsyncCallback<LinkedList<EndpointData>>() {
 					public void onFailure(Throwable caught) {
 						Window.alert("Error" + caught.getMessage());
 					}
 
 					@Override
-					public void onSuccess(Vector<EndpointData> result) {
+					public void onSuccess(LinkedList<EndpointData> result) {
 
 						Iterator<EndpointData> it = result.iterator();
 						removeLoadAnimation(animationLoading);
@@ -423,9 +436,16 @@ public class SphereEditorWidget extends Composite {
 							final DynamicAnchor anchorAssigned = new DynamicAnchor(
 									currentItem.endpointName, true,
 									currentItem.endpointId);
-							anchorAssigned.addClickHandler(new OpenEndpointClickHandler(
-									sphereID, sphereName, currentItem.endpointId, currentItem.endpointName, currentItem.endpointclassId));
+							anchorAssigned.addClickHandler(new ClickHandler(){
 
+								@Override
+								public void onClick(ClickEvent event) {
+									// TODO Auto-generated method stub
+								
+									AppController.openEndpoint(currentItem.endpointId);
+								}
+								
+							});
 							/*
 							final Button buttonRemoveAssigned = new Button();
 							buttonRemoveAssigned.setType(ButtonType.DANGER);
@@ -551,40 +571,7 @@ public class SphereEditorWidget extends Composite {
 	}
 
 */
-	public class OpenEndpointClickHandler implements ClickHandler {
-
-		private String sphereID;
-		private String sphereName;
-		private String endpointID;
-		private String endpointName;
-		private String endpointClassID;
-		
-
-		OpenEndpointClickHandler(String sphereID, String sphereName, String endpointID, String endpointName, String endpointClassId) {
-			super();
-			this.sphereID = sphereID;
-			this.endpointID = endpointID;
-			this.sphereName = sphereName;
-			this.endpointName = endpointName;
-			this.endpointClassID = endpointClassId;
-			
-
-		}
-
-		public void onClick(ClickEvent event) {
-			// Window.alert("Hello World: " + sphereID + endpointID);
-
-			final AnimationLoading animationLoading = new AnimationLoading();
-			showLoadAnimation(animationLoading);
-
-			RootPanel.get("main").clear();
-			EndpointView endpointView = new EndpointView(sphereID, sphereName, endpointID, endpointName, endpointClassID);
-			RootPanel.get("main").add(endpointView);
-			
-			
-		}
-
-	}
+	
 	
 	public void removeAssigned(final String sphereID, String endpointID) {
 	
@@ -622,7 +609,31 @@ public class SphereEditorWidget extends Composite {
 
 	}
 
+	private void setSphereName(){
+		SphereServiceAsync rpcServiceSphere = GWT.create(SphereService.class);
+		rpcServiceSphere.getSphereForSphereID(sphereID,
+				new AsyncCallback<SphereData>() {
 
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(SphereData result) {
+						// TODO Auto-generated method stub
+						sphereName = result.getName();
+						
+						
+
+					}
+
+				});
+
+		
+	}
+	
 
 
 }

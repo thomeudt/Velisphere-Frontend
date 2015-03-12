@@ -31,7 +31,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.velisphere.tigerspice.client.NavBar;
+import com.velisphere.tigerspice.client.appcontroller.NavBar;
 import com.velisphere.tigerspice.client.spheres.SphereEditorWidget;
 
 
@@ -43,7 +43,7 @@ public class NewAccountScreen {
 	RootPanel rootPanelBanderole;
 	VerticalPanel mainPanel;
 	NavBar navBar;
-	NewAccountDialogbox newAccount;
+	NewAccountWidget newAccount;
 	
 	public void open(){
 
@@ -70,7 +70,7 @@ public class NewAccountScreen {
 	mainPanel = new VerticalPanel();
 	rootPanel.add(mainPanel);
 	
-	newAccount = new NewAccountDialogbox();
+	newAccount = new NewAccountWidget();
 	rootPanel.add(newAccount);
 	
 		

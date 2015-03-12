@@ -67,4 +67,10 @@ ImageResource action();
 @Source("blocked.png")
 ImageResource blocked();
 
+@Source("and-icon.png")
+ImageResource and_icon();
+
+@Source("or-icon.png")
+ImageResource or_icon();
+
 }

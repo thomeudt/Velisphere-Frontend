@@ -17,10 +17,12 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client.propertyclasses;
 
+import java.util.LinkedList;
 import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 
@@ -28,5 +30,8 @@ import com.velisphere.tigerspice.shared.PropertyClassData;
 public interface PropertyClassService extends RemoteService {
 
 	PropertyClassData getPropertyClassForPropertyClassID(String propertyClassID);
+	String addPropertyClass(String propertyClassName, String propertyClassDataType, String propertyClassUnit);
+	LinkedList<PropertyClassData> getAllPropertyClassDetails();
+	String updatePropertyClass(String pcID, String pcName, String pcDataType, String pcUnit);
 
 }

@@ -18,6 +18,7 @@
 package com.velisphere.tigerspice.client.checks;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Vector;
 
 import com.github.gwtbootstrap.client.ui.Accordion;
@@ -39,16 +40,16 @@ import com.sencha.gxt.dnd.core.client.DndDragStartEvent;
 import com.sencha.gxt.dnd.core.client.DragSource;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
+import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
-import com.velisphere.tigerspice.client.helper.DragobjectContainer;
+import com.velisphere.tigerspice.client.helper.DragobjectContainerUNUSED;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
-import com.velisphere.tigerspice.client.helper.EventUtils;
-import com.velisphere.tigerspice.client.helper.SessionHelper;
-import com.velisphere.tigerspice.client.helper.SessionVerifiedEvent;
-import com.velisphere.tigerspice.client.helper.SessionVerifiedEventHandler;
-import com.velisphere.tigerspice.shared.CheckData;
+import com.velisphere.tigerspice.shared.CheckDataUNUSED;
 import com.velisphere.tigerspice.shared.EndpointData;
 
 public class ChecksByEndpointWidget extends Composite {
@@ -87,7 +88,7 @@ public class ChecksByEndpointWidget extends Composite {
 	SessionHelper.validateCurrentSession();
 
 	
-	sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+	sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 	    	
 	@Override
     public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
@@ -96,7 +97,7 @@ public class ChecksByEndpointWidget extends Composite {
 		userID = SessionHelper.getCurrentUserID();
 
 	loadAnimation.showLoadAnimation("Loading endpoints");
-	rpcServiceEndpoint.getEndpointsForUser(userID, new AsyncCallback<Vector<EndpointData>>(){
+	rpcServiceEndpoint.getEndpointsForUser(userID, new AsyncCallback<LinkedList<EndpointData>>(){
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -105,7 +106,7 @@ public class ChecksByEndpointWidget extends Composite {
 		}
 
 		@Override
-		public void onSuccess(Vector<EndpointData> result) {
+		public void onSuccess(LinkedList<EndpointData> result) {
 			// TODO Auto-generated method stub
 			loadAnimation.removeLoadAnimation();
 			Iterator<EndpointData> it = result.iterator();
@@ -137,7 +138,7 @@ public class ChecksByEndpointWidget extends Composite {
 	private void addChecksToEndpoint(final AccordionGroup endpoint, String endpointID){
 
 		loadAnimation.showLoadAnimation("Loading sensors");
-		rpcServiceCheck.getChecksForEndpointID(endpointID, new AsyncCallback<Vector<CheckData>>(){
+		rpcServiceCheck.getChecksForEndpointID(endpointID, new AsyncCallback<LinkedList<CheckDataUNUSED>>(){
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -146,16 +147,16 @@ public class ChecksByEndpointWidget extends Composite {
 			}
 
 			@Override
-			public void onSuccess(Vector<CheckData> result) {
+			public void onSuccess(LinkedList<CheckDataUNUSED> result) {
 				// TODO Auto-generated method stub
 				loadAnimation.removeLoadAnimation();
-				Iterator<CheckData> it = result.iterator();
+				Iterator<CheckDataUNUSED> it = result.iterator();
 				if (it.hasNext() == false){
 					endpoint.add(accordionRowBuilder("No checks available"));
 				}
 				while(it.hasNext()){
 					
-					CheckData current = it.next();
+					CheckDataUNUSED current = it.next();
 					String shortName;
 					
 					if (current.getName().length() < 25){
@@ -207,7 +208,7 @@ public class ChecksByEndpointWidget extends Composite {
 				// is
 				// allowed
 				
-				DragobjectContainer dragAccordion = new DragobjectContainer();
+				DragobjectContainerUNUSED dragAccordion = new DragobjectContainerUNUSED();
 				dragAccordion.checkID = checkID;
 				dragAccordion.checkName = checkName;
 				

@@ -21,6 +21,9 @@ import java.io.IOException;
 
 
 
+
+
+
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -34,18 +37,32 @@ public class BrokerConnection {
 
 	
 	// CachingConnectionFactory connectionFactory = new CachingConnectionFactory("somehost");
-	public static ConnectionFactory factory;
+	
 	public static Channel channel;
 	static Connection rxConnection;
 	static Connection txConnection;
 
 	public static void establishConnection(){
-		factory = new ConnectionFactory();
-		factory.setHost(ServerParameters.bunny_ip);
+		
+		ConnectionFactory txFactory;
+		ConnectionFactory rxFactory;
+		txFactory = new ConnectionFactory();
+		txFactory.setHost(ServerParameters.bunny_ip);
+		txFactory.setVirtualHost("hClients");
+		txFactory.setUsername("dummy");
+		txFactory.setPassword("dummy");
 
+		rxFactory = new ConnectionFactory();
+		rxFactory.setHost(ServerParameters.bunny_ip);
+		rxFactory.setVirtualHost("hController");
+		rxFactory.setUsername("dummy");
+		rxFactory.setPassword("dummy");
+
+
+		
 		try {
-			txConnection = factory.newConnection();
-			rxConnection = factory.newConnection();
+			txConnection = txFactory.newConnection();
+			rxConnection = rxFactory.newConnection();
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -56,12 +73,14 @@ public class BrokerConnection {
 
 	public Channel establishRxChannel() throws IOException {
 
+		
 		return channel = rxConnection.createChannel();
 
 	}
 
 	public Channel establishTxChannel() throws IOException {
 
+		
 		return channel = txConnection.createChannel();
 
 	}

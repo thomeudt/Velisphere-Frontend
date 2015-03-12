@@ -2,6 +2,7 @@ package com.velisphere.montana.manager;
 
 import org.voltdb.*;
 import org.voltdb.client.*;
+import org.voltdb.types.TimestampType;
 
 public class PreLoadNeu {
 
@@ -15,12 +16,14 @@ public class PreLoadNeu {
 	        //public static String volt_ip = "16.1.1.149"; // for local db
 	    	//public static String volt_ip = "ec2-54-200-17-56.us-west-2.compute.amazonaws.com"; // for aws db
 	        
-	        preLoader.createConnection("16.1.1.110");
-	        //preLoader.createConnection("ec2-54-186-85-248.us-west-2.compute.amazonaws.com");
+	        preLoader.createConnection("16.1.1.84");
+	        //preLoader.createConnection("54.200.77.57");
 	        
 	        /*
 	         * Load the database.
 	         */
+	        
+	        
 	        
 	        preLoader.callProcedure("SPHERE.insert", "1000", "Home Tübingen", "0");
 	        preLoader.callProcedure("SPHERE.insert", "1001", "My Car", "0");
@@ -29,22 +32,22 @@ public class PreLoadNeu {
 	        System.out.println("Spheres loaded");
 	        
 	        
-	        preLoader.callProcedure("USER.insert", "1000", "thmeu", "thorsten@thorsten-meudt.de", "asa");
-	        preLoader.callProcedure("USER.insert", "1001", "utmeu", "ute_lechner@yahoo.de", "asa");
-	        preLoader.callProcedure("USER.insert", "1002", "lcmeu", "charlotte@thorsten-meudt.de", "asa");
+	        preLoader.callProcedure("USER.insert", "1000", "thmeu", "thorsten@thorsten-meudt.de", "asa", "PAYPERUSE");
+	        preLoader.callProcedure("USER.insert", "1001", "utmeu", "ute_lechner@yahoo.de", "asa", "PAYPERUSE");
+	        preLoader.callProcedure("USER.insert", "1002", "lcmeu", "charlotte@thorsten-meudt.de", "asa", "PAYPERUSE");
 	        
 	        System.out.println("Users loaded");
 	        
-	        preLoader.callProcedure("ENDPOINTCLASS.insert", "EPC1", "Blubber Messenger Client Account");
-	        preLoader.callProcedure("ENDPOINTCLASS.insert", "EPC2", "Generic Universal Sensor / Actor");
-	        preLoader.callProcedure("ENDPOINTCLASS.insert", "EPC3", "Generic Setter/Getter Application");
+	        preLoader.callProcedure("ENDPOINTCLASS.insert", "EPC1", "Blubber Messenger Client Account", "", "");
+	        preLoader.callProcedure("ENDPOINTCLASS.insert", "EPC2", "Generic Universal Sensor / Actor", "", "");
+	        preLoader.callProcedure("ENDPOINTCLASS.insert", "EPC3", "Generic Setter/Getter Application", "", "");
 	        
 	        System.out.println("Endpointclasses loaded");
 	        
-	        preLoader.callProcedure("ENDPOINT.insert", "E1", "PiPhidget", "EPC2");
-	        preLoader.callProcedure("ENDPOINT.insert", "E2", "Blubber Thorsten", "EPC1");
-	        preLoader.callProcedure("ENDPOINT.insert", "E3", "Blubber Ute", "EPC1");
-	        preLoader.callProcedure("ENDPOINT.insert", "E4", "Reference Home Controller App", "EPC3");
+	        preLoader.callProcedure("ENDPOINT.insert", "E1", "PiPhidget", "EPC2", new TimestampType());
+	        preLoader.callProcedure("ENDPOINT.insert", "E2", "Blubber Thorsten", "EPC1", new TimestampType());
+	        preLoader.callProcedure("ENDPOINT.insert", "E3", "Blubber Ute", "EPC1", new TimestampType());
+	        preLoader.callProcedure("ENDPOINT.insert", "E4", "Reference Home Controller App", "EPC3", new TimestampType());
 	        
 	        System.out.println("Endpoints loaded");
 	        
@@ -52,13 +55,21 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1001", "E2", "1000");
 	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1002", "E3", "1001");
 	        
-	        System.out.println("Endpoints and Spheres linked");
+	        System.out.println("Endpoints and Users linked");
 	        
 	        preLoader.callProcedure("ENDPOINT_SPHERE_LINK.insert", "1000", "E1", "1000");
 	        preLoader.callProcedure("ENDPOINT_SPHERE_LINK.insert", "1001", "E2", "1000");
-	        preLoader.callProcedure("ENDPOINT_SPHERE_LINK.insert", "1002", "E3", "1001");
+	        System.out.println("Endpoints and Spheres linked");
 	        
-	        System.out.println("Endpoints and Users linked");
+	      /**  
+	        preLoader.callProcedure("SPHERE_USER_LINK.insert", "1000", "1000", "1000");
+	        preLoader.callProcedure("SPHERE_USER_LINK.insert", "1001", "1001", "1000");
+	        
+	        
+	        System.out.println("Spheres and Users linked");
+	        **/
+	        
+	       
 	        
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC1", "Text", "String", "");
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC2", "Generic Digital Port", "Byte", "");
@@ -68,7 +79,14 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC6", "Touch", "Double", "");
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC7", "Rotation", "Double", "");
 	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC8", "Pressure", "Double", "");
-	        	        
+	        
+	        
+	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC_GEO_LAT", "Latitude", "String", "");
+	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC_GEO_LON", "Longitude", "String", "");
+	        preLoader.callProcedure("PROPERTYCLASS.insert", "PC_GEO_LATLON", "Composite Lat/Lon", "String", "");
+	       
+	        
+	        
 	        System.out.println("Property Classes loaded");
 	        
 	        preLoader.callProcedure("PROPERTY.insert", "PR1", "Switch 1", "PC4", "EPC3", 0, 1, 0, 0);
@@ -84,6 +102,7 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("PROPERTY.insert", "PR11", "Measured Rotation", "PC7", "EPC2", 0, 1, 0, 0);
 	        preLoader.callProcedure("PROPERTY.insert", "PR12", "Measured Touch", "PC6", "EPC2", 0, 1, 0, 0);
 	        preLoader.callProcedure("PROPERTY.insert", "PR13", "Measured Brightness", "PC3", "EPC2", 0, 1, 0, 0);
+    
 	        	        	        
 	        System.out.println("Properties loaded");
 	        
@@ -108,30 +127,30 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("CHECK.insert", "C9", "E1", "PR1", "5", "<", "0", "0", "Switch 1 is less than 5", "CP1"); // Checks if switch 1 is on
 	        preLoader.callProcedure("CHECKSTATE.insert", "C9", 0, "CP1");
 	        
-	        /* megastress
-	       */
+	        
 	        int i = 0;
 	        
-	        while (i<5){
+	        while (i<3){
 	        	preLoader.callProcedure("CHECK.insert", "CA"+i, "E1"+i, "PR1", "1", "=", "0", "0", "Switch 1 on", "CP1"+i); // Checks if switch 1 is on
-	        	preLoader.callProcedure("CHECKPATH.insert", "CP1"+i, "Dummy "+i, ""); // Checkpath Button 1,2,3,4 gedrückt UNUSED
+	        	preLoader.callProcedure("CHECKPATH.insert", "CP1"+i, "Dummy "+i, "", ""); // Checkpath Button 1,2,3,4 gedrückt UNUSED
 	        	preLoader.callProcedure("CHECKSTATE.insert", "CA"+i, 0, "CP1"+i);
-	        	preLoader.callProcedure("MULTICHECK.insert", "MC5"+i, "AND", "0", "0", "Test 5", "CP1"+i);
-	        	preLoader.callProcedure("MULTICHECK_CHECK_LINK.insert", "1000"+i, "MC1"+i, "C1"+i, "CP1"+i);
+	        	preLoader.callProcedure("MULTICHECK.insert", "MC1"+i, "AND", "0", "0", "Test 5", "CP1"+i);
+	        	preLoader.callProcedure("MULTICHECK_CHECK_LINK.insert", "1000"+i, "MC1"+i, "CA"+i, "CP1"+i);	
+		        
 	        	System.out.println("MASSCHECK " + i);
 	        	i = i + 1;
 	        }
 	        
 	        int e = 0;
 	        
-	        while (e<2){
+	        while (e<5){
 	        	preLoader.callProcedure("CHECK.insert", "CX"+e, "E1", "PR1", "1", "=", "0", "0", "Switch 1 on", "CP1"); // Checks if switch 1 is on
 	        	preLoader.callProcedure("CHECKSTATE.insert", "CX"+e, 0, "CP1");
 	        	System.out.println("MASS CP CHECK " + e);
 	        	e = e + 1;
 	        }
 	        
-	        /**/
+	        
 	        
 	        System.out.println("Checks loaded");
 	        
@@ -159,12 +178,12 @@ public class PreLoadNeu {
 	        System.out.println("Multichecks and Multichecks linked");
 	        
         
-	        preLoader.callProcedure("CHECKPATH.insert", "CP1", "Dummy 1", ""); // Checpath für alle Buttons
-	        preLoader.callProcedure("CHECKPATH.insert", "CP2", "Dummy 2", ""); // Checkpath Messenger
-	        preLoader.callProcedure("CHECKPATH.insert", "CP3", "Dummy 3", ""); // Checkpath Button 5 gedrückt UNUSED
-	        preLoader.callProcedure("CHECKPATH.insert", "CP4", "Dummy 4", ""); // Checkpath Button 1,2,3,4 gedrückt UNUSED
-	        preLoader.callProcedure("CHECKPATH.insert", "CP5", "Dummy 5", ""); // Checkpath Button 1,2,3,4 gedrückt UNUSED
-	        preLoader.callProcedure("CHECKPATH.insert", "CP6", "Dummy 5", ""); // Checkpath Button 1,2,3,4 gedrückt UNUSED
+	        preLoader.callProcedure("CHECKPATH.insert", "CP1", "Dummy 1", "", ""); // Checpath für alle Buttons
+	        preLoader.callProcedure("CHECKPATH.insert", "CP2", "Dummy 2", "", ""); // Checkpath Messenger
+	        preLoader.callProcedure("CHECKPATH.insert", "CP3", "Dummy 3", "", ""); // Checkpath Button 5 gedrückt UNUSED
+	        preLoader.callProcedure("CHECKPATH.insert", "CP4", "Dummy 4", "", ""); // Checkpath Button 1,2,3,4 gedrückt UNUSED
+	        preLoader.callProcedure("CHECKPATH.insert", "CP5", "Dummy 5", "", ""); // Checkpath Button 1,2,3,4 gedrückt UNUSED
+	        preLoader.callProcedure("CHECKPATH.insert", "CP6", "Dummy 5", "", ""); // Checkpath Button 1,2,3,4 gedrückt UNUSED
 	        
 	        System.out.println("Checkpaths loaded");
 
@@ -205,32 +224,37 @@ public class PreLoadNeu {
 	        preLoader.callProcedure("CHECKPATH_MULTICHECK_LINK.insert", "1013", "CP6", "MC5");
 	        	        
 	        System.out.println("Checkpaths and MultiChecks linked");
+	      
 	        
-	        preLoader.callProcedure("RULE.insert", "R1", "Button 1 gedrückt", "C1", "", "CP1"); 
-	        preLoader.callProcedure("RULE.insert", "R2", "Button 1 und 2 gedrückt", "", "MC1", "CP1");
-	        preLoader.callProcedure("RULE.insert", "R3", "Button 3 und 4 gedrückt", "", "MC2", "CP1");
-	        preLoader.callProcedure("RULE.insert", "R4", "Button 1,2, 3 und 4 gedrückt", "", "MC3", "CP1");
-	        preLoader.callProcedure("RULE.insert", "R5", "Chat von Thorsten", "C6", "", "CP2");	           
-	        preLoader.callProcedure("RULE.insert", "R6", "Chat von Ute", "C7", "", "CP2");
-	        
-	        System.out.println("Rules loaded");
 	 	        
-	        preLoader.callProcedure("ACTION.insert", "A1", "Forward Chat to Zielendpoint", "", "PR6", 0); 
-	        preLoader.callProcedure("ACTION.insert", "A2", "Licht an im Arbeitszimmer", "E2", "", 0);
+	        preLoader.callProcedure("ACTION.insert", "A1", "Forward Chat to Zielendpoint", "", "PR6", 0, "C6", "", "CP2"); 
+	        preLoader.callProcedure("ACTION.insert", "A2", "Licht an im Arbeitszimmer", "E2", "", 0, "C1", "", "CP1");
+	        preLoader.callProcedure("ACTION.insert", "A3", "Forward Chat to Zielendpoint", "", "PR6", 0, "C7", "", "CP2"); 
 	        
 	        System.out.println("Actions loaded");
 	        	        	        
-	        preLoader.callProcedure("OUTBOUNDPROPERTYACTION.insert", "OPA1", "PR9", "PR7", "", "", "A1");
-	        preLoader.callProcedure("OUTBOUNDPROPERTYACTION.insert", "OPA2", "PR9", "", "", "LICHT AN", "A2");
+	        preLoader.callProcedure("OUTBOUNDPROPERTYACTION.insert", "OPA1", "PR9", "PR7", "", "", "", "A1", "CP2");
+	        preLoader.callProcedure("OUTBOUNDPROPERTYACTION.insert", "OPA2", "PR9", "", "", "", "LICHT AN", "A2", "CP1");
+	        preLoader.callProcedure("OUTBOUNDPROPERTYACTION.insert", "OPA3", "PR9", "PR7", "", "", "", "A3", "CP2");
 	        
 	        System.out.println("Outbound Property Actions loaded");
 	        	        
-	        preLoader.callProcedure("RULE_ACTION_LINK.insert", "1000", "R5", "A1");
-	        preLoader.callProcedure("RULE_ACTION_LINK.insert", "1001", "R1", "A2");
-	        preLoader.callProcedure("RULE_ACTION_LINK.insert", "1002", "R6", "A1");
 	        
-	        System.out.println("Outbound Rules and Actions linked");
+	        preLoader.callProcedure("ITEMCOST.insert", "ACCOUNT", "PAYPERUSE", "Account fee per user account, per month", 0);
+	        preLoader.callProcedure("ITEMCOST.insert", "CHECK_HIT", "PAYPERUSE", "Cost per Check Hit", 0.01);
+	        preLoader.callProcedure("ITEMCOST.insert", "MULTICHECK_HIT", "PAYPERUSE", "Cost per Check Hit", 0.05);
+	        preLoader.callProcedure("ITEMCOST.insert", "ACCOUNT", "ECO1", "Account fee per user account, per month", 0);
+	        preLoader.callProcedure("ITEMCOST.insert", "CHECK_HIT", "ECO1", "Cost per Check Hit", 0.01);
+	        preLoader.callProcedure("ITEMCOST.insert", "MULTICHECK_HIT", "ECO1", "Cost per Check Hit", 0.05);
+
+	      	        
+	        System.out.println("Item Costs loaded");
 	        
+	        preLoader.callProcedure("PLAN.insert", "PAYPERUSE", "Pay per Use plan with no monthly subscription fee");
+	        preLoader.callProcedure("PLAN.insert", "ECO1", "Light usage plan");
+	      	        
+	        System.out.println("Plans loaded");
+	      
 	        
 	        
 	        System.out.println("Done!");

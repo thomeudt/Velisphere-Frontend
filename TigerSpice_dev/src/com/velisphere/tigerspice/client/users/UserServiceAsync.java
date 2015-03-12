@@ -17,6 +17,7 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client.users;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Vector;
 
@@ -25,5 +26,6 @@ import com.velisphere.tigerspice.shared.UserData;
 
 public interface UserServiceAsync {
 	void getAllUserDetails(AsyncCallback<Vector<UserData>> callback);
-	void addNewUser(String userName, String password, String eMail, AsyncCallback<String> callback);
+	void addNewUser(String userName, String password, String eMail, String captchaWord, AsyncCallback<String> callback);
+	void getAllUsersWithPublicSpheres(AsyncCallback<HashMap<String, String>> callback);
 }

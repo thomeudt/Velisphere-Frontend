@@ -19,6 +19,7 @@ package com.velisphere.tigerspice.client.properties;
 
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -75,10 +76,10 @@ import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
-import com.velisphere.tigerspice.client.helper.DragobjectContainer;
+import com.velisphere.tigerspice.client.helper.DragobjectContainerUNUSED;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
 import com.velisphere.tigerspice.client.images.Images;
-import com.velisphere.tigerspice.shared.CheckData;
+import com.velisphere.tigerspice.shared.CheckDataUNUSED;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.UnusedPropertyDataProperties;
 import com.velisphere.tigerspice.shared.UnusedFolderPropertyData;
@@ -120,7 +121,7 @@ public class PropertyEditorWidget extends Composite {
 		ScrollPanel treeCon = new ScrollPanel();
 		treeCon = buildTree(this.endpointClassID);
 		Button refreshButton = new Button();
-		refreshButton.setType(ButtonType.INFO);
+		refreshButton.setType(ButtonType.PRIMARY);
 		refreshButton.setSize(ButtonSize.MINI);
 		refreshButton.setText("Refresh Status");
 		column.add(treeCon);
@@ -144,7 +145,7 @@ public class PropertyEditorWidget extends Composite {
 		showLoadAnimation(animationLoading);
 		rpcService.getPropertiesForEndpointClass(
 				endpointClassID,
-				new AsyncCallback<List<PropertyData>>() {
+				new AsyncCallback<LinkedList<PropertyData>>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -153,7 +154,7 @@ public class PropertyEditorWidget extends Composite {
 					}
 
 					@Override
-					public void onSuccess(List<PropertyData> result) {
+					public void onSuccess(LinkedList<PropertyData> result) {
 						// TODO Auto-generated method stub
 						removeLoadAnimation(animationLoading);
 
@@ -161,7 +162,7 @@ public class PropertyEditorWidget extends Composite {
 						
 						final Accordion accordion = new Accordion();
 						
-						Collections.sort(result);
+						
 						
 						while(iT.hasNext()){
 		
@@ -226,10 +227,10 @@ public class PropertyEditorWidget extends Composite {
 													// is
 													// allowed
 													
-													DragobjectContainer dragAccordion = new DragobjectContainer();
+													DragobjectContainerUNUSED dragAccordion = new DragobjectContainerUNUSED();
 													dragAccordion.accordionGroup = accordionGroup;
 													dragAccordion.propertyID = currentItem.propertyId;
-													dragAccordion.properyClassID = currentItem.propertyclassId;
+													dragAccordion.propertyClassID = currentItem.propertyclassId;
 													dragAccordion.propertyName = currentItem.propertyName;
 													
 													event.setData(dragAccordion);

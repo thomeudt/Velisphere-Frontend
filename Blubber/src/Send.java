@@ -33,6 +33,9 @@ public class Send {
 
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(ServerParameters.bunny_ip);
+		factory.setUsername("dummy");
+		factory.setPassword("dummy");
+		factory.setVirtualHost("hController");
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 
@@ -83,6 +86,10 @@ public class Send {
 
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(ServerParameters.bunny_ip);
+		factory.setUsername("dummy");
+		factory.setPassword("dummy");
+		
+		factory.setVirtualHost("hController");
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 

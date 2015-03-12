@@ -27,6 +27,7 @@ import java.util.Vector;
 import com.github.gwtbootstrap.client.ui.Accordion;
 import com.github.gwtbootstrap.client.ui.AccordionGroup;
 import com.github.gwtbootstrap.client.ui.Column;
+import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.Row;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.core.shared.GWT;
@@ -36,23 +37,24 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.dom.ScrollSupport;
 import com.sencha.gxt.dnd.core.client.DndDragStartEvent;
 import com.sencha.gxt.dnd.core.client.DragSource;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
+import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
-import com.velisphere.tigerspice.client.helper.DragobjectContainer;
+import com.velisphere.tigerspice.client.helper.DragobjectContainerUNUSED;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
-import com.velisphere.tigerspice.client.helper.EventUtils;
-import com.velisphere.tigerspice.client.helper.SessionHelper;
-import com.velisphere.tigerspice.client.helper.SessionVerifiedEvent;
-import com.velisphere.tigerspice.client.helper.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.images.Images;
 import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.EndpointData;
@@ -79,22 +81,32 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 	
 	FlowLayoutContainer con = new FlowLayoutContainer();
 	initWidget(con);
+	con.setBorders(false);
+	
 
 	VerticalLayoutContainer container = new VerticalLayoutContainer();
 
 	container.setBorders(false);
 	container.setScrollMode(ScrollSupport.ScrollMode.AUTOY);
-	// container.setHeight((int)((RootPanel.get().getOffsetHeight())/2.5));
-	container.setWidth(180);
+	container.setHeight((int)((RootPanel.get().getOffsetHeight())/3.5));
+	//container.setWidth(180);
 	con.add(container);
 	accordion = new Accordion();
 	container.add(accordion);
-
+	
+	/**
+	ListBox actorList = new ListBox();
+	Row actorRow = new Row();
+	Column actorColumn = new Column(1);
+	actorColumn.add(actorList);
+	actorRow.add(actorColumn);
+	initWidget(actorRow);
+**/
 	
 	SessionHelper.validateCurrentSession();
 
 	
-	sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+	sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 	    	
 	@Override
     public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
@@ -103,7 +115,7 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 		userID = SessionHelper.getCurrentUserID();
 
 	loadAnimation.showLoadAnimation("Loading sensors");
-	rpcServiceEndpoint.getEndpointsForUser(userID, new AsyncCallback<Vector<EndpointData>>(){
+	rpcServiceEndpoint.getEndpointsForUser(userID, new AsyncCallback<LinkedList<EndpointData>>(){
 
 		@Override
 		public void onFailure(Throwable caught) {
@@ -112,30 +124,31 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 		}
 
 		@Override
-		public void onSuccess(Vector<EndpointData> result) {
+		public void onSuccess(LinkedList<EndpointData> result) {
 			
 			loadAnimation.removeLoadAnimation();
 			Iterator<EndpointData> it = result.iterator();
+			
 			while(it.hasNext()){
 				AccordionGroup endpoint = new AccordionGroup();
 				
 				EndpointData current = it.next();
 				String shortName;
 				
-				if (current.getName().length() < 22){
+				if (current.getName().length() < 21){
 					shortName = current.getName();	
 				} else
 				{
-					shortName = current.getName().substring(0, 17)+"(...)";
+					shortName = current.getName().substring(0, 16)+"(...)";
 				}
 				
 				endpoint.addStyleName("style.icon");
 				endpoint.setBaseIcon(IconType.GEARS);
 				endpoint.setHeading(shortName);
 				endpoint.setTitle(current.getName());
-				addActPropertiesToEndpoint(endpoint, current.getId());
+				addActPropertiesToEndpoint(endpoint, current.getId(), current.getName(), current.endpointclassId);
 				//System.out.println("momentane ID: " + current.getId());
-				
+				endpoint.addStyleName("bgsilver");
 				accordion.add(endpoint);
 			}
 			
@@ -146,7 +159,7 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 	});
 	}
 	
-	private void addActPropertiesToEndpoint(final AccordionGroup endpoint, String endpointID){
+	private void addActPropertiesToEndpoint(final AccordionGroup endpoint, final String endpointID, final String endpointName, final String endpointClassID){
 
 		
 		loadAnimation.showLoadAnimation("Loading actors");
@@ -183,7 +196,8 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 						shortName = current.getName().substring(0, 20)+"(...)";
 					}
 					Row row = accordionRowBuilder(shortName);
-					setDragSource(row, current.getId(), current.getName());
+					
+					setDragSource(row, current.getId(), current.getName(), endpointName, endpointID, endpointClassID);
 					endpoint.add(row);
 
 				}
@@ -203,12 +217,12 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 		return row;
 	}
 	
-	private void setDragSource(Row accordionRow, final String checkID, final String checkName){
+	private void setDragSource(Row accordionRow, final String propertyID, final String propertyName, final String endpointName, final String endpointID, final String endpointClassID){
 		final SafeHtmlBuilder builder = new SafeHtmlBuilder();
 		builder.appendHtmlConstant("<div style=\"border:1px solid #ddd;cursor:default\" class=\""
 				+ "\">");
 		builder.appendHtmlConstant("Drag "
-				+ checkName
+				+ propertyName
 				+ " into Checkpath to create an action");
 		builder.appendHtmlConstant("</div>");
 		
@@ -224,9 +238,13 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 				// is
 				// allowed
 				
-				DragobjectContainer dragAccordion = new DragobjectContainer();
-				dragAccordion.checkID = checkID;
-				dragAccordion.checkName = checkName;
+				DragobjectContainerUNUSED dragAccordion = new DragobjectContainerUNUSED();
+				dragAccordion.propertyID = propertyID;
+				dragAccordion.propertyName = propertyName;
+				dragAccordion.endpointName = endpointName;
+				dragAccordion.endpointID = endpointID;
+				dragAccordion.endpointClassID = endpointClassID;
+				
 				
 				event.setData(dragAccordion);
 				event.getStatusProxy()

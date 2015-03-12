@@ -18,12 +18,11 @@
 package com.velisphere.tigerspice.client.actions;
 
 import java.util.LinkedList;
-import java.util.Vector;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.velisphere.tigerspice.shared.ActionData;
 
 
 public interface ActionServiceAsync {
 
-	
+	void getActionsForCheckpathID(String checkpathID, AsyncCallback<LinkedList<ActionData>> callback);
 }

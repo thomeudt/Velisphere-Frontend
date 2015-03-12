@@ -21,7 +21,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class MulticheckData implements IsSerializable, Comparable <MulticheckData>
+public class MulticheckData implements IsSerializable
 {
 	
 	public String multiCheckId;
@@ -60,11 +60,7 @@ public class MulticheckData implements IsSerializable, Comparable <MulticheckDat
 		this.multiCheckName = checkName;
 	}
 
-	@Override
-	public int compareTo(MulticheckData o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
 		
 	
 }
