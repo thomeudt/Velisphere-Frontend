@@ -48,14 +48,20 @@
 
 
 						<b:Row>
-							<b:Column size="2" offset="2">
-								<b:Button type="PRIMARY" ui:field="btnOpenCheckpath"
-									addStyleNames="btn-block" size="SMALL">Open Selected Logic Design</b:Button>
-							</b:Column>
-							<b:Column size="2" offset="0">
+							<b:Column size="1" offset="3">
 								<b:Button type="SUCCESS" ui:field="btnCreateCheckpath"
-									addStyleNames="btn-block" size="SMALL">Create New Logic Design</b:Button>
+									addStyleNames="btn-block" size="SMALL">New</b:Button>
+								
 							</b:Column>
+							<b:Column size="1" offset="0">
+								<b:Button type="PRIMARY" ui:field="btnOpenCheckpath"
+									addStyleNames="btn-block" size="SMALL">Open</b:Button>
+							</b:Column>
+							<b:Column size="1" offset="0">
+								<b:Button type="DANGER" ui:field="btnDeleteCheckpath"
+									addStyleNames="btn-block" size="SMALL">Delete</b:Button>
+							</b:Column>
+							
 							<b:Column size="2" offset="0">
 								<b:Paragraph addStyleNames="smalltext" ui:field="txtOpenStatus"></b:Paragraph>
 							</b:Column>

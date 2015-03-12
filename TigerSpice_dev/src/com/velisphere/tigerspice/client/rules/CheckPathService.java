@@ -61,6 +61,7 @@ public interface CheckPathService extends RemoteService {
 		String deleteMulticheckCheckLink(String linkID);
 		String deleteMulticheckMulticheckLink(String parentMulticheckID);
 		String deleteMulticheck(String multicheckID);
+		String deleteCheckpath(String checkpathID);
 		String addNewCheckpathCheckLink(String checkpathID, String checkID);
 		String addNewCheckpathMulticheckLink(String checkpathID, String multicheckID);
 		LinkedList<ActionObject> getActionsForMulticheckID(String multicheckID, String checkpathID);

@@ -12,6 +12,7 @@ import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.NavLink;
+import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.IconSize;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.canvas.client.Canvas;
@@ -25,12 +26,16 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.event.ConnectionSaveEvent;
 import com.velisphere.tigerspice.client.event.ConnectionSaveEventHandler;
 import com.velisphere.tigerspice.client.event.DraggedInCanvasEvent;
@@ -114,7 +119,6 @@ public class LogicCanvas extends Composite {
 
 	public LogicCanvas() {
 
-		
 		createUUID();
 		linkedInCanvasHandler = null;
 
@@ -1514,6 +1518,66 @@ public class LogicCanvas extends Composite {
 		dataManager.processDeletedP2L();
 		dataManager.processDeletedL2P();
 		
+	}
+	
+	public void deleteFromDatabase() {
+		
+		
+		final DialogBox deleteDialog = new DialogBox();
+		deleteDialog.setText("Are you sure you want to delete this checkpath?");
+		deleteDialog.setStyleName("wellappleblue");
+		HorizontalPanel panel = new HorizontalPanel();
+		Button btnSave = new Button("Yes");
+		panel.add(btnSave);
+		Button btnCancel = new Button("No");
+		panel.add(btnCancel);
+		deleteDialog.add(panel);
+		deleteDialog.setAutoHideEnabled(true);
+		deleteDialog.center();
+		
+		final LogicCanvas currentCanvas = this;
+		
+		btnSave.addClickHandler(new ClickHandler(){
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				Iterator<PhysicalItem> pit = physicalItems.iterator();
+				while (pit.hasNext())
+				{
+					removePhysicalItem(pit.next());
+				}
+				
+				Iterator<LogicCheck> lit = logicChecks.iterator();
+				while (lit.hasNext())
+				{
+					removeLogicCheck(lit.next());
+				}
+				
+				DataManager dataManager = new DataManager(currentCanvas);
+				//dataManager.processCheckPath();
+				dataManager.processP2P();
+				dataManager.processP2L();
+				dataManager.processL2P();
+				dataManager.processDeletedP2P();
+				dataManager.processDeletedP2L();
+				dataManager.processDeletedL2P();
+				dataManager.deleteCheckpath();
+				deleteDialog.removeFromParent();
+				AppController.openLogicDesigner();
+				
+			}
+			
+		});
+		
+		btnCancel.addClickHandler(new ClickHandler(){
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				deleteDialog.removeFromParent();
+				AppController.openLogicDesigner();
+			}
+		});
+						
 	}
 
 	public void openFromDatabase(String checkpathID) {

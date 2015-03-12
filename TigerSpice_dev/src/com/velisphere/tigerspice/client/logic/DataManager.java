@@ -45,8 +45,8 @@ public class DataManager {
 
 		// wait for JSON to be generated
 
-		HandlerRegistration jsonReadyHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(
-				JSONreadyEvent.TYPE, new JSONreadyEventHandler() {
+		HandlerRegistration jsonReadyHandler = EventUtils.RESETTABLE_EVENT_BUS
+				.addHandler(JSONreadyEvent.TYPE, new JSONreadyEventHandler() {
 
 					@Override
 					public void onJSONready(JSONreadyEvent jsonReadyEvent) {
@@ -64,8 +64,9 @@ public class DataManager {
 									public void onFailure(Throwable caught) {
 										// TODO Auto-generated method stub
 
-										RootPanel.get().add(
-												new HTML(
+										RootPanel
+												.get()
+												.add(new HTML(
 														"Error from attempt to create checkpath: "
 																+ caught.getMessage()));
 									}
@@ -92,11 +93,11 @@ public class DataManager {
 				.iterator();
 
 		RootPanel.get().add(new HTML("P2P: started"));
-		
+
 		while (it.hasNext()) {
 
 			ConnectorSensorActor current = it.next();
-			
+
 			RootPanel.get().add(new HTML("P2P: fetched connector"));
 
 			// build action object
@@ -121,22 +122,16 @@ public class DataManager {
 			RootPanel.get().add(new HTML("P2P: Typical processed"));
 			action.manualValue = current.getManualValue();
 			RootPanel.get().add(new HTML("P2P: Manual processed"));
-			
-			if (current.getSourceValue() == ActionSourceConfig.currentSensorValue)
-			{
+
+			if (current.getSourceValue() == ActionSourceConfig.currentSensorValue) {
 				action.valueFromInboundPropertyID = current.getSourceValue();
-				RootPanel.get().add(new HTML("P2P: Source processed"));				
-			}
-			else
-			{
+				RootPanel.get().add(new HTML("P2P: Source processed"));
+			} else {
 				action.valueFromInboundPropertyID = "no";
 				RootPanel.get().add(new HTML("P2P: Source processed - empty"));
 			}
-			
-			
+
 			RootPanel.get().add(new HTML("P2P: built action object"));
-			
-			
 
 			// TODO this can be simplified - we do not need to take care of
 			// multiple actions in new setup
@@ -144,7 +139,7 @@ public class DataManager {
 			LinkedList<ActionObject> actions = new LinkedList<ActionObject>();
 
 			actions.add(action);
-			
+
 			RootPanel.get().add(new HTML("P2P: built action object list"));
 
 			// send to database
@@ -182,13 +177,13 @@ public class DataManager {
 
 		Iterator<ConnectorSensorLogicCheck> it = canvas
 				.getConnectorsSensorLogicCheck().iterator();
-		
+
 		RootPanel.get().add(new HTML("P2L: started"));
 
 		while (it.hasNext()) {
 
 			ConnectorSensorLogicCheck current = it.next();
-			
+
 			RootPanel.get().add(new HTML("P2L: fetched connector"));
 
 			// TODO this can be simplified - we do not need to take care of
@@ -200,17 +195,26 @@ public class DataManager {
 			LinkedList<ActionObject> actions = new LinkedList<ActionObject>();
 
 			RootPanel.get().add(new HTML("P2L: created empty actions list"));
-			
+
 			// send check to database
 
 			CheckServiceAsync checkService = GWT.create(CheckService.class);
 
-			RootPanel.get().add(new HTML("P2L: processing UUID " + current.getCheckUUID()));
-			RootPanel.get().add(new HTML("P2L: processing sensor EPID " + current.getSensor().getEndpointID()));
-			RootPanel.get().add(new HTML("P2L: processing sensor PID " + current.getSensor().getPropertyID()));
-			RootPanel.get().add(new HTML("P2L: processing check value " + current.getCheckValue()));
-			RootPanel.get().add(new HTML("P2L: processing operator " + current.getOperator()));
-			
+			RootPanel.get().add(
+					new HTML("P2L: processing UUID " + current.getCheckUUID()));
+			RootPanel.get().add(
+					new HTML("P2L: processing sensor EPID "
+							+ current.getSensor().getEndpointID()));
+			RootPanel.get().add(
+					new HTML("P2L: processing sensor PID "
+							+ current.getSensor().getPropertyID()));
+			RootPanel.get().add(
+					new HTML("P2L: processing check value "
+							+ current.getCheckValue()));
+			RootPanel.get().add(
+					new HTML("P2L: processing operator "
+							+ current.getOperator()));
+
 			checkService.addNewCheck(current.getCheckUUID(), current
 					.getSensor().getEndpointID(), current.getSensor()
 					.getPropertyID(), current.getCheckValue(), current
@@ -312,12 +316,13 @@ public class DataManager {
 					.getChildConnectors().iterator();
 
 			while (pit.hasNext()) {
-				
+
 				ConnectorSensorLogicCheck childConnector = pit.next();
-				
+
 				checkpathService.addNewMulticheckCheckLink(
-						childConnector.getUUID(), current.getCheckUUID(), childConnector.getCheckUUID(),
-						canvas.getUUID(), new AsyncCallback<String>() {
+						childConnector.getUUID(), current.getCheckUUID(),
+						childConnector.getCheckUUID(), canvas.getUUID(),
+						new AsyncCallback<String>() {
 
 							@Override
 							public void onFailure(Throwable caught) {
@@ -348,7 +353,6 @@ public class DataManager {
 
 			ConnectorLogicCheckActor current = it.next();
 
-			
 			// delete multicheck from database
 
 			CheckPathServiceAsync checkpathService = GWT
@@ -377,8 +381,8 @@ public class DataManager {
 
 			// delete actions from database
 
-			checkpathService.deleteAllActionsForMulticheckId(current.getCheckUUID(),
-					new AsyncCallback<String>() {
+			checkpathService.deleteAllActionsForMulticheckId(
+					current.getCheckUUID(), new AsyncCallback<String>() {
 
 						@Override
 						public void onFailure(Throwable caught) {
@@ -398,16 +402,14 @@ public class DataManager {
 
 					});
 
-			
-			
 			// delete links to checks
 
 			Iterator<ConnectorSensorLogicCheck> pit = current.getLogicCheck()
 					.getDeletedChildConnectors().iterator();
 
 			while (pit.hasNext()) {
-				checkpathService.deleteMulticheckCheckLink(pit.next().getUUID(),
-						new AsyncCallback<String>() {
+				checkpathService.deleteMulticheckCheckLink(
+						pit.next().getUUID(), new AsyncCallback<String>() {
 
 							@Override
 							public void onFailure(Throwable caught) {
@@ -430,20 +432,18 @@ public class DataManager {
 		}
 	}
 
-	
 	public void processDeletedP2P() {
-		Iterator<ConnectorSensorActor> it = canvas.getDeletedConnectorsSensorActor()
-				.iterator();
+		Iterator<ConnectorSensorActor> it = canvas
+				.getDeletedConnectorsSensorActor().iterator();
 
 		RootPanel.get().add(new HTML("Deleted P2P: started"));
-		
+
 		while (it.hasNext()) {
 
 			ConnectorSensorActor current = it.next();
-			
+
 			RootPanel.get().add(new HTML("P2P: fetched connector"));
 
-			
 			// delete from database
 
 			CheckServiceAsync checkService = GWT.create(CheckService.class);
@@ -468,54 +468,51 @@ public class DataManager {
 						}
 
 					});
-			
+
 			// delete actions from database
 
-						checkService.deleteAllActionsForCheckId(current.getCheckUUID(),
-								new AsyncCallback<String>() {
+			checkService.deleteAllActionsForCheckId(current.getCheckUUID(),
+					new AsyncCallback<String>() {
 
-									@Override
-									public void onFailure(Throwable caught) {
-										// TODO Auto-generated method stub
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
 
-									}
+						}
 
-									@Override
-									public void onSuccess(String result) {
-										// TODO Auto-generated method stub
+						@Override
+						public void onSuccess(String result) {
+							// TODO Auto-generated method stub
 
-										RootPanel.get().add(
-												new HTML(
-														"Result from attempt to delete actions P2P: "
-																+ result));
-									}
+							RootPanel.get().add(
+									new HTML(
+											"Result from attempt to delete actions P2P: "
+													+ result));
+						}
 
-								});
-
-
+					});
 
 		}
 	}
 
-	
 	public void processDeletedP2L() {
 
 		Iterator<ConnectorSensorLogicCheck> it = canvas
 				.getConnectorsSensorLogicCheck().iterator();
-		
+
 		RootPanel.get().add(new HTML("Deleted P2L: started"));
 
 		while (it.hasNext()) {
 
 			ConnectorSensorLogicCheck current = it.next();
-			
+
 			RootPanel.get().add(new HTML("P2L: fetched connector"));
-			
+
 			// send check to database
 
 			CheckServiceAsync checkService = GWT.create(CheckService.class);
-			
-			checkService.deleteCheck(current.getCheckUUID(), 
+
+			checkService.deleteCheck(current.getCheckUUID(),
 					new AsyncCallback<String>() {
 
 						@Override
@@ -535,7 +532,7 @@ public class DataManager {
 						}
 
 					});
-			
+
 			// delete actions from database
 
 			checkService.deleteAllActionsForCheckId(current.getCheckUUID(),
@@ -559,21 +556,13 @@ public class DataManager {
 
 					});
 
-
-
 		}
 	}
 
-	
-	
-	
 	public void loadUI(final String checkpathName) {
 
-		RootPanel.get().add(
-				new HTML(
-						"UILOAD--- "));
+		RootPanel.get().add(new HTML("UILOAD--- "));
 
-		
 		// create JSON factory
 
 		final JsonFabrik factory = new JsonFabrik(canvas);
@@ -585,39 +574,77 @@ public class DataManager {
 
 					@Override
 					public void onJSONready(JSONreadyEvent jsonReadyEvent) {
-						
+
 						jsonReadyHandler.removeHandler();
 
 						// send to database
 						CheckPathServiceAsync checkpathService = GWT
 								.create(CheckPathService.class);
 
-						checkpathService.loadJsonToContainer(checkpathName,
-								new AsyncCallback<SerializableLogicContainer>() {
+						checkpathService
+								.loadJsonToContainer(
+										checkpathName,
+										new AsyncCallback<SerializableLogicContainer>() {
 
-									@Override
-									public void onFailure(Throwable caught) {
-										// TODO Auto-generated method stub
+											@Override
+											public void onFailure(
+													Throwable caught) {
+												// TODO Auto-generated method
+												// stub
 
-									}
+											}
 
-									@Override
-									public void onSuccess(SerializableLogicContainer result) {
-										// TODO Auto-generated method stub
-										RootPanel.get().add(
-												new HTML(
-														"Result from attempt to load checkpath: "
-																+ result.toString()));
-										
-										factory.unpackContainer(result);
-									}
+											@Override
+											public void onSuccess(
+													SerializableLogicContainer result) {
+												// TODO Auto-generated method
+												// stub
+												RootPanel
+														.get()
+														.add(new HTML(
+																"Result from attempt to load checkpath: "
+																		+ result.toString()));
 
-								});
+												factory.unpackContainer(result);
+											}
+
+										});
 
 					}
 
 				});
 
+	}
+
+	public void deleteCheckpath() {
+
+		// send to database
+		CheckPathServiceAsync checkpathService = GWT
+				.create(CheckPathService.class);
+
+		checkpathService.deleteCheckpath(canvas.getUUID(),
+				new AsyncCallback<String>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+						RootPanel.get().add(
+								new HTML(
+										"Error from attempt to delete checkpath: "
+												+ caught.getMessage()));
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						// TODO Auto-generated method stub
+						RootPanel.get().add(
+								new HTML(
+										"Result from attempt to delete checkpath: "
+												+ result));
+					}
+
+				});
 	}
 
 }

@@ -87,6 +87,27 @@ public class LogicDesigner extends Composite {
 				
 	}
 	
+	public LogicDesigner(String userID, String checkpathID, boolean deleteLogic) {
+
+		EventUtils.RESETTABLE_EVENT_BUS.removeHandlers();
+
+		
+		addNameChangeHandler();
+		this.userID = userID;
+		initWidget(uiBinder.createAndBindUi(this));
+
+		buildUI();
+		
+		canvas.openFromDatabase(checkpathID);
+		
+		if (deleteLogic == true)
+		{
+			canvas.deleteFromDatabase();	
+		}
+		
+				
+	}
+	
 	
 	private void buildUI()
 	{
@@ -119,7 +140,7 @@ public class LogicDesigner extends Composite {
 			
 						RootPanel mainPanel = RootPanel.get("main");
 						mainPanel.clear();
-						CheckpathList checkPathList = new CheckpathList(SessionHelper.getCurrentUserID()); 		
+						LogicDesignList checkPathList = new LogicDesignList(SessionHelper.getCurrentUserID()); 		
 						mainPanel.add(checkPathList);
 						
 					}

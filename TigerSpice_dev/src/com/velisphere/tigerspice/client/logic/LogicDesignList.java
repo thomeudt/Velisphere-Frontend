@@ -44,7 +44,7 @@ import com.velisphere.tigerspice.client.rules.CheckPathService;
 import com.velisphere.tigerspice.client.rules.CheckPathServiceAsync;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 
-public class CheckpathList extends Composite {
+public class LogicDesignList extends Composite {
 
 	@UiField
 	Breadcrumbs brdMain;
@@ -58,6 +58,8 @@ public class CheckpathList extends Composite {
 	TabPane tbpEmbLogic;
 	@UiField
 	Button btnOpenCheckpath;
+	@UiField
+	Button btnDeleteCheckpath;
 
 	
 	
@@ -69,10 +71,10 @@ public class CheckpathList extends Composite {
 	private static CheckpathListUiBinder uiBinder = GWT
 			.create(CheckpathListUiBinder.class);
 
-	interface CheckpathListUiBinder extends UiBinder<Widget, CheckpathList> {
+	interface CheckpathListUiBinder extends UiBinder<Widget, LogicDesignList> {
 	}
 
-	public CheckpathList(String userID) {
+	public LogicDesignList(String userID) {
 		initWidget(uiBinder.createAndBindUi(this));
 		rpcServiceCheckPath = GWT.create(CheckPathService.class);
 		
@@ -101,7 +103,7 @@ public class CheckpathList extends Composite {
 			tbpTmplLogic.setActive(false);
 			tbpEmbLogic.setActive(false);
 			btnOpenCheckpath.setEnabled(false);
-		
+			btnDeleteCheckpath.setEnabled(false);
 		
 		
 		
@@ -136,7 +138,11 @@ public class CheckpathList extends Composite {
 							
 						}
 						lstCheckpath.setVisibleItemCount(7);
-						if(result.entrySet().size() > 0) btnOpenCheckpath.setEnabled(true);
+						if(result.entrySet().size() > 0) 
+							{
+								btnOpenCheckpath.setEnabled(true);
+								btnDeleteCheckpath.setEnabled(true);
+							}
 
 					}
 				});
@@ -176,5 +182,21 @@ public class CheckpathList extends Composite {
 		AppController.openLogicDesign(lstCheckpath.getValue());
 		
 	}
+	
+	@UiHandler("btnDeleteCheckpath")
+	void deleteCheckpath(ClickEvent event) {
+	
+		/**
+		RootPanel mainPanel = RootPanel.get("main");
+		mainPanel.clear();
+		
+		CheckpathEditView checkpathView = new CheckpathEditView(lstCheckpath.getValue()); 		
+		mainPanel.add(checkpathView);
+		**/
+		
+		AppController.deleteLogicDesign(lstCheckpath.getValue());
+		
+	}
+
 
 }

@@ -27,7 +27,7 @@ import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.locator.Locator;
-import com.velisphere.tigerspice.client.logic.CheckpathList;
+import com.velisphere.tigerspice.client.logic.LogicDesignList;
 import com.velisphere.tigerspice.client.logic.LogicDesigner;
 import com.velisphere.tigerspice.client.marketplace.MarketPlace;
 import com.velisphere.tigerspice.client.provisioning.ProvisioningSuccess;
@@ -309,7 +309,7 @@ public class AppController {
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
 			String userID = SessionHelper.getCurrentUserID();
-			CheckpathList checkpathList = new CheckpathList(userID);
+			LogicDesignList checkpathList = new LogicDesignList(userID);
 			openWithHistoryHandler("logicdesigner", checkpathList);
 		}		
 	});
@@ -343,6 +343,24 @@ public class AppController {
 		}		
 	});
 	}
+	
+	
+	public static void deleteLogicDesign(final String checkpathID)
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			String userID = SessionHelper.getCurrentUserID();
+			
+			RootPanel.get("main").clear();
+			LogicDesigner logicDesigner = new LogicDesigner(userID, checkpathID, true);
+      	  	RootPanel.get("main").add(logicDesigner);
+		}		
+	});
+	}
+	
 	
 	public static void createLogicDesign()
 	{	

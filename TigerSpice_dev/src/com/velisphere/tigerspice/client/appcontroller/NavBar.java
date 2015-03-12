@@ -47,7 +47,7 @@ import com.velisphere.tigerspice.client.dashboard.Dashboard;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
-import com.velisphere.tigerspice.client.logic.CheckpathList;
+import com.velisphere.tigerspice.client.logic.LogicDesignList;
 import com.velisphere.tigerspice.client.marketplace.MarketPlace;
 import com.velisphere.tigerspice.client.rules.CheckpathCreateView;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
