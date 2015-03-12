@@ -35,7 +35,7 @@ public class CheckpathCostIndicator extends Composite {
 	void initCostUpdater(){
 		
 		
-		calcUpdateHandler = EventUtils.EVENT_BUS.addHandler(CheckpathCalculatedEvent.TYPE, new CheckpathCalculatedEventHandler()     {
+		calcUpdateHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(CheckpathCalculatedEvent.TYPE, new CheckpathCalculatedEventHandler()     {
 			@Override
 		    public void onCheckpathCalculated(CheckpathCalculatedEvent checkpathCalculatedEvent) {
 				System.out.println("[IN] Checkpath Calculated Event fired.");

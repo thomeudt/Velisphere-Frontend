@@ -69,7 +69,7 @@ public class SessionHelper {
 									userName = result.userName;
 									userID = result.userID;
 									System.out.println("[IN] Session validation ok.");
-									if (userID != null) EventUtils.EVENT_BUS.fireEvent(new SessionVerifiedEvent());
+									if (userID != null) EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new SessionVerifiedEvent());
 									
 
 								} else {

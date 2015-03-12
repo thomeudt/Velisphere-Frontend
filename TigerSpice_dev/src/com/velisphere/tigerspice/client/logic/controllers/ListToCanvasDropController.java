@@ -38,7 +38,7 @@ public class ListToCanvasDropController extends AbsolutePositionDropController {
 		
 		int targetX = context.desiredDraggableX - dropTargetOffsetX;
 		int targetY = context.desiredDraggableY - dropTargetOffsetY;
-		EventUtils.EVENT_BUS.fireEvent(new DraggedToCanvasEvent(context, targetX, targetY));
+		EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new DraggedToCanvasEvent(context, targetX, targetY));
 			
 	}
 

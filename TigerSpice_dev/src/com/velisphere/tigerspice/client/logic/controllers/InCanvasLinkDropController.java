@@ -95,11 +95,11 @@ public class InCanvasLinkDropController extends SimpleDropController {
 			    if(linkCreator.isLogic())
 			    {
 			    	RootPanel.get().add(new HTML("Was logic..."));
-			    	EventUtils.EVENT_BUS.fireEvent(new LinkedInCanvasL2PEvent((LogicCheck) linkCreator.getSource(), phyicalDropTarget));
+			    	EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new LinkedInCanvasL2PEvent((LogicCheck) linkCreator.getSource(), phyicalDropTarget));
 			    }
 			    else
 			    {
-			    	EventUtils.EVENT_BUS.fireEvent(new LinkedInCanvasP2PEvent((PhysicalItem) linkCreator.getSource(), phyicalDropTarget));	
+			    	EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new LinkedInCanvasP2PEvent((PhysicalItem) linkCreator.getSource(), phyicalDropTarget));	
 			    }
 				
 				
@@ -114,7 +114,7 @@ public class InCanvasLinkDropController extends SimpleDropController {
 			
 			RootPanel.get().add(new HTML("DropController says onGENERICDrop"));
 			LinkCreator linkCreator = (LinkCreator) context.draggable;
-			 EventUtils.EVENT_BUS.fireEvent(new LinkedInCanvasP2LEvent((PhysicalItem) linkCreator.getSource(), logicDropTarget));
+			 EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new LinkedInCanvasP2LEvent((PhysicalItem) linkCreator.getSource(), logicDropTarget));
 			
 		}
 		

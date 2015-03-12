@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client.rules;
+package com.velisphere.tigerspice.client.logic;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -40,6 +40,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
+import com.velisphere.tigerspice.client.rules.CheckPathService;
+import com.velisphere.tigerspice.client.rules.CheckPathServiceAsync;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 
 public class CheckpathList extends Composite {

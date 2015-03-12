@@ -74,7 +74,7 @@ public class Start implements EntryPoint{
 		SessionHelper.validateCurrentSession();
 		
 	       
-		reg = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		reg = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 			
 			@Override
 	        public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {

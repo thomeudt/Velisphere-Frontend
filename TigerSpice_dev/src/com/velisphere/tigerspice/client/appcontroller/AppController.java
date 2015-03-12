@@ -27,6 +27,7 @@ import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.locator.Locator;
+import com.velisphere.tigerspice.client.logic.CheckpathList;
 import com.velisphere.tigerspice.client.logic.LogicDesigner;
 import com.velisphere.tigerspice.client.marketplace.MarketPlace;
 import com.velisphere.tigerspice.client.provisioning.ProvisioningSuccess;
@@ -34,7 +35,6 @@ import com.velisphere.tigerspice.client.provisioning.ProvisioningWizard;
 import com.velisphere.tigerspice.client.provisioning.TakeOwnership;
 import com.velisphere.tigerspice.client.rules.CheckpathCreateView;
 import com.velisphere.tigerspice.client.rules.CheckpathEditView;
-import com.velisphere.tigerspice.client.rules.CheckpathList;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
 import com.velisphere.tigerspice.client.spheres.SphereView;
 import com.velisphere.tigerspice.client.spheres.SphereViewPublic;
@@ -73,11 +73,11 @@ public class AppController {
 	}
 
 	
-	static void openCheckpathWithHistoryHandler(final String token, final String checkpathID, final String userID)
+	static void openLogicDesignWithHistoryHandler(final String token, final String checkpathID, final String userID)
 	{
 		History.newItem(token);
 		RootPanel.get("main").clear();
-		RootPanel.get("main").add(new CheckpathEditView(checkpathID, userID));
+		RootPanel.get("main").add(new LogicDesigner(userID, checkpathID));
 				
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {
 
@@ -90,7 +90,7 @@ public class AppController {
 
 	          if (historyToken.equals(token)) {
 	        	  RootPanel.get("main").clear();
-	        	  RootPanel.get("main").add(new CheckpathEditView(checkpathID, userID));
+	        	  RootPanel.get("main").add(new LogicDesigner(userID, checkpathID));
 		        }
 			}
 		    });
@@ -273,7 +273,7 @@ public class AppController {
 	public static void openDashboard()
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -287,7 +287,7 @@ public class AppController {
 	public static void openHome()
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -304,7 +304,7 @@ public class AppController {
 	public static void openLogicDesigner()
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -318,7 +318,7 @@ public class AppController {
 	public static void openNewLogicDesigner()
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -333,13 +333,13 @@ public class AppController {
 	public static void openLogicDesign(final String checkpathID)
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
 			String userID = SessionHelper.getCurrentUserID();
 			
-			openCheckpathWithHistoryHandler("logicdesign"+checkpathID, checkpathID, userID);
+			openLogicDesignWithHistoryHandler("logicdesign"+checkpathID, checkpathID, userID);
 		}		
 	});
 	}
@@ -347,14 +347,14 @@ public class AppController {
 	public static void createLogicDesign()
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
 			String userID = SessionHelper.getCurrentUserID();
 			
 			RootPanel.get("main").clear();
-			RootPanel.get("main").add(new CheckpathCreateView(userID));
+			RootPanel.get("main").add(new LogicDesigner(userID));
 		}		
 	});
 	}
@@ -363,7 +363,7 @@ public class AppController {
 	public static void openEndpointManager()
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -377,7 +377,7 @@ public class AppController {
 	public static void openSphere(final String sphereID)
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -391,7 +391,7 @@ public class AppController {
 	public static void openPublicSphere(final String sphereID)
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -406,7 +406,7 @@ public class AppController {
 	public static void openAnalytics()
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -421,7 +421,7 @@ public class AppController {
 	public static void openAnalyticsForDataTrail(final String sphereID, final String endpointID, final String propertyID, final String endpointName, final String propertyName, final boolean sensor)
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -440,7 +440,7 @@ public class AppController {
 	public static void openDirectLink(final String URL)
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -453,7 +453,7 @@ public class AppController {
 	public static void openProvisioningWizard()
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -467,7 +467,7 @@ public class AppController {
 	public static void openTakeOwnership(final String uEPID, final String identifier, final String endpointclassID, final String endpointclassName)
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -480,7 +480,7 @@ public class AppController {
 	public static void openProvisioningSuccess()
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -494,7 +494,7 @@ public class AppController {
 	public static void openEPCManager(final String successMessage)
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -509,7 +509,7 @@ public class AppController {
 	public static void openEPCCreator()
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -523,7 +523,7 @@ public class AppController {
 	public static void openEPCDeleter()
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -539,7 +539,7 @@ public class AppController {
 	public static void openPropertyClassManager(final String successMessage)
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -554,7 +554,7 @@ public class AppController {
 	public static void openPropertyClassCreator()
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -568,7 +568,7 @@ public class AppController {
 	public static void openVendorManager()
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -582,7 +582,7 @@ public class AppController {
 	public static void openPlanManager()
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -596,7 +596,7 @@ public class AppController {
 	public static void openPopUp(final Widget w)
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -613,7 +613,7 @@ public class AppController {
 	public static void openEndpoint(final String endpointID)
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -626,7 +626,7 @@ public class AppController {
 	public static void openEndpointPublic(final String endpointID)
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -639,7 +639,7 @@ public class AppController {
 	public static void openEPCInput(final String id, final String message)
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -652,7 +652,7 @@ public class AppController {
 	public static void openEPCAddProperty(final String EPCId)
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -664,7 +664,7 @@ public class AppController {
 	public static void openGeoLocator()
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -678,7 +678,7 @@ public class AppController {
 	public static void openMarket()
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -692,7 +692,7 @@ public class AppController {
 	public static void openGettingStarted()
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
@@ -706,7 +706,7 @@ public class AppController {
 	public static void openBestPractices()
 	{	
 		SessionHelper.validateCurrentSession();
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();

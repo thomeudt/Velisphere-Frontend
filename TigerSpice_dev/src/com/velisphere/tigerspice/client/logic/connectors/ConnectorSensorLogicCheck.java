@@ -187,24 +187,13 @@ public class ConnectorSensorLogicCheck extends Connector {
 			
 		
 		Row row4 = new Row();
-		Column col4A = new Column(1,2);
-		Button btnSave = new Button("Save");
+		Column col4A = new Column(1,4);
+		Button btnSave = new Button("Close");
 		btnSave.setType(ButtonType.SUCCESS);
 		col4A.add(btnSave);
 		
-		Column col4B = new Column(1);
-		Button btnDelete = new Button("Delete");
-		btnDelete.setType(ButtonType.DANGER);
-		col4B.add(btnDelete);
-		
-		Column col4C = new Column(1);
-		Button btnCancel = new Button("Cancel");
-		btnCancel.setType(ButtonType.DEFAULT);
-		col4C.add(btnCancel);
 		
 		row4.add(col4A);
-		row4.add(col4B);
-		row4.add(col4C);
 		
 		verticalPanel.add(row4);
 		
@@ -214,15 +203,6 @@ public class ConnectorSensorLogicCheck extends Connector {
 		// set the various handlers
 		
 		
-		btnCancel.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
-				close();
-			}
-			
-		});
 		
 		
 		btnSave.addClickHandler(new ClickHandler(){

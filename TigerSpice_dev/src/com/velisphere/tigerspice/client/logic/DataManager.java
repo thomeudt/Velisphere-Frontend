@@ -37,7 +37,7 @@ public class DataManager {
 
 	}
 
-	public void processCheckPath(final String checkpathName) {
+	public void processCheckPath() {
 
 		// create JSON factory
 
@@ -45,7 +45,7 @@ public class DataManager {
 
 		// wait for JSON to be generated
 
-		HandlerRegistration jsonReadyHandler = EventUtils.EVENT_BUS.addHandler(
+		HandlerRegistration jsonReadyHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(
 				JSONreadyEvent.TYPE, new JSONreadyEventHandler() {
 
 					@Override
@@ -55,7 +55,7 @@ public class DataManager {
 						CheckPathServiceAsync checkpathService = GWT
 								.create(CheckPathService.class);
 
-						checkpathService.addNewCheckpath(checkpathName,
+						checkpathService.addNewCheckpath(canvas.getName(),
 								SessionHelper.getCurrentUserID(),
 								canvas.getUUID(), factory.getJSON(),
 								new AsyncCallback<String>() {
@@ -580,7 +580,7 @@ public class DataManager {
 
 		// wait for JSON to be generated
 
-		jsonReadyHandler = EventUtils.EVENT_BUS.addHandler(
+		jsonReadyHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(
 				JSONreadyEvent.TYPE, new JSONreadyEventHandler() {
 
 					@Override

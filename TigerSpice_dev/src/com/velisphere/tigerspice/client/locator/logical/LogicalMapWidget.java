@@ -389,7 +389,7 @@ public class LogicalMapWidget extends Composite {
 	
 	private void setFilterHandlerListener() {
 		HandlerRegistration applyFilterHandler;
-		applyFilterHandler = EventUtils.EVENT_BUS.addHandler(
+		applyFilterHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(
 				FilterAppliedEvent.TYPE, new FilterAppliedEventHandler() {
 					@Override
 					public void onFilterApplied(

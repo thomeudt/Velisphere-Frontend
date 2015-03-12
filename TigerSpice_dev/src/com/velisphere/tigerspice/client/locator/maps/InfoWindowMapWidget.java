@@ -153,7 +153,7 @@ public class InfoWindowMapWidget extends Composite {
   private void setFilterHandlerListener()
   {
 	  HandlerRegistration applyFilterHandler;
-	  applyFilterHandler = EventUtils.EVENT_BUS.addHandler(FilterAppliedEvent.TYPE, new FilterAppliedEventHandler()     {
+	  applyFilterHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(FilterAppliedEvent.TYPE, new FilterAppliedEventHandler()     {
 			@Override
 		    public void onFilterApplied(FilterAppliedEvent filterAppliedEvent) {
 				HTML html = new HTML("FILTER APPLIED. Sphere ID: "+ filterAppliedEvent.getSphereID() + ", Endpoint ID: " + filterAppliedEvent.getEndpointID());

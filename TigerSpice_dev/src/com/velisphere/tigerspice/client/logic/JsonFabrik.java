@@ -60,7 +60,7 @@ public class JsonFabrik {
 		// set UUID
 		
 		logicContainer.setUuid(canvas.getUUID());
-		
+		logicContainer.setName(canvas.getName());
 		
 		
 		// create json for all physical items
@@ -169,7 +169,7 @@ public class JsonFabrik {
 						// TODO Auto-generated method stub
 
 						checkpathJSON = result;
-						EventUtils.EVENT_BUS.fireEvent(new JSONreadyEvent());
+						EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new JSONreadyEvent());
 
 					}
 
@@ -200,6 +200,7 @@ public class JsonFabrik {
 		loadL2PConnectors();
 		
 		canvas.setUUID(logicContainer.getUuid());
+		canvas.setName(logicContainer.getName());
 		
 		
 	}

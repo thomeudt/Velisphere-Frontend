@@ -51,7 +51,7 @@ public class LogicToCanvasDropController extends AbsolutePositionDropController 
 		}
 			
 		
-		EventUtils.EVENT_BUS.fireEvent(new DraggedToCanvasEvent(context,
+		EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new DraggedToCanvasEvent(context,
 				targetX, targetY));
 
 	}

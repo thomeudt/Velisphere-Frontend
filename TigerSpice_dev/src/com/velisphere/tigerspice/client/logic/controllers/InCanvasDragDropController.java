@@ -43,22 +43,22 @@ public class InCanvasDragDropController extends AbsolutePositionDropController {
 		{
 			PhysicalItem canvasLabel = (PhysicalItem) context.selectedWidgets.get(0);
 			RootPanel.get().add(new HTML(canvasLabel.getContentRepresentation() + " WAS DROPPED at " + (context.desiredDraggableX - dropTargetOffsetX) + " / " + (context.desiredDraggableY - dropTargetOffsetY)));
-			EventUtils.EVENT_BUS.fireEvent(new DraggedInCanvasEvent(context, canvasLabel));
+			EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new DraggedInCanvasEvent(context, canvasLabel));
 		}
 		else if (context.selectedWidgets.get(0).getClass() == LogicCheckAnd.class)
 		{
 			LogicCheckAnd logicCheckAnd = (LogicCheckAnd) context.selectedWidgets.get(0);
-			EventUtils.EVENT_BUS.fireEvent(new DraggedInCanvasEvent(context, logicCheckAnd));
+			EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new DraggedInCanvasEvent(context, logicCheckAnd));
 		}
 		else if (context.selectedWidgets.get(0).getClass() == LogicCheckOr.class)
 		{
 			LogicCheckOr logicCheckOr = (LogicCheckOr) context.selectedWidgets.get(0);
-			EventUtils.EVENT_BUS.fireEvent(new DraggedInCanvasEvent(context, logicCheckOr));
+			EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new DraggedInCanvasEvent(context, logicCheckOr));
 		}
 		else if (context.selectedWidgets.get(0).getClass() == DraggableButton.class)
 		{
 			DraggableButton button = (DraggableButton) context.selectedWidgets.get(0);
-			EventUtils.EVENT_BUS.fireEvent(new DraggedInCanvasEvent(context, button));
+			EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new DraggedInCanvasEvent(context, button));
 		}
 		
 		

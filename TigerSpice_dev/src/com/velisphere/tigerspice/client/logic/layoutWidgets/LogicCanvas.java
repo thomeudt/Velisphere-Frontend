@@ -11,6 +11,7 @@ import com.allen_sauer.gwt.dnd.client.drop.DropController;
 import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Icon;
+import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.constants.IconSize;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.canvas.client.Canvas;
@@ -43,6 +44,7 @@ import com.velisphere.tigerspice.client.event.LinkedInCanvasP2LEvent;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2LEventHandler;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2PEvent;
 import com.velisphere.tigerspice.client.event.LinkedInCanvasP2PEventHandler;
+import com.velisphere.tigerspice.client.event.LogicNameChangedEvent;
 import com.velisphere.tigerspice.client.helper.UuidService;
 import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
 import com.velisphere.tigerspice.client.logic.DataManager;
@@ -75,7 +77,8 @@ public class LogicCanvas extends Composite {
 	static final int controlsOffsetY = 25;
 
 	String uuid;
-
+	String name;
+			
 	Context2d context;
 	Canvas canvas;
 	TrashCan trashCan;
@@ -111,8 +114,7 @@ public class LogicCanvas extends Composite {
 
 	public LogicCanvas() {
 
-		EventUtils.EVENT_BUS.removeHandlers();
-
+		
 		createUUID();
 		linkedInCanvasHandler = null;
 
@@ -235,7 +237,7 @@ public class LogicCanvas extends Composite {
 		inCanvasMoveDropController = new InCanvasDragDropController(logicPanel);
 		dragController.registerDropController(inCanvasMoveDropController);
 
-		draggedToCanvasHandler = EventUtils.EVENT_BUS.addHandler(
+		draggedToCanvasHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(
 				DraggedToCanvasEvent.TYPE, new DraggedToCanvasEventHandler() {
 
 					@Override
@@ -449,7 +451,7 @@ public class LogicCanvas extends Composite {
 	}
 
 	private void setLinkedInCanvasP2PEventListener() {
-		linkedInCanvasHandler = EventUtils.EVENT_BUS.addHandler(
+		linkedInCanvasHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(
 				LinkedInCanvasP2PEvent.TYPE,
 				new LinkedInCanvasP2PEventHandler() {
 
@@ -654,7 +656,7 @@ public class LogicCanvas extends Composite {
 	}
 
 	private void setLinkedInCanvasP2LEventListener() {
-		linkedInCanvasHandler = EventUtils.EVENT_BUS.addHandler(
+		linkedInCanvasHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(
 				LinkedInCanvasP2LEvent.TYPE,
 				new LinkedInCanvasP2LEventHandler() {
 
@@ -738,7 +740,7 @@ public class LogicCanvas extends Composite {
 	}
 
 	private void setLinkedInCanvasL2PEventListener() {
-		linkedInCanvasHandler = EventUtils.EVENT_BUS.addHandler(
+		linkedInCanvasHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(
 				LinkedInCanvasL2PEvent.TYPE,
 				new LinkedInCanvasL2PEventHandler() {
 
@@ -1052,7 +1054,7 @@ public class LogicCanvas extends Composite {
 	}
 
 	private void setDraggedInCanvasEventListener() {
-		HandlerRegistration draggedInCanvasHandler = EventUtils.EVENT_BUS
+		HandlerRegistration draggedInCanvasHandler = EventUtils.RESETTABLE_EVENT_BUS
 				.addHandler(DraggedInCanvasEvent.TYPE,
 						new DraggedInCanvasEventHandler() {
 
@@ -1501,20 +1503,22 @@ public class LogicCanvas extends Composite {
 
 	}
 
-	public void saveToDatabase(String name) {
+	public void saveToDatabase(String newName) {
+		this.setName(newName);
 		DataManager dataManager = new DataManager(this);
-		dataManager.processCheckPath(name);
+		dataManager.processCheckPath();
 		dataManager.processP2P();
 		dataManager.processP2L();
 		dataManager.processL2P();
 		dataManager.processDeletedP2P();
 		dataManager.processDeletedP2L();
 		dataManager.processDeletedL2P();
+		
 	}
 
-	public void openFromDatabase(String name) {
+	public void openFromDatabase(String checkpathID) {
 		DataManager dataManager = new DataManager(this);
-		dataManager.loadUI(name);
+		dataManager.loadUI(checkpathID);
 
 	}
 
@@ -1556,6 +1560,17 @@ public class LogicCanvas extends Composite {
 
 	public LinkedList<ConnectorSensorLogicCheck> getDeletedConnectorsSensorLogicCheck() {
 		return deletedConnectorsSensorLogicCheck;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+		RootPanel.get().add(new HTML("Triggering name change request to: " + name));
+		
+		EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new LogicNameChangedEvent(name));
 	}
 
 

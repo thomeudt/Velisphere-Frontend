@@ -9,6 +9,8 @@ import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.AttachEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -16,9 +18,14 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
+import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
+import com.velisphere.tigerspice.client.event.DraggedToCanvasEventHandler;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.LogicNameChangedEvent;
+import com.velisphere.tigerspice.client.event.LogicNameChangedEventHandler;
 import com.velisphere.tigerspice.client.logic.layoutWidgets.LogicCanvas;
 import com.velisphere.tigerspice.client.logic.layoutWidgets.Explorer;
-import com.velisphere.tigerspice.client.rules.CheckpathList;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 
 public class LogicDesigner extends Composite {
@@ -39,7 +46,8 @@ public class LogicDesigner extends Composite {
 	Column colCanvas;
 	@UiField
 	Column colExplorer;
-	
+
+	HandlerRegistration logicNameChangedEventHandler;
 
 
 	
@@ -52,9 +60,36 @@ public class LogicDesigner extends Composite {
 
 	public LogicDesigner(String userID) {
 
+		EventUtils.RESETTABLE_EVENT_BUS.removeHandlers();
+
+		addNameChangeHandler();
 		this.userID = userID;
 		initWidget(uiBinder.createAndBindUi(this));
+		buildUI();
 		
+
+	}
+	
+
+	
+	public LogicDesigner(String userID, String checkpathID) {
+
+		EventUtils.RESETTABLE_EVENT_BUS.removeHandlers();
+
+		
+		addNameChangeHandler();
+		this.userID = userID;
+		initWidget(uiBinder.createAndBindUi(this));
+
+		buildUI();
+		
+		canvas.openFromDatabase(checkpathID);
+				
+	}
+	
+	
+	private void buildUI()
+	{
 		bread0 = new NavLink();
 		bread0.setText("Home");
 		brdMain.add(bread0);
@@ -84,7 +119,7 @@ public class LogicDesigner extends Composite {
 			
 						RootPanel mainPanel = RootPanel.get("main");
 						mainPanel.clear();
-						CheckpathList checkPathList = new CheckpathList("dummy"); 		
+						CheckpathList checkPathList = new CheckpathList(SessionHelper.getCurrentUserID()); 		
 						mainPanel.add(checkPathList);
 						
 					}
@@ -97,17 +132,30 @@ public class LogicDesigner extends Composite {
 		
 		Explorer explorer = new Explorer(this.userID, canvas);
 		colExplorer.add(explorer);
-		
-		
-		
-		
+
+	}
+	
+	private void addNameChangeHandler()
+	{
+		logicNameChangedEventHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(
+				LogicNameChangedEvent.TYPE, new LogicNameChangedEventHandler() {
+
+					@Override
+					public void onLogicNameChanged(
+							LogicNameChangedEvent logicNameChangedEvent) {
+						RootPanel.get().add(new HTML("Name change completed to " + logicNameChangedEvent.getName()));
+
+						brdMain.remove(bread2);						
+						bread2.setText(logicNameChangedEvent.getName());						
+						brdMain.add(bread2);
+						
+										
+					}
+				});
 
 	}
 	
 	
-	
-	
-		
 	
 
 }

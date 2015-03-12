@@ -266,7 +266,7 @@ public class SphereEditorWidget extends Composite {
 		
 		SessionHelper.validateCurrentSession();
 	
-		sessionHandler = EventUtils.EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
 		    	
 		@Override
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {

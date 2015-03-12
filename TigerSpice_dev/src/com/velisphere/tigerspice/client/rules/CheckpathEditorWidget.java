@@ -161,7 +161,7 @@ public class CheckpathEditorWidget extends Composite {
 	private float calculateCost()
 	{		
 		this.cost = checkCount * 1 + multicheckCount * 10;
-		EventUtils.EVENT_BUS.fireEvent(new CheckpathCalculatedEvent());
+		EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new CheckpathCalculatedEvent());
 		return cost;
 		
 	}

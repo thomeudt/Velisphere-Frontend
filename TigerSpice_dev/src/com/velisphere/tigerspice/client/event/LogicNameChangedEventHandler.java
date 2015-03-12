@@ -17,17 +17,8 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client.event;
 
+import com.google.gwt.event.shared.EventHandler;
 
-import com.google.gwt.core.shared.GWT;
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.ResettableEventBus;
-import com.google.gwt.event.shared.SimpleEventBus;
-
-
-public class EventUtils {
-	 
-	public static ResettableEventBus RESETTABLE_EVENT_BUS = new ResettableEventBus(new SimpleEventBus());
-	
-	public static EventBus STANDARD_EVENT_BUS = GWT.create(SimpleEventBus.class);
-	
-}
+public interface LogicNameChangedEventHandler extends EventHandler {
+	    void onLogicNameChanged(LogicNameChangedEvent logicNameChangedEvent);
+	}

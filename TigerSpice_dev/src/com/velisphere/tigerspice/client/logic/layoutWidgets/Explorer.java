@@ -287,33 +287,6 @@ public class Explorer extends Composite {
 			
 		});
 		
-		Row row8 = new Row();
-		Column col8 = new Column(2);
-		Button btnOpen = new Button("Load");
-
-		btnOpen.setWidth("85%");
-		btnOpen.setSize(ButtonSize.SMALL);
-		btnOpen.setType(ButtonType.PRIMARY);
-		btnOpen.setBaseIcon(IconType.SAVE);
-		
-		col8.add(btnOpen);
-		row8.add(col8);
-		container.add(row8);
-		
-		btnOpen.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				
-							
-				createLoadDialog().center();
-				
-				
-			}
-			
-		});
-
-		
 		
 		
 	}
@@ -326,6 +299,7 @@ public class Explorer extends Composite {
 		VerticalPanel panel = new VerticalPanel();
 		final TextBox txtName = new TextBox();
 		panel.add(txtName);
+		txtName.setText(logicCanvas.getName());
 		Button btnSave = new Button("Save");
 		panel.add(btnSave);
 		saveDialog.add(panel);
@@ -337,6 +311,7 @@ public class Explorer extends Composite {
 			public void onClick(ClickEvent event) {
 				
 				logicCanvas.saveToDatabase(txtName.getText());
+				logicCanvas.setName(txtName.getText());
 				saveDialog.removeFromParent();
 			}
 			
@@ -344,33 +319,7 @@ public class Explorer extends Composite {
 		return saveDialog;
 
 	}
-	
-	private DialogBox createLoadDialog()
-	{
-		final DialogBox saveDialog = new DialogBox();
-		saveDialog.setText("Logic you want to open:");
-		saveDialog.setStyleName("wellappleblue");
-		VerticalPanel panel = new VerticalPanel();
-		final TextBox txtName = new TextBox();
-		panel.add(txtName);
-		Button btnOpen = new Button("Open");
-		panel.add(btnOpen);
-		saveDialog.add(panel);
-		saveDialog.setAutoHideEnabled(true);
 		
-		btnOpen.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				
-				logicCanvas.openFromDatabase(txtName.getText());
-				saveDialog.removeFromParent();
-			}
-			
-		});
-		return saveDialog;
-
-	}
 
 	
 	public void addLogicCheckAnd()
@@ -435,7 +384,9 @@ public class Explorer extends Composite {
 			@Override
 			public void onChange(ChangeEvent event) {
 				// TODO Auto-generated method stub
-			
+	
+				dbxSensors.clear();
+				dbxActors.clear();
 				getEndpoints(lbxSpheres.getValue());
 			}
 		});
