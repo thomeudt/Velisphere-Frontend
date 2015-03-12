@@ -41,9 +41,9 @@
 		    <b:Row>
 			<b:Column size="8" offset="0">
 			    	<b:Heading size="3" >Debug/Version Information</b:Heading>
-				    <b:Paragraph>VeliSphere TigerSpice 0.7.9</b:Paragraph>
-				    <b:Paragraph>VeliSphere Montana Database Version 0.7.8 or newer required</b:Paragraph>
-				    <b:Paragraph>VoltDB 4.0.2 or newer required</b:Paragraph>
+				    <b:Paragraph>VeliSphere TigerSpice 0.8.0</b:Paragraph>
+				    <b:Paragraph>VeliSphere Montana Database Version 0.7.9 or newer required</b:Paragraph>
+				    <b:Paragraph>VoltDB 4.9.2 or newer required</b:Paragraph>
 				    <b:Paragraph>VeliSphere Mart Version 0.7.6 or newer required</b:Paragraph>
 				    <b:Paragraph>Vertica 7.0.1 or newer required</b:Paragraph>
 				    <b:Paragraph>Optimized for Apache Tomcat 8</b:Paragraph>
