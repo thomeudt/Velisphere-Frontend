@@ -47,9 +47,9 @@ import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
-import com.velisphere.tigerspice.client.helper.DragobjectContainer;
+import com.velisphere.tigerspice.client.helper.DragobjectContainerUNUSED;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
-import com.velisphere.tigerspice.shared.CheckData;
+import com.velisphere.tigerspice.shared.CheckDataUNUSED;
 import com.velisphere.tigerspice.shared.EndpointData;
 
 public class ChecksByEndpointWidget extends Composite {
@@ -138,7 +138,7 @@ public class ChecksByEndpointWidget extends Composite {
 	private void addChecksToEndpoint(final AccordionGroup endpoint, String endpointID){
 
 		loadAnimation.showLoadAnimation("Loading sensors");
-		rpcServiceCheck.getChecksForEndpointID(endpointID, new AsyncCallback<LinkedList<CheckData>>(){
+		rpcServiceCheck.getChecksForEndpointID(endpointID, new AsyncCallback<LinkedList<CheckDataUNUSED>>(){
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -147,16 +147,16 @@ public class ChecksByEndpointWidget extends Composite {
 			}
 
 			@Override
-			public void onSuccess(LinkedList<CheckData> result) {
+			public void onSuccess(LinkedList<CheckDataUNUSED> result) {
 				// TODO Auto-generated method stub
 				loadAnimation.removeLoadAnimation();
-				Iterator<CheckData> it = result.iterator();
+				Iterator<CheckDataUNUSED> it = result.iterator();
 				if (it.hasNext() == false){
 					endpoint.add(accordionRowBuilder("No checks available"));
 				}
 				while(it.hasNext()){
 					
-					CheckData current = it.next();
+					CheckDataUNUSED current = it.next();
 					String shortName;
 					
 					if (current.getName().length() < 25){
@@ -208,7 +208,7 @@ public class ChecksByEndpointWidget extends Composite {
 				// is
 				// allowed
 				
-				DragobjectContainer dragAccordion = new DragobjectContainer();
+				DragobjectContainerUNUSED dragAccordion = new DragobjectContainerUNUSED();
 				dragAccordion.checkID = checkID;
 				dragAccordion.checkName = checkName;
 				

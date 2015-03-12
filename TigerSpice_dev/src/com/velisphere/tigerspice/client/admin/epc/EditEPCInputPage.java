@@ -32,7 +32,6 @@ import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
-import com.velisphere.tigerspice.client.rules.CheckpathEditorWidget;
 import com.velisphere.tigerspice.client.vendors.VendorService;
 import com.velisphere.tigerspice.client.vendors.VendorServiceAsync;
 import com.velisphere.tigerspice.shared.EPCData;

@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client.rules;
+package com.velisphere.tigerspice.client.logic;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -23,10 +23,10 @@ import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.velisphere.tigerspice.shared.ActionObject;
-import com.velisphere.tigerspice.shared.CheckData;
-import com.velisphere.tigerspice.shared.CheckPathData;
-import com.velisphere.tigerspice.shared.CheckPathObjectData;
-import com.velisphere.tigerspice.shared.CheckPathObjectTree;
+import com.velisphere.tigerspice.shared.CheckDataUNUSED;
+import com.velisphere.tigerspice.shared.CheckPathDataUNUSED;
+import com.velisphere.tigerspice.shared.CheckPathObjectDataUNUSED;
+import com.velisphere.tigerspice.shared.CheckPathObjectTreeUNUSED;
 import com.velisphere.tigerspice.shared.LinkedPair;
 import com.velisphere.tigerspice.shared.SerializableLogicConnector;
 import com.velisphere.tigerspice.shared.SerializableLogicContainer;
@@ -35,13 +35,13 @@ import com.velisphere.tigerspice.shared.SerializableLogicPhysicalItem;
 
 public interface CheckPathServiceAsync {
 	
-	void addNewUiObject(CheckPathObjectData uiObject, AsyncCallback<String> callback );
+	void addNewUiObject(CheckPathObjectDataUNUSED uiObject, AsyncCallback<String> callback );
 	void updateCheckpath(String checkpathId, String uiObject, AsyncCallback<String> callback );
 	void addNewCheckpath(String checkpathName, String userID, AsyncCallback<String> callback);
 	void addNewCheckpath(String checkpathName, String userID, String checkpathID, AsyncCallback<String> callback);
 	void addNewCheckpath(String checkpathName, String userID, String checkpathID, String uiObject, AsyncCallback<String> callback);
-	void getUiObjectJSONForCheckpathID(String checkpathID, AsyncCallback<CheckPathObjectTree> callback);
-	void createJsonCheckpath(CheckPathObjectTree uiObject, AsyncCallback<String> callback );
+	void getUiObjectJSONForCheckpathID(String checkpathID, AsyncCallback<CheckPathObjectTreeUNUSED> callback);
+	void createJsonCheckpath(CheckPathObjectTreeUNUSED uiObject, AsyncCallback<String> callback );
 	void createJsonFromPhysical(SerializableLogicPhysicalItem object, AsyncCallback<String> callback );
 	void createJsonFromLogical(SerializableLogicLogicCheck object, AsyncCallback<String> callback );
 	void createJsonFromConnector(SerializableLogicConnector object, AsyncCallback<String> callback );
@@ -51,7 +51,7 @@ public interface CheckPathServiceAsync {
 	void addNewMulticheckCheckLink(String linkId, String multiCheckId, String checkId, String checkPathId, AsyncCallback<String> callback );
 	void addNewMulticheckMulticheckLink(String multicheckLId, String multicheckRId, String checkPathId, AsyncCallback<String> callback );
 	void getAllCheckpaths(String userID, AsyncCallback<LinkedHashMap<String, String>> callback);
-	void getCheckpathDetails(String checkpathId, AsyncCallback<CheckPathData> callback);
+	void getCheckpathDetails(String checkpathId, AsyncCallback<CheckPathDataUNUSED> callback);
 	void updateCheckpathName(String checkpathId, String checkpathName, AsyncCallback<String> callback );
 	void updateMulticheck(String multicheckID,  String multicheckOperator, String multicheckName, String checkpathID, LinkedList<ActionObject> actions, AsyncCallback<String> callback);
 	void deleteMulticheckCheckLink(String parentMulticheckID, AsyncCallback<String> callback);

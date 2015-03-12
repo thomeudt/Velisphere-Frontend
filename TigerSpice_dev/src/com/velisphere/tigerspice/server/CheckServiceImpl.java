@@ -40,8 +40,8 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.shared.ActionObject;
-import com.velisphere.tigerspice.shared.CheckData;
-import com.velisphere.tigerspice.shared.CheckPathData;
+import com.velisphere.tigerspice.shared.CheckDataUNUSED;
+import com.velisphere.tigerspice.shared.CheckPathDataUNUSED;
 import com.velisphere.tigerspice.shared.EndpointData;
 
 @SuppressWarnings("serial")
@@ -52,7 +52,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 	 * 
 	 */
 
-	public LinkedList<CheckData> getChecksForEndpointID(String endpointID)
+	public LinkedList<CheckDataUNUSED> getChecksForEndpointID(String endpointID)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -67,7 +67,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 			e1.printStackTrace();
 		}
 
-		LinkedList<CheckData> checksForEndpointID = new LinkedList<CheckData>();
+		LinkedList<CheckDataUNUSED> checksForEndpointID = new LinkedList<CheckDataUNUSED>();
 		try {
 
 			final ClientResponse findCheck = voltCon.montanaClient
@@ -82,7 +82,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 				{
 					// extract the value in column checkid
 
-					CheckData check = new CheckData();
+					CheckDataUNUSED check = new CheckDataUNUSED();
 					check.checkId = result.getString("CHECKID");
 					check.endpointId = result.getString("ENDPOINTID");
 					check.checkName = result.getString("NAME");
@@ -372,7 +372,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 
 	}
 
-	public Vector<CheckData> getChecksForUserID(String userID)
+	public Vector<CheckDataUNUSED> getChecksForUserID(String userID)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -419,7 +419,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 			e.printStackTrace();
 		}
 
-		Vector<CheckData> checksForEndpointID = new Vector<CheckData>();
+		Vector<CheckDataUNUSED> checksForEndpointID = new Vector<CheckDataUNUSED>();
 		try {
 
 			Iterator<EndpointData> it = endPointsforUser.iterator();
@@ -439,7 +439,7 @@ public class CheckServiceImpl extends RemoteServiceServlet implements
 					{
 						// extract the value in column checkid
 
-						CheckData check = new CheckData();
+						CheckDataUNUSED check = new CheckDataUNUSED();
 						check.checkId = result.getString("CHECKID");
 						check.endpointId = result.getString("ENDPOINTID");
 						check.checkName = result.getString("NAME");

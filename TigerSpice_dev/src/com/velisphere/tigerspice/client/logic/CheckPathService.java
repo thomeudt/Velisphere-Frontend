@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client.rules;
+package com.velisphere.tigerspice.client.logic;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -25,10 +25,10 @@ import java.util.Vector;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.velisphere.tigerspice.shared.ActionObject;
-import com.velisphere.tigerspice.shared.CheckData;
-import com.velisphere.tigerspice.shared.CheckPathData;
-import com.velisphere.tigerspice.shared.CheckPathObjectData;
-import com.velisphere.tigerspice.shared.CheckPathObjectTree;
+import com.velisphere.tigerspice.shared.CheckDataUNUSED;
+import com.velisphere.tigerspice.shared.CheckPathDataUNUSED;
+import com.velisphere.tigerspice.shared.CheckPathObjectDataUNUSED;
+import com.velisphere.tigerspice.shared.CheckPathObjectTreeUNUSED;
 import com.velisphere.tigerspice.shared.LinkedPair;
 import com.velisphere.tigerspice.shared.SerializableLogicConnector;
 import com.velisphere.tigerspice.shared.SerializableLogicContainer;
@@ -43,19 +43,19 @@ public interface CheckPathService extends RemoteService {
 		String addNewCheckpath(String checkpathName, String userID, String checkpathID);
 		String addNewCheckpath(String checkpathName, String userID, String checkpathID, String uiObject);
 		String updateCheckpath(String checkpathId, String uiObject);
-		String addNewUiObject(CheckPathObjectData uiObject);
-		String createJsonCheckpath(CheckPathObjectTree uiObject);
+		String addNewUiObject(CheckPathObjectDataUNUSED uiObject);
+		String createJsonCheckpath(CheckPathObjectTreeUNUSED uiObject);
 		String createJsonFromPhysical(SerializableLogicPhysicalItem object);
 		String createJsonFromLogical(SerializableLogicLogicCheck object);
 		String createJsonFromConnector(SerializableLogicConnector object);
 		String createJsonFromContainer(SerializableLogicContainer object);
 		SerializableLogicContainer loadJsonToContainer(String checkpathName);
-		CheckPathObjectTree getUiObjectJSONForCheckpathID(String checkpathID);
+		CheckPathObjectTreeUNUSED getUiObjectJSONForCheckpathID(String checkpathID);
 		String addNewMulticheck(String checkId, String operator, String multicheckName, String checkpathID, LinkedList<ActionObject> actions);
 		String addNewMulticheckCheckLink(String linkId, String multiCheckId, String checkId, String checkPathId);
 		String addNewMulticheckMulticheckLink(String multicheckLId, String multicheckRId, String checkPathId);
 		LinkedHashMap<String, String> getAllCheckpaths(String userID);
-		CheckPathData getCheckpathDetails(String checkpathId);
+		CheckPathDataUNUSED getCheckpathDetails(String checkpathId);
 		String updateCheckpathName(String checkpathId, String checkpathName);
 		String updateMulticheck(String multicheckID, String multicheckOperator, String multicheckName,String checkpathID, LinkedList<ActionObject> actions);
 		String deleteMulticheckCheckLink(String linkID);

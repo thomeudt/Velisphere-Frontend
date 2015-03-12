@@ -21,7 +21,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class CheckData implements IsSerializable, Comparable <CheckData>
+public class CheckDataUNUSED implements IsSerializable, Comparable <CheckDataUNUSED>
 {
 	
 	public String checkId;
@@ -35,7 +35,7 @@ public class CheckData implements IsSerializable, Comparable <CheckData>
 	public String checkpathId;
 	
 	@Override
-	public int compareTo(CheckData arg0) {
+	public int compareTo(CheckDataUNUSED arg0) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

@@ -7,12 +7,7 @@ import java.util.List;
 
 import com.github.gwtbootstrap.client.ui.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.github.gwtbootstrap.client.ui.SimplePager.Resources;
-import com.github.gwtbootstrap.client.ui.SimplePager.TextLocation;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
@@ -20,16 +15,11 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
-import com.velisphere.tigerspice.client.rules.MulticheckDialogBox;
 import com.velisphere.tigerspice.shared.PropertyClassData;
-import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
-import com.google.gwt.view.client.HasRows;
 import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.Range;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
-import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.cell.client.TextCell;
 
 public class PropertyClassList extends Composite {

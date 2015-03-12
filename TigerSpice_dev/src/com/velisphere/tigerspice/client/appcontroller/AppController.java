@@ -33,8 +33,7 @@ import com.velisphere.tigerspice.client.marketplace.MarketPlace;
 import com.velisphere.tigerspice.client.provisioning.ProvisioningSuccess;
 import com.velisphere.tigerspice.client.provisioning.ProvisioningWizard;
 import com.velisphere.tigerspice.client.provisioning.TakeOwnership;
-import com.velisphere.tigerspice.client.rules.CheckpathCreateView;
-import com.velisphere.tigerspice.client.rules.CheckpathEditView;
+
 import com.velisphere.tigerspice.client.spheres.SphereLister;
 import com.velisphere.tigerspice.client.spheres.SphereView;
 import com.velisphere.tigerspice.client.spheres.SphereViewPublic;

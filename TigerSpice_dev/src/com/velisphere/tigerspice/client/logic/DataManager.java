@@ -22,8 +22,6 @@ import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorLogicCheck;
 import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.logic.layoutWidgets.LogicCanvas;
-import com.velisphere.tigerspice.client.rules.CheckPathService;
-import com.velisphere.tigerspice.client.rules.CheckPathServiceAsync;
 import com.velisphere.tigerspice.shared.ActionObject;
 import com.velisphere.tigerspice.shared.SerializableLogicContainer;
 

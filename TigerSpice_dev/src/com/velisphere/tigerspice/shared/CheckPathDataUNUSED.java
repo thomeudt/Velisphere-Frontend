@@ -15,14 +15,35 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.shared;
-
-import java.util.LinkedList;
+	
+	package com.velisphere.tigerspice.shared;
+	
+	import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class CheckPathObjectColumn implements IsSerializable {
+	public class CheckPathDataUNUSED implements IsSerializable
+	{
+		
 
-	public LinkedList<CheckPathObjectData> column = new LinkedList<CheckPathObjectData>();
-	
-}
+		public String checkpathId;
+		public String checkpathName;
+		public String uiObjectJSON;
+		
+		
+		
+		public String getCheckpathId(){
+			return this.checkpathId;
+		}
+		
+		public String getCheckpathName(){
+			return this.checkpathName;
+		}
+		
+		public String getUiObjectJSON(){
+			return this.uiObjectJSON;
+		}
+		
+		
+	}
+

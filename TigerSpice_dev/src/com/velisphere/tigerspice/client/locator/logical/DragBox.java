@@ -25,7 +25,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.orange.links.client.save.IsDiagramSerializable;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
@@ -33,8 +32,7 @@ import com.velisphere.tigerspice.client.helper.widgets.Circle;
 import com.velisphere.tigerspice.client.helper.widgets.RenderingContext;
 import com.velisphere.tigerspice.shared.EPCData;
 
-public class DragBox extends FocusPanel implements HasAllTouchHandlers,
-		IsDiagramSerializable {
+public class DragBox extends FocusPanel implements HasAllTouchHandlers {
 
 	public static String identifier = "DragBox";
 	String content;
@@ -137,17 +135,15 @@ public class DragBox extends FocusPanel implements HasAllTouchHandlers,
 		return addDomHandler(handler, TouchCancelEvent.getType());
 	}
 
-	@Override
+	
 	public String getType() {
 		return this.identifier;
 	}
 
-	@Override
 	public String getContentRepresentation() {
 		return this.content;
 	}
 
-	@Override
 	public void setContentRepresentation(String contentRepresentation) {
 		this.content = contentRepresentation;
 	}

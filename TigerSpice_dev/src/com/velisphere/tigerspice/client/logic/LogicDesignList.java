@@ -40,8 +40,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
-import com.velisphere.tigerspice.client.rules.CheckPathService;
-import com.velisphere.tigerspice.client.rules.CheckPathServiceAsync;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 
 public class LogicDesignList extends Composite {

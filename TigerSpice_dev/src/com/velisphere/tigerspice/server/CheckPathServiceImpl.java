@@ -37,11 +37,11 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.velisphere.tigerspice.client.rules.CheckPathService;
+import com.velisphere.tigerspice.client.logic.CheckPathService;
 import com.velisphere.tigerspice.shared.ActionObject;
-import com.velisphere.tigerspice.shared.CheckPathData;
-import com.velisphere.tigerspice.shared.CheckPathObjectTree;
-import com.velisphere.tigerspice.shared.CheckPathObjectData;
+import com.velisphere.tigerspice.shared.CheckPathDataUNUSED;
+import com.velisphere.tigerspice.shared.CheckPathObjectTreeUNUSED;
+import com.velisphere.tigerspice.shared.CheckPathObjectDataUNUSED;
 import com.velisphere.tigerspice.shared.LinkedPair;
 import com.velisphere.tigerspice.shared.SerializableLogicConnector;
 import com.velisphere.tigerspice.shared.SerializableLogicContainer;
@@ -59,7 +59,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 
 
 	
-	public String addNewUiObject(CheckPathObjectData uiObject)
+	public String addNewUiObject(CheckPathObjectDataUNUSED uiObject)
 
 	{
 				
@@ -102,7 +102,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 	
 
 	
-	public String createJsonCheckpath(CheckPathObjectTree uiObject)
+	public String createJsonCheckpath(CheckPathObjectTreeUNUSED uiObject)
 
 	{
 				
@@ -485,7 +485,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 	}
 
 	
-	public CheckPathObjectTree getUiObjectJSONForCheckpathID(String checkpathID)
+	public CheckPathObjectTreeUNUSED getUiObjectJSONForCheckpathID(String checkpathID)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -501,7 +501,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 		}
 
 		String uiObjectJSON = new String();
-		CheckPathObjectTree uiObject = new CheckPathObjectTree();
+		CheckPathObjectTreeUNUSED uiObject = new CheckPathObjectTreeUNUSED();
 		try {
 
 			final ClientResponse findCheckpath= voltCon.montanaClient
@@ -524,7 +524,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 			ObjectMapper mapper = new ObjectMapper();
 			try {
 			        
-				uiObject = mapper.readValue(uiObjectJSON, CheckPathObjectTree.class);
+				uiObject = mapper.readValue(uiObjectJSON, CheckPathObjectTreeUNUSED.class);
 				
 			        System.out.println(uiObject);
 			    } catch (JsonGenerationException e) {
@@ -610,7 +610,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 
 
 	@Override
-	public CheckPathData getCheckpathDetails(String checkpathId) 
+	public CheckPathDataUNUSED getCheckpathDetails(String checkpathId) 
 
 		{
 			VoltConnector voltCon = new VoltConnector();
@@ -625,7 +625,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 				e1.printStackTrace();
 			}
 
-			CheckPathData checkPath = new CheckPathData();
+			CheckPathDataUNUSED checkPath = new CheckPathDataUNUSED();
 			
 			try {
 

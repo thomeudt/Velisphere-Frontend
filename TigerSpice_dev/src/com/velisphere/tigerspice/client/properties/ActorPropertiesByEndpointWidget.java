@@ -53,7 +53,7 @@ import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
-import com.velisphere.tigerspice.client.helper.DragobjectContainer;
+import com.velisphere.tigerspice.client.helper.DragobjectContainerUNUSED;
 import com.velisphere.tigerspice.client.helper.DynamicAnchor;
 import com.velisphere.tigerspice.client.images.Images;
 import com.velisphere.tigerspice.shared.PropertyData;
@@ -238,7 +238,7 @@ public class ActorPropertiesByEndpointWidget extends Composite {
 				// is
 				// allowed
 				
-				DragobjectContainer dragAccordion = new DragobjectContainer();
+				DragobjectContainerUNUSED dragAccordion = new DragobjectContainerUNUSED();
 				dragAccordion.propertyID = propertyID;
 				dragAccordion.propertyName = propertyName;
 				dragAccordion.endpointName = endpointName;

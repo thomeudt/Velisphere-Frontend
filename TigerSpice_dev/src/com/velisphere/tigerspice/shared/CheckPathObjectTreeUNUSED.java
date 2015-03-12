@@ -20,10 +20,10 @@ package com.velisphere.tigerspice.shared;
 import java.util.LinkedList;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
-import com.velisphere.tigerspice.client.rules.SameLevelCheckpathObject;
 
-public class CheckPathObjectTree implements IsSerializable{
 
-	public LinkedList<CheckPathObjectColumn> tree = new LinkedList<CheckPathObjectColumn>();
-	public LinkedList<CheckPathObjectData> baseLayer = new LinkedList<CheckPathObjectData>();
+public class CheckPathObjectTreeUNUSED implements IsSerializable{
+
+	public LinkedList<CheckPathObjectColumnUNUSED> tree = new LinkedList<CheckPathObjectColumnUNUSED>();
+	public LinkedList<CheckPathObjectDataUNUSED> baseLayer = new LinkedList<CheckPathObjectDataUNUSED>();
 }

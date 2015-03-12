@@ -46,14 +46,14 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.actions.ActionService;
 import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
-import com.velisphere.tigerspice.client.rules.CheckPathService;
-import com.velisphere.tigerspice.client.rules.MulticheckColumn;
+import com.velisphere.tigerspice.client.logic.CheckPathService;
+
 import com.velisphere.tigerspice.shared.ActionData;
-import com.velisphere.tigerspice.shared.CheckData;
-import com.velisphere.tigerspice.shared.CheckPathData;
-import com.velisphere.tigerspice.shared.CheckPathObjectTree;
+import com.velisphere.tigerspice.shared.CheckDataUNUSED;
+import com.velisphere.tigerspice.shared.CheckPathDataUNUSED;
+import com.velisphere.tigerspice.shared.CheckPathObjectTreeUNUSED;
 import com.velisphere.tigerspice.shared.EndpointData;
-import com.velisphere.tigerspice.shared.CheckPathObjectData;
+import com.velisphere.tigerspice.shared.CheckPathObjectDataUNUSED;
 import com.velisphere.tigerspice.shared.SphereData;
 
 @SuppressWarnings("serial")

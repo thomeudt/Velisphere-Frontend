@@ -29,7 +29,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Anchor;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 
-public class CheckPathObjectData implements IsSerializable {
+public class CheckPathObjectDataUNUSED implements IsSerializable {
 
 	public String text;
 	public Boolean empty;
@@ -50,9 +50,9 @@ public class CheckPathObjectData implements IsSerializable {
 	public String operator;
 	public String triggerValue;
 	
-	public CheckPathObjectData(){}
+	public CheckPathObjectDataUNUSED(){}
 	
-	public CheckPathObjectData (String checkId, String text, Boolean empty, Integer level)  {
+	public CheckPathObjectDataUNUSED (String checkId, String text, Boolean empty, Integer level)  {
 		super();
 		this.text = text;
 		this.empty = empty;

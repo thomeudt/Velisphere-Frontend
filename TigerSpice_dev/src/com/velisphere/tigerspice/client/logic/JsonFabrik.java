@@ -20,8 +20,6 @@ import com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr;
 import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
 import com.velisphere.tigerspice.client.logic.layoutWidgets.LogicCanvas;
-import com.velisphere.tigerspice.client.rules.CheckPathService;
-import com.velisphere.tigerspice.client.rules.CheckPathServiceAsync;
 import com.velisphere.tigerspice.shared.SerializableLogicConnector;
 import com.velisphere.tigerspice.shared.SerializableLogicContainer;
 import com.velisphere.tigerspice.shared.SerializableLogicLogicCheck;
