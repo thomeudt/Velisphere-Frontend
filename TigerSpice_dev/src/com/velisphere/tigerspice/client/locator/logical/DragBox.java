@@ -4,6 +4,8 @@ import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.BorderStyle;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasAllTouchHandlers;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
@@ -24,6 +26,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.orange.links.client.save.IsDiagramSerializable;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.helper.widgets.Circle;
@@ -36,11 +39,13 @@ public class DragBox extends FocusPanel implements HasAllTouchHandlers,
 	public static String identifier = "DragBox";
 	String content;
 	Image epcImage;
+	String endpointID;
 
-	public DragBox(String text, String epcID) {
+	public DragBox(final String endpointID, String text, String epcID) {
 		super();
 
-		//removeDefaultMouseDown();
+		this.endpointID = endpointID;
+		removeDefaultMouseDown();
 		
 		HorizontalPanel hPanel = new HorizontalPanel();
 		
@@ -50,6 +55,8 @@ public class DragBox extends FocusPanel implements HasAllTouchHandlers,
 			this.content = text;
 		
 		this.content = text;
+		
+		this.getElement().getStyle().setCursor(Cursor.POINTER);
 		
 		this.setSize("130px", "35px");
 		Label label = new Label();
@@ -66,6 +73,18 @@ public class DragBox extends FocusPanel implements HasAllTouchHandlers,
 		getElement().getStyle().setPadding(10, Unit.PX);
 		getElement().getStyle().setBorderStyle(BorderStyle.SOLID);
 		getElement().getStyle().setBorderWidth(1, Unit.PX);
+		
+		
+		
+		this.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				AppController.openEndpoint(endpointID);
+			}
+			
+		});
 
 	}
 
@@ -145,6 +164,8 @@ public class DragBox extends FocusPanel implements HasAllTouchHandlers,
 		});
 		
 	}
+	
+	
 
 	
 }

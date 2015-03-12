@@ -73,6 +73,9 @@ public class Locator extends Composite {
 
 	public Locator() {
 		
+		EventUtils.RESETTABLE_EVENT_BUS.removeHandlers();
+
+		
 		loadMapApi();
 		this.userID = SessionHelper.getCurrentUserID();
 			

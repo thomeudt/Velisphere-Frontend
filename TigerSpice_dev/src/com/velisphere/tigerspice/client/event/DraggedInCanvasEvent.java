@@ -23,7 +23,10 @@ import com.google.common.eventbus.EventBus;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.locator.logical.DragBox;
 import com.velisphere.tigerspice.client.logic.draggables.DraggableButton;
 import com.velisphere.tigerspice.client.logic.draggables.LinkCreator;
 import com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd;
@@ -40,6 +43,7 @@ public class DraggedInCanvasEvent extends GwtEvent<DraggedInCanvasEventHandler> 
 		LogicCheckAnd logicCheckAnd;
 		LogicCheckOr logicCheckOr;
 		DraggableButton button;
+		DragBox dragBox;
 		
 		
 		public DraggedInCanvasEvent(DragContext context, PhysicalItem canvasLabel)
@@ -48,6 +52,7 @@ public class DraggedInCanvasEvent extends GwtEvent<DraggedInCanvasEventHandler> 
 			this.context = context;
 		}
 		
+				
 		public DraggedInCanvasEvent(DragContext context, LogicCheckAnd logicCheckAnd) {
 			this.logicCheckAnd = logicCheckAnd;
 			this.context = context;
@@ -62,6 +67,14 @@ public class DraggedInCanvasEvent extends GwtEvent<DraggedInCanvasEventHandler> 
 			this.button = button;
 			this.context = context;
 		}
+		
+		public DraggedInCanvasEvent(DragContext context, DragBox dragBox)
+		{
+			this.dragBox = dragBox;
+			this.context = context;
+			RootPanel.get().add(new HTML("Event Fired..."));
+		}
+		
 		
 		@Override
 		public Type<DraggedInCanvasEventHandler> getAssociatedType() {
@@ -96,6 +109,11 @@ public class DraggedInCanvasEvent extends GwtEvent<DraggedInCanvasEventHandler> 
 		public DragContext getContext()
 		{
 			return this.context;
+		}
+		
+		public DragBox getDragBox()
+		{
+			return this.dragBox;
 		}
 		
 

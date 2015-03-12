@@ -7,11 +7,20 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
+import com.allen_sauer.gwt.dnd.client.drop.AbsolutePositionDropController;
+import com.allen_sauer.gwt.dnd.client.util.WidgetLocation;
+import com.github.gwtbootstrap.client.ui.Column;
+import com.github.gwtbootstrap.client.ui.Row;
+import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -25,77 +34,183 @@ import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
+import com.velisphere.tigerspice.client.event.DraggedInCanvasEvent;
+import com.velisphere.tigerspice.client.event.DraggedInCanvasEventHandler;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.FilterAppliedEvent;
 import com.velisphere.tigerspice.client.event.FilterAppliedEventHandler;
 import com.velisphere.tigerspice.client.helper.widgets.FilterSphereEndpointWidget;
+import com.velisphere.tigerspice.client.logic.connectors.ConnectorLogicCheckActor;
+import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorActor;
+import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorLogicCheck;
+import com.velisphere.tigerspice.client.logic.controllers.InCanvasDragDropController;
+import com.velisphere.tigerspice.client.logic.controllers.ListToCanvasDropController;
+import com.velisphere.tigerspice.client.logic.controllers.LogicToCanvasDropController;
+import com.velisphere.tigerspice.client.logic.draggables.DraggableButton;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheck;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheckAnd;
+import com.velisphere.tigerspice.client.logic.draggables.LogicCheckOr;
+import com.velisphere.tigerspice.client.logic.draggables.PhysicalItem;
+import com.velisphere.tigerspice.client.logic.draggables.TrashCan;
+import com.velisphere.tigerspice.client.logic.layoutWidgets.LineCoordinateCalculator;
 import com.velisphere.tigerspice.shared.EndpointData;
+import com.velisphere.tigerspice.shared.LinkedPair;
 import com.velisphere.tigerspice.shared.LogicLinkTargetData;
 
 public class LogicalMapWidget extends Composite {
 
-	HorizontalPanel pWidget;
-	ScrollPanel scrollWidget;
-	DiagramController controller;
-	HashMap<String, LabelWithMenu> labelDirectory;
-	HashMap<String, LinkedList<String>> linkDirectory;
-	HorizontalPanel diagramContainer;
+	static final int controlsOffsetY = 25;
+
+	String uuid;
+	String name;
+			
+	Context2d context;
+	Canvas canvas;
+
 	PickupDragController dragController;
+	LogicLocatorDragDropController inCanvasMoveDropController;
 	
-	
-	// general constructor showing all endpoints per default
+	AbsolutePanel logicPanel;
+	HashMap<String, DragBox> labelDirectory;
+	HashMap<String, LinkedList<String>> linkDirectory;
+	HorizontalPanel mainPanel;
+
+	Column filterCol;
+	Column diagramCol;
 	
 	public LogicalMapWidget() {
+	
+		logicPanel = new AbsolutePanel();
+		mainPanel = new HorizontalPanel();
 
-		pWidget = new HorizontalPanel();
-		diagramContainer = new HorizontalPanel();
-		linkDirectory = new HashMap<String, LinkedList<String>>();
-		labelDirectory = new HashMap<String, LabelWithMenu>();
 		FilterSphereEndpointWidget endpointFilter = new FilterSphereEndpointWidget();
-		pWidget.add(endpointFilter);
+		Row row = new Row();
+		filterCol = new Column (2);
+		filterCol.add(endpointFilter);
+		row.add(filterCol);
+		
+		diagramCol = new Column (8);
+		diagramCol.add(logicPanel);
+		row.add(diagramCol);
+		
+		
+		mainPanel.add(row);
+		
 		setFilterHandlerListener();
-		initWidget(pWidget);
-		controller = createDiagramController();
-		dragController = new PickupDragController(
-				controller.getView(), true);
-		controller.registerDragController(dragController);
-		pWidget.add(diagramContainer);
-		diagramContainer.add(controller.getView());
-		populateDiagramAllEndpoints();
-	}
-	
-	
-	// constructor for calls from endpoint manager, to display only a single endpoint
-	
-	public LogicalMapWidget(String endpointID) {
 
-		pWidget = new HorizontalPanel();
-		diagramContainer = new HorizontalPanel();
+
+		logicPanel.setWidth("100%");
+		logicPanel.setHeight("500px");
+		initWidget(mainPanel);
 		linkDirectory = new HashMap<String, LinkedList<String>>();
-		labelDirectory = new HashMap<String, LabelWithMenu>();
-		initWidget(pWidget);
-		controller = createDiagramController();
-		dragController = new PickupDragController(
-				controller.getView(), true);
-		controller.registerDragController(dragController);
-		pWidget.add(diagramContainer);
-		diagramContainer.add(controller.getView());
+		labelDirectory = new HashMap<String, DragBox>();
+
+		
+		logicPanel.addAttachHandler(new AttachEvent.Handler() {
+
+			@Override
+			public void onAttachOrDetach(AttachEvent event) {
+				// TODO Auto-generated method stub
+
+				if (event.isAttached()) {
+					canvas = Canvas.createIfSupported();
+					logicPanel.add(canvas);
+
+					canvas.setWidth("99%");
+					canvas.setHeight("99%");
+					RootPanel.get().add(
+							new HTML("WIDTH OFFSET "
+									+ logicPanel.getOffsetWidth()));
+					canvas.setCoordinateSpaceWidth(logicPanel.getOffsetWidth() - 10);
+					canvas.setCoordinateSpaceHeight((int) (logicPanel
+							.getOffsetHeight() * 0.99));
+
+					canvas.addStyleName("wellapple");
+
+					logicPanel
+							.add(new HTML(
+									"<b>Connection Map</b> Shows a logical map of all your device connections."),
+									5, 5);
+
+					context = canvas.getContext2d();
+
+				}
+
+			}
+		});
+
+		dragController = new PickupDragController(logicPanel, false);
+		dragController.setBehaviorDragStartSensitivity(5);
+		inCanvasMoveDropController = new LogicLocatorDragDropController(logicPanel);
+		dragController.registerDropController(inCanvasMoveDropController);
+
+		setDraggedInCanvasEventListener();
+		
+		populateDiagramAllEndpoints();
+
+	}
+
+	public LogicalMapWidget(String endpointID) 
+	{
+		
+		logicPanel = new AbsolutePanel();
+		
+		logicPanel.setWidth("100%");
+		logicPanel.setHeight("500px");
+		initWidget(logicPanel);
+		linkDirectory = new HashMap<String, LinkedList<String>>();
+		labelDirectory = new HashMap<String, DragBox>();
+
+		
+		logicPanel.addAttachHandler(new AttachEvent.Handler() {
+
+			@Override
+			public void onAttachOrDetach(AttachEvent event) {
+				// TODO Auto-generated method stub
+
+				if (event.isAttached()) {
+					canvas = Canvas.createIfSupported();
+					logicPanel.add(canvas);
+
+					canvas.setWidth("99%");
+					canvas.setHeight("99%");
+					RootPanel.get().add(
+							new HTML("WIDTH OFFSET "
+									+ logicPanel.getOffsetWidth()));
+					canvas.setCoordinateSpaceWidth(logicPanel.getOffsetWidth() - 10);
+					canvas.setCoordinateSpaceHeight((int) (logicPanel
+							.getOffsetHeight() * 0.99));
+
+					canvas.addStyleName("wellapple");
+
+					logicPanel
+							.add(new HTML(
+									"<b>Connection Map</b> Shows a logical map of all your device connections."),
+									5, 5);
+
+					context = canvas.getContext2d();
+
+				}
+
+			}
+		});
+
+		dragController = new PickupDragController(logicPanel, false);
+		dragController.setBehaviorDragStartSensitivity(5);
+		inCanvasMoveDropController = new LogicLocatorDragDropController(logicPanel);
+		dragController.registerDropController(inCanvasMoveDropController);
+
+		setDraggedInCanvasEventListener();
+		
 		populateDiagramSingleEndpoint(endpointID);
+
+		
 	}
 
-
-	private DiagramController createDiagramController() {
-		DiagramController controller = new DiagramController(800, 500);
-		controller.getView().addStyleName("span8");
-		controller.showGrid(true); // Display a background grid
-		return controller;
-	}
 
 	private void populateDiagramAllEndpoints() {
 
-		// clean up diagram first
-		controller.clearDiagram();
-
+		
 		EndpointServiceAsync endpointService = GWT
 				.create(EndpointService.class);
 
@@ -121,9 +236,7 @@ public class LogicalMapWidget extends Composite {
 
 	private void populateDiagramSingleSphere(String sphereID) {
 
-		// clean up diagram first
-		controller.clearDiagram();
-
+		
 		EndpointServiceAsync endpointService = GWT
 				.create(EndpointService.class);
 
@@ -149,9 +262,7 @@ public class LogicalMapWidget extends Composite {
 	
 	private void populateDiagramSingleEndpoint(String endpointID) {
 
-		// clean up diagram first
-		controller.clearDiagram();
-
+		
 		EndpointServiceAsync endpointService = GWT
 				.create(EndpointService.class);
 
@@ -194,7 +305,7 @@ public class LogicalMapWidget extends Composite {
 
 		while (it.hasNext()) {
 			final EndpointData endpoint = it.next();
-			final LabelWithMenu endpointLabel = new LabelWithMenu(
+			final DragBox endpointLabel = new DragBox(
 					endpoint.endpointId, endpoint.endpointName,
 					endpoint.getEpcId());
 
@@ -211,7 +322,7 @@ public class LogicalMapWidget extends Composite {
 			labelDirectory.put(endpoint.endpointId, endpointLabel);
 			
 			
-			controller.addWidget(endpointLabel, x, y);
+			logicPanel.add(endpointLabel, x, y);
 			dragController.makeDraggable(endpointLabel);
 
 		}
@@ -224,6 +335,14 @@ public class LogicalMapWidget extends Composite {
 
 	private void drawLinksFromServer() {
 
+		
+		// clear canvas
+		
+		context.clearRect(0, 0, canvas.getCoordinateSpaceWidth(),
+				canvas.getCoordinateSpaceHeight());
+		
+		// get data
+		
 		LinkedList<String> sourceEndpointIDs = new LinkedList<String>(
 				labelDirectory.keySet());
 		
@@ -251,14 +370,14 @@ public class LogicalMapWidget extends Composite {
 										new HTML("Raw data "
 												+ result.toString()));
 
-								Iterator<Entry<String, LabelWithMenu>> it = labelDirectory
+								Iterator<Entry<String, DragBox>> it = labelDirectory
 										.entrySet().iterator();
 
 								while (it.hasNext()) {
 
-									Map.Entry<String, LabelWithMenu> originPair = (Map.Entry<String, LabelWithMenu>) it
+									Map.Entry<String, DragBox> originPair = it
 											.next();
-									LabelWithMenu originLabel = originPair
+									DragBox originLabel = originPair
 											.getValue();
 
 									RootPanel
@@ -319,45 +438,74 @@ public class LogicalMapWidget extends Composite {
 
 	}
 
-	private void drawLink(final LogicLinkTargetData targetEndpoint, LabelWithMenu originLabel)
+	private void drawLink(final LogicLinkTargetData targetEndpoint, DragBox originLabel)
 	{
 		
-		LabelWithMenu targetLabel = labelDirectory.get(targetEndpoint
+		String lineColor = "cornflowerblue";
+		
+		DragBox targetLabel = labelDirectory.get(targetEndpoint
 				.getTargetEndpointID());
-		RootPanel
-				.get()
-				.add(new HTML(
-						"Connecting "
-								+ originLabel.endpointID
-								+ " with "
-								+ targetLabel.endpointID));
-		Connection c1 = controller
-				.drawStraightArrowConnection(
-						originLabel,
-						targetLabel);
-		HTML decorationLabel = new HTML(
-				"<a>"
-						+ targetEndpoint
-								.getCheckpathName()
-						+ "</a>");
-		controller.addDecoration(
-				decorationLabel, c1);
-		decorationLabel
-				.addClickHandler(new ClickHandler() {
+		
+		LineCoordinateCalculator coordinates = new LineCoordinateCalculator(
+				originLabel, targetLabel, logicPanel);
 
-					@Override
-					public void onClick(
-							ClickEvent event) {
-						AppController
-								.openLogicDesign(targetEndpoint
-										.getCheckpathID());
+		context.beginPath();
 
-					}
+		// change to red
 
-				});
+		context.setStrokeStyle(CssColor.make(lineColor));
 
-	
+		context.moveTo(coordinates.getCalcSourceX(),
+				coordinates.getCalcSourceY());
+		context.lineTo(coordinates.getCalcTargetX(),
+				coordinates.getCalcTargetY());
+
+		context.stroke();
+		context.closePath();
+
+		drawArrow(coordinates, lineColor);
+		
+			
 	}
+	
+	private void drawArrow(LineCoordinateCalculator coordinates,
+			String lineColor) {
+
+		double angle = Math.PI / 8;
+
+		// calculate the angle of the line
+		double lineangle = Math.atan2(coordinates.getCalcTargetY()
+				- coordinates.getCalcSourceY(), coordinates.getCalcTargetX()
+				- coordinates.getCalcSourceX());
+		// h is the line length of a side of the arrow head
+		double h = Math.abs(10 / Math.cos(angle));
+
+		double angle1 = lineangle + Math.PI + angle;
+		double topx = coordinates.getCalcTargetX() + Math.cos(angle1) * h;
+		double topy = coordinates.getCalcTargetY() + Math.sin(angle1) * h;
+
+		double angle2 = lineangle + Math.PI - angle;
+		double botx = coordinates.getCalcTargetX() + Math.cos(angle2) * h;
+		double boty = coordinates.getCalcTargetY() + Math.sin(angle2) * h;
+
+		context.beginPath();
+
+		context.setStrokeStyle(CssColor.make("lineColor"));
+
+		context.save();
+		context.beginPath();
+		context.moveTo(topx, topy);
+		context.lineTo(coordinates.getCalcTargetX(),
+				coordinates.getCalcTargetY());
+		context.stroke();
+		context.lineTo(botx, boty);
+		context.stroke();
+		context.restore();
+
+		context.closePath();
+
+	}
+
 	
 	private void addOutOfSelectionLabels(LinkedList<String> missingLabelDirectory)
 	{
@@ -400,14 +548,18 @@ public class LogicalMapWidget extends Composite {
 								+ filterAppliedEvent.getEndpointID());
 						RootPanel.get().add(html);
 						// applyFilterHandler.removeHandler();
+						
+						Iterator<Entry<String, DragBox>> it = labelDirectory.entrySet().iterator();
+						
+						while (it.hasNext())
+						{
+							Map.Entry<String, DragBox> pair = it.next();
+							logicPanel.remove(pair.getValue());
+						}
+						
 						labelDirectory.clear();
-						pWidget.clear();
-						FilterSphereEndpointWidget endpointFilter = new FilterSphereEndpointWidget(
-								filterAppliedEvent.getSphereID(),
-								filterAppliedEvent.getEndpointID());
-						pWidget.add(endpointFilter);
-						pWidget.add(diagramContainer);
-
+						
+						
 						if (filterAppliedEvent.getEndpointID() != "0") {
 
 							populateDiagramSingleEndpoint(filterAppliedEvent.getEndpointID());
@@ -426,5 +578,26 @@ public class LogicalMapWidget extends Composite {
 					}
 				});
 	}
+	
+	
+	private void setDraggedInCanvasEventListener() {
+		HandlerRegistration draggedInCanvasHandler = EventUtils.RESETTABLE_EVENT_BUS
+				.addHandler(DraggedInCanvasEvent.TYPE,
+						new DraggedInCanvasEventHandler() {
+					
+							@Override
+							public void onDraggedInCanvas(
+									DraggedInCanvasEvent draggedInCanvasEvent) {
+								// TODO Auto-generated method stub
+
+								RootPanel.get().add(new HTML("DRAGGED FIRED"));
+								
+								drawLinksFromServer();
+
+							}
+						});
+
+	}
+
 
 }
