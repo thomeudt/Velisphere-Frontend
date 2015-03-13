@@ -122,7 +122,7 @@ public class DataManager {
 			RootPanel.get().add(new HTML("P2P: Manual processed"));
 
 			if (current.getSourceValue() == ActionSourceConfig.currentSensorValue) {
-				action.valueFromInboundPropertyID = current.getSourceValue();
+				action.valueFromInboundPropertyID = current.getValueFromSensorValue();
 				RootPanel.get().add(new HTML("P2P: Source processed"));
 			} else {
 				action.valueFromInboundPropertyID = "no";
@@ -266,14 +266,8 @@ public class DataManager {
 			action.manualValue = current.getManualValue();
 			
 
-			if (current.getSourceValue() == ActionSourceConfig.currentSensorValue) {
-				action.valueFromInboundPropertyID = current.getSourceValue();
-				RootPanel.get().add(new HTML("L2P: Source processed"));
-			} else {
-				action.valueFromInboundPropertyID = "no";
-				RootPanel.get().add(new HTML("L2P: Source processed - empty"));
-			}
-
+			action.valueFromInboundPropertyID = "no";
+			
 			// TODO this can be simplified - we do not need to take care of
 			// multiple actions in new setup
 

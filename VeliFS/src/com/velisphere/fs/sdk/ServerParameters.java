@@ -1,4 +1,4 @@
-package com.velisphere.fs;
+package com.velisphere.fs.sdk;
 /*******************************************************************************
  * CONFIDENTIAL INFORMATION
  *  __________________

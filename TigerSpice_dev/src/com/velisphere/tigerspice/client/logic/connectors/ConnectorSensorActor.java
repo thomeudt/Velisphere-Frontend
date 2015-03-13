@@ -536,6 +536,11 @@ public class ConnectorSensorActor extends Connector {
 	public String getManualValue() {
 		return txtManualEntryContent;
 	}
+	
+	public String getValueFromSensorValue() {
+		return String.valueOf(lbxValueFromSensorValue);
+	}
+	
 
 	
 	

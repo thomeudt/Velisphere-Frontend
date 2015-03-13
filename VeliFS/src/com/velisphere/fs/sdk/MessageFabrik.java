@@ -1,4 +1,4 @@
-package com.velisphere.fs;
+package com.velisphere.fs.sdk;
 /*******************************************************************************
  * CONFIDENTIAL INFORMATION
  *  __________________
@@ -35,8 +35,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 
 
-public class MessagePack {
+public class MessageFabrik {
 
+	
+	String jsonString;
+	
+	public MessageFabrik(Object object)
+	{
+	
+		ObjectMapper mapper = new ObjectMapper();
+		
+		System.out.println("Intake: " + object.toString());
+	 
+		jsonString = new String();
+		try {
+			jsonString = mapper.writeValueAsString(object);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
+		System.out.println("JSON generiert: " + jsonString);
+				
+	}
+
+	
+	
 	public static String extractProperty(String jsonInput, String propertyID) throws JsonProcessingException, IOException 
 	{
 
@@ -59,31 +83,14 @@ public class MessagePack {
 		return foundValue;  
 	}
 
-		
-	public static String buildMessagePack(Object object)
-	{
-	
-		ObjectMapper mapper = new ObjectMapper();
-		
-		System.out.println("Intake: " + object.toString());
-	 
-		String jsonString = new String();
-		try {
-			jsonString = mapper.writeValueAsString(object);
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		System.out.println("JSON generiert: " + jsonString);
-	 
-		
-		
+
+
+	public String getJsonString() {
 		return jsonString;
-	
 	}
 
+		
+	
 
 
 }

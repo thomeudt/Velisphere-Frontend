@@ -4,10 +4,8 @@ package com.velisphere.fs;
 
 import java.io.IOException;
 import java.util.HashMap;
-
-
-
-
+import com.velisphere.fs.sdk.Server;
+import com.velisphere.fs.sdk.ServerParameters;
 import flightsim.simconnect.SimConnect;
 import flightsim.simconnect.SimConnectDataType;
 import flightsim.simconnect.SimObjectType;
@@ -138,7 +136,7 @@ public class FsConnect {
 						
 						
 						try {
-							Send.sendHashTable(messageHash, "controller");
+							Server.sendHashTable(messageHash, "controller");
 						} catch (Exception e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();

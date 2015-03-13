@@ -2,6 +2,10 @@ package com.velisphere.fs;
 
 import java.util.HashMap;
 
+import com.velisphere.fs.sdk.Server;
+
+
+
 public class SenderTask implements Runnable {
 
 
@@ -24,7 +28,7 @@ public class SenderTask implements Runnable {
 	@Override
 	public void run() {
 		try {
-			Send.sendHashTable(messageHash, controller);
+			Server.sendHashTable(messageHash, controller);
 			System.out.println("Message Hash Sent to Controller: " + messageHash);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -1,4 +1,4 @@
-package com.velisphere.fs;
+package com.velisphere.fs.sdk;
 /*******************************************************************************
  * CONFIDENTIAL INFORMATION
  *  __________________
@@ -17,6 +17,8 @@ package com.velisphere.fs;
  *  from Thorsten Meudt.
  ******************************************************************************/
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.HashMap;
 
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
@@ -24,9 +26,10 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
+import com.rabbitmq.client.AMQP.BasicProperties;
 
 
-public class Recv implements Runnable {
+public class Server implements Runnable {
 
 	
 	
@@ -64,7 +67,7 @@ public class Recv implements Runnable {
     boolean admFilterResult = filterMqttAdmMessage(message);   
     if(admFilterResult==false){
     
-    	String addText = MessagePack.extractProperty(message, "PR9");
+    	String addText = MessageFabrik.extractProperty(message, "PR9");
     	
     }
     
@@ -89,5 +92,54 @@ public class Recv implements Runnable {
 		
 	}
 	
+    public static void sendHashTable(HashMap<String, String> message,
+			String queue_name) throws Exception {
+
+		ConnectionFactory connectionFactory = new ConnectionFactory();
+		connectionFactory.setHost(ServerParameters.bunny_ip);
+		connectionFactory.setUsername("dummy");
+		connectionFactory.setPassword("dummy");
+		
+		connectionFactory.setVirtualHost("hController");
+		Connection connection = connectionFactory.newConnection();
+		Channel channel = connection.createChannel();
+
+		// System.out.println("QUEUE DEFINED AS....."+queue_name+"...");
+		if (queue_name.equals("controller")) {
+			boolean durable = true;
+			channel.queueDeclare(queue_name, durable, false, false, null);
+		} else {
+			channel.queueDeclare(queue_name, false, false, false, null);
+		}
+
+		// implemented reply queue to allow tracing the sender for callback
+
+		BasicProperties props = new BasicProperties.Builder()
+		.replyTo(ServerParameters.my_queue_name).deliveryMode(2)
+		.build();
+
+			
+		
+		message.put("TYPE", "REG");
+		java.util.Date date= new java.util.Date();
+		Timestamp timeStamp = new Timestamp(date.getTime());
+		message.put("TIMESTAMP", timeStamp.toString());
+		message.put("EPID", ServerParameters.my_queue_name);
+		
+						
+		MessageFabrik messageFactory = new MessageFabrik(message);
+		String messagePackText = messageFactory.getJsonString();
+		
+		System.out.println(messagePackText);
+
+		channel.basicPublish("", "controller", props,
+				messagePackText.getBytes());
+
+		// System.out.println(" [x] Sent '" + messagePackText + "'");
+
+		channel.close();
+		connection.close();
+	}
+
     
 }
