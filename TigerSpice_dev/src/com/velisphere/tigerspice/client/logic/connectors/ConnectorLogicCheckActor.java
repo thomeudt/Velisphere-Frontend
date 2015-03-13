@@ -328,11 +328,11 @@ public class ConnectorLogicCheckActor extends Connector {
 			return actor;
 		}
 						
-		public String getSourceIndex() {
+		public String getSourceValue() {
 			return String.valueOf(lbxSourceValue);
 		}
 		
-		public String getTypicalValueIndex() {
+		public String getTypicalValueValue() {
 			return String.valueOf(lbxTypicalValuesValue);
 		}
 		

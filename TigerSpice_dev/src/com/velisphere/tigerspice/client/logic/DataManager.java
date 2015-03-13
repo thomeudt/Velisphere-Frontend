@@ -261,9 +261,18 @@ public class DataManager {
 			action.propertyID = current.getActor().getPropertyID();
 			action.propertyIdIntake = "";
 			action.sensorEndpointID = "";
-			action.valueFromInboundPropertyID = current.getSourceIndex();
-			action.validValueIndex = current.getTypicalValueIndex();
+			
+			action.validValueIndex = current.getTypicalValueValue();
 			action.manualValue = current.getManualValue();
+			
+
+			if (current.getSourceValue() == ActionSourceConfig.currentSensorValue) {
+				action.valueFromInboundPropertyID = current.getSourceValue();
+				RootPanel.get().add(new HTML("L2P: Source processed"));
+			} else {
+				action.valueFromInboundPropertyID = "no";
+				RootPanel.get().add(new HTML("L2P: Source processed - empty"));
+			}
 
 			// TODO this can be simplified - we do not need to take care of
 			// multiple actions in new setup
