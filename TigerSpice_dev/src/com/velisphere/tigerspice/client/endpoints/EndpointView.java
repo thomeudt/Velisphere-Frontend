@@ -391,7 +391,8 @@ public class EndpointView extends Composite {
 		tblConfiguration.addClickHandler(new ClickHandler() {
 	          public void onClick(ClickEvent event) {
 	        	  tbpEndpoint.clear();
-	        	 	
+	        	  EndpointConfiguratorWidget endpointConfiguratorWidget = new EndpointConfiguratorWidget(endpointID);
+	        	  tbpEndpoint.add(endpointConfiguratorWidget);
 	              
 	          }
 	      });

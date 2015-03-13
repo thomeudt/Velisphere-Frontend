@@ -15,12 +15,17 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.server;
+package com.velisphere.tigerspice.client.amqp;
 
-public class ServerParameters {
-	public static String volt_ip = "16.1.1.115"; // for local db
-	//public static String volt_ip = "54.186.33.146"; // for aws db
-	public static String vertica_ip = "16.1.1.83";
-	public static String rabbit_ip = "16.1.1.81";
-	public static String my_queue_name = "tigerspice";
+import java.util.LinkedList;
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.velisphere.tigerspice.shared.ActionData;
+
+
+@RemoteServiceRelativePath("rabbitAMQP")
+public interface AMQPService extends RemoteService {
+		
+	String sendGetAllProperties(String endpointID);
+		
 }

@@ -233,7 +233,17 @@
     <url-pattern>/tigerspice_dev/voltVendor</url-pattern>
   </servlet-mapping>
   
-  
+ <servlet>
+    <servlet-name>amqpServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.AMQPServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>amqpServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/rabbitAMQP</url-pattern>
+  </servlet-mapping>
+
+
 
   <!-- Default page to serve -->
   <welcome-file-list>

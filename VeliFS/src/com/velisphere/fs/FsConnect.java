@@ -4,8 +4,11 @@ package com.velisphere.fs;
 
 import java.io.IOException;
 import java.util.HashMap;
+
+import com.velisphere.fs.sdk.CTLInitiator;
 import com.velisphere.fs.sdk.Server;
 import com.velisphere.fs.sdk.ServerParameters;
+
 import flightsim.simconnect.SimConnect;
 import flightsim.simconnect.SimConnectDataType;
 import flightsim.simconnect.SimObjectType;
@@ -32,11 +35,19 @@ public class FsConnect {
 		SimConnect sc;
 		//try {
 			
-			// Start AMQP Listener
-			ServerParameters.my_queue_name = "4356e2b5-abd4-40b5-9f9d-cc3b52eb564f";
+						
+			// Activate Event Responders
 			
+			CTLEventResponder eventResponder = new CTLEventResponder();
+			CTLInitiator initiator = new CTLInitiator();
+	       	initiator.addListener(eventResponder);
+	       	
+	       	// Start Server
 			
-			
+	     	Server.startServer("4356e2b5-abd4-40b5-9f9d-cc3b52eb564f", initiator);
+	     	
+	     	// Start SimConnect
+						
 			sc = new SimConnect("AIList");
 				
 			
