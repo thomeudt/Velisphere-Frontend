@@ -25,7 +25,7 @@ import flightsim.simconnect.recv.RecvOpen;
 import flightsim.simconnect.recv.RecvSimObjectDataByType;
 import flightsim.simconnect.recv.SimObjectDataTypeHandler;
 
-public class FsConnectV2 {
+public class FsConnectV2unused {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub

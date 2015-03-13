@@ -673,7 +673,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 				"veliadmin2014", "4GfQ2xgIwVsJ9g3wZIQE");
 		rabbitClient.register(feature);
 		WebTarget target = rabbitClient
-				.target("http://16.1.1.107:15672/api/users/" + endpointID);
+				.target("http://"+ServerParameters.rabbit_ip+":15672/api/users/" + endpointID);
 		Response response = target.request().put(
 				Entity.json("{\"password\":\"" + endpointID
 						+ "\",\"tags\":\"\"}")); // replace endpoint ID with API
@@ -685,7 +685,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		// allow access to clients virtual host
 
 		target = rabbitClient
-				.target("http://16.1.1.107:15672/api/permissions/hClients/"
+				.target("http://"+ServerParameters.rabbit_ip+":15672/api/permissions/hClients/"
 						+ endpointID);
 		response = target.request().put(
 				Entity.json("{\"configure\":\"\",\"write\":\"\",\"read\":\""
@@ -697,7 +697,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		// allow access to controller virtual host
 
 		target = rabbitClient
-				.target("http://16.1.1.107:15672/api/permissions/hController/"
+				.target("http://"+ServerParameters.rabbit_ip+":15672/api/permissions/hController/"
 						+ endpointID);
 		response = target
 				.request()

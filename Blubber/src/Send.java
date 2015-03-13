@@ -130,6 +130,8 @@ public class Send {
 		messagePack.writeJSONString(out);
 
 		String messagePackText = out.toString();
+		
+		System.out.println(messagePackText);
 
 		channel.basicPublish("", "controller", props,
 				messagePackText.getBytes());

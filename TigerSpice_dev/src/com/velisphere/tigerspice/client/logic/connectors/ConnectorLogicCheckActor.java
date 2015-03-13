@@ -104,10 +104,7 @@ public class ConnectorLogicCheckActor extends Connector {
 			{
 			createBaseLayout();
 			}
-		lbxSource.setSelectedValue(lbxSourceValue);
-		lbxTypicalValues.setSelectedValue(lbxTypicalValuesValue);
-		txtManualEntry.setValue(txtManualEntryContent);
-			
+		fillFields();			
 
 	}
 	
@@ -119,10 +116,8 @@ public class ConnectorLogicCheckActor extends Connector {
 		{
 		createBaseLayout();
 		}
-		lbxSource.setSelectedValue(lbxSourceValue);
-		lbxTypicalValues.setSelectedValue(lbxTypicalValuesValue);
-		txtManualEntry.setValue(txtManualEntryContent);
-	
+		fillFields();			
+
 	}
 
 
@@ -133,6 +128,15 @@ public class ConnectorLogicCheckActor extends Connector {
 		txtManualEntryContent = txtManualEntry.getValue();
 	}
 	
+	
+	private void fillFields()
+	{
+
+		lbxSource.setSelectedValue(lbxSourceValue);
+		lbxTypicalValues.setSelectedValue(lbxTypicalValuesValue);
+		txtManualEntry.setValue(txtManualEntryContent);
+		
+	}
 	
 	private void createBaseLayout()
 	{

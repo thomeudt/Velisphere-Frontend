@@ -22,6 +22,8 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.AMQP.BasicProperties;
 
 import java.io.StringWriter;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,22 +57,25 @@ public class Send {
 
 		message = "[" + ServerParameters.my_queue_name + "] " + message;
 
+		
 		JSONObject messagePack = new JSONObject();
 		JsonTools tooler = new JsonTools();
 
 		messagePack = tooler.addArgument(messagePack,
 				ServerParameters.my_queue_name, "EPID");
-		messagePack = tooler.addArgument(messagePack, null, "SECTOK");
 		messagePack = tooler.addArgument(messagePack, queue_name, "0");
 		messagePack = tooler.addArgument(messagePack, message, "1");
 		messagePack = tooler.addArgument(messagePack, null, "TIMESTAMP");
 		messagePack = tooler.addArgument(messagePack, "REG", "TYPE");
 
 		StringWriter out = new StringWriter();
+		
 		messagePack.writeJSONString(out);
 
 		String messagePackText = out.toString();
 
+		System.out.println(messagePack.toJSONString());
+		
 		channel.basicPublish("", "controller", props,
 				messagePackText.getBytes());
 		// channel.basicPublish("", "sana", props, messagePackText.getBytes());
@@ -107,29 +112,18 @@ public class Send {
 		.replyTo(ServerParameters.my_queue_name).deliveryMode(2)
 		.build();
 
-		// message = "[" + ServerParameters.my_queue_name + "] " + message;
-
-		JSONObject messagePack = new JSONObject();
-		JsonTools tooler = new JsonTools();
-
-		// Add Metadata to MessagePack
-		messagePack = tooler.addArgument(messagePack,
-				ServerParameters.my_queue_name, "EPID");
-		messagePack = tooler.addArgument(messagePack, null, "SECTOK");
-		messagePack = tooler.addArgument(messagePack, null, "TIMESTAMP");
-		messagePack = tooler.addArgument(messagePack, "REG", "TYPE");
-
-		// Now add payload to MessagePack
-		for (Map.Entry<String, String> e : message.entrySet()) {
-			// System.out.println( e.getKey() + "="+ e.getValue() );
-			messagePack = tooler.addArgument(messagePack, e.getValue(),
-					e.getKey());
-		}
-
-		StringWriter out = new StringWriter();
-		messagePack.writeJSONString(out);
-
-		String messagePackText = out.toString();
+			
+		
+		message.put("TYPE", "REG");
+		java.util.Date date= new java.util.Date();
+		Timestamp timeStamp = new Timestamp(date.getTime());
+		message.put("TIMESTAMP", timeStamp.toString());
+		message.put("EPID", ServerParameters.my_queue_name);
+		
+						
+		String messagePackText = MessagePack.buildMessagePack(message);
+		
+		System.out.println(messagePackText);
 
 		channel.basicPublish("", "controller", props,
 				messagePackText.getBytes());

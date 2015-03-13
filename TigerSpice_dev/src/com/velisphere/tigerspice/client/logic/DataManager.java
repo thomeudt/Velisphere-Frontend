@@ -180,7 +180,7 @@ public class DataManager {
 
 		while (it.hasNext()) {
 
-			ConnectorSensorLogicCheck current = it.next();
+			final ConnectorSensorLogicCheck current = it.next();
 
 			RootPanel.get().add(new HTML("P2L: fetched connector"));
 
@@ -231,7 +231,7 @@ public class DataManager {
 
 							RootPanel.get().add(
 									new HTML(
-											"Result from attempt to generate check and action P2L: "
+											"Result from attempt to generate check and action P2L "+ current.getCheckUUID()+": "
 													+ result));
 						}
 
@@ -496,7 +496,7 @@ public class DataManager {
 	public void processDeletedP2L() {
 
 		Iterator<ConnectorSensorLogicCheck> it = canvas
-				.getConnectorsSensorLogicCheck().iterator();
+				.getDeletedConnectorsSensorLogicCheck().iterator();
 
 		RootPanel.get().add(new HTML("Deleted P2L: started"));
 

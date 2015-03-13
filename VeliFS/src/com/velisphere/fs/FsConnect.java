@@ -35,7 +35,7 @@ public class FsConnect {
 		//try {
 			
 			// Start AMQP Listener
-			ServerParameters.my_queue_name = "26999b45-f90f-4f3e-8e83-457ccdb1298d";
+			ServerParameters.my_queue_name = "4356e2b5-abd4-40b5-9f9d-cc3b52eb564f";
 			
 			
 			
@@ -123,16 +123,16 @@ public class FsConnect {
 						HashMap<String, String> messageHash = new HashMap<String, String>();
 						
 						// messageHash.put("4dbfba15-7297-4349-b152-b32ca81b2bd4", position.toString());
-						messageHash.put("713524b6-d77a-45e3-aead-82e786ac2f15", String.valueOf(altitude));
-						messageHash.put("725bd22e-c912-4d54-8c42-09c4935611e5", String.valueOf(atcType));
-						messageHash.put("c5994de5-9762-4df4-840e-a30109784c8a", String.valueOf(atcID));
-						messageHash.put("acd4fc06-d01b-4ec0-a17c-13d2d1d89a2a", String.valueOf(groundspeed));
-						messageHash.put("229da09b-8b1c-46a4-8ada-3f72f30a7b19", String.valueOf(stall));
-						messageHash.put("1fb601dc-f3c2-4f12-8dd0-8f6a590681f6", String.valueOf(overspeed));
-						messageHash.put("224365cc-5973-4510-bb8a-8bd7b249e451", String.valueOf(aoA));
-						messageHash.put("fbafb133-9b4a-4104-a140-0eecb99e11f0", String.valueOf(lat));
-						messageHash.put("a9225f76-b326-48b4-93e3-b878ca4a8ad1", String.valueOf(lon));
-						messageHash.put("3ddb8d2e-75dc-4375-8ba1-7d9c0694487e", "{"+String.valueOf(lat)+"}"+"["+String.valueOf(lon)+"]");
+						messageHash.put("d1d620f5-f7be-42bc-8e85-3383a38341aa", String.valueOf(altitude));
+						messageHash.put("b3b2d9f4-4824-45ca-b117-313a46b46061", String.valueOf(atcType));
+						messageHash.put("d42cd2d9-e2be-4f3f-aa76-562007c2b6d1", String.valueOf(atcID));
+						messageHash.put("23ffd953-5b9c-4a71-bb50-c0507e75b04f", String.valueOf(groundspeed));
+						messageHash.put("e610a30a-25ef-4119-bdfd-998342883612", String.valueOf(stall));
+						messageHash.put("36752e74-81ff-4654-9efe-5b55e2119ff0", String.valueOf(overspeed));
+						messageHash.put("c4c30bd5-4329-4ad3-9f86-dcdc33dc2a2d", String.valueOf(aoA));
+						messageHash.put("ceff2e16-674b-4ad5-a26a-20a010f7d6cf", String.valueOf(lat));
+						messageHash.put("3ba9aa03-264a-4571-ad7a-d1f0f91c22c5", String.valueOf(lon));
+						messageHash.put("e9afe92e-d46b-4f6f-b793-e5213d3aef28", "{"+String.valueOf(lat)+"}"+"["+String.valueOf(lon)+"]");
 						
 						System.out.println("Message Hash Sent to Controller: " + messageHash);
 						
