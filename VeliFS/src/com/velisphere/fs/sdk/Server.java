@@ -74,10 +74,10 @@ public class Server implements Runnable {
 			
 				
 				String ctlMessage = MessageFabrik.extractProperty(message,
-							"CTL");
+							"getAllProperties");
 				
-				if (ctlMessage.equals("getAllProperties")) ctlInitiator.requestAllProperties();
-				if (ctlMessage.equals("getIsAlive")) ctlInitiator.requestIsAlive();
+				if (ctlMessage.equals("1")) ctlInitiator.requestAllProperties();
+				
 					
 			}
 			
