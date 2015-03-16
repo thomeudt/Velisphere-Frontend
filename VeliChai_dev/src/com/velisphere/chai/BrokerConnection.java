@@ -24,6 +24,9 @@ import java.io.IOException;
 
 
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -42,7 +45,7 @@ public class BrokerConnection {
 	static Connection rxConnection;
 	static Connection txConnection;
 
-	public static void establishConnection(){
+	public static void establishConnection() throws KeyManagementException, NoSuchAlgorithmException{
 		
 		ConnectionFactory txFactory;
 		ConnectionFactory rxFactory;
@@ -51,12 +54,16 @@ public class BrokerConnection {
 		txFactory.setVirtualHost("hClients");
 		txFactory.setUsername("dummy");
 		txFactory.setPassword("dummy");
+		txFactory.setPort(5671);
+		txFactory.useSslProtocol();
 
 		rxFactory = new ConnectionFactory();
 		rxFactory.setHost(ServerParameters.bunny_ip);
 		rxFactory.setVirtualHost("hController");
 		rxFactory.setUsername("dummy");
 		rxFactory.setPassword("dummy");
+		rxFactory.setPort(5671);
+		rxFactory.useSslProtocol();
 
 
 		

@@ -18,6 +18,8 @@
 package com.velisphere.chai;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -65,7 +67,15 @@ public class ChaiWorker {
 		 * Creating the connection to Rabbit
 		 */
 
-		BrokerConnection.establishConnection();
+		try {
+			BrokerConnection.establishConnection();
+		} catch (KeyManagementException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println(" [OK] Connection to AMQP Broker successful.");
 		
 		// Open the IMDB Database
