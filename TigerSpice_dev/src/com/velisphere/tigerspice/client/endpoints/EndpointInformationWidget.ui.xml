@@ -85,6 +85,12 @@
 			    <b:Paragraph ui:field="pgpCurrentState" text="Requires implementation of ping mechanism, pending" />
 			</b:Column>
 		</b:Row>
+		<b:Row>
+			<b:Column size="2" offset="2">
+			   <b:Button type="PRIMARY" ui:field="btnPing"
+									addStyleNames="btn-block" size="SMALL">Ping!</b:Button>
+			</b:Column>
+		</b:Row>
 		
 		
 		

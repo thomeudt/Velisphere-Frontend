@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.chai;
+package com.velisphere.chai.broker;
 
 import java.io.IOException;
 
@@ -30,6 +30,7 @@ import java.security.NoSuchAlgorithmException;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import com.velisphere.chai.ServerParameters;
 
 
 public class BrokerConnection {

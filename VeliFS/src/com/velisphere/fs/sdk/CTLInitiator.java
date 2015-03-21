@@ -14,7 +14,7 @@ public class CTLInitiator {
 	    public void requestIsAlive() {
 	        System.out.println(" [IN] Is Alive Requested");
 
-	        // Notify everybody that may be interested.
+	        // Notify
 	        for (CTLListener cl : listeners)
 	            cl.isAliveRequested();
 	    }
@@ -22,7 +22,7 @@ public class CTLInitiator {
 	    public void requestAllProperties() {
 	    	System.out.println(" [IN] All Properties Requested");
 
-	        // Notify everybody that may be interested.
+	        // Notify
 	        for (CTLListener cl : listeners)
 	            cl.allPropertiesRequested();
 	    }

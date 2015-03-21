@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.chai;
+package com.velisphere.chai.messageUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,8 +29,12 @@ import java.util.UUID;
 import java.util.Map.Entry;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.velisphere.chai.VelisphereMart;
 import com.velisphere.chai.dataObjects.ActionObject;
 import com.velisphere.chai.dataObjects.BLEResultObject;
+import com.velisphere.chai.engines.ActionManipulationEngine;
+import com.velisphere.chai.engines.BusinessLogicEngine;
+import com.velisphere.chai.engines.ServiceEngine;
 
 public class MessageInspect implements Runnable {
 
@@ -71,17 +75,27 @@ public class MessageInspect implements Runnable {
 					
 					LinkedList<ActionObject> executedActions = new LinkedList<ActionObject>();
 					
+					System.out.println("[IN] Key: " + e.getKey() + " / Value: " + e.getValue());
+					
+					if (e.getKey() == "STATE")
+					{
+						System.out.println("[IN] State Update received from " + EPID);
+						ServiceEngine.setEndpointState(EPID, e.getValue());
+						
+					}
+					
 					if (e.getKey() != "EPID" && e.getKey() != null
 							&& e.getKey() != "SECTOK"
 							&& e.getKey() != "TIMESTAMP"
-							&& e.getKey() != "TYPE") {
+							&& e.getKey() != "TYPE"
+							&& e.getKey() != "STATE"){
 						
 							
 							
 						    BLEResultObject bleResult = BusinessLogicEngine.runChecks(EPID, e.getKey(), e.getValue(), (byte) 0);
 						    triggeredActions.putAll(bleResult.getTriggerActions());
 						    
-						    System.out.println(bleResult.getTriggerActions().values());
+						    
 						    
 						    for (Iterator<Entry<String, String>> aIT = triggeredActions.entrySet().iterator(); aIT
 									.hasNext();) {

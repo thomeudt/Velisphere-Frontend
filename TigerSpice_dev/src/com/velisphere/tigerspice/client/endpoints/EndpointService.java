@@ -40,7 +40,7 @@ import com.velisphere.tigerspice.shared.UserData;
 
 @RemoteServiceRelativePath("voltEndpoint")
 public interface EndpointService extends RemoteService {
-	Vector<EndpointData> getAllEndpointDetails();
+	LinkedList<EndpointData> getAllEndpointDetails();
 	LinkedList<EndpointData> getEndpointsForSphere(String sphereID);
 	LinkedList<EndpointData> getEndpointsForMultipleIDs(LinkedList<String> endpointIDs);
 	String addEndpointToSphere(String endpointID, String sphereID);

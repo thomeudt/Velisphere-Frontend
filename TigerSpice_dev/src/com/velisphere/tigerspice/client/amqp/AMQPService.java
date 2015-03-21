@@ -27,5 +27,6 @@ import com.velisphere.tigerspice.shared.ActionData;
 public interface AMQPService extends RemoteService {
 		
 	String sendGetAllProperties(String endpointID);
+	String sendIsAliveRequest(String endpointID);
 		
 }

@@ -18,8 +18,13 @@
 package com.velisphere.tigerspice.server;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.sql.Timestamp;
 import java.util.HashMap;
+
+import org.voltdb.client.ClientResponse;
+import org.voltdb.client.NoConnectionsException;
+import org.voltdb.client.ProcCallException;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -156,6 +161,46 @@ public class AMQPServiceImpl extends RemoteServiceServlet implements
 		
 
 
+	}
+
+
+	@Override
+	public String sendIsAliveRequest(String endpointID) {
+		// TODO Auto-generated method stub
+		
+		VoltConnector voltCon = new VoltConnector();
+		
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			ClientResponse bleUpdateCheckState = voltCon.montanaClient
+					.callProcedure("SRV_UpdateEndpointState", endpointID, "UNKNOWN");
+		} catch (IOException | ProcCallException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+					
+		HashMap<String, String> messageHash = new HashMap<String, String>();
+		messageHash.put("getIsAlive", "1");
+		
+		try {
+			sendHashTable(messageHash, endpointID);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "OK";
+		
+		
 	}
 
 	

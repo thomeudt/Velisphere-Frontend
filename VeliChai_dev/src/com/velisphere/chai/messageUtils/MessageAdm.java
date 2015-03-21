@@ -15,7 +15,10 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.chai;
+package com.velisphere.chai.messageUtils;
+
+import com.velisphere.chai.LdapGet;
+import com.velisphere.chai.broker.Send;
 
 public class MessageAdm {
 

@@ -1,4 +1,4 @@
-package com.velisphere.chai;
+package com.velisphere.chai.engines;
 
 import java.sql.Timestamp;
 import java.util.UUID;

@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.chai;
+package com.velisphere.chai.engines;
 
 /**
  * TODO
@@ -26,6 +26,7 @@ package com.velisphere.chai;
 import org.voltdb.VoltTable;
 import org.voltdb.client.*;
 
+import com.velisphere.chai.ServerParameters;
 import com.velisphere.chai.dataObjects.BLEResultObject;
 import com.velisphere.chai.dataObjects.CheckObject;
 import com.velisphere.chai.dataObjects.MulticheckObject;

@@ -3,6 +3,9 @@ package com.velisphere.fs;
 import java.io.IOException;
 import java.util.HashMap;
 
+
+
+
 import com.velisphere.fs.sdk.CTLInitiator;
 import com.velisphere.fs.sdk.Server;
 import com.velisphere.fs.sdk.ServerParameters;
@@ -34,12 +37,13 @@ public class FsConnect {
 		// Activate Event Responders
 
 		CTLEventResponder eventResponder = new CTLEventResponder();
+		
 		CTLInitiator initiator = new CTLInitiator();
 		initiator.addListener(eventResponder);
 
 		// Start Server
 
-		Server.startServer("4356e2b5-abd4-40b5-9f9d-cc3b52eb564f", initiator);
+		Server.startServer("10100729-eb58-45e0-b02e-df01bb904f2f", initiator);
 
 		// Start SimConnect
 

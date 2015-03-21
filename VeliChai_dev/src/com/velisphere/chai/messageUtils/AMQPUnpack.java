@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.chai;
+package com.velisphere.chai.messageUtils;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -27,6 +27,8 @@ import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 import com.rabbitmq.client.AMQP.BasicProperties;
+import com.velisphere.chai.ServerParameters;
+import com.velisphere.chai.broker.BrokerConnection;
 
 public class AMQPUnpack implements Runnable {
 

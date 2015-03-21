@@ -18,6 +18,8 @@ package com.velisphere.fs.sdk;
  *  from Thorsten Meudt.
  ******************************************************************************/
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 
@@ -28,6 +30,7 @@ import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 import com.rabbitmq.client.AMQP.BasicProperties;
+
 
 public class Server implements Runnable {
 
@@ -45,14 +48,28 @@ public class Server implements Runnable {
 
 		try {
 
+			
+		
+			
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setHost(ServerParameters.bunny_ip);
 			factory.setUsername("dummy");
 			factory.setPassword("dummy");
 			factory.setVirtualHost("hClients");
+			factory.setPort(5671);
+			factory.useSslProtocol();
 			
-			Connection connection = factory.newConnection();
+			Connection connection = null;
+			
+			try {
+				connection = factory.newConnection();
 
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 			Channel channel = connection.createChannel();
 
 			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
@@ -73,10 +90,15 @@ public class Server implements Runnable {
 
 			
 				
-				String ctlMessage = MessageFabrik.extractProperty(message,
+				String msgGetAllProperties = MessageFabrik.extractProperty(message,
 							"getAllProperties");
 				
-				if (ctlMessage.equals("1")) ctlInitiator.requestAllProperties();
+				if (msgGetAllProperties.equals("1")) ctlInitiator.requestAllProperties();
+				
+				String msgIsAliveRequest = MessageFabrik.extractProperty(message,
+						"getIsAlive");
+			
+				if (msgIsAliveRequest.equals("1")) ctlInitiator.requestIsAlive();;
 				
 					
 			}
@@ -92,6 +114,12 @@ public class Server implements Runnable {
 			e.printStackTrace();
 			System.out.println(" [ER] Server has shut down. Reason: "
 					+ e.getMessage());
+		} catch (KeyManagementException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}

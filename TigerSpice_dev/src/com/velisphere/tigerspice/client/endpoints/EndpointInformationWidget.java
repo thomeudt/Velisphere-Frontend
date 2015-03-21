@@ -7,20 +7,32 @@ import java.util.Date;
 
 
 
+
+
+
+
+
+
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.google.gwt.core.client.GWT;
-
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.amqp.AMQPService;
+import com.velisphere.tigerspice.client.amqp.AMQPServiceAsync;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.users.NewAccountWidget;
 import com.velisphere.tigerspice.client.vendors.VendorService;
 import com.velisphere.tigerspice.client.vendors.VendorServiceAsync;
 import com.velisphere.tigerspice.shared.AnalyticsRawData;
@@ -46,6 +58,9 @@ public class EndpointInformationWidget extends Composite {
 	Paragraph pgpEndpointLogCount;
 	@UiField
 	Paragraph pgpActionLogCount;
+	@UiField
+	Paragraph pgpCurrentState;
+
 
 	private static EndpointInformationWidgetUiBinder uiBinder = GWT
 			.create(EndpointInformationWidgetUiBinder.class);
@@ -87,7 +102,7 @@ public class EndpointInformationWidget extends Composite {
 					public void onSuccess(EndpointData result) {
 						// TODO Auto-generated method stub
 						pgpProvDate.setText(result.endpointProvDate);
-												
+						pgpCurrentState.setText(result.endpointState);								
 						setEndpointClassData(result.endpointclassId);
 						animationLoading.removeLoadAnimation();
 
@@ -269,6 +284,66 @@ public class EndpointInformationWidget extends Composite {
 
 
 	
+	}
+	
+	@UiHandler("btnPing")
+	void sendPingRequest (ClickEvent event)  {
+		AMQPServiceAsync amqpService = GWT
+				.create(AMQPService.class);
+		
+		
+		amqpService.sendIsAliveRequest(endpointID,
+				new AsyncCallback<String>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						// TODO Auto-generated method stub
+						
+						pgpCurrentState.setText("Refreshing. Please wait...");
+						Timer t = new Timer() {
+						      @Override
+						      public void run() {
+						    	  updateEndpointState();   
+						      }
+						    };
+
+						    // Schedule the timer to run once in 5 seconds.
+						    t.schedule(3000);
+						
+						    
+					}
+		
+	
+	});
+	}
+	
+	void updateEndpointState(){
+		EndpointServiceAsync endpointService = GWT
+				.create(EndpointService.class);
+		
+		
+		endpointService.getEndpointForEndpointID(endpointID,
+				new AsyncCallback<EndpointData>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(EndpointData result) {
+						// TODO Auto-generated method stub
+						pgpCurrentState.setText(result.endpointState);
+					}
+		});
+
 	}
 
 }

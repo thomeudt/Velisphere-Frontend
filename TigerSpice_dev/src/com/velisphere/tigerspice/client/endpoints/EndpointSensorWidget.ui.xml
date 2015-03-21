@@ -48,7 +48,7 @@
 				</b:Row>
 				
 				<b:Row>
-					<b:Column size="1">
+					<b:Column size="2">
 						<b:Button type="PRIMARY" size="MINI" addStyleNames="btn-block" ui:field="btnDataTrail">View Datatrail</b:Button>
 					</b:Column>
 				</b:Row>

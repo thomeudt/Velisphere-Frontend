@@ -63,7 +63,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public Vector<EndpointData> getAllEndpointDetails()
+	public LinkedList<EndpointData> getAllEndpointDetails()
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -78,7 +78,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			e1.printStackTrace();
 		}
 
-		Vector<EndpointData> allEndPoints = new Vector<EndpointData>();
+		LinkedList<EndpointData> allEndPoints = new LinkedList<EndpointData>();
 		try {
 
 			final ClientResponse findAllUsers = voltCon.montanaClient
@@ -123,6 +123,10 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		return allEndPoints;
 	}
 
+	
+	
+	
+	
 	public LinkedList<EndpointData> getEndpointsForSphere(String sphereID)
 
 	{
@@ -426,6 +430,9 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 					endpointForEndpointID.endpointProvDate = result
 							.getTimestampAsTimestamp("ENDPOINTPROVDATE")
 							.toString();
+					endpointForEndpointID.endpointState = result
+							.getString("ENDPOINTSTATE")
+							.toString();
 
 				}
 			}
@@ -607,7 +614,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		try {
 
 			voltCon.montanaClient.callProcedure("ENDPOINT.insert", endpointID,
-					endpointName, endpointclassID, new TimestampType());
+					endpointName, endpointclassID, new TimestampType(), "UNKNOWN");
 			voltCon.montanaClient.callProcedure("ENDPOINT_USER_LINK.insert",
 					linkID, endpointID, userID);
 		} catch (NoConnectionsException e1) {

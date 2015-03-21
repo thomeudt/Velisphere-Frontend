@@ -47,25 +47,25 @@ public class SendCommands {
 
 	// messageHash.put("4dbfba15-7297-4349-b152-b32ca81b2bd4",
 	// position.toString());
-	messageHash.put("d1d620f5-f7be-42bc-8e85-3383a38341aa",
+	messageHash.put("1000a75c-ca98-479c-bbf1-3b00d71f99c5",
 			String.valueOf(altitude));
-	messageHash.put("b3b2d9f4-4824-45ca-b117-313a46b46061",
+	messageHash.put("aa89dd01-29ea-4bad-9bd3-0b2a2fa394ed",
 			String.valueOf(atcType));
-	messageHash.put("d42cd2d9-e2be-4f3f-aa76-562007c2b6d1",
+	messageHash.put("15dcc770-674a-4e02-90ca-2417625180bb",
 			String.valueOf(atcID));
-	messageHash.put("23ffd953-5b9c-4a71-bb50-c0507e75b04f",
+	messageHash.put("247771e7-65e5-4fe5-9ac5-3efb21d0ae1d",
 			String.valueOf(groundspeed));
-	messageHash.put("e610a30a-25ef-4119-bdfd-998342883612",
+	messageHash.put("5c651829-20d9-4f21-a096-e1cba9fd349a",
 			String.valueOf(stall));
-	messageHash.put("36752e74-81ff-4654-9efe-5b55e2119ff0",
+	messageHash.put("7f714d19-ff38-45df-9ef3-47ce772f87b6",
 			String.valueOf(overspeed));
-	messageHash.put("c4c30bd5-4329-4ad3-9f86-dcdc33dc2a2d",
+	messageHash.put("6d9ef23a-1fd9-44e9-9ce2-7a7ed1014f45",
 			String.valueOf(aoA));
-	messageHash.put("ceff2e16-674b-4ad5-a26a-20a010f7d6cf",
+	messageHash.put("2d677e0f-794a-48e3-8751-2ab521d37571",
 			String.valueOf(lat));
-	messageHash.put("3ba9aa03-264a-4571-ad7a-d1f0f91c22c5",
+	messageHash.put("9897e7b4-8bcf-4022-aa20-f037f3859f91",
 			String.valueOf(lon));
-	messageHash.put("e9afe92e-d46b-4f6f-b793-e5213d3aef28", "{"
+	messageHash.put("5d2b15b6-7587-4055-abeb-2de246125ef4", "{"
 			+ String.valueOf(lat) + "}" + "[" + String.valueOf(lon)
 			+ "]");
 

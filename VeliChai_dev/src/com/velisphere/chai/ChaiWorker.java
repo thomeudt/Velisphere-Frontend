@@ -22,13 +22,11 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.ConsumerCancelledException;
-import com.rabbitmq.client.QueueingConsumer;
-import com.rabbitmq.client.ShutdownSignalException;
+import com.velisphere.chai.broker.BrokerConnection;
+import com.velisphere.chai.engines.BusinessLogicEngine;
+import com.velisphere.chai.messageUtils.AMQPUnpack;
 
 public class ChaiWorker {
 

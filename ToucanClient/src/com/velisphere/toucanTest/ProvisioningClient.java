@@ -49,13 +49,13 @@ public class ProvisioningClient {
 		
 		
 			
-			WebTarget target = client.target( "http://16.1.1.82:80/Toucan/rest/provisioning/put" );
+			WebTarget target = client.target( "http://localhost:8080/Toucan/rest/provisioning/put" );
 
 			//Response response = target.path( "endpoint" ).path( sb.toString() ).request().put( Entity.text("f67528e4-80f7-4832-a5fd-3082bd4e7385") );
 			
 			String identifier = "P3D"; 
 			
-			Response response = target.path( "endpoint" ).path( identifier).request().put( Entity.text("5ba0942f-cb4b-47df-ae2b-e7af377eaddb") );
+			Response response = target.path( "endpoint" ).path( identifier).request().put( Entity.text("e122adff-8890-47fa-802e-eba26710d26d") );
 			System.out.println("Search for identifier: " + identifier);	
 		
 			System.out.println (response);

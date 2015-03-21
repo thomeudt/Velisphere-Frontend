@@ -26,5 +26,5 @@ import com.velisphere.tigerspice.shared.ActionData;
 public interface AMQPServiceAsync {
 
 	void sendGetAllProperties(String endpointID, AsyncCallback<String> callback);
-	
+	void sendIsAliveRequest(String endpointID, AsyncCallback<String> callback);
 }

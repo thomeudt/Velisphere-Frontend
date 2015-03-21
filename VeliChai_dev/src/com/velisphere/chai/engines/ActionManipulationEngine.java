@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.chai;
+package com.velisphere.chai.engines;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -29,6 +29,7 @@ import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
+import com.velisphere.chai.broker.Send;
 import com.velisphere.chai.dataObjects.ActionObject;
 
 public class ActionManipulationEngine {
