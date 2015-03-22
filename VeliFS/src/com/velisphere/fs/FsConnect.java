@@ -6,6 +6,14 @@ import java.util.HashMap;
 
 
 
+
+
+
+
+
+import com.velisphere.fs.actors.Flaps;
+import com.velisphere.fs.actors.Gear;
+import com.velisphere.fs.actors.SimFunctions;
 import com.velisphere.fs.sdk.CTLInitiator;
 import com.velisphere.fs.sdk.Server;
 import com.velisphere.fs.sdk.ServerParameters;
@@ -13,6 +21,7 @@ import com.velisphere.fs.sdk.ServerParameters;
 import flightsim.simconnect.SimConnect;
 import flightsim.simconnect.SimConnectDataType;
 import flightsim.simconnect.SimObjectType;
+import flightsim.simconnect.config.ConfigurationNotFoundException;
 import flightsim.simconnect.data.LatLonAlt;
 import flightsim.simconnect.recv.DispatcherTask;
 import flightsim.simconnect.recv.EventHandler;
@@ -27,7 +36,7 @@ public class FsConnect {
 	static DispatcherTask dispatcherTask;
 	static SimConnect simConnect;
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException  {
 		// TODO Auto-generated method stub
 
 		final int dataDefID = 1;
@@ -47,6 +56,16 @@ public class FsConnect {
 
 		// Start SimConnect
 
+		Gear.down();
+		Flaps.full();
+		try {
+			SimFunctions.pause();
+		} catch (ConfigurationNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
 		simConnect = new SimConnect("AIList");
 
 		simConnect.addToDataDefinition(dataDefID, "STRUCT LATLONALT", null,
@@ -69,11 +88,38 @@ public class FsConnect {
 				SimConnectDataType.FLOAT32);
 		simConnect.addToDataDefinition(dataDefID, "PLANE LONGITUDE", null,
 				SimConnectDataType.FLOAT32);
-
+		simConnect.addToDataDefinition(dataDefID, "FLAPS HANDLE INDEX", null,
+				SimConnectDataType.INT32);
+		simConnect.addToDataDefinition(dataDefID, "SPOILERS LEFT POSITION", null,
+				SimConnectDataType.INT32);
+		simConnect.addToDataDefinition(dataDefID, "SPOILERS ARMED", null,
+				SimConnectDataType.INT32);
+		simConnect.addToDataDefinition(dataDefID, "AMBIENT WIND VELOCITY", null,
+				SimConnectDataType.INT32);
+		simConnect.addToDataDefinition(dataDefID, "AMBIENT WIND DIRECTION", null,
+				SimConnectDataType.INT32);
+		simConnect.addToDataDefinition(dataDefID, "PLANE PITCH DEGREES", null,
+				SimConnectDataType.FLOAT32);
+		simConnect.addToDataDefinition(dataDefID, "PLANE BANK DEGREES", null,
+				SimConnectDataType.FLOAT32);
+		simConnect.addToDataDefinition(dataDefID, "SIM ON GROUND", null,
+				SimConnectDataType.INT32);
+		simConnect.addToDataDefinition(dataDefID, "NAV GLIDE SLOPE ERROR:index", null,
+				SimConnectDataType.INT32);
+		simConnect.addToDataDefinition(dataDefID, "GPS ETE", null,
+				SimConnectDataType.INT32);
+		simConnect.addToDataDefinition(dataDefID, "TOTAL AIR TEMPERATURE", null,
+				SimConnectDataType.INT32);
+		simConnect.addToDataDefinition(dataDefID, "TOTAL WEIGHT", null,
+				SimConnectDataType.INT32);
+		simConnect.addToDataDefinition(dataDefID, "AUTO BRAKE SWITCH CB", null,
+				SimConnectDataType.INT32);
+		
+		
 		// get warned every 4 seconds when in sim mode
 		
 		simConnect.subscribeToSystemEvent(fourSeceventID, "4sec");
-		
+				
 		dispatcherTask = new DispatcherTask(simConnect);
 
 		//	just for esthetic purposes

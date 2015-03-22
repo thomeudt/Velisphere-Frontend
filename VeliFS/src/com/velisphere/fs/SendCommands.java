@@ -2,6 +2,8 @@ package com.velisphere.fs;
 
 import java.util.HashMap;
 
+import sensors.Constants;
+
 import com.velisphere.fs.sdk.Server;
 import com.velisphere.fs.sdk.ServerParameters;
 
@@ -25,7 +27,21 @@ public class SendCommands {
 	Float aoA = (float) (e.getDataFloat32() * 57.2957795);
 	Float lat = (float) ((e.getDataFloat32() * 180) / Math.PI);
 	Float lon = (float) ((e.getDataFloat32() * 180) / Math.PI);
-
+	Integer flap = e.getDataInt32();
+	Integer spoiler = e.getDataInt32();
+	Integer spoilerArmed = e.getDataInt32();
+	Integer windSpeed = e.getDataInt32();
+	Integer windDirect = e.getDataInt32();
+	Float pitch = (float) (e.getDataFloat32() * 57.2957795);
+	Float bank = (float) (e.getDataFloat32() * 57.2957795);
+	Integer onGround = e.getDataInt32();
+	Integer glideslopeError = e.getDataInt32();
+	Integer gpsETE = e.getDataInt32();
+	Integer temperatureTAT = e.getDataInt32();
+	Integer totalWeight = e.getDataInt32();
+	Integer autoBrake = e.getDataInt32();
+	
+	
 	// print to users
 	System.out.println("Plane id#" + e.getObjectID() + " no "
 			+ e.getEntryNumber() + "/" + e.getOutOf());
@@ -38,6 +54,7 @@ public class SendCommands {
 	System.out.println("\tAoA: " + aoA.toString());
 	System.out.println("\tLatitude: " + lat.toString());
 	System.out.println("\tLogitude: " + lon.toString());
+	
 	// line separator
 	if (e.getEntryNumber() == e.getOutOf())
 		System.out.println();
@@ -48,28 +65,55 @@ public class SendCommands {
 
 	// messageHash.put("4dbfba15-7297-4349-b152-b32ca81b2bd4",
 	// position.toString());
-	messageHash.put("1000a75c-ca98-479c-bbf1-3b00d71f99c5",
+	messageHash.put(Constants.altitude,
 			String.valueOf(altitude));
-	messageHash.put("aa89dd01-29ea-4bad-9bd3-0b2a2fa394ed",
+	messageHash.put(Constants.atcType,
 			String.valueOf(atcType));
-	messageHash.put("15dcc770-674a-4e02-90ca-2417625180bb",
+	messageHash.put(Constants.atcID,
 			String.valueOf(atcID));
-	messageHash.put("247771e7-65e5-4fe5-9ac5-3efb21d0ae1d",
+	messageHash.put(Constants.groundspeed,
 			String.valueOf(groundspeed));
-	messageHash.put("5c651829-20d9-4f21-a096-e1cba9fd349a",
+	messageHash.put(Constants.stall,
 			String.valueOf(stall));
-	messageHash.put("7f714d19-ff38-45df-9ef3-47ce772f87b6",
+	messageHash.put(Constants.overspeed,
 			String.valueOf(overspeed));
-	messageHash.put("6d9ef23a-1fd9-44e9-9ce2-7a7ed1014f45",
+	messageHash.put(Constants.overspeed,
 			String.valueOf(aoA));
-	messageHash.put("2d677e0f-794a-48e3-8751-2ab521d37571",
+	messageHash.put(Constants.lat,
 			String.valueOf(lat));
-	messageHash.put("9897e7b4-8bcf-4022-aa20-f037f3859f91",
+	messageHash.put(Constants.lon,
 			String.valueOf(lon));
-	messageHash.put("5d2b15b6-7587-4055-abeb-2de246125ef4", "{"
+	messageHash.put(Constants.pos, "{"
 			+ String.valueOf(lat) + "}" + "[" + String.valueOf(lon)
 			+ "]");
-
+	messageHash.put(Constants.flap,
+			String.valueOf(flap));
+	messageHash.put(Constants.spoiler,
+			String.valueOf(spoiler));
+	messageHash.put(Constants.spoilerArmed,
+			String.valueOf(spoilerArmed));
+	messageHash.put(Constants.windSpeed,
+			String.valueOf(windSpeed));
+	messageHash.put(Constants.windDirect,
+			String.valueOf(windDirect));
+	messageHash.put(Constants.pitch,
+			String.valueOf(pitch));
+	messageHash.put(Constants.bank,
+			String.valueOf(bank));
+	messageHash.put(Constants.onGround,
+			String.valueOf(onGround));
+	messageHash.put(Constants.glideslopeError,
+			String.valueOf(glideslopeError));
+	messageHash.put(Constants.gpsETE,
+			String.valueOf(gpsETE));
+	messageHash.put(Constants.temperatureTAT,
+			String.valueOf(temperatureTAT));
+	messageHash.put(Constants.totalWeight,
+			String.valueOf(totalWeight));
+	messageHash.put(Constants.autoBrake,
+			String.valueOf(autoBrake));
+	
+	
 	System.out.println("Message Hash Sent to Controller: "
 			+ messageHash);
 
