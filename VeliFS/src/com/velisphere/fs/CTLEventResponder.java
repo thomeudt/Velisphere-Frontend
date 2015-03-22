@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.velisphere.fs.sdk.CTLListener;
 import com.velisphere.fs.sdk.Server;
+import com.velisphere.fs.sdk.ServerParameters;
 
 public class CTLEventResponder implements CTLListener {
    
@@ -14,10 +15,10 @@ public class CTLEventResponder implements CTLListener {
 		System.out.println("IsAlive Requested...");
 		
 		HashMap<String, String> messageHash = new HashMap<String, String>();
-		messageHash.put("STATE", "REACHABLE");
+		messageHash.put("setState", "REACHABLE");
 		
 		try {
-			Server.sendHashTable(messageHash, "controller");
+			Server.sendHashTable(messageHash, ServerParameters.my_queue_name, "CTL");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

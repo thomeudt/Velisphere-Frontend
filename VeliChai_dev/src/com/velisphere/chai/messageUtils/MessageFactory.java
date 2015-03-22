@@ -34,7 +34,7 @@ import com.velisphere.chai.ChaiWorker;
  */
 
 
-public class MessagePack {
+public class MessageFactory {
 
 	public static String extractProperty(String jsonInput, String propertyID) throws JsonProcessingException, IOException 
 	{
@@ -56,7 +56,7 @@ public class MessagePack {
 		return foundValue;  
 	}
 
-	public static HashMap<String, String> extractKeyPropertyPair(String jsonInput) throws JsonProcessingException, IOException 
+	public static HashMap<String, String> extractKeyPropertyPairs(String jsonInput) throws JsonProcessingException, IOException 
 	{
 
 		JsonParser jp = ChaiWorker.factory.createParser(jsonInput);

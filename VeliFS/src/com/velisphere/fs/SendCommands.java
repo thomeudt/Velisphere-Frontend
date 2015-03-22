@@ -3,6 +3,7 @@ package com.velisphere.fs;
 import java.util.HashMap;
 
 import com.velisphere.fs.sdk.Server;
+import com.velisphere.fs.sdk.ServerParameters;
 
 import flightsim.simconnect.SimConnect;
 import flightsim.simconnect.data.LatLonAlt;
@@ -73,7 +74,7 @@ public class SendCommands {
 			+ messageHash);
 
 	try {
-		Server.sendHashTable(messageHash, "controller");
+		Server.sendHashTable(messageHash, ServerParameters.my_queue_name, "REG");
 	} catch (Exception e1) {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();

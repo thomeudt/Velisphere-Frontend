@@ -91,16 +91,13 @@ public class AMQPUnpack implements Runnable {
 
 
 					ExecutorService inspector = Executors.newFixedThreadPool(ServerParameters.threadpoolSize/4); // create thread pool for message inspection
-					String messagetype;
-					messagetype = MessagePack.extractProperty(message, "TYPE");
-					if(messagetype.equals("REG")) {
-						Thread inspectionThread;
-						inspectionThread = new Thread(new MessageInspect(message), "inspector");
-						inspector.execute(inspectionThread);
-						//BusinessLogicEngine.writeLog("null", message, ServerParameters.controllerQueueName, "null");
-						channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+					
+					Thread inspectionThread;
+					inspectionThread = new Thread(new MessageInspector(message), "inspector");
+					inspector.execute(inspectionThread);
+					//BusinessLogicEngine.writeLog("null", message, ServerParameters.controllerQueueName, "null");
+					channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
 					 
-					}
 					inspector.shutdown(); // close thread pool for message inspection
 					} catch (Exception e) {
 				// TODO Auto-generated catch block

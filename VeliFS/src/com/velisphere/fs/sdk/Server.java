@@ -125,7 +125,7 @@ public class Server implements Runnable {
 	}
 
 	public static void sendHashTable(HashMap<String, String> message,
-			String queue_name) throws Exception {
+			String queue_name, String type) throws Exception {
 
 		ConnectionFactory connectionFactory = new ConnectionFactory();
 		connectionFactory.setHost(ServerParameters.bunny_ip);
@@ -150,7 +150,7 @@ public class Server implements Runnable {
 				.replyTo(ServerParameters.my_queue_name).deliveryMode(2)
 				.build();
 
-		message.put("TYPE", "REG");
+		message.put("TYPE", type);
 		java.util.Date date = new java.util.Date();
 		Timestamp timeStamp = new Timestamp(date.getTime());
 		message.put("TIMESTAMP", timeStamp.toString());
