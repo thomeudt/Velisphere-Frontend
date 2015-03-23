@@ -5,12 +5,15 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -24,6 +27,7 @@ import com.velisphere.toucan.ConfigHandler;
 import com.velisphere.toucan.amqp.VoltConnector;
 import com.velisphere.toucan.dataObjects.EndpointData;
 import com.velisphere.toucan.dataObjects.SphereData;
+import com.velisphere.toucan.security.HashTool;
 import com.velisphere.toucan.volt.PasswordChecker;
 import com.velisphere.toucan.volt.UserData;
 import com.velisphere.toucan.xmlRootElements.Endpoints;
@@ -43,12 +47,14 @@ public class Users {
 			String password ) 
 					throws Exception {
 
-	PasswordChecker checker = new PasswordChecker();
-	
-	UserData user = checker.loginServer(username, password);
-	
+		PasswordChecker checker = new PasswordChecker();
+		UserData user = checker.loginServer(username, password);
+						
+		System.out.println(" [IN] User ID " + user.userID + " validated for User Name: " + username);
 		
-	System.out.println("User ID " + user.userID + " validated for User Name: " + username);
+		
+		
+		System.out.println(" [IN] User ID " + user.userID + " hashed to: " + HashTool.hmacSha1(user.userID, "thorsten"));
 		
 	return Response.ok(user.userID).build();
 	//return Response.noContent().build();
@@ -120,6 +126,8 @@ public class Users {
 	@Path("/get/user/endpoints/{param}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Endpoints getEndpointsForUser(@PathParam("param") String userID) {
+		
+
 		
 		// AMQP handling from here
 
