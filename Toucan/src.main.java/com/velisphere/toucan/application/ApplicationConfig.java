@@ -31,9 +31,10 @@ public class ApplicationConfig extends Application {
         //resources.add(JacksonJaxbJsonProvider.class);
         
         //instead let's do it manually:
-        //resources.add(com.nabisoft.tutorials.jerseyjackson.jaxrs.provider.MyJacksonJsonProvider.class);
-        //resources.add(com.nabisoft.tutorials.jerseyjackson.jaxrs.resource.MessageResource.class);
-        //resources.add(com.nabisoft.tutorials.jerseyjackson.jaxrs.resource.PersonResource.class);
+        resources.add(com.velisphere.toucan.providers.MyJacksonJsonProvider.class);
+        resources.add(com.velisphere.toucan.webservices.Authenticator.class);
+        resources.add(com.velisphere.toucan.webservices.Messages.class);
+        resources.add(com.velisphere.toucan.webservices.Provisioning.class);
         //==> we could also choose packages, see below getProperties()
         
         System.out.println("REST configuration ended successfully.");

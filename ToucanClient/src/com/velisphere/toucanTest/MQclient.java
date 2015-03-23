@@ -27,7 +27,7 @@ public class MQclient {
 		Client client = ClientBuilder.newClient();
 
 		
-		WebTarget target = client.target( "http://16.1.1.82/ToucanServer/rest/messages/put/" );
+		WebTarget target = client.target( "http://localhost:8080/ToucanServer/rest/messages/put/" );
 
 		Response response = target.path( "text" ).path( "chris" ).request().put( Entity.text("Hey Chris") );
 		
