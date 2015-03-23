@@ -20,21 +20,24 @@ public class UniversalTest {
 		// get user name
 		
 		String userid = "b9816c0a-1c2c-42da-9bc7-d9dfc51baafc";
-		WebTarget target = client.target( "http://localhost:8080/ToucanServer/rest/authentication/get" );
+		WebTarget target = client.target( "http://localhost:8080/ToucanServer/rest/users/get" );
 		Response response = target.path( "user" ).path("name").path(userid).request().get();
 		System.out.println ("Reponse from server: " + response);
 		System.out.println ("Returned user id: " + response.readEntity(String.class));
 		
 		// get endpoints json
-
 		
-		
-		target = client.target( "http://localhost:8080/ToucanServer/rest/authentication/get" );
+		target = client.target( "http://localhost:8080/ToucanServer/rest/users/get" );
 		response = target.path( "user" ).path("endpoints").path(userid).request().get();
 		System.out.println ("Reponse from server: " + response);
 		System.out.println ("Returned json: " + response.readEntity(String.class));
-		
 
+		// get spheres json
+		
+		target = client.target( "http://localhost:8080/ToucanServer/rest/users/get" );
+		response = target.path( "user" ).path("spheres").path(userid).request().get();
+		System.out.println ("Reponse from server: " + response);
+		System.out.println ("Returned json: " + response.readEntity(String.class));
 		
 	}
 }

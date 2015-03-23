@@ -2,11 +2,8 @@ package com.velisphere.toucan.webservices;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.sql.Timestamp;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -14,41 +11,34 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.voltdb.VoltTable;
+import org.voltdb.VoltType;
+import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.ConsumerCancelledException;
-import com.rabbitmq.client.GetResponse;
-import com.rabbitmq.client.QueueingConsumer;
-import com.rabbitmq.client.ShutdownSignalException;
 import com.velisphere.toucan.ConfigHandler;
-import com.velisphere.toucan.amqp.ServerParameters;
 import com.velisphere.toucan.amqp.VoltConnector;
 import com.velisphere.toucan.dataObjects.EndpointData;
+import com.velisphere.toucan.dataObjects.SphereData;
 import com.velisphere.toucan.volt.PasswordChecker;
 import com.velisphere.toucan.volt.UserData;
 import com.velisphere.toucan.xmlRootElements.Endpoints;
-import com.velisphere.toucan.xmlRootElements.Todo;
+import com.velisphere.toucan.xmlRootElements.Spheres;
 
 
 
-@Path("/authentication")
-public class Authenticator {
+@Path("/users")
+public class Users {
 
 	
 	@PUT
 	@Path( "/put/user/{username}" )
 	@Consumes( MediaType.TEXT_PLAIN )
-	public Response postPlainTextMessage( 
+	public Response authenticateUser( 
 			@PathParam( "username" ) String username,
 			String password ) 
 					throws Exception {
@@ -177,7 +167,7 @@ public class Authenticator {
 						.getTimestampAsTimestamp("ENDPOINTPROVDATE")
 						.toString();
 				endpoints.add(endpointData);
-				endpointNames.add(endpointData.endpointName);
+				
 			}
 			
 		} catch (NoConnectionsException e1) {
@@ -199,10 +189,75 @@ public class Authenticator {
 		}
 
 		System.out.println(" [IN] Result from Get Endpoints: " + Arrays.toString(endpoints.toArray()));
-		//endpointsForUser.setEndpointData(endpoints);
-		endpointsForUser.setEndpointNames(endpointNames);
+		endpointsForUser.setEndpointData(endpoints);
+		//endpointsForUser.setEndpointNames(endpointNames);
 		
 		return endpointsForUser;
+	}
+	
+	@GET
+	@Path("/get/user/spheres/{param}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Spheres getSpheresForUser(@PathParam("param") String userID) {
+		
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		LinkedList<SphereData> allSpheres = new LinkedList<SphereData>();
+		try {
+
+			final ClientResponse findAllSpheres = voltCon.montanaClient
+					.callProcedure("UI_SelectSpheresForUser", userID);
+
+			final VoltTable findAllSpheresResults[] = findAllSpheres.getResults();
+
+			VoltTable result = findAllSpheresResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					SphereData sphereData = new SphereData();
+					sphereData.sphereId = result.getString("SPHEREID");
+					sphereData.sphereName = result.getString("SPHERENAME");
+					
+					
+					Byte b;
+					b = (Byte) result.get("PUBLIC", VoltType.TINYINT);
+					sphereData.sphereIsPublic = b.intValue();
+					
+					allSpheres.add(sphereData);
+
+				}
+			}
+
+			
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Spheres spheres = new Spheres();
+		spheres.setEndpointData(allSpheres);
+
+		return spheres;
 	}
 
 	

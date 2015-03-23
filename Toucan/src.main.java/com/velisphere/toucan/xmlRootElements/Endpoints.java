@@ -7,18 +7,7 @@ import com.velisphere.toucan.dataObjects.EndpointData;
 
 @XmlRootElement
 public class Endpoints {
-
-	private LinkedList<String> endpointNames;
-
-	public LinkedList<String> getEndpointNames() {
-		return endpointNames;
-	}
-
-	public void setEndpointNames(LinkedList<String> endpointNames) {
-		this.endpointNames = endpointNames;
-	}
 	
-	/*
 	private LinkedList<EndpointData> endpointData;
 
 	public LinkedList<EndpointData> getEndpointData() {
@@ -28,6 +17,6 @@ public class Endpoints {
 	public void setEndpointData(LinkedList<EndpointData> endpointData) {
 		this.endpointData = endpointData;
 	}
-	*/
-		  
+	
+	  
 }
