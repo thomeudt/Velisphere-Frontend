@@ -28,7 +28,7 @@ public class SendCommands {
 	Float lat = (float) ((e.getDataFloat32() * 180) / Math.PI);
 	Float lon = (float) ((e.getDataFloat32() * 180) / Math.PI);
 	Integer flap = e.getDataInt32();
-	Integer spoiler = e.getDataInt32();
+	Float spoiler = (float) (e.getDataInt32() / 16000 * 100);
 	Integer spoilerArmed = e.getDataInt32();
 	Integer windSpeed = e.getDataInt32();
 	Integer windDirect = e.getDataInt32();
@@ -37,7 +37,7 @@ public class SendCommands {
 	Integer onGround = e.getDataInt32();
 	Integer glideslopeError = e.getDataInt32();
 	Integer gpsETE = e.getDataInt32();
-	Integer temperatureTAT = e.getDataInt32();
+	Float temperatureTAT = e.getDataFloat32();
 	Integer totalWeight = e.getDataInt32();
 	Integer autoBrake = e.getDataInt32();
 	
@@ -104,8 +104,16 @@ public class SendCommands {
 			String.valueOf(onGround));
 	messageHash.put(Constants.glideslopeError,
 			String.valueOf(glideslopeError));
+	
+	int seconds = gpsETE; 
+	int hr = seconds/3600;
+	int rem = seconds%3600;
+	int mn = rem/60;
+	String hrStr = (hr<10 ? "0" : "")+hr;
+	String mnStr = (mn<10 ? "0" : "")+mn;
+	
 	messageHash.put(Constants.gpsETE,
-			String.valueOf(gpsETE));
+			hrStr+mnStr);
 	messageHash.put(Constants.temperatureTAT,
 			String.valueOf(temperatureTAT));
 	messageHash.put(Constants.totalWeight,

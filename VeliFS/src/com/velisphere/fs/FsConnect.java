@@ -56,14 +56,8 @@ public class FsConnect {
 
 		// Start SimConnect
 
-		Gear.down();
-		Flaps.full();
-		try {
-			SimFunctions.pause();
-		} catch (ConfigurationNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		//Gear.down();
+		//Flaps.full();
 		
 		
 		simConnect = new SimConnect("AIList");
@@ -109,7 +103,7 @@ public class FsConnect {
 		simConnect.addToDataDefinition(dataDefID, "GPS ETE", null,
 				SimConnectDataType.INT32);
 		simConnect.addToDataDefinition(dataDefID, "TOTAL AIR TEMPERATURE", null,
-				SimConnectDataType.INT32);
+				SimConnectDataType.FLOAT32);
 		simConnect.addToDataDefinition(dataDefID, "TOTAL WEIGHT", null,
 				SimConnectDataType.INT32);
 		simConnect.addToDataDefinition(dataDefID, "AUTO BRAKE SWITCH CB", null,

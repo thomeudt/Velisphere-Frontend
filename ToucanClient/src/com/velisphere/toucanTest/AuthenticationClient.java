@@ -20,7 +20,7 @@ public class AuthenticationClient {
 		String username = "a";
 		String password = "a";
 			
-			WebTarget target = client.target( "http://16.1.1.82/Toucan/rest/authentication/put" );
+			WebTarget target = client.target( "http://16.1.1.82/ToucanServer/rest/authentication/put" );
 
 			//Response response = target.path( "endpoint" ).path( sb.toString() ).request().put( Entity.text("f67528e4-80f7-4832-a5fd-3082bd4e7385") );
 			
