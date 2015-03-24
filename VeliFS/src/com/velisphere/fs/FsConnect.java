@@ -65,7 +65,7 @@ public class FsConnect {
 
 		// Start Server
 
-		Server.startServer("10100729-eb58-45e0-b02e-df01bb904f2f", initiator);
+		Server.startServer(ConfigData.epid, initiator);
 
 		// Start SimConnect
 
@@ -136,7 +136,7 @@ public class FsConnect {
 			public void handleOpen(SimConnect sender, RecvOpen e) {
 				// TODO Auto-generated method stub
 
-				System.out.println("Connected to " + e.getApplicationName());
+				System.out.println(" [IN] Connected to " + e.getApplicationName());
 
 			}
 		});

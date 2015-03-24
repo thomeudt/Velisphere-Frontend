@@ -2,7 +2,7 @@ package sensors;
 
 public class Constants {
 	
-	public static final String altitude = "42ab9dda-0ec4-4878-9e05-64e66f96a39b";
+	public static final String altitude = "797b592d-cad9-4090-846d-04b95c5afcef";
 	public static final String atcType = "bd27014a-d3b6-46a8-bf08-c73244ddff38";
 	public static final String atcID = "a50b6da3-3b03-49ce-927b-4089d9199448";
 	public static final String groundspeed = "97b6bb16-f344-4598-8d5f-e956910e9719";

@@ -34,7 +34,7 @@ import com.velisphere.chai.ChaiWorker;
  */
 
 
-public class MessageFactory {
+public class MessageFabrik {
 
 	public static String extractProperty(String jsonInput, String propertyID) throws JsonProcessingException, IOException 
 	{
@@ -96,6 +96,27 @@ public class MessageFactory {
 	
 	}
 
+	public static String[] parseOuterJSON(String messageBody) throws IOException
+	{
+	
+		System.out.println("Parsing " + messageBody);
+		JsonParser jp = ChaiWorker.factory.createParser(messageBody);
+		
+		String[] hMACandPayload = new String[2];
+		
+		while (jp.nextToken() != JsonToken.END_OBJECT) {
+
+			
+			hMACandPayload[0] = jp.getCurrentName();
+			hMACandPayload[1] = jp.getText();
+		}
+
+		jp.close();		 
+		
+
+		return hMACandPayload;  
+
+	}
 
 
 }

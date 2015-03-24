@@ -61,7 +61,7 @@ public class ProvisioningClient {
 			
 			String identifier = "P3D"; 
 			
-			Response response = target.path( "endpoint" ).path( identifier).request().put( Entity.text("b3a15b10-791c-4e58-9e2f-27bb4d1bc354") );
+			Response response = target.path( "endpoint" ).path( identifier).request().put( Entity.text("f1276b27-664b-4e5c-85b8-7049efea3da4") );
 			System.out.println("Search for identifier: " + identifier);	
 		
 			System.out.println (response);

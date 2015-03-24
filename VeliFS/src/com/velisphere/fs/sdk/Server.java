@@ -30,6 +30,8 @@ import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 import com.rabbitmq.client.AMQP.BasicProperties;
+import com.velisphere.fs.sdk.config.ConfigData;
+import com.velisphere.fs.sdk.security.HashTool;
 
 
 public class Server implements Runnable {
@@ -155,14 +157,24 @@ public class Server implements Runnable {
 		Timestamp timeStamp = new Timestamp(date.getTime());
 		message.put("TIMESTAMP", timeStamp.toString());
 		message.put("EPID", ServerParameters.my_queue_name);
+		
+		MessageFabrik innerMessageFactory = new MessageFabrik(message);
+		String messagePackJSON = innerMessageFactory.getJsonString();
+		
+		String hMAC = HashTool.getHmacSha1(messagePackJSON, ConfigData.secret);
 
-		MessageFabrik messageFactory = new MessageFabrik(message);
-		String messagePackText = messageFactory.getJsonString();
-
-		System.out.println(messagePackText);
+		HashMap<String, String> submittableMessage = new HashMap<String, String>();
+		
+		submittableMessage.put(hMAC, messagePackJSON);
+		
+		MessageFabrik outerMessageFactory = new MessageFabrik(submittableMessage);
+		String submittableJSON = outerMessageFactory.getJsonString();
+		
+		System.out.println("HMAC:" + hMAC);
+		System.out.println("Submittable:" + submittableJSON);
 
 		channel.basicPublish("", "controller", props,
-				messagePackText.getBytes());
+				submittableJSON.getBytes());
 
 		// System.out.println(" [x] Sent '" + messagePackText + "'");
 
@@ -180,7 +192,7 @@ public class Server implements Runnable {
 		 */
 
 		System.out.println();
-		System.out.println("    * *    VeliSphere SDK Server v0.1 (vanilla)");
+		System.out.println("    * *    VeliSphere SDK Server v0.2a (vanilla)");
 		System.out
 				.println("    * * *  Copyright (C) 2015 Thorsten Meudt/Connected Things Lab. All rights reserved.");
 		System.out.println("**   *    ");
