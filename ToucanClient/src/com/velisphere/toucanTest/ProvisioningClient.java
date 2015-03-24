@@ -20,6 +20,12 @@ import javax.ws.rs.core.UriBuilder;
 import org.glassfish.jersey.client.*;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.velisphere.toucanTest.config.ConfigFileAccess;
+import com.velisphere.toucanTest.config.SecretData;
+
 
 
 
@@ -55,12 +61,31 @@ public class ProvisioningClient {
 			
 			String identifier = "P3D"; 
 			
-			Response response = target.path( "endpoint" ).path( identifier).request().put( Entity.text("e122adff-8890-47fa-802e-eba26710d26d") );
+			Response response = target.path( "endpoint" ).path( identifier).request().put( Entity.text("b3a15b10-791c-4e58-9e2f-27bb4d1bc354") );
 			System.out.println("Search for identifier: " + identifier);	
 		
 			System.out.println (response);
-			System.out.println (response.readEntity(String.class));
+			String jsonInput = response.readEntity(String.class);
+			System.out.println (jsonInput);
 			
+			ObjectMapper mapper = new ObjectMapper();
+
+			SecretData secretData = new SecretData();
+			try {
+				secretData = mapper.readValue(jsonInput, SecretData.class);			
+			} catch (JsonParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			ConfigFileAccess.saveParamChangesAsXML(secretData.getSecret(), secretData.getEpid());
 
 
 		} catch (UnknownHostException e) {

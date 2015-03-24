@@ -589,18 +589,8 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			String endpointclassID, String userID)
 
 	{
-
-		/*
-		 * TODO: ADD ERROR HANDLING VERIFY IF DUPLICATE ENTRY!!!!!!!!!!
-		 */
-
-		// first add to VoltDB
-
-		String errorTracker = new String("OK");
-
 		VoltConnector voltCon = new VoltConnector();
-		String linkID = UUID.randomUUID().toString();
-
+		
 		try {
 			voltCon.openDatabase();
 		} catch (UnknownHostException e1) {
@@ -610,11 +600,65 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+	
+		// lookup secret
+		
+		String secret = "";
+		
+		ClientResponse findEndpoint;
+		try {
+			findEndpoint = voltCon.montanaClient
+					.callProcedure("SEC_SelectSecretForUEPID",
+							endpointID);
+			
+			final VoltTable findEndpointResults[] = findEndpoint
+					.getResults();
+
+			VoltTable result = findEndpointResults[0];
+			// check if any rows have been returned
+
+			
+			
+			while (result.advanceRow()) 
+				{
+					// extract the value in column checkid
+
+					secret = result
+							.getString("SECRET");
+
+				}
+
+		} catch (NoConnectionsException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (ProcCallException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+
+				
+		
+		
+		/*
+		 * TODO: ADD ERROR HANDLING VERIFY IF DUPLICATE ENTRY!!!!!!!!!!
+		 */
+
+		// first add to VoltDB
+
+		String errorTracker = new String("OK");
+
+		
+		String linkID = UUID.randomUUID().toString();
+
+	
 
 		try {
 
 			voltCon.montanaClient.callProcedure("ENDPOINT.insert", endpointID,
-					endpointName, endpointclassID, new TimestampType(), "UNKNOWN");
+					endpointName, endpointclassID, new TimestampType(), "UNKNOWN", secret);
 			voltCon.montanaClient.callProcedure("ENDPOINT_USER_LINK.insert",
 					linkID, endpointID, userID);
 		} catch (NoConnectionsException e1) {

@@ -11,12 +11,18 @@ import java.util.HashMap;
 
 
 
+
+
+
+
 import com.velisphere.fs.actors.Flaps;
 import com.velisphere.fs.actors.Gear;
 import com.velisphere.fs.actors.SimFunctions;
 import com.velisphere.fs.sdk.CTLInitiator;
 import com.velisphere.fs.sdk.Server;
 import com.velisphere.fs.sdk.ServerParameters;
+import com.velisphere.fs.sdk.config.ConfigData;
+import com.velisphere.fs.sdk.config.ConfigFileAccess;
 
 import flightsim.simconnect.SimConnect;
 import flightsim.simconnect.SimConnectDataType;
@@ -43,6 +49,13 @@ public class FsConnect {
 		final int requestID = 1;
 		final int fourSeceventID = 1;
 
+		// load config data
+		
+		ConfigFileAccess.loadParamChangesAsXML();
+		
+		System.out.println(" [IN] Endpoint ID: " + ConfigData.epid);
+		System.out.println(" [IN] Secret: " + ConfigData.secret);
+		
 		// Activate Event Responders
 
 		CTLEventResponder eventResponder = new CTLEventResponder();

@@ -54,7 +54,7 @@ public class Users {
 		
 		
 		
-		System.out.println(" [IN] User ID " + user.userID + " hashed to: " + HashTool.hmacSha1(user.userID, "thorsten"));
+		System.out.println(" [IN] User ID " + user.userID + " hashed to: " + HashTool.getHmacSha1(user.userID, "thorsten"));
 		
 	return Response.ok(user.userID).build();
 	//return Response.noContent().build();

@@ -1,13 +1,18 @@
 package com.velisphere.toucan.security;
 
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.KeyGenerator;
 import javax.crypto.Mac;
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 
 public class HashTool {
 	
-	public static String hmacSha1(String value, String key) {
+	public static String getHmacSha1(String value, String key) {
         try {
             // Get an hmac_sha1 key from the raw key bytes
             byte[] keyBytes = key.getBytes();           
@@ -30,4 +35,21 @@ public class HashTool {
         }
     }
 
+	
+	public static String generateKey()
+	{
+		 
+		try {
+			KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA1");
+			SecretKey key = keyGen.generateKey();
+			return Base64.encodeBase64String(key.getEncoded());
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	   
+	}
+	
+	
 }
