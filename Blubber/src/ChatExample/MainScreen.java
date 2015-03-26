@@ -1,3 +1,4 @@
+package ChatExample;
 /*******************************************************************************
  * CONFIDENTIAL INFORMATION
  *  __________________
@@ -15,6 +16,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -46,6 +48,11 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
+
+import com.velisphere.fs.CTLEventResponder;
+import com.velisphere.fs.sdk.CTLInitiator;
+import com.velisphere.fs.sdk.Server;
+import com.velisphere.fs.sdk.ServerParameters;
 
 
 public class MainScreen {
@@ -146,7 +153,7 @@ public class MainScreen {
 					messageHash.put("PR6", txtSendToQueue.getText());
 					messageHash.put("PR7", "["+ ServerParameters.my_queue_name + "]" + txtMessageToSend.getText());
 					messageHash.put("PR8", "1");
-		        	Send.sendHashTable(messageHash, "controller");
+		        	Server.sendHashTable(messageHash, ServerParameters.my_queue_name, "REG");
 					
 					txtMessageToSend.setText("");
 				} catch (Exception e) {
@@ -192,8 +199,12 @@ public class MainScreen {
 			
 				try {
 					ServerParameters.my_queue_name = txtMyQueue.getText();
-					t = new Thread(new Recv(), "listener");
-					t.start();
+					EventResponder eventResponder = new EventResponder();
+					EventInitiator initiator = new EventInitiator();
+					initiator.addListener(eventResponder);
+					
+					ChatServer.startServer(ServerParameters.my_queue_name, initiator);
+								
 					btnSendMessage.setEnabled(true);
 					// Connect user queue to blubber.all fanout exchange for broadcasts.
 					// QueueMgmt.bindQueueFanout(ServerParameters.my_queue_name, "blubber.all");
@@ -208,7 +219,7 @@ public class MainScreen {
 		JButton btnLogOff = new JButton("Log off");
 		btnLogOff.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				t.interrupt();
+
 				btnSendMessage.setEnabled(false);	
 			}
 		});
@@ -227,12 +238,9 @@ public class MainScreen {
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				try {
-					QueueMgmt.deleteQueue(ServerParameters.my_queue_name);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				
+					// fix later to delete Queue
+				
 				System.exit(0);
 			
 			}

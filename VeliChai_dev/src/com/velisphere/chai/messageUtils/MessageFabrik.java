@@ -76,8 +76,7 @@ public class MessageFabrik {
 	public static String buildMessagePack(Object object)
 	{
 	
-		// unused
-		
+				
 		ObjectMapper mapper = new ObjectMapper();
 		StringWriter writer = new StringWriter();
 		try {

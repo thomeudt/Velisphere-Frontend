@@ -30,6 +30,10 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.velisphere.chai.ServerParameters;
+import com.velisphere.chai.messageUtils.MessageFabrik;
+import com.velisphere.chai.messageUtils.MessageValidator;
+import com.velisphere.chai.security.HashTool;
+
 
 public class Send {
 
@@ -59,24 +63,31 @@ public class Send {
 		channel.queueDeclare(senderQueueName, false, false, false, null);
 
 
-		ObjectMapper mapper = new ObjectMapper();
-		StringWriter writer = new StringWriter();
 		HashMap<String, String> messageMap = new HashMap<String, String>();
 		messageMap.put("SECTOK", null);
 		messageMap.put("TIMESTAMP", null);
 		messageMap.put("TYPE", "REG");
 		messageMap.put("EPID", senderQueueName);
 		messageMap.putAll(message);
+	
+				
+		String messagePackJSON = MessageFabrik.buildMessagePack(messageMap);
+		
+		String hMAC = HashTool.getHmacSha1(messagePackJSON, MessageValidator.getSecretFromMontana(targetQueueName));
 
+		HashMap<String, String> submittableMessage = new HashMap<String, String>();
 		
-		mapper.writeValue(writer, messageMap);
+		submittableMessage.put(hMAC, messagePackJSON);
+				
+		String submittableJSON = MessageFabrik.buildMessagePack(submittableMessage);
 		
-		//System.out.println("Target: " + targetQueueName);
+		System.out.println("HMAC:" + hMAC);
+		System.out.println("Submittable:" + submittableJSON);
+		System.out.println("Target Queue:" + targetQueueName);
+		
 
 		channel.basicPublish("", targetQueueName, null,
-				writer.toString().getBytes());
-
-		//System.out.println(" [x] Sent '" + writer.toString() + "' from " + senderQueueName + " to " + targetQueueName);
+				submittableJSON.getBytes());
 
 		channel.close();
 		

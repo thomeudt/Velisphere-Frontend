@@ -17,6 +17,8 @@
  ******************************************************************************/
 import java.io.IOException;
 
+import ChatExample.MainScreen;
+
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
@@ -25,7 +27,7 @@ import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 
 
-public class Recv implements Runnable {
+public class RecvOld implements Runnable {
 
 	
 	

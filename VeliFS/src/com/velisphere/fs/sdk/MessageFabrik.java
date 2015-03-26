@@ -30,6 +30,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
 /*
  * This class contains all methods needed to extract values from a MessagePack or to build a new MessagePack
  */
@@ -90,6 +91,30 @@ public class MessageFabrik {
 	}
 
 		
+	public static String[] parseOuterJSON(String messageBody) throws IOException
+	{
+	
+		System.out.println("Parsing " + messageBody);
+		ObjectMapper mapper = new ObjectMapper();
+		JsonFactory factory = mapper.getFactory();
+		JsonParser jp = factory.createParser(messageBody);
+		
+		
+		String[] hMACandPayload = new String[2];
+		
+		while (jp.nextToken() != JsonToken.END_OBJECT) {
+
+			
+			hMACandPayload[0] = jp.getCurrentName();
+			hMACandPayload[1] = jp.getText();
+		}
+
+		jp.close();		 
+		
+
+		return hMACandPayload;  
+
+	}
 	
 
 

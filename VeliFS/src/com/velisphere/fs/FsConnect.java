@@ -49,12 +49,6 @@ public class FsConnect {
 		final int requestID = 1;
 		final int fourSeceventID = 1;
 
-		// load config data
-		
-		ConfigFileAccess.loadParamChangesAsXML();
-		
-		System.out.println(" [IN] Endpoint ID: " + ConfigData.epid);
-		System.out.println(" [IN] Secret: " + ConfigData.secret);
 		
 		// Activate Event Responders
 

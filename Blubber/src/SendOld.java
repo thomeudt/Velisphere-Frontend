@@ -27,7 +27,7 @@ import java.util.Map;
 
 import org.json.simple.JSONObject;
 
-public class Send {
+public class SendOld {
 
 	public static void main(String message, String queue_name) throws Exception {
 

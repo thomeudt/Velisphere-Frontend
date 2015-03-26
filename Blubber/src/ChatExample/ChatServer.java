@@ -1,48 +1,37 @@
-package com.velisphere.fs.sdk;
+package ChatExample;
 
-/*******************************************************************************
- * CONFIDENTIAL INFORMATION
- *  __________________
- *  
- *   Copyright (C) 2013 Thorsten Meudt 
- *   All Rights Reserved.
- *  
- *  NOTICE:  All information contained herein is, and remains
- *  the property of Thorsten Meudt and its suppliers,
- *  if any.  The intellectual and technical concepts contained
- *  herein are proprietary to Thorsten Meudt
- *  and its suppliers and may be covered by Patents,
- *  patents in process, and are protected by trade secret or copyright law.
- *  Dissemination of this information or reproduction of this material
- *  is strictly forbidden unless prior written permission is obtained
- *  from Thorsten Meudt.
- ******************************************************************************/
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Connection;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 import com.rabbitmq.client.AMQP.BasicProperties;
+import com.velisphere.fs.sdk.MessageFabrik;
+import com.velisphere.fs.sdk.ServerParameters;
 import com.velisphere.fs.sdk.config.ConfigData;
 import com.velisphere.fs.sdk.config.ConfigFileAccess;
 import com.velisphere.fs.sdk.security.HashTool;
+import com.velisphere.fs.sdk.security.MessageValidator;
 
-
-public class Server implements Runnable {
+public class ChatServer implements Runnable {
 
 	private static Thread t;
-	private CTLInitiator ctlInitiator;
-	
-	public Server(CTLInitiator ctlInitiator){
-		this.ctlInitiator = ctlInitiator;
-		
+	private EventInitiator eventInitiator;
+
+	public ChatServer(EventInitiator eventInitiator) {
+		this.eventInitiator = eventInitiator;
+
 	}
 
 	public void run() {
@@ -51,9 +40,6 @@ public class Server implements Runnable {
 
 		try {
 
-			
-		
-			
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setHost(ServerParameters.bunny_ip);
 			factory.setUsername("dummy");
@@ -61,9 +47,9 @@ public class Server implements Runnable {
 			factory.setVirtualHost("hClients");
 			factory.setPort(5671);
 			factory.useSslProtocol();
-			
+
 			Connection connection = null;
-			
+
 			try {
 				connection = factory.newConnection();
 
@@ -71,12 +57,11 @@ public class Server implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
+
 			Channel channel = connection.createChannel();
 
 			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-			
+
 			System.out.println(" [IN] Server Startup Completed.");
 			System.out
 					.println(" [IN] Waiting for messages. To exit press CTRL+C");
@@ -84,29 +69,62 @@ public class Server implements Runnable {
 			QueueingConsumer consumer = new QueueingConsumer(channel);
 			channel.basicConsume(QUEUE_NAME, true, consumer);
 
-			
-			
 			while (!Thread.currentThread().isInterrupted()) {
 				QueueingConsumer.Delivery delivery = consumer.nextDelivery();
-				String message = new String(delivery.getBody());
-				System.out.println(" [x] Received '" + message + "'");
+				String messageBody = new String(delivery.getBody());
 
-			
+				System.out.println(" [IN] Message JSON:" + messageBody);
+
+				String[] hMACandPayload = new String[2];
+				boolean validationResult = false;
+
+				// parse outer JSON
+
+				try {
+					hMACandPayload = MessageFabrik.parseOuterJSON(messageBody);
+
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				validationResult = MessageValidator.validateHmac(
+						hMACandPayload[0], hMACandPayload[1], ConfigData.epid);
+
+				if (validationResult) {
+					String msgGetAllProperties = MessageFabrik.extractProperty(
+							hMACandPayload[1], "getAllProperties");
+
+					if (msgGetAllProperties.equals("1"))
+						eventInitiator.requestAllProperties();
+
+					String msgIsAliveRequest = MessageFabrik.extractProperty(
+							hMACandPayload[1], "getIsAlive");
+
+					if (msgIsAliveRequest.equals("1"))
+						eventInitiator.requestIsAlive();
+
+					String displayMessage = MessageFabrik.extractProperty(
+							hMACandPayload[1], "PR9");
+
+					System.out
+							.println(" [IN] Got new inbound message. Content: "
+									+ displayMessage);
+
+					eventInitiator.newInboundMessage(displayMessage);
+
+				}
 				
-				String msgGetAllProperties = MessageFabrik.extractProperty(message,
-							"getAllProperties");
-				
-				if (msgGetAllProperties.equals("1")) ctlInitiator.requestAllProperties();
-				
-				String msgIsAliveRequest = MessageFabrik.extractProperty(message,
-						"getIsAlive");
-			
-				if (msgIsAliveRequest.equals("1")) ctlInitiator.requestIsAlive();;
-				
+				else
+				{
+					System.out.println(" [IN] Message rejected - HMAC not matching. Possibly an attempted security breach.");
 					
+					//TODO write notification of security breach into database
+				}
+				
+
 			}
-			
-			
+
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 			System.out.println(" [ER] Server has shut down. Reason: "
@@ -158,19 +176,20 @@ public class Server implements Runnable {
 		Timestamp timeStamp = new Timestamp(date.getTime());
 		message.put("TIMESTAMP", timeStamp.toString());
 		message.put("EPID", ServerParameters.my_queue_name);
-		
+
 		MessageFabrik innerMessageFactory = new MessageFabrik(message);
 		String messagePackJSON = innerMessageFactory.getJsonString();
-		
+
 		String hMAC = HashTool.getHmacSha1(messagePackJSON, ConfigData.secret);
 
 		HashMap<String, String> submittableMessage = new HashMap<String, String>();
-		
+
 		submittableMessage.put(hMAC, messagePackJSON);
-		
-		MessageFabrik outerMessageFactory = new MessageFabrik(submittableMessage);
+
+		MessageFabrik outerMessageFactory = new MessageFabrik(
+				submittableMessage);
 		String submittableJSON = outerMessageFactory.getJsonString();
-		
+
 		System.out.println("HMAC:" + hMAC);
 		System.out.println("Submittable:" + submittableJSON);
 
@@ -183,7 +202,8 @@ public class Server implements Runnable {
 		connection.close();
 	}
 
-	public static void startServer(String endpointID, CTLInitiator ctlInitiator) {
+	public static void startServer(String endpointID,
+			EventInitiator eventInitiator) {
 
 		// set queue name for (rabbitMQ)
 		ServerParameters.my_queue_name = endpointID;
@@ -193,7 +213,8 @@ public class Server implements Runnable {
 		 */
 
 		System.out.println();
-		System.out.println("    * *    VeliSphere SDK Server v0.2a / AMQP (vanilla)");
+		System.out
+				.println("    * *    VeliSphere SDK Server v0.2a / AMQP (vanilla)");
 		System.out
 				.println("    * * *  Copyright (C) 2015 Thorsten Meudt/Connected Things Lab. All rights reserved.");
 		System.out.println("**   *    ");
@@ -203,16 +224,15 @@ public class Server implements Runnable {
 		System.out.println();
 		System.out.println();
 		System.out.println(" [IN] Starting server...");
-		
+
 		// load config data
-		
+
 		ConfigFileAccess.loadParamChangesAsXML();
-				
+
 		System.out.println(" [IN] Endpoint ID: " + ConfigData.epid);
 		System.out.println(" [IN] Secret: " + ConfigData.secret);
-				
 
-		t = new Thread(new Server(ctlInitiator), "listener");
+		t = new Thread(new ChatServer(eventInitiator), "listener");
 		t.start();
 
 	}

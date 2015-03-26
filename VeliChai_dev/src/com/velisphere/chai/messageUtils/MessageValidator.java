@@ -49,9 +49,35 @@ public class MessageValidator {
 		if (calculatedHmac.equals(receivedHMAC)) validationOK = true;
 		
 		return validationOK;
-	
-		
-	
 
 	}
+	
+	
+	public static String getSecretFromMontana(String endpointID) throws NoConnectionsException, IOException, ProcCallException
+	{
+		
+
+		String secret = null;
+		ClientResponse findSecret = BusinessLogicEngine.montanaClient
+				.callProcedure("SEC_SelectSecretForEndpointID", endpointID);
+
+		final VoltTable findSecretResults[] = findSecret.getResults();
+
+		VoltTable result = findSecretResults[0];
+
+		while (result.advanceRow()) {
+				
+				secret = result
+						.getString("SECRET");
+				
+		}
+
+		System.out.println("Secret in DB: " + secret );
+		
+				
+		return secret;
+	
+	}
+
+	
 }
