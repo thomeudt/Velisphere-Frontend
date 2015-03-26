@@ -193,7 +193,7 @@ public class Server implements Runnable {
 		 */
 
 		System.out.println();
-		System.out.println("    * *    VeliSphere SDK Server v0.2a / AMQP (vanilla)");
+		System.out.println("    * *    VeliSphere SDK Server v0.2.2 / AMQP (vanilla)");
 		System.out
 				.println("    * * *  Copyright (C) 2015 Thorsten Meudt/Connected Things Lab. All rights reserved.");
 		System.out.println("**   *    ");

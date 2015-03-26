@@ -18,6 +18,10 @@
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import ChatExample.ChatServer;
+import ChatExample.EventInitiator;
+import ChatExample.EventResponder;
+
 
 public class stresstest {
 
@@ -25,6 +29,14 @@ public class stresstest {
 
 		ServerParameters.my_queue_name = "E1";
 		//ServerParameters.my_queue_name = "EX1";
+
+		
+		EventResponder eventResponder = new EventResponder();
+		EventInitiator initiator = new EventInitiator();
+		initiator.addListener(eventResponder);
+		
+		ChatServer.startServer(ServerParameters.my_queue_name, initiator);
+		
 		
 		int numworkers = 32;
 		
