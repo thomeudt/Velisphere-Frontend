@@ -32,9 +32,9 @@ public class PreLoadNeu {
 	        System.out.println("Spheres loaded");
 	        
 	        
-	        preLoader.callProcedure("USER.insert", "1000", "thmeu", "thorsten@thorsten-meudt.de", "asa", "PAYPERUSE");
-	        preLoader.callProcedure("USER.insert", "1001", "utmeu", "ute_lechner@yahoo.de", "asa", "PAYPERUSE");
-	        preLoader.callProcedure("USER.insert", "1002", "lcmeu", "charlotte@thorsten-meudt.de", "asa", "PAYPERUSE");
+	        preLoader.callProcedure("USER.insert", "1000", "thmeu", "thorsten@thorsten-meudt.de", "asa", "PAYPERUSE", "LEER");
+	        preLoader.callProcedure("USER.insert", "1001", "utmeu", "ute_lechner@yahoo.de", "asa", "PAYPERUSE", "LEER");
+	        preLoader.callProcedure("USER.insert", "1002", "lcmeu", "charlotte@thorsten-meudt.de", "asa", "PAYPERUSE", "LEER");
 	        
 	        System.out.println("Users loaded");
 	        

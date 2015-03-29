@@ -55,7 +55,8 @@ public class PasswordChecker {
 				    	
 				    	if (pwValid == true)
 				    		{
-				    			user.userID = result.getString("USERID");
+				    			user.setUserID(result.getString("USERID"));
+				    			user.setApiKey(result.getString("APIKEY"));
 				    		} 
 					}
 				}

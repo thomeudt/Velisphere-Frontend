@@ -1,8 +1,10 @@
 package com.velisphere.toucan.webservices;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +25,7 @@ import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.velisphere.toucan.ConfigHandler;
 import com.velisphere.toucan.amqp.VoltConnector;
 import com.velisphere.toucan.dataObjects.EndpointData;
@@ -51,15 +54,24 @@ public class Users {
 		UserData user = checker.loginServer(username, password);
 						
 		System.out.println(" [IN] User ID " + user.userID + " validated for User Name: " + username);
-		
-		
-		
 		System.out.println(" [IN] User ID " + user.userID + " hashed to: " + HashTool.getHmacSha1(user.userID, "thorsten"));
 		
-	return Response.ok(user.userID).build();
+		HashMap<String, String> userIdApiKey = new HashMap<String, String>();
+		
+		userIdApiKey.put(user.getUserID(), user.getApiKey());
+		
+		// creating JSON
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+        StringWriter userJson = new StringWriter();
+        objectMapper.writeValue(userJson, userIdApiKey);
+		
+		
+	return Response.ok(userJson.toString()).build();
 	//return Response.noContent().build();
 
 	}
+
 	
 	@GET
 	@Path("/get/user/name/{param}")

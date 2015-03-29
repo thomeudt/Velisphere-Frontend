@@ -30,6 +30,7 @@ public class UserData
 	public String userName;
 	public String userPassword;
 	public String sessionID;
+	public String apiKey;
 	public Boolean loggedIn = false;
 	
 	
@@ -68,6 +69,24 @@ public class UserData
 		
 		this.loggedIn = loggedInStatus;
 	}
+	
+	public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
+	
+	public String getUserID() {
+		return userID;
+	}
+
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
+
+
 
 	
 }

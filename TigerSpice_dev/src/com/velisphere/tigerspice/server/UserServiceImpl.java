@@ -140,6 +140,11 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 			response = "OK";
 			System.out.println("[IN] Captcha OK");
 
+			// create random API Key
+			
+			String apiKey = UUID.randomUUID().toString();
+			
+			
 			// first add to VoltDB
 
 			VoltConnector voltCon = new VoltConnector();
@@ -158,7 +163,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 			try {
 				String pwHash = BCrypt.hashpw(password, BCrypt.gensalt());
 				voltCon.montanaClient.callProcedure("USER.insert", userID,
-						userName, eMail, pwHash, "PAYPERUSE");
+						userName, eMail, pwHash, "PAYPERUSE", apiKey);
 			} catch (NoConnectionsException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
