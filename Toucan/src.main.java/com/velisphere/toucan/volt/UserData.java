@@ -25,51 +25,16 @@ import java.util.UUID;
 
 public class UserData
 {
-	public String userID;
-	public String userEmail;
+	public String userID;	
 	public String userName;
-	public String userPassword;
-	public String sessionID;
 	public String apiKey;
-	public Boolean loggedIn = false;
 	
 	
 	
-	public String getEmail(){
-		return userEmail;
-	}
 	
-	public String getName(){
-		return userName;
-	}
 	
-	public String getId(){
-		return userID;
-	}
 	
-	public void setUserPwHash(String password){
-		this.userPassword = password;
-	}
-
-	public String getSessionId() {
-		return sessionID;
-	}
-
-	public void setSessionId(String sID) {
-		this.sessionID = sID;		
-	}
-
-	
-	public boolean getLoggedIn() {
-	
-		return loggedIn;
-	}
-
-	public void setLoggedIn(Boolean loggedInStatus) {
 		
-		this.loggedIn = loggedInStatus;
-	}
-	
 	public String getApiKey() {
 		return apiKey;
 	}
@@ -86,6 +51,13 @@ public class UserData
 		this.userID = userID;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
 
 	

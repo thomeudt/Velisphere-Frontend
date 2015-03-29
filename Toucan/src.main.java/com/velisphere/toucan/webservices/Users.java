@@ -43,7 +43,7 @@ public class Users {
 
 	
 	@PUT
-	@Path( "/put/user/{username}" )
+	@Path( "/put/authrequest/{username}" )
 	@Consumes( MediaType.TEXT_PLAIN )
 	public Response authenticateUser( 
 			@PathParam( "username" ) String username,
@@ -56,15 +56,13 @@ public class Users {
 		System.out.println(" [IN] User ID " + user.userID + " validated for User Name: " + username);
 		System.out.println(" [IN] User ID " + user.userID + " hashed to: " + HashTool.getHmacSha1(user.userID, "thorsten"));
 		
-		HashMap<String, String> userIdApiKey = new HashMap<String, String>();
 		
-		userIdApiKey.put(user.getUserID(), user.getApiKey());
 		
 		// creating JSON
 		
 		ObjectMapper objectMapper = new ObjectMapper();
         StringWriter userJson = new StringWriter();
-        objectMapper.writeValue(userJson, userIdApiKey);
+        objectMapper.writeValue(userJson, user);
 		
 		
 	return Response.ok(userJson.toString()).build();

@@ -26,7 +26,7 @@ public class AuthenticationClient {
 			
 			
 			
-			Response response = target.path( "user" ).path(username).request().put( Entity.text(password) );
+			Response response = target.path( "authrequest" ).path(username).request().put( Entity.text(password) );
 			System.out.println("User tried to log in: " + username);	
 		
 			System.out.println ("Reponse from server: " + response);
