@@ -19,25 +19,37 @@ public class UniversalTest {
 
 		// get user name
 		
-		String userid = "b9816c0a-1c2c-42da-9bc7-d9dfc51baafc";
-		WebTarget target = client.target( "http://localhost:8080/ToucanServer/rest/users/get" );
-		Response response = target.path( "user" ).path("name").path(userid).request().get();
+		String userid = "3f82b42b-7d77-4e97-8e92-becdc1bf797d";
+		String endpointID = "E1";
+				
+				
+		WebTarget target = client.target( "http://localhost:8080/ToucanServer/rest/user/get" );
+		Response response = target.path("name").path(userid).request().get();
 		System.out.println ("Reponse from server: " + response);
 		System.out.println ("Returned user id: " + response.readEntity(String.class));
 		
 		// get endpoints json
 		
-		target = client.target( "http://localhost:8080/ToucanServer/rest/users/get" );
-		response = target.path( "user" ).path("endpoints").path(userid).request().get();
+		target = client.target( "http://localhost:8080/ToucanServer/rest/user/get" );
+		response = target.path("endpoints").path(userid).request().get();
 		System.out.println ("Reponse from server: " + response);
 		System.out.println ("Returned json: " + response.readEntity(String.class));
 
 		// get spheres json
 		
-		target = client.target( "http://localhost:8080/ToucanServer/rest/users/get" );
-		response = target.path( "user" ).path("spheres").path(userid).request().get();
+		target = client.target( "http://localhost:8080/ToucanServer/rest/user/get" );
+		response = target.path("spheres").path(userid).request().get();
 		System.out.println ("Reponse from server: " + response);
 		System.out.println ("Returned json: " + response.readEntity(String.class));
+		
+		// get single endpoint json
+		
+		target = client.target( "http://localhost:8080/ToucanServer/rest/endpoint/get" );
+		response = target.path("general").path(endpointID).request().get();
+		System.out.println ("Reponse from server: " + response);
+		System.out.println ("Returned json: " + response.readEntity(String.class));
+				
+		
 		
 	}
 }

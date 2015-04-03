@@ -7,16 +7,16 @@ import com.velisphere.toucan.dataObjects.EndpointData;
 import com.velisphere.toucan.dataObjects.SphereData;
 
 @XmlRootElement
-public class Spheres {
+public class SphereElements {
 
 
 	private LinkedList<SphereData> sphereData;
 
-	public LinkedList<SphereData> getEndpointData() {
+	public LinkedList<SphereData> getSphereData() {
 		return sphereData;
 	}
 
-	public void setEndpointData(LinkedList<SphereData> sphereData) {
+	public void setSphereData(LinkedList<SphereData> sphereData) {
 		this.sphereData = sphereData;
 	}
 	

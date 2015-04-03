@@ -28,8 +28,8 @@ import com.velisphere.toucan.amqp.ServerParameters;
 import com.velisphere.toucan.xmlRootElements.Todo;
 
 
-@Path("/messages")
-public class Messages {
+@Path("/message")
+public class Message {
 
 	@GET
 	@Path("/get/xml/{param}")
@@ -167,7 +167,7 @@ public class Messages {
 	public Response postPlainTextMessage( @PathParam( "content" ) String user, String message ) throws Exception {
 
 	
-	System.out.printf( "%s sendet ‘%s’%n", user, message );
+	System.out.printf( "%s sendet ï¿½%sï¿½%n", user, message );
 	HashMap<String,String>outboundMessageMap = new HashMap<String, String>();
 	outboundMessageMap.put("A", message);
 	String targetEPID = new String("EX");

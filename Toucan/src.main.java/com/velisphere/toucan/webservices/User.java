@@ -33,13 +33,13 @@ import com.velisphere.toucan.dataObjects.SphereData;
 import com.velisphere.toucan.security.HashTool;
 import com.velisphere.toucan.volt.PasswordChecker;
 import com.velisphere.toucan.volt.UserData;
-import com.velisphere.toucan.xmlRootElements.Endpoints;
-import com.velisphere.toucan.xmlRootElements.Spheres;
+import com.velisphere.toucan.xmlRootElements.EndpointElements;
+import com.velisphere.toucan.xmlRootElements.SphereElements;
 
 
 
-@Path("/users")
-public class Users {
+@Path("/user")
+public class User {
 
 	
 	@PUT
@@ -72,7 +72,7 @@ public class Users {
 
 	
 	@GET
-	@Path("/get/user/name/{param}")
+	@Path("/get/name/{param}")
 	@Produces({ MediaType.TEXT_PLAIN })
 	public String getUserName(@PathParam("param") String userID) {
 		
@@ -133,9 +133,9 @@ public class Users {
 	}
 	
 	@GET
-	@Path("/get/user/endpoints/{param}")
+	@Path("/get/endpoints/{param}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Endpoints getEndpointsForUser(@PathParam("param") String userID) {
+	public EndpointElements getEndpointsForUser(@PathParam("param") String userID) {
 		
 
 		
@@ -146,7 +146,7 @@ public class Users {
 		
 		System.out.println(" [IN] Get Endpoints Called");
 
-		Endpoints endpointsForUser = new Endpoints();
+		EndpointElements endpointsForUser = new EndpointElements();
 		
 		LinkedList<EndpointData> endpoints = new LinkedList<EndpointData>();
 		LinkedList<String> endpointNames = new LinkedList<String>();
@@ -214,9 +214,9 @@ public class Users {
 	}
 	
 	@GET
-	@Path("/get/user/spheres/{param}")
+	@Path("/get/spheres/{param}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Spheres getSpheresForUser(@PathParam("param") String userID) {
+	public SphereElements getSpheresForUser(@PathParam("param") String userID) {
 		
 		VoltConnector voltCon = new VoltConnector();
 
@@ -272,8 +272,8 @@ public class Users {
 			e.printStackTrace();
 		}
 		
-		Spheres spheres = new Spheres();
-		spheres.setEndpointData(allSpheres);
+		SphereElements spheres = new SphereElements();
+		spheres.setSphereData(allSpheres);
 
 		return spheres;
 	}

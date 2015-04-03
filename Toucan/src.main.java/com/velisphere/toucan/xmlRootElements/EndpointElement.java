@@ -6,15 +6,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.velisphere.toucan.dataObjects.EndpointData;
 
 @XmlRootElement
-public class Endpoints {
+public class EndpointElement {
 	
-	private LinkedList<EndpointData> endpointData;
+	private EndpointData endpointData;
 
-	public LinkedList<EndpointData> getEndpointData() {
+	public EndpointData getEndpointData() {
 		return endpointData;
 	}
 
-	public void setEndpointData(LinkedList<EndpointData> endpointData) {
+	public void setEndpointData(EndpointData endpointData) {
 		this.endpointData = endpointData;
 	}
 	

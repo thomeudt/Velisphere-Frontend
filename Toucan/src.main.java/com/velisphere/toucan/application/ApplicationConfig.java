@@ -32,8 +32,8 @@ public class ApplicationConfig extends Application {
         
         //instead let's do it manually:
         resources.add(com.velisphere.toucan.providers.MyJacksonJsonProvider.class);
-        resources.add(com.velisphere.toucan.webservices.Users.class);
-        resources.add(com.velisphere.toucan.webservices.Messages.class);
+        resources.add(com.velisphere.toucan.webservices.User.class);
+        resources.add(com.velisphere.toucan.webservices.Message.class);
         resources.add(com.velisphere.toucan.webservices.Provisioning.class);
         //==> we could also choose packages, see below getProperties()
         
