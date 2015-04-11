@@ -20,7 +20,11 @@ public class UniversalTest {
 		// get user name
 		
 		String userid = "3f82b42b-7d77-4e97-8e92-becdc1bf797d";
-		String endpointID = "E1";
+		String endpointID = "E3";
+		String endpointClassID = "EPC1";
+		String propertyClassID = "PC1";
+		String vendorID = "65eb271e-d6c3-470a-8d62-6e40b9f930e7";
+		
 				
 				
 		WebTarget target = client.target( "http://localhost:8080/ToucanServer/rest/user/get" );
@@ -48,8 +52,37 @@ public class UniversalTest {
 		response = target.path("general").path(endpointID).request().get();
 		System.out.println ("Reponse from server: " + response);
 		System.out.println ("Returned json: " + response.readEntity(String.class));
-				
 		
+		// get single analytics / last log entry
+		
+		target = client.target( "http://localhost:8080/ToucanServer/rest/analytics/get" );
+		response = target.path("lastendpointlogtime").path(endpointID).request().get();
+		System.out.println ("Reponse from server: " + response);
+		System.out.println ("Returned json: " + response.readEntity(String.class));
+		
+		// get endpoint class details
+		
+		target = client.target( "http://localhost:8080/ToucanServer/rest/endpointclass/get" );
+		response = target.path("general").path(endpointClassID).request().get();
+		System.out.println ("Reponse from server: " + response);
+		System.out.println ("Returned json: " + response.readEntity(String.class));
+				
+		// get property class details
+		
+		target = client.target( "http://localhost:8080/ToucanServer/rest/propertyclass/get" );
+		response = target.path("general").path(propertyClassID).request().get();
+		System.out.println ("Reponse from server: " + response);
+		System.out.println ("Returned json: " + response.readEntity(String.class));
+
+		
+		// get property class details
+
+		target = client.target( "http://localhost:8080/ToucanServer/rest/vendor/get" );
+		response = target.path("general").path(vendorID).request().get();
+		System.out.println ("Reponse from server: " + response);
+		System.out.println ("Returned json: " + response.readEntity(String.class));
+
+
 		
 	}
 }
