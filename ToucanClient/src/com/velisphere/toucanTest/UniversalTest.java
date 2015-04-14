@@ -24,6 +24,7 @@ public class UniversalTest {
 		String endpointClassID = "EPC1";
 		String propertyClassID = "PC1";
 		String vendorID = "65eb271e-d6c3-470a-8d62-6e40b9f930e7";
+		String propertyID = "PR1";
 		
 				
 				
@@ -82,6 +83,12 @@ public class UniversalTest {
 		System.out.println ("Reponse from server: " + response);
 		System.out.println ("Returned json: " + response.readEntity(String.class));
 
+		// get property class details
+
+		target = client.target( "http://localhost:8080/ToucanServer/rest/property/get" );
+		response = target.path("general").path(propertyID).request().get();
+		System.out.println ("Reponse from server: " + response);
+		System.out.println ("Returned json: " + response.readEntity(String.class));
 
 		
 	}

@@ -69,7 +69,7 @@ public class EndpointClass  {
 
 			
 			results = voltCon.montanaClient.callProcedure(
-					"UI_SelectEndpointForEndpointID", endpointClassID).getResults();
+					"UI_SelectEndpointClassForEndpointClassID", endpointClassID).getResults();
 			
 			VoltTable result = results[0];
 			// check if any rows have been returned

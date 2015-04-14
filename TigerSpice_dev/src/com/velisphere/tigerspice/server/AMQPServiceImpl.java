@@ -58,6 +58,46 @@ public class AMQPServiceImpl extends RemoteServiceServlet implements
 		
 		return "OK";
 	}
+	
+	@Override
+	public String sendIsAliveRequest(String endpointID) {
+		// TODO Auto-generated method stub
+		
+		VoltConnector voltCon = new VoltConnector();
+		
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			ClientResponse bleUpdateCheckState = voltCon.montanaClient
+					.callProcedure("SRV_UpdateEndpointState", endpointID, "UNKNOWN");
+		} catch (IOException | ProcCallException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+					
+		HashMap<String, String> messageHash = new HashMap<String, String>();
+		messageHash.put("getIsAlive", "1");
+		
+		try {
+			sendHashTable(messageHash, endpointID);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "OK";
+		
+		
+	}
+
 
 	
 	private void sendHashTable(HashMap<String, String> message,
@@ -101,6 +141,8 @@ public class AMQPServiceImpl extends RemoteServiceServlet implements
 		channel.close();
 		connection.close();
 	}
+	
+	
 
 	
 	private class MessageFabrik {
@@ -164,44 +206,6 @@ public class AMQPServiceImpl extends RemoteServiceServlet implements
 	}
 
 
-	@Override
-	public String sendIsAliveRequest(String endpointID) {
-		// TODO Auto-generated method stub
-		
-		VoltConnector voltCon = new VoltConnector();
-		
-		try {
-			voltCon.openDatabase();
-		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		try {
-			ClientResponse bleUpdateCheckState = voltCon.montanaClient
-					.callProcedure("SRV_UpdateEndpointState", endpointID, "UNKNOWN");
-		} catch (IOException | ProcCallException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-					
-		HashMap<String, String> messageHash = new HashMap<String, String>();
-		messageHash.put("getIsAlive", "1");
-		
-		try {
-			sendHashTable(messageHash, endpointID);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return "OK";
-		
-		
-	}
-
+	
 	
 }

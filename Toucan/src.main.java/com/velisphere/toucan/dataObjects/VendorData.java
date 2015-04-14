@@ -13,27 +13,27 @@ public class VendorData
 		return vendorName;
 	}
 	
-	public String getId(){
+	public String getVendorID(){
 		return vendorID;
 	}
 	
-	public String getPath(){
+	public String getVendorPath(){
 		return vendorPath;
 	}
 	
-	public String getImageURL(){
+	public String getVendorImageURL(){
 		return vendorImageURL;
 	}
 	
-	public void setName(String vendorName){
+	public void setVendorName(String vendorName){
 		this.vendorName = vendorName;
 	}
 	
-	public void setPath(String vendorPath){
+	public void setVendorPath(String vendorPath){
 		this.vendorPath = vendorPath;
 	}
 	
-	public void setImageURL( String vendorImage){
+	public void setVendorImageURL( String vendorImage){
 		this.vendorImageURL = vendorImage;
 	}
 	

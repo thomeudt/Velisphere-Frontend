@@ -10,24 +10,21 @@ public class EndpointClassData
 	public String endpointclassImageURL;
 	public String vendorID;
 		
-	public String getName(){
+	public String getEndpointclassName(){
 		return endpointclassName;
 	}
 	
-	public String getId(){
-		return endpointclassID;
-	}
-
 	
-	public String getVendorId(){
+	
+	public String getVendorID(){
 		return vendorID;
 	}
 
-	public String getPath(){
+	public String getEndpointclassPath(){
 		return endpointclassPath;
 	}
 	
-	public String getImageURL(){
+	public String getEndpointclassImageURL(){
 		return endpointclassImageURL;
 	}
 	
@@ -35,11 +32,11 @@ public class EndpointClassData
 		this.endpointclassName = endpointclassName;
 	}
 	
-	public void setPath(String endpointclassPath){
+	public void setEndpointclassPath(String endpointclassPath){
 		this.endpointclassPath = endpointclassPath;
 	}
 	
-	public void setImageURL( String endpointclassImage){
+	public void setEndpointclassImageURL( String endpointclassImage){
 		this.endpointclassImageURL = endpointclassImage;
 	}
 	

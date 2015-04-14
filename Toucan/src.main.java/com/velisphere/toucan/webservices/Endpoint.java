@@ -1,23 +1,34 @@
 package com.velisphere.toucan.webservices;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.voltdb.VoltTable;
+import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.velisphere.toucan.ConfigHandler;
+import com.velisphere.toucan.amqp.Send;
 import com.velisphere.toucan.amqp.VoltConnector;
 import com.velisphere.toucan.dataObjects.EndpointData;
+import com.velisphere.toucan.security.HashTool;
+import com.velisphere.toucan.volt.PasswordChecker;
+import com.velisphere.toucan.volt.UserData;
 import com.velisphere.toucan.xmlRootElements.EndpointElement;
 import com.velisphere.toucan.xmlRootElements.EndpointElements;
 
@@ -107,6 +118,48 @@ public class Endpoint {
 	
 	
 	
+	@PUT
+	@Path( "/put/isalive/{param}" )
+	@Consumes( MediaType.TEXT_PLAIN )
+	public Response sendIsAlive( 
+			@PathParam( "param" ) String endpointID ) 
+					throws Exception {
+
+		
+	
+	VoltConnector voltCon = new VoltConnector();
+	
+	try {
+		voltCon.openDatabase();
+	} catch (UnknownHostException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	} catch (IOException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+
+	try {
+		ClientResponse bleUpdateCheckState = voltCon.montanaClient
+				.callProcedure("SRV_UpdateEndpointState", endpointID, "UNKNOWN");
+	} catch (IOException | ProcCallException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+				
+	HashMap<String, String> messageHash = new HashMap<String, String>();
+	messageHash.put("getIsAlive", "1");
+	
+	try {
+		Send.sendHashTable(messageHash, endpointID, "controller");
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	 return Response.noContent().build();
+	
+	}
 
 }
 

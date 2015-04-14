@@ -18,6 +18,4 @@ public class EndpointClassElement {
 	public void setEndpointClassData(EndpointClassData endpointClassData) {
 		this.endpointClassData = endpointClassData;
 	}
-	
-	  
 }
