@@ -20,6 +20,6 @@ public class ServerParameters {
 
 	  public final static String bunny_ip = "16.1.1.81";
 	  //public final static String bunny_ip = "ec2-54-213-218-172.us-west-2.compute.amazonaws.com";
-	  public static String my_queue_name = "";
+	  //public static String my_queue_name = "";
 	
 }

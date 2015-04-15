@@ -98,7 +98,7 @@ public class MessageFabrik {
 	public static String[] parseOuterJSON(String messageBody) throws IOException
 	{
 	
-		System.out.println("Parsing " + messageBody);
+		System.out.println("Parsing outer: " + messageBody);
 		JsonParser jp = ChaiWorker.factory.createParser(messageBody);
 		
 		String[] hMACandPayload = new String[2];

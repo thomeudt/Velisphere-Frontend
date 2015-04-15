@@ -21,5 +21,7 @@ public class ServerParameters {
 	public static String bunny_ip = "not set";
 	public static String volt_ip = "16.1.1.84";
 	public static String vertica_ip = "16.1.1.83";
+	public static String my_queue_name = "toucan";
+	public static String rabbit_ip = "16.1.1.81";
 	
 }

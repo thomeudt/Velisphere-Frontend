@@ -87,6 +87,8 @@ public class Endpoint {
 				endpointData.endpointProvDate = result
 						.getTimestampAsTimestamp("ENDPOINTPROVDATE")
 						.toString();
+				endpointData.endpointState = result
+						.getString("ENDPOINTSTATE");
 				endpointForUser.setEndpointData(endpointData);
 				
 			}
@@ -119,10 +121,10 @@ public class Endpoint {
 	
 	
 	@PUT
-	@Path( "/put/isalive/{param}" )
+	@Path( "/put/isalive" )
 	@Consumes( MediaType.TEXT_PLAIN )
 	public Response sendIsAlive( 
-			@PathParam( "param" ) String endpointID ) 
+			String endpointID ) 
 					throws Exception {
 
 		
@@ -151,13 +153,13 @@ public class Endpoint {
 	messageHash.put("getIsAlive", "1");
 	
 	try {
-		Send.sendHashTable(messageHash, endpointID, "controller");
+		Send.sendHashTable(messageHash, endpointID);
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 	
-	 return Response.noContent().build();
+	 return Response.ok().build();
 	
 	}
 

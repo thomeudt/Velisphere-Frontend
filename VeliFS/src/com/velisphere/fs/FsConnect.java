@@ -59,7 +59,7 @@ public class FsConnect {
 
 		// Start Server
 
-		Server.startServer(ConfigData.epid, initiator);
+		Server.startServer(initiator);
 
 		// Start SimConnect
 

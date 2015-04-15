@@ -38,6 +38,7 @@ public class MessageValidator {
 				
 		}
 
+		System.out.println("Endpoint ID: " + endpointID );
 		System.out.println("Secret in DB: " + secret );
 		
 		String calculatedHmac = HashTool.getHmacSha1(payload, secret);

@@ -47,7 +47,7 @@ public class Server implements Runnable {
 
 	public void run() {
 
-		String QUEUE_NAME = ServerParameters.my_queue_name;
+		String QUEUE_NAME = ConfigData.epid;
 
 		try {
 
@@ -150,27 +150,28 @@ public class Server implements Runnable {
 		// implemented reply queue to allow tracing the sender for callback
 
 		BasicProperties props = new BasicProperties.Builder()
-				.replyTo(ServerParameters.my_queue_name).deliveryMode(2)
+				.replyTo(ConfigData.epid).deliveryMode(2)
 				.build();
 
 		message.put("TYPE", type);
 		java.util.Date date = new java.util.Date();
 		Timestamp timeStamp = new Timestamp(date.getTime());
 		message.put("TIMESTAMP", timeStamp.toString());
-		message.put("EPID", ServerParameters.my_queue_name);
-		
+		message.put("EPID", ConfigData.epid);
+
 		MessageFabrik innerMessageFactory = new MessageFabrik(message);
 		String messagePackJSON = innerMessageFactory.getJsonString();
-		
+
 		String hMAC = HashTool.getHmacSha1(messagePackJSON, ConfigData.secret);
 
 		HashMap<String, String> submittableMessage = new HashMap<String, String>();
-		
+
 		submittableMessage.put(hMAC, messagePackJSON);
-		
-		MessageFabrik outerMessageFactory = new MessageFabrik(submittableMessage);
+
+		MessageFabrik outerMessageFactory = new MessageFabrik(
+				submittableMessage);
 		String submittableJSON = outerMessageFactory.getJsonString();
-		
+
 		System.out.println("HMAC:" + hMAC);
 		System.out.println("Submittable:" + submittableJSON);
 
@@ -183,10 +184,8 @@ public class Server implements Runnable {
 		connection.close();
 	}
 
-	public static void startServer(String endpointID, CTLInitiator ctlInitiator) {
+	public static void startServer(CTLInitiator ctlInitiator) {
 
-		// set queue name for (rabbitMQ)
-		ServerParameters.my_queue_name = endpointID;
 
 		/*
 		 * Show startup message

@@ -172,7 +172,7 @@ public class Message {
 	outboundMessageMap.put("A", message);
 	String targetEPID = new String("EX");
 
-	Send.sendHashTable(outboundMessageMap, targetEPID, "test");
+	Send.sendHashTable(outboundMessageMap, targetEPID);
 	return Response.noContent().build();
 
 	}

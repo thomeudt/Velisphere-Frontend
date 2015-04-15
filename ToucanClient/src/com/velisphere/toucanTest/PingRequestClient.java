@@ -11,23 +11,23 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-public class AuthenticationClient {
+public class PingRequestClient {
 	public static void main(String[] args) {
 		InetAddress ip;
 		
 		Client client = ClientBuilder.newClient();
 
-		String username = "a";
-		String password = "a";
+		String endpointID = "E2";
+		
 			
-			WebTarget target = client.target( "http://localhost:8080/ToucanServer/rest/user/put/" );
+			WebTarget target = client.target( "http://localhost:8080/ToucanServer/rest/endpoint/put/" );
 
 			//Response response = target.path( "endpoint" ).path( sb.toString() ).request().put( Entity.text("f67528e4-80f7-4832-a5fd-3082bd4e7385") );
 			
 			
 			
-			Response response = target.path( "authrequest" ).path(username).request().put( Entity.text(password) );
-			System.out.println("User tried to log in: " + username);	
+			Response response = target.path( "isalive" ).request().put( Entity.text(endpointID) );
+			System.out.println("Pinging: " + endpointID);	
 		
 			System.out.println ("Reponse from server: " + response);
 			System.out.println ("Returned user id: " + response.readEntity(String.class));

@@ -19,6 +19,7 @@ package com.velisphere.toucan.amqp;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,46 +44,45 @@ public class Send {
 	
 	
 	public static void sendHashTable(HashMap<String, String> message,
-			String targetQueueName, String senderQueueName) throws Exception {
+			String queue_name) throws Exception {
 
-		ConfigHandler conf = new ConfigHandler();
-		conf.loadParamChangesAsXML();
-		
-		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost(ServerParameters.bunny_ip);
-		factory.setUsername("guest");
-		factory.setPassword("guest");
-		
+		ConnectionFactory connectionFactory = new ConnectionFactory();
+		connectionFactory.setHost(ServerParameters.rabbit_ip);
+		connectionFactory.setUsername("dummy");
+		connectionFactory.setPassword("dummy");
 
-		Connection connection;
-		connection = factory.newConnection();
-
-		
+		connectionFactory.setVirtualHost("hClients");
+		Connection connection = connectionFactory.newConnection();
 		Channel channel = connection.createChannel();
 
-		//String queueName = channel.queueDeclare().getQueue();
-        //channel.queueBind(queueName, "xClients", targetQueueName);
-
-		ObjectMapper mapper = new ObjectMapper();
-		StringWriter writer = new StringWriter();
-		HashMap<String, String> messageMap = new HashMap<String, String>();
-		messageMap.put("SECTOK", null);
-		messageMap.put("TIMESTAMP", null);
-		messageMap.put("TYPE", "REG");
-		messageMap.put("EPID", senderQueueName);
-		messageMap.putAll(message);
+		// System.out.println("QUEUE DEFINED AS....."+queue_name+"...");
+		channel.queueDeclare(ServerParameters.my_queue_name, false, false, false, null);
 		
-		mapper.writeValue(writer, messageMap);
-		
-		//System.out.println("Target: " + targetQueueName);
 
-		channel.basicPublish("xClients", targetQueueName, null,
-				writer.toString().getBytes());
+		// implemented reply queue to allow tracing the sender for callback
 
-		// System.out.println(" [x] Sent '" + writer.toString() + "' from " + senderQueueName + " to " + targetQueueName);
+		BasicProperties props = new BasicProperties.Builder()
+				.replyTo(ServerParameters.my_queue_name).deliveryMode(2)
+				.build();
+
+		message.put("TYPE", "CTL");
+		java.util.Date date = new java.util.Date();
+		Timestamp timeStamp = new Timestamp(date.getTime());
+		message.put("TIMESTAMP", timeStamp.toString());
+		message.put("EPID", ServerParameters.my_queue_name);
+
+		MessageFabrik messageFactory = new MessageFabrik(message);
+		String messagePackText = messageFactory.getJsonString();
+
+		System.out.println(messagePackText);
+
+		channel.basicPublish("", queue_name, props,
+				messagePackText.getBytes());
+
+		// System.out.println(" [x] Sent '" + messagePackText + "'");
 
 		channel.close();
-		
+		connection.close();
 	}
 	
 
