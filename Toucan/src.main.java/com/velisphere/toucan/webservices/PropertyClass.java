@@ -104,6 +104,72 @@ public class PropertyClass {
 		return propertyClassElement;
 	}
 	
+	@GET
+	@Path("/get/unitofmeasure/{param}")
+	@Produces({ MediaType.TEXT_PLAIN })
+	public String getUnitOfMeasure(@PathParam("param") String propertyClassID) {
+		
+
+		ConfigHandler conf = new ConfigHandler();
+		conf.loadParamChangesAsXML();
+		
+		String unitOfMeasure = new String();
+		
+		VoltConnector voltCon = new VoltConnector();
+		
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			
+			VoltTable[] results;
+
+			
+			results = voltCon.montanaClient.callProcedure(
+					"UI_SelectPropertyClassForPropertyClassID", propertyClassID).getResults();
+			
+			VoltTable result = results[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+					// extract the value in column checkid
+				
+				unitOfMeasure = result.getString("PROPERTYCLASSUNIT");
+				
+				
+			}
+			
+		} catch (NoConnectionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProcCallException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		
+		//endpointsForUser.setEndpointNames(endpointNames);
+		
+		return unitOfMeasure;
+	}
 	
 	
 

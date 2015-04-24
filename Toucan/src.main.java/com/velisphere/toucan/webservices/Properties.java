@@ -5,47 +5,45 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.voltdb.VoltTable;
 import org.voltdb.VoltType;
+import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
 import com.velisphere.toucan.ConfigHandler;
 import com.velisphere.toucan.amqp.VoltConnector;
-import com.velisphere.toucan.dataObjects.EndpointClassData;
 import com.velisphere.toucan.dataObjects.EndpointData;
 import com.velisphere.toucan.dataObjects.PropertyData;
-import com.velisphere.toucan.xmlRootElements.EndpointClassElement;
 import com.velisphere.toucan.xmlRootElements.EndpointElement;
 import com.velisphere.toucan.xmlRootElements.EndpointElements;
 import com.velisphere.toucan.xmlRootElements.PropertyElement;
+import com.velisphere.toucan.xmlRootElements.PropertyElements;
 
 
 
-@Path("/property")
-public class Property {
+@Path("/properties")
+public class Properties {
 		
 	@GET
-	@Path("/get/general/{param}")
+	@Path("/get/sensorsforendpoint/{param}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public PropertyElement getPropertyDetails(@PathParam("param") String propertyID) {
+	public PropertyElements getSensorsForEndpoint(@PathParam("param") String endpointID) {
 		
 
 		ConfigHandler conf = new ConfigHandler();
 		conf.loadParamChangesAsXML();
 		
-		System.out.println(" [IN] Get General Called");
+		System.out.println(" [IN] Get All Sensors for Endpoint Called");
 
-		PropertyElement propertyElement = new PropertyElement();
-		
+		PropertyElements propertyElements = new PropertyElements();
+		propertyElements.setPropertyData(new LinkedList<PropertyData>());
 		VoltConnector voltCon = new VoltConnector();
 		
 		try {
@@ -61,10 +59,9 @@ public class Property {
 		try {
 			
 			VoltTable[] results;
-
 			
 			results = voltCon.montanaClient.callProcedure(
-					"UI_SelectPropertyDetailsForPropertyID", propertyID).getResults();
+					"UI_SelectSensePropertiesForEndpoint", endpointID).getResults();
 			
 			VoltTable result = results[0];
 			// check if any rows have been returned
@@ -88,7 +85,7 @@ public class Property {
 				propertyData.status = (byte) result
 						.get("STATUS", VoltType.TINYINT);
 				
-				propertyElement.setPropertyData(propertyData);
+				propertyElements.getPropertyData().add((propertyData));
 				
 				
 			}
@@ -115,23 +112,25 @@ public class Property {
 		
 		//endpointsForUser.setEndpointNames(endpointNames);
 		
-		return propertyElement;
+		return propertyElements;
 	}
-	
 
+	
 	@GET
-	@Path("/get/unitofmeasure/{param}")
-	@Produces({ MediaType.TEXT_PLAIN })
-	public String getUnitOfMeasure(@PathParam("param") String propertyID) {
+	@Path("/get/actorsforendpoint/{param}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public PropertyElements getActorsForEndpoint(@PathParam("param") String endpointID) {
 		
 
 		ConfigHandler conf = new ConfigHandler();
 		conf.loadParamChangesAsXML();
 		
-		String unitOfMeasure = new String();
-		PropertyElement propertyElement = new PropertyElement();
-		
+		System.out.println(" [IN] Get All Actors for Endpoint Called");
+
+		PropertyElements propertyElements = new PropertyElements();
+		propertyElements.setPropertyData(new LinkedList<PropertyData>());
 		VoltConnector voltCon = new VoltConnector();
+		
 		try {
 			voltCon.openDatabase();
 		} catch (UnknownHostException e1) {
@@ -145,10 +144,10 @@ public class Property {
 		try {
 			
 			VoltTable[] results;
-
 			
 			results = voltCon.montanaClient.callProcedure(
-					"UI_SelectPropertyDetailsForPropertyID", propertyID).getResults();
+					"UI_SelectActPropertiesForEndpoint", endpointID).getResults();
+		
 			
 			VoltTable result = results[0];
 			// check if any rows have been returned
@@ -172,58 +171,7 @@ public class Property {
 				propertyData.status = (byte) result
 						.get("STATUS", VoltType.TINYINT);
 				
-				propertyElement.setPropertyData(propertyData);
-				
-				
-			}
-			
-		} catch (NoConnectionsException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ProcCallException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		try {
-			voltCon.closeDatabase();
-		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-
-		System.out.println("PROP CLASS ID "+ propertyElement.getPropertyData().getPropertyclassId());
-		
-		
-		try {
-			voltCon.openDatabase();
-		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		try {
-			
-			VoltTable[] results;
-
-			
-			results = voltCon.montanaClient.callProcedure(
-					"UI_SelectPropertyClassForPropertyClassID", propertyElement.getPropertyData().getPropertyclassId()).getResults();
-			
-			VoltTable result = results[0];
-			// check if any rows have been returned
-
-			while (result.advanceRow()) {
-					// extract the value in column checkid
-				
-				unitOfMeasure = result.getString("PROPERTYCLASSUNIT");
+				propertyElements.getPropertyData().add((propertyData));
 				
 				
 			}
@@ -250,14 +198,10 @@ public class Property {
 		
 		//endpointsForUser.setEndpointNames(endpointNames);
 		
-		return unitOfMeasure;
+		return propertyElements;
 	}
-	
-	
-	
 
 	
-
 }
 
 

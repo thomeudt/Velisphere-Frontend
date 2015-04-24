@@ -15,13 +15,6 @@ public class PropertyData
 	public byte status;
 	
 	
-	public String getId(){
-		return propertyId;
-	}
-	
-	public String getName(){
-		return propertyName;
-	}
 	
 	public String getPropertyName(){
 		return propertyName;
@@ -35,9 +28,6 @@ public class PropertyData
 		return propertyclassId;
 	}
 	
-	public String getEpcId(){
-		return endpointclassId;
-	}
 	
 	public String getEndpointclassId(){
 		return endpointclassId;

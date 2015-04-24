@@ -1,27 +1,271 @@
-function tigerspice_dev(){var U='',R=' top: -1000px;',pb='" for "gwt:onLoadErrorFn"',nb='" for "gwt:onPropertyErrorFn"',$='");',qb='#',zc='.cache.js',sb='/',yb='//',ec='04FE3E074EF43D48942A546D2546DDA1',kc='09B122C9561E98D857AA1F9B4FA6A76E',lc='127D2BA5D9C2FBE1513B9E07FD8409EB',mc='2030202BA681766E8B6700A9311A7157',nc='4AF22A95EC18C60E0E8EE13CC0F68B88',xc='60BBC8A34D3FCD14A10AC93FA9A3754C',yc=':',fc=':1',oc=':10',pc=':11',qc=':12',rc=':13',sc=':14',gc=':2',hc=':3',ic=':4',jc=':5',tc=':6',uc=':7',vc=':8',wc=':9',hb='::',T='<!doctype html>',V='<html><head><\/head><body><\/body><\/html>',kb='=',rb='?',mb='Bad handler "',S='CSS1Compat',Y='Chrome',X='DOMContentLoaded',M='DUMMY',Ub='adobeair',Vb='air',xb='base',vb='baseUrl',H='begin',N='body',G='bootstrap',Ab='chrome',ub='clear.cache.gif',jb='content',Fc='css/bootstrap.min.css',Ic='css/datepicker.css',Jc='css/datetimepicker.css',Hc='css/font-awesome.min.css',Gc='css/gwt-bootstrap.css',Kc='end',Z='eval("',Qb='gecko',Sb='gecko1_8',Tb='gecko1_9',I='gwt.codesvr.tigerspice_dev=',J='gwt.codesvr=',ob='gwt:onLoadErrorFn',lb='gwt:onPropertyErrorFn',ib='gwt:property',zb='gxt.user.agent',db='head',Dc='href',Eb='ie6',Gb='ie7',Ib='ie8',Jb='ie9',O='iframe',tb='img',ab='javascript',P='javascript:""',Ac='link',$b='linux',Ec='loadExternalRefs',Zb='mac',Yb='mac os x',Xb='macintosh',eb='meta',cb='moduleRequested',bb='moduleStartup',Cb='msie',Db='msie 6',Fb='msie 7',Hb='msie 8',fb='name',Bb='opera',Q='position:absolute; width:0; height:0; border:none; left: -1000px;',Bc='rel',Rb='rv:1.8',Kb='safari',Mb='safari3',Ob='safari4',Pb='safari5',_='script',cc='selectingPermutation',L='startup',Cc='stylesheet',K='tigerspice_dev',dc='tigerspice_dev.devmode.js',wb='tigerspice_dev.nocache.js',gb='tigerspice_dev::',W='undefined',bc='unknown',Wb='user.agent.os',Lb='version/3',Nb='version/4',ac='win32',_b='windows';var o=window;var p=document;r(G,H);function q(){var a=o.location.search;return a.indexOf(I)!=-1||a.indexOf(J)!=-1}
-function r(a,b){if(o.__gwtStatsEvent){o.__gwtStatsEvent({moduleName:K,sessionId:o.__gwtStatsSessionId,subSystem:L,evtGroup:a,millis:(new Date).getTime(),type:b})}}
-tigerspice_dev.__sendStats=r;tigerspice_dev.__moduleName=K;tigerspice_dev.__errFn=null;tigerspice_dev.__moduleBase=M;tigerspice_dev.__softPermutationId=0;tigerspice_dev.__computePropValue=null;tigerspice_dev.__getPropMap=null;tigerspice_dev.__gwtInstallCode=function(){};tigerspice_dev.__gwtStartLoadingFragment=function(){return null};var s=function(){return false};var t=function(){return null};__propertyErrorFunction=null;var u=o.__gwt_activeModules=o.__gwt_activeModules||{};u[K]={moduleName:K};var v;function w(){y();return v}
-function x(){y();return v.getElementsByTagName(N)[0]}
-function y(){if(v){return}var a=p.createElement(O);a.src=P;a.id=K;a.style.cssText=Q+R;a.tabIndex=-1;p.body.appendChild(a);v=a.contentDocument;if(!v){v=a.contentWindow.document}v.open();var b=document.compatMode==S?T:U;v.write(b+V);v.close()}
-function z(k){function l(a){function b(){if(typeof p.readyState==W){return typeof p.body!=W&&p.body!=null}return /loaded|complete/.test(p.readyState)}
-var c=b();if(c){a();return}function d(){if(!c){c=true;a();if(p.removeEventListener){p.removeEventListener(X,d,false)}if(e){clearInterval(e)}}}
-if(p.addEventListener){p.addEventListener(X,d,false)}var e=setInterval(function(){if(b()){d()}},50)}
-function m(c){function d(a,b){a.removeChild(b)}
-var e=x();var f=w();var g;if(navigator.userAgent.indexOf(Y)>-1&&window.JSON){var h=f.createDocumentFragment();h.appendChild(f.createTextNode(Z));for(var i=0;i<c.length;i++){var j=window.JSON.stringify(c[i]);h.appendChild(f.createTextNode(j.substring(1,j.length-1)))}h.appendChild(f.createTextNode($));g=f.createElement(_);g.language=ab;g.appendChild(h);e.appendChild(g);d(e,g)}else{for(var i=0;i<c.length;i++){g=f.createElement(_);g.language=ab;g.text=c[i];e.appendChild(g);d(e,g)}}}
-tigerspice_dev.onScriptDownloaded=function(a){l(function(){m(a)})};r(bb,cb);var n=p.createElement(_);n.src=k;p.getElementsByTagName(db)[0].appendChild(n)}
-tigerspice_dev.__startLoadingFragment=function(a){return C(a)};tigerspice_dev.__installRunAsyncCode=function(a){var b=x();var c=w().createElement(_);c.language=ab;c.text=a;b.appendChild(c);b.removeChild(c)};function A(){var c={};var d;var e;var f=p.getElementsByTagName(eb);for(var g=0,h=f.length;g<h;++g){var i=f[g],j=i.getAttribute(fb),k;if(j){j=j.replace(gb,U);if(j.indexOf(hb)>=0){continue}if(j==ib){k=i.getAttribute(jb);if(k){var l,m=k.indexOf(kb);if(m>=0){j=k.substring(0,m);l=k.substring(m+1)}else{j=k;l=U}c[j]=l}}else if(j==lb){k=i.getAttribute(jb);if(k){try{d=eval(k)}catch(a){alert(mb+k+nb)}}}else if(j==ob){k=i.getAttribute(jb);if(k){try{e=eval(k)}catch(a){alert(mb+k+pb)}}}}}t=function(a){var b=c[a];return b==null?null:b};__propertyErrorFunction=d;tigerspice_dev.__errFn=e}
-function B(){function e(a){var b=a.lastIndexOf(qb);if(b==-1){b=a.length}var c=a.indexOf(rb);if(c==-1){c=a.length}var d=a.lastIndexOf(sb,Math.min(c,b));return d>=0?a.substring(0,d+1):U}
-function f(a){if(a.match(/^\w+:\/\//)){}else{var b=p.createElement(tb);b.src=a+ub;a=e(b.src)}return a}
-function g(){var a=t(vb);if(a!=null){return a}return U}
-function h(){var a=p.getElementsByTagName(_);for(var b=0;b<a.length;++b){if(a[b].src.indexOf(wb)!=-1){return e(a[b].src)}}return U}
-function i(){var a=p.getElementsByTagName(xb);if(a.length>0){return a[a.length-1].href}return U}
-function j(){var a=p.location;return a.href==a.protocol+yb+a.host+a.pathname+a.search+a.hash}
-var k=g();if(k==U){k=h()}if(k==U){k=i()}if(k==U&&j()){k=e(p.location.href)}k=f(k);return k}
-function C(a){if(a.match(/^\//)){return a}if(a.match(/^[a-zA-Z]+:\/\//)){return a}return tigerspice_dev.__moduleBase+a}
-function D(){var f=[];var g;function h(a,b){var c=f;for(var d=0,e=a.length-1;d<e;++d){c=c[a[d]]||(c[a[d]]=[])}c[a[e]]=b}
-var i=[];var j=[];function k(a){var b=j[a](),c=i[a];if(b in c){return b}var d=[];for(var e in c){d[c[e]]=e}if(__propertyErrorFunc){__propertyErrorFunc(a,d,b)}throw null}
-j[zb]=function(){var a=navigator.userAgent.toLowerCase();if(a.indexOf(Ab)!=-1)return Ab;if(a.indexOf(Bb)!=-1)return Bb;if(a.indexOf(Cb)!=-1){if(a.indexOf(Db)!=-1)return Eb;if(a.indexOf(Fb)!=-1)return Gb;if(a.indexOf(Hb)!=-1)return Ib;return Jb}if(a.indexOf(Kb)!=-1){if(a.indexOf(Lb)!=-1)return Mb;if(a.indexOf(Nb)!=-1)return Ob;return Pb}if(a.indexOf(Qb)!=-1){if(a.indexOf(Rb)!=-1)return Sb;return Tb}if(a.indexOf(Ub)!=-1)return Vb;return null};i[zb]={air:0,chrome:1,gecko1_8:2,gecko1_9:3,ie6:4,ie7:5,ie8:6,ie9:7,opera:8,safari3:9,safari4:10,safari5:11};j[Wb]=function(){var a=o.navigator.userAgent.toLowerCase();if(a.indexOf(Xb)!=-1||a.indexOf(Yb)!=-1){return Zb}if(a.indexOf($b)!=-1){return $b}if(a.indexOf(_b)!=-1||a.indexOf(ac)!=-1){return _b}return bc};i[Wb]={linux:0,mac:1,windows:2};s=function(a,b){return b in i[a]};tigerspice_dev.__getPropMap=function(){var a={};for(var b in i){if(i.hasOwnProperty(b)){a[b]=k(b)}}return a};tigerspice_dev.__computePropValue=k;o.__gwt_activeModules[K].bindings=tigerspice_dev.__getPropMap;r(G,cc);if(q()){return C(dc)}var l;try{h([Sb,$b],ec);h([Sb,Zb],ec+fc);h([Sb,_b],ec+gc);h([Tb,$b],ec+hc);h([Tb,Zb],ec+ic);h([Tb,_b],ec+jc);h([Bb,$b],kc);h([Bb,Zb],kc+fc);h([Bb,_b],kc+gc);h([Eb,$b],lc);h([Eb,Zb],lc+fc);h([Eb,_b],lc+gc);h([Gb,$b],lc+hc);h([Gb,Zb],lc+ic);h([Gb,_b],lc+jc);h([Ib,$b],mc);h([Ib,Zb],mc+fc);h([Ib,_b],mc+gc);h([Vb,$b],nc);h([Vb,Zb],nc+fc);h([Ob,Zb],nc+oc);h([Ob,_b],nc+pc);h([Pb,$b],nc+qc);h([Pb,Zb],nc+rc);h([Pb,_b],nc+sc);h([Vb,_b],nc+gc);h([Ab,$b],nc+hc);h([Ab,Zb],nc+ic);h([Ab,_b],nc+jc);h([Mb,$b],nc+tc);h([Mb,Zb],nc+uc);h([Mb,_b],nc+vc);h([Ob,$b],nc+wc);h([Jb,$b],xc);h([Jb,Zb],xc+fc);h([Jb,_b],xc+gc);l=f[k(zb)][k(Wb)];var m=l.indexOf(yc);if(m!=-1){g=parseInt(l.substring(m+1),10);l=l.substring(0,m)}}catch(a){}tigerspice_dev.__softPermutationId=g;return C(l+zc)}
-function E(){if(!o.__gwt_stylesLoaded){o.__gwt_stylesLoaded={}}function c(a){if(!__gwt_stylesLoaded[a]){var b=p.createElement(Ac);b.setAttribute(Bc,Cc);b.setAttribute(Dc,C(a));p.getElementsByTagName(db)[0].appendChild(b);__gwt_stylesLoaded[a]=true}}
-r(Ec,H);c(Fc);c(Gc);c(Hc);c(Ic);c(Jc);r(Ec,Kc)}
-A();tigerspice_dev.__moduleBase=B();u[K].moduleBase=tigerspice_dev.__moduleBase;var F=D();E();r(G,Kc);z(F);return true}
-tigerspice_dev.succeeded=tigerspice_dev();
+/*
+ * Copyright 2014 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+/**
+ * This startup script is used when we run superdevmode from an app server.
+ *
+ * The main goal is to avoid installing bookmarklets for host:port/module
+ * to load and recompile the application.
+ */
+(function($wnd, $doc){
+  // Don't support browsers without session storage: IE6/7
+  var badBrowser = 'Unable to load Super Dev Mode of "tigerspice_dev" because\n';
+  if (!('sessionStorage' in $wnd)) {
+    $wnd.alert(badBrowser +  'this browser does not support "sessionStorage".');
+    return;
+  }
+
+  //We don't import properties.js so we have to update active modules here
+  $wnd.__gwt_activeModules = $wnd.__gwt_activeModules || {};
+  $wnd.__gwt_activeModules['tigerspice_dev'] = {
+    'moduleName' : 'tigerspice_dev',
+    'bindings' : function() {
+      return {};
+    }
+  };
+
+  // Reuse compute script base
+  /*
+ * Copyright 2012 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+/**
+ * A simplified version of computeScriptBase.js that's used only when running
+ * in Super Dev Mode. (We don't want the default version because it allows the
+ * web page to override it using a meta tag.)
+ *
+ * Prerequisite: we assume that the first script tag using a URL ending with
+ * "/tigerspice_dev.nocache.js" is the one that loaded us. Normally this happens
+ * because DevModeRedirectHook.js loaded this nocache.js script by prepending a
+ * script tag with an absolute URL to head. (However, it's also okay for an html
+ * file included in the GWT compiler's output to load the nocache.js file using
+ * a relative URL.)
+ */
+function computeScriptBase() {
+  // TODO(skybrian) This approach won't work for workers.
+
+  $wnd.__gwt_activeModules['tigerspice_dev'].superdevmode = true;
+
+  var expectedSuffix = '/tigerspice_dev.nocache.js';
+
+  var scriptTags = $doc.getElementsByTagName('script');
+  for (var i = 0;; i++) {
+    var tag = scriptTags[i];
+    if (!tag) {
+      break;
+    }
+    var candidate = tag.src;
+    var lastMatch = candidate.lastIndexOf(expectedSuffix);
+    if (lastMatch == candidate.length - expectedSuffix.length) {
+      // Assumes that either the URL is absolute, or it's relative
+      // and the html file is hosted by this code server.
+      return candidate.substring(0, lastMatch + 1);
+    }
+  }
+
+  $wnd.alert('Unable to load Super Dev Mode version of ' + tigerspice_dev + ".");
+}
+;
+
+  // document.head does not exist in IE8
+  var $head = $doc.head || $doc.getElementsByTagName('head')[0];
+
+  // Quick way to compute the user.agent, it works almost the same than
+  // UserAgentPropertyGenerator, but we cannot reuse it without depending
+  // on gwt-user.jar.
+  // This reduces compilation time since we only compile for one ua.
+  var ua = $wnd.navigator.userAgent.toLowerCase();
+  var docMode = $doc.documentMode || 0;
+  ua = /webkit/.test(ua)? 'safari' : /gecko/.test(ua) || docMode > 10 ? 'gecko1_8' :
+       /msie/.test(ua) && docMode > 7 ? 'ie' + docMode : '';
+  if (!ua && docMode) {
+    $wnd.alert(badBrowser +  'your browser is running "Compatibility View" for IE' + docMode + '.');
+    return;
+  }
+
+  // We use a different key for each module so that we can turn on dev mode
+  // independently for each.
+  var devModeHookKey = '__gwtDevModeHook:tigerspice_dev';
+  var devModeSessionKey = '__gwtDevModeSession:tigerspice_dev';
+
+  // Compute some codeserver urls so as the user does not need bookmarklets
+  var hostName = $wnd.location.hostname;
+  var serverUrl = 'http://' + hostName + ':9876';
+  var nocacheUrl = serverUrl + '/tigerspice_dev/tigerspice_dev.nocache.js';
+
+  // Save supder-devmode url in session
+  $wnd.sessionStorage[devModeHookKey] = nocacheUrl;
+  // Save user.agent in session
+  $wnd.sessionStorage[devModeSessionKey] = 'user.agent=' + ua + '&';
+
+  // Set bookmarklet params in window
+  $wnd.__gwt_bookmarklet_params = {'server_url': serverUrl};
+  // Save the original module base. (Returned by GWT.getModuleBaseURL.)
+  $wnd[devModeHookKey + ':moduleBase'] = computeScriptBase();
+
+  // Needed in the real nocache.js logic
+  $wnd.__gwt_activeModules['tigerspice_dev'].canRedirect = true;
+  $wnd.__gwt_activeModules['tigerspice_dev'].superdevmode = true;
+
+  // Insert the superdevmode nocache script in the first position of the head
+  var devModeScript = $doc.createElement('script');
+  devModeScript.src = nocacheUrl;
+
+  // Show a div in a corner for adding buttons to recompile the app.
+  // We reuse the same div in all modules of this page for stacking buttons
+  // and to make it available in jsni.
+  // The user can remove this: .gwt-DevModeRefresh {display:none}
+  $wnd.__gwt_compileElem = $wnd.__gwt_compileElem || $doc.createElement('div');
+  $wnd.__gwt_compileElem.className = 'gwt-DevModeRefresh';
+
+  // Create the compile button for this module
+  var compileButton = $doc.createElement('div');
+  $wnd.__gwt_compileElem.appendChild(compileButton);
+  // Number of modules present in the window
+  var moduleIdx = $wnd.__gwt_compileElem.childNodes.length;
+  // Each button has a class with its index number
+  var buttonClassName = 'gwt-DevModeCompile gwt-DevModeModule-' + moduleIdx;
+  compileButton.className = buttonClassName;
+  // The status message container
+  compileButton.innerHTML = '<div></div>';
+  // User knows who module to compile, hovering the button
+  compileButton.title = 'Compile module:\ntigerspice_dev';
+
+  // Use CSS so the app could change button style
+  var compileStyle = $doc.createElement('style');
+  compileStyle.language = 'text/css';
+  $head.appendChild(compileStyle);
+  var css =
+    ".gwt-DevModeRefresh{" +
+      "position:fixed;" +
+      "right:3px;" +
+      "bottom:3px;" +
+      "font-family:arial;" +
+      "font-size:1.8em;" +
+      "cursor:pointer;" +
+      "color:#B62323;" +
+      "text-shadow:grey 1px 1px 3px;" +
+      "z-index:2147483646;" +
+      "white-space:nowrap;" +
+    "}" +
+    ".gwt-DevModeCompile{" +
+      "position:relative;" +
+      "float:left;" +
+      "width:1em;" +
+    "}" +
+    ".gwt-DevModeCompile div{" +
+      "position:absolute;" +
+      "right:1em;" +
+      "bottom:-3px;" +
+      "font-size:0.3em;" +
+      "opacity:1;" +
+      "direction:rtl;" +
+    "}" +
+    ".gwt-DevModeCompile:before{" +
+      "content:'\u21bb';" +
+    "}" +
+    ".gwt-DevModeCompiling:before{" +
+      // IE8 fails when setting content here
+      "opacity:0.1;" +
+    "}" +
+    ".gwt-DevModeCompile div:before{" +
+      "content:'GWT';" +
+    "}" +
+    ".gwt-DevModeError div:before{" +
+      "content:'FAILED';" +
+    "}";
+  // Only insert common css the first time
+  css = (moduleIdx == 1 ? css : '') +
+    ".gwt-DevModeModule-" + moduleIdx + ".gwt-DevModeCompiling div:before{" +
+      "content:'COMPILING tigerspice_dev';" +
+      "font-size:24px;" +
+      "color:#d2d9ee;" +
+    "}";
+  if ('styleSheet' in compileStyle) {
+    // IE8
+    compileStyle.styleSheet.cssText = css;
+  } else {
+    compileStyle.appendChild($doc.createTextNode(css));
+  }
+
+  // Set a different compile function name per module
+  var compileFunction = '__gwt_compile_' + moduleIdx;
+
+  compileButton.onclick = function() {
+    $wnd[compileFunction]();
+  };
+
+  // defer so as the body is ready
+  setTimeout(function(){
+    $head.insertBefore(devModeScript, $head.firstElementChild || $head.children[0]);
+    $doc.body.appendChild($wnd.__gwt_compileElem);
+  }, 1);
+
+  // Flag to avoid compiling in parallel.
+  var compiling = false;
+  // Compile function available in window so as it can be run from jsni.
+  // TODO(manolo): make Super Dev Mode script set this function in __gwt_activeModules
+  $wnd[compileFunction] = function() {
+    if (compiling) {
+      return;
+    }
+    compiling = true;
+
+    // Compute an unique name for each callback to avoid cache issues
+    // in IE, and to avoid the same function being called twice.
+    var callback = '__gwt_compile_callback_' + moduleIdx + '_' + new Date().getTime();
+    $wnd[callback] = function(r) {
+      if (r && r.status && r.status == 'ok') {
+        $wnd.location.reload();
+      }
+      compileButton.className = buttonClassName + ' gwt-DevModeError';
+      delete $wnd[callback];
+      compiling = false;
+    };
+
+    // Insert the jsonp script to compile the current module
+    // TODO(manolo): we don't have a way to detect when the server is unreachable,
+    // maybe a request returning status='idle'
+    var compileScript = $doc.createElement('script');
+    compileScript.src = serverUrl +
+      '/recompile/tigerspice_dev?user.agent=' + ua + '&_callback=' + callback;
+    $head.appendChild(compileScript);
+    compileButton.className = buttonClassName  + ' gwt-DevModeCompiling';
+  }
+
+  // Run this block after the app has been loaded.
+  setTimeout(function(){
+    // Maintaining the hook key in session can cause problems
+    // if we try to run classic code server so we remove it
+    // after a while.
+    $wnd.sessionStorage.removeItem(devModeHookKey);
+
+    // Re-attach compile button because sometimes app clears the dom
+    $doc.body.appendChild($wnd.__gwt_compileElem);
+  }, 2000);
+})(window, document);
