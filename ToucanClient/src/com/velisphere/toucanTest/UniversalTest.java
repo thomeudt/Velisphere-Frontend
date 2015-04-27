@@ -20,13 +20,11 @@ public class UniversalTest {
 		// get user name
 		
 		String userid = "3f82b42b-7d77-4e97-8e92-becdc1bf797d";
-		String endpointID = "E3";
+		String endpointID = "9e48c4eb-4ac1-4512-ac53-b86b1dd130aa";
 		String endpointClassID = "EPC1";
 		String propertyClassID = "PC1";
 		String vendorID = "65eb271e-d6c3-470a-8d62-6e40b9f930e7";
-		String propertyID = "PR1";
-		
-				
+		String propertyID = "aa4bae92-3fda-44ca-ad28-f65931ef10a0";		
 				
 		WebTarget target = client.target( "http://localhost:8080/ToucanServer/rest/user/get" );
 		Response response = target.path("name").path(userid).request().get();
@@ -76,20 +74,43 @@ public class UniversalTest {
 		System.out.println ("Returned json: " + response.readEntity(String.class));
 
 		
-		// get property class details
+		// get property vendor details
 
 		target = client.target( "http://localhost:8080/ToucanServer/rest/vendor/get" );
 		response = target.path("general").path(vendorID).request().get();
 		System.out.println ("Reponse from server: " + response);
 		System.out.println ("Returned json: " + response.readEntity(String.class));
 
-		// get property class details
+		// get property details
 
 		target = client.target( "http://localhost:8080/ToucanServer/rest/property/get" );
 		response = target.path("general").path(propertyID).request().get();
 		System.out.println ("Reponse from server: " + response);
 		System.out.println ("Returned json: " + response.readEntity(String.class));
 
+		
+		// get sensors for endpoints
+
+		target = client.target( "http://localhost:8080/ToucanServer/rest/properties/get" );
+		response = target.path("sensorsforendpoint").path(endpointID).request().get();
+		System.out.println ("Reponse from server: " + response);
+		System.out.println ("Returned json: " + response.readEntity(String.class));
+
+		// get geopos for endpoint
+
+		target = client.target( "http://localhost:8080/ToucanServer/rest/analytics/get" );
+		response = target.path("endpointgeoposition").path(endpointID).request().get();
+		System.out.println ("Reponse from server: " + response);
+		System.out.println ("Returned json: " + response.readEntity(String.class));
+		
+		// get log for endpoint and property
+
+		target = client.target( "http://localhost:8080/ToucanServer/rest/analytics/get" );
+		response = target.path("endpointpropertylog").path(endpointID).queryParam("propertyid", propertyID).request().get();
+		System.out.println ("Reponse from server: " + response);
+		System.out.println ("Returned json: " + response.readEntity(String.class));
+		
+		
 		
 	}
 }

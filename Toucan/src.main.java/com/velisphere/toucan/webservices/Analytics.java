@@ -19,15 +19,11 @@ import javax.ws.rs.core.MediaType;
 import org.voltdb.VoltTable;
 import org.voltdb.client.ClientResponse;
 
-
-
-
-
-
-
 import com.velisphere.toucan.amqp.ServerParameters;
 import com.velisphere.toucan.dataObjects.EndpointData;
+import com.velisphere.toucan.dataObjects.EndpointPropertyLogData;
 import com.velisphere.toucan.volt.VoltConnector;
+import com.velisphere.toucan.xmlRootElements.EndpointPropertyLogElements;
 
 
 
@@ -631,6 +627,70 @@ public class Analytics {
 	return geoposition;
 
 	}
+	
+	
+	
+	@GET
+	@Path("/get/endpointpropertylog/{param}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public EndpointPropertyLogElements getEndpointPropertyLog(@PathParam("param") String endpointID, @QueryParam("propertyid") String propertyID) {
+		
+
+		Connection conn;
+		LinkedList<EndpointPropertyLogData> logData = new LinkedList<EndpointPropertyLogData>();
+
+		try {
+			Class.forName("com.vertica.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Could not find the JDBC driver class.\n");
+			e.printStackTrace();
+
+		}
+		try {
+			conn = DriverManager.getConnection("jdbc:vertica://"
+					+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+					"vertica", "1Suplies!");
+
+			conn.setAutoCommit(true);
+			System.out.println(" [OK] Connected to Vertica on address: "
+					+ "16.1.1.113");
+
+			Statement mySelect = conn.createStatement();
+
+			ResultSet myResult = mySelect
+					.executeQuery("SELECT propertyname, propertyentry, time_stamp FROM vlogger.endpointpropertylog "
+							+ "JOIN vlogger.property ON vlogger.endpointpropertylog.propertyid = vlogger.property.propertyid WHERE "
+							+ "vlogger.endpointpropertylog.PROPERTYID = '"
+							+ propertyID
+							+ "' AND vlogger.endpointpropertylog.endpointid = '"
+							+ endpointID
+							+ "' ORDER BY TIME_STAMP");
+
+			while (myResult.next()) {
+				EndpointPropertyLogData logItem = new EndpointPropertyLogData();
+				logItem.addPropertyValuePair(myResult.getString(1), myResult.getString(2));
+				//logItem.addPropertyValuePair("Test", myResult.getString(2));
+				logItem.setTimeStamp(myResult.getString(3));
+				logData.add(logItem);
+				// System.out.println("Retrieved: " + logItem.getValue());
+			}
+
+			mySelect.close();
+
+		} catch (SQLException e) {
+			System.err.println("Could not connect to the database.\n");
+			e.printStackTrace();
+
+		}
+		
+		EndpointPropertyLogElements logElements = new EndpointPropertyLogElements();
+		
+		logElements.setPropertyData(logData);
+
+		return logElements;
+	
+	}
+
 
 }
 
