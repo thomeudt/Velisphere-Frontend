@@ -40,7 +40,7 @@ public class Endpoint {
 	@GET
 	@Path("/get/general/{param}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public EndpointElement getEndpointsForSphere(@PathParam("param") String endpointID) {
+	public EndpointElement getEndpointDetails(@PathParam("param") String endpointID) {
 		
 
 		ConfigHandler conf = new ConfigHandler();
@@ -119,6 +119,8 @@ public class Endpoint {
 	}
 	
 	
+		
+	
 	
 	@PUT
 	@Path( "/put/isalive" )
@@ -162,6 +164,10 @@ public class Endpoint {
 	 return Response.ok().build();
 	
 	}
+	
+	
+	
+	
 
 }
 

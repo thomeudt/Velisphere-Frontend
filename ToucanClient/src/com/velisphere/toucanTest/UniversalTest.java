@@ -109,7 +109,22 @@ public class UniversalTest {
 		response = target.path("endpointpropertylog").path(endpointID).queryParam("propertyid", propertyID).request().get();
 		System.out.println ("Reponse from server: " + response);
 		System.out.println ("Returned json: " + response.readEntity(String.class));
-		
+
+		// get sensors with state for endpoints
+
+				target = client.target( "http://localhost:8080/ToucanServer/rest/properties/get" );
+				response = target.path("sensorsstateforendpoint").path(endpointID).request().get();
+				System.out.println ("Reponse from server: " + response);
+				System.out.println ("Returned json: " + response.readEntity(String.class));
+				
+				// get actors with state for endpoints
+
+				target = client.target( "http://localhost:8080/ToucanServer/rest/properties/get" );
+				response = target.path("sensorsstateforendpoint").path(endpointID).request().get();
+				System.out.println ("Reponse from server: " + response);
+				System.out.println ("Returned json: " + response.readEntity(String.class));
+
+
 		
 		
 	}
