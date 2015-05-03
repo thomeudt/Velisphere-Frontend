@@ -1,23 +1,36 @@
 package com.velisphere.tigerspice.client.endpoints;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
+import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.Heading;
+import com.github.gwtbootstrap.client.ui.ListBox;
+import com.github.gwtbootstrap.client.ui.Paragraph;
+import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.amqp.AMQPService;
 import com.velisphere.tigerspice.client.amqp.AMQPServiceAsync;
+import com.velisphere.tigerspice.client.analytics.AnalyticsService;
+import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
+import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
+import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
+import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
+import com.velisphere.tigerspice.shared.AnalyticsRawData;
+import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.velisphere.tigerspice.shared.PropertyData;
 
 public class EndpointConfiguratorWidget extends Composite  {
@@ -29,42 +42,239 @@ public class EndpointConfiguratorWidget extends Composite  {
 			UiBinder<Widget, EndpointConfiguratorWidget> {
 	}
 
-	
-	@UiField
-	Button btnRefresh;
+
 	String endpointID;
+	HandlerRegistration submitClickReg;	
+	@UiField
+	ListBox lstConfigurators;
+	@UiField
+	Heading pgpPropertyName;
+	@UiField
+	Button btnSubmit;
+	@UiField
+	Paragraph pgpLastValue;
+	@UiField
+	Paragraph pgpLastUpdate;
+	@UiField
+	Paragraph pgpUnit;
+	@UiField
+	Paragraph pgpCurrentValueHeader;
+	@UiField
+	Paragraph pgpNewValueHeader;
+	@UiField
+	Paragraph pgpLastUpdateHeader;
+	@UiField
+	Paragraph pgpUnitHeader;
+	@UiField
+	TextBox txtNewValue;
+	
 
 	public EndpointConfiguratorWidget(String endpointID) {
-		initWidget(uiBinder.createAndBindUi(this));
 		this.endpointID = endpointID;
-		btnRefresh.setText("Refresh Data");
+	
+		initWidget(uiBinder.createAndBindUi(this));
+		populateConfiguratorList();
+		lstConfigurators.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+				populateCurrentState(lstConfigurators.getValue());
+				populatePropertyData(lstConfigurators.getValue());
+			}
+		});
+		
+		
 	}
+	
+	private void populateConfiguratorList() {
 
-	@UiHandler("btnRefresh")
-	void onClick(ClickEvent e) {
-		AMQPServiceAsync amqpService = GWT
-				.create(AMQPService.class);
+		final AnimationLoading animationLoading = new AnimationLoading();
 
-		amqpService.sendGetAllProperties(endpointID,
-				new AsyncCallback<String>() {
+		animationLoading.showLoadAnimation("Loading Endpoint");
+
+		PropertyServiceAsync propertyService = GWT
+				.create(PropertyService.class);
+
+		propertyService.getConfiguratorPropertiesForEndpointID(endpointID,
+				new AsyncCallback<LinkedList<PropertyData>>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
-						
+
 					}
 
 					@Override
-					public void onSuccess(String result) {
+					public void onSuccess(LinkedList<PropertyData> result) {
 						// TODO Auto-generated method stub
-						AppController.openEndpoint(endpointID);
+						animationLoading.removeLoadAnimation();
+						Iterator<PropertyData> it = result.iterator();
+						if (it.hasNext() == false) {
+							
+							pgpPropertyName.setText("This endpoint does not contain sensors.");
+							pgpUnitHeader.setText("");
+							pgpCurrentValueHeader.setText("");
+							pgpNewValueHeader.setText("");
+							pgpLastUpdateHeader.setText("");
+							pgpUnit.setText("");
+							pgpLastValue.setText("");
+							pgpLastUpdate.setText("");
+							btnSubmit.setVisible(false);
+
+						}
+						while (it.hasNext()) {
+
+							PropertyData propData = new PropertyData();
+							propData = it.next();
+							lstConfigurators.addItem(propData.propertyName,
+									propData.propertyId);
+							lstConfigurators.setSelectedIndex(0);
+							populateCurrentState(lstConfigurators.getValue());
+							populatePropertyData(lstConfigurators.getValue());
+
+						}
+
+					}
+
+				});
+
+		lstConfigurators.setVisibleItemCount(10);
+
+
+	}
+	
+	
+	private void populateCurrentState(final String propertyID) {
+
+		final AnimationLoading animationLoading = new AnimationLoading();
+
+		animationLoading.showLoadAnimation("Loading Current State");
+
+		AnalyticsServiceAsync analyticsService = GWT
+				.create(AnalyticsService.class);
+
+		analyticsService.getCurrentSensorState(endpointID, propertyID,
+				new AsyncCallback<AnalyticsRawData>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						animationLoading.removeLoadAnimation();
+					}
+
+					@Override
+					public void onSuccess(AnalyticsRawData result) {
+						
+						
+						if (result.getPropertyValuePairs().get(propertyID) == null)
+						{
+							pgpLastValue.setText("not available");
+							pgpLastUpdate.setText("not available");
+						}
+						else					
+						{
+							pgpLastValue.setText(result.getPropertyValuePairs().get(propertyID));
+							pgpLastUpdate.setText(result.getTimeStamp());
+						}
+						
+						animationLoading.removeLoadAnimation();
+					}
+				});
+	}
+	
+	private void populatePropertyData(final String propertyID) {
+
+		final AnimationLoading animationLoading = new AnimationLoading();
+
+		animationLoading.showLoadAnimation("Loading Class-specific Data");
+
+
+		PropertyServiceAsync propertyService = GWT
+				.create(PropertyService.class);
+
+		propertyService.getPropertyDetailsForPropertyID(propertyID, new AsyncCallback<PropertyData>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onSuccess(PropertyData result) {
+						animationLoading.removeLoadAnimation();
+						pgpPropertyName.setText(result.getPropertyName());
+						populatePropertyClassData(result.propertyclassId);
+						addSubmitClickhandler(result.propertyId);
+						
+						
 						
 					}
 
-		
-		});
+				});
+	}
+	
+	private void populatePropertyClassData(final String propertyClassID) {
+
+		final AnimationLoading animationLoading = new AnimationLoading();
+
+		animationLoading.showLoadAnimation("Loading Class-specific Data");
+
+
+		PropertyClassServiceAsync propertyClassService = GWT
+				.create(PropertyClassService.class);
+
+		propertyClassService.getPropertyClassForPropertyClassID(propertyClassID, new AsyncCallback<PropertyClassData>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onSuccess(PropertyClassData result) {
+						animationLoading.removeLoadAnimation();
+
+						pgpUnit.setText(result.getUnit());
+					}
+
+				});
 	}
 
+	private void addSubmitClickhandler(final String propertyID) 
+	{
+		if (submitClickReg != null) {
+			submitClickReg.removeHandler();
+		}
+
+		submitClickReg = btnSubmit.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				AMQPServiceAsync amqpService = GWT
+						.create(AMQPService.class);
+
+				amqpService.sendConfigMessage(endpointID, propertyID, txtNewValue.getText(), new AsyncCallback<String>() {
+
+							@Override
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+
+							}
+
+							@Override
+							public void onSuccess(String result) {
+								
+								pgpLastValue.setText("new value ("+txtNewValue.getText()+") submitted, refresh needed");
+							}
+
+						});
+				
+			}
+
+		});
+	}
 	
 
 }

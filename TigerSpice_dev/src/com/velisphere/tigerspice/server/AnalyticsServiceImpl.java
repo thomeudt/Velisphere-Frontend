@@ -403,6 +403,8 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 		return logItem;
 	}
 	
+	
+	
 	@Override
 	public AnalyticsRawData getCurrentActorState(String endpointID,
 			String propertyID) {

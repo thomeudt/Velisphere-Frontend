@@ -13,6 +13,7 @@ import java.util.Date;
 
 
 
+
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -29,6 +30,7 @@ import com.velisphere.tigerspice.client.amqp.AMQPService;
 import com.velisphere.tigerspice.client.amqp.AMQPServiceAsync;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
@@ -344,6 +346,31 @@ public class EndpointInformationWidget extends Composite {
 					}
 		});
 
+	}
+	
+	@UiHandler("btnRefresh")
+	void onClick(ClickEvent e) {
+		AMQPServiceAsync amqpService = GWT
+				.create(AMQPService.class);
+
+		amqpService.sendGetAllProperties(endpointID,
+				new AsyncCallback<String>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						// TODO Auto-generated method stub
+						AppController.openEndpoint(endpointID);
+						
+					}
+
+		
+		});
 	}
 
 }

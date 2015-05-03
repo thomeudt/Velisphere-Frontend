@@ -112,18 +112,29 @@ public class UniversalTest {
 
 		// get sensors with state for endpoints
 
-				target = client.target( "http://localhost:8080/ToucanServer/rest/properties/get" );
-				response = target.path("sensorsstateforendpoint").path(endpointID).request().get();
-				System.out.println ("Reponse from server: " + response);
-				System.out.println ("Returned json: " + response.readEntity(String.class));
+		target = client.target( "http://localhost:8080/ToucanServer/rest/properties/get" );
+		response = target.path("sensorsstateforendpoint").path(endpointID).request().get();
+		System.out.println ("Reponse from server: " + response);
+		System.out.println ("Returned json: " + response.readEntity(String.class));
 				
-				// get actors with state for endpoints
+		// get actors with state for endpoints
 
-				target = client.target( "http://localhost:8080/ToucanServer/rest/properties/get" );
-				response = target.path("sensorsstateforendpoint").path(endpointID).request().get();
-				System.out.println ("Reponse from server: " + response);
-				System.out.println ("Returned json: " + response.readEntity(String.class));
+		target = client.target( "http://localhost:8080/ToucanServer/rest/properties/get" );
+		response = target.path("sensorsstateforendpoint").path(endpointID).request().get();
+		System.out.println ("Reponse from server: " + response);
+		System.out.println ("Returned json: " + response.readEntity(String.class));
 
+		// send config message to endpoint
+
+		
+		
+		target = client.target( "http://localhost:8080/ToucanServer/rest/endpoint/put" );
+		response = target.path( "configmessage" ).path( endpointID).path(propertyID).request().put( Entity.text("Test") );
+		
+		System.out.println ("Reponse from server: " + response);
+		System.out.println ("Returned json: " + response.readEntity(String.class));
+		
+		
 
 		
 		

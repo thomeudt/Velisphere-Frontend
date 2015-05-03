@@ -25,7 +25,7 @@ import com.velisphere.toucan.ConfigHandler;
 import com.velisphere.toucan.amqp.MessagePack;
 import com.velisphere.toucan.amqp.Send;
 import com.velisphere.toucan.amqp.ServerParameters;
-import com.velisphere.toucan.xmlRootElements.Todo;
+import com.velisphere.toucan.xmlRootElements.MessageElement;
 
 
 @Path("/message")
@@ -34,8 +34,8 @@ public class Message {
 	@GET
 	@Path("/get/xml/{param}")
 	@Produces({ MediaType.APPLICATION_XML })
-	public Todo getXML(@PathParam("param") String endpointID) {
-		Todo todo = new Todo();
+	public MessageElement getXML(@PathParam("param") String endpointID) {
+		MessageElement todo = new MessageElement();
 		todo.setSummary("VeliSphere Web Service Version 0.1");
 		// todo.setDescription("First Sphere");
 
@@ -87,7 +87,7 @@ public class Message {
 	@Path("/get/json/{param}")
 	@Produces({ MediaType.TEXT_PLAIN })
 	public String getJSON(@PathParam("param") String endpointID) {
-		Todo todo = new Todo();
+		MessageElement todo = new MessageElement();
 		todo.setSummary("VeliSphere Web Service Version 0.1");
 		// todo.setDescription("First Sphere");
 
@@ -153,8 +153,8 @@ public class Message {
 	@GET
 	@Path("/text")
 	@Produces({ MediaType.TEXT_XML })
-	public Todo getHTML() {
-		Todo todo = new Todo();
+	public MessageElement getHTML() {
+		MessageElement todo = new MessageElement();
 		todo.setSummary("VeliSphere Web Service Version 0.1");
 		// todo.setDescription("First Sphere");
 		return todo;

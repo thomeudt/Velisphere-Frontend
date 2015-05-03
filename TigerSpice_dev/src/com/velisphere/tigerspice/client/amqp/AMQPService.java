@@ -28,5 +28,5 @@ public interface AMQPService extends RemoteService {
 		
 	String sendGetAllProperties(String endpointID);
 	String sendIsAliveRequest(String endpointID);
-		
+	String sendConfigMessage(String endpointID, String propertyID, String value);
 }

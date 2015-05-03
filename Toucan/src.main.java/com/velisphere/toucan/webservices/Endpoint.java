@@ -167,6 +167,29 @@ public class Endpoint {
 	
 	
 	
+	@PUT
+	@Path( "/put/configmessage/{endpointid}/{propertyid}" )
+	@Consumes( MediaType.TEXT_PLAIN )
+	public Response sendConfigMessage( 
+			@PathParam("endpointid") String endpointID, @PathParam("propertyid") String propertyID, String value ) 
+					throws Exception {
+					
+	HashMap<String, String> messageHash = new HashMap<String, String>();
+	messageHash.put(propertyID, value);
+	
+	try {
+		Send.sendHashTable(messageHash, endpointID);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	ObjectMapper mapper = new ObjectMapper();
+	String jsonString = mapper.writeValueAsString(messageHash);
+		
+	return Response.ok(jsonString).build();
+	
+	}
 	
 
 }

@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class Todo {
+public class MessageElement {
 
 	
 		  private String summary;

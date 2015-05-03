@@ -90,6 +90,9 @@
 			   <b:Button type="PRIMARY" ui:field="btnPing"
 									addStyleNames="btn-block" size="SMALL">Ping!</b:Button>
 			</b:Column>
+			<b:Column size="2">
+				<b:Button type="SUCCESS" size="MINI" addStyleNames="btn-block" ui:field="btnRefresh">Refresh Data</b:Button>
+			</b:Column>
 		</b:Row>
 		
 		
