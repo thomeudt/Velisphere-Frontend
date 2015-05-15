@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.endpoints;
+package com.velisphere.tigerspice.client.endpoints.sensor;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -30,7 +30,7 @@ import com.velisphere.tigerspice.shared.AnalyticsRawData;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.velisphere.tigerspice.shared.PropertyData;
 
-public class EndpointActorWidget extends Composite {
+public class EndpointSensorWidget extends Composite {
 
 	String endpointID;
 	String sphereID;
@@ -45,41 +45,24 @@ public class EndpointActorWidget extends Composite {
 	@UiField
 	Paragraph pgpUnit;
 	@UiField
-	Paragraph pgpAction;
-	@UiField
-	Paragraph pgpCheck;
-	@UiField
-	Paragraph pgpLogic;
-	@UiField
-	Paragraph pgpTrigger;
-	@UiField
 	Paragraph pgpLastValueHeader;
 	@UiField
 	Paragraph pgpLastUpdateHeader;
 	@UiField
 	Paragraph pgpUnitHeader;
 	@UiField
-	Paragraph pgpActionHeader;
-	@UiField
-	Paragraph pgpCheckHeader;
-	@UiField
-	Paragraph pgpLogicHeader;
-	@UiField
-	Paragraph pgpTriggerHeader;
-	@UiField
 	Button btnDataTrail;
-	@UiField
-	Button btnSetNewValue;
 	HandlerRegistration dataTrailClickReg;
 
+	
 	private static EndpointSensorWidgetUiBinder uiBinder = GWT
 			.create(EndpointSensorWidgetUiBinder.class);
 
 	interface EndpointSensorWidgetUiBinder extends
-			UiBinder<Widget, EndpointActorWidget> {
+			UiBinder<Widget, EndpointSensorWidget> {
 	}
 
-	public EndpointActorWidget(String sphereID, String endpointID) {
+	public EndpointSensorWidget(String sphereID, String endpointID) {
 		this.endpointID = endpointID;
 		this.sphereID = sphereID;
 		initWidget(uiBinder.createAndBindUi(this));
@@ -103,7 +86,7 @@ public class EndpointActorWidget extends Composite {
 		PropertyServiceAsync propertyService = GWT
 				.create(PropertyService.class);
 
-		propertyService.getActorPropertiesForEndpointID(endpointID,
+		propertyService.getSensorPropertiesForEndpointID(endpointID,
 				new AsyncCallback<LinkedList<PropertyData>>() {
 
 					@Override
@@ -118,25 +101,16 @@ public class EndpointActorWidget extends Composite {
 						animationLoading.removeLoadAnimation();
 						Iterator<PropertyData> it = result.iterator();
 						if (it.hasNext() == false) {
-
-							pgpPropertyName
-									.setText("This endpoint can't perform any actions.");
+							
+							pgpPropertyName.setText("This endpoint does not contain sensors.");
 							pgpUnitHeader.setText("");
 							pgpLastValueHeader.setText("");
 							pgpLastUpdateHeader.setText("");
 							pgpUnit.setText("");
-							pgpCheckHeader.setText("");
-							pgpActionHeader.setText("");
-							pgpLogicHeader.setText("");
-							pgpTriggerHeader.setText("");
 							pgpLastValue.setText("");
 							pgpLastUpdate.setText("");
-							pgpCheck.setText("");
-							pgpAction.setText("");
-							pgpLogic.setText("");
-							pgpTrigger.setText("");
 							btnDataTrail.setVisible(false);
-							btnSetNewValue.setVisible(false);
+
 						}
 						while (it.hasNext()) {
 
@@ -156,8 +130,10 @@ public class EndpointActorWidget extends Composite {
 
 		lstSensors.setVisibleItemCount(10);
 
-	}
 
+	}
+	
+	
 	private void addTrailClickhandler(final String propertyID, final String endpointName,
 			final String propertyName) {
 		if (dataTrailClickReg != null) {
@@ -169,7 +145,7 @@ public class EndpointActorWidget extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				AppController.openAnalyticsForDataTrail(sphereID, endpointID,
-						propertyID, endpointName, propertyName, false);
+						propertyID, endpointName, propertyName, true);
 				System.out.println("EPID source " + endpointID);
 			}
 
@@ -185,7 +161,7 @@ public class EndpointActorWidget extends Composite {
 		AnalyticsServiceAsync analyticsService = GWT
 				.create(AnalyticsService.class);
 
-		analyticsService.getCurrentActorState(endpointID, propertyID,
+		analyticsService.getCurrentSensorState(endpointID, propertyID,
 				new AsyncCallback<AnalyticsRawData>() {
 
 					@Override
@@ -196,38 +172,36 @@ public class EndpointActorWidget extends Composite {
 
 					@Override
 					public void onSuccess(AnalyticsRawData result) {
-
-						if (result.getPropertyValuePairs().get(propertyID) == null) {
+						
+						
+						if (result.getPropertyValuePairs().get(propertyID) == null)
+						{
 							pgpLastValue.setText("no values received yet");
 							pgpLastUpdate.setText("no values received yet");
-							pgpCheck.setText("no values received yet");
-							pgpAction.setText("no values received yet");
-							pgpLogic.setText("no values received yet");
-							pgpTrigger.setText("no values received yet");
-						} else {
-							pgpLastValue.setText(result.getPropertyValuePairs()
-									.get(propertyID));
-							pgpLastUpdate.setText(result.getTimeStamp());
-							populateActionData(result.getProcessedByID());
-							pgpTrigger.setText(result.getSource());
 						}
-
+						else					
+						{
+							pgpLastValue.setText(result.getPropertyValuePairs().get(propertyID));
+							pgpLastUpdate.setText(result.getTimeStamp());
+						}
+						
 						animationLoading.removeLoadAnimation();
 					}
 				});
 	}
-
+	
+	
 	private void populatePropertyData(final String propertyID) {
 
 		final AnimationLoading animationLoading = new AnimationLoading();
 
 		animationLoading.showLoadAnimation("Loading Class-specific Data");
 
+
 		PropertyServiceAsync propertyService = GWT
 				.create(PropertyService.class);
 
-		propertyService.getPropertyDetailsForPropertyID(propertyID,
-				new AsyncCallback<PropertyData>() {
+		propertyService.getPropertyDetailsForPropertyID(propertyID, new AsyncCallback<PropertyData>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -242,23 +216,24 @@ public class EndpointActorWidget extends Composite {
 						populatePropertyClassData(result.propertyclassId);
 						addTrailClickhandler(result.propertyId,
 								null, result.propertyName);
-
+						
+						
 					}
 
 				});
 	}
-
+	
 	private void populatePropertyClassData(final String propertyClassID) {
 
 		final AnimationLoading animationLoading = new AnimationLoading();
 
 		animationLoading.showLoadAnimation("Loading Class-specific Data");
 
+
 		PropertyClassServiceAsync propertyClassService = GWT
 				.create(PropertyClassService.class);
 
-		propertyClassService.getPropertyClassForPropertyClassID(
-				propertyClassID, new AsyncCallback<PropertyClassData>() {
+		propertyClassService.getPropertyClassForPropertyClassID(propertyClassID, new AsyncCallback<PropertyClassData>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -276,32 +251,6 @@ public class EndpointActorWidget extends Composite {
 				});
 	}
 
-	private void populateActionData(final String actionID) {
 
-		final AnimationLoading animationLoading = new AnimationLoading();
-
-		animationLoading.showLoadAnimation("Loading Action-specific Data");
-
-		AnalyticsServiceAsync analyticsService = GWT
-				.create(AnalyticsService.class);
-
-		analyticsService.getActionNameForActionID(actionID,
-				new AsyncCallback<String>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-
-					}
-
-					@Override
-					public void onSuccess(String result) {
-						animationLoading.removeLoadAnimation();
-
-						pgpAction.setText(result);
-					}
-
-				});
-	}
 
 }

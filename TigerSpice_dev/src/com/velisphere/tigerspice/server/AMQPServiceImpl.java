@@ -114,6 +114,22 @@ public class AMQPServiceImpl extends RemoteServiceServlet implements
 	
 	}
 	
+	@Override
+	public String sendRegMessage(String endpointID, String propertyID, String value) {
+					
+	HashMap<String, String> messageHash = new HashMap<String, String>();
+	messageHash.put(propertyID, value);
+	
+	try {
+		sendHashTable(messageHash, endpointID, "REG");
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+		
+	return "OK";
+	
+	}
 
 
 	

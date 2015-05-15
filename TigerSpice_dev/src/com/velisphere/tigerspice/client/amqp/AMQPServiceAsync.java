@@ -28,4 +28,5 @@ public interface AMQPServiceAsync {
 	void sendGetAllProperties(String endpointID, AsyncCallback<String> callback);
 	void sendIsAliveRequest(String endpointID, AsyncCallback<String> callback);
 	void sendConfigMessage(String endpointID, String propertyID, String value, AsyncCallback<String> callback);
+	void sendRegMessage(String endpointID, String propertyID, String value, AsyncCallback<String> callback);
 }

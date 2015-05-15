@@ -1,9 +1,10 @@
-package com.velisphere.tigerspice.client.endpoints;
+package com.velisphere.tigerspice.client.endpoints.info;
 
 
 
 import java.sql.Timestamp;
 import java.util.Date;
+
 
 
 
@@ -33,6 +34,8 @@ import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
+import com.velisphere.tigerspice.client.endpoints.EndpointService;
+import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.users.NewAccountWidget;
 import com.velisphere.tigerspice.client.vendors.VendorService;

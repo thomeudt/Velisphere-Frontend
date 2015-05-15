@@ -26,6 +26,23 @@ public class CTLInitiator {
 	        for (CTLListener cl : listeners)
 	            cl.allPropertiesRequested();
 	    }
+	    
+	    public void processCnfMessage(String message) {
+	    	System.out.println(" [IN] Configuration Requested");
+
+	        // Notify
+	        for (CTLListener cl : listeners)
+	            cl.cnfMessage(message);
+	    }
+	    
+	    public void processRegMessage(String message) {
+	    	System.out.println(" [IN] Action Requested");
+
+	        // Notify
+	        for (CTLListener cl : listeners)
+	            cl.regMessage(message);
+	    }
+
 
 	
 }

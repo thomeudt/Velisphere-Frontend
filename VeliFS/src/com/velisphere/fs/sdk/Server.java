@@ -105,15 +105,14 @@ public class Server implements Runnable {
 				
 				if (msgType.equals("CNF"))
 					{
-					System.out.println(" [IN] Processing of CNF message started");
-					String msgSetFlightNumber = MessageFabrik.extractProperty(message,
-							"0d5af911-2bff-4bf8-b1f3-132c5671930e");
-						if (!msgSetFlightNumber.isEmpty())
-						{
-							SimFunctions.setFlightNumber(msgSetFlightNumber);
-						}
-
+						processCnfMessage(message);
 					}
+				
+				if (msgType.equals("REG"))
+				{
+					processRegMessage(message);
+				}
+			
 					
 			}
 			
@@ -160,16 +159,19 @@ public class Server implements Runnable {
 	{
 		
 		System.out.println(" [IN] Processing of CNF message started");
-		String msgSetFlightNumber = MessageFabrik.extractProperty(message,
-				"0d5af911-2bff-4bf8-b1f3-132c5671930e");
-			if (!msgSetFlightNumber.isEmpty())
-			{
-				SimFunctions.setFlightNumber(msgSetFlightNumber);
-			}
+		ctlInitiator.processCnfMessage(message);
 
 		
 	}
 	
+	private void processRegMessage(String message) throws JsonProcessingException, IOException, ConfigurationNotFoundException
+	{
+		
+		System.out.println(" [IN] Processing of REG message started");
+		ctlInitiator.processRegMessage(message);
+
+		
+	}
 	
 	
 

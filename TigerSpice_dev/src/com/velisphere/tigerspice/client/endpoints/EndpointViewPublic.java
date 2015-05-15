@@ -29,6 +29,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointView.EndpointViewUiBinder;
+import com.velisphere.tigerspice.client.endpoints.info.EndpointInformationWidget;
+import com.velisphere.tigerspice.client.endpoints.sensor.EndpointSensorWidget;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.locator.logical.LogicalMapWidget;
 import com.velisphere.tigerspice.client.locator.maps.InfoWindowMapWidget;

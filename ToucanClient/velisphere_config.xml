@@ -2,6 +2,6 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 <comment>This file contains Velisphere authentication information. Do not overwrite!</comment>
-<entry key="Secret Key">SUI6Yoz29qsdV6kVpx5O2HPcuvwkmZnA+wA+uCUZrynEXFTCQvwdl2fn+ebMoRs92e1+yRmEI5vjq0lGZG1Skg==</entry>
-<entry key="Endpoint ID">25914378-3ffe-4b6b-8062-ef51bf203b87</entry>
+<entry key="Secret Key">l6YJybuMLngOwjSmN4TuS6cXiTfS0UX8ctbHzbkdOEA8/YtWm/lBJjeOXOmere2zBj14jbUDg9yBRSIxfBkVdg==</entry>
+<entry key="Endpoint ID">dc320cb9-b27d-4878-a3c4-cb3e11ef3f34</entry>
 </properties>
