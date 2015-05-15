@@ -5,7 +5,7 @@ import java.util.HashMap;
 import com.velisphere.fs.sdk.Server;
 import com.velisphere.fs.sdk.ServerParameters;
 import com.velisphere.fs.sdk.config.ConfigData;
-import com.velisphere.fs.sensors.Constants;
+import com.velisphere.fs.sensorsAndConfigs.Constants;
 
 import flightsim.simconnect.SimConnect;
 import flightsim.simconnect.data.LatLonAlt;
@@ -40,6 +40,7 @@ public class SendCommands {
 	Float temperatureTAT = e.getDataFloat32();
 	Integer totalWeight = e.getDataInt32();
 	Integer autoBrake = e.getDataInt32();
+	String flightNumber = e.getDataString8();
 	
 	
 	// print to users
@@ -54,6 +55,7 @@ public class SendCommands {
 	System.out.println("\tAoA: " + aoA.toString());
 	System.out.println("\tLatitude: " + lat.toString());
 	System.out.println("\tLogitude: " + lon.toString());
+	System.out.println("\tFlight Number: " + flightNumber);
 	
 	// line separator
 	if (e.getEntryNumber() == e.getOutOf())
@@ -121,6 +123,9 @@ public class SendCommands {
 	messageHash.put(Constants.autoBrake,
 			String.valueOf(autoBrake));
 	
+	messageHash.put(Constants.flightNumber,
+			String.valueOf(flightNumber));
+	
 	
 	System.out.println("Message Hash Sent to Controller: "
 			+ messageHash);
@@ -133,5 +138,7 @@ public class SendCommands {
 	}
 
 }
+	
+	
 
 }

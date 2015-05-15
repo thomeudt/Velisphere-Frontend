@@ -48,7 +48,7 @@ public class AMQPServiceImpl extends RemoteServiceServlet implements
 		messageHash.put("getAllProperties", "1");
 		
 		try {
-			sendHashTable(messageHash, endpointID);
+			sendHashTable(messageHash, endpointID, "CTL");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -85,7 +85,7 @@ public class AMQPServiceImpl extends RemoteServiceServlet implements
 		messageHash.put("getIsAlive", "1");
 		
 		try {
-			sendHashTable(messageHash, endpointID);
+			sendHashTable(messageHash, endpointID, "CTL");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -104,7 +104,7 @@ public class AMQPServiceImpl extends RemoteServiceServlet implements
 	messageHash.put(propertyID, value);
 	
 	try {
-		sendHashTable(messageHash, endpointID);
+		sendHashTable(messageHash, endpointID, "CNF");
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -118,7 +118,7 @@ public class AMQPServiceImpl extends RemoteServiceServlet implements
 
 	
 	private void sendHashTable(HashMap<String, String> message,
-			String queue_name) throws Exception {
+			String queue_name, String messageType) throws Exception {
 
 		ConnectionFactory connectionFactory = new ConnectionFactory();
 		connectionFactory.setHost(ServerParameters.rabbit_ip);
@@ -139,7 +139,7 @@ public class AMQPServiceImpl extends RemoteServiceServlet implements
 				.replyTo(ServerParameters.my_queue_name).deliveryMode(2)
 				.build();
 
-		message.put("TYPE", "CTL");
+		message.put("TYPE", messageType);
 		java.util.Date date = new java.util.Date();
 		Timestamp timeStamp = new Timestamp(date.getTime());
 		message.put("TIMESTAMP", timeStamp.toString());

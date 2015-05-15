@@ -50,7 +50,7 @@ import org.voltdb.types.TimestampType;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
-import com.velisphere.tigerspice.client.helper.ErrorCodes;
+import com.velisphere.tigerspice.client.helper.VeliConstants;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.LogicLinkTargetData;
 import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
@@ -668,7 +668,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (ProcCallException e1) {
-			errorTracker = ErrorCodes.VOLT_INSERTFAILED;
+			errorTracker = VeliConstants.VOLT_INSERTFAILED;
 
 			System.out
 					.println("[ER] ENDPOINT COULD NOT BE PROVISIONED, PROBABLY ALREADY EXISTS");

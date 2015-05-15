@@ -1,4 +1,7 @@
-package com.velisphere.fs.sensors;
+package com.velisphere.fs.sensorsAndConfigs;
+
+import flightsim.simconnect.SimConnect;
+import flightsim.simconnect.SimConnectDataType;
 
 public class Constants {
 	
@@ -25,6 +28,8 @@ public class Constants {
 	public static final String temperatureTAT = "851c4fdd-21f0-408b-b278-03bcf5108a68";
 	public static final String totalWeight = "d4de8f4e-6ebc-4bbc-86c0-cf0743370159";
 	public static final String autoBrake = "8b7a2605-5fa5-4a31-a295-8c0283f65ca3";
+	public static final String flightNumber = "0d5af911-2bff-4bf8-b1f3-132c5671930e";
+	
 	
 	
 }

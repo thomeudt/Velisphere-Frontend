@@ -16,6 +16,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
@@ -25,6 +27,7 @@ import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.helper.VeliConstants;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
@@ -266,7 +269,19 @@ public class EndpointConfiguratorWidget extends Composite  {
 							@Override
 							public void onSuccess(String result) {
 								
-								pgpLastValue.setText("new value ("+txtNewValue.getText()+") submitted, refresh needed");
+								pgpLastValue.setText("New value submitted, refreshing data from endpoint. Please wait...");
+								Timer t = new Timer() {
+								      @Override
+								      public void run() {
+								    	  populateCurrentState(propertyID);   
+								      }
+								    };
+
+								    // Schedule the timer to run once in 5 seconds.
+								    t.schedule(3000);
+								
+								
+								
 							}
 
 						});
@@ -276,6 +291,30 @@ public class EndpointConfiguratorWidget extends Composite  {
 		});
 	}
 	
+	@UiHandler("btnRefresh")
+	void onClick(ClickEvent e) {
+		AMQPServiceAsync amqpService = GWT
+				.create(AMQPService.class);
+
+		amqpService.sendGetAllProperties(endpointID,
+				new AsyncCallback<String>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						// TODO Auto-generated method stub
+						AppController.openEndpoint(endpointID, VeliConstants.VIEWMODE_CONFIG);
+						
+					}
+
+		
+		});
+	}
 
 }
 

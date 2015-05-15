@@ -67,7 +67,7 @@ public class FsConnect {
 		//Flaps.full();
 		
 		
-		simConnect = new SimConnect("AIList");
+		simConnect = new SimConnect("VeliFS Listener");
 
 		simConnect.addToDataDefinition(dataDefID, "STRUCT LATLONALT", null,
 				SimConnectDataType.LATLONALT);
@@ -115,6 +115,8 @@ public class FsConnect {
 				SimConnectDataType.INT32);
 		simConnect.addToDataDefinition(dataDefID, "AUTO BRAKE SWITCH CB", null,
 				SimConnectDataType.INT32);
+		simConnect.addToDataDefinition(dataDefID, "ATC FLIGHT NUMBER", null,
+				SimConnectDataType.STRING8);
 		
 		
 		// get warned every 4 seconds when in sim mode

@@ -23,6 +23,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
@@ -30,9 +31,12 @@ import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 import com.rabbitmq.client.AMQP.BasicProperties;
+import com.velisphere.fs.actors.SimFunctions;
 import com.velisphere.fs.sdk.config.ConfigData;
 import com.velisphere.fs.sdk.config.ConfigFileAccess;
 import com.velisphere.fs.sdk.security.HashTool;
+
+import flightsim.simconnect.config.ConfigurationNotFoundException;
 
 
 public class Server implements Runnable {
@@ -89,20 +93,27 @@ public class Server implements Runnable {
 			while (!Thread.currentThread().isInterrupted()) {
 				QueueingConsumer.Delivery delivery = consumer.nextDelivery();
 				String message = new String(delivery.getBody());
-				System.out.println(" [x] Received '" + message + "'");
+				String msgType = MessageFabrik.extractProperty(message, "TYPE");
+				System.out.println(" [IN] Received " + msgType+ " message: '" + message + "'");
 
-			
 				
-				String msgGetAllProperties = MessageFabrik.extractProperty(message,
-							"getAllProperties");
+				if (msgType.equals("CTL"))
+					{
+						processCtlMessage(message);
+					}
+					
 				
-				if (msgGetAllProperties.equals("1")) ctlInitiator.requestAllProperties();
-				
-				String msgIsAliveRequest = MessageFabrik.extractProperty(message,
-						"getIsAlive");
-			
-				if (msgIsAliveRequest.equals("1")) ctlInitiator.requestIsAlive();;
-				
+				if (msgType.equals("CNF"))
+					{
+					System.out.println(" [IN] Processing of CNF message started");
+					String msgSetFlightNumber = MessageFabrik.extractProperty(message,
+							"0d5af911-2bff-4bf8-b1f3-132c5671930e");
+						if (!msgSetFlightNumber.isEmpty())
+						{
+							SimFunctions.setFlightNumber(msgSetFlightNumber);
+						}
+
+					}
 					
 			}
 			
@@ -123,9 +134,45 @@ public class Server implements Runnable {
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (ConfigurationNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}
+	
+	private void processCtlMessage(String message) throws JsonProcessingException, IOException
+	{
+		String msgGetAllProperties = MessageFabrik.extractProperty(message,
+				"getAllProperties");
+
+			if (msgGetAllProperties.equals("1")) ctlInitiator.requestAllProperties();
+
+			String msgIsAliveRequest = MessageFabrik.extractProperty(message,
+			"getIsAlive");
+
+			if (msgIsAliveRequest.equals("1")) ctlInitiator.requestIsAlive();
+
+		
+	}
+	
+	private void processCnfMessage(String message) throws JsonProcessingException, IOException, ConfigurationNotFoundException
+	{
+		
+		System.out.println(" [IN] Processing of CNF message started");
+		String msgSetFlightNumber = MessageFabrik.extractProperty(message,
+				"0d5af911-2bff-4bf8-b1f3-132c5671930e");
+			if (!msgSetFlightNumber.isEmpty())
+			{
+				SimFunctions.setFlightNumber(msgSetFlightNumber);
+			}
+
+		
+	}
+	
+	
+	
+
 
 	public static void sendHashTable(HashMap<String, String> message,
 			String queue_name, String type) throws Exception {

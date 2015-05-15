@@ -63,6 +63,9 @@
 					<b:Column size="2">
 						<b:Button type="PRIMARY" size="MINI" addStyleNames="btn-block" ui:field="btnSubmit">Submit</b:Button>
 					</b:Column>
+					<b:Column size="2">
+						<b:Button type="SUCCESS" size="MINI" addStyleNames="btn-block" ui:field="btnRefresh">Refresh Data</b:Button>
+					</b:Column>
 				</b:Row>
 
 			</b:Column>

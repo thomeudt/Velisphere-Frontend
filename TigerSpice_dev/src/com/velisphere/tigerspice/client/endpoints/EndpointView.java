@@ -36,15 +36,16 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
-
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.helper.VeliConstants;
 import com.velisphere.tigerspice.client.locator.logical.LogicalMapWidget;
 import com.velisphere.tigerspice.client.locator.maps.HeatMapLayerWidget;
 import com.velisphere.tigerspice.client.locator.maps.InfoWindowMapWidget;
@@ -100,6 +101,7 @@ public class EndpointView extends Composite {
 	String endpointClassID;
 	String endpointID;
 	String sphereID;
+	String sphereName;
 	NavLink bread0;
 	NavLink bread1;
 	NavLink bread2;
@@ -127,10 +129,50 @@ public class EndpointView extends Composite {
 		this.endpointClassID = endpointClassID;
 		this.endpointID = endpointID;
 		this.sphereID = sphereID;
+		this.sphereName = sphereName;
 		
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		
+		initialize();
+		
+		
+	}
+	
+	
+	public EndpointView(final String sphereID, final String sphereName,
+			final String endpointID, String endpointName, final String endpointClassID, final int viewMode) {
+		
+		rpcServiceEndpoint = GWT.create(EndpointService.class);
+		
+		this.endpointClassID = endpointClassID;
+		this.endpointID = endpointID;
+		this.sphereID = sphereID;
+		this.sphereName = sphereName;
+		
+		
+		initWidget(uiBinder.createAndBindUi(this));
+		
+		initialize();
+		
+		RootPanel.get().add(new HTML("ViewMode: " + viewMode));
+		
+		switch(viewMode)
+		{
+		case VeliConstants.VIEWMODE_CONFIG:   {
+						tbpEndpoint.clear();
+						EndpointConfiguratorWidget endpointConfiguratorWidget = new EndpointConfiguratorWidget(endpointID);
+						tbpEndpoint.add(endpointConfiguratorWidget);
+						tabPanel.selectTab(4);
+					}  	  
+		}
+		
+		
+		
+	}
+	
+	private void initialize()
+	{
 		bread0 = new NavLink();
 		bread0.setText("Home");
 		brdMain.add(bread0);		
@@ -265,8 +307,7 @@ public class EndpointView extends Composite {
 				}
 				});
 		pghEndpointName.add(ancEditEndpointName);
-	
-		
+
 	}
 	
 	
