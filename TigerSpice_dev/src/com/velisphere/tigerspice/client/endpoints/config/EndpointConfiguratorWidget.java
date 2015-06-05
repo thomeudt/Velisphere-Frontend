@@ -55,6 +55,8 @@ public class EndpointConfiguratorWidget extends Composite  {
 	@UiField
 	Button btnSubmit;
 	@UiField
+	Button btnRefresh;
+	@UiField
 	Paragraph pgpLastValue;
 	@UiField
 	Paragraph pgpLastUpdate;
@@ -113,7 +115,7 @@ public class EndpointConfiguratorWidget extends Composite  {
 						Iterator<PropertyData> it = result.iterator();
 						if (it.hasNext() == false) {
 							
-							pgpPropertyName.setText("This endpoint does not contain sensors.");
+							pgpPropertyName.setText("This endpoint does not allow configuration.");
 							pgpUnitHeader.setText("");
 							pgpCurrentValueHeader.setText("");
 							pgpNewValueHeader.setText("");
@@ -122,6 +124,8 @@ public class EndpointConfiguratorWidget extends Composite  {
 							pgpLastValue.setText("");
 							pgpLastUpdate.setText("");
 							btnSubmit.setVisible(false);
+							btnRefresh.setVisible(false);
+							txtNewValue.setVisible(false);
 
 						}
 						while (it.hasNext()) {

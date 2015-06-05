@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.client.admin.epc;
+package com.velisphere.tigerspice.client.endpoints.alerts;
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -49,7 +49,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.cell.client.TextCell;
 
-public class EPCList extends Composite {
+public class AlertList extends Composite {
 
 	final DialogBox dialogBox = new DialogBox();
 	CellTable<EpcItem> cellTable;
@@ -64,7 +64,7 @@ public class EPCList extends Composite {
 
 	}
 
-	public EPCList() {
+	public AlertList() {
 
 		EPCServiceAsync rpcService;
 
@@ -131,6 +131,16 @@ public class EPCList extends Composite {
 							
 							
 							//Window.alert("You selected: " + selected.name);
+							/**
+							final EditEPCInputPage editEPCWidget = new EditEPCInputPage(selected.id, selected.name, selected.imageURL);
+					
+							editEPCWidget.setAutoHideEnabled(true);
+
+							//multicheckDialogBox.setAnimationEnabled(true);
+
+							editEPCWidget.show();
+							editEPCWidget.center();
+							**/
 							
 							AppController.openEPCInput(selected.id, "");
 

@@ -45,6 +45,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.actor.EndpointActorWidget;
+import com.velisphere.tigerspice.client.endpoints.alerts.EndpointAlertsWidget;
 import com.velisphere.tigerspice.client.endpoints.config.EndpointConfiguratorWidget;
 import com.velisphere.tigerspice.client.endpoints.info.EndpointInformationWidget;
 import com.velisphere.tigerspice.client.endpoints.sensor.EndpointSensorWidget;
@@ -427,6 +428,8 @@ public class EndpointView extends Composite {
 		tblAlerts.addClickHandler(new ClickHandler() {
 	          public void onClick(ClickEvent event) {
 	        	  tbpEndpoint.clear();
+	        	  EndpointAlertsWidget alertsWidget = new EndpointAlertsWidget(endpointID, tbpEndpoint);
+	        	  tbpEndpoint.add(alertsWidget);
 	        	 
 	        		
 	              

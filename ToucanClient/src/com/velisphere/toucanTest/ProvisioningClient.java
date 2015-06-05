@@ -61,7 +61,7 @@ public class ProvisioningClient {
 			
 			String identifier = "MSG"; 
 			
-			Response response = target.path( "endpoint" ).path( identifier).request().put( Entity.text("1f7dea63-7b69-459a-8d4a-956107fa0c68") );
+			Response response = target.path( "endpoint" ).path( identifier).request().put( Entity.text("EPC1") );
 			System.out.println("Search for identifier: " + identifier);	
 		
 			System.out.println (response);

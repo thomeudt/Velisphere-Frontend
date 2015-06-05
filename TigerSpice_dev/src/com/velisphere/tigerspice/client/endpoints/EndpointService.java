@@ -51,6 +51,8 @@ public interface EndpointService extends RemoteService {
 	UnprovisionedEndpointData getUnprovisionedEndpoints(String endpointID, String captchaWord);
 	String addNewEndpoint(String endpointID, String endpointName, String endpointclassID, String userID);
 	HashMap<String, LinkedList<LogicLinkTargetData>> getLinksForEndpointList(LinkedList<String> endpointID);
+	String addNewAlert(String endpointID, String checkpathID, String alertName,
+			String userID);
 }
 
 

@@ -17,7 +17,7 @@ public class PingRequestClient {
 		
 		Client client = ClientBuilder.newClient();
 
-		String endpointID = "E2";
+		String endpointID = "b0954534-4396-4d49-912c-8b6b99f6743c";
 		
 			
 			WebTarget target = client.target( "http://localhost:8080/ToucanServer/rest/endpoint/put/" );

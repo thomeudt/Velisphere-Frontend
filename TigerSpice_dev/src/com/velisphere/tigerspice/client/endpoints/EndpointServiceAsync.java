@@ -42,4 +42,5 @@ public interface EndpointServiceAsync {
 	void getUnprovisionedEndpoints(String endpointID, String captchaWord, AsyncCallback<UnprovisionedEndpointData> callback);
 	void addNewEndpoint(String endpointID, String endpointName, String endpointclassID, String userID, AsyncCallback<String> callback);
 	void getLinksForEndpointList(LinkedList<String> endpointID, AsyncCallback<HashMap<String, LinkedList<LogicLinkTargetData>>> callback); 
+	void addNewAlert(String endpointID, String checkpathID, String alertName, String userID, AsyncCallback<String> callback);
 }

@@ -981,5 +981,59 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		return endpointsForMultipleEndpointIDs;
 
 	}
+	
+	@Override
+	public String addNewAlert(String endpointID, String checkpathID,
+			String alertName, String userID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+		
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	
+		
+
+		// first add to VoltDB
+
+		
+		String alertID = UUID.randomUUID().toString();
+
+		try {
+
+			voltCon.montanaClient.callProcedure("ALERT.insert", alertID,
+					userID, alertName, checkpathID);
+			
+		} catch (NoConnectionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProcCallException e1) {
+			
+			System.out
+					.println("[ER] ENDPOINT COULD NOT BE PROVISIONED, PROBABLY ALREADY EXISTS");
+
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// 
+		return alertID;
+
+	}
 
 }

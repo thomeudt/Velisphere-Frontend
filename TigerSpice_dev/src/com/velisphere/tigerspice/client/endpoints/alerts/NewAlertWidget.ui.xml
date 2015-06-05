@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:ct="urn:import:com.google.gwt.user.cellview.client" xmlns:vspy="urn:import:com.velisphere.tigerspice.client.properties"
+	xmlns:vsal="urn:import:com.velisphere.tigerspice.client.endpoints.alerts"
+	xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
+	<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images' />
+	
+
+
+	<g:HTMLPanel>
+
+		<b:Row>
+			<b:Column size="2">
+				<b:Heading size ="3" text="Alerts" />
+			</b:Column>
+			<b:Column size="6">
+				<b:Heading size ="3" text="Create new Alert" />
+			</b:Column>
+		
+		
+			
+		</b:Row>
+		
+		<b:Row>
+			<b:Column size="2" offset="2">
+						<b:Paragraph text="Alert Name" />
+					</b:Column>
+					<b:Column size="3">
+						 <b:TextBox ui:field="txtAlertName" name="txtAlertName" />
+					</b:Column>
+					
+		</b:Row>
+				
+		<b:Row>
+						<b:Column size="2" offset="2">
+					<b:Paragraph text="Property to be monitored" />
+					</b:Column>
+					<b:Column size="3">
+						 <b:ListBox ui:field="lbxProperty" name="lbxProperty" />
+					</b:Column>
+		</b:Row>
+		
+		<b:Row>
+						<b:Column size="2" offset="2">
+					
+					<b:Paragraph text="Operator" />
+					</b:Column>
+					<b:Column size="3">
+						 <b:ListBox ui:field="lbxOperator" name="lbxOperator" />
+					</b:Column>
+		</b:Row>
+		
+		<b:Row>
+						<b:Column size="2" offset="2">
+					
+					<b:Paragraph text="Threshold" />
+					</b:Column>
+					<b:Column size="3">
+						 <b:TextBox ui:field="txtValue" name="txtValue" />
+					</b:Column>
+		</b:Row>
+		
+		<b:Row>
+						<b:Column size="2" offset="2">
+					
+					<b:Paragraph text="Alert Type" />
+					</b:Column>
+					<b:Column size="3">
+						 <b:ListBox ui:field="lbxAlertType" name="lbxAlertType" />
+					</b:Column>
+		</b:Row>
+		
+		<b:Row>
+						<b:Column size="2" offset="2">
+					
+					<b:Paragraph text="Recepient" />
+					</b:Column>
+					<b:Column size="3">
+						 <b:TextBox ui:field="txtRecipient" name="txtRecipient" />
+					</b:Column>
+		</b:Row>
+		
+		<b:Row>
+						<b:Column size="2" offset="2">
+					
+					<b:Paragraph text="Text" />
+					</b:Column>
+					<b:Column size="3">
+						 <b:TextBox ui:field="txtText" name="txtText" />
+					</b:Column>
+		</b:Row>
+		
+		
+			
+		
+		
+		
+		
+		<b:Row>
+			<b:Column size="2" offset="2">
+			   <b:Button type="PRIMARY" ui:field="btnAdd"
+									addStyleNames="btn-block" size="SMALL">Add Alert</b:Button>
+			</b:Column>
+			
+			
+			
+			<b:Column size="2">
+				<b:Button type="DANGER" size="MINI" addStyleNames="btn-block" ui:field="btnRefresh">Cancel</b:Button>
+			</b:Column>
+		</b:Row>
+		
+		
+		
+		
+		
+		
+	</g:HTMLPanel>
+</ui:UiBinder> 

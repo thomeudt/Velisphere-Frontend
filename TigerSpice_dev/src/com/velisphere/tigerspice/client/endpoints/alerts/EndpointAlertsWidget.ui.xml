@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:ct="urn:import:com.google.gwt.user.cellview.client" xmlns:vspy="urn:import:com.velisphere.tigerspice.client.properties"
+	xmlns:vsal="urn:import:com.velisphere.tigerspice.client.endpoints.alerts"
+	xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
+	<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images' />
+	
+
+
+	<g:HTMLPanel>
+
+		<b:Row>
+			<b:Column size="2">
+				<b:Heading size ="3" text="Alerts" />
+			</b:Column>
+			<b:Column size="6">
+				<vsal:AlertList ui:field="altAlertList"/>
+			</b:Column>
+			
+		</b:Row>
+		
+		
+		<b:Row>
+			<b:Column size="2" offset="2">
+			   <b:Button type="PRIMARY" ui:field="btnAddAlert"
+									addStyleNames="btn-block" size="SMALL">Add Alert</b:Button>
+			</b:Column>
+			<b:Column size="2">
+				<b:Button type="SUCCESS" size="MINI" addStyleNames="btn-block" ui:field="btnRefresh">Refresh Data</b:Button>
+			</b:Column>
+		</b:Row>
+		
+		
+		
+		
+		
+		
+	</g:HTMLPanel>
+</ui:UiBinder> 
