@@ -26,7 +26,7 @@ public class CTLEventResponder implements CTLListener {
 	@Override
 	public void isAliveRequested() {
 
-		System.out.println("IsAlive Requested...");
+		System.out.println(" [MS] IsAlive Requested...");
 		
 		HashMap<String, String> messageHash = new HashMap<String, String>();
 		messageHash.put("setState", "REACHABLE");
@@ -42,14 +42,14 @@ public class CTLEventResponder implements CTLListener {
 	@Override
 	public void allPropertiesRequested() {
 
-		System.out.println("AllProperties Requested, but not supported by Simple Mail Service");
+		System.out.println(" [MS] AllProperties Requested, but not supported by Simple Mail Service");
 		
 		
 	}
 
 	@Override
 	public void cnfMessage(String message) {
-		System.out.println("CnfMessage Received");
+		System.out.println(" [MS] CnfMessage Received");
 		
 		
 	}
@@ -58,7 +58,7 @@ public class CTLEventResponder implements CTLListener {
 	public void regMessage(String message) {
 		// TODO Auto-generated method stub
 		
-	System.out.println("RegMessage Received");
+	System.out.println(" [MS] RegMessage Received");
 	
 	
 	// unpack message
@@ -105,7 +105,7 @@ public class CTLEventResponder implements CTLListener {
 	 
 				Transport.send(emailMessage);
 	 
-				System.out.println(" [IN] E-Mail sent.");
+				System.out.println(" [MS] E-Mail sent.");
 	 
 			} catch (MessagingException e) {
 				throw new RuntimeException(e);

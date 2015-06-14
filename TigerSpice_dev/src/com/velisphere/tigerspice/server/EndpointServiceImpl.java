@@ -27,6 +27,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.UUID;
 import java.util.Vector;
@@ -51,6 +52,7 @@ import org.voltdb.types.TimestampType;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.helper.VeliConstants;
+import com.velisphere.tigerspice.shared.AlertData;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.LogicLinkTargetData;
 import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
@@ -983,8 +985,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	@Override
-	public String addNewAlert(String endpointID, String checkpathID,
-			String alertName, String userID)
+	public String addNewAlert(AlertData alert)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -1001,15 +1002,18 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 	
 		
 
-		// first add to VoltDB
+		//  add to VoltDB
 
 		
 		String alertID = UUID.randomUUID().toString();
+		alert.setAlertID(alertID);
 
 		try {
 
-			voltCon.montanaClient.callProcedure("ALERT.insert", alertID,
-					userID, alertName, checkpathID);
+			voltCon.montanaClient.callProcedure("ALERT.insert", alert.getAlertID(),
+					alert.getUserID(), alert.getEndpointID(), alert.getAlertName(), alert.getProperty(), alert.getProperty(), alert.getThreshold(),
+					alert.getType(), alert.getRecipient(), alert.getText(), alert.getCheckpathID());
+			
 			
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
@@ -1020,7 +1024,9 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		} catch (ProcCallException e1) {
 			
 			System.out
-					.println("[ER] ENDPOINT COULD NOT BE PROVISIONED, PROBABLY ALREADY EXISTS");
+					.println("[ER] ALERT COULD NOT BE ADDED");
+			
+			e1.printStackTrace();
 
 		}
 
@@ -1035,5 +1041,126 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		return alertID;
 
 	}
+	
+	
+	@Override
+	public LinkedHashMap<String, String> getAllAlerts(String endpointID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		LinkedHashMap<String, String> allAlerts = new LinkedHashMap<String, String>();
+		try {
+
+			final ClientResponse findAllUsers = voltCon.montanaClient
+					.callProcedure("UI_SelectAllAlertsForEndpoint", endpointID);
+
+			final VoltTable findAllUsersResults[] = findAllUsers.getResults();
+
+			VoltTable result = findAllUsersResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					
+					allAlerts.put(result.getString("ALERTID"), result.getString("ALERTNAME"));
+					
+				}
+			}
+
+			// System.out.println(allEndPoints);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return allAlerts;
+	}
+	
+	
+	@Override
+	public AlertData getAlertDetails(String alertID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		AlertData alert = new AlertData();
+		
+		try {
+
+			final ClientResponse findAllUsers = voltCon.montanaClient
+					.callProcedure("UI_SelectAllAlertDetails", alertID);
+
+			final VoltTable findAllUsersResults[] = findAllUsers.getResults();
+
+			VoltTable result = findAllUsersResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					
+					alert.setAlertID(result.getString("ALERTID"));
+					alert.setAlertName(result.getString("ALERTNAME"));
+					alert.setCheckpathID(result.getString("CHECKPATHID"));
+					alert.setEndpointID(result.getString("ENDPOINTID"));
+					alert.setOperator(result.getString("OPERATOR"));
+					alert.setProperty(result.getString("PROPERTY"));
+					alert.setRecipient(result.getString("RECIPIENT"));
+					alert.setText(result.getString("TEXT"));
+					alert.setType(result.getString("TYPE"));
+					alert.setUserID(result.getString("USERID"));
+					
+				}
+			}
+
+			// System.out.println(allEndPoints);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return alert;
+	}
+
+
+	
 
 }

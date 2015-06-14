@@ -49,7 +49,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.cell.client.TextCell;
 
-public class AlertList extends Composite {
+public class AlertList_unused extends Composite {
 
 	final DialogBox dialogBox = new DialogBox();
 	CellTable<EpcItem> cellTable;
@@ -64,7 +64,7 @@ public class AlertList extends Composite {
 
 	}
 
-	public AlertList() {
+	public AlertList_unused() {
 
 		EPCServiceAsync rpcService;
 

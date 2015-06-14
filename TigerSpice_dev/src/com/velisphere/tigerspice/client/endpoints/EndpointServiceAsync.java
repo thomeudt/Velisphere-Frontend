@@ -21,8 +21,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Vector;
+import java.util.LinkedHashMap;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.velisphere.tigerspice.shared.AlertData;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.LogicLinkTargetData;
@@ -42,5 +44,8 @@ public interface EndpointServiceAsync {
 	void getUnprovisionedEndpoints(String endpointID, String captchaWord, AsyncCallback<UnprovisionedEndpointData> callback);
 	void addNewEndpoint(String endpointID, String endpointName, String endpointclassID, String userID, AsyncCallback<String> callback);
 	void getLinksForEndpointList(LinkedList<String> endpointID, AsyncCallback<HashMap<String, LinkedList<LogicLinkTargetData>>> callback); 
-	void addNewAlert(String endpointID, String checkpathID, String alertName, String userID, AsyncCallback<String> callback);
+	void getAllAlerts(String endpointID, AsyncCallback<LinkedHashMap<String, String>> callback);
+	void addNewAlert(AlertData alert, AsyncCallback<String> callback);
+	void getAlertDetails(String alertID, AsyncCallback<AlertData> callback);
+	
 }

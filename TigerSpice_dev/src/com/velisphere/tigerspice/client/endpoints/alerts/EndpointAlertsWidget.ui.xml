@@ -5,36 +5,101 @@
 	xmlns:vsal="urn:import:com.velisphere.tigerspice.client.endpoints.alerts"
 	xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
 	<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images' />
-	
+
 
 
 	<g:HTMLPanel>
 
 		<b:Row>
 			<b:Column size="2">
-				<b:Heading size ="3" text="Alerts" />
+				<b:ListBox styleName="span2" ui:field="lstAlerts" />
 			</b:Column>
 			<b:Column size="6">
-				<vsal:AlertList ui:field="altAlertList"/>
+				<b:Row>
+					<b:Column size="6">
+						<b:Heading size="3" ui:field="pgpAlertName" text="Loading..." />
+					</b:Column>
+				</b:Row>
+
+
+				<b:Row>
+					<b:Column size="3">
+						<b:Paragraph text="Property monitored" ui:field="pgpLastValueHeader" />
+					</b:Column>
+					<b:Column size="3">
+						<b:Paragraph ui:field="pgpLastValue" text="Last Loading..." />
+					</b:Column>
+				</b:Row>
+
+				<b:Row>
+					<b:Column size="3">
+						<b:Paragraph text="Operator" ui:field="pgpActionHeader" />
+					</b:Column>
+					<b:Column size="3">
+						<b:Paragraph ui:field="pgpAction" text="Last Loading..." />
+					</b:Column>
+				</b:Row>
+
+
+				<b:Row>
+					<b:Column size="3">
+						<b:Paragraph text="Threshold" ui:field="pgpCheckHeader" />
+					</b:Column>
+					<b:Column size="3">
+						<b:Paragraph ui:field="pgpCheck" text="Last Loading..." />
+					</b:Column>
+				</b:Row>
+
+				<b:Row>
+					<b:Column size="3">
+						<b:Paragraph text="Alert Type"
+							ui:field="pgpLogicHeader" />
+					</b:Column>
+					<b:Column size="3">
+						<b:Paragraph ui:field="pgpLogic" text="Last Loading..." />
+					</b:Column>
+				</b:Row>
+
+				<b:Row>
+					<b:Column size="3">
+						<b:Paragraph text="Recipient"
+							ui:field="pgpTriggerHeader" />
+					</b:Column>
+					<b:Column size="3">
+						<b:Paragraph ui:field="pgpTrigger" text="Last Loading..." />
+					</b:Column>
+				</b:Row>
+
+				<b:Row>
+					<b:Column size="3">
+						<b:Paragraph text="Text" ui:field="pgpUnitHeader" />
+					</b:Column>
+					<b:Column size="3">
+						<b:Paragraph ui:field="pgpUnit" text="Loading..." />
+					</b:Column>
+				</b:Row>
+				
+				<b:Row>
+					<b:Column size="2" offset="0">
+						<b:Button type="PRIMARY" ui:field="btnAddAlert"
+							addStyleNames="btn-block" size="SMALL">Add Alert</b:Button>
+					</b:Column>
+					<b:Column size="2">
+						<b:Button type="SUCCESS" size="MINI" addStyleNames="btn-block"
+							ui:field="btnRefresh">Refresh Data</b:Button>
+					</b:Column>
+				</b:Row>
 			</b:Column>
-			
+
 		</b:Row>
-		
-		
-		<b:Row>
-			<b:Column size="2" offset="2">
-			   <b:Button type="PRIMARY" ui:field="btnAddAlert"
-									addStyleNames="btn-block" size="SMALL">Add Alert</b:Button>
-			</b:Column>
-			<b:Column size="2">
-				<b:Button type="SUCCESS" size="MINI" addStyleNames="btn-block" ui:field="btnRefresh">Refresh Data</b:Button>
-			</b:Column>
-		</b:Row>
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+
+
 	</g:HTMLPanel>
 </ui:UiBinder> 

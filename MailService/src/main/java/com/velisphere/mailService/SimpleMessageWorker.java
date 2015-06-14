@@ -9,7 +9,7 @@ public class SimpleMessageWorker
 {
     public static void main( String[] args )
     {
-        System.out.println( "Starting VeliSphere Simple Mail Service" );
+        System.out.println( " [MS] Starting VeliSphere Simple Mail Service v0.1" );
         
      // Activate Event Responders
 

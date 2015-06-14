@@ -18,15 +18,26 @@
 package com.velisphere.tigerspice.server;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.UnknownHostException;
 import java.sql.Timestamp;
 import java.util.HashMap;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.commons.codec.binary.Hex;
+import org.voltdb.VoltTable;
 import org.voltdb.client.ClientResponse;
+import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
+
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.rabbitmq.client.Channel;
@@ -155,6 +166,8 @@ public class AMQPServiceImpl extends RemoteServiceServlet implements
 				.replyTo(ServerParameters.my_queue_name).deliveryMode(2)
 				.build();
 
+		
+		/*
 		message.put("TYPE", messageType);
 		java.util.Date date = new java.util.Date();
 		Timestamp timeStamp = new Timestamp(date.getTime());
@@ -173,42 +186,53 @@ public class AMQPServiceImpl extends RemoteServiceServlet implements
 
 		channel.close();
 		connection.close();
+		*/
+		
+		
+		
+		HashMap<String, String> messageMap = new HashMap<String, String>();
+		messageMap.put("SECTOK", null);
+		messageMap.put("TIMESTAMP", null);
+		messageMap.put("TYPE", messageType);
+		messageMap.put("EPID", ServerParameters.my_queue_name);
+		messageMap.putAll(message);
+	
+				
+		String messagePackJSON = MessageFabrik.buildMessagePack(messageMap);
+		
+		String hMAC = HashTool.getHmacSha1(messagePackJSON, MessageValidator.getSecretFromMontana(queue_name));
+
+		HashMap<String, String> submittableMessage = new HashMap<String, String>();
+		
+		submittableMessage.put(hMAC, messagePackJSON);
+				
+		String submittableJSON = MessageFabrik.buildMessagePack(submittableMessage);
+		
+		System.out.println("HMAC:" + hMAC);
+		System.out.println("Submittable:" + submittableJSON);
+		System.out.println("Target Queue:" + queue_name);
+		
+
+		channel.basicPublish("", queue_name, null,
+				submittableJSON.getBytes());
+
+		channel.close();
 	}
 	
 	
 
 	
-	private class MessageFabrik {
-
+	private static class MessageFabrik {
 		
-		String jsonString;
 		
-		public MessageFabrik(Object object)
-		{
+		static ObjectMapper mapper = new ObjectMapper(); // object mapper for
 		
-			ObjectMapper mapper = new ObjectMapper();
-			
-			System.out.println("Intake: " + object.toString());
-		 
-			jsonString = new String();
-			try {
-				jsonString = mapper.writeValueAsString(object);
-			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-					
-			System.out.println("JSON generiert: " + jsonString);
-					
-		}
-
+		public static JsonFactory factory = mapper.getFactory();
 		
 		
 		public String extractProperty(String jsonInput, String propertyID) throws JsonProcessingException, IOException 
 		{
 
-			ObjectMapper mapper = new ObjectMapper();
-			JsonFactory factory = mapper.getFactory();
 			JsonParser jp = factory.createParser(jsonInput);
 			String foundValue = new String();
 
@@ -226,19 +250,190 @@ public class AMQPServiceImpl extends RemoteServiceServlet implements
 			return foundValue;  
 		}
 
+		public HashMap<String, String> extractKeyPropertyPairs(String jsonInput) throws JsonProcessingException, IOException 
+		{
 
+			JsonParser jp = factory.createParser(jsonInput);
+			HashMap<String, String> foundMap = new HashMap<String, String>();
 
-		public String getJsonString() {
-			return jsonString;
+			while (jp.nextToken() != JsonToken.END_OBJECT) {
+
+				String fieldname = jp.getCurrentName();
+				foundMap.put(jp.getCurrentName(), jp.getText());
+			}
+
+			jp.close();		 
+
+			return foundMap;  
+		}
+		
+		public static  String buildMessagePack(Object object)
+		{
+		
+					
+			ObjectMapper mapper = new ObjectMapper();
+			StringWriter writer = new StringWriter();
+			try {
+				mapper.writeValue(writer, object);
+			} catch (JsonGenerationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return writer.toString();
+		
 		}
 
-			
+		public String[] parseOuterJSON(String messageBody) throws IOException
+		{
 		
+			System.out.println("Parsing outer: " + messageBody);
+			JsonParser jp = factory.createParser(messageBody);
+			
+			String[] hMACandPayload = new String[2];
+			
+			while (jp.nextToken() != JsonToken.END_OBJECT) {
 
+				
+				hMACandPayload[0] = jp.getCurrentName();
+				hMACandPayload[1] = jp.getText();
+			}
 
+			jp.close();		 
+			
+
+			return hMACandPayload;  
+
+		}
+
+		
 	}
-
-
 	
+	
+	private static class MessageValidator {
+
+		
+		public static boolean validateHmac(String receivedHMAC, String payload, String endpointID) throws NoConnectionsException, IOException, ProcCallException
+		{
+			
+
+			String secret = null;
+			
+			VoltConnector voltCon = new VoltConnector();
+			
+			try {
+				voltCon.openDatabase();
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			
+			ClientResponse findSecret = voltCon.montanaClient
+					.callProcedure("SEC_SelectSecretForEndpointID", endpointID);
+
+			final VoltTable findSecretResults[] = findSecret.getResults();
+
+			VoltTable result = findSecretResults[0];
+
+			while (result.advanceRow()) {
+					
+					secret = result
+							.getString("SECRET");
+					
+			}
+
+			System.out.println("Endpoint ID: " + endpointID );
+			System.out.println("Secret in DB: " + secret );
+			
+			String calculatedHmac = HashTool.getHmacSha1(payload, secret);
+			
+			System.out.println("Calculated HMAC: " + calculatedHmac + " <> Received HMAC: " + receivedHMAC);
+			
+			boolean validationOK = false;
+			
+			if (calculatedHmac.equals(receivedHMAC)) validationOK = true;
+			
+			return validationOK;
+
+		}
+		
+		
+		public static String getSecretFromMontana(String endpointID) throws NoConnectionsException, IOException, ProcCallException
+		{
+			
+
+			String secret = null;
+			
+			VoltConnector voltCon = new VoltConnector();
+			
+			try {
+				voltCon.openDatabase();
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			
+			ClientResponse findSecret = voltCon.montanaClient
+					.callProcedure("SEC_SelectSecretForEndpointID", endpointID);
+
+			final VoltTable findSecretResults[] = findSecret.getResults();
+
+			VoltTable result = findSecretResults[0];
+
+			while (result.advanceRow()) {
+					
+					secret = result
+							.getString("SECRET");
+					
+			}
+
+			System.out.println("Secret in DB: " + secret );
+			
+					
+			return secret;
+		
+		}
+	
+	}
+	
+	private static class HashTool {
+		
+		public static String getHmacSha1(String value, String key) {
+	        try {
+	            // Get an hmac_sha1 key from the raw key bytes
+	            byte[] keyBytes = key.getBytes();           
+	            SecretKeySpec signingKey = new SecretKeySpec(keyBytes, "HmacSHA1");
+
+	            // Get an hmac_sha1 Mac instance and initialize with the signing key
+	            Mac mac = Mac.getInstance("HmacSHA1");
+	            mac.init(signingKey);
+
+	            // Compute the hmac on input data bytes
+	            byte[] rawHmac = mac.doFinal(value.getBytes());
+
+	            // Convert raw bytes to Hex
+	            byte[] hexBytes = new Hex().encode(rawHmac);
+
+	            //  Covert array of Hex bytes to a String
+	            return new String(hexBytes, "UTF-8");
+	        } catch (Exception e) {
+	            throw new RuntimeException(e);
+	        }
+	    }
+	
+	}
 	
 }

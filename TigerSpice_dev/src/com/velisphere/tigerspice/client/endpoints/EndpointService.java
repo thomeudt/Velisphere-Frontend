@@ -26,11 +26,13 @@ import java.util.HashSet;
 
 
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Vector;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.velisphere.tigerspice.shared.AlertData;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.LogicLinkTargetData;
@@ -51,8 +53,10 @@ public interface EndpointService extends RemoteService {
 	UnprovisionedEndpointData getUnprovisionedEndpoints(String endpointID, String captchaWord);
 	String addNewEndpoint(String endpointID, String endpointName, String endpointclassID, String userID);
 	HashMap<String, LinkedList<LogicLinkTargetData>> getLinksForEndpointList(LinkedList<String> endpointID);
-	String addNewAlert(String endpointID, String checkpathID, String alertName,
-			String userID);
+	String addNewAlert(AlertData alert);
+	LinkedHashMap<String, String> getAllAlerts(String endpointID);
+	AlertData getAlertDetails(String alertID);
+	
 }
 
 

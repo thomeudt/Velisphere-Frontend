@@ -81,25 +81,11 @@
 				<b:Paragraph addStyleNames="smalltext-black">No issues reported.</b:Paragraph>
 				<b:Paragraph addStyleNames="smalltext-black" ui:field="pgpLogCount">...</b:Paragraph>
 			</b:TabPane>
-			<b:TabPane heading="Spheres" active="false">
-			    <b:Heading size="4" >Spheres: OK</b:Heading>
+			<b:TabPane heading="Alerts" active="false">
+			    <b:Heading size="4" >Alerts: OK</b:Heading>
 				
 				<b:Paragraph addStyleNames="smalltext-black">No errors reported in any sphere.</b:Paragraph>
 				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
-			</b:TabPane>
-			<b:TabPane heading="Endpoints" active="false">
-			    	<b:Heading size="4" >Endpoints: OK</b:Heading>
-				
-				<b:Paragraph addStyleNames="smalltext-black">All endpoints are functioning.</b:Paragraph>
-				<b:Paragraph addStyleNames="smalltext-black">Maximum time out of contact: 14 min for endpoint X</b:Paragraph>
-				
-			</b:TabPane>
-			<b:TabPane heading="Logic Designs" active="false">
-			    <b:Heading size="4" >Logic Designs: OK</b:Heading>
-				
-				<b:Paragraph addStyleNames="smalltext-black">All logic designs function properly.</b:Paragraph>
-				<b:Paragraph addStyleNames="smalltext-black">No failed actions reported.</b:Paragraph>
-				
 			</b:TabPane>
 			<b:TabPane heading="News" active="false">
 			    <b:Heading size="4" >News</b:Heading>

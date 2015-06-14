@@ -609,6 +609,8 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 				
 	}
 
+	
+	
 
 	@Override
 	public CheckPathDataUNUSED getCheckpathDetails(String checkpathId) 

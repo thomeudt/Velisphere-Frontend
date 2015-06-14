@@ -12,23 +12,16 @@
 
 		<b:Row>
 			<b:Column size="2">
-				<b:Heading size ="3" text="Alerts" />
+				<b:Heading size ="3" text="New Alert" />
 			</b:Column>
-			<b:Column size="6">
-				<b:Heading size ="3" text="Create new Alert" />
-			</b:Column>
-		
-		
-			
-		</b:Row>
-		
-		<b:Row>
-			<b:Column size="2" offset="2">
+			<b:Column size="2">
 						<b:Paragraph text="Alert Name" />
 					</b:Column>
 					<b:Column size="3">
 						 <b:TextBox ui:field="txtAlertName" name="txtAlertName" />
 					</b:Column>
+		
+			
 					
 		</b:Row>
 				

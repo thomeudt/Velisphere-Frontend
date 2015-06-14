@@ -106,7 +106,7 @@ interface MyBinder extends UiBinder<Widget, Dashboard>{}
     	
     	pgbRed.setPercent(0);
     	pgbYellow.setPercent(0);
-    	pgbGreen.setText("30/100 endpoints activated");
+    
     	
     	final LogServiceAsync logService = GWT
 				.create(LogService.class);

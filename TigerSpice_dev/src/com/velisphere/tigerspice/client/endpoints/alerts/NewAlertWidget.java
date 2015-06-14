@@ -23,6 +23,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
+import com.velisphere.tigerspice.client.endpoints.EndpointService;
+import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.alerts.EndpointAlertsWidget.EndpointAlertsWidgetUiBinder;
 import com.velisphere.tigerspice.client.helper.ActionSourceConfig;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
@@ -37,6 +39,7 @@ import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
 import com.velisphere.tigerspice.shared.ActionObject;
+import com.velisphere.tigerspice.shared.AlertData;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.velisphere.tigerspice.shared.PropertyData;
 
@@ -68,6 +71,10 @@ public class NewAlertWidget extends Composite {
 	@UiField
 	TextBox txtRecipient;
 
+	@UiField
+	TextBox txtText;
+
+	
 	private static NewAlertWidgetUiBinder uiBinder = GWT
 			.create(NewAlertWidgetUiBinder.class);
 
@@ -279,12 +286,13 @@ public class NewAlertWidget extends Composite {
 	void sendPingRequest (ClickEvent event)  {
 		
 	
+		
 		createCheckpath();
 	
 			
 	}
 
-	
+		
 	void createCheckpath()
 	{
 		// create UUID
@@ -306,6 +314,7 @@ public class NewAlertWidget extends Composite {
 				// send checkpath to database
 				CheckPathServiceAsync checkpathService = GWT
 						.create(CheckPathService.class);
+				createAlertEntry(uuidCheckpath);
 
 				checkpathService.addNewCheckpath(txtAlertName.getText(),
 						SessionHelper.getCurrentUserID(),
@@ -331,6 +340,7 @@ public class NewAlertWidget extends Composite {
 												"Result from attempt to create checkpath: "
 														+ result));
 								createActions();
+								
 							}
 
 						});
@@ -344,6 +354,47 @@ public class NewAlertWidget extends Composite {
 
 	}
 	
+	
+	void createAlertEntry(String checkpathID)
+	{
+		
+		AlertData alert = new AlertData();
+		
+		alert.setAlertName(txtAlertName.getText());
+		alert.setCheckpathID(checkpathID);
+		alert.setEndpointID(endpointID);
+		alert.setOperator(lbxOperator.getValue());
+		alert.setProperty(lbxProperty.getValue());
+		alert.setRecipient(txtRecipient.getValue());
+		alert.setText(txtText.getValue());
+		alert.setThreshold(txtValue.getValue());
+		alert.setType(lbxAlertType.getValue());
+		alert.setUserID(SessionHelper.getCurrentUserID());
+		
+		EndpointServiceAsync endpointService = GWT
+				.create(EndpointService.class);
+
+		endpointService.addNewAlert(alert, new AsyncCallback<String>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+				
+		
+			
+	
+	}
+
 	
 	void createActions()
 	{
