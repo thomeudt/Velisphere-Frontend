@@ -47,9 +47,22 @@ public class EndpointAlertsWidget extends Composite {
 
 	@UiField
 	ListBox lstAlerts;
-	
 	@UiField
 	Heading pgpAlertName;
+	@UiField
+	Paragraph pgpPropMonitored;
+	@UiField
+	Paragraph pgpOperator;
+	@UiField
+	Paragraph pgpThreshold;
+	@UiField
+	Paragraph pgpType;
+	@UiField
+	Paragraph pgpRecipient;
+	@UiField
+	Paragraph pgpText;
+	
+	
 	
 	String endpointID;
 	String epcID;
@@ -168,6 +181,12 @@ public class EndpointAlertsWidget extends Composite {
 				// TODO Auto-generated method stub
 				
 				pgpAlertName.setText(result.getAlertName());
+				pgpOperator.setText(result.getOperator());
+				pgpType.setText(result.getType());
+				pgpRecipient.setText(result.getRecipient());
+				pgpThreshold.setText(result.getThreshold());
+				pgpText.setText(result.getText());
+				populatePropertyName(result.getProperty());
 				
 			}
 		
@@ -177,6 +196,27 @@ public class EndpointAlertsWidget extends Composite {
 		
 		
 		
+	}
+	
+	void populatePropertyName(String propertyID)
+	{
+		PropertyServiceAsync propertyService = GWT
+				.create(PropertyService.class);
+
+		propertyService.getPropertyName(propertyID, new AsyncCallback<String>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				// TODO Auto-generated method stub
+				pgpPropMonitored.setText(result);				
+			}
+		});
 	}
 	
 		

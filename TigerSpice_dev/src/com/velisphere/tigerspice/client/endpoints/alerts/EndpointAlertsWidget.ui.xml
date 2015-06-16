@@ -24,58 +24,58 @@
 
 				<b:Row>
 					<b:Column size="3">
-						<b:Paragraph text="Property monitored" ui:field="pgpLastValueHeader" />
+						<b:Paragraph text="Property monitored" ui:field="pgpPropMonitoredHeader" />
 					</b:Column>
 					<b:Column size="3">
-						<b:Paragraph ui:field="pgpLastValue" text="Last Loading..." />
+						<b:Paragraph ui:field="pgpPropMonitored" text="Last Loading..." />
 					</b:Column>
 				</b:Row>
 
 				<b:Row>
 					<b:Column size="3">
-						<b:Paragraph text="Operator" ui:field="pgpActionHeader" />
+						<b:Paragraph text="Operator" ui:field="pgpOperatorHeader" />
 					</b:Column>
 					<b:Column size="3">
-						<b:Paragraph ui:field="pgpAction" text="Last Loading..." />
+						<b:Paragraph ui:field="pgpOperator" text="Last Loading..." />
 					</b:Column>
 				</b:Row>
 
 
 				<b:Row>
 					<b:Column size="3">
-						<b:Paragraph text="Threshold" ui:field="pgpCheckHeader" />
+						<b:Paragraph text="Threshold" ui:field="pgpThresholdHeader" />
 					</b:Column>
 					<b:Column size="3">
-						<b:Paragraph ui:field="pgpCheck" text="Last Loading..." />
+						<b:Paragraph ui:field="pgpThreshold" text="Last Loading..." />
 					</b:Column>
 				</b:Row>
 
 				<b:Row>
 					<b:Column size="3">
 						<b:Paragraph text="Alert Type"
-							ui:field="pgpLogicHeader" />
+							ui:field="pgpTypeHeader" />
 					</b:Column>
 					<b:Column size="3">
-						<b:Paragraph ui:field="pgpLogic" text="Last Loading..." />
+						<b:Paragraph ui:field="pgpType" text="Last Loading..." />
 					</b:Column>
 				</b:Row>
 
 				<b:Row>
 					<b:Column size="3">
 						<b:Paragraph text="Recipient"
-							ui:field="pgpTriggerHeader" />
+							ui:field="pgpRecipientHeader" />
 					</b:Column>
 					<b:Column size="3">
-						<b:Paragraph ui:field="pgpTrigger" text="Last Loading..." />
+						<b:Paragraph ui:field="pgpRecipient" text="Last Loading..." />
 					</b:Column>
 				</b:Row>
 
 				<b:Row>
 					<b:Column size="3">
-						<b:Paragraph text="Text" ui:field="pgpUnitHeader" />
+						<b:Paragraph text="Text" ui:field="pgpTextHeader" />
 					</b:Column>
 					<b:Column size="3">
-						<b:Paragraph ui:field="pgpUnit" text="Loading..." />
+						<b:Paragraph ui:field="pgpText" text="Loading..." />
 					</b:Column>
 				</b:Row>
 				

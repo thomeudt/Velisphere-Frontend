@@ -1011,7 +1011,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		try {
 
 			voltCon.montanaClient.callProcedure("ALERT.insert", alert.getAlertID(),
-					alert.getUserID(), alert.getEndpointID(), alert.getAlertName(), alert.getProperty(), alert.getProperty(), alert.getThreshold(),
+					alert.getUserID(), alert.getEndpointID(), alert.getAlertName(), alert.getProperty(), alert.getOperator(), alert.getThreshold(),
 					alert.getType(), alert.getRecipient(), alert.getText(), alert.getCheckpathID());
 			
 			
@@ -1138,7 +1138,9 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 					alert.setRecipient(result.getString("RECIPIENT"));
 					alert.setText(result.getString("TEXT"));
 					alert.setType(result.getString("TYPE"));
+					alert.setThreshold(result.getString("THRESHOLD"));
 					alert.setUserID(result.getString("USERID"));
+					
 					
 				}
 			}
