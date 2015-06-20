@@ -1527,8 +1527,8 @@ public class LogicCanvas extends Composite {
 		deleteDialog.setText("Are you sure you want to delete this checkpath?");
 		deleteDialog.setStyleName("wellappleblue");
 		HorizontalPanel panel = new HorizontalPanel();
-		Button btnSave = new Button("Yes");
-		panel.add(btnSave);
+		Button btnDelete = new Button("Yes");
+		panel.add(btnDelete);
 		Button btnCancel = new Button("No");
 		panel.add(btnCancel);
 		deleteDialog.add(panel);
@@ -1537,7 +1537,7 @@ public class LogicCanvas extends Composite {
 		
 		final LogicCanvas currentCanvas = this;
 		
-		btnSave.addClickHandler(new ClickHandler(){
+		btnDelete.addClickHandler(new ClickHandler(){
 			
 			@Override
 			public void onClick(ClickEvent event) {

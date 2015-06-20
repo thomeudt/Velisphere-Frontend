@@ -1164,5 +1164,119 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 
 
 	
+	@Override
+	public String deleteAlert(String alertID, String checkpathID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		// first we delete the alert from the alert table
+		
+		try {
+			voltCon.montanaClient.callProcedure("ALERT.delete",
+					alertID);
+		} catch (NoConnectionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProcCallException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		// next we delete the related checkpath from the checkpath table
+		
+				try {
+					voltCon.montanaClient.callProcedure("CHECKPATH.delete",
+							checkpathID);
+				} catch (NoConnectionsException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ProcCallException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+		// now we delete the check that is contained in this checkpath
+				
+				try {
+					voltCon.montanaClient.callProcedure("@AdHoc",
+				       "DELETE FROM CHECK " +
+				       "WHERE CHECKPATHID='" + checkpathID + "'");
+				} catch (NoConnectionsException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ProcCallException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+		// now we delete the action that is contained in this checkpath
+				
+				try {
+					voltCon.montanaClient.callProcedure("@AdHoc",
+				       "DELETE FROM ACTION " +
+				       "WHERE CHECKPATHID='" + checkpathID + "'");
+				} catch (NoConnectionsException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ProcCallException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+	// now we delete the outbound property action that is contained in this checkpath
+				
+				try {
+					voltCon.montanaClient.callProcedure("@AdHoc",
+				       "DELETE FROM OUTBOUNDPROPERTYACTION " +
+				       "WHERE CHECKPATHID='" + checkpathID + "'");
+				} catch (NoConnectionsException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ProcCallException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "OK";
+
+	}
+	
 
 }

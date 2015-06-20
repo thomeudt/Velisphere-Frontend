@@ -47,5 +47,6 @@ public interface EndpointServiceAsync {
 	void getAllAlerts(String endpointID, AsyncCallback<LinkedHashMap<String, String>> callback);
 	void addNewAlert(AlertData alert, AsyncCallback<String> callback);
 	void getAlertDetails(String alertID, AsyncCallback<AlertData> callback);
+	void deleteAlert(String alertID, String checkpathID, AsyncCallback<String> callback);
 	
 }

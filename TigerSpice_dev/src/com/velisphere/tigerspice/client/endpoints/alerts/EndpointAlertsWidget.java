@@ -20,7 +20,9 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.amqp.AMQPService;
 import com.velisphere.tigerspice.client.amqp.AMQPServiceAsync;
@@ -33,6 +35,8 @@ import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.info.EndpointInformationWidget;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.logic.CheckPathService;
+import com.velisphere.tigerspice.client.logic.CheckPathServiceAsync;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.vendors.VendorService;
@@ -61,12 +65,12 @@ public class EndpointAlertsWidget extends Composite {
 	Paragraph pgpRecipient;
 	@UiField
 	Paragraph pgpText;
-	
-	
-	
+
 	String endpointID;
 	String epcID;
 	TabPane enclosingPane;
+	String currentCheckpathID;
+	String currentAlertID;
 	
 	
 
@@ -165,6 +169,8 @@ public class EndpointAlertsWidget extends Composite {
 	void populateAlertDetails(String alertID)
 	{
 		
+		this.currentAlertID = alertID;
+		
 		EndpointServiceAsync endpointService = GWT
 				.create(EndpointService.class);
 
@@ -186,6 +192,8 @@ public class EndpointAlertsWidget extends Composite {
 				pgpRecipient.setText(result.getRecipient());
 				pgpThreshold.setText(result.getThreshold());
 				pgpText.setText(result.getText());
+				currentCheckpathID = result.getCheckpathID();
+				
 				populatePropertyName(result.getProperty());
 				
 			}
@@ -229,8 +237,38 @@ public class EndpointAlertsWidget extends Composite {
 	}
 	
 	
-	@UiHandler("btnRefresh")
-	void onClick(ClickEvent e) {
+	@UiHandler("btnEdit")
+	void onEdit(ClickEvent e) {
 	}
 
+	@UiHandler("btnDelete")
+	void onDelete(ClickEvent e) {
+		
+		EndpointServiceAsync endpointService = GWT
+				.create(EndpointService.class);
+
+		
+		
+		endpointService.deleteAlert(currentAlertID, currentCheckpathID, new AsyncCallback<String>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				// TODO Auto-generated method stub
+				RootPanel.get().add(new HTML("DELETE SHOULD HAVE SUCCEEDED"));
+			}
+			
+		});
+
+		
+
+		
+	}
+
+	
 }
