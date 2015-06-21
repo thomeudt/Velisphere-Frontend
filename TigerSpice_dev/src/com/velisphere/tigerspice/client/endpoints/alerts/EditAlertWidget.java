@@ -42,6 +42,13 @@ public class EditAlertWidget extends Composite {
 
 	String currentAlertID;
 	String currentCheckpathID;
+	String currentPropertyID;
+	String currentAlertName;
+	String currentAlertType;
+	String currentOperator;
+	String currentValue;
+	String currentRecipient;
+	String currentText;
 	String endpointID;
 	String epcID;
 	String uuidAction;
@@ -109,14 +116,30 @@ public class EditAlertWidget extends Composite {
 
 			@Override
 			public void onSuccess(AlertData result) {
-				txtAlertName.setText(result.getAlertName());
-				lbxProperty.setSelectedValue(result.getProperty());
-				lbxOperator.setSelectedValue(result.getOperator());
-				lbxAlertType.setSelectedValue(result.getType());
-				txtRecipient.setText(result.getRecipient());
-				txtText.setText(result.getText());
-				txtValue.setText(result.getThreshold());
-				currentCheckpathID = result.getCheckpathID();
+				if (currentPropertyID != null)
+				{
+					txtAlertName.setText(currentAlertName);
+					lbxProperty.setSelectedValue(currentPropertyID);
+					lbxOperator.setSelectedValue(currentOperator);
+					lbxAlertType.setSelectedValue(currentAlertType);
+					txtRecipient.setText(currentRecipient);
+					txtText.setText(currentText);
+					txtValue.setText(currentValue);
+					
+					
+				} else
+				{
+					txtAlertName.setText(result.getAlertName());
+					lbxProperty.setSelectedValue(result.getProperty());
+					lbxOperator.setSelectedValue(result.getOperator());
+					lbxAlertType.setSelectedValue(result.getType());
+					txtRecipient.setText(result.getRecipient());
+					txtText.setText(result.getText());
+					txtValue.setText(result.getThreshold());
+					currentCheckpathID = result.getCheckpathID();
+					
+				}
+				
 				
 			}
 
@@ -164,6 +187,15 @@ public class EditAlertWidget extends Composite {
 
 							@Override
 							public void onChange(ChangeEvent event) {
+								currentPropertyID = lbxProperty.getValue();
+								currentAlertName = txtAlertName.getValue();
+								currentPropertyID = lbxProperty.getValue();
+								currentOperator = lbxOperator.getValue();
+								currentAlertType = lbxAlertType.getValue();
+								currentRecipient = txtRecipient.getValue();
+								currentText = txtText.getValue();
+								currentValue = txtValue.getValue();
+								
 								populateLbxOperator(lbxProperty.getValue());
 								
 							}

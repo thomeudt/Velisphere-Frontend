@@ -24,7 +24,24 @@ import com.google.gwt.event.shared.HandlerRegistration;
 
 public class JSONreadyEvent extends GwtEvent<JSONreadyEventHandler> {
 
+		String json;
 		
+		public JSONreadyEvent() {
+			super();
+			
+		}
+	
+		public JSONreadyEvent(String json) {
+			super();
+			this.json = json;
+		}
+
+		
+		public String getJson() {
+			return json;
+		}
+
+
 		public static Type<JSONreadyEventHandler> TYPE = new Type<JSONreadyEventHandler>();
 
 		  @Override

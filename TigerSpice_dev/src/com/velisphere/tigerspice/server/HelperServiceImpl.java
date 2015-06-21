@@ -37,11 +37,15 @@ import org.voltdb.client.ClientStatsContext;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.server.ServerParameters;
 import com.velisphere.tigerspice.client.helper.HelperService;
 import com.velisphere.tigerspice.client.users.LoginService;
 import com.velisphere.tigerspice.shared.EPCData;
+import com.velisphere.tigerspice.shared.MessageData;
 import com.velisphere.tigerspice.shared.MontanaStatsData;
 import com.velisphere.tigerspice.shared.UserData;
 
@@ -180,5 +184,43 @@ public class HelperServiceImpl extends RemoteServiceServlet implements HelperSer
         return stats;
     }
  
+    
+    @Override
+    public String createMessageJson(MessageData messageData)
+    {
+    	ObjectMapper mapper = new ObjectMapper();
+		
+		System.out.println("Intake: " + messageData.toString());
+	 
+		String json = ""; 
+		
+		try {
+			
+			
+	 				 
+			// display to console
+			json = mapper.writeValueAsString(messageData);
+			System.out.println("JSON generiert: " + json);
+	 
+		} catch (JsonGenerationException e) {
+	 
+			e.printStackTrace();
+	 
+		} catch (JsonMappingException e) {
+	 
+			e.printStackTrace();
+	 
+		} catch (IOException e) {
+	 
+			e.printStackTrace();
+	 
+		}
+	 
+
+		return json;
+  	
+    	
+    }
+    
      
 }
