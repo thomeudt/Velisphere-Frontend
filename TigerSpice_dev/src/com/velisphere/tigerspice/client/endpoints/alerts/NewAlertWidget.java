@@ -453,7 +453,7 @@ public class NewAlertWidget extends Composite {
 								action.endpointName = "MAILSERVICE";
 								RootPanel.get().add(new HTML("P2P: Content processed"));
 								action.propertyID = VeliConstants.MAILSERVICE_PROPID;
-								RootPanel.get().add(new HTML("P2P: APID processed"));
+								RootPanel.get().add(new HTML("P2P: APID processed"));  
 								action.propertyIdIntake = lbxProperty.getValue();
 								RootPanel.get().add(new HTML("P2P: SPID processed"));
 								action.sensorEndpointID = endpointID;
