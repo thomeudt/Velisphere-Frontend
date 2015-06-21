@@ -164,12 +164,19 @@ public class EndpointView extends Composite {
 		
 		switch(viewMode)
 		{
-		case VeliConstants.VIEWMODE_CONFIG:   {
+		case VeliConstants.ENDPOINT_VIEWMODE_CONFIG:   {
 						tbpEndpoint.clear();
 						EndpointConfiguratorWidget endpointConfiguratorWidget = new EndpointConfiguratorWidget(endpointID);
 						tbpEndpoint.add(endpointConfiguratorWidget);
 						tabPanel.selectTab(4);
 					}  	  
+		case VeliConstants.ENDPOINT_VIEWMODE_ALERTS:   {
+						tbpEndpoint.clear();
+						EndpointAlertsWidget alertsWidget = new EndpointAlertsWidget(endpointID, tbpEndpoint);
+						tbpEndpoint.add(alertsWidget);
+						tabPanel.selectTab(3);
+						 
+		}  	  
 		}
 		
 		

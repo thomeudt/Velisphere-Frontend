@@ -12,7 +12,7 @@
 
 		<b:Row>
 			<b:Column size="2">
-				<b:Heading size ="3" text="New Alert" />
+				<b:Heading size ="3" text="Edit Alert" />
 			</b:Column>
 			<b:Column size="2">
 						<b:Paragraph text="Alert Name" />
@@ -92,8 +92,8 @@
 		
 		<b:Row>
 			<b:Column size="2" offset="2">
-			   <b:Button type="PRIMARY" ui:field="btnAdd"
-									addStyleNames="btn-block" size="SMALL">Add Alert</b:Button>
+			   <b:Button type="PRIMARY" ui:field="btnSave"
+									addStyleNames="btn-block" size="SMALL">Save Alert</b:Button>
 			</b:Column>
 			
 			

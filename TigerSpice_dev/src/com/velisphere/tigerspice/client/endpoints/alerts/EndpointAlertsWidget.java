@@ -35,6 +35,7 @@ import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.info.EndpointInformationWidget;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.helper.VeliConstants;
 import com.velisphere.tigerspice.client.logic.CheckPathService;
 import com.velisphere.tigerspice.client.logic.CheckPathServiceAsync;
 import com.velisphere.tigerspice.client.properties.PropertyService;
@@ -239,6 +240,12 @@ public class EndpointAlertsWidget extends Composite {
 	
 	@UiHandler("btnEdit")
 	void onEdit(ClickEvent e) {
+		
+		enclosingPane.clear();
+		EditAlertWidget editAlertWidget = new EditAlertWidget(endpointID, currentAlertID);
+		RootPanel.get().add(new HTML("Edit for " + currentAlertID));
+		enclosingPane.add(editAlertWidget);
+		
 	}
 
 	@UiHandler("btnDelete")
@@ -261,6 +268,7 @@ public class EndpointAlertsWidget extends Composite {
 			public void onSuccess(String result) {
 				// TODO Auto-generated method stub
 				RootPanel.get().add(new HTML("DELETE SHOULD HAVE SUCCEEDED"));
+				AppController.openEndpoint(endpointID, VeliConstants.ENDPOINT_VIEWMODE_ALERTS);
 			}
 			
 		});

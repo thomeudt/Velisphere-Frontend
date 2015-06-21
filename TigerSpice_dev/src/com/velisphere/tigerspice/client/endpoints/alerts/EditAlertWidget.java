@@ -12,12 +12,9 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
@@ -26,15 +23,12 @@ import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
-import com.velisphere.tigerspice.client.endpoints.alerts.EndpointAlertsWidget.EndpointAlertsWidgetUiBinder;
-import com.velisphere.tigerspice.client.helper.ActionSourceConfig;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
 import com.velisphere.tigerspice.client.helper.UuidService;
 import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
 import com.velisphere.tigerspice.client.helper.VeliConstants;
 import com.velisphere.tigerspice.client.logic.CheckPathService;
 import com.velisphere.tigerspice.client.logic.CheckPathServiceAsync;
-import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorActor;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
@@ -44,14 +38,17 @@ import com.velisphere.tigerspice.shared.AlertData;
 import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.velisphere.tigerspice.shared.PropertyData;
 
-public class NewAlertWidget extends Composite {
+public class EditAlertWidget extends Composite {
 
+	String currentAlertID;
+	String currentCheckpathID;
 	String endpointID;
 	String epcID;
 	String uuidAction;
 	String uuidCheck;
 	String uuidCanvas;
 	String uuidCheckpath;
+	
 	UuidServiceAsync uuidService;
 	
 	@UiField
@@ -80,19 +77,53 @@ public class NewAlertWidget extends Composite {
 			.create(NewAlertWidgetUiBinder.class);
 
 	interface NewAlertWidgetUiBinder extends
-			UiBinder<Widget, NewAlertWidget> {
+			UiBinder<Widget, EditAlertWidget> {
 	}
 
-	public NewAlertWidget(String endpointID) {
+	public EditAlertWidget(String endpointID, String currentAlertID) {
 		this.endpointID = endpointID;
+		this.currentAlertID = currentAlertID;
 		initWidget(uiBinder.createAndBindUi(this));
 		uuidService = GWT
 				.create(UuidService.class);
 		
 		populatePropertyList();
 		populateAlertTypeList();
+		
+		
 	}
 	
+	
+	private void fillCurrentData()
+	{
+		EndpointServiceAsync endpointService = GWT
+				.create(EndpointService.class);
+
+		endpointService.getAlertDetails(currentAlertID, new AsyncCallback<AlertData>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(AlertData result) {
+				txtAlertName.setText(result.getAlertName());
+				lbxProperty.setSelectedValue(result.getProperty());
+				lbxOperator.setSelectedValue(result.getOperator());
+				lbxAlertType.setSelectedValue(result.getType());
+				txtRecipient.setText(result.getRecipient());
+				txtText.setText(result.getText());
+				txtValue.setText(result.getThreshold());
+				currentCheckpathID = result.getCheckpathID();
+				
+			}
+
+			
+			
+		});
+	}
 	
 	private void populatePropertyList()
 	{
@@ -138,6 +169,8 @@ public class NewAlertWidget extends Composite {
 							}
 							
 						});
+						
+						
 
 					}
 
@@ -268,6 +301,10 @@ public class NewAlertWidget extends Composite {
 								
 								else lbxOperator.addItem("Invalid Endpoint Configuration");
 								
+								// Now all drop down lists should be populated, now show current values
+								
+								fillCurrentData();
+								
 							}
 
 						});
@@ -283,13 +320,41 @@ public class NewAlertWidget extends Composite {
 
 	
 		
-	@UiHandler("btnAdd")
-	void addAlert (ClickEvent event)  {
-	
+	@UiHandler("btnSave")
+	void save (ClickEvent event)  {
+		
+		deleteCheckpath();
 		createCheckpath();
-		AppController.openEndpoint(endpointID, VeliConstants.ENDPOINT_VIEWMODE_ALERTS);		
+		AppController.openEndpoint(endpointID, VeliConstants.ENDPOINT_VIEWMODE_ALERTS);
+	
+			
 	}
 
+	
+	void deleteCheckpath() {
+		
+		EndpointServiceAsync endpointService = GWT
+				.create(EndpointService.class);
+
+		
+		
+		endpointService.deleteAlert(currentAlertID, currentCheckpathID, new AsyncCallback<String>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				// TODO Auto-generated method stub
+				RootPanel.get().add(new HTML("DELETE SHOULD HAVE SUCCEEDED for Alert " + currentAlertID + " and Checkpath " + currentCheckpathID));
+			}
+			
+		});
+	}
+		
 		
 	void createCheckpath()
 	{

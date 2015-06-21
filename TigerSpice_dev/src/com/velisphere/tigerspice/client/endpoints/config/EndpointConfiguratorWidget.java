@@ -312,7 +312,7 @@ public class EndpointConfiguratorWidget extends Composite  {
 					@Override
 					public void onSuccess(String result) {
 						// TODO Auto-generated method stub
-						AppController.openEndpoint(endpointID, VeliConstants.VIEWMODE_CONFIG);
+						AppController.openEndpoint(endpointID, VeliConstants.ENDPOINT_VIEWMODE_CONFIG);
 						
 					}
 
