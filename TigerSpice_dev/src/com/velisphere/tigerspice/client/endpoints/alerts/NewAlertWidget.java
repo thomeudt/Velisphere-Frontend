@@ -441,6 +441,7 @@ public class NewAlertWidget extends Composite {
 									JSONreadyEvent jsonReadyEvent) {
 
 								// build action object
+								// build action object
 								ActionObject action = new ActionObject();
 								action.actionID = uuidAction;
 								RootPanel.get().add(new HTML("P2P: ID processed"));
