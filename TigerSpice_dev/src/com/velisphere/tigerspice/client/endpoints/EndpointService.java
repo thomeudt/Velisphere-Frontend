@@ -58,6 +58,8 @@ public interface EndpointService extends RemoteService {
 	AlertData getAlertDetails(String alertID);
 	String deleteAlert(String alertID, String checkpathID);
 	
+	
+	
 }
 
 
