@@ -123,6 +123,7 @@ public class EndpointActorWidget extends Composite {
 
 							pgpPropertyName
 									.setText("This endpoint can't perform any actions.");
+							lstSensors.setVisible(false);
 							pgpUnitHeader.setText("");
 							pgpLastValueHeader.setText("");
 							pgpLastUpdateHeader.setText("");

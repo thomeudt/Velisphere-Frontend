@@ -101,7 +101,7 @@ public class EndpointSensorWidget extends Composite {
 						animationLoading.removeLoadAnimation();
 						Iterator<PropertyData> it = result.iterator();
 						if (it.hasNext() == false) {
-							
+							lstSensors.setVisible(false);
 							pgpPropertyName.setText("This endpoint does not contain sensors.");
 							pgpUnitHeader.setText("");
 							pgpLastValueHeader.setText("");

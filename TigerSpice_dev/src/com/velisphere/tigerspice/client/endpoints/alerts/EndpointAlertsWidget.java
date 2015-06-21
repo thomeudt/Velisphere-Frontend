@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.Paragraph;
@@ -66,7 +67,26 @@ public class EndpointAlertsWidget extends Composite {
 	Paragraph pgpRecipient;
 	@UiField
 	Paragraph pgpText;
+	
+	@UiField
+	Paragraph pgpPropMonitoredHeader;
+	@UiField
+	Paragraph pgpOperatorHeader;
+	@UiField
+	Paragraph pgpThresholdHeader;
+	@UiField
+	Paragraph pgpTypeHeader;
+	@UiField
+	Paragraph pgpRecipientHeader;
+	@UiField
+	Paragraph pgpTextHeader;
+	@UiField
+	Button btnDelete;
+	@UiField
+	Button btnEdit;
 
+
+	
 	String endpointID;
 	String epcID;
 	TabPane enclosingPane;
@@ -123,29 +143,26 @@ public class EndpointAlertsWidget extends Composite {
 						Iterator<Entry<String, String>> it = result.entrySet().iterator();
 						if (it.hasNext() == false) {
 
-							Entry<String, String> entry = it.next();
+							pgpAlertName.setText("No Alerts found for this Endpoint.");
 							
-							/*
-							pgpPropertyName
-									.setText("This endpoint can't perform any actions.");
-							pgpUnitHeader.setText("");
-							pgpLastValueHeader.setText("");
-							pgpLastUpdateHeader.setText("");
-							pgpUnit.setText("");
-							pgpCheckHeader.setText("");
-							pgpActionHeader.setText("");
-							pgpLogicHeader.setText("");
-							pgpTriggerHeader.setText("");
-							pgpLastValue.setText("");
-							pgpLastUpdate.setText("");
-							pgpCheck.setText("");
-							pgpAction.setText("");
-							pgpLogic.setText("");
-							pgpTrigger.setText("");
-							btnDataTrail.setVisible(false);
-							btnSetNewValue.setVisible(false);
-							*/
-						}
+							 lstAlerts.setVisible(false);
+							
+							 pgpPropMonitored.setVisible(false);
+							 pgpOperator.setVisible(false);
+							 pgpThreshold.setVisible(false);
+							 pgpType.setVisible(false);
+							 pgpRecipient.setVisible(false);
+							 pgpText.setVisible(false);
+							 pgpPropMonitoredHeader.setVisible(false);
+							 pgpOperatorHeader.setVisible(false);
+							 pgpThresholdHeader.setVisible(false);
+							 pgpTypeHeader.setVisible(false);
+							 pgpRecipientHeader.setVisible(false);
+							 pgpTextHeader.setVisible(false);
+							 btnDelete.setVisible(false);
+							 btnEdit.setVisible(false);
+							
+													}
 						while (it.hasNext()) {
 
 							Entry<String, String> entry = it.next();
