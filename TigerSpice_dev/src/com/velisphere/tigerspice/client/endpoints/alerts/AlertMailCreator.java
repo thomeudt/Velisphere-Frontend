@@ -149,11 +149,12 @@ public class AlertMailCreator {
 		
 		
 		mailHTML = "<p><span style=font-size:16px;><strong>VELISPHERE ALERT NOTIFICATION</strong></span></p>"+
-				"<p>Dear recepient,</p>"+
-				"<p>you are receiving this message as you have been added as a subscriber to the alert named " + alertName +".</p>"+
-				"<p>This alert has been triggered due to the event</p>"+
-				"<p>"+propertyName+" "+ operator +" " + value +"</p>"+
+				"<p>Dear recepient,<br>"+
+				"you are receiving this message as you have been added as a subscriber to the alert named " + alertName +".</p>"+
+				"<p>This alert has been triggered due to the event<br>"+
+				"<b>"+propertyName+" "+ operator +" " + value +"</b></p>"+
 				"<p>on Endpoint "+ endpointName +".</p>"+
+				"<p><b>Additional information:<br></b>" + text +"</p>"+
 				"<p>Log on to www.velisphere.com to manage this endpoint.</p>"+
 				"<p>The current status of the of the endpoint is:</p>";
 		

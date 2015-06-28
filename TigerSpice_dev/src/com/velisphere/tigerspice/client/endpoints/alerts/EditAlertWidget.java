@@ -3,12 +3,14 @@ package com.velisphere.tigerspice.client.endpoints.alerts;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -23,6 +25,9 @@ import com.velisphere.tigerspice.client.checks.CheckService;
 import com.velisphere.tigerspice.client.checks.CheckServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.JSONreadyEvent;
+import com.velisphere.tigerspice.client.event.JSONreadyEventHandler;
 import com.velisphere.tigerspice.client.helper.DatatypeConfig;
 import com.velisphere.tigerspice.client.helper.UuidService;
 import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
@@ -57,6 +62,9 @@ public class EditAlertWidget extends Composite {
 	String uuidCheckpath;
 	
 	UuidServiceAsync uuidService;
+
+	@UiField
+	Button btnSave;
 	
 	@UiField
 	ListBox lbxProperty;
@@ -172,12 +180,14 @@ public class EditAlertWidget extends Composite {
 						if (it.hasNext() == false) {
 							
 							lbxProperty.addItem("No monitorable sensors.");
+							btnSave.setEnabled(false);
 													}
 						while (it.hasNext()) {
 
 							PropertyData propData = new PropertyData();
 							propData = it.next();
 							lbxProperty.addItem(propData.propertyName, propData.propertyId);
+							btnSave.setEnabled(true);
 							
 						}
 						
@@ -362,6 +372,11 @@ public class EditAlertWidget extends Composite {
 			
 	}
 
+	@UiHandler("btnCancel")
+	void onClick(ClickEvent e) {
+		AppController.openEndpoint(endpointID, VeliConstants.ENDPOINT_VIEWMODE_ALERTS);
+	}
+
 	
 	void deleteCheckpath() {
 		
@@ -490,7 +505,6 @@ public class EditAlertWidget extends Composite {
 	
 	}
 
-	
 	void createActions()
 	{
 		uuidService.getUuid(new AsyncCallback<String>(){
@@ -509,40 +523,71 @@ public class EditAlertWidget extends Composite {
 
 				RootPanel.get().add(new HTML("P2P: fetched connector"));
 
-				// build action object
-				ActionObject action = new ActionObject();
-				action.actionID = uuidAction;
-				RootPanel.get().add(new HTML("P2P: ID processed"));
-				action.actionName = "unused";
-				RootPanel.get().add(new HTML("P2P: Name processed"));
-				action.endpointClassID = VeliConstants.MAILSERVICE_EPCID;
-				RootPanel.get().add(new HTML("P2P: EPC processed"));
-				action.endpointID = VeliConstants.MAILSERVICE_EPID;
-				RootPanel.get().add(new HTML("P2P: AEPID processed"));
-				action.endpointName = "MAILSERVICE";
-				RootPanel.get().add(new HTML("P2P: Content processed"));
-				action.propertyID = VeliConstants.MAILSERVICE_PROPID;
-				RootPanel.get().add(new HTML("P2P: APID processed"));
-				action.propertyIdIntake = lbxProperty.getValue();
-				RootPanel.get().add(new HTML("P2P: SPID processed"));
-				action.sensorEndpointID = endpointID;
-				RootPanel.get().add(new HTML("P2P: SEPID processed"));
-				action.valueFromInboundPropertyID = "no";
-				action.manualValue = txtRecipient.getText();
-				RootPanel.get().add(new HTML("P2P: Source processed"));
+				// create messageJSON
 				
-				RootPanel.get().add(new HTML("P2P: built action object"));
-
-				// TODO this can be simplified - we do not need to take care of
-				// multiple actions in new setup
-
-				LinkedList<ActionObject> actions = new LinkedList<ActionObject>();
-
-				actions.add(action);
-
-				RootPanel.get().add(new HTML("P2P: built action object list"));
+				AlertMailCreator mailCreator = new  AlertMailCreator();
+				mailCreator.setAlertName(txtAlertName.getText());
+				mailCreator.setEndpointID(endpointID);
+				mailCreator.setOperator(lbxOperator.getItemText(lbxOperator.getSelectedIndex()));
+				mailCreator.setPropertyID(lbxProperty.getValue());
+				mailCreator.setPropertyName(lbxProperty.getItemText(lbxProperty.getSelectedIndex()));
+				mailCreator.setRecipient(txtRecipient.getText());
+				mailCreator.setText(txtText.getText());
+				mailCreator.setValue(txtValue.getText());
+				mailCreator.createJSON();
 				
-				createCheck(actions);
+				
+				
+				HandlerRegistration jsonReadyHandler = EventUtils.RESETTABLE_EVENT_BUS
+						.addHandler(JSONreadyEvent.TYPE, new JSONreadyEventHandler() {
+
+							@Override
+							public void onJSONready(
+									JSONreadyEvent jsonReadyEvent) {
+
+								// build action object
+								// build action object
+								ActionObject action = new ActionObject();
+								action.actionID = uuidAction;
+								RootPanel.get().add(new HTML("P2P: ID processed"));
+								action.actionName = "unused";
+								RootPanel.get().add(new HTML("P2P: Name processed"));
+								action.endpointClassID = VeliConstants.MAILSERVICE_EPCID;
+								RootPanel.get().add(new HTML("P2P: EPC processed"));
+								action.endpointID = VeliConstants.MAILSERVICE_EPID;
+								RootPanel.get().add(new HTML("P2P: AEPID processed"));
+								action.endpointName = "MAILSERVICE";
+								RootPanel.get().add(new HTML("P2P: Content processed"));
+								action.propertyID = VeliConstants.MAILSERVICE_PROPID;
+								RootPanel.get().add(new HTML("P2P: APID processed"));  
+								action.propertyIdIntake = lbxProperty.getValue();
+								RootPanel.get().add(new HTML("P2P: SPID processed"));
+								action.sensorEndpointID = endpointID;
+								RootPanel.get().add(new HTML("P2P: SEPID processed"));
+								action.valueFromInboundPropertyID = "no";
+								action.manualValue = jsonReadyEvent.getJson();
+								RootPanel.get().add(new HTML("P2P: Source processed"));
+								
+								RootPanel.get().add(new HTML("P2P: built action object"));
+
+								// TODO this can be simplified - we do not need to take care of
+								// multiple actions in new setup
+
+								LinkedList<ActionObject> actions = new LinkedList<ActionObject>();
+
+								actions.add(action);
+
+								RootPanel.get().add(new HTML("P2P: built action object list"));
+								
+								createCheck(actions);
+								
+								EventUtils.RESETTABLE_EVENT_BUS.removeHandlers();
+
+							}
+						
+						});
+
+				
 
 			}
 			
@@ -598,9 +643,5 @@ public class EditAlertWidget extends Composite {
 
 	}
 	
-	@UiHandler("btnCancel")
-	void onClick(ClickEvent e) {
-		AppController.openEndpoint(endpointID, VeliConstants.ENDPOINT_VIEWMODE_ALERTS);
-	}
 
 }

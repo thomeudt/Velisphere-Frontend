@@ -84,7 +84,9 @@ public class EndpointAlertsWidget extends Composite {
 	Button btnDelete;
 	@UiField
 	Button btnEdit;
-
+	@UiField
+	Button btnAddAlert;
+	
 
 	
 	String endpointID;

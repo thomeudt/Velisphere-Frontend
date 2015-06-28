@@ -3,6 +3,7 @@ package com.velisphere.tigerspice.client.endpoints.alerts;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.google.gwt.core.client.GWT;
@@ -15,7 +16,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasText;
@@ -59,6 +59,9 @@ public class NewAlertWidget extends Composite {
 	String uuidCanvas;
 	String uuidCheckpath;
 	UuidServiceAsync uuidService;
+	
+	@UiField
+	Button btnAdd;
 	
 	@UiField
 	ListBox lbxProperty;
@@ -124,12 +127,14 @@ public class NewAlertWidget extends Composite {
 						if (it.hasNext() == false) {
 							
 							lbxProperty.addItem("No monitorable sensors.");
+							btnAdd.setEnabled(false);
 													}
 						while (it.hasNext()) {
 
 							PropertyData propData = new PropertyData();
 							propData = it.next();
 							lbxProperty.addItem(propData.propertyName, propData.propertyId);
+							btnAdd.setEnabled(true);
 							
 						}
 						
@@ -295,6 +300,12 @@ public class NewAlertWidget extends Composite {
 		createCheckpath();
 		AppController.openEndpoint(endpointID, VeliConstants.ENDPOINT_VIEWMODE_ALERTS);		
 	}
+	
+	@UiHandler("btnCancel")
+	void onClick(ClickEvent e) {
+		AppController.openEndpoint(endpointID, VeliConstants.ENDPOINT_VIEWMODE_ALERTS);
+	}
+
 
 		
 	void createCheckpath()
@@ -538,9 +549,5 @@ public class NewAlertWidget extends Composite {
 
 	}
 	
-	@UiHandler("btnCancel")
-	void onClick(ClickEvent e) {
-		AppController.openEndpoint(endpointID, VeliConstants.ENDPOINT_VIEWMODE_ALERTS);
-	}
 
 }
