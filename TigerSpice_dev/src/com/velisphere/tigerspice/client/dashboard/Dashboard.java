@@ -28,6 +28,7 @@ import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.StackProgressBar;
+import com.github.gwtbootstrap.client.ui.TabPane;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -68,9 +69,13 @@ interface MyBinder extends UiBinder<Widget, Dashboard>{}
 	@UiField StackProgressBar pgbUtilization;
 	@UiField Breadcrumbs brdMain;
 	@UiField Paragraph pgpLogCount;
+	@UiField Paragraph pgpUtilInfo;
+	@UiField Paragraph pgpStatusInfo;
+	@UiField TabPane tbpAlerts;
 	NavLink bread0;
 	NavLink bread1;
 	String userName;
+	
 	
  	
 	public Dashboard() {
@@ -102,11 +107,19 @@ interface MyBinder extends UiBinder<Widget, Dashboard>{}
 		
 		// set page header welcome back message
     	pageHeader.setText("Dashboard for " + SessionHelper.getCurrentUserName());
-    	pgbGreen.setPercent(30);
+    	pgbGreen.setPercent(100);
     	
     	pgbRed.setPercent(0);
     	pgbYellow.setPercent(0);
+    	pgbUtilization.setHeight("20px");
     
+    	pgpUtilInfo.setText("You are running a public beta version of VeliSphere, which gives you unlimited usage rights (in exchange for no performance guarantee "+
+    	"or any level of SLA). Usage metering and charge back will be introduced after completion of the beta phase.");
+    	
+    	pgpStatusInfo.setText("System is up and operating normally. Last update: June 29, 2015 / 12:19 CET");
+    	
+    	tbpAlerts.add(new AlertsState());
+    	
     	
     	final LogServiceAsync logService = GWT
 				.create(LogService.class);

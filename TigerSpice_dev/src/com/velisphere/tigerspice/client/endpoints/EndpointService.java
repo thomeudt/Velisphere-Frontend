@@ -54,9 +54,10 @@ public interface EndpointService extends RemoteService {
 	String addNewEndpoint(String endpointID, String endpointName, String endpointclassID, String userID);
 	HashMap<String, LinkedList<LogicLinkTargetData>> getLinksForEndpointList(LinkedList<String> endpointID);
 	String addNewAlert(AlertData alert);
-	LinkedHashMap<String, String> getAllAlerts(String endpointID);
+	LinkedHashMap<String, String> getAllAlertsForEndpoint(String endpointID);
 	AlertData getAlertDetails(String alertID);
 	String deleteAlert(String alertID, String checkpathID);
+	LinkedList<AlertData> getAllAlertsForUser(String userID);
 	
 	
 	

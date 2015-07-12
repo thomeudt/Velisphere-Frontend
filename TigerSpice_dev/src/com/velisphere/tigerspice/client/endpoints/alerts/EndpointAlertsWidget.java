@@ -129,7 +129,7 @@ public class EndpointAlertsWidget extends Composite {
 		EndpointServiceAsync endpointService = GWT
 				.create(EndpointService.class);
 
-		endpointService.getAllAlerts(endpointID,
+		endpointService.getAllAlertsForEndpoint(endpointID,
 				new AsyncCallback<LinkedHashMap<String, String>>() {
 
 					@Override

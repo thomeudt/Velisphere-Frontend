@@ -56,7 +56,7 @@
 		<b:Row>
 			<b:Column size="8" offset="0">
 				<b:StackProgressBar ui:field="pgbUtilization">
-					<b:Bar color="SUCCESS" ui:field="pgbGreen" text="green" percent="0" />
+					<b:Bar color="SUCCESS" ui:field="pgbGreen" text="Utilization" percent="0" />
 					<b:Bar color="WARNING" ui:field="pgbYellow" text="" percent="0" />
 					<b:Bar color="DANGER" ui:field="pgbRed" text="" percent="0" />
 				</b:StackProgressBar>
@@ -66,7 +66,7 @@
 		
 		<b:Row>
 		<b:Column size="6" offset="0">
-			 <b:Paragraph addStyleNames="smalltext">Upgrade your subscription to increase your endpoint limit.</b:Paragraph>
+			 <b:Paragraph ui:field="pgpUtilInfo" addStyleNames="smalltext">Upgrade your subscription to increase your endpoint limit.</b:Paragraph>
 			  <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
 			</b:Column>
 		</b:Row>
@@ -77,14 +77,11 @@
 		    	<b:TabPane heading="System" active="false">
 			    <b:Heading size="4" >System: OK</b:Heading>
 				
-				<b:Paragraph addStyleNames="smalltext-black">System is up.</b:Paragraph>
-				<b:Paragraph addStyleNames="smalltext-black">No issues reported.</b:Paragraph>
-				<b:Paragraph addStyleNames="smalltext-black" ui:field="pgpLogCount">...</b:Paragraph>
+				<b:Paragraph ui:field="pgpStatusInfo" addStyleNames="smalltext">System is up.</b:Paragraph>
+				<b:Paragraph addStyleNames="smalltext" ui:field="pgpLogCount">...</b:Paragraph>
 			</b:TabPane>
-			<b:TabPane heading="Alerts" active="false">
-			    <b:Heading size="4" >Alerts: OK</b:Heading>
-				
-				<b:Paragraph addStyleNames="smalltext-black">No errors reported in any sphere.</b:Paragraph>
+			<b:TabPane heading="Alerts" active="false" ui:field="tbpAlerts">
+			    
 				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
 			</b:TabPane>
 			<b:TabPane heading="News" active="false">

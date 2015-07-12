@@ -1044,7 +1044,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 	
 	
 	@Override
-	public LinkedHashMap<String, String> getAllAlerts(String endpointID)
+	public LinkedHashMap<String, String> getAllAlertsForEndpoint(String endpointID)
 
 	{
 		VoltConnector voltCon = new VoltConnector();
@@ -1095,6 +1095,75 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 
 		return allAlerts;
 	}
+	
+	@Override
+	public LinkedList<AlertData> getAllAlertsForUser(String userID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		LinkedList<AlertData> allAlerts = new LinkedList<AlertData>();
+		try {
+
+			
+			 VoltTable[] results = voltCon.montanaClient.callProcedure("@AdHoc",
+				       "SELECT * FROM ALERT " +
+				       "WHERE USERID='" + userID+"'").getResults();
+			
+			
+
+			VoltTable result = results[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					AlertData alert = new AlertData();
+					alert.setAlertID(result.getString("ALERTID"));
+					alert.setAlertName(result.getString("ALERTNAME"));
+					alert.setCheckpathID(result.getString("CHECKPATHID"));
+					alert.setEndpointID(result.getString("ENDPOINTID"));
+					alert.setOperator(result.getString("OPERATOR"));
+					alert.setProperty(result.getString("PROPERTY"));
+					alert.setRecipient(result.getString("RECIPIENT"));
+					alert.setText(result.getString("TEXT"));
+					alert.setThreshold(result.getString("THRESHOLD"));
+					alert.setType(result.getString("TYPE"));
+					alert.setUserID(result.getString("USERID"));
+					
+					
+					allAlerts.add(alert);
+					
+				}
+			}
+
+			// System.out.println(allEndPoints);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return allAlerts;
+	}
+	
 	
 	
 	@Override

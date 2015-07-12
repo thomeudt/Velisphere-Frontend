@@ -26,6 +26,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
+import com.velisphere.tigerspice.shared.ActionData;
 import com.velisphere.tigerspice.shared.AnalyticsRawData;
 import com.velisphere.tigerspice.shared.GeoLocationData;
 import com.velisphere.tigerspice.shared.TableRowData;
@@ -253,6 +254,9 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 		return timestamp;
 	}
 
+	
+	
+	
 	public String getEndpointLogCount(String endpointID) {
 
 		Connection conn;
@@ -937,6 +941,56 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 
 		return geoItems;
 	}
+	
+	@Override
+	public ActionData getLastActionExecuted(String actionID) {
+
+		Connection conn;
+		ActionData actionData = new ActionData();
+
+		try {
+			Class.forName("com.vertica.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Could not find the JDBC driver class.\n");
+			e.printStackTrace();
+
+		}
+		try {
+			conn = DriverManager.getConnection("jdbc:vertica://"
+					+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+					"vertica", "1Suplies!");
+
+			conn.setAutoCommit(true);
+			System.out.println(" [OK] Connected to Vertica on address: "
+					+ "16.1.1.113");
+
+			Statement mySelect = conn.createStatement();
+
+			ResultSet myResult = mySelect
+					.executeQuery("SELECT actionid, payload, time_stamp FROM vlogger.actionexecutedlog WHERE ACTIONID = '"+actionID+"' ORDER BY time_stamp DESC LIMIT 1;");
+
+			while (myResult.next()) {
+				
+				actionData.setActionID(myResult.getString(1));
+				actionData.setPayload(myResult.getString(2));
+				actionData.setTimestamp(myResult.getString(3));
+				// System.out.println("Retrieved: " + logItem.getValue());
+			}
+
+			mySelect.close();
+
+		} catch (SQLException e) {
+			System.err.println("Could not connect to the database.\n");
+			e.printStackTrace();
+
+		}
+
+		return actionData;
+	}
+
+	
+	
+	
 
 	
 }

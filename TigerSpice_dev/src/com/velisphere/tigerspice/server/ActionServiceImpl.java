@@ -115,7 +115,5 @@ public class ActionServiceImpl extends RemoteServiceServlet implements
 		return actionsForCheckpathID;
 		
 	}
-
-	
 	
 }

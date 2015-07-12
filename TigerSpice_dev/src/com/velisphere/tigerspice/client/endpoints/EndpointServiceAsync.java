@@ -44,9 +44,10 @@ public interface EndpointServiceAsync {
 	void getUnprovisionedEndpoints(String endpointID, String captchaWord, AsyncCallback<UnprovisionedEndpointData> callback);
 	void addNewEndpoint(String endpointID, String endpointName, String endpointclassID, String userID, AsyncCallback<String> callback);
 	void getLinksForEndpointList(LinkedList<String> endpointID, AsyncCallback<HashMap<String, LinkedList<LogicLinkTargetData>>> callback); 
-	void getAllAlerts(String endpointID, AsyncCallback<LinkedHashMap<String, String>> callback);
+	void getAllAlertsForEndpoint(String endpointID, AsyncCallback<LinkedHashMap<String, String>> callback);
 	void addNewAlert(AlertData alert, AsyncCallback<String> callback);
 	void getAlertDetails(String alertID, AsyncCallback<AlertData> callback);
 	void deleteAlert(String alertID, String checkpathID, AsyncCallback<String> callback);
+	void getAllAlertsForUser(String userID, AsyncCallback<LinkedList<AlertData>> callback); 
 	
 }
