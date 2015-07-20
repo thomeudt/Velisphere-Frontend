@@ -90,13 +90,6 @@
 				<b:Paragraph addStyleNames="smalltext-black">New pricing model available. Click here for more (...)</b:Paragraph>
 				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
 			</b:TabPane>
-			<b:TabPane heading="Tasks" active="false">
-			    	<b:Heading size="4">Task list</b:Heading>
-				
-				<b:Paragraph addStyleNames="smalltext-black" >No open tasks.</b:Paragraph>
-				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
-				
-			</b:TabPane>
 			
 		
 		</b:TabPanel>

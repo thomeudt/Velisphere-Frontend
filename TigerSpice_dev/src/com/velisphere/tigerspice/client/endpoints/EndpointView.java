@@ -23,6 +23,7 @@ import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
+import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.TabLink;
 import com.github.gwtbootstrap.client.ui.TabPane;
 import com.github.gwtbootstrap.client.ui.TabPanel;
@@ -41,7 +42,12 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.actions.ActionService;
+import com.velisphere.tigerspice.client.actions.ActionServiceAsync;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
+import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.actor.EndpointActorWidget;
@@ -49,6 +55,8 @@ import com.velisphere.tigerspice.client.endpoints.alerts.EndpointAlertsWidget;
 import com.velisphere.tigerspice.client.endpoints.config.EndpointConfiguratorWidget;
 import com.velisphere.tigerspice.client.endpoints.info.EndpointInformationWidget;
 import com.velisphere.tigerspice.client.endpoints.sensor.EndpointSensorWidget;
+import com.velisphere.tigerspice.client.favorites.FavoriteService;
+import com.velisphere.tigerspice.client.favorites.FavoriteServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.VeliConstants;
 import com.velisphere.tigerspice.client.locator.logical.LogicalMapWidget;
@@ -61,6 +69,7 @@ import com.velisphere.tigerspice.client.spheres.SphereView;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.EndpointData;
+import com.velisphere.tigerspice.shared.FavoriteData;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -111,6 +120,7 @@ public class EndpointView extends Composite {
 	NavLink bread1;
 	NavLink bread2;
 	NavLink bread3;
+	String favoriteID;
 	
 	private TextBox endpointChangeNameField;
 	
@@ -241,14 +251,62 @@ public class EndpointView extends Composite {
 		setEndpointNameAndImage(this.endpointID);
 		buildTabPanes();
 		
+		final VerticalPanel vp = new VerticalPanel();
+		
+	
+		vp.add(addEditNameWidget());
 		
 		
+		final FavoriteServiceAsync favoriteService = GWT
+				.create(FavoriteService.class);
+		
+		favoriteService.getFavoriteForTargetID(endpointID, new AsyncCallback<FavoriteData>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(FavoriteData result) {
+				// TODO Auto-generated method stub
+				
+				if (result.getId() == null)
+				{
+					vp.add(addFavoriteWidget());			
+				}
+				else
+				{
+					favoriteID = result.getId();
+					vp.add(removeFavoriteWidget());
+					
+				}
+					
+				
+			}
+			
+		});
+		
+		
+		
+		pghEndpointName.add(vp);
+		
+		
+		
+	}
+	
+			
+	
+	private HorizontalPanel addEditNameWidget()
+	{
+		HorizontalPanel hp = new HorizontalPanel();
 		
 		Icon icnEditEndpointName = new Icon();
 		icnEditEndpointName.setType(IconType.EDIT);
-		pghEndpointName.add(icnEditEndpointName);
+		hp.add(icnEditEndpointName);
 		final Anchor ancEditEndpointName = new Anchor();
-		ancEditEndpointName.setText(" Change Name of this Endpoint");
+		ancEditEndpointName.setText(" Change Name");
 		ancEditEndpointName.setHref("#");
 
 			
@@ -318,10 +376,114 @@ public class EndpointView extends Composite {
 					}
 				}
 				});
-		pghEndpointName.add(ancEditEndpointName);
+		hp.add(ancEditEndpointName);
+		return hp;
 
 	}
 	
+	private HorizontalPanel addFavoriteWidget()
+	{
+		HorizontalPanel hp = new HorizontalPanel();
+		
+		Icon icnEditEndpointName = new Icon();
+		icnEditEndpointName.setType(IconType.STAR_EMPTY);
+		hp.add(icnEditEndpointName);
+		final Anchor ancEditEndpointName = new Anchor();
+		ancEditEndpointName.setText(" Add Favorite");
+		ancEditEndpointName.setHref("#");
+		
+		ancEditEndpointName.addClickHandler(
+				new ClickHandler(){ 
+				public void onClick(ClickEvent event)  {
+					FavoriteData favoriteData = new FavoriteData();
+					favoriteData.setName("Endpoint " + pghEndpointName.getText());
+					favoriteData.setTargetId(endpointID);
+					favoriteData.setUserId(SessionHelper.getCurrentUserID());
+					favoriteData.setType(VeliConstants.FAVORITE_ENDPOINT);
+					
+										
+					final FavoriteServiceAsync favoriteService = GWT
+							.create(FavoriteService.class);
+					
+					favoriteService.addFavorite(favoriteData, new AsyncCallback<String>(){
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void onSuccess(String result) {
+							// TODO Auto-generated method stub
+							
+							AppController.openEndpoint(endpointID);
+							
+						}
+						
+					}
+							
+							);
+					
+				
+				
+				}
+				});
+		hp.add(ancEditEndpointName);
+		return hp;
+
+	}
+	
+	
+	private HorizontalPanel removeFavoriteWidget()
+	{
+		HorizontalPanel hp = new HorizontalPanel();
+		
+		Icon icnEditEndpointName = new Icon();
+		icnEditEndpointName.setType(IconType.STAR);
+		hp.add(icnEditEndpointName);
+		final Anchor ancEditEndpointName = new Anchor();
+		ancEditEndpointName.setText(" Remove Favorite");
+		ancEditEndpointName.setHref("#");
+		
+		ancEditEndpointName.addClickHandler(
+				new ClickHandler(){ 
+				public void onClick(ClickEvent event)  {
+										
+										
+					final FavoriteServiceAsync favoriteService = GWT
+							.create(FavoriteService.class);
+					
+					favoriteService.deleteFavoriteForFavoriteID(favoriteID, new AsyncCallback<String>(){
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void onSuccess(String result) {
+							// TODO Auto-generated method stub
+							
+							AppController.openEndpoint(endpointID);
+							
+						}
+						
+					}
+							
+							);
+					
+				
+				
+				}
+				});
+		hp.add(ancEditEndpointName);
+		return hp;
+
+	}
+
+
 	
 	private void setEndpointNameAndImage(String endpointID) {
 

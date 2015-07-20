@@ -244,6 +244,17 @@
   </servlet-mapping>
 
 
+ <servlet>
+    <servlet-name>favoriteServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.FavoriteServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>favoriteServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltFavorite</url-pattern>
+  </servlet-mapping>
+  
+
 
   <!-- Default page to serve -->
   <welcome-file-list>
