@@ -14,11 +14,15 @@ package com.velisphere.tigerspice.client.spheres.widgets;
  * the License.
  */
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.endpoints.EndpointService;
+import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 
 import java.util.ArrayList;
 
@@ -45,13 +49,29 @@ class MouseListBox extends Composite {
   private Grid grid;
 
   private int widgetCount = 0;
+  
+  private boolean inSphere;
+  private String sphereID;
 
-  /**
+  public String getSphereID() {
+	return sphereID;
+}
+
+public boolean isInSphere() {
+	return inSphere;
+}
+
+/**
    * Used by {@link ListBoxDragController} to create a draggable listbox containing the selected
    * items.
    */
-  MouseListBox(int size) {
-	
+  
+  
+  
+  
+  MouseListBox(int size, boolean inSphere, String sphereID) {
+	this.inSphere = inSphere;
+	this.sphereID = sphereID;
     grid = new Grid(size, 1);
     initWidget(grid);
     grid.addStyleName("wellapple");
@@ -69,8 +89,8 @@ class MouseListBox extends Composite {
   /**
    * Used by {@link DualListBox} to create the left and right list boxes.
    */
-  MouseListBox(ListBoxDragController dragController, int size) {
-    this(size);
+  MouseListBox(ListBoxDragController dragController, int size, boolean inSphere, String sphereID) {
+    this(size, inSphere, sphereID);
     this.dragController = dragController;
     dragController.setBehaviorDragStartSensitivity(5);
   }
@@ -100,6 +120,52 @@ class MouseListBox extends Composite {
     widgetCount--;
     return true;
   }
+  
+  void removeFromDatabase(EndpointDataLabel label)
+  {
+	  final EndpointServiceAsync endpointService = GWT
+				.create(EndpointService.class);
+		
+			endpointService.removeEndpointFromSphere(label.getEndpointData().getId(), sphereID, new AsyncCallback<String>(){
+
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onSuccess(String result) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+			});
+	  
+  }
+  
+  void addToDatabase(EndpointDataLabel label)
+  {
+	  final EndpointServiceAsync endpointService = GWT
+				.create(EndpointService.class);
+		
+			endpointService.addEndpointToSphere(label.getEndpointData().getId(), sphereID, new AsyncCallback<String>(){
+
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onSuccess(String result) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+			});
+	  
+  }
 
   ArrayList<Widget> widgetList() {
     ArrayList<Widget> widgetList = new ArrayList<Widget>();
@@ -109,6 +175,8 @@ class MouseListBox extends Composite {
     return widgetList;
   }
 
+  
+  
   private Widget getWidget(int index) {
     return grid.getWidget(index, 0);
   }
@@ -144,4 +212,6 @@ class MouseListBox extends Composite {
     }
     grid.setWidget(index, 0, widget);
   }
+  
+  
 }

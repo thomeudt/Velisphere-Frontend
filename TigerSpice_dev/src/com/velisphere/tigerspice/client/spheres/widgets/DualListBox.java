@@ -56,7 +56,7 @@ public class DualListBox extends AbsolutePanel {
 
   private MouseListBox right;
 
-  public DualListBox(int visibleItems) {
+  public DualListBox(int visibleItems, String sphereID) {
 	  
 	  
 		FlowLayoutContainer con = new FlowLayoutContainer();
@@ -83,8 +83,8 @@ public class DualListBox extends AbsolutePanel {
 
     dragController = new ListBoxDragController(this);
     dragController.setBehaviorDragStartSensitivity(5);
-    left = new MouseListBox(dragController, LIST_SIZE);
-    right = new MouseListBox(dragController, LIST_SIZE);
+    left = new MouseListBox(dragController, LIST_SIZE, true, sphereID);
+    right = new MouseListBox(dragController, LIST_SIZE, false, sphereID);
 
     
     mainCol1.add(left);

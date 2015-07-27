@@ -86,7 +86,7 @@ class ListBoxDragController extends PickupDragController {
   @Override
   protected Widget newDragProxy(DragContext context) {
     MouseListBox currentMouseListBox = (MouseListBox) context.draggable.getParent().getParent();
-    MouseListBox proxyMouseListBox = new MouseListBox(context.selectedWidgets.size());
+    MouseListBox proxyMouseListBox = new MouseListBox(context.selectedWidgets.size(), currentMouseListBox.isInSphere(), currentMouseListBox.getSphereID());
     proxyMouseListBox.setWidth(DOMUtil.getClientWidth(currentMouseListBox.getElement()) + "px");
     for (Widget widget : context.selectedWidgets) {
       HTML htmlClone = new HTML(DOM.getInnerHTML(widget.getElement()));

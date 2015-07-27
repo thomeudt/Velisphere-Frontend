@@ -47,17 +47,21 @@ class ListBoxDropController extends AbstractDropController {
     	  {
     		 RootPanel.get().add(new HTML ("Class is " + context.selectedWidgets.get(0).getClass()));
     		 EndpointDataLabel labelClone = new EndpointDataLabel((EndpointDataLabel) widget);
-    		 
-    		 mouseListBox.add(labelClone); 
+    		
+    		 if(from.isInSphere())
+    		 {
+    			 mouseListBox.add(labelClone);
+    			 mouseListBox.removeFromDatabase(labelClone);
+    		 }
+    		 else
+    		 {
+    			 mouseListBox.add(labelClone);
+    			 mouseListBox.addToDatabase(labelClone);
+    		 } 
+    		  
     	  }
     	  
-    	  else
-    	  {
-    		  RootPanel.get().add(new HTML ("Class is " + context.selectedWidgets.get(0).getClass()));
-    		  HTML htmlClone = new HTML(DOM.getInnerHTML(widget.getElement()));
-    	      mouseListBox.add(htmlClone);
-    	       	  
-    	  }
+    	  
     	
       }
       

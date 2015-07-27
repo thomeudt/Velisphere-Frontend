@@ -49,7 +49,7 @@ public class SphereEditor extends Composite {
 
 		
 				
-		dualListBox = new DualListBox(10);
+		dualListBox = new DualListBox(10, sphereID);
 	    
 		initWidget(dualListBox);
 
