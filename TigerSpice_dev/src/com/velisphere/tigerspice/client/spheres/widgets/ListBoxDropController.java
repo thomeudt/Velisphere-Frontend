@@ -38,16 +38,32 @@ class ListBoxDropController extends AbstractDropController {
   public void onDrop(DragContext context) {
     MouseListBox from = (MouseListBox) context.draggable.getParent().getParent();
     
-    
-    
+     
+   
     for (Widget widget : context.selectedWidgets) {
       if (widget.getParent().getParent() == from) {
-        HTML htmlClone = new HTML(DOM.getInnerHTML(widget.getElement()));
-        mouseListBox.add(htmlClone);
-       
+    	  
+    	  if(widget instanceof EndpointDataLabel)
+    	  {
+    		 RootPanel.get().add(new HTML ("Class is " + context.selectedWidgets.get(0).getClass()));
+    		 EndpointDataLabel labelClone = new EndpointDataLabel((EndpointDataLabel) widget);
+    		 
+    		 mouseListBox.add(labelClone); 
+    	  }
+    	  
+    	  else
+    	  {
+    		  RootPanel.get().add(new HTML ("Class is " + context.selectedWidgets.get(0).getClass()));
+    		  HTML htmlClone = new HTML(DOM.getInnerHTML(widget.getElement()));
+    	      mouseListBox.add(htmlClone);
+    	       	  
+    	  }
+    	
       }
       
+      
     }
+   
     
     super.onDrop(context);
   }

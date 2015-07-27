@@ -80,6 +80,7 @@ public class DragBox extends FocusPanel implements HasAllTouchHandlers {
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				AppController.openEndpoint(endpointID);
+			
 			}
 			
 		});

@@ -1,7 +1,12 @@
 package com.velisphere.tigerspice.client.spheres;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map.Entry;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -12,12 +17,16 @@ import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.spheres.widgets.DualListBox;
+import com.velisphere.tigerspice.client.spheres.widgets.EndpointDataLabel;
 import com.velisphere.tigerspice.shared.EndpointData;
 
 public class SphereEditor extends Composite {
 	
 	DualListBox dualListBox;
 	String sphereID;
+	HashMap<String, EndpointData> endpointsInSphere;
+	HashMap<String, EndpointData> endpointsNotInSphere;
+	
 	
 	public SphereEditor(final String sphereID, final String sphereName) {
 
@@ -29,6 +38,8 @@ public class SphereEditor extends Composite {
 		// SphereOverview class
 		super();
 		this.sphereID = sphereID;
+		endpointsInSphere = new HashMap<String, EndpointData>();
+		endpointsNotInSphere = new HashMap<String, EndpointData>();
 		
 		
 		
@@ -49,7 +60,7 @@ public class SphereEditor extends Composite {
 	    
 		dualListBox.getDragController();
 
-		refreshSourceEndpoints();
+		
 		refreshTargetEndpoints();
 	    
 	    // use the dual list box as our widget
@@ -68,48 +79,9 @@ public class SphereEditor extends Composite {
 		
 	}
 
-	
-	private void refreshSourceEndpoints() {
-
-			final EndpointServiceAsync endpointService = GWT
-				.create(EndpointService.class);
-		
-			endpointService.getEndpointsForUser(
-												SessionHelper.getCurrentUserID(),
-												new AsyncCallback<LinkedList<EndpointData>>() {
-													public void onFailure(
-															Throwable caught) {
-														Window.alert("Error"
-																+ caught.getMessage());
-													}
-
-													@Override
-													public void onSuccess(
-															LinkedList<EndpointData> result) {
-
-														Iterator<EndpointData> it = result
-																.iterator();
-														
-
-														while (it.hasNext()) {
-
-															final EndpointData currentItem = it
-																	.next();
-														    dualListBox.addRight(currentItem.endpointName);
-															
-															}
-														}
-												});
-
-	}
-		
-	
 
 	private void refreshTargetEndpoints() {
 
-		// show animation while rpc is processed
-
-		final AnimationLoading animationLoading = new AnimationLoading();
 
 		// query endpoints that are already part of the current sphere
 		final EndpointServiceAsync endpointService = GWT
@@ -133,14 +105,94 @@ public class SphereEditor extends Composite {
 
 							final EndpointData currentItem = it
 									.next();
-						    dualListBox.addLeft(currentItem.endpointName);
+							endpointsInSphere.put(currentItem.getId(), currentItem);
+							
 							
 							}
+						
+						refreshSourceEndpoints();
+						
 						}
 				});
 	
 	}
+	
+	private void refreshSourceEndpoints() {
 
+			final EndpointServiceAsync endpointService = GWT
+				.create(EndpointService.class);
+		
+			endpointService.getEndpointsForUser(
+												SessionHelper.getCurrentUserID(),
+												new AsyncCallback<LinkedList<EndpointData>>() {
+													public void onFailure(
+															Throwable caught) {
+														Window.alert("Error"
+																+ caught.getMessage());
+													}
+
+													@Override
+													public void onSuccess(
+															LinkedList<EndpointData> result) {
+
+														Iterator<EndpointData> it = result
+																.iterator();
+														
+														
+
+														while (it.hasNext()) {
+
+															final EndpointData currentItem = it
+																	.next();
+														    
+														    
+														    endpointsNotInSphere.put(currentItem.getId(), currentItem);
+														    
+															}
+																																									
+														populateListWidget();
+														}
+												});
+
+	}
+		
+	
+
+
+
+	
+	private void populateListWidget()
+	{
+
+		
+		
+		
+		Iterator<Entry<String, EndpointData>> itIn = endpointsInSphere.entrySet().iterator();
+		
+		while (itIn.hasNext())
+		{
+			Entry<String, EndpointData> currentItem = itIn.next();
+			EndpointDataLabel label = new EndpointDataLabel(currentItem.getValue().getName(), currentItem.getValue());
+			dualListBox.addLeft(label);
+			endpointsNotInSphere.remove(currentItem.getKey());
+			
+		}
+		
+		
+		Iterator<Entry<String, EndpointData>> itNotIn = endpointsNotInSphere.entrySet().iterator();
+		
+		while (itNotIn.hasNext())
+		{
+			Entry<String, EndpointData> currentItem = itNotIn.next();
+			EndpointDataLabel label = new EndpointDataLabel(currentItem.getValue().getName(), currentItem.getValue());
+			dualListBox.addRight(label);
+			
+			
+		}
+		
+	}
+		
+		
 	
 
 }

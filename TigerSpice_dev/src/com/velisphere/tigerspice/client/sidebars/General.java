@@ -45,7 +45,7 @@ public class General extends Composite {
 		ancMarket.setHref("#");
 		ancGettingStarted.setHref("#");
 		ancBestPractices.setHref("#");
-		ddlFavs.setVisibleItemCount(3);
+		//ddlFavs.setVisibleItemCount(3);
 		populateShortcuts();
 		populateFavorites();
 

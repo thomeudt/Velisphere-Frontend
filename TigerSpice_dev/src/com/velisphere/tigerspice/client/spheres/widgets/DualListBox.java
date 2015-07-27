@@ -82,6 +82,7 @@ public class DualListBox extends AbsolutePanel {
     verticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
     dragController = new ListBoxDragController(this);
+    dragController.setBehaviorDragStartSensitivity(5);
     left = new MouseListBox(dragController, LIST_SIZE);
     right = new MouseListBox(dragController, LIST_SIZE);
 

@@ -72,6 +72,7 @@ class MouseListBox extends Composite {
   MouseListBox(ListBoxDragController dragController, int size) {
     this(size);
     this.dragController = dragController;
+    dragController.setBehaviorDragStartSensitivity(5);
   }
 
   void add(String text) {
@@ -138,7 +139,7 @@ class MouseListBox extends Composite {
     } else {
       grid.getCellFormatter().addStyleName(index, 0, CSS_DEMO_DUAL_LIST_EXAMPLE_ITEM_HAS_CONTENT);
       if (dragController != null) {
-        dragController.makeDraggable(widget);
+        dragController.makeDraggable((EndpointDataLabel) widget);
       }
     }
     grid.setWidget(index, 0, widget);
