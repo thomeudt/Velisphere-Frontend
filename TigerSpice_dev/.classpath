@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/GWT (1)"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" output="test-classes" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
@@ -70,7 +71,6 @@
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/joda-time-2.5.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/commons-io-2.4.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/gwt-bootstrap-2.3.2.0-20131023.060834-44.jar"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/gwt-maps-api-3.10.0-alpha-8-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/gwt-incubator-20101117-r1766.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
