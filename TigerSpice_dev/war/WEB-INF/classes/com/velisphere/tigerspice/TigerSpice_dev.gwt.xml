@@ -43,7 +43,7 @@
 
 
 
-	<inherits name='com.sencha.gxt.ui.GXT' />
+	<!-- inherits name='com.sencha.gxt.ui.GXT'  -->
 
 
 	<!-- Other module inherits -->

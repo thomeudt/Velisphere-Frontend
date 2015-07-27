@@ -27,7 +27,7 @@ import java.util.LinkedList;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Anchor;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+
 
 public class CheckPathObjectDataUNUSED implements IsSerializable {
 

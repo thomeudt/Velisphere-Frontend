@@ -63,7 +63,6 @@ import com.velisphere.tigerspice.client.locator.logical.LogicalMapWidget;
 import com.velisphere.tigerspice.client.locator.maps.HeatMapLayerWidget;
 import com.velisphere.tigerspice.client.locator.maps.InfoWindowMapWidget;
 import com.velisphere.tigerspice.client.locator.maps.PolylineMapWidget;
-import com.velisphere.tigerspice.client.properties.PropertyEditorWidget;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
 import com.velisphere.tigerspice.client.spheres.SphereView;
 import com.velisphere.tigerspice.client.users.LoginSuccess;

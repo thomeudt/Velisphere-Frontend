@@ -16,6 +16,7 @@ package com.velisphere.tigerspice.client.spheres.widgets;
 
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Column;
+import com.github.gwtbootstrap.client.ui.FluidContainer;
 import com.github.gwtbootstrap.client.ui.Row;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -28,7 +29,6 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.allen_sauer.gwt.dnd.client.DragController;
 
 import java.util.ArrayList;
@@ -42,24 +42,18 @@ public class DualListBox extends AbsolutePanel {
 
   private static final int LIST_SIZE = 10;
 
-  private Button allLeft;
-
-  private Button allRight;
-
+ 
   private ListBoxDragController dragController;
 
   private MouseListBox left;
 
-  private Button oneLeft;
-
-  private Button oneRight;
-
+ 
   private MouseListBox right;
 
   public DualListBox(int visibleItems, String sphereID) {
 	  
 	  
-		FlowLayoutContainer con = new FlowLayoutContainer();
+		FluidContainer con = new FluidContainer();
 		add(con);
 
 		Row hpMain = new Row();
@@ -94,30 +88,13 @@ public class DualListBox extends AbsolutePanel {
    
     
     
-    oneRight = new Button(">");
-    oneRight.setType(ButtonType.SUCCESS);
-    oneLeft = new Button("<");
-    oneLeft.setType(ButtonType.DANGER);
-    verticalPanel.add(oneRight);
-    verticalPanel.add(oneLeft);
+    verticalPanel.add(new HTML("Drag and Drop Endpoints into Sphere"));
     
     
     
     
 
-    oneRight.addClickHandler(new ClickHandler() {
-      @Override
-      public void onClick(ClickEvent event) {
-        moveItems(left, right, true);
-      }
-    });
-
-    oneLeft.addClickHandler(new ClickHandler() {
-      @Override
-      public void onClick(ClickEvent event) {
-        moveItems(right, left, true);
-      }
-    });
+  
 
     ListBoxDropController leftDropController = new ListBoxDropController(left);
     ListBoxDropController rightDropController = new ListBoxDropController(right);
