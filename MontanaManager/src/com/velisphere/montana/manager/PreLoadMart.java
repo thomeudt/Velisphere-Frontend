@@ -5,8 +5,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.voltdb.*;
-import org.voltdb.client.*;
 
 
 
@@ -30,12 +28,12 @@ public class PreLoadMart {
 	         {
 	         conn = DriverManager.getConnection
 	            (
-	            "jdbc:vertica://16.1.1.116:5433/VelisphereMart", "vertica", "1Suplies!"
+	            "jdbc:vertica://127.0.0.1:5433/VelisphereMart", "dbadmin", ""
 	            );
 	         
 	         conn.setAutoCommit(true);
 	 		System.out.println(" [OK] Connected to Vertica on address: "
-	 				+ "16.1.1.116");
+	 				+ "127.0.0.1");
 	         
 	         } catch (SQLException e)
 	            {
@@ -54,7 +52,7 @@ public class PreLoadMart {
 	      Statement myInsert = conn.createStatement();
 	    
 	      /**
-	      myInsert.addBatch("INSERT INTO VLOGGER.SPHERE VALUES ('1000', 'Home Tübingen', '0')");
+	      myInsert.addBatch("INSERT INTO VLOGGER.SPHERE VALUES ('1000', 'Home Tï¿½bingen', '0')");
 	      myInsert.addBatch("INSERT INTO VLOGGER.SPHERE VALUES ('1001', 'My Car', '0')");
 	      
 	       	       
