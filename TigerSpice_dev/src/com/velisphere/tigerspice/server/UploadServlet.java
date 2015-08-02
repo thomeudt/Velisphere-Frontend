@@ -25,7 +25,7 @@ import gwtupload.shared.UConsts;
  * This servlet saves all received files in a temporary folder, 
  * and deletes them when the user sends a remove request.
  * 
- * @author Manolo Carrasco Moñino
+ * @author Manolo Carrasco Moï¿½ino
  *
  */
 public class UploadServlet extends UploadAction {
@@ -57,7 +57,7 @@ public class UploadServlet extends UploadAction {
           
           /// Create a temporary file placed in the default system temp folder
         	
-        	File file = new File("/images/" + item.getName());
+        	File file = new File("/tmp/" + item.getName());
         	System.out.println(file.getCanonicalPath());
           item.write(file);
           

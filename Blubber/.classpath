@@ -11,20 +11,19 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="forms-1.3.0.jar" sourcepath="forms-1.3.0-src.zip"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/json-simple-1.1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/Phidgets/examples/JavaJNI/lib/phidget21.jar"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/commons-cli-1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/commons-io-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/junit.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/rabbitmq-client.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/rabbitmq-client-tests.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/commons-codec-1.9.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/SDK/velisphereClientSDK.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/commons-cli-1.1.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/commons-io-1.2.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/junit.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/rabbitmq-client.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/rabbitmq-client-tests.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/Downloads/phidget21.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/commons-codec-1.9.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/Downloads/velisphereClientSDK.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

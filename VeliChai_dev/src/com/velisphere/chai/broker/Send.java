@@ -21,9 +21,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.json.simple.JSONObject;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;

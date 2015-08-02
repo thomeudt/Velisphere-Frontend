@@ -49,8 +49,6 @@ import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 
-
-
 import com.velisphere.fs.sdk.CTLInitiator;
 import com.velisphere.fs.sdk.Server;
 
