@@ -8,6 +8,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.URI;
 import java.net.UnknownHostException;
+import java.util.Enumeration;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -38,28 +39,36 @@ public class ProvisioningClient {
 		
 		Client client = ClientBuilder.newClient();
 
+
+        StringBuilder sb = new StringBuilder();
+
+		
 		try {
 			ip = InetAddress.getLocalHost();
 			System.out.println("Current IP address : " + ip.getHostAddress());
 			 
-			NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-	 
-			byte[] mac = network.getHardwareAddress();
 			
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < mac.length; i++) {
-				sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
-			}
-			System.out.println("Current Mac Address: " + sb.toString());
-	 
+			 Enumeration<NetworkInterface> networks = NetworkInterface.getNetworkInterfaces();
+			    while(networks.hasMoreElements()) {
+			      NetworkInterface network = networks.nextElement();
+			      byte[] mac = network.getHardwareAddress();
+
+			      if(mac != null) {
+			        System.out.print("Current MAC address : ");
+			        for (int i = 0; i < mac.length; i++) {
+			          sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+			        }
+			        System.out.println(sb.toString());
+			      }
+			    }
 		
 		
 			
-			WebTarget target = client.target( "http://localhost:8080/ToucanServer/rest/provisioning/put" );
+			WebTarget target = client.target( "http://localhost:8082/rest/provisioning/put" );
 
 			//Response response = target.path( "endpoint" ).path( sb.toString() ).request().put( Entity.text("f67528e4-80f7-4832-a5fd-3082bd4e7385") );
 			
-			String identifier = "MSG2"; 
+			String identifier = sb.toString(); 
 			
 			Response response = target.path( "endpoint" ).path( identifier).request().put( Entity.text("363a5307-bcd3-4b97-acfc-06da47411355") );
 			System.out.println("Search for identifier: " + identifier);	

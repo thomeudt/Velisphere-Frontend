@@ -240,9 +240,14 @@ public class ChartSensorHistoryWidget extends Composite {
 
 		
 		// show message if nothing is selected or injected
+	
+		Column graphCol = new Column(8);
+		graphCol.add(new Paragraph(
+				"Please make a selection in the menu to the left."));
+	
 		
-				graphRow.add(new Paragraph("Please make a selection in the menu to the left."));
-
+		graphRow.add(graphCol);
+	
 		// build graph if selection parameters were injected
 
 				if (endpointID != null) {
@@ -448,8 +453,14 @@ public class ChartSensorHistoryWidget extends Composite {
 			final Timestamp startDate, final Timestamp endDate) {
 
 		graphRow.clear();
-		graphRow.add(new Paragraph("Preparing Chart, please wait..."));
-
+		
+		Column graphCol = new Column(8);
+		graphCol.add(new Paragraph(
+				"Preparing Chart, please wait..."));
+	
+		
+		graphRow.add(graphCol);
+	
 		Runnable onLoadCallback = new Runnable() {
 			public void run() {
 

@@ -114,7 +114,8 @@ public class EndpointConfiguratorWidget extends Composite  {
 						animationLoading.removeLoadAnimation();
 						Iterator<PropertyData> it = result.iterator();
 						if (it.hasNext() == false) {
-							
+				
+							lstConfigurators.setEnabled(false);
 							pgpPropertyName.setText("This endpoint does not allow configuration.");
 							pgpUnitHeader.setText("");
 							pgpCurrentValueHeader.setText("");
