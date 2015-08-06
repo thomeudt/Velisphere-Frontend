@@ -17,6 +17,7 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client;
 
+import com.github.gwtbootstrap.client.ui.Image;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -33,6 +34,9 @@ import com.velisphere.tigerspice.client.users.NewAccountWidget;
 
 public class HeroUnitLogin extends Composite implements HasText {
 
+	@UiField
+	Image imgSplash;
+	
 	private static HeroUnitLoginUiBinder uiBinder = GWT
 			.create(HeroUnitLoginUiBinder.class);
 
@@ -41,7 +45,8 @@ public class HeroUnitLogin extends Composite implements HasText {
 
 	public HeroUnitLogin() {
 		initWidget(uiBinder.createAndBindUi(this));
-					
+		imgSplash.setUrl("http://41.media.tumblr.com/86905a26349fe508ddfa9614fcc42d89/tumblr_n3vuzrEjDJ1sfie3io1_1280.jpg");
+		
 	}
 	
 	
