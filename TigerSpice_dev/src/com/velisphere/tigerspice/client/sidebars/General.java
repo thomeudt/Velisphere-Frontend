@@ -95,6 +95,8 @@ public class General extends Composite {
 		final FavoriteServiceAsync favoriteService = GWT
 				.create(FavoriteService.class);
 		
+		ddlFavs.addItem("Select Favorite");
+		
 		favoriteService.getAllFavoritesForUser(SessionHelper.getCurrentUserID(), new AsyncCallback<LinkedList<FavoriteData>>(){
 
 			@Override

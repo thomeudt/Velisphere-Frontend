@@ -591,6 +591,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			String endpointclassID, String userID)
 
 	{
+		
 		VoltConnector voltCon = new VoltConnector();
 		
 		try {
@@ -648,6 +649,8 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		 * TODO: ADD ERROR HANDLING VERIFY IF DUPLICATE ENTRY!!!!!!!!!!
 		 */
 
+		
+		
 		// first add to VoltDB
 
 		String errorTracker = new String("OK");
@@ -759,6 +762,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		System.out
 				.println("[IN] RabbitMQ write permission for controller queue requested, result: "
 						+ response);
+
 
 		return errorTracker;
 

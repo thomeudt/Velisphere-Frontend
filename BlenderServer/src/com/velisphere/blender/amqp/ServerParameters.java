@@ -15,12 +15,13 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.server;
+package com.velisphere.blender.amqp;
 
 public class ServerParameters {
-	public static String volt_ip = "16.1.1.115"; // for local db
-	//public static String volt_ip = "54.186.33.146"; // for aws db
-	public static String vertica_ip = "16.1.1.83";
-	public static String rabbit_ip = "127.0.0.1";
-	public static String my_queue_name = "tigerspice";
+	public static String bunny_ip = "not set";
+	public static String volt_ip = "localhost";
+	public static String vertica_ip = "localhost";
+	public static String my_queue_name = "toucan";
+	public static String rabbit_ip = "localhost";
+	
 }

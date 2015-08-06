@@ -15,12 +15,50 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.tigerspice.server;
+package com.velisphere.blender.volt;
 
-public class ServerParameters {
-	public static String volt_ip = "16.1.1.115"; // for local db
-	//public static String volt_ip = "54.186.33.146"; // for aws db
-	public static String vertica_ip = "16.1.1.83";
-	public static String rabbit_ip = "127.0.0.1";
-	public static String my_queue_name = "tigerspice";
+import java.util.List;
+import java.util.UUID;
+
+
+
+
+public class UserData
+{
+	public String userID;	
+	public String userName;
+	public String apiKey;
+	
+	
+	
+	
+	
+	
+		
+	public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
+	
+	public String getUserID() {
+		return userID;
+	}
+
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+
+	
 }

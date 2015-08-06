@@ -68,9 +68,11 @@ public class ProvisioningClient {
 
 			//Response response = target.path( "endpoint" ).path( sb.toString() ).request().put( Entity.text("f67528e4-80f7-4832-a5fd-3082bd4e7385") );
 			
-			String identifier = sb.toString(); 
+			//String identifier = sb.toString(); 
 			
-			Response response = target.path( "endpoint" ).path( identifier).request().put( Entity.text("363a5307-bcd3-4b97-acfc-06da47411355") );
+			String identifier = "GEN";
+			
+			Response response = target.path( "endpoint" ).path( identifier).request().put( Entity.text("ee175195-d0bc-47c2-9cde-1cf44433305f") );
 			System.out.println("Search for identifier: " + identifier);	
 		
 			System.out.println (response);
