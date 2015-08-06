@@ -24,10 +24,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
-import com.velisphere.blender.amqp.ServerParameters;
-
-
-
 
 
 public class ConfigHandler {
@@ -68,10 +64,15 @@ public class ConfigHandler {
 		}
 		catch ( Exception e ) { }
 
-		ServerParameters.bunny_ip = props.getProperty("VeliBunny AMPQ Broker IP");
+		ConfigMap.addURL("RABBIT", props.getProperty("RABBIT IP"));
+		ConfigMap.addURL("VOLT", props.getProperty("VOLT IP"));
+		ConfigMap.addURL("VERTICA", props.getProperty("VERTICA IP"));
+		ConfigMap.addURL("TOUCAN", props.getProperty("TOUCAN IP"));
 
+		
+		
 		System.out.println(" [IN] Reading Configuration");
-		System.out.println(" [IN] Selected RabbitMQ AMQP Broker: "+ ServerParameters.bunny_ip);
+		System.out.println(" [IN] Selected RabbitMQ AMQP Broker: "+ ConfigMap.getUrl("RABBIT"));
 
 	}
 

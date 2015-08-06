@@ -19,5 +19,9 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 <comment>This file contains LDAP login information. Do not overwrite!</comment>
-<entry key="VeliBunny AMPQ Broker IP">h2209363.stratoserver.net</entry>
+<entry key="RABBIT IP">127.0.0.1</entry>
+<entry key="VOLT IP">127.0.0.1</entry>
+<entry key="VERTICA IP">127.0.0.1</entry>
+<entry key="TOUCAN IP">127.0.0.1:8082</entry>
+
 </properties>

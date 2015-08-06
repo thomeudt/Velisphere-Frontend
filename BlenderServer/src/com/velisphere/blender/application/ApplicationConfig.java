@@ -32,9 +32,7 @@ public class ApplicationConfig extends Application {
         
         //instead let's do it manually:
         resources.add(com.velisphere.blender.providers.MyJacksonJsonProvider.class);
-        resources.add(com.velisphere.blender.webservices.User.class);
-        resources.add(com.velisphere.blender.webservices.Message.class);
-        resources.add(com.velisphere.blender.webservices.Provisioning.class);
+        resources.add(com.velisphere.blender.webservices.Service.class);
         //==> we could also choose packages, see below getProperties()
         
         System.out.println("REST configuration ended successfully.");
