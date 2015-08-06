@@ -63,8 +63,16 @@ public class ProvisioningClient {
 			    }
 		
 		
+
+				WebTarget target = client.target( "http://127.0.0.1:8083/rest/config/get/general" );
+				Response response = target.path("TOUCAN").request().get();
+				
+				System.out.println(response);
+				
+				String toucanIP = response.readEntity(String.class);
+			    
 			
-			WebTarget target = client.target( "http://localhost:8082/rest/provisioning/put" );
+			 target = client.target( "http://"+toucanIP+"/rest/provisioning/put" );
 
 			//Response response = target.path( "endpoint" ).path( sb.toString() ).request().put( Entity.text("f67528e4-80f7-4832-a5fd-3082bd4e7385") );
 			
@@ -72,7 +80,7 @@ public class ProvisioningClient {
 			
 			String identifier = "GEN";
 			
-			Response response = target.path( "endpoint" ).path( identifier).request().put( Entity.text("ee175195-d0bc-47c2-9cde-1cf44433305f") );
+			response = target.path( "endpoint" ).path( identifier).request().put( Entity.text("ee175195-d0bc-47c2-9cde-1cf44433305f") );
 			System.out.println("Search for identifier: " + identifier);	
 		
 			System.out.println (response);

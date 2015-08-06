@@ -28,6 +28,10 @@ import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 
 import org.mindrot.BCrypt;
 import org.voltdb.VoltTable;
@@ -61,37 +65,26 @@ public class HelperServiceImpl extends RemoteServiceServlet implements HelperSer
 		Properties props = new Properties();
 		InputStream is = null;
 
-		// First try loading from the current directory
-		try {
-			File f = new File("montanaconf.xml");
-			is = new FileInputStream( f );
-		}
-		catch ( Exception e ) { is = null; }
-
-		try {
-			if ( is == null ) {
-				// Try loading from classpath
-				is = getClass().getResourceAsStream("montanaconf.xml");
-			}
-
-			// Try loading properties from the file (if found)
-			props.loadFromXML( is );
-		}
-		catch ( Exception e ) { }
-
-		System.out.println("[IN] Reading Configuration");
-		ServerParameters.volt_ip = props.getProperty("Volt IP");
-		System.out.println("[IN] Selected VoltDB: "+ ServerParameters.volt_ip);
-		ServerParameters.vertica_ip = props.getProperty("Vertica IP");
-		System.out.println("[IN] Selected Vertica Database: "+ ServerParameters.vertica_ip);
-
-		// Setting manually
 		
-		System.out.println("[IN] Setting manual Configuration");
+		// Read settings via BlenderServer
 		
-		ServerParameters.volt_ip = "127.0.0.1";
+		System.out.println("[IN] Receiving Configuration from BlenderServer");
+		
+		
+
+		Client client = ClientBuilder.newClient();
+
+		WebTarget target = client.target( "http://127.0.0.1:8083/rest/config/get/general" );
+		Response response = target.path("VOLT").request().get();
+		
+		
+		ServerParameters.volt_ip = response.readEntity(String.class);
 		System.out.println("[IN] Selected VoltDB: "+ ServerParameters.volt_ip);
-		ServerParameters.vertica_ip = "127.0.0.1";
+		
+		target = client.target( "http://127.0.0.1:8083/rest/config/get/general" );
+		response = target.path("VERTICA").request().get();
+		
+		ServerParameters.vertica_ip = response.readEntity(String.class);
 		System.out.println("[IN] Selected Vertica Database: "+ ServerParameters.vertica_ip);
 
 		
