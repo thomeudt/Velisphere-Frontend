@@ -1,4 +1,10 @@
-package ChatExample;
+package PhidgetsExample;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+
 /*******************************************************************************
  * CONFIDENTIAL INFORMATION
  *  __________________
@@ -18,8 +24,22 @@ package ChatExample;
  ******************************************************************************/
 public class ServerParameters {
 
-	  public static String bunny_ip = "www.connectedthingslab.com";
+	  public static String bunny_ip = "";
 	  //public final static String bunny_ip = "ec2-54-213-218-172.us-west-2.compute.amazonaws.com";
 	  public static String my_queue_name = "";
 	
+	  
+	  public static void autoConf(){
+			Client client = ClientBuilder.newClient();
+
+			WebTarget target = client.target( "http://www.connectedthingslab.com:8080/BlenderServer/rest/config/get/general" );
+			Response response = target.path("RABBIT").request().get();
+			
+			
+			ServerParameters.bunny_ip = response.readEntity(String.class);
+
+			System.out.println("Rabbit IP: " + ServerParameters.bunny_ip);
+
+	  }
+	  
 }

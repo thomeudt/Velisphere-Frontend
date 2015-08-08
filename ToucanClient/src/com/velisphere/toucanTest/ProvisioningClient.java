@@ -64,7 +64,7 @@ public class ProvisioningClient {
 		
 		
 
-				WebTarget target = client.target( "http://127.0.0.1:8083/rest/config/get/general" );
+				WebTarget target = client.target( "http://connectedthingslab.com:8080/BlenderServer/rest/config/get/general" );
 				Response response = target.path("TOUCAN").request().get();
 				
 				System.out.println(response);

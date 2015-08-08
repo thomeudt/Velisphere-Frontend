@@ -17,7 +17,7 @@ public class UniversalTest {
 		Client client = ClientBuilder.newClient();
 
 		
-		WebTarget target = client.target( "http://localhost:8083/rest/config/get/general" );
+		WebTarget target = client.target( "http://connectedthingslab.com:8080/BlenderServer/rest/config/get/general" );
 		Response response = target.path("TOUCAN").request().get();
 		
 		String toucanIP = response.readEntity(String.class);

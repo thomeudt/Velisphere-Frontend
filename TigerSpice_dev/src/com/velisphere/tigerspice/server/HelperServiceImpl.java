@@ -74,14 +74,14 @@ public class HelperServiceImpl extends RemoteServiceServlet implements HelperSer
 
 		Client client = ClientBuilder.newClient();
 
-		WebTarget target = client.target( "http://127.0.0.1:8083/rest/config/get/general" );
+		WebTarget target = client.target( "http://www.connectedthingslab.com:8080/BlenderServer/rest/config/get/general" );
 		Response response = target.path("VOLT").request().get();
 		
 		
 		ServerParameters.volt_ip = response.readEntity(String.class);
 		System.out.println("[IN] Selected VoltDB: "+ ServerParameters.volt_ip);
 		
-		target = client.target( "http://127.0.0.1:8083/rest/config/get/general" );
+		target = client.target( "http://www.connectedthingslab.com:8080/BlenderServer/rest/config/get/general" );
 		response = target.path("VERTICA").request().get();
 		
 		ServerParameters.vertica_ip = response.readEntity(String.class);

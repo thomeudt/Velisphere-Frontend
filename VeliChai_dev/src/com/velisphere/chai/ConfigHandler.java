@@ -24,6 +24,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+
+
 
 
 public class ConfigHandler {
@@ -82,19 +88,25 @@ public class ConfigHandler {
 		}
 		catch ( Exception e ) { }
 
-		ServerParameters.ldapUrl = props.getProperty("LDAP URL");
-		ServerParameters.ldapPrincipal = props.getProperty("LDAP Principal");
-		ServerParameters.ldapPassword = props.getProperty("LDAP PW");
 		ServerParameters.controllerQueueName = props.getProperty("Controller Queue Name");
-		ServerParameters.bunny_ip = props.getProperty("VeliBunny AMPQ Broker IP");
 		ServerParameters.threadpoolSize = Integer.parseInt(props.getProperty("Threadpool Size"));
-		ServerParameters.volt_ip = props.getProperty("Volt IP");
+		
+		System.out.println(" [IN] Requesting Configuration From BlenderServer");
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target( "http://www.connectedthingslab.com:8080/BlenderServer/rest/config/get/general" );
+		Response response = target.path("RABBIT").request().get();
+		ServerParameters.bunny_ip = response.readEntity(String.class);
+		System.out.println(" [IN] BlenderServer provided Rabbit IP: " + ServerParameters.bunny_ip);
+		response = target.path("VOLT").request().get();
+		ServerParameters.volt_ip = response.readEntity(String.class);
+		System.out.println(" [IN] BlenderServer provided Volt IP: " + ServerParameters.volt_ip);
+		response = target.path("VERTICA").request().get();
+		ServerParameters.vertica_ip = response.readEntity(String.class);
+		System.out.println(" [IN] BlenderServer provided Vertica IP: " + ServerParameters.vertica_ip);
+		System.out.println(" [IN] Threadpool Size set in chaiconf.xml: "+ ServerParameters.threadpoolSize);
 
-		System.out.println(" [IN] Reading Configuration");
-		System.out.println(" [IN] Selected RabbitMQ AMQP Broker: "+ ServerParameters.bunny_ip);
-		System.out.println(" [IN] Selected VoltDB: "+ ServerParameters.volt_ip);
-		System.out.println(" [IN] Threadpool Size: "+ ServerParameters.threadpoolSize);
-
+		
+		
 	}
 
 }
