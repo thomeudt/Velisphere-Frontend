@@ -12,7 +12,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 
 
 
-	<display-name>VeliSphere Restful Web Services (Toucan v0.1)</display-name>
+	<display-name>VeliSphere RESTful Configuration Services (Blender v0.1)</display-name>
 
 	<servlet>
 		<servlet-name>jersey-serlvet</servlet-name>
