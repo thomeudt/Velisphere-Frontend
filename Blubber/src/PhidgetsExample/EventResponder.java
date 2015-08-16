@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.phidgets.PhidgetException;
 import com.velisphere.fs.sdk.CTLListener;
 import com.velisphere.fs.sdk.Server;
+import com.velisphere.fs.sdk.config.ConfigData;
 
 
 public class EventResponder implements EventListener {
@@ -19,7 +20,7 @@ public class EventResponder implements EventListener {
 		messageHash.put("setState", "REACHABLE");
 		
 		try {
-			Server.sendHashTable(messageHash, ServerParameters.my_queue_name, "CTL");
+			Server.sendHashTable(messageHash, ConfigData.epid, "CTL");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

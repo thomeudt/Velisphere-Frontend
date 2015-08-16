@@ -3,6 +3,7 @@ import java.util.HashMap;
 
 import com.phidgets.*; 
 import com.phidgets.event.*; 
+import com.velisphere.fs.sdk.config.ConfigData;
 public class PhiTestAdvanced 
 { 
 	public static InterfaceKitPhidget ik;
@@ -10,17 +11,12 @@ public class PhiTestAdvanced
 	public static final void main(String args[]) throws Exception { 
 		 
 		
-		// Start AMQP Listener
-		ServerParameters.my_queue_name = "E1";
-		//Thread t = new Thread(new RecvPhi(), "listener");
-		//t.start();
-		
 		EventResponder eventResponder = new EventResponder();
 		EventInitiator initiator = new EventInitiator();
 		initiator.addListener(eventResponder);
 	
 		
-		PhidgetServer.startServer(ServerParameters.my_queue_name, initiator);
+		PhidgetServer.startServer(initiator);
 		
 		
 		System.out.println(Phidget.getLibraryVersion()); 
@@ -61,14 +57,14 @@ public class PhiTestAdvanced
 					
 					HashMap<String, String> messageHash = new HashMap<String, String>();
 					
-					messageHash.put("PR10", String.valueOf(ik.getSensorValue(6)));
-					messageHash.put("PR11", String.valueOf(ik.getSensorValue(7)));
-					messageHash.put("PR12", String.valueOf(ik.getSensorValue(5)));
-					messageHash.put("PR13", String.valueOf(ik.getSensorValue(1)));
+					messageHash.put("075bbef2-4c53-46c0-826c-a7dc0f30cfb0", String.valueOf(ik.getSensorValue(6)));
+					messageHash.put("d2544026-6a99-415f-98a7-6d1c55560886", String.valueOf(ik.getSensorValue(7)));
+					messageHash.put("fa1840e6-b590-4aa9-9445-69cd1bbf3175", String.valueOf(ik.getSensorValue(5)));
+					messageHash.put("d5d57ac8-6fa3-474e-b7af-5792b1d4964a", String.valueOf(ik.getSensorValue(1)));
 					
 					System.out.println("Message Hash Sent to Controller: " + messageHash);
 					
-					PhidgetServer.sendHashTable(messageHash, ServerParameters.my_queue_name, "REG");
+					PhidgetServer.sendHashTable(messageHash, ConfigData.epid, "REG");
 					
 					
 				} catch (Exception e) {

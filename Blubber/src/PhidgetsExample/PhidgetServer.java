@@ -38,7 +38,7 @@ public class PhidgetServer implements Runnable {
 
 		
 		
-		String QUEUE_NAME = ServerParameters.my_queue_name;
+		String QUEUE_NAME = ConfigData.epid;
 
 		try {
 
@@ -183,20 +183,25 @@ public class PhidgetServer implements Runnable {
 		// implemented reply queue to allow tracing the sender for callback
 
 		BasicProperties props = new BasicProperties.Builder()
-				.replyTo(ServerParameters.my_queue_name).deliveryMode(2)
+				.replyTo(ConfigData.epid).deliveryMode(2)
 				.build();
 
 		message.put("TYPE", type);
 		java.util.Date date = new java.util.Date();
 		Timestamp timeStamp = new Timestamp(date.getTime());
 		message.put("TIMESTAMP", timeStamp.toString());
-		message.put("EPID", ServerParameters.my_queue_name);
+		message.put("EPID", ConfigData.epid);
 
 		MessageFabrik innerMessageFactory = new MessageFabrik(message);
 		String messagePackJSON = innerMessageFactory.getJsonString();
 
 		String hMAC = HashTool.getHmacSha1(messagePackJSON, ConfigData.secret);
 
+		System.out.println("Using secret: "+ ConfigData.secret);
+
+		System.out.println("Using endpointID: "+ ConfigData.epid);
+		
+		
 		HashMap<String, String> submittableMessage = new HashMap<String, String>();
 
 		submittableMessage.put(hMAC, messagePackJSON);
@@ -217,11 +222,7 @@ public class PhidgetServer implements Runnable {
 		connection.close();
 	}
 
-	public static void startServer(String endpointID,
-			EventInitiator eventInitiator) {
-
-		// set queue name for (rabbitMQ)
-		ServerParameters.my_queue_name = endpointID;
+	public static void startServer(EventInitiator eventInitiator) {
 
 		/*
 		 * Show startup message

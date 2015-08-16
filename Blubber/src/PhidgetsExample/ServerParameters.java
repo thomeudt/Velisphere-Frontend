@@ -25,8 +25,7 @@ import javax.ws.rs.core.Response;
 public class ServerParameters {
 
 	  public static String bunny_ip = "";
-	  //public final static String bunny_ip = "ec2-54-213-218-172.us-west-2.compute.amazonaws.com";
-	  public static String my_queue_name = "";
+
 	
 	  
 	  public static void autoConf(){
