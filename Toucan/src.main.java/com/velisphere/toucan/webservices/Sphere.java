@@ -26,7 +26,6 @@ import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.velisphere.toucan.ConfigHandler;
 import com.velisphere.toucan.amqp.VoltConnector;
 import com.velisphere.toucan.dataObjects.EndpointData;
 import com.velisphere.toucan.dataObjects.SphereData;
@@ -50,8 +49,7 @@ public class Sphere {
 		
 		// AMQP handling from here
 
-		ConfigHandler conf = new ConfigHandler();
-		conf.loadParamChangesAsXML();
+
 		
 		System.out.println(" [IN] Get Endpoints Called");
 

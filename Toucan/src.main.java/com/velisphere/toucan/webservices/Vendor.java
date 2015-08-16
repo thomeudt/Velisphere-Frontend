@@ -18,7 +18,7 @@ import org.voltdb.VoltTable;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
-import com.velisphere.toucan.ConfigHandler;
+
 import com.velisphere.toucan.amqp.VoltConnector;
 import com.velisphere.toucan.dataObjects.EndpointData;
 import com.velisphere.toucan.dataObjects.VendorData;
@@ -38,8 +38,7 @@ public class Vendor {
 	public VendorElement getVendorDetails(@PathParam("param") String vendorID) {
 		
 
-		ConfigHandler conf = new ConfigHandler();
-		conf.loadParamChangesAsXML();
+		
 		
 		System.out.println(" [IN] Get General Called");
 

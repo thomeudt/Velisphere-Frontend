@@ -22,7 +22,6 @@ import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
-import com.velisphere.toucan.ConfigHandler;
 import com.velisphere.toucan.amqp.ServerParameters;
 import com.velisphere.toucan.amqp.VoltConnector;
 import com.velisphere.toucan.dataObjects.EndpointData;
@@ -43,8 +42,7 @@ public class Properties {
 	public PropertyElements getSensorsForEndpoint(@PathParam("param") String endpointID) {
 		
 
-		ConfigHandler conf = new ConfigHandler();
-		conf.loadParamChangesAsXML();
+		
 		
 		System.out.println(" [IN] Get All Sensors for Endpoint Called");
 
@@ -129,8 +127,7 @@ public class Properties {
 		public PropertyElements getSensorsStatesForEndpoint(@PathParam("param") String endpointID) {
 			
 
-			ConfigHandler conf = new ConfigHandler();
-			conf.loadParamChangesAsXML();
+	
 			
 			System.out.println(" [IN] Get All Sensors for Endpoint Called");
 
@@ -282,8 +279,6 @@ public class Properties {
 	public PropertyElements getActorsForEndpoint(@PathParam("param") String endpointID) {
 		
 
-		ConfigHandler conf = new ConfigHandler();
-		conf.loadParamChangesAsXML();
 		
 		System.out.println(" [IN] Get All Actors for Endpoint Called");
 
@@ -367,9 +362,7 @@ public class Properties {
 	public PropertyElements getActorsStatesForEndpoint(@PathParam("param") String endpointID) {
 		
 
-		ConfigHandler conf = new ConfigHandler();
-		conf.loadParamChangesAsXML();
-		
+
 		System.out.println(" [IN] Get All Sensors for Endpoint Called");
 
 		PropertyElements propertyElements = new PropertyElements();

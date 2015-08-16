@@ -26,7 +26,7 @@ import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.velisphere.toucan.ConfigHandler;
+
 import com.velisphere.toucan.amqp.VoltConnector;
 import com.velisphere.toucan.dataObjects.EndpointData;
 import com.velisphere.toucan.dataObjects.SphereData;
@@ -77,9 +77,6 @@ public class User {
 	public String getUserName(@PathParam("param") String userID) {
 		
 		// AMQP handling from here
-
-		ConfigHandler conf = new ConfigHandler();
-		conf.loadParamChangesAsXML();
 
 		String userName = new String();
 		
@@ -141,9 +138,6 @@ public class User {
 		
 		// AMQP handling from here
 
-		ConfigHandler conf = new ConfigHandler();
-		conf.loadParamChangesAsXML();
-		
 		System.out.println(" [IN] Get Endpoints Called");
 
 		EndpointElements endpointsForUser = new EndpointElements();

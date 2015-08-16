@@ -87,6 +87,7 @@ public class VelisphereMart {
       
       myInsert.executeBatch();
       myInsert.close();
+     
       
       } catch (SQLException e)
          {
@@ -108,6 +109,7 @@ public class VelisphereMart {
       
       myInsert.executeUpdate("INSERT INTO VLOGGER.ACTIONEXECUTEDLOG VALUES ('"+entryID.toString()+"', '"+actionID+"', '"+sensorID+"', '"+actorID+"', '"+payload+"', STATEMENT_TIMESTAMP())");
       myInsert.close();
+      
       
       } catch (SQLException e)
          {

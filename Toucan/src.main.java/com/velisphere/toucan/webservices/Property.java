@@ -18,7 +18,6 @@ import org.voltdb.VoltType;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
-import com.velisphere.toucan.ConfigHandler;
 import com.velisphere.toucan.amqp.VoltConnector;
 import com.velisphere.toucan.dataObjects.EndpointClassData;
 import com.velisphere.toucan.dataObjects.EndpointData;
@@ -39,8 +38,6 @@ public class Property {
 	public PropertyElement getPropertyDetails(@PathParam("param") String propertyID) {
 		
 
-		ConfigHandler conf = new ConfigHandler();
-		conf.loadParamChangesAsXML();
 		
 		System.out.println(" [IN] Get General Called");
 
@@ -125,9 +122,7 @@ public class Property {
 	public String getUnitOfMeasure(@PathParam("param") String propertyID) {
 		
 
-		ConfigHandler conf = new ConfigHandler();
-		conf.loadParamChangesAsXML();
-		
+
 		String unitOfMeasure = new String();
 		PropertyElement propertyElement = new PropertyElement();
 		

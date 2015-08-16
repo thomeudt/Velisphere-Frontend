@@ -239,6 +239,9 @@ public class PhidgetServer implements Runnable {
 				.println("   *       VeliSphere SDK Server is part of the VeliSphere IoTS ecosystem.");
 		System.out.println();
 		System.out.println();
+		System.out.println(" [IN] This product includes GeoLite data created by MaxMind, available from http://www.maxmind.com");
+		System.out.println();
+		System.out.println();
 		System.out.println(" [IN] Starting server...");
 
 		// load config data

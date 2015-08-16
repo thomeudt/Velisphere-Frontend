@@ -21,7 +21,7 @@ import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.GetResponse;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
-import com.velisphere.toucan.ConfigHandler;
+
 import com.velisphere.toucan.amqp.MessagePack;
 import com.velisphere.toucan.amqp.Send;
 import com.velisphere.toucan.amqp.ServerParameters;
@@ -41,14 +41,13 @@ public class Message {
 
 		// AMQP handling from here
 
-		ConfigHandler conf = new ConfigHandler();
-		conf.loadParamChangesAsXML();
+		
 
 		String QUEUE_NAME = endpointID;
 
 		try {
 			ConnectionFactory factory = new ConnectionFactory();
-			factory.setHost(ServerParameters.bunny_ip);
+			factory.setHost(ServerParameters.rabbit_ip);
 			Connection connection;
 			connection = factory.newConnection();
 
@@ -93,8 +92,7 @@ public class Message {
 
 		// AMQP handling from here
 
-		ConfigHandler conf = new ConfigHandler();
-		conf.loadParamChangesAsXML();
+	
 
 		String QUEUE_NAME = endpointID;
 
@@ -102,7 +100,7 @@ public class Message {
 
 		try {
 			ConnectionFactory factory = new ConnectionFactory();
-			factory.setHost(ServerParameters.bunny_ip);
+			factory.setHost(ServerParameters.rabbit_ip);
 			factory.setUsername("guest");
 			factory.setPassword("guest");
 			

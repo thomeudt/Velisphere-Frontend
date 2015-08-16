@@ -25,5 +25,6 @@
 	<classpathentry kind="lib" path="/home/thorsten/Downloads/phidget21.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/commons-codec-1.9.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/Downloads/velisphereClientSDK.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/Documents/GeoIP/geoip-api-1.2.15.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

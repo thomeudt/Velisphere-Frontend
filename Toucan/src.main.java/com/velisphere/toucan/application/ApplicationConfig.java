@@ -7,12 +7,20 @@ import java.util.Set;
  
 
 
+
+
 import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import com.velisphere.toucan.amqp.ServerParameters;
+
  
 @ApplicationPath("/service")
 public class ApplicationConfig extends Application {
@@ -21,6 +29,13 @@ public class ApplicationConfig extends Application {
     public Set<Class<?>> getClasses() {
         
         Set<Class<?>> resources = new java.util.HashSet<>();
+        
+        System.out.println("Requesting server parameters from BlenderServer...");            
+        
+        getConfigData();
+
+        System.out.println("Requesting server parameters from BlenderServer completed.");            
+        
         
         System.out.println("REST configuration starting: getClasses()");            
         
@@ -64,4 +79,21 @@ public class ApplicationConfig extends Application {
         
         return properties;
     }    
+    
+    
+    private void getConfigData()
+    {
+    	Client client = ClientBuilder.newClient();
+		WebTarget target = client.target( "http://www.connectedthingslab.com:8080/BlenderServer/rest/config/get/general" );
+		Response response = target.path("RABBIT").request().get();
+		ServerParameters.rabbit_ip = response.readEntity(String.class);
+		System.out.println(" [IN] BlenderServer provided Rabbit IP: " + ServerParameters.rabbit_ip);
+		response = target.path("VOLT").request().get();
+		ServerParameters.volt_ip = response.readEntity(String.class);
+		System.out.println(" [IN] BlenderServer provided Volt IP: " + ServerParameters.volt_ip);
+		response = target.path("VERTICA").request().get();
+		ServerParameters.vertica_ip = response.readEntity(String.class);
+		System.out.println(" [IN] BlenderServer provided Vertica IP: " + ServerParameters.vertica_ip);
+    	
+    }
 }

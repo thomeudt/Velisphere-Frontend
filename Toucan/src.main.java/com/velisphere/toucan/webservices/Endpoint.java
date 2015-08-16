@@ -22,7 +22,7 @@ import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.velisphere.toucan.ConfigHandler;
+
 import com.velisphere.toucan.amqp.Send;
 import com.velisphere.toucan.amqp.VoltConnector;
 import com.velisphere.toucan.dataObjects.EndpointData;
@@ -43,8 +43,7 @@ public class Endpoint {
 	public EndpointElement getEndpointDetails(@PathParam("param") String endpointID) {
 		
 
-		ConfigHandler conf = new ConfigHandler();
-		conf.loadParamChangesAsXML();
+		
 		
 		System.out.println(" [IN] Get General Called");
 

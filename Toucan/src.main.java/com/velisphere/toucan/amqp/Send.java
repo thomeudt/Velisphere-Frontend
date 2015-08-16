@@ -28,7 +28,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.AMQP.BasicProperties;
-import com.velisphere.toucan.ConfigHandler;
+
 
 public class Send {
 

@@ -16,7 +16,7 @@ import org.voltdb.VoltTable;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
-import com.velisphere.toucan.ConfigHandler;
+
 import com.velisphere.toucan.amqp.VoltConnector;
 import com.velisphere.toucan.dataObjects.EndpointClassData;
 import com.velisphere.toucan.dataObjects.EndpointData;
@@ -41,9 +41,6 @@ public class EndpointClass  {
 	public EndpointClassElement getEndpointClassDetails(@PathParam("param") String endpointClassID) {
 		
 
-		ConfigHandler conf = new ConfigHandler();
-		conf.loadParamChangesAsXML();
-		
 		System.out.println(" [IN] Get General Called");
 
 		EndpointClassElement endpointClassElement = new EndpointClassElement();

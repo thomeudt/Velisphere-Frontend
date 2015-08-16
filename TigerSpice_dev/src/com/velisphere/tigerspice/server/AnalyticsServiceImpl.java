@@ -68,16 +68,23 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 							+ endpointID
 							+ "' ORDER BY TIME_STAMP");
 
+			System.out.println("Result: " + myResult);
+			System.out.println("Size: " + myResult.getFetchSize());
+
+			
 			while (myResult.next()) {
 				AnalyticsRawData logItem = new AnalyticsRawData();
+				
 				logItem.addPropertyValuePair(myResult.getString(1), myResult.getString(2));
 				//logItem.addPropertyValuePair("Test", myResult.getString(2));
 				logItem.setTimeStamp(myResult.getString(3));
 				logData.add(logItem);
+				System.out.println(logItem);
 				// System.out.println("Retrieved: " + logItem.getValue());
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -110,6 +117,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 
 		writer.flush();
 		writer.close();
+	
 
 		System.out.println("[IN] Creating temporary file at "
 				+ tempFile.getAbsolutePath());
@@ -197,6 +205,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -244,6 +253,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -294,6 +304,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -342,6 +353,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -397,6 +409,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -454,6 +467,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -504,6 +518,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -574,6 +589,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -645,6 +661,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -718,6 +735,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -790,6 +808,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -860,6 +879,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -932,6 +952,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -978,6 +999,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
