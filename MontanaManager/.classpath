@@ -18,5 +18,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/voltdbclient-4.0.2.3.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/vertica-jdbc-7.0.1-0.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/mysql/mysql-connector-java-5.1.36-bin.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

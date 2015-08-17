@@ -31,8 +31,6 @@ public class ShovelExportToMYSQL {
 
 		// MySQL
 
-		System.out.println("Connecting to MySQL");
-
 		connect();
 
 		Statement myInsert = conn.createStatement();
