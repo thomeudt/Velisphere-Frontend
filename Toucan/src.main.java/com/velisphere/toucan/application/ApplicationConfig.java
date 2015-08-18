@@ -6,9 +6,6 @@ import java.util.Map;
 import java.util.Set;
  
 
-
-
-
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -16,7 +13,10 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.jackson.JacksonFeature;
+import org.glassfish.jersey.media.multipart.MultiPart;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.velisphere.toucan.amqp.ServerParameters;
@@ -25,9 +25,13 @@ import com.velisphere.toucan.amqp.ServerParameters;
 @ApplicationPath("/service")
 public class ApplicationConfig extends Application {
  
+	
+	
     @Override
     public Set<Class<?>> getClasses() {
         
+    
+    	
         Set<Class<?>> resources = new java.util.HashSet<>();
         
         System.out.println("Requesting server parameters from BlenderServer...");            
@@ -42,14 +46,29 @@ public class ApplicationConfig extends Application {
         //features
         //this will register Jackson JSON providers
         resources.add(JacksonFeature.class);
+        resources.add(MultiPartFeature.class);
+
         //we could also use this:
         //resources.add(JacksonJaxbJsonProvider.class);
         
         //instead let's do it manually:
         resources.add(com.velisphere.toucan.providers.MyJacksonJsonProvider.class);
-        resources.add(com.velisphere.toucan.webservices.User.class);
+        
+        
+        resources.add(com.velisphere.toucan.webservices.Analytics.class);
+        resources.add(com.velisphere.toucan.webservices.Endpoint.class);
+        resources.add(com.velisphere.toucan.webservices.EndpointClass.class);
+        resources.add(com.velisphere.toucan.webservices.FileStorage.class);
         resources.add(com.velisphere.toucan.webservices.Message.class);
+        resources.add(com.velisphere.toucan.webservices.Properties.class);
+        resources.add(com.velisphere.toucan.webservices.Property.class);
+        resources.add(com.velisphere.toucan.webservices.PropertyClass.class);
         resources.add(com.velisphere.toucan.webservices.Provisioning.class);
+        resources.add(com.velisphere.toucan.webservices.Sphere.class);
+        resources.add(com.velisphere.toucan.webservices.User.class);
+        resources.add(com.velisphere.toucan.webservices.Vendor.class);
+        
+        
         //==> we could also choose packages, see below getProperties()
         
         System.out.println("REST configuration ended successfully.");

@@ -57,7 +57,7 @@ public class UploadServlet extends UploadAction {
           
           /// Create a temporary file placed in the default system temp folder
         	
-        	File file = new File("/tmp/" + item.getName());
+        	File file = new File("/home/thorsten/images/" + item.getName());
         	System.out.println(file.getCanonicalPath());
           item.write(file);
           

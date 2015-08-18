@@ -1,15 +1,16 @@
 package com.velisphere.toucanTest;
 
+import java.io.File;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.glassfish.jersey.media.multipart.MultiPart;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
+import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 
 public class UniversalTest {
 	public static void main(String[] args) {
@@ -143,8 +144,21 @@ public class UniversalTest {
 		System.out.println ("Returned json: " + response.readEntity(String.class));
 		
 		
-
+		// upload image
 		
+		client.register(MultiPartFeature.class);
+		 
+	    final MultiPart multiPart = new MultiPart();
+	 
+	    FileDataBodyPart fileDataBodyPart = new FileDataBodyPart("file",
+	            new File("/home/thorsten/Downloads/stockvault-internet161600.jpg"), MediaType.APPLICATION_OCTET_STREAM_TYPE);
+	    
+	    multiPart.bodyPart(fileDataBodyPart);
+	    
+	    
+	    final Response res = client.target("http://"+toucanIP+"/rest/files/put/binary").request().put(Entity.entity(multiPart, MediaType.MULTIPART_FORM_DATA_TYPE));
+	 
+	    System.out.println("Response: "+res.readEntity(String.class));
 		
 	}
 }

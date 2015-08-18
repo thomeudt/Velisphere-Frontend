@@ -20,8 +20,11 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
 
 		<init-param>
-			<param-name>jersey.config.server.provider.packages</param-name>
-			<param-value>com.velisphere.toucan.webservices</param-value>
+			
+
+			<param-name>javax.ws.rs.Application</param-name>
+            <param-value>com.velisphere.toucan.application.ApplicationConfig</param-value>
+			
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 
