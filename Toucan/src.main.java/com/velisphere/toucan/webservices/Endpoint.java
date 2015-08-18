@@ -22,8 +22,8 @@ import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.velisphere.toucan.amqp.AMQPServer;
 
-import com.velisphere.toucan.amqp.Send;
 import com.velisphere.toucan.amqp.VoltConnector;
 import com.velisphere.toucan.dataObjects.EndpointData;
 import com.velisphere.toucan.security.HashTool;
@@ -154,7 +154,7 @@ public class Endpoint {
 	messageHash.put("getIsAlive", "1");
 	
 	try {
-		Send.sendHashTable(messageHash, endpointID);
+		AMQPServer.sendHashTable(messageHash, endpointID, "CTL");
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -177,7 +177,7 @@ public class Endpoint {
 	messageHash.put(propertyID, value);
 	
 	try {
-		Send.sendHashTable(messageHash, endpointID);
+		AMQPServer.sendHashTable(messageHash, endpointID, "CTL");
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();

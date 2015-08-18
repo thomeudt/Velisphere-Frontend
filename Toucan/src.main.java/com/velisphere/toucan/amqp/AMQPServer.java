@@ -1,4 +1,4 @@
-package PhidgetsExample;
+package com.velisphere.toucan.amqp;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -20,30 +20,35 @@ import com.velisphere.fs.sdk.config.ConfigFileAccess;
 import com.velisphere.fs.sdk.security.HashTool;
 import com.velisphere.fs.sdk.security.MessageValidator;
 
-public class PhidgetServer implements Runnable {
+public class AMQPServer implements Runnable {
 
 	private static Thread t;
 	private EventInitiator eventInitiator;
 
-	public PhidgetServer(EventInitiator eventInitiator) {
+	public AMQPServer(EventInitiator eventInitiator) {
 		this.eventInitiator = eventInitiator;
 
 	}
 
 	public void run() {
 
-		// get parameters from BlenderServer
+		// wait until parameters from BlenderServer are available
 
-		ServerParameters.autoConf();
 
+		System.out.println(" [IN] Waiting for Configuration Information from BlenderServer...");
+		
+		while(ServerParameters.rabbit_ip==null)
+		{
+			// do nothing
+		}
 		
 		
-		String QUEUE_NAME = ConfigData.epid;
+		String QUEUE_NAME = ServerParameters.my_queue_name;
 
 		try {
 
 			ConnectionFactory factory = new ConnectionFactory();
-			factory.setHost(ServerParameters.bunny_ip);
+			factory.setHost(ServerParameters.rabbit_ip);
 			factory.setUsername("dummy");
 			factory.setPassword("dummy");
 			factory.setVirtualHost("hClients");
@@ -152,13 +157,8 @@ public class PhidgetServer implements Runnable {
 
 		
 		
-		if(ServerParameters.bunny_ip.equals(""))
-		{
-			ServerParameters.autoConf();
-		}
-		
 		ConnectionFactory connectionFactory = new ConnectionFactory();
-		connectionFactory.setHost(ServerParameters.bunny_ip);
+		connectionFactory.setHost(ServerParameters.rabbit_ip);
 		connectionFactory.setUsername("dummy");
 		connectionFactory.setPassword("dummy");
 		connectionFactory.setVirtualHost("hClients");
@@ -222,8 +222,50 @@ public class PhidgetServer implements Runnable {
 		connection.close();
 	}
 
-	
-	
+	public static void sendJSON(String message,
+			String queue_name, String type) throws Exception {
+
+		
+		
+		ConnectionFactory connectionFactory = new ConnectionFactory();
+		connectionFactory.setHost(ServerParameters.rabbit_ip);
+		connectionFactory.setUsername("dummy");
+		connectionFactory.setPassword("dummy");
+		connectionFactory.setVirtualHost("hClients");
+		connectionFactory.setPort(5671);
+		connectionFactory.useSslProtocol();
+
+		
+		
+
+		
+		connectionFactory.setVirtualHost("hController");
+		Connection connection = connectionFactory.newConnection();
+		Channel channel = connection.createChannel();
+
+		// System.out.println("QUEUE DEFINED AS....."+queue_name+"...");
+		if (queue_name.equals("controller")) {
+			boolean durable = true;
+			channel.queueDeclare(queue_name, durable, false, false, null);
+		} else {
+			channel.queueDeclare(queue_name, false, false, false, null);
+		}
+
+		// implemented reply queue to allow tracing the sender for callback
+
+		BasicProperties props = new BasicProperties.Builder()
+				.replyTo(ConfigData.epid).deliveryMode(2)
+				.build();
+
+		channel.basicPublish("", "controller", props,
+				message.getBytes());
+
+		// System.out.println(" [x] Sent '" + messagePackText + "'");
+
+		channel.close();
+		connection.close();
+	}
+
 	
 	
 	public static void startServer(EventInitiator eventInitiator) {
@@ -255,7 +297,7 @@ public class PhidgetServer implements Runnable {
 		System.out.println(" [IN] Endpoint ID: " + ConfigData.epid);
 		System.out.println(" [IN] Secret: " + ConfigData.secret);
 
-		t = new Thread(new PhidgetServer(eventInitiator), "listener");
+		t = new Thread(new AMQPServer(eventInitiator), "listener");
 		t.start();
 
 	}

@@ -1,11 +1,14 @@
 package com.velisphere.toucan.webservices;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -21,9 +24,8 @@ import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.GetResponse;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
-
-import com.velisphere.toucan.amqp.MessagePack;
-import com.velisphere.toucan.amqp.Send;
+import com.velisphere.fs.sdk.MessageFabrik;
+import com.velisphere.toucan.amqp.AMQPServer;
 import com.velisphere.toucan.amqp.ServerParameters;
 import com.velisphere.toucan.xmlRootElements.MessageElement;
 
@@ -31,10 +33,36 @@ import com.velisphere.toucan.xmlRootElements.MessageElement;
 @Path("/message")
 public class Message {
 
+
+
+
+ 
+
+	
+
+	@POST
+	@Path( "/post/json" )
+	@Consumes( MediaType.TEXT_PLAIN )
+	public Response postJSON( String message ) throws Exception {
+
+	
+	System.out.println( "Message is " + message );
+
+
+	AMQPServer.sendJSON(message, ServerParameters.my_queue_name, "REG");
+	return Response.noContent().build();
+
+	}
+
+	
+	
+	
+
+
 	@GET
-	@Path("/get/xml/{param}")
-	@Produces({ MediaType.APPLICATION_XML })
-	public MessageElement getXML(@PathParam("param") String endpointID) {
+	@Path("/get/json/{endpointid}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public LinkedList<String> getJSON(@PathParam("endpointid") String endpointID) {
 		MessageElement todo = new MessageElement();
 		todo.setSummary("VeliSphere Web Service Version 0.1");
 		// todo.setDescription("First Sphere");
@@ -42,108 +70,87 @@ public class Message {
 		// AMQP handling from here
 
 		
+		System.out.println("EndpointID is "+ endpointID);
+		
+		String submittableJSON = null;
+	
+		LinkedList<String> messageList = new LinkedList<String>();
+		
+		
 
 		String QUEUE_NAME = endpointID;
 
+		
 		try {
+
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setHost(ServerParameters.rabbit_ip);
-			Connection connection;
-			connection = factory.newConnection();
+			factory.setUsername("dummy");
+			factory.setPassword("dummy");
+			factory.setVirtualHost("hClients");
+			factory.setPort(5671);
+			factory.useSslProtocol();
 
-			Channel channel = connection.createChannel();
+			Connection connection = null;
 
-			// channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-			System.out
-					.println(" [*] Waiting for messages. To exit press CTRL+C");
+			try {
+				connection = factory.newConnection();
 
-			GetResponse response = channel.basicGet(QUEUE_NAME, true);
-
-			LinkedList<String> test = new LinkedList<String>();
-
-			while (response != null) {
-				AMQP.BasicProperties props = response.getProps();
-				byte[] body = response.getBody();
-				String message = new String(body);
-				System.out.println("RECEIVED: " + message);
-				test.add(message);
-				test.add(MessagePack.extractProperty(message, "PR9"));
-				long deliveryTag = response.getEnvelope().getDeliveryTag();
-				response = channel.basicGet(QUEUE_NAME, true);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
-			todo.setDescription(test);
-
-		} catch (IOException | ShutdownSignalException
-				| ConsumerCancelledException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return todo;
-	}
-
-	@GET
-	@Path("/get/json/{param}")
-	@Produces({ MediaType.TEXT_PLAIN })
-	public String getJSON(@PathParam("param") String endpointID) {
-		MessageElement todo = new MessageElement();
-		todo.setSummary("VeliSphere Web Service Version 0.1");
-		// todo.setDescription("First Sphere");
-
-		// AMQP handling from here
-
-	
-
-		String QUEUE_NAME = endpointID;
-
-		String test = new String();
-
-		try {
-			ConnectionFactory factory = new ConnectionFactory();
-			factory.setHost(ServerParameters.rabbit_ip);
-			factory.setUsername("guest");
-			factory.setPassword("guest");
-			
-			Connection connection;
-			connection = factory.newConnection();
-
-			
 			Channel channel = connection.createChannel();
 
 			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+
+			System.out.println(" [IN] Server Startup Completed.");
 			System.out
-					.println(" [*] Waiting for messages. To exit press CTRL+C");
+					.println(" [IN] Waiting for messages. To exit press CTRL+C");
 
-			//String queueName = channel.queueDeclare();
-
-			channel.queueBind(QUEUE_NAME, "xClients", "EX");
+			QueueingConsumer consumer = new QueueingConsumer(channel);
 			
 			
-			GetResponse response = channel.basicGet(QUEUE_NAME, true);
-
-			while (response != null) {
-				AMQP.BasicProperties props = response.getProps();
-				byte[] body = response.getBody();
-				String message = new String(body);
-				System.out.println("RECEIVED: " + message);
-				test = test + "," + message;
-				// test.add(MessagePack.extractProperty(message, "PR9"));
-				long deliveryTag = response.getEnvelope().getDeliveryTag();
-				response = channel.basicGet(QUEUE_NAME, true);
+			boolean empty = false;
+			
+			while (empty==false)
+			{
+				GetResponse response = channel.basicGet(QUEUE_NAME, true);
+				if(response == null)
+				{
+					empty = true;
+				}
+				else
+				{
+					byte[] messageBody = response.getBody();
+					messageList.add(new String(messageBody));		
+				}
+				
+				
 			}
-
-			if (test.length() > 0)
-				test = "[" + test.substring(1) + "]";
-			// todo.setDescription(test);
-
+			
+						
+			
+			/*
+			MessageFabrik messageFactory = new MessageFabrik(
+					messageList);
+			 submittableJSON = messageFactory.getJsonString();
+*/
 		}
 
 		catch (IOException | ShutdownSignalException
 				| ConsumerCancelledException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (KeyManagementException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		return test;
+		return messageList;
 	}
 
 	// This can be used to test the integration with the browser
@@ -170,7 +177,7 @@ public class Message {
 	outboundMessageMap.put("A", message);
 	String targetEPID = new String("EX");
 
-	Send.sendHashTable(outboundMessageMap, targetEPID);
+	AMQPServer.sendHashTable(outboundMessageMap, targetEPID, "REG");
 	return Response.noContent().build();
 
 	}

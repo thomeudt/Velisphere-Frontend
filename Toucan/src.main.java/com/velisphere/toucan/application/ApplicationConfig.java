@@ -6,6 +6,10 @@ import java.util.Map;
 import java.util.Set;
  
 
+
+
+
+
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -18,7 +22,15 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 
+
+
+
+
+
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import com.velisphere.toucan.amqp.AMQPServer;
+import com.velisphere.toucan.amqp.EventInitiator;
+import com.velisphere.toucan.amqp.EventResponder;
 import com.velisphere.toucan.amqp.ServerParameters;
 
  
@@ -31,6 +43,16 @@ public class ApplicationConfig extends Application {
     public Set<Class<?>> getClasses() {
         
     
+    	// Start the AMQP handling component
+    	
+    	EventResponder eventResponder = new EventResponder();
+		EventInitiator initiator = new EventInitiator();
+		initiator.addListener(eventResponder);
+	
+		
+		AMQPServer.startServer(initiator);
+    	
+    	
     	
         Set<Class<?>> resources = new java.util.HashSet<>();
         

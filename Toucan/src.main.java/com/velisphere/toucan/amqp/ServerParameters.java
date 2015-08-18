@@ -17,11 +17,13 @@
  ******************************************************************************/
 package com.velisphere.toucan.amqp;
 
+
+
 public class ServerParameters {
 
 	public static String volt_ip = "localhost";
 	public static String vertica_ip = "localhost";
 	public static String my_queue_name = "toucan";
-	public static String rabbit_ip = "localhost";
+	public static String rabbit_ip = null;
 	
 }
