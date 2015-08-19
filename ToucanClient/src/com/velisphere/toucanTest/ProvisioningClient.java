@@ -78,9 +78,9 @@ public class ProvisioningClient {
 			
 			//String identifier = sb.toString(); 
 			
-			String identifier = "pi";
+			String identifier = "gen";
 			
-			response = target.path( "endpoint" ).path( identifier).request().put( Entity.text("163fe016-e931-4407-9478-62a812536732") );
+			response = target.path( "endpoint" ).path( identifier).request().put( Entity.text("88e72c15-b867-4380-82d5-01aa7f7be609") );
 			System.out.println("Search for identifier: " + identifier);	
 		
 			System.out.println (response);

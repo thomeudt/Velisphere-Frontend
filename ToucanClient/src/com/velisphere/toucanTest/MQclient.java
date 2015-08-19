@@ -26,24 +26,31 @@ public class MQclient {
 
 		HashMap<String, String> message = new HashMap<String, String>();
 		
-		message.put("7244bc76-8385-4bb5-b242-18cfa97d473b", "AAA");
+		String endpointID = "596bf410-9b99-4acc-9d2b-202f3e315c65";
+		String secret = "Pr03JIRthrRMqEr8lBI7VIATQ6vfmM+jcNmUen6nXzjyf4W16Pp/xv8DvIUwDmzBEqe8bcpyNGLHrrGg5LElLg==";
+		String propertyID = "c04a3711-84ea-4eaf-a4d7-bd2ba2f4b62d";
+		String fakeSensorValue = "777";
+		
+		
+		message.put(propertyID, fakeSensorValue);
 		
 			
 
 			message.put("TYPE", "REG");
 			java.util.Date date = new java.util.Date();
 			Timestamp timeStamp = new Timestamp(date.getTime());
+		
 			message.put("TIMESTAMP", timeStamp.toString());
-			message.put("EPID", "1234");
+			message.put("EPID", endpointID);
 
 			MessageFabrik innerMessageFactory = new MessageFabrik(message);
 			String messagePackJSON = innerMessageFactory.getJsonString();
 
-			String hMAC = HashTool.getHmacSha1(messagePackJSON, "here should come the secret");
+			String hMAC = HashTool.getHmacSha1(messagePackJSON, secret);
 
-			System.out.println("Using secret: "+ ConfigData.secret);
+			System.out.println("Using secret: "+ secret);
 
-			System.out.println("Using endpointID: "+ ConfigData.epid);
+			System.out.println("Using endpointID: "+ endpointID);
 			
 			
 			HashMap<String, String> submittableMessage = new HashMap<String, String>();
@@ -79,7 +86,7 @@ public class MQclient {
 				// and validate by getting back again
 				
 				target = client.target( "http://localhost:8082/rest/message/get" );
-				response = target.path("json").path("1234").request().get();
+				response = target.path("json").path(endpointID).request().get();
 				System.out.println ("Reponse from server: " + response);
 				System.out.println ("Returned json: " + response.readEntity(String.class));
 				

@@ -53,49 +53,49 @@ public class VelisphereMart {
 		  LinkedList<CheckObject> checks, LinkedList<String> checkPaths)
   {
    try
-      {
-      Statement myInsert = conn.createStatement();
-      
-      myInsert.addBatch("INSERT INTO VLOGGER.ENDPOINTPROPERTYLOG VALUES ('"+transactionID+"', '"+endpointID+"', '"+propertyID+"', '"+entry+"', STATEMENT_TIMESTAMP())");
-      
-      
-      //System.out.println(transactionID+"', '"+endpointID+"', '"+propertyID+"', '"+entry+"', STATEMENT_TIMESTAMP())");
-      
-      Iterator<ActionObject> aIT = executedActions.iterator();
-      
-      while (aIT.hasNext()){
-    	  ActionObject executedAction = aIT.next();
-    	  myInsert.addBatch("INSERT INTO VLOGGER.ACTIONEXECUTEDLOG VALUES ('"+transactionID+"', '"+executedAction.getActionID()+"', '"+executedAction.getSensorID()+"', '"+executedAction.getActorID()+"', '"+executedAction.getPayload()+"', STATEMENT_TIMESTAMP(), '"+executedAction.getPropertyID()+"')");  
-    	  
-      }
-      
-      Iterator<CheckObject> cIT = checks.iterator();
-      
-      while (cIT.hasNext()){
-    	  CheckObject executedCheck = cIT.next();
-    	 
-    	  myInsert.addBatch("INSERT INTO VLOGGER.CHECKEXECUTEDLOG VALUES ('"+transactionID+"', '"+executedCheck.getCheckID()+"', '"+executedCheck.getCheckValue()+"', '"+executedCheck.getHit()+"', STATEMENT_TIMESTAMP())");  
-      }
-      
-      Iterator<String> cpIT = checkPaths.iterator();
-      
-      while (cpIT.hasNext()){
-    	  String executedCheckpathID = cpIT.next();
-    	 
-    	  myInsert.addBatch("INSERT INTO VLOGGER.CHECKPATHEXECUTEDLOG VALUES ('"+transactionID+"', '"+executedCheckpathID+"', STATEMENT_TIMESTAMP())");  
-      }
-      
-      myInsert.executeBatch();
-      myInsert.close();
-     
-      
-      } catch (SQLException e)
-         {
-         System.err.println("Could not connect to the database.\n");
-         e.printStackTrace();
-         return;
-         }
-   } 
+   {
+	      Statement myInsert = conn.createStatement();
+	      
+	      myInsert.addBatch("INSERT INTO VLOGGER.ENDPOINTPROPERTYLOG VALUES ('"+transactionID+"', '"+endpointID+"', '"+propertyID+"', '"+entry+"', STATEMENT_TIMESTAMP())");
+	      
+	      
+	      //System.out.println(transactionID+"', '"+endpointID+"', '"+propertyID+"', '"+entry+"', STATEMENT_TIMESTAMP())");
+	      
+	      Iterator<ActionObject> aIT = executedActions.iterator();
+	      
+	      while (aIT.hasNext()){
+	    	  ActionObject executedAction = aIT.next();
+	    	  myInsert.addBatch("INSERT INTO VLOGGER.ACTIONEXECUTEDLOG VALUES ('"+transactionID+"', '"+executedAction.getActionID()+"', '"+executedAction.getSensorID()+"', '"+executedAction.getActorID()+"', '"+executedAction.getPayload()+"', '"+executedAction.getPropertyID()+ "', STATEMENT_TIMESTAMP())");  
+	    	  
+	      }
+	      
+	      Iterator<CheckObject> cIT = checks.iterator();
+	      
+	      while (cIT.hasNext()){
+	    	  CheckObject executedCheck = cIT.next();
+	    	 
+	    	  myInsert.addBatch("INSERT INTO VLOGGER.CHECKEXECUTEDLOG VALUES ('"+transactionID+"', '"+executedCheck.getCheckID()+"', '"+executedCheck.getCheckValue()+"', '"+executedCheck.getHit()+"', STATEMENT_TIMESTAMP())");  
+	      }
+	      
+	      Iterator<String> cpIT = checkPaths.iterator();
+	      
+	      while (cpIT.hasNext()){
+	    	  String executedCheckpathID = cpIT.next();
+	    	 
+	    	  myInsert.addBatch("INSERT INTO VLOGGER.CHECKPATHEXECUTEDLOG VALUES ('"+transactionID+"', '"+executedCheckpathID+"', STATEMENT_TIMESTAMP())");  
+	      }
+	      
+	      myInsert.executeBatch();
+	      myInsert.close();
+	     
+	      
+	      } catch (SQLException e)
+	         {
+	         System.err.println("Could not connect to the database.\n");
+	         e.printStackTrace();
+	         return;
+	         }
+  }
   
   public static void ainsertActionExecutionLog(String actionID, String payload, String sensorID, String actorID)
   {

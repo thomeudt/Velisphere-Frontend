@@ -89,7 +89,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.velisphere.toucan.webservices.Sphere.class);
         resources.add(com.velisphere.toucan.webservices.User.class);
         resources.add(com.velisphere.toucan.webservices.Vendor.class);
-        
+       
         
         //==> we could also choose packages, see below getProperties()
         
