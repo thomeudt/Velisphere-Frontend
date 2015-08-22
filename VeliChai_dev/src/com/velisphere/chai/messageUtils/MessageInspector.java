@@ -56,7 +56,7 @@ public class MessageInspector implements Runnable {
 	public void run() {
 		HashMap<String, String> forEvaluation = new HashMap<String, String>();
 		
-		System.out.println(" [IN] Message JSON:"+ messageBody);
+		//System.out.println(" [IN] Message JSON:"+ messageBody);
 		
 		String[] hMACandPayload = new String[2];
 		boolean validationResult = false;
@@ -74,8 +74,8 @@ public class MessageInspector implements Runnable {
 		// parse inner JSON
 		
 		try {
-			System.out.println("HMAC: " + hMACandPayload[0]);
-			System.out.println("Payload: " + hMACandPayload[1]);
+			//System.out.println("HMAC: " + hMACandPayload[0]);
+			//System.out.println("Payload: " + hMACandPayload[1]);
 			forEvaluation = MessageFabrik.extractKeyPropertyPairs(hMACandPayload[1]);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -85,7 +85,7 @@ public class MessageInspector implements Runnable {
 		// validate if received HMAC matches calculated HMAC based on secret stored in DB
 		
 		try {
-			System.out.println(" [IN] For Evaluation:"+ forEvaluation);
+			//System.out.println(" [IN] For Evaluation:"+ forEvaluation);
 			validationResult = MessageValidator.validateHmac(hMACandPayload[0], hMACandPayload[1], forEvaluation.get("EPID"));
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
@@ -102,7 +102,7 @@ public class MessageInspector implements Runnable {
 		
 		if (validationResult)
 		{
-			System.out.println(" [IN] Message Type:"+ forEvaluation.get("TYPE"));
+			//System.out.println(" [IN] Message Type:"+ forEvaluation.get("TYPE"));
 			
 			if (forEvaluation.get("TYPE").equals("REG"))
 			{
@@ -131,7 +131,7 @@ public class MessageInspector implements Runnable {
 		else
 			
 		{
-			System.out.println(" [IN] Message rejected - HMAC not matching. Possibly an attempted security breach.");
+			//System.out.println(" [IN] Message rejected - HMAC not matching. Possibly an attempted security breach.");
 			
 			//TODO write notification of security breach into database
 		}
@@ -158,8 +158,8 @@ public class MessageInspector implements Runnable {
 			
 			LinkedList<ActionObject> executedActions = new LinkedList<ActionObject>();
 			
-			System.out.println(" [IN] Regular Message Received");
-			System.out.println(" [IN] Key: " + e.getKey() + " / Value: " + e.getValue());
+			//System.out.println(" [IN] Regular Message Received");
+			//System.out.println(" [IN] Key: " + e.getKey() + " / Value: " + e.getValue());
 						
 			if (e.getKey() != "EPID" && e.getKey() != null
 					&& e.getKey() != "SECTOK"
@@ -198,12 +198,12 @@ public class MessageInspector implements Runnable {
 			Map.Entry<String, String> e = (Map.Entry<String, String>) it
 					.next();
 			
-			System.out.println(" [IN] Control Message Received");
-			System.out.println(" [IN] Key: " + e.getKey() + " / Value: " + e.getValue());
+			//System.out.println(" [IN] Control Message Received");
+			//System.out.println(" [IN] Key: " + e.getKey() + " / Value: " + e.getValue());
 			
 			if (e.getKey() == "setState")
 			{
-				System.out.println(" [IN] State Update received from " + EPID);
+				//System.out.println(" [IN] State Update received from " + EPID);
 				ServiceEngine.setEndpointState(EPID, e.getValue());
 				
 			}

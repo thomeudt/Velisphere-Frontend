@@ -2,10 +2,10 @@ package PhidgetsExample;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.HashMap;
-
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -32,6 +32,26 @@ public class PhidgetServer implements Runnable {
 
 	public void run() {
 
+		// build password for rabbitmq by hashing secret
+		StringBuffer pwHash = null;
+		MessageDigest sh;
+			try {
+				sh = MessageDigest.getInstance("SHA-512");
+			  sh.update(ConfigData.secret.getBytes());
+		        //Get the hash's bytes
+			  
+			
+
+				 pwHash = new StringBuffer();
+		            for (byte b : sh.digest()) pwHash.append(Integer.toHexString(0xff & b));
+				
+			
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		
 		// get parameters from BlenderServer
 
 		ServerParameters.autoConf();
@@ -44,8 +64,8 @@ public class PhidgetServer implements Runnable {
 
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setHost(ServerParameters.bunny_ip);
-			factory.setUsername("dummy");
-			factory.setPassword("dummy");
+			factory.setUsername(QUEUE_NAME);
+			factory.setPassword(pwHash.toString());
 			factory.setVirtualHost("hClients");
 			factory.setPort(5671);
 			factory.useSslProtocol();
@@ -151,6 +171,26 @@ public class PhidgetServer implements Runnable {
 			String queue_name, String type) throws Exception {
 
 		
+		// build password for rabbitmq by hashing secret
+		StringBuffer pwHash = null;
+		MessageDigest sh;
+			try {
+				sh = MessageDigest.getInstance("SHA-512");
+			  sh.update(ConfigData.secret.getBytes());
+		        //Get the hash's bytes
+			  
+			
+
+				 pwHash = new StringBuffer();
+		            for (byte b : sh.digest()) pwHash.append(Integer.toHexString(0xff & b));
+				
+			
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		
 		
 		if(ServerParameters.bunny_ip.equals(""))
 		{
@@ -159,8 +199,8 @@ public class PhidgetServer implements Runnable {
 		
 		ConnectionFactory connectionFactory = new ConnectionFactory();
 		connectionFactory.setHost(ServerParameters.bunny_ip);
-		connectionFactory.setUsername("dummy");
-		connectionFactory.setPassword("dummy");
+		connectionFactory.setUsername(ConfigData.epid);
+		connectionFactory.setPassword(pwHash.toString());
 		connectionFactory.setVirtualHost("hClients");
 		connectionFactory.setPort(5671);
 		connectionFactory.useSslProtocol();

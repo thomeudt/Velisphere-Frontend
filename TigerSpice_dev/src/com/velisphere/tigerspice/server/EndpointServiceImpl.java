@@ -19,6 +19,8 @@ package com.velisphere.tigerspice.server;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -43,6 +45,7 @@ import javax.ws.rs.core.Response;
 import nl.captcha.Captcha;
 
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import org.mindrot.BCrypt;
 import org.voltdb.VoltTable;
 import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
@@ -723,6 +726,28 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 
 		// third add to rabbitMQ
 
+		// create password by hashing secret
+		StringBuffer pwHash = null;
+
+		MessageDigest sh;
+		try {
+			sh = MessageDigest.getInstance("SHA-512");
+		  sh.update(secret.getBytes());
+	        //Get the hash's bytes
+		  
+			 pwHash = new StringBuffer();
+	            for (byte b : sh.digest()) pwHash.append(Integer.toHexString(0xff & b));
+
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+					
+		System.out.println("[IN] RabbitMQ password created: "
+				+ pwHash);				
+		//Add password bytes to digest
+      
+		
 		// create rabbitMQ account
 		Client rabbitClient = ClientBuilder.newClient();
 		HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic(
@@ -731,10 +756,12 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		WebTarget target = rabbitClient
 				.target("http://"+ServerParameters.rabbit_ip+":15672/api/users/" + endpointID);
 		Response response = target.request().put(
-				Entity.json("{\"password\":\"" + endpointID
-						+ "\",\"tags\":\"\"}")); // replace endpoint ID with API
-													// Key later on
+				Entity.json("{\"password\":\"" + pwHash
+						+ "\",\"tags\":\"\"}")); 
+												
 
+
+		
 		System.out.println("[IN] RabbitMQ account creation started, result: "
 				+ response);
 
@@ -758,12 +785,12 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		response = target
 				.request()
 				.put(Entity
-						.json("{\"configure\":\"\",\"write\":\"controller\",\"read\":\"\"}"));
+						.json("{\"configure\":\"\",\"write\":\".*\",\"read\":\"\"}"));
 		System.out
 				.println("[IN] RabbitMQ write permission for controller queue requested, result: "
 						+ response);
-
-
+        
+		
 		return errorTracker;
 
 	}

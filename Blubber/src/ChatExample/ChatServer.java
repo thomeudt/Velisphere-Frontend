@@ -2,10 +2,10 @@ package ChatExample;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.HashMap;
-
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -15,7 +15,6 @@ import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.velisphere.fs.sdk.MessageFabrik;
-
 import com.velisphere.fs.sdk.config.ConfigData;
 import com.velisphere.fs.sdk.config.ConfigFileAccess;
 import com.velisphere.fs.sdk.security.HashTool;
@@ -35,12 +34,36 @@ public class ChatServer implements Runnable {
 
 		String QUEUE_NAME = ServerParameters.my_queue_name;
 
+
+		// build password for rabbitmq by hashing secret
+				StringBuffer pwHash = null;
+				MessageDigest sh;
+					try {
+						sh = MessageDigest.getInstance("SHA-512");
+					  sh.update(ConfigData.secret.getBytes());
+				        //Get the hash's bytes
+					  
+					
+
+						 pwHash = new StringBuffer();
+				            for (byte b : sh.digest()) pwHash.append(Integer.toHexString(0xff & b));
+						
+					
+					} catch (NoSuchAlgorithmException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+
+		
 		try {
 
+			System.out.println("Connecting to RabbitMQ with password " + pwHash);
+			
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setHost(ServerParameters.bunny_ip);
-			factory.setUsername("dummy");
-			factory.setPassword("dummy");
+			factory.setUsername(QUEUE_NAME);
+			factory.setPassword(pwHash.toString());
 			factory.setVirtualHost("hClients");
 			factory.setPort(5671);
 			factory.useSslProtocol();
@@ -145,16 +168,38 @@ public class ChatServer implements Runnable {
 	public static void sendHashTable(HashMap<String, String> message,
 			String queue_name, String type) throws Exception {
 
+		
+		// build password for rabbitmq by hashing secret
+				StringBuffer pwHash = null;
+				MessageDigest sh;
+					try {
+						sh = MessageDigest.getInstance("SHA-512");
+					  sh.update(ConfigData.secret.getBytes());
+				        //Get the hash's bytes
+					  
+					
+
+						 pwHash = new StringBuffer();
+				            for (byte b : sh.digest()) pwHash.append(Integer.toHexString(0xff & b));
+						
+					
+					} catch (NoSuchAlgorithmException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+
+		
 		ConnectionFactory connectionFactory = new ConnectionFactory();
 		connectionFactory.setHost(ServerParameters.bunny_ip);
-		connectionFactory.setUsername("dummy");
-		connectionFactory.setPassword("dummy");
+		connectionFactory.setUsername(ServerParameters.my_queue_name);
+		connectionFactory.setPassword(pwHash.toString());
 
 		connectionFactory.setVirtualHost("hController");
 		Connection connection = connectionFactory.newConnection();
 		Channel channel = connection.createChannel();
 
-		// System.out.println("QUEUE DEFINED AS....."+queue_name+"...");
+		/* remove queue declare as an endpoint will NEVER have to declare the controller queue!
 		if (queue_name.equals("controller")) {
 			boolean durable = true;
 			channel.queueDeclare(queue_name, durable, false, false, null);
@@ -162,6 +207,7 @@ public class ChatServer implements Runnable {
 			channel.queueDeclare(queue_name, false, false, false, null);
 		}
 
+*/
 		// implemented reply queue to allow tracing the sender for callback
 
 		BasicProperties props = new BasicProperties.Builder()

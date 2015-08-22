@@ -38,12 +38,12 @@ public class MessageValidator {
 				
 		}
 
-		System.out.println("Endpoint ID: " + endpointID );
-		System.out.println("Secret in DB: " + secret );
+		//System.out.println("Endpoint ID: " + endpointID );
+		//System.out.println("Secret in DB: " + secret );
 		
 		String calculatedHmac = HashTool.getHmacSha1(payload, secret);
 		
-		System.out.println("Calculated HMAC: " + calculatedHmac + " <> Received HMAC: " + receivedHMAC);
+		//System.out.println("Calculated HMAC: " + calculatedHmac + " <> Received HMAC: " + receivedHMAC);
 		
 		boolean validationOK = false;
 		
@@ -73,7 +73,7 @@ public class MessageValidator {
 				
 		}
 
-		System.out.println("Secret in DB: " + secret );
+		//System.out.println("Secret in DB: " + secret );
 		
 				
 		return secret;

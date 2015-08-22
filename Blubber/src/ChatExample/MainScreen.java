@@ -152,7 +152,7 @@ public class MainScreen {
 					messageHash.put("PR6", txtSendToQueue.getText());
 					messageHash.put("PR7", "["+ ServerParameters.my_queue_name + "]" + txtMessageToSend.getText());
 					messageHash.put("PR8", "1");
-		        	Server.sendHashTable(messageHash, ServerParameters.my_queue_name, "REG");
+		        	ChatServer.sendHashTable(messageHash, ServerParameters.my_queue_name, "REG");
 					
 					txtMessageToSend.setText("");
 				} catch (Exception e) {

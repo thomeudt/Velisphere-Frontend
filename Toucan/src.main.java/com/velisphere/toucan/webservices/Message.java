@@ -41,15 +41,16 @@ public class Message {
 	
 
 	@POST
-	@Path( "/post/json" )
+	@Path( "/post/json/{endpointid}/{password}" )
 	@Consumes( MediaType.TEXT_PLAIN )
-	public Response postJSON( String message ) throws Exception {
+	public Response postJSON( 
+			@PathParam("endpointid") String endpointid, @PathParam("password") String password, String message ) throws Exception {
 
 	
 	System.out.println( "Message is " + message );
 
 
-	AMQPServer.sendJSON(message, ServerParameters.my_queue_name, "REG");
+	AMQPServer.sendJSON(endpointid, password, message, ServerParameters.my_queue_name, "REG");
 	return Response.noContent().build();
 
 	}

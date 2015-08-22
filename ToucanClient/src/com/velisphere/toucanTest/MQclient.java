@@ -2,6 +2,8 @@ package com.velisphere.toucanTest;
 
 
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 
@@ -26,11 +28,31 @@ public class MQclient {
 
 		HashMap<String, String> message = new HashMap<String, String>();
 		
-		String endpointID = "596bf410-9b99-4acc-9d2b-202f3e315c65";
-		String secret = "Pr03JIRthrRMqEr8lBI7VIATQ6vfmM+jcNmUen6nXzjyf4W16Pp/xv8DvIUwDmzBEqe8bcpyNGLHrrGg5LElLg==";
+		String endpointID = "99539bd2-e643-45d6-b731-e68fe0e27401";
+		String secret = "QyTZga/nXRVXAiA+zm2AGB3/vyEEyRkN9SI6L6jnZwPVjRKOVFCAA1ngamWtvhuDeOrZxjQA9JD+knHNHj7ASQ==";
 		String propertyID = "c04a3711-84ea-4eaf-a4d7-bd2ba2f4b62d";
 		String fakeSensorValue = "777";
 		
+		
+		// build password for rabbitmq by hashing secret
+		StringBuffer pwHash = null;
+		MessageDigest sh;
+			try {
+				sh = MessageDigest.getInstance("SHA-512");
+			  sh.update(secret.getBytes());
+		        //Get the hash's bytes
+			  
+			
+
+				 pwHash = new StringBuffer();
+		            for (byte b : sh.digest()) pwHash.append(Integer.toHexString(0xff & b));
+				
+			
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		
 		message.put(propertyID, fakeSensorValue);
 		
@@ -51,6 +73,7 @@ public class MQclient {
 			System.out.println("Using secret: "+ secret);
 
 			System.out.println("Using endpointID: "+ endpointID);
+			System.out.println("Using password: "+ new String(pwHash));
 			
 			
 			HashMap<String, String> submittableMessage = new HashMap<String, String>();
@@ -72,7 +95,7 @@ public class MQclient {
 			WebTarget target = client.target( "http://localhost:8082/rest/message/post/" );
 		
 				
-				Response response = target.path( "json" ).request().post( Entity.text(submittableJSON) );
+				Response response = target.path( "json" ).path(endpointID).path(new String(pwHash)).request().post( Entity.text(submittableJSON) );
 	
 			
 				System.out.println ("Reponse from server: " + response);

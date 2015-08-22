@@ -37,7 +37,7 @@ public class Bombarder implements Runnable {
 				HashMap<String, String> messageHash = new HashMap<String, String>();
 				Integer rndNum = random.nextInt();
 				//messageHash.put("PR1", rndNum.toString());
-				messageHash.put("PR1", "1");
+				messageHash.put("PR6", "1");
 				//messageHash.put("PR2", "1");
 	        	//messageHash.put("PR3", "1");
 	        	//messageHash.put("PR4", "1");

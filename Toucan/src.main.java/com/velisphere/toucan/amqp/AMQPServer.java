@@ -156,6 +156,8 @@ public class AMQPServer implements Runnable {
 			String queue_name, String type) throws Exception {
 
 		
+		//TODO this is not yet updated with new RabbitMQ login mechanism, see sendJSON
+		
 		
 		ConnectionFactory connectionFactory = new ConnectionFactory();
 		connectionFactory.setHost(ServerParameters.rabbit_ip);
@@ -222,16 +224,15 @@ public class AMQPServer implements Runnable {
 		connection.close();
 	}
 
-	public static void sendJSON(String message,
+	public static void sendJSON(String username, String password, String message,
 			String queue_name, String type) throws Exception {
 
 		
 		
 		ConnectionFactory connectionFactory = new ConnectionFactory();
 		connectionFactory.setHost(ServerParameters.rabbit_ip);
-		connectionFactory.setUsername("dummy");
-		connectionFactory.setPassword("dummy");
-		connectionFactory.setVirtualHost("hClients");
+		connectionFactory.setUsername(username);
+		connectionFactory.setPassword(password);
 		connectionFactory.setPort(5671);
 		connectionFactory.useSslProtocol();
 
@@ -243,7 +244,7 @@ public class AMQPServer implements Runnable {
 		Connection connection = connectionFactory.newConnection();
 		Channel channel = connection.createChannel();
 
-		// System.out.println("QUEUE DEFINED AS....."+queue_name+"...");
+/*
 		if (queue_name.equals("controller")) {
 			boolean durable = true;
 			channel.queueDeclare(queue_name, durable, false, false, null);
@@ -252,10 +253,11 @@ public class AMQPServer implements Runnable {
 		}
 
 		// implemented reply queue to allow tracing the sender for callback
-
+*/
 		BasicProperties props = new BasicProperties.Builder()
 				.replyTo(ConfigData.epid).deliveryMode(2)
 				.build();
+
 
 		channel.basicPublish("", "controller", props,
 				message.getBytes());

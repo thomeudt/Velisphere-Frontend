@@ -45,7 +45,7 @@ public class Send {
 	public static void main(String message, String queue_name) throws Exception {
 		BrokerConnection bc = new BrokerConnection();
 		Channel channel = bc.establishTxChannel();
-		channel.queueDeclare(queue_name, false, false, false, null);
+		//channel.queueDeclare(queue_name, false, false, false, null);
 		message = "[" + "via controller" + "] " + message;
 		channel.basicPublish("", queue_name, null, message.getBytes());
 		channel.close();
@@ -57,7 +57,7 @@ public class Send {
 
 		BrokerConnection bc = new BrokerConnection();
 		Channel channel = bc.establishTxChannel();
-		channel.queueDeclare(senderQueueName, false, false, false, null);
+		//channel.queueDeclare(senderQueueName, false, false, false, null);
 
 
 		HashMap<String, String> messageMap = new HashMap<String, String>();
@@ -78,9 +78,9 @@ public class Send {
 				
 		String submittableJSON = MessageFabrik.buildMessagePack(submittableMessage);
 		
-		System.out.println("HMAC:" + hMAC);
-		System.out.println("Submittable:" + submittableJSON);
-		System.out.println("Target Queue:" + targetQueueName);
+		//System.out.println("HMAC:" + hMAC);
+		//System.out.println("Submittable:" + submittableJSON);
+		//System.out.println("Target Queue:" + targetQueueName);
 		
 
 		channel.basicPublish("", targetQueueName, null,
@@ -98,10 +98,10 @@ public class Send {
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 
-		channel.queueDeclare(queue_name, false, false, false, null);
+		//channel.queueDeclare(queue_name, false, false, false, null);
 
 		channel.basicPublish("", queue_name, null, jsonContainer.getBytes());
-		System.out.println(" [x] Sent '" + jsonContainer + "'");
+		//System.out.println(" [x] Sent '" + jsonContainer + "'");
 
 		channel.close();
 		connection.close();
