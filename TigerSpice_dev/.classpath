@@ -32,7 +32,6 @@
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/junit.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/rabbitmq-client.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/rabbitmq-client-tests.jar"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/GWT"/>
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/Jersey/aopalliance-repackaged-2.3.0-b05.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/Jersey/asm-debug-all-5.0.2.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/Jersey/hk2-api-2.3.0-b05.jar"/>
@@ -57,5 +56,6 @@
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/Jersey/osgi-resource-locator-1.0.1.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/Jersey/persistence-api-1.0.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/Jersey/validation-api-1.1.0.Final.jar"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/gwt-2.7.0"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
