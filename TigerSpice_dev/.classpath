@@ -57,5 +57,22 @@
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/Jersey/osgi-resource-locator-1.0.1.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/Jersey/persistence-api-1.0.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/Jersey/validation-api-1.1.0.Final.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/gwt-2.7.0/gwt-user.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/home/thorsten/gwt-2.7.0/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/thorsten/gwt-2.7.0/gwt-codeserver.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/home/thorsten/gwt-2.7.0/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/thorsten/gwt-2.7.0/gwt-dev.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/home/thorsten/gwt-2.7.0/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/thorsten/gwt-2.7.0/validation-api-1.0.0.GA-sources.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/gwt-2.7.0/validation-api-1.0.0.GA.jar" sourcepath="/home/thorsten/gwt-2.7.0/validation-api-1.0.0.GA-sources.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
