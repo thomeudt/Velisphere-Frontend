@@ -771,8 +771,9 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 				.target("http://"+ServerParameters.rabbit_ip+":15672/api/permissions/hClients/"
 						+ endpointID);
 		response = target.request().put(
-				Entity.json("{\"configure\":\"\",\"write\":\"\",\"read\":\""
-						+ endpointID + ".*\"}"));
+				Entity.json("{\"configure\":\"" + endpointID 
+						+ ".*\",\"write\":\"" + endpointID 
+						+ ".*\",\"read\":\"" + endpointID + ".*\"}"));
 		System.out
 				.println("[IN] RabbitMQ read permission for clients queue requested, result: "
 						+ response);
