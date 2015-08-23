@@ -5,6 +5,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -15,7 +16,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.soap.MessageFactory;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -29,59 +35,63 @@ import com.velisphere.toucan.amqp.AMQPServer;
 import com.velisphere.toucan.amqp.ServerParameters;
 import com.velisphere.toucan.xmlRootElements.MessageElement;
 
-
 @Path("/message")
 public class Message {
 
-
-
-
- 
-
-	
-
+	@SuppressWarnings("unchecked")
 	@POST
-	@Path( "/post/json/{endpointid}/{password}" )
-	@Consumes( MediaType.TEXT_PLAIN )
-	public Response postJSON( 
-			@PathParam("endpointid") String endpointid, @PathParam("password") String password, String message ) throws Exception {
+	@Path("/post/json/{endpointid}")
+	@Consumes(MediaType.TEXT_PLAIN)
+	public Response postJSON(@PathParam("endpointid") String endpointid,
+			String message) throws Exception {
 
+		// Receive incoming message and create JACKSON Object Mapper
+		System.out.println("Parsing " + message);
+		ObjectMapper mapper = new ObjectMapper();
 	
-	System.out.println( "Message is " + message );
+		// This map will take from JSON the password for RabbitMQ and the enclosed message
+		Map<String, Object> passwordAndMessageObject = new HashMap<String, Object>();
 
+		// Parse XML and put into Map
+		passwordAndMessageObject = mapper.readValue(message, Map.class);
 
-	AMQPServer.sendJSON(endpointid, password, message, ServerParameters.my_queue_name, "REG");
-	return Response.noContent().build();
+		// Get entry - as per definition, we never receive more than one entry, so we do not need to iterate
+		Map.Entry<String, Object> entry = passwordAndMessageObject.entrySet()
+				.iterator().next();
+		Map<String, String> messageMap = new HashMap<String, String>();
+		
+		// Get the value from the entry - this is the messageMap that will be sent to the controller via RabbitMQ
+		messageMap = (Map<String, String>) entry.getValue();
+		
+		// Get the key from the entry - this is the password we will use to log on to RabbitMQ
+		String password = entry.getKey();
+		MessageFabrik messageFabrik = new MessageFabrik(messageMap);
+
+		AMQPServer.sendJSON(endpointid, password,
+				messageFabrik.getJsonString(), ServerParameters.my_queue_name,
+				"REG");
+		return Response.noContent().build();
 
 	}
-
-	
-	
-	
-
 
 	@GET
 	@Path("/get/json/{endpointid}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public LinkedList<String> getJSON(@PathParam("endpointid") String endpointID) {
-		MessageElement todo = new MessageElement();
-		todo.setSummary("VeliSphere Web Service Version 0.1");
-		// todo.setDescription("First Sphere");
+		
+		// TODO implement password authentication exactly as in the POST method!!!
+		
 
 		// AMQP handling from here
 
-		
-		System.out.println("EndpointID is "+ endpointID);
-		
-		String submittableJSON = null;
-	
+		System.out.println("EndpointID is " + endpointID);
+
+		//String submittableJSON = null;
+
 		LinkedList<String> messageList = new LinkedList<String>();
-		
-		
 
 		String QUEUE_NAME = endpointID;
 
-		
 		try {
 
 			ConnectionFactory factory = new ConnectionFactory();
@@ -106,38 +116,31 @@ public class Message {
 
 			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 
-			System.out.println(" [IN] Server Startup Completed.");
-			System.out
-					.println(" [IN] Waiting for messages. To exit press CTRL+C");
+			System.out.println(" [IN] AMQP connection to RabbitMQ established");
+			System.out.println(" [IN] Requesting messages from Queue (GET)...");
+			
+			//QueueingConsumer consumer = new QueueingConsumer(channel);
 
-			QueueingConsumer consumer = new QueueingConsumer(channel);
-			
-			
 			boolean empty = false;
-			
-			while (empty==false)
-			{
+
+			while (empty == false) {
 				GetResponse response = channel.basicGet(QUEUE_NAME, true);
-				if(response == null)
-				{
+				if (response == null) {
 					empty = true;
-				}
-				else
-				{
+				} else {
 					byte[] messageBody = response.getBody();
-					messageList.add(new String(messageBody));		
+					messageList.add(new String(messageBody));
 				}
-				
-				
+
 			}
+
+			System.out.println(" [IN] Getting messages completed!");
 			
-						
 			
 			/*
-			MessageFabrik messageFactory = new MessageFabrik(
-					messageList);
-			 submittableJSON = messageFactory.getJsonString();
-*/
+			 * MessageFabrik messageFactory = new MessageFabrik( messageList);
+			 * submittableJSON = messageFactory.getJsonString();
+			 */
 		}
 
 		catch (IOException | ShutdownSignalException
@@ -165,23 +168,21 @@ public class Message {
 		// todo.setDescription("First Sphere");
 		return todo;
 	}
-	
-	
+
 	@PUT
-	@Path( "/put/text/{user}" )
-	@Consumes( MediaType.TEXT_PLAIN )
-	public Response postPlainTextMessage( @PathParam( "content" ) String user, String message ) throws Exception {
+	@Path("/put/text/{user}")
+	@Consumes(MediaType.TEXT_PLAIN)
+	public Response postPlainTextMessage(@PathParam("content") String user,
+			String message) throws Exception {
 
-	
-	System.out.printf( "%s sendet �%s�%n", user, message );
-	HashMap<String,String>outboundMessageMap = new HashMap<String, String>();
-	outboundMessageMap.put("A", message);
-	String targetEPID = new String("EX");
+		System.out.printf("%s sendet �%s�%n", user, message);
+		HashMap<String, String> outboundMessageMap = new HashMap<String, String>();
+		outboundMessageMap.put("A", message);
+		String targetEPID = new String("EX");
 
-	AMQPServer.sendHashTable(outboundMessageMap, targetEPID, "REG");
-	return Response.noContent().build();
+		AMQPServer.sendHashTable(outboundMessageMap, targetEPID, "REG");
+		return Response.noContent().build();
 
 	}
-	
 
 }

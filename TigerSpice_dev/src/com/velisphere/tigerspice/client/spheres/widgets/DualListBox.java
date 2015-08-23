@@ -17,8 +17,11 @@ package com.velisphere.tigerspice.client.spheres.widgets;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.FluidContainer;
+import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Row;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
+import com.github.gwtbootstrap.client.ui.constants.IconSize;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -86,9 +89,12 @@ public class DualListBox extends AbsolutePanel {
     mainCol2.add(right);
     
    
+    Icon dragDropIcon = new Icon();
+    dragDropIcon.setIcon(IconType.UNLINK);
+    dragDropIcon.setIconSize(IconSize.FIVE_TIMES);
     
     
-    verticalPanel.add(new HTML("Drag and Drop Endpoints into Sphere"));
+    verticalPanel.add(dragDropIcon);
     
     
     
@@ -102,12 +108,12 @@ public class DualListBox extends AbsolutePanel {
     dragController.registerDropController(rightDropController);
     
     
-    HTML leftP = new HTML("Endpoints currently in this Sphere:");
+    HTML leftP = new HTML("<h2>Endpoints in this Sphere</h2>");
 	headerCol1.add(leftP);
 	
 	
 
-	HTML rightP = new HTML("Endpoints currently outside of this Sphere:");
+	HTML rightP = new HTML("<h2>Other Endpoints</h2>");
 	headerCol2.add(rightP);
 
 	

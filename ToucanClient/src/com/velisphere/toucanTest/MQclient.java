@@ -5,7 +5,11 @@ package com.velisphere.toucanTest;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -76,26 +80,34 @@ public class MQclient {
 			System.out.println("Using password: "+ new String(pwHash));
 			
 			
-			HashMap<String, String> submittableMessage = new HashMap<String, String>();
-
-			submittableMessage.put(hMAC, messagePackJSON);
-
-			MessageFabrik outerMessageFactory = new MessageFabrik(
-					submittableMessage);
-			String submittableJSON = outerMessageFactory.getJsonString();
-
-			System.out.println("HMAC:" + hMAC);
-			System.out.println("Submittable:" + submittableJSON);
-
+			Map<String,Object> submittableMessage = new HashMap<String,Object>();
+			
+			
+			HashMap<String, String> passwordMap = new HashMap<String, String>();
+			passwordMap.put("password", new String(pwHash));
+			HashMap<String, String> messageMap = new HashMap<String, String>();
+			messageMap.put(hMAC, messagePackJSON);
+			
+			submittableMessage.put(new String(pwHash), messageMap);
+			
+			
+			
+						
+			MessageFabrik messageFabrik = new MessageFabrik(submittableMessage);
+			
+			
 			// Message sending via HTTP POST
 			
 			Client client = ClientBuilder.newClient();
 			
 			
+			
+			
+			
 			WebTarget target = client.target( "http://localhost:8082/rest/message/post/" );
 		
 				
-				Response response = target.path( "json" ).path(endpointID).path(new String(pwHash)).request().post( Entity.text(submittableJSON) );
+				Response response = target.path( "json" ).path(endpointID).request().post( Entity.text(messageFabrik.getJsonString()) );
 	
 			
 				System.out.println ("Reponse from server: " + response);
@@ -116,5 +128,13 @@ public class MQclient {
 				
 		}
 
+
 	
+	
+}
+
+
+class MqForJSON{
+	public String password;
+	public HashMap<String, String> message;
 }

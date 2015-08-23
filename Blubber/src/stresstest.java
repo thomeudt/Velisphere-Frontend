@@ -27,7 +27,7 @@ public class stresstest {
 
 	public static void main(String[] args) throws Exception {
 
-		ServerParameters.my_queue_name = "166fe1f0-6562-405f-ba3e-0851200ada0b";
+		ServerParameters.my_queue_name = "5ef196ae-0803-441d-b3f8-a374cbeb647c";
 		//ServerParameters.my_queue_name = "EX1";
 
 		
