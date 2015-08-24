@@ -107,23 +107,26 @@ public class MQclient {
 			WebTarget target = client.target( "http://localhost:8082/rest/message/post/" );
 		
 				
-				Response response = target.path( "json" ).path(endpointID).request().post( Entity.text(messageFabrik.getJsonString()) );
-	
+
+			for(int x = 1; x < 50; x = x+1) {
+			
+			Response response = target.path( "pushjson" ).path(endpointID).request().post( Entity.text(messageFabrik.getJsonString()) );
+			
 			
 				System.out.println ("Reponse from server: " + response);
 				System.out.println ("Returned data: " + response.readEntity(String.class));
 				
-			
+			}
 		
 			// System.out.println(" [x] Sent '" + messagePackText + "'");
 
 
 				// and validate by getting back again
 				
-				target = client.target( "http://localhost:8082/rest/message/get" );
-				response = target.path("json").path(endpointID).request().get();
-				System.out.println ("Reponse from server: " + response);
-				System.out.println ("Returned json: " + response.readEntity(String.class));
+				target = client.target( "http://localhost:8082/rest/message/post" );
+				Response getResponse = target.path("requestjson").path(endpointID).request().post(Entity.text(new String(pwHash)));
+				System.out.println ("Reponse from server: " + getResponse);
+				System.out.println ("Returned json: " + getResponse.readEntity(String.class));
 				
 				
 		}

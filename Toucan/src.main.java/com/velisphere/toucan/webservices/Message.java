@@ -40,7 +40,7 @@ public class Message {
 
 	@SuppressWarnings("unchecked")
 	@POST
-	@Path("/post/json/{endpointid}")
+	@Path("/post/pushjson/{endpointid}")
 	@Consumes(MediaType.TEXT_PLAIN)
 	public Response postJSON(@PathParam("endpointid") String endpointid,
 			String message) throws Exception {
@@ -74,10 +74,10 @@ public class Message {
 
 	}
 
-	@GET
-	@Path("/get/json/{endpointid}")
+	@POST
+	@Path("/post/requestjson/{endpointid}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public LinkedList<String> getJSON(@PathParam("endpointid") String endpointID) {
+	public LinkedList<String> getJSON(@PathParam("endpointid") String endpointID, String password) {
 		
 		// TODO implement password authentication exactly as in the POST method!!!
 		
@@ -96,8 +96,8 @@ public class Message {
 
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setHost(ServerParameters.rabbit_ip);
-			factory.setUsername("dummy");
-			factory.setPassword("dummy");
+			factory.setUsername(endpointID);
+			factory.setPassword(password);
 			factory.setVirtualHost("hClients");
 			factory.setPort(5671);
 			factory.useSslProtocol();
@@ -114,8 +114,6 @@ public class Message {
 
 			Channel channel = connection.createChannel();
 
-			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-
 			System.out.println(" [IN] AMQP connection to RabbitMQ established");
 			System.out.println(" [IN] Requesting messages from Queue (GET)...");
 			
@@ -130,6 +128,7 @@ public class Message {
 				} else {
 					byte[] messageBody = response.getBody();
 					messageList.add(new String(messageBody));
+					System.out.println("Getting: " + new String(messageBody));
 				}
 
 			}
@@ -157,32 +156,5 @@ public class Message {
 		return messageList;
 	}
 
-	// This can be used to test the integration with the browser
-
-	@GET
-	@Path("/text")
-	@Produces({ MediaType.TEXT_XML })
-	public MessageElement getHTML() {
-		MessageElement todo = new MessageElement();
-		todo.setSummary("VeliSphere Web Service Version 0.1");
-		// todo.setDescription("First Sphere");
-		return todo;
-	}
-
-	@PUT
-	@Path("/put/text/{user}")
-	@Consumes(MediaType.TEXT_PLAIN)
-	public Response postPlainTextMessage(@PathParam("content") String user,
-			String message) throws Exception {
-
-		System.out.printf("%s sendet �%s�%n", user, message);
-		HashMap<String, String> outboundMessageMap = new HashMap<String, String>();
-		outboundMessageMap.put("A", message);
-		String targetEPID = new String("EX");
-
-		AMQPServer.sendHashTable(outboundMessageMap, targetEPID, "REG");
-		return Response.noContent().build();
-
-	}
 
 }
