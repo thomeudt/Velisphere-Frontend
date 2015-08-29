@@ -1,6 +1,7 @@
 import java.util.HashMap;
 
-import ChatExample.ChatServer;
+import com.velisphere.milk.amqpClient.AmqpClient.AmqpClient;
+
 
 /*******************************************************************************
  * CONFIDENTIAL INFORMATION
@@ -43,7 +44,7 @@ public class Bombarder implements Runnable {
 	        	//messageHash.put("PR4", "1");
 	        	//messageHash.put("PR5", "1");
 	        	
-	        	ChatServer.sendHashTable(messageHash, "controller", "REG");
+	        	AmqpClient.sendHashTable(messageHash, "controller", "REG");
 	        	//Send.sendHashTable(messageHash, "controller");
 
 	        	

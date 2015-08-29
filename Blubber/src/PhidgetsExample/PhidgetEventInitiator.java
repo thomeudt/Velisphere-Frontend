@@ -3,14 +3,24 @@ package PhidgetsExample;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventInitiator {
+import com.velisphere.milk.Interfaces.EventInitiator;
+import com.velisphere.milk.Interfaces.EventListener;
+
+public class PhidgetEventInitiator implements EventInitiator{
 	
 	    List<EventListener> listeners = new ArrayList<EventListener>();
 
-	    public void addListener(EventListener toAdd) {
-	        listeners.add(toAdd);
-	    }
+	    
+	    @Override
+		public void addListener(
+				com.velisphere.milk.Interfaces.EventListener toAdd) {
 
+	        listeners.add(toAdd);
+
+		}
+
+	    
+	   
 	    public void requestIsAlive() {
 	        System.out.println(" [IN] Is Alive Requested");
 
@@ -35,5 +45,6 @@ public class EventInitiator {
 	            cl.newInboundMessage(message);
 	    }
 
+		
 	
 }

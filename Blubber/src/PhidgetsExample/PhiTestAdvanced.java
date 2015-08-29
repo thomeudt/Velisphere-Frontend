@@ -1,4 +1,5 @@
 package PhidgetsExample;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -10,7 +11,8 @@ import com.maxmind.geoip.LookupService;
 import com.maxmind.geoip.regionName;
 import com.phidgets.*; 
 import com.phidgets.event.*; 
-import com.velisphere.fs.sdk.config.ConfigData;
+import com.velisphere.milk.Configuration.ConfigData;
+import com.velisphere.milk.amqpClient.AmqpClient.AmqpClient;
 public class PhiTestAdvanced 
 { 
 	public static InterfaceKitPhidget ik;
@@ -19,11 +21,11 @@ public class PhiTestAdvanced
 		 
 		
 		EventResponder eventResponder = new EventResponder();
-		EventInitiator initiator = new EventInitiator();
+		PhidgetEventInitiator initiator = new PhidgetEventInitiator();
 		initiator.addListener(eventResponder);
 	
 		
-		PhidgetServer.startServer(initiator);
+		AmqpClient.startClient(initiator);
 		
 		
 		System.out.println(Phidget.getLibraryVersion()); 
@@ -97,7 +99,7 @@ public class PhiTestAdvanced
 					
 					System.out.println("Message Hash Sent to Controller: " + messageHash);
 					
-					PhidgetServer.sendHashTable(messageHash, ConfigData.epid, "REG");
+					AmqpClient.sendHashTable(messageHash, ConfigData.epid, "REG");
 					
 					
 				} catch (Exception e) {

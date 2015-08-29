@@ -18,8 +18,9 @@
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import ChatExample.ChatServer;
-import ChatExample.EventInitiator;
+import com.velisphere.milk.amqpClient.AmqpClient.AmqpClient;
+
+import ChatExample.ChatEventInitiator;
 import ChatExample.EventResponder;
 
 
@@ -32,10 +33,10 @@ public class stresstest {
 
 		
 		EventResponder eventResponder = new EventResponder();
-		EventInitiator initiator = new EventInitiator();
+		ChatEventInitiator initiator = new ChatEventInitiator();
 		initiator.addListener(eventResponder);
 		
-		ChatServer.startServer(ServerParameters.my_queue_name, initiator);
+		AmqpClient.startClient(initiator);
 		
 		
 		int numworkers = 32;

@@ -202,7 +202,7 @@ public class MainScreen {
 					ChatEventInitiator initiator = new ChatEventInitiator();
 					initiator.addListener(eventResponder);
 					
-					AmqpClient.startServer(initiator);
+					AmqpClient.startClient(initiator);
 								
 					btnSendMessage.setEnabled(true);
 					// Connect user queue to blubber.all fanout exchange for broadcasts.
