@@ -3,26 +3,10 @@ package com.velisphere.fs;
 import java.io.IOException;
 import java.util.HashMap;
 
-
-
-
-
-
-
-
-
-
-
-
-
 import com.velisphere.fs.actors.Flaps;
 import com.velisphere.fs.actors.Gear;
 import com.velisphere.fs.actors.SimFunctions;
-import com.velisphere.fs.sdk.CTLInitiator;
-import com.velisphere.fs.sdk.Server;
-import com.velisphere.fs.sdk.ServerParameters;
-import com.velisphere.fs.sdk.config.ConfigData;
-import com.velisphere.fs.sdk.config.ConfigFileAccess;
+import com.velisphere.milk.amqpClient.AmqpClient.AmqpClient;
 
 import flightsim.simconnect.SimConnect;
 import flightsim.simconnect.SimConnectDataType;
@@ -52,14 +36,14 @@ public class FsConnect {
 		
 		// Activate Event Responders
 
-		CTLEventResponder eventResponder = new CTLEventResponder();
+		FsEventResponder eventResponder = new FsEventResponder();
 		
-		CTLInitiator initiator = new CTLInitiator();
+		FsEventInitiator initiator = new FsEventInitiator();
 		initiator.addListener(eventResponder);
 
 		// Start Server
 
-		Server.startServer(initiator);
+		AmqpClient.startClient(initiator);
 
 		// Start SimConnect
 

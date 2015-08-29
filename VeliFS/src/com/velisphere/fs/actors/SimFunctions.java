@@ -2,9 +2,6 @@ package com.velisphere.fs.actors;
 
 import java.io.IOException;
 import java.util.HashMap;
-
-import com.velisphere.fs.sdk.Server;
-import com.velisphere.fs.sdk.config.ConfigData;
 import com.velisphere.fs.sensorsAndConfigs.Constants;
 
 import flightsim.simconnect.SimConnect;

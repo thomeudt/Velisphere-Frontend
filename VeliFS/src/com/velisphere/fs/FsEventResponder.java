@@ -3,17 +3,18 @@ package com.velisphere.fs;
 import java.io.IOException;
 import java.util.HashMap;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.velisphere.fs.actors.SimFunctions;
-import com.velisphere.fs.sdk.CTLListener;
-import com.velisphere.fs.sdk.MessageFabrik;
-import com.velisphere.fs.sdk.Server;
-import com.velisphere.fs.sdk.ServerParameters;
-import com.velisphere.fs.sdk.config.ConfigData;
+import com.velisphere.milk.Configuration.ConfigData;
+import com.velisphere.milk.Interfaces.EventListener;
+import com.velisphere.milk.MessageUtils.MessageFabrik;
+import com.velisphere.milk.amqpClient.AmqpClient.AmqpClient;
 
 import flightsim.simconnect.config.ConfigurationNotFoundException;
 
-public class CTLEventResponder implements CTLListener {
+
+
+
+public class FsEventResponder implements EventListener {
    
 	@Override
 	public void isAliveRequested() {
@@ -24,7 +25,7 @@ public class CTLEventResponder implements CTLListener {
 		messageHash.put("setState", "REACHABLE");
 		
 		try {
-			Server.sendHashTable(messageHash, ConfigData.epid, "CTL");
+			AmqpClient.sendHashTable(messageHash, ConfigData.epid, "CTL");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -39,8 +40,11 @@ public class CTLEventResponder implements CTLListener {
 		
 	}
 
+
 	@Override
-	public void cnfMessage(String message) {
+	public void newInboundMessage(String message) {
+		// TODO Auto-generated method stub
+
 		String msgSetFlightNumber;
 		try {
 			msgSetFlightNumber = MessageFabrik.extractProperty(message,
@@ -57,14 +61,6 @@ public class CTLEventResponder implements CTLListener {
 			e.printStackTrace();
 		}
 			
-		
-	}
 
-	@Override
-	public void regMessage(String message) {
-		// TODO Auto-generated method stub
-		
 	}
-
-	
 }

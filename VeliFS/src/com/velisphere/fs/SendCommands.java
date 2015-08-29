@@ -2,10 +2,9 @@ package com.velisphere.fs;
 
 import java.util.HashMap;
 
-import com.velisphere.fs.sdk.Server;
-import com.velisphere.fs.sdk.ServerParameters;
-import com.velisphere.fs.sdk.config.ConfigData;
 import com.velisphere.fs.sensorsAndConfigs.Constants;
+import com.velisphere.milk.Configuration.ConfigData;
+import com.velisphere.milk.amqpClient.AmqpClient.AmqpClient;
 
 import flightsim.simconnect.SimConnect;
 import flightsim.simconnect.data.LatLonAlt;
@@ -131,7 +130,7 @@ public class SendCommands {
 			+ messageHash);
 
 	try {
-		Server.sendHashTable(messageHash, ConfigData.epid, "REG");
+		AmqpClient.sendHashTable(messageHash, ConfigData.epid, "REG");
 	} catch (Exception e1) {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();

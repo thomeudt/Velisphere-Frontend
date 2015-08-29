@@ -242,7 +242,7 @@ public class AmqpClient implements Runnable {
 		connection.close();
 	}
 
-	public static void startServer(EventInitiator eventInitiator) {
+	public static void startClient(EventInitiator eventInitiator) {
 
 		/*
 		 * Show startup message
