@@ -41,41 +41,35 @@ public class SphereEditor extends Composite {
 		endpointsInSphere = new HashMap<String, EndpointData>();
 		endpointsNotInSphere = new HashMap<String, EndpointData>();
 		
-		
-		
-		// this.sphereName = sphereName;
-		
-
-
-		
-				
-		dualListBox = new DualListBox(10, sphereID);
-	    
+		dualListBox = new DualListBox();
 		initWidget(dualListBox);
+		
+		
+		final EndpointServiceAsync endpointService = GWT
+				.create(EndpointService.class);
+		
+			endpointService.getEndpointsForUser(
+												SessionHelper.getCurrentUserID(),
+												new AsyncCallback<LinkedList<EndpointData>>() {
+													public void onFailure(
+															Throwable caught) {
+														Window.alert("Error"
+																+ caught.getMessage());
+													}
 
-		
-		
-	    
-		
-	    
-		dualListBox.getDragController();
+													@Override
+													public void onSuccess(
+															LinkedList<EndpointData> result) {
 
-		
-		refreshTargetEndpoints();
-	    
-	    // use the dual list box as our widget
-	    
+														dualListBox.populate(result.size(), sphereID);
+														
+														dualListBox.getDragController();
+														refreshTargetEndpoints();
 
-	  		// add some items to the list
-	  
-		/*
-		dualListBox.addLeft("Apples");
-	    dualListBox.addLeft("Bananas");
-	    dualListBox.addLeft("Cucumbers");
-	    dualListBox.addLeft("Dates");
-	    dualListBox.addLeft("Enchiladas");
-     */
-		
+
+													}
+												});
+
 		
 	}
 

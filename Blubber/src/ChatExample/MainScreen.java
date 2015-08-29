@@ -49,8 +49,9 @@ import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 
-import com.velisphere.milk.Interfaces.EventInitiator;
-import com.velisphere.milk.amqpClient.AmqpClient.AmqpClient;
+import com.velisphere.milk.interfaces.EventInitiator;
+import com.velisphere.milk.amqpClient.AmqpClient;
+import com.velisphere.milk.configuration.Provisioner;
 
 
 
@@ -72,6 +73,7 @@ public class MainScreen {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					checkProvisioning();
 					MainScreen window = new MainScreen();
 					window.frmBlubberMessenger.setVisible(true);
 				} catch (Exception e) {
@@ -81,6 +83,24 @@ public class MainScreen {
 		});
 	}
 
+	
+	private static void checkProvisioning()
+	{
+		if (Provisioner.isProvisioned() == false)
+		{
+			String identifier = "mxv";
+			System.out.println(" [IN] Triggering initial provisioning with Toucan, using identifier " + identifier);
+			Provisioner.triggerProvisioning(identifier);
+			
+		}
+		else
+		{
+			System.out.println(" [IN] Already provisioned... Skipping provisioning... ");
+		}
+		
+	}
+	
+	
 	/**
 	 * Create the application.
 	 */

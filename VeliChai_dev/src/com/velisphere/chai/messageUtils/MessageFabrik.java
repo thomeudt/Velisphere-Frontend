@@ -20,6 +20,7 @@ package com.velisphere.chai.messageUtils;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -59,18 +60,17 @@ public class MessageFabrik {
 	public static HashMap<String, String> extractKeyPropertyPairs(String jsonInput) throws JsonProcessingException, IOException 
 	{
 
-		JsonParser jp = ChaiWorker.factory.createParser(jsonInput);
-		HashMap<String, String> foundMap = new HashMap<String, String>();
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, String> foundMap = new HashMap<String, String>();
 
-		while (jp.nextToken() != JsonToken.END_OBJECT) {
+		foundMap = mapper.readValue(jsonInput, Map.class);
 
-			String fieldname = jp.getCurrentName();
-			foundMap.put(jp.getCurrentName(), jp.getText());
-		}
-
-		jp.close();		 
-
-		return foundMap;  
+		
+		
+		
+		return (HashMap<String, String>) foundMap;  
 	}
 	
 	public static String buildMessagePack(Object object)

@@ -78,6 +78,7 @@ public class Provisioner {
 	{
 		Properties props = new Properties();
 		InputStream is = null;
+		boolean returnValue = false;
 
 		try {
 			File f = new File(System.getProperty("user.dir")
@@ -85,19 +86,29 @@ public class Provisioner {
 					+ "velisphere_config.xml");
 			is = new FileInputStream(f);
 			props.loadFromXML(is);
+			
+			if(props.getProperty("isProvisioned").equals("true"))
+			{
+				System.out.println(" [IN] Provisioner determined provisioning state is " + props.getProperty("isProvisioned"));
+				
+				returnValue = true;
+			}
+			else
+			{
+				System.out.println(" [IN] Provisioner determined provisioning state is " + props.getProperty("isProvisioned"));
+				
+				returnValue = false;
+			}
+		
+		
 		} catch (Exception e) {
 			is = null;
 		}
 		
-		if(props.getProperty("isProvisioned") == "true")
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
 		
+		return returnValue;
+
+			
 	}
 	
 

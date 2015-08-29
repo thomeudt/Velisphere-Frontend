@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import com.phidgets.PhidgetException;
-import com.velisphere.milk.Configuration.ConfigData;
-import com.velisphere.milk.Interfaces.EventListener;
-import com.velisphere.milk.amqpClient.AmqpClient.AmqpClient;
+import com.velisphere.milk.configuration.ConfigData;
+import com.velisphere.milk.interfaces.EventListener;
+import com.velisphere.milk.amqpClient.AmqpClient;
 
 
 public class EventResponder implements EventListener {

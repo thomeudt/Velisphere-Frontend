@@ -11,8 +11,8 @@ import com.maxmind.geoip.LookupService;
 import com.maxmind.geoip.regionName;
 import com.phidgets.*; 
 import com.phidgets.event.*; 
-import com.velisphere.milk.Configuration.ConfigData;
-import com.velisphere.milk.amqpClient.AmqpClient.AmqpClient;
+import com.velisphere.milk.configuration.ConfigData;
+import com.velisphere.milk.amqpClient.AmqpClient;
 public class PhiTestAdvanced 
 { 
 	public static InterfaceKitPhidget ik;

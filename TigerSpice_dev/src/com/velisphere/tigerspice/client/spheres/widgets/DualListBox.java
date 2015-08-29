@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.allen_sauer.gwt.dnd.client.DragController;
@@ -43,8 +44,9 @@ public class DualListBox extends AbsolutePanel {
 
   private static final String CSS_DEMO_DUAL_LIST_EXAMPLE_CENTER = "demo-DualListExample-center";
 
-  private static final int LIST_SIZE = 10;
+  //private static final int LIST_SIZE = 50;
 
+  private int visibleItems;
  
   private ListBoxDragController dragController;
 
@@ -53,9 +55,11 @@ public class DualListBox extends AbsolutePanel {
  
   private MouseListBox right;
 
-  public DualListBox(int visibleItems, String sphereID) {
-	  
-	  
+  
+  
+  public void populate(int visibleItems, String sphereID)
+  {
+	  this.visibleItems = visibleItems;
 		FluidContainer con = new FluidContainer();
 		add(con);
 
@@ -72,43 +76,52 @@ public class DualListBox extends AbsolutePanel {
 		
 	  
 	  
-    
-
-    VerticalPanel verticalPanel = new VerticalPanel();
-    verticalPanel.addStyleName(CSS_DEMO_DUAL_LIST_EXAMPLE_CENTER);
-    verticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-
-    dragController = new ListBoxDragController(this);
-    dragController.setBehaviorDragStartSensitivity(5);
-    left = new MouseListBox(dragController, LIST_SIZE, true, sphereID);
-    right = new MouseListBox(dragController, LIST_SIZE, false, sphereID);
-
-    
-    mainCol1.add(left);
-    connectorCol.add(verticalPanel);
-    mainCol2.add(right);
-    
-   
-    Icon dragDropIcon = new Icon();
-    dragDropIcon.setIcon(IconType.UNLINK);
-    dragDropIcon.setIconSize(IconSize.FIVE_TIMES);
-    
-    
-    verticalPanel.add(dragDropIcon);
-    
-    
-    
-    
-
   
 
-    ListBoxDropController leftDropController = new ListBoxDropController(left);
-    ListBoxDropController rightDropController = new ListBoxDropController(right);
-    dragController.registerDropController(leftDropController);
-    dragController.registerDropController(rightDropController);
-    
-    
-    HTML leftP = new HTML("<h2>Endpoints in this Sphere</h2>");
+  VerticalPanel verticalPanel = new VerticalPanel();
+  verticalPanel.addStyleName(CSS_DEMO_DUAL_LIST_EXAMPLE_CENTER);
+  verticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+
+  dragController = new ListBoxDragController(this);
+  dragController.setBehaviorDragStartSensitivity(5);
+  left = new MouseListBox(dragController, visibleItems, true, sphereID);
+  right = new MouseListBox(dragController, visibleItems, false, sphereID);
+
+  
+  ScrollPanel scrollableLeft = new ScrollPanel();
+  scrollableLeft.setHeight("200px");
+  scrollableLeft.add(left);
+  mainCol1.add(scrollableLeft);
+  
+  
+  
+  connectorCol.add(verticalPanel);
+  ScrollPanel scrollableRight = new ScrollPanel();
+  scrollableRight.setHeight("200px");
+  scrollableRight.add(right);
+  mainCol2.add(scrollableRight);
+  
+ 
+  Icon dragDropIcon = new Icon();
+  dragDropIcon.setIcon(IconType.UNLINK);
+  dragDropIcon.setIconSize(IconSize.FIVE_TIMES);
+  
+  
+  verticalPanel.add(dragDropIcon);
+  
+  
+  
+  
+
+
+
+  ListBoxDropController leftDropController = new ListBoxDropController(left);
+  ListBoxDropController rightDropController = new ListBoxDropController(right);
+  dragController.registerDropController(leftDropController);
+  dragController.registerDropController(rightDropController);
+  
+  
+  HTML leftP = new HTML("<h2>Endpoints in this Sphere</h2>");
 	headerCol1.add(leftP);
 	
 	
@@ -129,9 +142,9 @@ public class DualListBox extends AbsolutePanel {
 		
 	con.add(hpHeader);
 	con.add(hpMain);
-    
-    
+
   }
+  
 
   public void addLeft(String string) {
     left.add(string);

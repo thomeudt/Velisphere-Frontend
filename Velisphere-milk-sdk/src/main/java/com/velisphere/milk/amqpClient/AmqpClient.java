@@ -80,7 +80,7 @@ public class AmqpClient implements Runnable {
 
 			Channel channel = connection.createChannel();
 
-			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+			//channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 
 			System.out.println(" [IN] Server Startup Completed.");
 			System.out

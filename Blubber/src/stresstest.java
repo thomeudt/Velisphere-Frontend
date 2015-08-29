@@ -18,7 +18,7 @@
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.velisphere.milk.amqpClient.AmqpClient.AmqpClient;
+import com.velisphere.milk.amqpClient.AmqpClient;
 
 import ChatExample.ChatEventInitiator;
 import ChatExample.EventResponder;

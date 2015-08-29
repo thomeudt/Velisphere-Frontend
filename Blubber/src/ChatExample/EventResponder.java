@@ -3,8 +3,8 @@ package ChatExample;
 import java.io.IOException;
 import java.util.HashMap;
 
-import com.velisphere.milk.Interfaces.EventListener;
-import com.velisphere.milk.amqpClient.AmqpClient.AmqpClient;
+import com.velisphere.milk.interfaces.EventListener;
+import com.velisphere.milk.amqpClient.AmqpClient;
 
 
 

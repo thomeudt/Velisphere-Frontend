@@ -72,6 +72,7 @@ public boolean isInSphere() {
   MouseListBox(int size, boolean inSphere, String sphereID) {
 	this.inSphere = inSphere;
 	this.sphereID = sphereID;
+	
     grid = new Grid(size, 1);
     initWidget(grid);
     grid.addStyleName("well");

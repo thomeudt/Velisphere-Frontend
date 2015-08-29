@@ -1,6 +1,6 @@
 import java.util.HashMap;
 
-import com.velisphere.milk.amqpClient.AmqpClient.AmqpClient;
+import com.velisphere.milk.amqpClient.AmqpClient;
 
 
 /*******************************************************************************

@@ -3,8 +3,8 @@ package PhidgetsExample;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.velisphere.milk.Interfaces.EventInitiator;
-import com.velisphere.milk.Interfaces.EventListener;
+import com.velisphere.milk.interfaces.EventInitiator;
+import com.velisphere.milk.interfaces.EventListener;
 
 public class PhidgetEventInitiator implements EventInitiator{
 	
@@ -13,7 +13,7 @@ public class PhidgetEventInitiator implements EventInitiator{
 	    
 	    @Override
 		public void addListener(
-				com.velisphere.milk.Interfaces.EventListener toAdd) {
+				EventListener toAdd) {
 
 	        listeners.add(toAdd);
 
