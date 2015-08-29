@@ -49,8 +49,8 @@ import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 
-import com.velisphere.fs.sdk.CTLInitiator;
-import com.velisphere.fs.sdk.Server;
+import com.velisphere.milk.Interfaces.EventInitiator;
+import com.velisphere.milk.amqpClient.AmqpClient.AmqpClient;
 
 
 
@@ -152,7 +152,7 @@ public class MainScreen {
 					messageHash.put("PR6", txtSendToQueue.getText());
 					messageHash.put("PR7", "["+ ServerParameters.my_queue_name + "]" + txtMessageToSend.getText());
 					messageHash.put("PR8", "1");
-		        	ChatServer.sendHashTable(messageHash, ServerParameters.my_queue_name, "REG");
+		        	AmqpClient.sendHashTable(messageHash, ServerParameters.my_queue_name, "REG");
 					
 					txtMessageToSend.setText("");
 				} catch (Exception e) {
@@ -199,10 +199,10 @@ public class MainScreen {
 				try {
 					ServerParameters.my_queue_name = txtMyQueue.getText();
 					EventResponder eventResponder = new EventResponder();
-					EventInitiator initiator = new EventInitiator();
+					ChatEventInitiator initiator = new ChatEventInitiator();
 					initiator.addListener(eventResponder);
 					
-					ChatServer.startServer(ServerParameters.my_queue_name, initiator);
+					AmqpClient.startServer(initiator);
 								
 					btnSendMessage.setEnabled(true);
 					// Connect user queue to blubber.all fanout exchange for broadcasts.

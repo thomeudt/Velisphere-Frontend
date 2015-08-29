@@ -38,29 +38,24 @@ public class AmqpClient implements Runnable {
 		// build password for rabbitmq by hashing secret
 		StringBuffer pwHash = null;
 		MessageDigest sh;
-			try {
-				sh = MessageDigest.getInstance("SHA-512");
-			  sh.update(ConfigData.secret.getBytes());
-		        //Get the hash's bytes
-			  
-			
+		try {
+			sh = MessageDigest.getInstance("SHA-512");
+			sh.update(ConfigData.secret.getBytes());
+			// Get the hash's bytes
 
-				 pwHash = new StringBuffer();
-		            for (byte b : sh.digest()) pwHash.append(Integer.toHexString(0xff & b));
-				
-			
-			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			pwHash = new StringBuffer();
+			for (byte b : sh.digest())
+				pwHash.append(Integer.toHexString(0xff & b));
 
-		
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		// get parameters from BlenderServer
 
 		ServerParameters.autoConf();
 
-		
-		
 		String QUEUE_NAME = ConfigData.epid;
 
 		try {
@@ -139,14 +134,13 @@ public class AmqpClient implements Runnable {
 					eventInitiator.newInboundMessage(displayMessage);
 
 				}
-				
-				else
-				{
-					System.out.println(" [IN] Message rejected - HMAC not matching. Possibly an attempted security breach.");
-					
-					//TODO write notification of security breach into database
+
+				else {
+					System.out
+							.println(" [IN] Message rejected - HMAC not matching. Possibly an attempted security breach.");
+
+					// TODO write notification of security breach into database
 				}
-				
 
 			}
 
@@ -173,61 +167,44 @@ public class AmqpClient implements Runnable {
 	public static void sendHashTable(HashMap<String, String> message,
 			String queue_name, String type) throws Exception {
 
-		
 		// build password for rabbitmq by hashing secret
 		StringBuffer pwHash = null;
 		MessageDigest sh;
-			try {
-				sh = MessageDigest.getInstance("SHA-512");
-			  sh.update(ConfigData.secret.getBytes());
-		        //Get the hash's bytes
-			  
-			
+		try {
+			sh = MessageDigest.getInstance("SHA-512");
+			sh.update(ConfigData.secret.getBytes());
+			// Get the hash's bytes
 
-				 pwHash = new StringBuffer();
-		            for (byte b : sh.digest()) pwHash.append(Integer.toHexString(0xff & b));
-				
-			
-			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			pwHash = new StringBuffer();
+			for (byte b : sh.digest())
+				pwHash.append(Integer.toHexString(0xff & b));
 
-		
-		
-		if(ServerParameters.bunny_ip.equals(""))
-		{
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// verify that configuration is already completed
+
+		if (ServerParameters.bunny_ip.equals("")) {
 			ServerParameters.autoConf();
 		}
-		
+
+		// build connection factory
+
 		ConnectionFactory connectionFactory = new ConnectionFactory();
 		connectionFactory.setHost(ServerParameters.bunny_ip);
 		connectionFactory.setUsername(ConfigData.epid);
 		connectionFactory.setPassword(pwHash.toString());
-		connectionFactory.setVirtualHost("hClients");
 		connectionFactory.setPort(5671);
 		connectionFactory.useSslProtocol();
-
-		
-		
 
 		connectionFactory.setVirtualHost("hController");
 		Connection connection = connectionFactory.newConnection();
 		Channel channel = connection.createChannel();
 
-		// System.out.println("QUEUE DEFINED AS....."+queue_name+"...");
-		if (queue_name.equals("controller")) {
-			boolean durable = true;
-			channel.queueDeclare(queue_name, durable, false, false, null);
-		} else {
-			channel.queueDeclare(queue_name, false, false, false, null);
-		}
-
-		// implemented reply queue to allow tracing the sender for callback
-
 		BasicProperties props = new BasicProperties.Builder()
-				.replyTo(ConfigData.epid).deliveryMode(2)
-				.build();
+				.replyTo(ConfigData.epid).deliveryMode(2).build();
 
 		message.put("TYPE", type);
 		java.util.Date date = new java.util.Date();
@@ -236,16 +213,15 @@ public class AmqpClient implements Runnable {
 		message.put("EPID", ConfigData.epid);
 
 		MessageFabrik innerMessageFactory = new MessageFabrik(message);
-		
+
 		String messagePackJSON = innerMessageFactory.getJsonString();
 
 		String hMAC = HashTool.getHmacSha1(messagePackJSON, ConfigData.secret);
 
-		System.out.println("Using secret: "+ ConfigData.secret);
+		System.out.println("Using secret: " + ConfigData.secret);
 
-		System.out.println("Using endpointID: "+ ConfigData.epid);
-		
-		
+		System.out.println("Using endpointID: " + ConfigData.epid);
+
 		HashMap<String, String> submittableMessage = new HashMap<String, String>();
 
 		submittableMessage.put(hMAC, messagePackJSON);
@@ -266,10 +242,6 @@ public class AmqpClient implements Runnable {
 		connection.close();
 	}
 
-	
-	
-	
-	
 	public static void startServer(EventInitiator eventInitiator) {
 
 		/*
@@ -278,7 +250,7 @@ public class AmqpClient implements Runnable {
 
 		System.out.println();
 		System.out
-				.println("    * *    VeliSphere SDK Server v0.2a / AMQP (vanilla)");
+				.println("    * *    VeliSphere SDK Server v0.2.5 / AMQP (Milk)");
 		System.out
 				.println("    * * *  Copyright (C) 2015 Thorsten Meudt/Connected Things Lab. All rights reserved.");
 		System.out.println("**   *    ");
@@ -287,7 +259,8 @@ public class AmqpClient implements Runnable {
 				.println("   *       VeliSphere SDK Server is part of the VeliSphere IoTS ecosystem.");
 		System.out.println();
 		System.out.println();
-		System.out.println(" [IN] This product includes GeoLite data created by MaxMind, available from http://www.maxmind.com");
+		System.out
+				.println(" [IN] This product includes GeoLite data created by MaxMind, available from http://www.maxmind.com");
 		System.out.println();
 		System.out.println();
 		System.out.println(" [IN] Starting server...");

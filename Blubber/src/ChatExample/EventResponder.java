@@ -3,8 +3,10 @@ package ChatExample;
 import java.io.IOException;
 import java.util.HashMap;
 
-import com.velisphere.fs.sdk.CTLListener;
-import com.velisphere.fs.sdk.Server;
+import com.velisphere.milk.Interfaces.EventListener;
+import com.velisphere.milk.amqpClient.AmqpClient.AmqpClient;
+
+
 
 
 public class EventResponder implements EventListener {
@@ -18,7 +20,7 @@ public class EventResponder implements EventListener {
 		messageHash.put("setState", "REACHABLE");
 		
 		try {
-			Server.sendHashTable(messageHash, ServerParameters.my_queue_name, "CTL");
+			AmqpClient.sendHashTable(messageHash, ServerParameters.my_queue_name, "CTL");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
