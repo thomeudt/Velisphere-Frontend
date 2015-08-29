@@ -59,17 +59,9 @@ public class MessageFabrik {
 
 	public static HashMap<String, String> extractKeyPropertyPairs(String jsonInput) throws JsonProcessingException, IOException 
 	{
-
-		
 		ObjectMapper mapper = new ObjectMapper();
-		
 		Map<String, String> foundMap = new HashMap<String, String>();
-
 		foundMap = mapper.readValue(jsonInput, Map.class);
-
-		
-		
-		
 		return (HashMap<String, String>) foundMap;  
 	}
 	

@@ -92,6 +92,8 @@ public class DualListBox extends AbsolutePanel {
   scrollableLeft.setHeight("200px");
   scrollableLeft.add(left);
   mainCol1.add(scrollableLeft);
+  scrollableLeft.addStyleName("well");
+  
   
   
   
@@ -100,6 +102,7 @@ public class DualListBox extends AbsolutePanel {
   scrollableRight.setHeight("200px");
   scrollableRight.add(right);
   mainCol2.add(scrollableRight);
+  scrollableRight.addStyleName("well");
   
  
   Icon dragDropIcon = new Icon();

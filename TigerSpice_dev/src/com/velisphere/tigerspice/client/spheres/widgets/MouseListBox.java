@@ -75,7 +75,6 @@ public boolean isInSphere() {
 	
     grid = new Grid(size, 1);
     initWidget(grid);
-    grid.addStyleName("well");
     
     grid.setWidth("100%");
     grid.setCellPadding(0);
