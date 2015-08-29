@@ -1,7 +1,7 @@
-package Security;
+package com.velisphere.milk.Security;
 
 
-import Configuration.ConfigData;
+import com.velisphere.milk.Configuration.ConfigData;
 
 
 

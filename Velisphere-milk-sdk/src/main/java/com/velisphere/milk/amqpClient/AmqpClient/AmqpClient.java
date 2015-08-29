@@ -1,4 +1,4 @@
-package AmqpClient;
+package com.velisphere.milk.amqpClient.AmqpClient;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -8,14 +8,6 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.concurrent.TimeoutException;
 
-import Configuration.ConfigData;
-import Configuration.ConfigFileAccess;
-import Configuration.ServerParameters;
-import Interfaces.EventInitiator;
-import MessageUtils.MessageFabrik;
-import Security.HashTool;
-import Security.MessageValidator;
-
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -23,6 +15,13 @@ import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 import com.rabbitmq.client.AMQP.BasicProperties;
+import com.velisphere.milk.Configuration.ConfigData;
+import com.velisphere.milk.Configuration.ConfigFileAccess;
+import com.velisphere.milk.Configuration.ServerParameters;
+import com.velisphere.milk.Interfaces.EventInitiator;
+import com.velisphere.milk.MessageUtils.MessageFabrik;
+import com.velisphere.milk.Security.HashTool;
+import com.velisphere.milk.Security.MessageValidator;
 
 public class AmqpClient implements Runnable {
 

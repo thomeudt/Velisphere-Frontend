@@ -1,4 +1,4 @@
-package Configuration;
+package com.velisphere.milk.Configuration;
 
 
 import java.io.File;

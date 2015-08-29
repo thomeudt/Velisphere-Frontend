@@ -1,4 +1,4 @@
-package Interfaces;
+package com.velisphere.milk.Interfaces;
 
 import java.util.ArrayList;
 import java.util.List;
