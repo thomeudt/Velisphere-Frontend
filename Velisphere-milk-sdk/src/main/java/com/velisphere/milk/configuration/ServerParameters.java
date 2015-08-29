@@ -1,4 +1,4 @@
-package com.velisphere.milk.Configuration;
+package com.velisphere.milk.configuration;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;

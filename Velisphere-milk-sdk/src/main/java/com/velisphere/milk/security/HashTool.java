@@ -1,4 +1,4 @@
-package com.velisphere.milk.Security;
+package com.velisphere.milk.security;
 
 
 	import java.security.NoSuchAlgorithmException;

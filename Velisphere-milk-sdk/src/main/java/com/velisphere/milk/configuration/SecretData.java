@@ -1,4 +1,4 @@
-package com.velisphere.milk.Configuration;
+package com.velisphere.milk.configuration;
 public class SecretData {
 	
 	private String epid;

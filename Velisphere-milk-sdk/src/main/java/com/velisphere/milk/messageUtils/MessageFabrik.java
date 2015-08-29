@@ -15,7 +15,7 @@
  *  is strictly forbidden unless prior written permission is obtained
  *  from Thorsten Meudt.
  ******************************************************************************/
-package com.velisphere.milk.MessageUtils;
+package com.velisphere.milk.messageUtils;
 
 
 import java.io.IOException;

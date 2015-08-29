@@ -1,4 +1,4 @@
-package com.velisphere.milk.Configuration;
+package com.velisphere.milk.configuration;
 
 import java.io.File;
 import java.io.FileInputStream;

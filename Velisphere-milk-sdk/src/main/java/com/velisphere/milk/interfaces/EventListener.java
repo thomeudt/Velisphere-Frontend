@@ -1,4 +1,4 @@
-package com.velisphere.milk.Interfaces;
+package com.velisphere.milk.interfaces;
 
 public interface EventListener {
 

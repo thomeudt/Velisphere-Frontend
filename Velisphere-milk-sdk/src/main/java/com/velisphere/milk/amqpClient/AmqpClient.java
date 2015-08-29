@@ -1,4 +1,4 @@
-package com.velisphere.milk.amqpClient.AmqpClient;
+package com.velisphere.milk.amqpClient;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -15,13 +15,13 @@ import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 import com.rabbitmq.client.AMQP.BasicProperties;
-import com.velisphere.milk.Configuration.ConfigData;
-import com.velisphere.milk.Configuration.ConfigFileAccess;
-import com.velisphere.milk.Configuration.ServerParameters;
-import com.velisphere.milk.Interfaces.EventInitiator;
-import com.velisphere.milk.MessageUtils.MessageFabrik;
-import com.velisphere.milk.Security.HashTool;
-import com.velisphere.milk.Security.MessageValidator;
+import com.velisphere.milk.configuration.ConfigData;
+import com.velisphere.milk.configuration.ConfigFileAccess;
+import com.velisphere.milk.configuration.ServerParameters;
+import com.velisphere.milk.interfaces.EventInitiator;
+import com.velisphere.milk.messageUtils.MessageFabrik;
+import com.velisphere.milk.security.HashTool;
+import com.velisphere.milk.security.MessageValidator;
 
 public class AmqpClient implements Runnable {
 
