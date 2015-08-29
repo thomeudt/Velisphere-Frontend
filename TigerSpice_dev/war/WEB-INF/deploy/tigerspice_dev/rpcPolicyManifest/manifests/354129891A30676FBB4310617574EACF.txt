@@ -1,2 +1,0 @@
-serviceClass: com.velisphere.tigerspice.client.users.LoginService
-path: BFDC1AC69E750AC71E777E990371A77F.gwt.rpc

@@ -32,10 +32,10 @@ public class MQclient {
 
 		HashMap<String, String> message = new HashMap<String, String>();
 		
-		String endpointID = "99539bd2-e643-45d6-b731-e68fe0e27401";
-		String secret = "QyTZga/nXRVXAiA+zm2AGB3/vyEEyRkN9SI6L6jnZwPVjRKOVFCAA1ngamWtvhuDeOrZxjQA9JD+knHNHj7ASQ==";
-		String propertyID = "c04a3711-84ea-4eaf-a4d7-bd2ba2f4b62d";
-		String fakeSensorValue = "777";
+		String endpointID = "f217be48-3cb1-49ac-a737-95c3396e3ba2";
+		String secret = "v9OLVQlNJBQTt8NVmwAx3nb3QrYblNJOX0L741UpQP+nr7SdsLUHuz2WU/d46w4kX/eU/CKJGx1rRjEff6UzkQ==";
+		String propertyID = "PR6";
+		String fakeSensorValue = "888";
 		
 		
 		// build password for rabbitmq by hashing secret

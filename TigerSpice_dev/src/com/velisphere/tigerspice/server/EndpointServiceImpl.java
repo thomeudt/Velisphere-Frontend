@@ -791,6 +791,25 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 				.println("[IN] RabbitMQ write permission for controller queue requested, result: "
 						+ response);
         
+
+		// create persistent queue
+
+		System.out
+		.println("[IN] Now create a queue for "+endpointID);
+
+		
+		target = rabbitClient
+						.target("http://"+ServerParameters.rabbit_ip+":15672/api/queues/hClients/"
+								+ endpointID);
+		response = target
+						.request()
+						.put(Entity
+								.json("{\"auto_delete\":false,\"durable\":true}"));
+		System.out
+						.println("[IN] RabbitMQ create of persistent queue requested, result: "
+								+ response);
+
+		
 		
 		return errorTracker;
 

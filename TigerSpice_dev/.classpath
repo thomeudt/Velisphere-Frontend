@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" output="test-classes" path="test"/>
+	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path=".apt_generated">
 		<attributes>
@@ -32,7 +32,6 @@
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/junit.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/rabbitmq-client.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/rabbitmq-java-client-bin-3.1.4/rabbitmq-java-client-bin-3.1.4/rabbitmq-client-tests.jar"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER/GWT"/>
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/Jersey/aopalliance-repackaged-2.3.0-b05.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/Jersey/asm-debug-all-5.0.2.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/Documents/jars/Jersey/hk2-api-2.3.0-b05.jar"/>
@@ -74,5 +73,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="/home/thorsten/gwt-2.7.0/validation-api-1.0.0.GA-sources.jar"/>
 	<classpathentry kind="lib" path="/home/thorsten/gwt-2.7.0/validation-api-1.0.0.GA.jar" sourcepath="/home/thorsten/gwt-2.7.0/validation-api-1.0.0.GA-sources.jar"/>
+	<classpathentry kind="lib" path="/home/thorsten/Downloads/gwt-2.7.0.zip"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

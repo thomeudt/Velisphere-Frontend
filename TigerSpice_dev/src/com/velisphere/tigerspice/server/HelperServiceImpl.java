@@ -68,6 +68,9 @@ public class HelperServiceImpl extends RemoteServiceServlet implements HelperSer
 		
 		// Read settings via BlenderServer
 		
+		System.out.println("[IN] THIS IS A FRESH COMPILE");
+		
+		
 		System.out.println("[IN] Receiving Configuration from BlenderServer");
 		
 		
