@@ -79,9 +79,6 @@ public class Message {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public LinkedList<String> getJSON(@PathParam("endpointid") String endpointID, String password) {
 		
-		// TODO implement password authentication exactly as in the POST method!!!
-		
-
 		// AMQP handling from here
 
 		System.out.println("EndpointID is " + endpointID);
@@ -133,6 +130,8 @@ public class Message {
 
 			}
 
+			
+			
 			System.out.println(" [IN] Getting messages completed!");
 			
 			
