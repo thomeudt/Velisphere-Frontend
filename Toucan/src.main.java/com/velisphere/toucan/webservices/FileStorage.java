@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.UUID;
@@ -20,71 +21,88 @@ import javax.ws.rs.core.Response;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
-
-
-
+import com.velisphere.toucan.vertica.Uploads;
 
 @Path("/files")
 public class FileStorage {
-	
-	private static final String SAVE_FOLDER = "/home/thorsten/filestorage/";	
-	
-	
+
+	private static final String SAVE_FOLDER = "/home/thorsten/filestorage/";
+
 	@PUT
-	@Path( "/put/binary" )
-	@Consumes( MediaType.MULTIPART_FORM_DATA )
-	public Response postPlainTextMessage( 
-			@FormDataParam("file") InputStream fileInputString, 
-			@FormDataParam("file") FormDataContentDisposition fileInputDetails) throws Exception {
+	@Path("/put/binary/{filetype}/{endpointid}")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response postPlainTextMessage(
+			@PathParam("filetype") String fileType,
+			@PathParam("endpointid") String endpointID,
+			@FormDataParam("file") InputStream fileInputString,
+			@FormDataParam("file") FormDataContentDisposition fileInputDetails)
+			throws Exception {
 
-		
 		/*
-		,
-		@FormDataParam("file") InputStream fileInputString,
-	     @FormDataParam("file") FormDataContentDisposition fileInputDetails
-		*/
-		
-		//InputStream fileInputString = null;
-	    //FormDataContentDisposition fileInputDetails = null;
-	    //String fileLocation = SAVE_FOLDER + fileInputDetails.getFileName();
-		
-		String randomFileName = UUID.randomUUID().toString();
-		
-		
-		
-		String fileLocation = SAVE_FOLDER + randomFileName;
-		
-		String status = null;
-	    NumberFormat myFormat = NumberFormat.getInstance();
-	    myFormat.setGroupingUsed(true);
-	     
-	    // Save the file
-	    try {
-	     OutputStream out = new FileOutputStream(new File(fileLocation));
-	     byte[] buffer = new byte[1024];
-	     int bytes = 0;
-	     long file_size = 0;
-	     while ((bytes = fileInputString.read(buffer)) != -1) {
-	      out.write(buffer, 0, bytes);
-	      file_size += bytes;
-	     }
-	     out.flush(); 
-	     out.close();
-	             
-	   
-	     ;
-	    } catch (IOException ex) {
-	      ex.printStackTrace();
-	    }
-	 
-	    return Response.status(200).entity(randomFileName).build();
+		 * ,
+		 * 
+		 * @FormDataParam("file") InputStream fileInputString,
+		 * 
+		 * @FormDataParam("file") FormDataContentDisposition fileInputDetails
+		 */
 
-	
-	}
-	
-	
 		
+		//TODO ADD SECURITY!!!!!!!!!!!!
+		
+		// InputStream fileInputString = null;
+		// FormDataContentDisposition fileInputDetails = null;
+		// String fileLocation = SAVE_FOLDER + fileInputDetails.getFileName();
+
+		System.out.println(" [IN] Filetype received is " + fileType);
+
+		String randomFileName = UUID.randomUUID().toString() + "." + fileType;
+
+		String originalFileName = fileInputDetails.getFileName();
+
+		// validate if size is within 1MB limit, if not, return negative
+		// response
+
+		if (fileInputDetails.getSize() > 1048576) {
+			return Response.status(413).entity("Rejected. Size limit exceeded")
+					.build();
+		} else {
+			String fileLocation = SAVE_FOLDER + randomFileName;
+
+			String status = null;
+			NumberFormat myFormat = NumberFormat.getInstance();
+			myFormat.setGroupingUsed(true);
+
+			// Save the file
+			try {
+				OutputStream out = new FileOutputStream(new File(fileLocation));
+				byte[] buffer = new byte[1024];
+				int bytes = 0;
+				long file_size = 0;
+				while ((bytes = fileInputString.read(buffer)) != -1) {
+					out.write(buffer, 0, bytes);
+					file_size += bytes;
+				}
+				out.flush();
+				out.close();
+
+				;
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+
+			// Add entry to Vertica
+
+			java.util.Date date = new java.util.Date();
+
+			Uploads uploads = new Uploads();
+			uploads.uploadFile(String.valueOf(UUID.randomUUID()),
+					randomFileName, fileType, originalFileName, endpointID,
+					String.valueOf(new Timestamp(date.getTime())));
+			
+			return Response.status(200).entity(randomFileName).build();
+
+		}
+
+	}
 
 }
-
-
