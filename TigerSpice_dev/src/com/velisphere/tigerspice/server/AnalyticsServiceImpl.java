@@ -28,6 +28,7 @@ import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.shared.ActionData;
 import com.velisphere.tigerspice.shared.AnalyticsRawData;
+import com.velisphere.tigerspice.shared.FileData;
 import com.velisphere.tigerspice.shared.GeoLocationData;
 import com.velisphere.tigerspice.shared.TableRowData;
 
@@ -1008,6 +1009,67 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 		}
 
 		return actionData;
+	}
+
+	@Override
+	public LinkedList<FileData> getAllFileData(String endpointID) {
+
+
+		Connection conn;
+		LinkedList<FileData> fileData = new LinkedList<FileData>();
+
+		try {
+			Class.forName("com.vertica.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Could not find the JDBC driver class.\n");
+			e.printStackTrace();
+
+		}
+		try {
+			conn = DriverManager.getConnection("jdbc:vertica://"
+					+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+					"vertica", "1Suplies!");
+
+			conn.setAutoCommit(true);
+			System.out.println(" [OK] Connected to Vertica on address: "
+					+ "16.1.1.113");
+
+			Statement mySelect = conn.createStatement();
+
+			ResultSet myResult = mySelect
+					.executeQuery("select * from vlogger.FILEUPLOAD where endpointid = '"
+							+ endpointID
+							+ "' ORDER BY TIME_STAMP");
+
+			
+			while (myResult.next()) {
+				FileData fileItem = new FileData();
+				
+				fileItem.setFileId(myResult.getString(1));
+				fileItem.setFileName(myResult.getString(2));
+				fileItem.setOriginalFileName(myResult.getString(3));
+				fileItem.setFileType(myResult.getString(4));
+
+				fileItem.setEndpointId(myResult.getString(5));
+
+				fileItem.setTimeStamp(myResult.getString(6));
+			
+				fileData.add(fileItem);
+			}
+
+			mySelect.close();
+			conn.close();
+
+		} catch (SQLException e) {
+			System.err.println("Could not connect to the database.\n");
+			e.printStackTrace();
+
+		}
+
+		return fileData;
+
+	
+	
 	}
 
 	

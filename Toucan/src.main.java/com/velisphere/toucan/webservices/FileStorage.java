@@ -22,6 +22,7 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import com.velisphere.toucan.vertica.Uploads;
+import com.velisphere.toucan.volt.MessageValidator;
 
 @Path("/files")
 public class FileStorage {
@@ -35,74 +36,86 @@ public class FileStorage {
 			@PathParam("filetype") String fileType,
 			@PathParam("endpointid") String endpointID,
 			@FormDataParam("file") InputStream fileInputString,
-			@FormDataParam("file") FormDataContentDisposition fileInputDetails)
+			@FormDataParam("file") FormDataContentDisposition fileInputDetails,
+			@FormDataParam("hMAC") String hMAC)
 			throws Exception {
-
-		/*
-		 * ,
-		 * 
-		 * @FormDataParam("file") InputStream fileInputString,
-		 * 
-		 * @FormDataParam("file") FormDataContentDisposition fileInputDetails
-		 */
 
 		
 		//TODO ADD SECURITY!!!!!!!!!!!!
 		
-		// InputStream fileInputString = null;
-		// FormDataContentDisposition fileInputDetails = null;
-		// String fileLocation = SAVE_FOLDER + fileInputDetails.getFileName();
+		// security handling
+		
+		if(MessageValidator.validateHmac(hMAC, endpointID, endpointID)==true)
+			{
+			
+			// file handling
+			
+			System.out.println(" [IN] Filetype received is " + fileType);
 
-		System.out.println(" [IN] Filetype received is " + fileType);
 
-		String randomFileName = UUID.randomUUID().toString() + "." + fileType;
+			System.out.println(" [IN] HMAC received is " + hMAC);
 
-		String originalFileName = fileInputDetails.getFileName();
+			
+			String randomFileName = UUID.randomUUID().toString() + "." + fileType;
 
-		// validate if size is within 1MB limit, if not, return negative
-		// response
+			String originalFileName = fileInputDetails.getFileName();
 
-		if (fileInputDetails.getSize() > 1048576) {
-			return Response.status(413).entity("Rejected. Size limit exceeded")
-					.build();
-		} else {
-			String fileLocation = SAVE_FOLDER + randomFileName;
+			// validate if size is within 1MB limit, if not, return negative
+			// response
 
-			String status = null;
-			NumberFormat myFormat = NumberFormat.getInstance();
-			myFormat.setGroupingUsed(true);
+			if (fileInputDetails.getSize() > 1048576) {
+				return Response.status(413).entity("Rejected. Size limit exceeded")
+						.build();
+			} else {
+				String fileLocation = SAVE_FOLDER + randomFileName;
 
-			// Save the file
-			try {
-				OutputStream out = new FileOutputStream(new File(fileLocation));
-				byte[] buffer = new byte[1024];
-				int bytes = 0;
-				long file_size = 0;
-				while ((bytes = fileInputString.read(buffer)) != -1) {
-					out.write(buffer, 0, bytes);
-					file_size += bytes;
+				String status = null;
+				NumberFormat myFormat = NumberFormat.getInstance();
+				myFormat.setGroupingUsed(true);
+
+				// Save the file
+				try {
+					OutputStream out = new FileOutputStream(new File(fileLocation));
+					byte[] buffer = new byte[1024];
+					int bytes = 0;
+					long file_size = 0;
+					while ((bytes = fileInputString.read(buffer)) != -1) {
+						out.write(buffer, 0, bytes);
+						file_size += bytes;
+					}
+					out.flush();
+					out.close();
+
+					;
+				} catch (IOException ex) {
+					ex.printStackTrace();
 				}
-				out.flush();
-				out.close();
 
-				;
-			} catch (IOException ex) {
-				ex.printStackTrace();
+				// Add entry to Vertica
+
+				java.util.Date date = new java.util.Date();
+
+				Uploads uploads = new Uploads();
+				uploads.uploadFile(String.valueOf(UUID.randomUUID()),
+						randomFileName, fileType, originalFileName, endpointID,
+						String.valueOf(new Timestamp(date.getTime())));
+				
+				return Response.status(200).entity(randomFileName).build();
+
 			}
 
-			// Add entry to Vertica
-
-			java.util.Date date = new java.util.Date();
-
-			Uploads uploads = new Uploads();
-			uploads.uploadFile(String.valueOf(UUID.randomUUID()),
-					randomFileName, fileType, originalFileName, endpointID,
-					String.valueOf(new Timestamp(date.getTime())));
 			
-			return Response.status(200).entity(randomFileName).build();
+			}
+			else
+				{
 
-		}
+				System.out.println(" [IN] hMAC does not match - potential security breach.");
 
+				return Response.status(500).build();
+				}
+
+		
+		
 	}
 
 }

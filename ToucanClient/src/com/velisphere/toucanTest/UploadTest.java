@@ -2,6 +2,7 @@ package com.velisphere.toucanTest;
 
 import java.io.File;
 import java.net.InetAddress;
+import java.util.HashMap;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -10,10 +11,13 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.media.multipart.BodyPart;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.MultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
+
+import com.velisphere.fs.sdk.security.HashTool;
 
 public class UploadTest {
 	public static void main(String[] args) {
@@ -26,24 +30,16 @@ public class UploadTest {
 		
 		String toucanIP = response.readEntity(String.class);
 		
-		InetAddress ip;
 		
-		
-		// get user name
-		
-		String userid = "3f82b42b-7d77-4e97-8e92-becdc1bf797d";
-		String endpointID = "9e48c4eb-4ac1-4512-ac53-b86b1dd130aa";
-		String endpointClassID = "EPC1";
-		String propertyClassID = "PC1";
-		String vendorID = "65eb271e-d6c3-470a-8d62-6e40b9f930e7";
-		String propertyID = "aa4bae92-3fda-44ca-ad28-f65931ef10a0";		
+		String endpointID = "08c7f657-d091-4a2d-bcbd-3ce832ae545c";
+		String secret = "XrbFLA7al1fR/nEgdzHCxRE1ucz8qTekcOutSe8Qcw/eHMDuQec8mIw8JAIFR2fQUBT0g8LtxpAskvXN+gwFgQ==";
 				
 		
 		// upload image
 		
 		client.register(MultiPartFeature.class);
 		 
-	    final MultiPart multiPart = new MultiPart();
+	    MultiPart multiPart = new MultiPart();
 	 
 	    // large file
 	    //FileDataBodyPart fileDataBodyPart = new FileDataBodyPart("file", new File("/home/thorsten/Downloads/stockvault-internet161600.jpg"), MediaType.APPLICATION_OCTET_STREAM_TYPE);
@@ -57,8 +53,20 @@ public class UploadTest {
 	    
 	    String fileType = "PDF";
 	    
-	    final Response res = client.target("http://"+toucanIP+"/rest/files/put/binary").path(fileType).path(endpointID).request().put(Entity.entity(multiPart, MediaType.MULTIPART_FORM_DATA_TYPE));
+	    // calculate hMAC
+	    
+		String hMAC = HashTool.getHmacSha1(endpointID, secret);
+
+
+	    FormDataBodyPart hMACBodyPart = new FormDataBodyPart("hMAC", hMAC, MediaType.TEXT_PLAIN_TYPE);
+	    multiPart.bodyPart(hMACBodyPart);
+		
+	
+	    
+	    //final Response res = client.target("http://"+toucanIP+"/rest/files/put/binary").path(fileType).path(endpointID).request().put(Entity.entity(multiPart, MediaType.MULTIPART_FORM_DATA_TYPE));
 	 
+		final Response res = client.target("http://"+toucanIP+"/rest/files/put/binary").path(fileType).path(endpointID).request().put(Entity.entity(multiPart, MediaType.MULTIPART_FORM_DATA));
+		
 	    System.out.println("Response: "+res.readEntity(String.class));
 		
 	}

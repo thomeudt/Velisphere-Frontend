@@ -53,6 +53,7 @@ import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.actor.EndpointActorWidget;
 import com.velisphere.tigerspice.client.endpoints.alerts.EndpointAlertsWidget;
 import com.velisphere.tigerspice.client.endpoints.config.EndpointConfiguratorWidget;
+import com.velisphere.tigerspice.client.endpoints.files.EndpointInboxWidget;
 import com.velisphere.tigerspice.client.endpoints.info.EndpointInformationWidget;
 import com.velisphere.tigerspice.client.endpoints.sensor.EndpointSensorWidget;
 import com.velisphere.tigerspice.client.favorites.FavoriteService;
@@ -108,8 +109,9 @@ public class EndpointView extends Composite {
 	@UiField
 	TabLink tblLocationMap;
 	@UiField
+	TabLink tblInbox;
+	@UiField
 	Column imageColumn;
-
 	
 	String endpointClassID;
 	String endpointID;
@@ -633,6 +635,18 @@ public class EndpointView extends Composite {
 	              
 	          }
 	      });
+
+		tblInbox.addClickHandler(new ClickHandler() {
+	          public void onClick(ClickEvent event) {
+	        	  tbpEndpoint.clear();
+	        	  EndpointInboxWidget endpointInboxWidget = new EndpointInboxWidget(endpointID);
+	        	  
+	        		tbpEndpoint.add(endpointInboxWidget);
+	        		
+	              
+	          }
+	      });
+
 		
 		// load default
 		
