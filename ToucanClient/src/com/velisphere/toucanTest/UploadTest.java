@@ -17,6 +17,8 @@ import org.glassfish.jersey.media.multipart.MultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.velisphere.fs.sdk.MessageFabrik;
 import com.velisphere.fs.sdk.security.HashTool;
 
 public class UploadTest {
@@ -55,19 +57,44 @@ public class UploadTest {
 	    
 	    // calculate hMAC
 	    
-		String hMAC = HashTool.getHmacSha1(endpointID, secret);
+		String hMacEndpointID = HashTool.getHmacSha1(endpointID, secret);
 
 
-	    FormDataBodyPart hMACBodyPart = new FormDataBodyPart("hMAC", hMAC, MediaType.TEXT_PLAIN_TYPE);
+	    FormDataBodyPart hMACBodyPart = new FormDataBodyPart("hMAC", hMacEndpointID, MediaType.TEXT_PLAIN_TYPE);
 	    multiPart.bodyPart(hMACBodyPart);
 		
 	
 	    
 	    //final Response res = client.target("http://"+toucanIP+"/rest/files/put/binary").path(fileType).path(endpointID).request().put(Entity.entity(multiPart, MediaType.MULTIPART_FORM_DATA_TYPE));
 	 
-		final Response res = client.target("http://"+toucanIP+"/rest/files/put/binary").path(fileType).path(endpointID).request().put(Entity.entity(multiPart, MediaType.MULTIPART_FORM_DATA));
+		final Response res = client.target("http://"+toucanIP+"/rest/files/post/binary/upload").path(fileType).path(endpointID).request().post(Entity.entity(multiPart, MediaType.MULTIPART_FORM_DATA));
 		
-	    System.out.println("Response: "+res.readEntity(String.class));
+		String uploadID = res.readEntity(String.class);
+		
+	    System.out.println("Response: "+ uploadID);
+	    
+	    
+	    // now download that file to test
+	    
+	    String hMacUploadID = HashTool.getHmacSha1(uploadID, secret);
+	    
+	    String[] fileIdAndHmac = new String[2];
+				
+		fileIdAndHmac[1] = hMacUploadID;
+		fileIdAndHmac[0] = uploadID;
+	    
+	    
+	    MessageFabrik messageFabrik = new MessageFabrik(fileIdAndHmac);
+
+		
+	    
+	    
+	    
+	    
+	    final Response resCheck = client.target("http://"+toucanIP+"/rest/files/post/binary/download").path(fileType).path(endpointID).request().post(Entity.entity(messageFabrik.getJsonString(), MediaType.APPLICATION_JSON));
+		System.out.println ("Reponse from server: " + resCheck);
+		System.out.println ("Returned json: " + resCheck.readEntity(String.class));
+	    
 		
 	}
 }

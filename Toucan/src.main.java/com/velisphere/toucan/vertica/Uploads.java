@@ -2,8 +2,10 @@ package com.velisphere.toucan.vertica;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import com.velisphere.toucan.amqp.ServerParameters;
 
 public class Uploads {
@@ -60,4 +62,54 @@ public class Uploads {
 		return "OK";
 	}
 
+	
+	public String downloadFile(String uploadID, String endpointID) {
+
+		Connection conn = null;
+
+		try {
+			Class.forName("com.vertica.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Could not find the JDBC driver class.\n");
+			e.printStackTrace();
+		}
+		try {
+			conn = DriverManager.getConnection("jdbc:vertica://"
+					+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+					"vertica", "1Suplies!");
+
+			conn.setAutoCommit(true);
+			System.out.println(" [OK] Connected to Vertica on address: "
+					+ ServerParameters.vertica_ip);
+
+		} catch (SQLException e) {
+			System.err.println("Could not connect to the database.\n");
+			e.printStackTrace();
+		}
+
+		try {
+			Statement mySelect = conn.createStatement();
+
+			ResultSet myResult = mySelect.executeQuery("SELECT NAME FROM VLOGGER.FILEUPLOAD WHERE FILEUPLOADID = '"
+					+ uploadID
+					+ "' AND ENDPOINTID = '"
+					+ endpointID + "'");
+			
+			myResult.next();
+			String fileName = myResult.getString(1);
+			
+			mySelect.close();
+			
+			return fileName;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "ERROR";
+
+		
+	}
+
+	
 }

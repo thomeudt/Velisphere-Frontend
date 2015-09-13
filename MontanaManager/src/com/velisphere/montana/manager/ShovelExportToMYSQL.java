@@ -1089,7 +1089,8 @@ public class ShovelExportToMYSQL {
 			e.printStackTrace();
 		}
 
-		
+
+
 		
 		
 		System.out.println("Executing MySQL Batch...");

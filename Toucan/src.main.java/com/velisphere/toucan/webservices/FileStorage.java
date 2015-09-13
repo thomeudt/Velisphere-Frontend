@@ -1,5 +1,6 @@
 package com.velisphere.toucan.webservices;
 
+import java.awt.Image;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,19 +9,29 @@ import java.io.OutputStream;
 import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
+import javax.activation.FileDataSource;
+import javax.imageio.ImageIO;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.glassfish.jersey.media.multipart.BodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.glassfish.jersey.media.multipart.MultiPart;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.velisphere.toucan.vertica.Uploads;
 import com.velisphere.toucan.volt.MessageValidator;
 
@@ -29,10 +40,10 @@ public class FileStorage {
 
 	private static final String SAVE_FOLDER = "/home/thorsten/filestorage/";
 
-	@PUT
-	@Path("/put/binary/{filetype}/{endpointid}")
+	@POST
+	@Path("/post/binary/upload/{filetype}/{endpointid}")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response postPlainTextMessage(
+	public Response postFile(
 			@PathParam("filetype") String fileType,
 			@PathParam("endpointid") String endpointID,
 			@FormDataParam("file") InputStream fileInputString,
@@ -40,8 +51,6 @@ public class FileStorage {
 			@FormDataParam("hMAC") String hMAC)
 			throws Exception {
 
-		
-		//TODO ADD SECURITY!!!!!!!!!!!!
 		
 		// security handling
 		
@@ -95,12 +104,14 @@ public class FileStorage {
 
 				java.util.Date date = new java.util.Date();
 
+				String uploadID = String.valueOf(UUID.randomUUID());
+				
 				Uploads uploads = new Uploads();
-				uploads.uploadFile(String.valueOf(UUID.randomUUID()),
+				uploads.uploadFile(uploadID,
 						randomFileName, fileType, originalFileName, endpointID,
 						String.valueOf(new Timestamp(date.getTime())));
 				
-				return Response.status(200).entity(randomFileName).build();
+				return Response.status(200).entity(uploadID).build();
 
 			}
 
@@ -118,4 +129,77 @@ public class FileStorage {
 		
 	}
 
+	
+	@POST
+	@Path("/post/binary/download/{filetype}/{endpointid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.MULTIPART_FORM_DATA)
+	public Response getFile(
+			@PathParam("filetype") String fileType,
+			@PathParam("endpointid") String endpointID,
+			String jSON)
+			throws Exception {
+
+		
+		
+		// parse JSON
+		
+		String[] fileIdAndHmac = new String[2];
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		fileIdAndHmac = mapper.readValue(jSON, String[].class);
+
+
+		String hMAC = fileIdAndHmac[1];
+		String fileID = fileIdAndHmac[0];
+		
+		// security handling
+		
+		if(MessageValidator.validateHmac(hMAC, fileID, endpointID)==true)
+			{
+			
+			// file handling
+			
+			System.out.println(" [IN] Filetype received is " + fileType);
+
+
+			System.out.println(" [IN] HMAC received is " + hMAC);
+
+			
+				// Get path from Vertica
+
+
+				Uploads uploads = new Uploads();
+				String fileName = uploads.downloadFile(fileID, endpointID);
+				String fullPath = SAVE_FOLDER + fileName;
+			
+				
+				// load file from disk and return
+				
+				File downloadableFile = new File(fullPath);
+				
+				FileDataSource file = new FileDataSource(downloadableFile); 
+				MultiPart multiPart = new MultiPart(). 
+				bodyPart(new BodyPart(file, new MediaType("image", "png"))); 
+				
+				return Response.ok(multiPart, MediaType.MULTIPART_FORM_DATA).build(); 
+				
+			
+			}
+			else
+				{
+
+				System.out.println(" [IN] hMAC does not match - potential security breach.");
+
+				return Response.status(500).build();
+				}
+
+		
+		
+	}
+
+	
+	
+	
 }
