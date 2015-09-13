@@ -49,5 +49,5 @@ public interface EndpointServiceAsync {
 	void getAlertDetails(String alertID, AsyncCallback<AlertData> callback);
 	void deleteAlert(String alertID, String checkpathID, AsyncCallback<String> callback);
 	void getAllAlertsForUser(String userID, AsyncCallback<LinkedList<AlertData>> callback); 
-	
+	void getUploadHmacJSON(String uploadID, String endpointID, AsyncCallback<String> callback);
 }

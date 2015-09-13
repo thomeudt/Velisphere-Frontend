@@ -58,6 +58,7 @@ public interface EndpointService extends RemoteService {
 	AlertData getAlertDetails(String alertID);
 	String deleteAlert(String alertID, String checkpathID);
 	LinkedList<AlertData> getAllAlertsForUser(String userID);
+	String getUploadHmacJSON(String uploadID, String endpointID);
 	
 	
 	

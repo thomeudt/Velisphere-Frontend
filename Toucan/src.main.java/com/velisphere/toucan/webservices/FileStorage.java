@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Timestamp;
 import java.text.NumberFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -27,6 +28,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.BodyPart;
+import org.glassfish.jersey.media.multipart.ContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.glassfish.jersey.media.multipart.MultiPart;
@@ -130,17 +132,18 @@ public class FileStorage {
 	}
 
 	
-	@POST
-	@Path("/post/binary/download/{filetype}/{endpointid}")
+	@GET
+	@Path("/get/binary/download/{filetype}/{endpointid}/{json}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.MULTIPART_FORM_DATA)
 	public Response getFile(
 			@PathParam("filetype") String fileType,
 			@PathParam("endpointid") String endpointID,
-			String jSON)
+			@PathParam("json") String jSON)
 			throws Exception {
 
-		
+		System.out.println(" [IN] Request received: Download File, JSON: " + jSON);
+
 		
 		// parse JSON
 		
@@ -171,7 +174,9 @@ public class FileStorage {
 
 
 				Uploads uploads = new Uploads();
-				String fileName = uploads.downloadFile(fileID, endpointID);
+				String [] nameArray = uploads.downloadFile(fileID, endpointID);
+				String fileName = nameArray[0];
+				String origName = nameArray[1];
 				String fullPath = SAVE_FOLDER + fileName;
 			
 				
@@ -180,10 +185,16 @@ public class FileStorage {
 				File downloadableFile = new File(fullPath);
 				
 				FileDataSource file = new FileDataSource(downloadableFile); 
-				MultiPart multiPart = new MultiPart(). 
-				bodyPart(new BodyPart(file, new MediaType("image", "png"))); 
 				
-				return Response.ok(multiPart, MediaType.MULTIPART_FORM_DATA).build(); 
+				
+				MultiPart multiPart = new MultiPart(). 
+				bodyPart(new BodyPart(file, new MediaType("application", "octet-stream"))); 
+				
+				ContentDisposition contentDisposition = ContentDisposition.type("attachment")
+					    .fileName(origName).creationDate(new Date()).build();
+
+				
+				return Response.ok(multiPart, MediaType.MULTIPART_FORM_DATA).header("Content-Disposition", contentDisposition).build(); 
 				
 			
 			}

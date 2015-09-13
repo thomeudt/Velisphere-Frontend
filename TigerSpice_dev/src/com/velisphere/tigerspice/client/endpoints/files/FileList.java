@@ -23,6 +23,8 @@ import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
+import com.velisphere.tigerspice.client.endpoints.EndpointService;
+import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.shared.FileData;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
@@ -33,6 +35,11 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
 
 
 public class FileList extends Composite {
@@ -121,7 +128,7 @@ public class FileList extends Composite {
 			selectionModel
 					.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 						public void onSelectionChange(SelectionChangeEvent event) {
-							FileItem selected = selectionModel
+							final FileItem selected = selectionModel
 									.getSelectedObject();
 
 							if (selected != null) {
@@ -129,10 +136,31 @@ public class FileList extends Composite {
 								
 								//Window.alert("You selected: " + selected.name);
 								
-								AppController.openEPCInput(selected.id, "");
-
+								EndpointServiceAsync endpointService = GWT
+										.create(EndpointService.class);
 								
+								
+								endpointService.getUploadHmacJSON(selected.id, selected.endpointId, new AsyncCallback<String>()
+										{
 
+											@Override
+											public void onFailure(
+													Throwable caught) {
+												// TODO Auto-generated method stub
+												
+											}
+
+											@Override
+											public void onSuccess(String result) {
+												
+												AppController
+												.openDirectLink("http://127.0.0.1:8082/rest/files/get/binary/download/"+selected.fileType+"/"+selected.endpointId+"/"+result);
+												
+											}
+										}
+											
+										);
+								
 							}
 						}
 					});

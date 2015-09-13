@@ -18,6 +18,7 @@
 package com.velisphere.tigerspice.server;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -34,6 +35,8 @@ import java.util.LinkedList;
 import java.util.UUID;
 import java.util.Vector;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.client.Client;
@@ -44,6 +47,7 @@ import javax.ws.rs.core.Response;
 
 import nl.captcha.Captcha;
 
+import org.apache.commons.codec.binary.Hex;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.mindrot.BCrypt;
 import org.voltdb.VoltTable;
@@ -52,6 +56,13 @@ import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 import org.voltdb.types.TimestampType;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.helper.VeliConstants;
@@ -1397,6 +1408,119 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		return "OK";
 
 	}
+	
+	public String getUploadHmacJSON(String uploadID, String endpointID)
+	{		
+		
+		String hMacUploadID = null;
+		
+		hMacUploadID = getHmacSha1(uploadID, getSecretFromMontana(endpointID));
+		
+		String[] uploadIDandHmac = new String[2];
+		uploadIDandHmac[0] = uploadID;
+		uploadIDandHmac[1] = hMacUploadID;
+		
+		return buildMessagePack(uploadIDandHmac);
+		
+			
+	}
+	
+		
+	public String buildMessagePack(Object object)
+	{
+	
+				
+		ObjectMapper mapper = new ObjectMapper();
+		StringWriter writer = new StringWriter();
+		try {
+			mapper.writeValue(writer, object);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return writer.toString();
+	
+	}
+	
+		
+		public String getSecretFromMontana(String endpointID) 
+		{
+			
+
+			String secret = null;
+			
+			VoltConnector voltCon = new VoltConnector();
+			
+			try {
+				voltCon.openDatabase();
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			
+			ClientResponse findSecret;
+			try {
+				findSecret = voltCon.montanaClient
+						.callProcedure("SEC_SelectSecretForEndpointID", endpointID);
+		
+			final VoltTable findSecretResults[] = findSecret.getResults();
+
+			VoltTable result = findSecretResults[0];
+
+			while (result.advanceRow()) {
+					
+					secret = result
+							.getString("SECRET");
+					
+			}
+
+			System.out.println("Secret in DB: " + secret );
+			} catch (IOException | ProcCallException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
+					
+			return secret;
+		
+		}
+	
+		
+		
+		public String getHmacSha1(String value, String key) {
+	        try {
+	            // Get an hmac_sha1 key from the raw key bytes
+	            byte[] keyBytes = key.getBytes();           
+	            SecretKeySpec signingKey = new SecretKeySpec(keyBytes, "HmacSHA1");
+
+	            // Get an hmac_sha1 Mac instance and initialize with the signing key
+	            Mac mac = Mac.getInstance("HmacSHA1");
+	            mac.init(signingKey);
+
+	            // Compute the hmac on input data bytes
+	            byte[] rawHmac = mac.doFinal(value.getBytes());
+
+	            // Convert raw bytes to Hex
+	            byte[] hexBytes = new Hex().encode(rawHmac);
+
+	            //  Covert array of Hex bytes to a String
+	            return new String(hexBytes, "UTF-8");
+	        } catch (Exception e) {
+	            throw new RuntimeException(e);
+	        }
+	    }
+	
+
 	
 
 }

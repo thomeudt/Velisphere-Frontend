@@ -91,7 +91,7 @@ public class UploadTest {
 	    
 	    
 	    
-	    final Response resCheck = client.target("http://"+toucanIP+"/rest/files/post/binary/download").path(fileType).path(endpointID).request().post(Entity.entity(messageFabrik.getJsonString(), MediaType.APPLICATION_JSON));
+	    final Response resCheck = client.target("http://"+toucanIP+"/rest/files/get/binary/download").path(fileType).path(endpointID).path(messageFabrik.getJsonString()).request().get();
 		System.out.println ("Reponse from server: " + resCheck);
 		System.out.println ("Returned json: " + resCheck.readEntity(String.class));
 	    

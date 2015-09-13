@@ -63,7 +63,7 @@ public class Uploads {
 	}
 
 	
-	public String downloadFile(String uploadID, String endpointID) {
+	public String[] downloadFile(String uploadID, String endpointID) {
 
 		Connection conn = null;
 
@@ -90,23 +90,28 @@ public class Uploads {
 		try {
 			Statement mySelect = conn.createStatement();
 
-			ResultSet myResult = mySelect.executeQuery("SELECT NAME FROM VLOGGER.FILEUPLOAD WHERE FILEUPLOADID = '"
+			ResultSet myResult = mySelect.executeQuery("SELECT NAME, ORIG_NAME FROM VLOGGER.FILEUPLOAD WHERE FILEUPLOADID = '"
 					+ uploadID
 					+ "' AND ENDPOINTID = '"
 					+ endpointID + "'");
 			
 			myResult.next();
 			String fileName = myResult.getString(1);
+			String origName = myResult.getString(2);
 			
 			mySelect.close();
 			
-			return fileName;
+			String[] nameArray = new String[2];
+			nameArray[0] = fileName;
+			nameArray[1] = origName;
+			
+			return nameArray;
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "ERROR";
+		return null;
 
 		
 	}
