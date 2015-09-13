@@ -49,7 +49,7 @@ public class UploadTest {
 	    // small file
 	    
 	    FileDataBodyPart fileDataBodyPart = new FileDataBodyPart("file",
-	            new File("/home/thorsten/Downloads/SF14_DATS004_100p NEW.pdf"), MediaType.APPLICATION_OCTET_STREAM_TYPE);
+	            new File("/home/thorsten/Downloads/Neoplan_Cityliner.jpg"), MediaType.APPLICATION_OCTET_STREAM_TYPE);
 	    
 	    multiPart.bodyPart(fileDataBodyPart);
 	    

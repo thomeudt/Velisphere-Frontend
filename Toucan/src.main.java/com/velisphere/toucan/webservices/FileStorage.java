@@ -134,8 +134,7 @@ public class FileStorage {
 	
 	@GET
 	@Path("/get/binary/download/{filetype}/{endpointid}/{json}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.WILDCARD)
 	public Response getFile(
 			@PathParam("filetype") String fileType,
 			@PathParam("endpointid") String endpointID,
@@ -186,15 +185,11 @@ public class FileStorage {
 				
 				FileDataSource file = new FileDataSource(downloadableFile); 
 				
-				
-				MultiPart multiPart = new MultiPart(). 
-				bodyPart(new BodyPart(file, new MediaType("application", "octet-stream"))); 
-				
 				ContentDisposition contentDisposition = ContentDisposition.type("attachment")
 					    .fileName(origName).creationDate(new Date()).build();
 
 				
-				return Response.ok(multiPart, MediaType.MULTIPART_FORM_DATA).header("Content-Disposition", contentDisposition).build(); 
+				return Response.ok(file, MediaType.MULTIPART_FORM_DATA).header("Content-Disposition", contentDisposition).build(); 
 				
 			
 			}
