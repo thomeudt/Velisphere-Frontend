@@ -118,7 +118,7 @@ interface MyBinder extends UiBinder<Widget, Dashboard>{}
     	
     	pgpStatusInfo.setText("System is up and operating normally. Last update: June 29, 2015 / 12:19 CET");
     	
-    	tbpAlerts.add(new AlertsState());
+    	tbpAlerts.add(new AlertStates());
     	
     	
     	final LogServiceAsync logService = GWT
