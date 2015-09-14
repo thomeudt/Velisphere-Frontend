@@ -17,6 +17,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
@@ -44,10 +45,10 @@ import com.google.gwt.http.client.Response;
 
 public class FileList extends Composite {
 
-		final DialogBox dialogBox = new DialogBox();
+		private DialogBox dialogBox = new DialogBox();
 		private CellTable<FileItem> cellTable;
 		private String endpointID;
-		
+		private VerticalPanel verticalPanel;
 		
 		
 		class FileItem {
@@ -71,20 +72,8 @@ public class FileList extends Composite {
 
 			rpcService = GWT.create(AnalyticsService.class);
 
-			cellTable = new CellTable<FileItem>(5);
-
-		
-			// Create a data provider for celltable.
-			ListDataProvider<FileItem> dataProvider = new ListDataProvider<FileItem>();
-
-			// Connect the table to the data provider.
-			dataProvider.addDataDisplay(cellTable);
-				
-			final List<FileItem> list = dataProvider.getList();
-			
-			// create columns
-			
-			createColumns(cellTable, list);
+			verticalPanel = new VerticalPanel();
+			initWidget(verticalPanel);
 		
 			
 			// fill
@@ -98,28 +87,68 @@ public class FileList extends Composite {
 
 						@Override
 						public void onSuccess(LinkedList<FileData> result) {
-
-							Iterator<FileData> it = result.iterator();
-
-							cellTable.setRowCount(result.size(), false);
-							while (it.hasNext()) {
-
-								final FileData sourceItem = it.next();
-								FileItem targetItem = new FileItem();
-								targetItem.id = sourceItem.getFileId();
-								targetItem.fileName = sourceItem.getFileName();
-								targetItem.fileType = sourceItem.getFileType();
-								targetItem.endpointId = sourceItem.getEndpointId();
-								targetItem.originalFileName = sourceItem.getOriginalFileName();
-								targetItem.timeStamp = sourceItem.getTimeStamp();
-								list.add(targetItem);
+							
+							if (result.size() > 0)
+							{
+								
+								verticalPanel.add(new HTML("<b>Endpoint Document Inbox</b><br><br>"
+										+ "The following documents have been uploaded by this endpoint and are available for your review: <br><br>"));
+								createTable(result);
+								
 							}
+							else
+								verticalPanel.add(new HTML("<b>Inbox currently empty</b><br><br>"
+									+ "Possible reasons are that your selected endpoint has not submitted any documents to its inbox, "
+									+ "or that the endpoint is experiencing connectivity issues preventing documents from being uploaded."));
+							
+
+							
 							
 							
 						
 						}
 					});
 
+			
+			
+
+		}
+		
+		
+		void createTable(LinkedList<FileData> fileData)
+		{
+			cellTable = new CellTable<FileItem>(5);
+
+			
+			// Create a data provider for celltable.
+			ListDataProvider<FileItem> dataProvider = new ListDataProvider<FileItem>();
+
+			// Connect the table to the data provider.
+			dataProvider.addDataDisplay(cellTable);
+				
+			final List<FileItem> list = dataProvider.getList();
+			
+			// create columns
+			
+			createColumns(cellTable, list);
+
+			
+			// fill
+			Iterator<FileData> it = fileData.iterator();
+
+			cellTable.setRowCount(fileData.size(), false);
+			while (it.hasNext()) {
+
+				final FileData sourceItem = it.next();
+				FileItem targetItem = new FileItem();
+				targetItem.id = sourceItem.getFileId();
+				targetItem.fileName = sourceItem.getFileName();
+				targetItem.fileType = sourceItem.getFileType();
+				targetItem.endpointId = sourceItem.getEndpointId();
+				targetItem.originalFileName = sourceItem.getOriginalFileName();
+				targetItem.timeStamp = sourceItem.getTimeStamp();
+				list.add(targetItem);
+			}
 			
 			// add selection model
 
@@ -168,9 +197,7 @@ public class FileList extends Composite {
 			
 			// display
 
-			final VerticalPanel verticalPanel = new VerticalPanel();
-			initWidget(verticalPanel);
-
+			
 			cellTable.setHover(true);
 			
 			
@@ -181,7 +208,6 @@ public class FileList extends Composite {
 			pager.setRangeLimited(false);
 			
 			verticalPanel.add(pager);
-
 
 		}
 		
