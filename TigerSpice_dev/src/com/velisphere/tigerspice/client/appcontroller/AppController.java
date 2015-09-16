@@ -18,7 +18,7 @@ import com.velisphere.tigerspice.client.admin.propertyclass.CreatePropertyClass;
 import com.velisphere.tigerspice.client.admin.propertyclass.EditPropertyClass;
 import com.velisphere.tigerspice.client.admin.vendor.CreateVendor;
 import com.velisphere.tigerspice.client.analytics.AnalyticsHome;
-import com.velisphere.tigerspice.client.dashboard.Dashboard;
+import com.velisphere.tigerspice.client.dash.ConfigurableDashboard;
 import com.velisphere.tigerspice.client.documentation.BestPractices;
 import com.velisphere.tigerspice.client.documentation.GettingStarted;
 import com.velisphere.tigerspice.client.endpoints.EndpointView;
@@ -33,10 +33,10 @@ import com.velisphere.tigerspice.client.marketplace.MarketPlace;
 import com.velisphere.tigerspice.client.provisioning.ProvisioningSuccess;
 import com.velisphere.tigerspice.client.provisioning.ProvisioningWizard;
 import com.velisphere.tigerspice.client.provisioning.TakeOwnership;
-
 import com.velisphere.tigerspice.client.spheres.SphereLister;
 import com.velisphere.tigerspice.client.spheres.SphereView;
 import com.velisphere.tigerspice.client.spheres.SphereViewPublic;
+import com.velisphere.tigerspice.client.status.StatusBoard;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 
 // this class manages all navigational calls within the application
@@ -296,7 +296,7 @@ public class AppController {
 		
 	
 
-	public static void openDashboard()
+	public static void openStatusBoard()
 	{	
 		SessionHelper.validateCurrentSession();
 		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
@@ -304,7 +304,21 @@ public class AppController {
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
 			//userID = SessionHelper.getCurrentUserID();
-			Dashboard dashboard = new Dashboard();
+			StatusBoard statusboard = new StatusBoard();
+			openWithHistoryHandler("statusboard", statusboard);
+		}		
+	});
+	}
+	
+	public static void openDashBoard()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//userID = SessionHelper.getCurrentUserID();
+			ConfigurableDashboard dashboard = new ConfigurableDashboard();
 			openWithHistoryHandler("dashboard", dashboard);
 		}		
 	});

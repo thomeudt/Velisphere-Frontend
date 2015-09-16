@@ -44,13 +44,13 @@ import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.LoggedOutHome;
 import com.velisphere.tigerspice.client.Login;
 import com.velisphere.tigerspice.client.admin.Overviewer;
-import com.velisphere.tigerspice.client.dashboard.Dashboard;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
 import com.velisphere.tigerspice.client.logic.LogicDesignList;
 import com.velisphere.tigerspice.client.marketplace.MarketPlace;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
+import com.velisphere.tigerspice.client.status.StatusBoard;
 import com.velisphere.tigerspice.client.users.LoginService;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 import com.velisphere.tigerspice.client.users.NewAccountScreen;
@@ -143,26 +143,17 @@ public class NavBar extends Composite implements HasText {
 	@UiHandler("btnHome")
 	void openHome (ClickEvent event) {
 		
-		AppController.openDashboard();
+		AppController.openStatusBoard();
 		
-		/**
-		String sessionID = Cookies.getCookie("sid");
-		clearBandarole();
-	     if (sessionID != null){
-			
-			RootPanel.get("main").clear();
-			Dashboard dashboard = new Dashboard();
-			RootPanel.get("main").add(dashboard);
-		}
-	     else
-	    	 {
-	    	 
-	    	 NewAccountScreen newAccountScreen = new NewAccountScreen();
-				newAccountScreen.open();
-			
-		}
-		**/
 	}
+	
+	@UiHandler("btnDash")
+	void openDash (ClickEvent event) {
+		
+		AppController.openDashBoard();
+		
+	}
+	
 	
 	@UiHandler("brdHome")
 	void openHomeBrand (ClickEvent event) {

@@ -1,4 +1,4 @@
-package com.velisphere.tigerspice.client.dashboard;
+package com.velisphere.tigerspice.client.status;
 
 import java.util.Comparator;
 import java.util.Iterator;
