@@ -5,6 +5,7 @@ import com.github.gwtbootstrap.client.ui.Row;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.visualization.client.VisualizationUtils;
 
 public class FlexBoard extends Composite{
 	
@@ -13,6 +14,7 @@ public class FlexBoard extends Composite{
 	public FlexBoard()
 	{
 		
+	
 		verticalPanel = new VerticalPanel();
 		initWidget(verticalPanel);
 		displayInitialRow();
@@ -39,7 +41,7 @@ public class FlexBoard extends Composite{
 	private Column addColumn()
 	{
 		Column column = new Column(2);
-		column.add(new HTML("<b>Col!</b>"));
+		column.add(new GaugeBox());
 		return column;
 	}
 	
