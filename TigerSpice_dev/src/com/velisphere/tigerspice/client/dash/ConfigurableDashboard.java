@@ -74,12 +74,7 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 	    
 			
 		initWidget(uiBinder.createAndBindUi(this));
-		loadContent();
-		
-	
-		
-
-		
+		loadContent();			
 	}
 	 
 	public ConfigurableDashboard(HandlerRegistration reg) {
@@ -126,12 +121,4 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 	}
 }
 		
-	
-		
-
-	
-	
-			
-	
-	
 	

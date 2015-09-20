@@ -19,10 +19,11 @@ public class FlexBoard extends Composite{
 	
 	VerticalPanel verticalPanel;
 	int fieldCount = 0;
-	int rowCount = 0;
-	HashMap<Integer, Row> rowMap;
+	//int rowCount = 0;
+	//HashMap<Integer, Row> rowMap;
 	FlexColumn currentAddBoxColumn;
-	
+	static HTML SPACER = new HTML("&nbsp;<br>");
+	Row row;
 	
 	public FlexBoard()
 	{
@@ -30,21 +31,22 @@ public class FlexBoard extends Composite{
 	
 		verticalPanel = new VerticalPanel();
 		initWidget(verticalPanel);
-		rowMap = new HashMap<Integer, Row>();
+		//rowMap = new HashMap<Integer, Row>();
 		displayInitialField();
 		
 	}
 	
 	private void displayInitialField()
 	{
-		Row initialRow = addRow();
-		verticalPanel.add(initialRow);
+		row = new Row();
+		verticalPanel.add(row);
 		currentAddBoxColumn = addAddBoxColumn();
 		
-		initialRow.add(currentAddBoxColumn);
+		row.add(currentAddBoxColumn);
 		
 	}
-	
+
+	/*
 	private Row addRow()
 	{
 		Row row = new Row();
@@ -53,6 +55,7 @@ public class FlexBoard extends Composite{
 		verticalPanel.add(row);
 		return row;
 	}
+	*/
 
 
 	private FlexColumn addAddBoxColumn()
@@ -77,22 +80,23 @@ public class FlexBoard extends Composite{
 			@Override
 			public void onClick(ClickEvent event) {
 				
-				Row lastRow = rowMap.get(rowCount);
-				lastRow.remove(currentAddBoxColumn);
+		//		Row lastRow = rowMap.get(rowCount);
+				row.remove(currentAddBoxColumn);
 				
-				
+		/*		
 				if(fieldCount % 6 == 0)
 				{
 					RootPanel.get().add(new HTML("ROW ADDING REQUESTED"));
+					verticalPanel.add(SPACER);
 					addRow();
 					lastRow = rowMap.get(rowCount);
 				}
-				
-				lastRow.add(addGaugeColumn());		
-				RootPanel.get().add(new HTML("GAUGE ADDING REQUESTED, ROWCOUNT " + rowCount));
+			*/	
+				row.add(addGaugeColumn());		
+				RootPanel.get().add(new HTML("GAUGE ADDING REQUESTED"));
 				
 				currentAddBoxColumn = addAddBoxColumn();
-				lastRow.add(currentAddBoxColumn);
+				row.add(currentAddBoxColumn);
 
 			}
 			
