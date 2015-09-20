@@ -472,8 +472,7 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 							.get("CONFIGURABLE", VoltType.TINYINT);
 					propertyData.status = (byte) result
 							.get("STATUS", VoltType.TINYINT);
-					
-					
+				
 					sensePropertiesForEndpoint.add(propertyData);
 
 				}

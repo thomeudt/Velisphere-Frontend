@@ -1,5 +1,6 @@
 package com.velisphere.tigerspice.client.dash;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -16,6 +17,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
 import com.google.gwt.visualization.client.DataTable;
@@ -26,7 +28,10 @@ import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
+import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
+import com.velisphere.tigerspice.client.propertyclasses.PropertyClassServiceAsync;
 import com.velisphere.tigerspice.shared.EndpointData;
+import com.velisphere.tigerspice.shared.PropertyClassData;
 import com.velisphere.tigerspice.shared.PropertyData;
 
 public class GaugeBox extends Composite {
@@ -38,6 +43,7 @@ public class GaugeBox extends Composite {
 	ListBox lbxProperties = new ListBox();
 	ListBox lbxEndpoints = new ListBox();
 	Button btnOK = new Button("OK");
+	HashMap<String, PropertyData> propertyDataMap = new HashMap<String, PropertyData>();
 
 	
 
@@ -71,6 +77,7 @@ public class GaugeBox extends Composite {
 			option.setMinorTicks(10);
 			option.setRedRange(81, 100);
 			option.setYellowRange(61, 70);
+			
 
 			panel.add(new Gauge(data, option));
 			panel.add(controls());
@@ -201,10 +208,13 @@ public class GaugeBox extends Composite {
 			public void onSuccess(LinkedList<PropertyData> result) {
 
 				lbxProperties.clear();
+				lbxProperties.addItem("---");
+				propertyDataMap.clear();
 				Iterator<PropertyData> it = result.iterator();
 				while(it.hasNext())
 				{
 					PropertyData propertyData = it.next();
+					propertyDataMap.put(propertyData.propertyId, propertyData);
 					lbxProperties.addItem(propertyData.propertyName, propertyData.propertyId);
 					
 				}
@@ -219,26 +229,56 @@ public class GaugeBox extends Composite {
 						
 
 						description = new HTML("<br><b><i>"+lbxProperties.getSelectedItemText()+"</b></i>");
-
-						gaugeLabel = "";
-						gaugeValue = 80;
-							
+						getPropertyClassData(propertyDataMap.get(lbxProperties.getSelectedValue()).propertyclassId);
 					
 					}
 					
 				});
 
-				if(btnOK.isAttached())
-				{
-					btnOK.removeFromParent();
-				}
-				panel.add(btnOK);
 							
 			}
 			
 		});
 	}
 
+	
+	private void getPropertyClassData(String propertyClassID)
+	{
+
+
+
+		RootPanel.get().add(new HTML("Searching for " + propertyClassID));
+
+		PropertyClassServiceAsync propertyClassService = GWT
+				.create(PropertyClassService.class);
+
+		propertyClassService.getPropertyClassForPropertyClassID(propertyClassID, new AsyncCallback<PropertyClassData>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(PropertyClassData result) {
+
+				RootPanel.get().add(new HTML(result.propertyClassName));
+				gaugeLabel = result.propertyClassUnit;
+				gaugeValue = 80;
+		
+				if(btnOK.isAttached())
+				{
+					btnOK.removeFromParent();
+				}
+				panel.add(btnOK);
+		
+			}
+		});
+		
+		
+
+	}
 	
 	private void setConfigOkButton()
 	{
