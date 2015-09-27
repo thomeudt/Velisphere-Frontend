@@ -74,6 +74,22 @@ public class GaugeBox extends Composite {
 		configure();
 	}
 
+	public GaugeBox(String endpointID, String propertyID) {
+		panel = new VerticalPanel();
+		gaugeType = EMPTY_GAUGE;
+		initWidget(panel);
+		setConfigOkButton();
+		getData();
+	}
+
+	public String getEndpointID() {
+		return endpointID;
+	}
+
+	public String getPropertyID() {
+		return propertyID;
+	}
+
 	private void addGauge() {
 		panel.add(description);
 		if (gaugeType == EMPTY_GAUGE)

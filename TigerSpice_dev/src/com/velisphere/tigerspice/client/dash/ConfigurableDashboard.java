@@ -88,10 +88,6 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 	
 	public void loadContent(){
 
-		
-		
-		
-		
 		// set page header welcome back message
     	pageHeader.setText("Custom Dashboard");
     	

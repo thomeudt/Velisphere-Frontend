@@ -1,26 +1,36 @@
 package com.velisphere.tigerspice.client.dash;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Column;
+import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.Row;
+import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.resources.ButtonSize;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.visualization.client.VisualizationUtils;
+import com.velisphere.tigerspice.client.endpoints.EndpointService;
+import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
+import com.velisphere.tigerspice.shared.GaugeData;
 
 public class FlexBoard extends Composite{
 	
 	VerticalPanel verticalPanel;
-	int fieldCount = 0;
 	//int rowCount = 0;
 	//HashMap<Integer, Row> rowMap;
+	LinkedList<GaugeBox> gaugeList;
 	FlexColumn currentAddBoxColumn;
 	static HTML SPACER = new HTML("&nbsp;<br>");
 	Row row;
@@ -28,13 +38,46 @@ public class FlexBoard extends Composite{
 	public FlexBoard()
 	{
 		
-	
+		gaugeList = new LinkedList<GaugeBox>();
 		verticalPanel = new VerticalPanel();
 		initWidget(verticalPanel);
 		//rowMap = new HashMap<Integer, Row>();
+		displayHeader();
 		displayInitialField();
 		
 	}
+	
+	private void displayHeader()
+	{
+		row = new Row();
+		verticalPanel.add(row);
+		Column descriptionColumn = new Column(1);
+		descriptionColumn.add(new HTML("Switch to:"));
+		row.add(descriptionColumn);
+		Column dashboardListColumn = new Column(2);
+		ListBox lbxDashboards = new ListBox();
+		dashboardListColumn.add(lbxDashboards);
+		lbxDashboards.setWidth("100%");
+		row.add(dashboardListColumn);
+		Column saveDashboardColumn = new Column(2);
+		Button btnSave = new Button("Save Dashboard");
+		btnSave.setSize(ButtonSize.SMALL);
+		btnSave.setType(ButtonType.PRIMARY);
+		saveDashboardColumn.add(btnSave);
+		row.add(saveDashboardColumn);
+		
+		btnSave.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				saveDashboardDialog().center();
+			}
+			
+		});
+		
+		
+	}
+	
 	
 	private void displayInitialField()
 	{
@@ -57,12 +100,71 @@ public class FlexBoard extends Composite{
 	}
 	*/
 
+	
+	private DialogBox saveDashboardDialog()
+	{
+			final DialogBox saveDialog = new DialogBox();
+			saveDialog.setText("Name of this Dashboard:");
+			saveDialog.setStyleName("wellappleblue");
+			VerticalPanel panel = new VerticalPanel();
+			final TextBox txtName = new TextBox();
+			panel.add(txtName);
+			txtName.setText("");
+			Button btnSave = new Button("Save");
+			panel.add(btnSave);
+			saveDialog.add(panel);
+			saveDialog.setAutoHideEnabled(true);
+			
+			btnSave.addClickHandler(new ClickHandler(){
+
+				@Override
+				public void onClick(ClickEvent event) {
+					
+					LinkedList<GaugeData> gaugeDataList = new LinkedList<GaugeData>();
+					
+					Iterator<GaugeBox> it = gaugeList.iterator();
+					while (it.hasNext())
+					{
+						GaugeBox gaugeBox = it.next();
+						GaugeData gaugeData = new GaugeData();
+						gaugeData.setEndpointID(gaugeBox.getEndpointID());
+						gaugeData.setPropertyID(gaugeBox.getPropertyID());
+						gaugeDataList.add(gaugeData);
+						
+					}
+					
+					GaugeServiceAsync gaugeService = GWT
+							.create(GaugeService.class);
+					
+					gaugeService.saveDashboard(txtName.getText(), gaugeDataList, new AsyncCallback<String>(){
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void onSuccess(String result) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+					});
+					saveDialog.removeFromParent();
+				}
+				
+			});
+			return saveDialog;
+
+		}
+
+	
 
 	private FlexColumn addAddBoxColumn()
 	{
 		FlexColumn column = new FlexColumn(2);
 		column.add(addBox());
-		fieldCount ++;
 		return column;
 	}
 
@@ -110,8 +212,9 @@ public class FlexBoard extends Composite{
 	{
 		
 		FlexColumn column = new FlexColumn(2);
-		column.add(new GaugeBox());
-		fieldCount ++;
+		GaugeBox gaugeBox = new GaugeBox();
+		column.add(gaugeBox);
+		gaugeList.add(gaugeBox);
 		return column;
 	}
 			
