@@ -3,8 +3,8 @@ package com.velisphere.fs;
 import java.util.HashMap;
 
 import com.velisphere.fs.sensorsAndConfigs.Constants;
-import com.velisphere.milk.Configuration.ConfigData;
-import com.velisphere.milk.amqpClient.AmqpClient.AmqpClient;
+import com.velisphere.milk.amqpClient.AmqpClient;
+import com.velisphere.milk.configuration.ConfigData;
 
 import flightsim.simconnect.SimConnect;
 import flightsim.simconnect.data.LatLonAlt;

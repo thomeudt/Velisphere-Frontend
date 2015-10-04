@@ -1,8 +1,8 @@
 package com.velisphere.fs;
 
+import com.velisphere.milk.interfaces.EventInitiator;
+import com.velisphere.milk.interfaces.EventListener;
 
-import com.velisphere.milk.Interfaces.EventInitiator;
-import com.velisphere.milk.Interfaces.EventListener;
 
 
 

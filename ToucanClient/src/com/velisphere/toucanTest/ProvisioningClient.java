@@ -5,16 +5,29 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.security.GeneralSecurityException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.util.Enumeration;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.velisphere.toucanTest.DisableSSLCertificateCheckUtil.NullHostnameVerifier;
+import com.velisphere.toucanTest.DisableSSLCertificateCheckUtil.NullX509TrustManager;
 import com.velisphere.toucanTest.config.ConfigFileAccess;
 import com.velisphere.toucanTest.config.SecretData;
 
@@ -22,9 +35,46 @@ public class ProvisioningClient {
 
 	public static void main(String[] args) {
 		InetAddress ip;
+		
+		// disable certificate matching check
+		
+		javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(new javax.net.ssl.HostnameVerifier()
+		{
 
-		Client client = ClientBuilder.newClient();
+			@Override
+			public boolean verify(String hostname, SSLSession session) {
+				// TODO Auto-generated method stub
+				return true;
+			}
+			
+		});
+		
+		
+		
+		// Create a trust manager that does not validate certificate chains
+		TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
+		    public X509Certificate[] getAcceptedIssuers(){return null;}
+		    public void checkClientTrusted(X509Certificate[] certs, String authType){}
+		    public void checkServerTrusted(X509Certificate[] certs, String authType){}
+		}};
 
+		// Install the all-trusting trust manager
+			 SSLContext sc;
+			try {
+				sc = SSLContext.getInstance("TLS");
+			
+		    sc.init(null, trustAllCerts, new SecureRandom());
+		    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+		
+  
+		
+	
+		//Client client = ClientBuilder.newClient();
+		
+		Client client = ClientBuilder.newBuilder()	      
+	      .sslContext(sc)
+	      .build();
+		
 		StringBuilder sb = new StringBuilder();
 
 		try {
@@ -47,6 +97,9 @@ public class ProvisioningClient {
 				}
 			}
 
+			
+			
+			
 			WebTarget target = client
 					.target("http://connectedthingslab.com:8080/BlenderServer/rest/config/get/general");
 			Response response = target.path("TOUCAN").request().get();
@@ -55,13 +108,15 @@ public class ProvisioningClient {
 
 			String toucanIP = response.readEntity(String.class);
 
-			target = client.target("http://" + toucanIP
+			System.out.println(toucanIP);
+			
+			target = client.target("https://" + toucanIP
 					+ "/rest/provisioning/put");
-
-			String identifier = "blub";
+			
+			String identifier = "sim";
 
 			response = target.path("endpoint").path(identifier).request()
-					.put(Entity.text("EPC1"));
+					.put(Entity.text("cbdf155d-98ab-490d-a911-e89e6e3e1428"));
 			System.out.println("Search for identifier: " + identifier);
 
 			System.out.println(response);
@@ -94,6 +149,27 @@ public class ProvisioningClient {
 			System.out.println("Socket Error " + e);
 			e.printStackTrace();
 		}
+			} catch (NoSuchAlgorithmException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (KeyManagementException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
 
 	}
+	
+
+	private static TrustManager[ ] get_trust_mgr() {
+	     TrustManager[ ] certs = new TrustManager[ ] {
+	        new X509TrustManager() {
+	           public X509Certificate[ ] getAcceptedIssuers() { return null; }
+	           public void checkClientTrusted(X509Certificate[ ] certs, String t) { }
+	           public void checkServerTrusted(X509Certificate[ ] certs, String t) { }
+	         }
+	      };
+	      return certs;
+	  }
+	
 }

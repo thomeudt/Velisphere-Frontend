@@ -6,7 +6,7 @@ import java.util.HashMap;
 import com.velisphere.fs.actors.Flaps;
 import com.velisphere.fs.actors.Gear;
 import com.velisphere.fs.actors.SimFunctions;
-import com.velisphere.milk.amqpClient.AmqpClient.AmqpClient;
+import com.velisphere.milk.amqpClient.AmqpClient;
 
 import flightsim.simconnect.SimConnect;
 import flightsim.simconnect.SimConnectDataType;

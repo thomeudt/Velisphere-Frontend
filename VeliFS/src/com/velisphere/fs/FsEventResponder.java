@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import com.velisphere.fs.actors.SimFunctions;
-import com.velisphere.milk.Configuration.ConfigData;
-import com.velisphere.milk.Interfaces.EventListener;
-import com.velisphere.milk.MessageUtils.MessageFabrik;
-import com.velisphere.milk.amqpClient.AmqpClient.AmqpClient;
+import com.velisphere.milk.amqpClient.AmqpClient;
+import com.velisphere.milk.configuration.ConfigData;
+import com.velisphere.milk.interfaces.EventListener;
+import com.velisphere.milk.messageUtils.MessageFabrik;
 
 import flightsim.simconnect.config.ConfigurationNotFoundException;
 

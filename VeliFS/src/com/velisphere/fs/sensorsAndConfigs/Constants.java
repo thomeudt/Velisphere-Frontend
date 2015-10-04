@@ -5,30 +5,30 @@ import flightsim.simconnect.SimConnectDataType;
 
 public class Constants {
 	
-	public static final String altitude = "fca63a77-62a9-461d-b77f-ecb1a80d3aa4";
-	public static final String atcType = "62adeee3-8fab-471c-9436-6a087c05b4d0";
-	public static final String atcID = "760e8c20-6187-4c53-8239-7d0a97d770e4";
-	public static final String groundspeed = "aa4bae92-3fda-44ca-ad28-f65931ef10a0";
-	public static final String stall = "6b9b3b7a-d0e9-4e0a-9135-0714deffcf8b";
-	public static final String overspeed = "f8949d59-e90a-4523-8efb-565e7cc658e7";
-	public static final String aoA = "39b4c0cc-2aef-4ea0-9ae9-d995b52dd751";
-	public static final String lat = "eff4a7b3-e268-407c-9703-eefae3550c31";
-	public static final String lon = "790a2d78-96b4-4883-a66e-0f25d3a44c33";
-	public static final String pos = "2176dc63-c4b0-495d-8a56-70ce67fa5053";
-	public static final String flap = "01afc33b-d8a4-43eb-9146-9d9723524c51";
-	public static final String spoiler = "0cc41aed-d9d8-4d89-b750-c26bcdf69d1f";
-	public static final String spoilerArmed = "afe78ae2-6275-4899-aaea-a697361a7ead";
-	public static final String windSpeed = "3150c278-80f5-44d5-92ce-0371d9dfecd6";
-	public static final String windDirect = "e9a4c408-eb98-41af-86a8-b0f79d456453";
-	public static final String pitch = "eba88d7f-15c7-4a31-ad74-f62ae66c0517";
-	public static final String bank = "3e623fe2-5448-4876-b98f-c35afdf952f2";
-	public static final String onGround = "377d150e-ef86-41af-aa04-c966e2287fc6";
-	public static final String glideslopeError = "3ef4e0ea-2e1d-405e-b534-cc91401395d5";
-	public static final String gpsETE = "f181be4a-3d55-4d9b-a75a-a12ebee9321f";
-	public static final String temperatureTAT = "851c4fdd-21f0-408b-b278-03bcf5108a68";
-	public static final String totalWeight = "d4de8f4e-6ebc-4bbc-86c0-cf0743370159";
-	public static final String autoBrake = "8b7a2605-5fa5-4a31-a295-8c0283f65ca3";
-	public static final String flightNumber = "0d5af911-2bff-4bf8-b1f3-132c5671930e";
+	public static final String altitude = "5a6864cc-a9ce-462e-9619-95d61cb56e42";
+	public static final String atcType = "a341ed67-0ddf-418e-83ef-b7a3391af23c";
+	public static final String atcID = "d20fce04-8f8b-4df8-8935-bd61a4583c9b";
+	public static final String groundspeed = "41262294-9adb-4d83-803a-73b209da8aae";
+	public static final String stall = "33eae6d9-1e15-4710-80c5-b416add30d5e";
+	public static final String overspeed = "456b5281-2d23-45ac-b21b-f29da9ef273c";
+	public static final String aoA = "328bda5d-22ab-48f5-af56-8e5300f87a3b";
+	public static final String lat = "4e93a246-4d17-48ba-bcfc-915a972b81ef";
+	public static final String lon = "70e5e817-ca79-4823-885b-f1303e78a5d9";
+	public static final String pos = "ecdeac7a-6e93-4aba-a5df-5e332f6ad0aa";
+	public static final String flap = "18f186c2-84bc-41da-a8a4-fce2a42f0582";
+	public static final String spoiler = "d4139358-3ba2-4be2-a9fe-823e366e0392";
+	public static final String spoilerArmed = "1c665d74-8890-42c5-8958-5961eec7c25b";
+	public static final String windSpeed = "b35cb741-f1ff-4050-a80d-dc8b430a1621";
+	public static final String windDirect = "02563221-b704-400b-be8a-b6902d5aad6f";
+	public static final String pitch = "1e46fe7a-7aaa-4543-af9b-f5cf49e3052b";
+	public static final String bank = "bcf75090-8565-40dd-9c0b-47c822dbe47d";
+	public static final String onGround = "d47bb874-6f12-47e4-ba7e-3dc6a18f7ccd";
+	public static final String glideslopeError = "1c69d74b-d5b8-47f9-8865-1af0dd924128";
+	public static final String gpsETE = "55df4b7e-b3ce-4b98-8e71-1ff19661ad5e";
+	public static final String temperatureTAT = "e9d78dbd-64f2-4fff-8673-b48aa2669bca";
+	public static final String totalWeight = "baca36e3-aef5-44f5-8969-f7c012249062";
+	public static final String autoBrake = "8ce895d5-adcd-4aa7-ba45-8f3692bdf1dc";
+	public static final String flightNumber = "06134315-e456-4722-86d5-7b8bdbf32638";
 	
 	
 	
