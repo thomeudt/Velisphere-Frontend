@@ -149,6 +149,8 @@ public class LoginDialogBox extends Composite{
 	@UiHandler("ancSignup")
 	void redirectSignup (ClickEvent event)  {
 		// Window.alert("Logging In");
+		
+		
 		RootPanel.get("main").clear();
 		NewAccountWidget newAccount = new NewAccountWidget();
 		RootPanel.get("main").add(newAccount);

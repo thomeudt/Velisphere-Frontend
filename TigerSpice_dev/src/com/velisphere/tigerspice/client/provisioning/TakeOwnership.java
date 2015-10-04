@@ -54,7 +54,7 @@ public class TakeOwnership extends Composite {
 		this.endpointclassID = endpointclassID;
 		
 
-		System.out.println("ÜPID: " + uEPID);
+		System.out.println("uPID: " + uEPID);
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		aleError.setVisible(false);

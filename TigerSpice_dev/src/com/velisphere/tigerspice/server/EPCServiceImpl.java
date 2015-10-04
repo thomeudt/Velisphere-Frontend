@@ -35,7 +35,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import net.sourceforge.htmlunit.corejs.javascript.Context;
 import nl.captcha.Captcha;
 
 import org.mindrot.BCrypt;

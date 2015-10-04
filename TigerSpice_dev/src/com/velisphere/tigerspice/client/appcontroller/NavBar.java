@@ -71,6 +71,7 @@ public class NavBar extends Composite implements HasText {
 	@UiField NavLink btnSpheres;
 	@UiField NavLink btnRules;
 	@UiField NavLink btnAnalytics;
+	@UiField NavLink btnShop;
 	@UiField NavForm forSearch;
 	@UiField NavLink btnHome;
 	@UiField Brand brdHome;
@@ -108,7 +109,8 @@ public class NavBar extends Composite implements HasText {
    	 dpdAdmin.setVisible(false);
    	 btnLocator.setVisible(false);
    	 btnManageEPC.setVisible(false);
-   	 
+	 	btnShop.setVisible(false);
+	 	  
    	 
    	 
 	    //checkWithServerIfSessionIdIsStillLegal();
@@ -320,6 +322,7 @@ public class NavBar extends Composite implements HasText {
    	    btnAnalytics.setVisible(false);
    	 	forSearch.setVisible(false);
    	 	btnHome.setVisible(false);
+   	 	btnShop.setVisible(false);
    	 	
 		
    	 	SessionHelper.validateCurrentSession();		
@@ -357,11 +360,12 @@ public class NavBar extends Composite implements HasText {
 	    	 forSearch.setVisible(false);
 	    	 btnHome.setVisible(true);
 	    	 dpdAccount.setVisible(true);
-	       	 dpdAdmin.setVisible(false);
+	       	 dpdAdmin.setVisible(true);
 	       	 btnLocator.setVisible(true);
 	       	 btnManageEPC.setVisible(true);
 	       	 dpdAccount.setTitle(SessionHelper.getCurrentUserName());
-			 
+	  	 	btnShop.setVisible(false);
+	  	  		 
 	    
 	}
 

@@ -20,7 +20,7 @@ public class PreLoadPart {
 	     // public static String volt_ip = "16.1.1.149"; // for local db
 	    	// public static String volt_ip = "ec2-54-200-208-195.us-west-2.compute.amazonaws.com"; // for aws db
 	        
-	         preLoader.createConnection("127.0.0.1");
+	         preLoader.createConnection("192.168.1.101");
 	        //preLoader.createConnection("54.200.77.57");
 	        
 	         Connection conn;
@@ -39,7 +39,7 @@ public class PreLoadPart {
 		         {
 		         conn = DriverManager.getConnection
 		            (
-		            "jdbc:vertica://127.0.0.1:5433/VelisphereMart", "vertica", "1Suplies!"
+		            "jdbc:vertica://192.168.1.101:5433/VelisphereMart", "vertica", "1Suplies!"
 		            );
 		         
 		         conn.setAutoCommit(true);
@@ -68,7 +68,7 @@ public class PreLoadPart {
 	         * Load the database.
 	         */
 	        
-	        String userID = "4a7d3200-1355-4321-b906-f78abf71e584";
+	        String userID = "4ad64636-96e8-4836-ab57-1eb7d5fb6341";
 	        	        
 	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1011", "E1", userID);
 	        preLoader.callProcedure("ENDPOINT_USER_LINK.insert", "1022", "E2", userID);
