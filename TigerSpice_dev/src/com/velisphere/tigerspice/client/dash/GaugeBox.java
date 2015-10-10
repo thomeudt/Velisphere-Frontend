@@ -1,5 +1,6 @@
 package com.velisphere.tigerspice.client.dash;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -9,6 +10,7 @@ import com.github.gwtbootstrap.client.ui.AlertBlock;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.ListBox;
+import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.AlertType;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.constants.IconSize;
@@ -19,6 +21,7 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
@@ -58,6 +61,15 @@ public class GaugeBox extends Composite {
 	String endpointID;
 	String propertyID;
 	String readout;
+	int[] greenRange;
+	int[] yellowRange;
+	int[] redRange;
+	double[] minMax;
+	RangePanel greenPanel;
+	RangePanel yellowPanel;
+	RangePanel redPanel;
+	RangePanel minMaxPanel;
+
 	
 	static int EMPTY_GAUGE = 0;
 	static int NUMERIC_GAUGE = 1;
@@ -69,6 +81,10 @@ public class GaugeBox extends Composite {
 	public GaugeBox() {
 		panel = new VerticalPanel();
 		gaugeType = EMPTY_GAUGE;
+		greenRange = new int[2];
+		yellowRange = new int[2];
+		redRange = new int[2];
+		minMax = new double[2];
 		initWidget(panel);
 		setConfigOkButton();
 		configure();
@@ -77,6 +93,10 @@ public class GaugeBox extends Composite {
 	public GaugeBox(String endpointID, String propertyID) {
 		panel = new VerticalPanel();
 		gaugeType = EMPTY_GAUGE;
+		greenRange = new int[2];
+		yellowRange = new int[2];
+		redRange = new int[2];
+		minMax = new double[2];
 		initWidget(panel);
 		setConfigOkButton();
 		getData();
@@ -173,11 +193,14 @@ public class GaugeBox extends Composite {
 
 			option.setHeight(180);
 			option.setWidth(180);
-			option.setGreenRange(71, 80);
+			option.setGreenRange(greenRange[0], greenRange[1]);
 			option.setMinorTicks(10);
-			option.setRedRange(81, 100);
-			option.setYellowRange(61, 70);
-
+			option.setRedRange(redRange[0], redRange[1]);
+			option.setYellowRange(yellowRange[0], yellowRange[1]);
+			option.set("min", minMax[0]);
+			option.set("max", minMax[1]);
+			
+			
 			panel.add(new Gauge(data, option));
 			panel.add(controls());
 
@@ -336,6 +359,7 @@ public class GaugeBox extends Composite {
 						
 						propertyID = lbxProperties.getSelectedValue();
 								
+						
 					
 					}
 					
@@ -375,7 +399,8 @@ public class GaugeBox extends Composite {
 				
 				if (result.propertyClassDatatype == "Double")
 				{
-					gaugeType = NUMERIC_GAUGE;	
+					gaugeType = NUMERIC_GAUGE;
+					setNumericGaugeProps();
 				} else
 					if (result.propertyClassDatatype == "String")
 					{
@@ -401,6 +426,22 @@ public class GaugeBox extends Composite {
 		
 
 	}
+	
+	private void setNumericGaugeProps()
+	{
+		minMaxPanel = new RangePanel("Minimum/Maximum values");
+		greenPanel = new RangePanel("Green range");
+		yellowPanel = new RangePanel("Yellow range");
+		redPanel = new RangePanel("Red range");
+		
+		panel.add(minMaxPanel);
+		panel.add(greenPanel);
+		panel.add(yellowPanel);
+		panel.add(redPanel);
+			
+	}
+
+	
 	
 	private void setConfigOkButton()
 	{
@@ -441,7 +482,29 @@ public class GaugeBox extends Composite {
 						if(result.getPropertyValuePairs().size() > 0)
 						{
 							Map.Entry<String, String> entry = result.getPropertyValuePairs().entrySet().iterator().next();
-							readout = entry.getValue();	
+							
+							// if gauge type is numeric, round value 2 two decimals
+							
+							if (gaugeType == NUMERIC_GAUGE)
+							{
+								Float numericalValue=Float.parseFloat(entry.getValue());
+								readout = NumberFormat.getFormat("0.00").format(numericalValue);
+								minMax[0] = Double.parseDouble(minMaxPanel.startBox.getValue());
+								minMax[1] = Double.parseDouble(minMaxPanel.endBox.getValue());
+								greenRange[0] = Integer.parseInt(greenPanel.startBox.getValue());
+								greenRange[1] = Integer.parseInt(greenPanel.endBox.getValue());
+								yellowRange[0] = Integer.parseInt(yellowPanel.startBox.getValue());
+								yellowRange[1] = Integer.parseInt(yellowPanel.endBox.getValue());
+								redRange[0] = Integer.parseInt(redPanel.startBox.getValue());
+								redRange[1] = Integer.parseInt(redPanel.endBox.getValue());
+								
+							}
+							else
+							{
+
+								readout = entry.getValue();	
+							}
+								
 						}
 						else
 						{
@@ -457,6 +520,31 @@ public class GaugeBox extends Composite {
 		
 	}
 
+
+
+	private class RangePanel extends VerticalPanel
+	{
+
+		TextBox startBox = new TextBox();
+		TextBox endBox = new TextBox();
+		
+		public RangePanel(String text)
+		{
+			super();
+			
+			this.add(new HTML(text));
+			HorizontalPanel horizontalPanel = new HorizontalPanel();
+			startBox.setWidth("50px");
+			endBox.setWidth("50px");
+			startBox.setValue("0");
+			endBox.setValue("0");
+			horizontalPanel.add(startBox);
+			horizontalPanel.add(new HTML("&nbsp to &nbsp"));
+			horizontalPanel.add(endBox);
+			this.add(horizontalPanel);			
+		}
+
+	}
 
 
 }
