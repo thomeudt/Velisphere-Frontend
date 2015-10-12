@@ -256,8 +256,13 @@ public class GaugeBox extends Composite {
 		panel.add(new HTML("<br><strong>Configure Gauge</strong>"));
 		panel.add(lbxEndpoints);
 		lbxEndpoints.setWidth("100%");
-		fillEndpointDropDown(lbxEndpoints);
-	
+		if(lbxEndpoints.getItemCount()==0)
+		{
+			fillEndpointDropDown(lbxEndpoints);		
+		}
+			
+			
+		
 	}
 	
 	private void fillEndpointDropDown(final ListBox lbxEndpoints)
@@ -429,16 +434,18 @@ public class GaugeBox extends Composite {
 	
 	private void setNumericGaugeProps()
 	{
-		minMaxPanel = new RangePanel("Minimum/Maximum values");
-		greenPanel = new RangePanel("Green range");
-		yellowPanel = new RangePanel("Yellow range");
-		redPanel = new RangePanel("Red range");
-		
-		panel.add(minMaxPanel);
-		panel.add(greenPanel);
-		panel.add(yellowPanel);
-		panel.add(redPanel);
-			
+		if(minMaxPanel==null)
+		{
+			minMaxPanel = new RangePanel("Minimum/Maximum values");
+			greenPanel = new RangePanel("Green range");
+			yellowPanel = new RangePanel("Yellow range");
+			redPanel = new RangePanel("Red range");
+		}	
+			panel.add(minMaxPanel);
+			panel.add(greenPanel);
+			panel.add(yellowPanel);
+			panel.add(redPanel);
+					
 	}
 
 	
