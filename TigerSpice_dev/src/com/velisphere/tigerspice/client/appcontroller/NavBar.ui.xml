@@ -39,9 +39,9 @@
     
          <b:Nav>
              <b:NavLink ui:field="btnHome" icon="REORDER">Status</b:NavLink>
-             <b:NavLink ui:field="btnDash" icon="DASHBOARD">Dash</b:NavLink>
+             <b:NavLink ui:field="btnDash" icon="DASHBOARD">Monitor</b:NavLink>
              <b:NavLink ui:field="btnSpheres" icon="WRENCH">Manage</b:NavLink>
-             <b:NavLink ui:field="btnRules" icon="SHARE_ALT">Interact</b:NavLink>
+             <b:NavLink ui:field="btnRules" icon="SHARE_ALT">Connect</b:NavLink>
              <b:NavLink ui:field="btnLocator" icon="LOCATION_ARROW">Locate</b:NavLink>
              <b:NavLink ui:field="btnAnalytics" icon="BAR_CHART">Analyze</b:NavLink>
              

@@ -27,6 +27,7 @@ import com.github.gwtbootstrap.client.ui.Navbar;
 import com.github.gwtbootstrap.client.ui.ResponsiveNavbar;
 import com.github.gwtbootstrap.client.ui.constants.NavbarPosition;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -92,8 +93,9 @@ public class NavBar extends Composite implements HasText {
 		initWidget(uiBinder.createAndBindUi(this));
 		navbar.setPosition(NavbarPosition.TOP);
 		//navbar.setWidth(RootPanel.get("main").getElement().getStyle().getWidth());
-		brdHome.setHref("#home");
+		//brdHome.setHref("#");
 
+		brdHome.getElement().getStyle().setCursor(Cursor.POINTER); 
 		btnLister.setVisible(false);
 	
    	 btnLogout.setVisible(false);
@@ -143,11 +145,19 @@ public class NavBar extends Composite implements HasText {
 	}
 	
 	@UiHandler("btnHome")
-	void openHome (ClickEvent event) {
+	void openStatus (ClickEvent event) {
 		
 		AppController.openStatusBoard();
 		
 	}
+
+	@UiHandler("brdHome")
+	void openHome (ClickEvent event) {
+		
+		AppController.openHome();
+		
+	}
+
 	
 	@UiHandler("btnDash")
 	void openDash (ClickEvent event) {
@@ -363,7 +373,7 @@ public class NavBar extends Composite implements HasText {
 	       	 dpdAdmin.setVisible(true);
 	       	 btnLocator.setVisible(true);
 	       	 btnManageEPC.setVisible(true);
-	       	 dpdAccount.setTitle(SessionHelper.getCurrentUserName());
+	       	 dpdAccount.setText(SessionHelper.getCurrentUserName());
 	  	 	btnShop.setVisible(false);
 	  	  		 
 	    

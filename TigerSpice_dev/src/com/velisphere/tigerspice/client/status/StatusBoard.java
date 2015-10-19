@@ -106,7 +106,6 @@ interface MyBinder extends UiBinder<Widget, StatusBoard>{}
 		
 		
 		// set page header welcome back message
-    	pageHeader.setText("Status Information for " + SessionHelper.getCurrentUserName());
     	pgbGreen.setPercent(100);
     	
     	pgbRed.setPercent(0);

@@ -1,20 +1,15 @@
 package com.velisphere.tigerspice.client.dash;
 
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
-
 import com.github.gwtbootstrap.client.ui.AlertBlock;
 import com.github.gwtbootstrap.client.ui.Button;
-import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.AlertType;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
-import com.github.gwtbootstrap.client.ui.constants.IconSize;
-import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.resources.ButtonSize;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -22,6 +17,7 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
@@ -52,7 +48,8 @@ public class GaugeBox extends Composite {
 	HTML description = new HTML("<br><b><i>New Gauge</b></i>");
 	VerticalPanel panel;
 	String gaugeLabel = "---";
-	
+	Gauge numericGauge;
+	AlertBlock alphaGauge;
 	ListBox lbxProperties = new ListBox();
 	ListBox lbxEndpoints = new ListBox();
 	Button btnOK = new Button("OK");
@@ -69,8 +66,7 @@ public class GaugeBox extends Composite {
 	RangePanel yellowPanel;
 	RangePanel redPanel;
 	RangePanel minMaxPanel;
-
-	
+	Timer refreshTimer;	
 	static int EMPTY_GAUGE = 0;
 	static int NUMERIC_GAUGE = 1;
 	static int ALPHANUMERIC_GAUGE = 2;
@@ -88,20 +84,27 @@ public class GaugeBox extends Composite {
 		initWidget(panel);
 		setConfigOkButton();
 		configure();
+		
 	}
 
-	public GaugeBox(String endpointID, String propertyID) {
+	public GaugeBox(String endpointID, String propertyID, int gaugeType, int[] greenRange, int[] yellowRange, int[] redRange, double[] minMax) {
 		panel = new VerticalPanel();
-		gaugeType = EMPTY_GAUGE;
-		greenRange = new int[2];
-		yellowRange = new int[2];
-		redRange = new int[2];
-		minMax = new double[2];
+		this.endpointID = endpointID;
+		this.propertyID = propertyID;
+		this.gaugeType = gaugeType;
+		this.greenRange = greenRange;
+		this.yellowRange = yellowRange;
+		this.redRange = redRange;
+		this.minMax = minMax;
 		initWidget(panel);
 		setConfigOkButton();
+		setTimer();
 		getData();
 	}
+	
 
+	// Setters and Getters to allow storing and loading of data
+	
 	public String getEndpointID() {
 		return endpointID;
 	}
@@ -110,6 +113,55 @@ public class GaugeBox extends Composite {
 		return propertyID;
 	}
 
+	public int[] getGreenRange() {
+		return greenRange;
+	}
+
+	public void setGreenRange(int[] greenRange) {
+		this.greenRange = greenRange;
+	}
+
+	public int[] getYellowRange() {
+		return yellowRange;
+	}
+
+	public void setYellowRange(int[] yellowRange) {
+		this.yellowRange = yellowRange;
+	}
+
+	public int[] getRedRange() {
+		return redRange;
+	}
+
+	public void setRedRange(int[] redRange) {
+		this.redRange = redRange;
+	}
+
+	public double[] getMinMax() {
+		return minMax;
+	}
+
+	public void setMinMax(double[] minMax) {
+		this.minMax = minMax;
+	}
+
+	
+	// Timer to refresh gauge data in pre-determined intervals
+	
+	private void setTimer()
+	{
+		refreshTimer = new Timer() {
+	        @Override
+	        public void run() {
+	          updateData();
+	        }
+	      };
+	      refreshTimer.scheduleRepeating(5000);
+
+	}
+	
+	// all other methods
+	
 	private void addGauge() {
 		panel.add(description);
 		if (gaugeType == EMPTY_GAUGE)
@@ -140,15 +192,15 @@ public class GaugeBox extends Composite {
 		SimplePanel simplePanel = new SimplePanel();
 		simplePanel.setHeight("180px");
 		simplePanel.setWidth("180px");
-		AlertBlock alertBlock = new AlertBlock();
-		alertBlock.setHeading("Readout:");
-		alertBlock.setType(AlertType.DEFAULT);
-		alertBlock.setClose(false);
-		alertBlock.setText(readout);
-		alertBlock.setHeight("140px");
-		alertBlock.setWidth("140px");
+		alphaGauge = new AlertBlock();
+		alphaGauge.setHeading("Readout:");
+		alphaGauge.setType(AlertType.DEFAULT);
+		alphaGauge.setClose(false);
+		alphaGauge.setText(readout);
+		alphaGauge.setHeight("140px");
+		alphaGauge.setWidth("140px");
 		
-		simplePanel.add(alertBlock);
+		simplePanel.add(alphaGauge);
 		panel.add(simplePanel);
 		panel.add(controls());	
 	}
@@ -158,9 +210,19 @@ public class GaugeBox extends Composite {
 		SimplePanel simplePanel = new SimplePanel();
 		simplePanel.setHeight("180px");
 		simplePanel.setWidth("180px");
-		Icon emptyIcon = new Icon(IconType.CHECK_EMPTY);
-		emptyIcon.setIconSize(IconSize.FIVE_TIMES);
-		simplePanel.add(emptyIcon);
+		alphaGauge = new AlertBlock();
+		alphaGauge.setHeading("Readout:");
+		alphaGauge.setType(AlertType.INFO);
+		alphaGauge.setClose(false);
+		if (readout == "true")
+			alphaGauge.setText("1 (On)");
+		else
+			alphaGauge.setText("0 (Off)");
+		
+		alphaGauge.setHeight("140px");
+		alphaGauge.setWidth("140px");
+		
+		simplePanel.add(alphaGauge);
 		panel.add(simplePanel);
 		panel.add(controls());
 	}
@@ -199,9 +261,10 @@ public class GaugeBox extends Composite {
 			option.setYellowRange(yellowRange[0], yellowRange[1]);
 			option.set("min", minMax[0]);
 			option.set("max", minMax[1]);
+			option.set("animation.duration", Double.valueOf(800));
 			
-			
-			panel.add(new Gauge(data, option));
+			numericGauge = new Gauge(data, option);
+			panel.add(numericGauge);
 			panel.add(controls());
 
 		}
@@ -236,6 +299,9 @@ public class GaugeBox extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				gauge.getParent().removeFromParent();
+				if (refreshTimer != null)
+					refreshTimer.cancel();
+
 			}
 
 		});
@@ -460,6 +526,7 @@ public class GaugeBox extends Composite {
 			public void onClick(ClickEvent event) {
 				
 				panel.clear();
+				setTimer();
 				getData();
 			}
 			
@@ -528,10 +595,107 @@ public class GaugeBox extends Composite {
 	}
 
 
+	private void updateData()
+	{
+		AnalyticsServiceAsync analyticsService = GWT
+				.create(AnalyticsService.class);
+		
+		analyticsService.getCurrentSensorState(endpointID, propertyID, new AsyncCallback<AnalyticsRawData>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						panel.add(new HTML("Error obtaining data."));
+					}
+
+					@Override
+					public void onSuccess(AnalyticsRawData result) {
+						// TODO Auto-generated method stub
+						
+						RootPanel.get().add(new HTML("Data Size: " + result.getPropertyValuePairs().size()));
+						
+						if(result.getPropertyValuePairs().size() > 0)
+						{
+							Map.Entry<String, String> entry = result.getPropertyValuePairs().entrySet().iterator().next();
+							
+							// if gauge type is numeric, round value 2 two decimals
+							
+							if (gaugeType == NUMERIC_GAUGE)
+							{
+						
+								
+								Float numericalValue=Float.parseFloat(entry.getValue());
+								readout = NumberFormat.getFormat("0.00").format(numericalValue);
+								Double gaugeValue = Double.parseDouble(readout);
+								
+								DataTable data = DataTable.create();
+
+								data.addColumn(ColumnType.STRING, "Label");
+								data.addColumn(ColumnType.NUMBER, "Value");
+								data.addRows(1);
+								data.setValue(0, 0, gaugeLabel);
+								data.setValue(0, 1, gaugeValue);
+								Gauge.Options option = Gauge.Options.create();
+
+								option.setHeight(180);
+								option.setWidth(180);
+								option.setGreenRange(greenRange[0], greenRange[1]);
+								option.setMinorTicks(10);
+								option.setRedRange(redRange[0], redRange[1]);
+								option.setYellowRange(yellowRange[0], yellowRange[1]);
+								option.set("min", minMax[0]);
+								option.set("max", minMax[1]);
+								option.set("animation.duration", Double.valueOf(800));
+								
+								numericGauge.draw(data, option);
+							}
+							else if (gaugeType == BOOLEAN_GAUGE)
+								
+							{
+								readout = entry.getValue();
+								if (readout == "true")
+									alphaGauge.setText("1 (On)");
+								else
+									alphaGauge.setText("0 (Off)");
+							}
+							else if (gaugeType == ALPHANUMERIC_GAUGE)
+							{
+								readout = entry.getValue();
+								alphaGauge.setText(readout);
+							}
+								
+						}
+						else
+						{
+							// re-set gauge type to empty
+							gaugeType = EMPTY_GAUGE;
+						}
+	
+						
+					}
+
+				});
+
+		
+	}
+	
+	
+	 @Override 
+     public void onUnload(){
+         if(this.isAttached() && refreshTimer != null){
+             refreshTimer.cancel();
+         }
+         super.onUnload();
+     }
+
+	
+	
 
 	private class RangePanel extends VerticalPanel
 	{
 
+		
 		TextBox startBox = new TextBox();
 		TextBox endBox = new TextBox();
 		
