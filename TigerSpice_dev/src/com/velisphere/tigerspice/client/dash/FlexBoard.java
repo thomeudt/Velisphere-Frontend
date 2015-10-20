@@ -129,8 +129,13 @@ public class FlexBoard extends Composite{
 						GaugeData gaugeData = new GaugeData();
 						gaugeData.setEndpointID(gaugeBox.getEndpointID());
 						gaugeData.setPropertyID(gaugeBox.getPropertyID());
+						gaugeData.setGaugeType(gaugeBox.getGaugeType());
+						gaugeData.setMinMax(gaugeBox.getMinMax());
+						gaugeData.setGreenRange(gaugeBox.getGreenRange());
+						gaugeData.setYellowRange(gaugeBox.getYellowRange());
+						gaugeData.setRedRange(gaugeBox.getRedRange());
 						gaugeDataList.add(gaugeData);
-						
+						RootPanel.get().add(new HTML("Green Range Items: " + gaugeBox.getGreenRange()[1] + " / " + gaugeBox.getGreenRange()[2]));
 					}
 					
 					GaugeServiceAsync gaugeService = GWT

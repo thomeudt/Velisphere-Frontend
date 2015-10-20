@@ -24,6 +24,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.velisphere.tigerspice.shared.ActionObject;
 import com.velisphere.tigerspice.shared.CheckDataUNUSED;
+import com.velisphere.tigerspice.shared.DashData;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.GaugeData;
 
@@ -31,5 +32,6 @@ import com.velisphere.tigerspice.shared.GaugeData;
 @RemoteServiceRelativePath("voltGauges")
 public interface GaugeService extends RemoteService {
 		String saveDashboard(String gaugeName, LinkedList<GaugeData> gaugeDatas);
+		LinkedList<DashData> getAllDashboardsForUser(String userID);
 	
 }

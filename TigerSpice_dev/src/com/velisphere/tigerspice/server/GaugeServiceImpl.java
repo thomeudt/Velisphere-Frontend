@@ -35,70 +35,17 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.dash.GaugeService;
 import com.velisphere.tigerspice.client.helper.VeliConstants;
 import com.velisphere.tigerspice.shared.ActionData;
+import com.velisphere.tigerspice.shared.DashData;
+import com.velisphere.tigerspice.shared.FavoriteData;
 import com.velisphere.tigerspice.shared.GaugeData;
 
 @SuppressWarnings("serial")
 public class GaugeServiceImpl extends RemoteServiceServlet implements
 		GaugeService {
 
-	public LinkedList<ActionData> getActionsForCheckpathID(String checkpathID){
-		
-		VoltConnector voltCon = new VoltConnector();
-
-		try {
-			voltCon.openDatabase();
-		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		LinkedList<ActionData> actionsForCheckpathID = new LinkedList<ActionData>();
-		try {
-
-			final ClientResponse findAction = voltCon.montanaClient
-					.callProcedure("UI_SelectActionsForCheckpathID", checkpathID);
-
-			final VoltTable findActionResult[] = findAction.getResults();
-
-			VoltTable result = findActionResult[0];
-			// check if any rows have been returned
-
-			while (result.advanceRow()) {
-				{
-					// extract the value in column checkid
-
-					ActionData action = new ActionData();
-					action.setActionID(result.getString("ACTIONID"));
-					action.setTargetEndpointID(result.getString("TARGETENDPOINTID"));
-					actionsForCheckpathID.add(action);
-				}
-			}
-
-			// System.out.println(endPointsforSphere);
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		try {
-			voltCon.closeDatabase();
-		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		
-		
-		return actionsForCheckpathID;
-		
-	}
-
+	
 	@Override
-	public String saveDashboard(String gaugeName,
+	public String saveDashboard(String dashName,
 			LinkedList<GaugeData> gaugeDatas) {
 	
 		ObjectMapper mapper = new ObjectMapper();
@@ -128,7 +75,7 @@ public class GaugeServiceImpl extends RemoteServiceServlet implements
 			try {
 
 				voltCon.montanaClient.callProcedure("DASHBOARD.insert", gaugeID,
-						gaugeName, jsonGauges);
+						dashName, jsonGauges);
 			} catch (NoConnectionsException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -166,4 +113,63 @@ public class GaugeServiceImpl extends RemoteServiceServlet implements
 		return gaugeID;
 	}
 	
+	
+	@Override
+	public LinkedList<DashData> getAllDashboardsForUser(String userID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		LinkedList<DashData> allDashes = new LinkedList<DashData>();
+		try {
+
+			
+			// need to fix missing user id check!!!!
+			
+			 VoltTable[] results = voltCon.montanaClient.callProcedure("@AdHoc",
+				       "SELECT * FROM DASHBOARD ORDER BY NAME ASC").getResults();
+			
+			VoltTable result = results[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					DashData dash = new DashData();
+					dash.setDashboardID(result.getString("DASHBOARDID"));
+					dash.setDashboardName(result.getString("NAME"));
+					dash.setJson(result.getString("JSON"));
+					//dash.setUserID(result.getString("USERID"));
+					
+					allDashes.add(dash);
+					
+				}
+			}
+
+			// System.out.println(allEndPoints);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return allDashes;
+	}
+
 }

@@ -145,6 +145,17 @@ public class GaugeBox extends Composite {
 		this.minMax = minMax;
 	}
 
+	public int getGaugeType() {
+		return gaugeType;
+	}
+
+	public void setGaugeType(int gaugeType) {
+		this.gaugeType = gaugeType;
+	}
+
+
+
+	
 	
 	// Timer to refresh gauge data in pre-determined intervals
 	

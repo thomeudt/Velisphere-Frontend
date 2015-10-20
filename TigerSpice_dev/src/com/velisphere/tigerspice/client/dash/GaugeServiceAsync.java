@@ -24,6 +24,7 @@ import java.util.Vector;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.velisphere.tigerspice.shared.ActionObject;
 import com.velisphere.tigerspice.shared.CheckDataUNUSED;
+import com.velisphere.tigerspice.shared.DashData;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.GaugeData;
@@ -32,4 +33,5 @@ import com.velisphere.tigerspice.shared.UserData;
 
 public interface GaugeServiceAsync {
 	void saveDashboard(String gaugeName, LinkedList<GaugeData> gaugeDatas, AsyncCallback<String> callback);
+	void getAllDashboardsForUser(String userID, AsyncCallback<LinkedList<DashData>> callback);
 }

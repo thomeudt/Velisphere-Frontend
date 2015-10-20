@@ -28,7 +28,9 @@ import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
 import com.github.gwtbootstrap.client.ui.Paragraph;
 import com.github.gwtbootstrap.client.ui.StackProgressBar;
+import com.github.gwtbootstrap.client.ui.TabLink;
 import com.github.gwtbootstrap.client.ui.TabPane;
+import com.github.gwtbootstrap.client.ui.TabPanel;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -38,6 +40,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -45,9 +48,12 @@ import com.velisphere.tigerspice.client.analytics.LogService;
 import com.velisphere.tigerspice.client.analytics.LogServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.NavBar;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
+import com.velisphere.tigerspice.client.endpoints.info.EndpointInformationWidget;
 import com.velisphere.tigerspice.client.helper.HelperService;
 import com.velisphere.tigerspice.client.helper.HelperServiceAsync;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
+import com.velisphere.tigerspice.shared.DashData;
+import com.velisphere.tigerspice.shared.GaugeData;
 import com.velisphere.tigerspice.shared.MontanaStatsData;
 
 
@@ -62,8 +68,11 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 	RootPanel rootPanelHeader;
 	VerticalPanel mainPanel;
 	NavBar navBar;
-	@UiField PageHeader pageHeader;
+	@UiField PageHeader pghPageHeader;
 	@UiField Breadcrumbs brdMain;
+	@UiField TabPanel tabPanel;
+	@UiField TabPane tbpEndpoint;
+
 	NavLink bread0;
 	NavLink bread1;
 	String userName;
@@ -75,8 +84,10 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 			
 		initWidget(uiBinder.createAndBindUi(this));
 		loadContent();			
+	
 	}
 	 
+	/*
 	public ConfigurableDashboard(HandlerRegistration reg) {
 		
 		initWidget(uiBinder.createAndBindUi(this));
@@ -85,11 +96,12 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 		loadContent();
 			
 	}
+	*/
 	
 	public void loadContent(){
 
 		// set page header welcome back message
-    	pageHeader.setText("Custom Dashboard");
+		pghPageHeader.setText("Dashboards");
     	
         	
     	/**
@@ -114,7 +126,56 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 			}
 
 		});
+		buildTabPanel();
+		
 	}
+	
+	
+	private void buildTabPanel()
+	{
+		
+		tbpEndpoint.clear();
+	    FlexBoard flexBoard = new FlexBoard();
+	    tbpEndpoint.add(flexBoard);
+		tabPanel.selectTab(0);
+	
+		
+		GaugeServiceAsync gaugeService = GWT
+				.create(GaugeService.class);
+
+		gaugeService.getAllDashboardsForUser(SessionHelper.getCurrentUserID(), new AsyncCallback<LinkedList<DashData>>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(LinkedList<DashData> result) {
+						// TODO Auto-generated method stu
+						
+						Iterator<DashData> it = result.iterator();
+						while (it.hasNext())
+						{
+							DashData dashData = it.next();
+							TabLink tabLink = new TabLink();
+							tabLink.setText(dashData.getDashboardName());
+							tabPanel.add(tabLink);
+							
+						}
+						
+					}
+			
+				}
+			);
+			
+      
+		
+	}
+	
+	
 }
 		
 	
