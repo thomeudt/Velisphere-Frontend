@@ -96,6 +96,31 @@ public class AppController {
 	}
 
 
+
+	static void openDashSelectedWithHistoryHandler(final String token, final String dashID)
+	{
+		History.newItem(token);
+		RootPanel.get("main").clear();
+		RootPanel.get("main").add(new ConfigurableDashboard(dashID));
+				
+		History.addValueChangeHandler(new ValueChangeHandler<String>() {
+
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+
+				String historyToken = event.getValue();
+				
+		        // Parse the history token
+
+	          if (historyToken.equals(token)) {
+	        	  RootPanel.get("main").clear();
+  	      		  RootPanel.get("main").add(new ConfigurableDashboard(dashID));
+		        }
+			}
+		    });
+	}
+
+	
 	static void openSphereWithHistoryHandler(final String token, final String sphereId)
 	{
 		History.newItem(token);
@@ -323,6 +348,21 @@ public class AppController {
 		}		
 	});
 	}
+	
+	public static void openDashBoardWithSelected(final String dashID)
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//userID = SessionHelper.getCurrentUserID();
+			openDashSelectedWithHistoryHandler("dashboard"+dashID, dashID);
+		}		
+	});
+	}
+	
+	
 	
 	public static void openHome()
 	{	

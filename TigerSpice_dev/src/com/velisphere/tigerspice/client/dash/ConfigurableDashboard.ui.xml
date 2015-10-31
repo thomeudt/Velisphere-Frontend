@@ -35,9 +35,7 @@
 
 				<b:TabPanel tabPosition="above" ui:field="tabPanel">
 
-					<b:TabLink text="New Dashboard" dataTarget="tbpEndpoint"
-						createTabPane="false" ui:field="tblGeneral" />
-
+				
 
 
 

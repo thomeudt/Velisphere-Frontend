@@ -20,41 +20,29 @@ package com.velisphere.tigerspice.client.dash;
 
 
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
-import com.github.gwtbootstrap.client.ui.Bar;
 import com.github.gwtbootstrap.client.ui.Breadcrumbs;
 import com.github.gwtbootstrap.client.ui.NavLink;
 import com.github.gwtbootstrap.client.ui.PageHeader;
-import com.github.gwtbootstrap.client.ui.Paragraph;
-import com.github.gwtbootstrap.client.ui.StackProgressBar;
 import com.github.gwtbootstrap.client.ui.TabLink;
 import com.github.gwtbootstrap.client.ui.TabPane;
 import com.github.gwtbootstrap.client.ui.TabPanel;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.velisphere.tigerspice.client.analytics.LogService;
-import com.velisphere.tigerspice.client.analytics.LogServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.NavBar;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
-import com.velisphere.tigerspice.client.endpoints.info.EndpointInformationWidget;
-import com.velisphere.tigerspice.client.helper.HelperService;
-import com.velisphere.tigerspice.client.helper.HelperServiceAsync;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 import com.velisphere.tigerspice.shared.DashData;
-import com.velisphere.tigerspice.shared.GaugeData;
-import com.velisphere.tigerspice.shared.MontanaStatsData;
 
 
 public class ConfigurableDashboard extends Composite  {
@@ -62,8 +50,6 @@ public class ConfigurableDashboard extends Composite  {
 interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 	
 	private static MyBinder uiBinder = GWT.create(MyBinder.class);
-
-	
 	RootPanel rootPanel;
 	RootPanel rootPanelHeader;
 	VerticalPanel mainPanel;
@@ -72,44 +58,34 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 	@UiField Breadcrumbs brdMain;
 	@UiField TabPanel tabPanel;
 	@UiField TabPane tbpEndpoint;
-
 	NavLink bread0;
 	NavLink bread1;
 	String userName;
-	
-	
+	LinkedHashMap<String, Integer> tabMap;
+	String selectedDashID;
  	
 	public ConfigurableDashboard() {
-	    
-			
 		initWidget(uiBinder.createAndBindUi(this));
-		loadContent();			
+		tabMap = new LinkedHashMap<String, Integer>();
+		loadContent();				
+	}
 	
-	}
-	 
-	/*
-	public ConfigurableDashboard(HandlerRegistration reg) {
-		
+	
+	public ConfigurableDashboard(String dashID) {
 		initWidget(uiBinder.createAndBindUi(this));
-		reg.removeHandler();
-		
-		loadContent();
-			
+		tabMap = new LinkedHashMap<String, Integer>();
+		selectedDashID = dashID;
+		loadContent();				
 	}
-	*/
+	
+	
 	
 	public void loadContent(){
 
 		// set page header welcome back message
 		pghPageHeader.setText("Dashboards");
     	
-        	
-    	/**
-		NavBar navBar = new NavBar();
-		navBar = (NavBar) RootPanel.get("stockList").getWidget(0);
-		navBar.activateForCurrentUser();
-		**/
-    	
+     	
 		bread0 = new NavLink();
 		bread0.setText("Home");
 		brdMain.add(bread0);
@@ -132,14 +108,8 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 	
 	
 	private void buildTabPanel()
+
 	{
-		
-		tbpEndpoint.clear();
-	    FlexBoard flexBoard = new FlexBoard();
-	    tbpEndpoint.add(flexBoard);
-		tabPanel.selectTab(0);
-	
-		
 		GaugeServiceAsync gaugeService = GWT
 				.create(GaugeService.class);
 
@@ -156,22 +126,103 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 					public void onSuccess(LinkedList<DashData> result) {
 						// TODO Auto-generated method stu
 						
+						Integer tabNumber = 0;
+						
 						Iterator<DashData> it = result.iterator();
 						while (it.hasNext())
 						{
+							// add entry to tabMap hashtable to enable lookup of tab postion
+				
 							DashData dashData = it.next();
-							TabLink tabLink = new TabLink();
+							tabMap.put(dashData.getDashboardID(), tabNumber);
+							tabNumber = tabNumber + 1;
+							DashTabLink tabLink = new DashTabLink();
 							tabLink.setText(dashData.getDashboardName());
+							tabLink.setDashboardID(dashData.getDashboardID());
+							tabLink.setDashboardJSON(dashData.getJson());
+							tabLink.setCreateTabPane(false);
+							tabLink.setDataTarget("tbpEndpoint");
 							tabPanel.add(tabLink);
+							tabLink.addClickHandler(new ClickHandler(){
+
+								@Override
+								public void onClick(ClickEvent event) {
+									  
+								  tbpEndpoint.clear();
+						        	  FlexBoard flexBoard = new FlexBoard();
+						        	  tbpEndpoint.add(flexBoard);
+						        								
+								}
+							});
+						}
+
+						addNewTabLink();
+						
+						if (selectedDashID != null)
+						{
+							Integer selectedTabNumber = tabMap.get(selectedDashID);
+							tabPanel.selectTab(selectedTabNumber);
 							
 						}
+						else
+						{
+							tabPanel.selectTab(0);
+							
+						};
+						
+					
 						
 					}
 			
 				}
 			);
-			
-      
+
+	}
+	
+
+	private void addNewTabLink()
+	{
+		DashTabLink tabLink = new DashTabLink();
+		tabLink.setText("add new...");
+		tabLink.setDataTarget("tbpEndpoint");
+		tabLink.setCreateTabPane(false);
+		tabPanel.add(tabLink);
+		tabLink.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				  
+			  tbpEndpoint.clear();
+	        	  FlexBoard flexBoard = new FlexBoard();
+	        	  tbpEndpoint.add(flexBoard);
+	        								
+			}
+		});
+
+	}
+	
+	class DashTabLink extends TabLink
+	{
+		String dashboardID;
+		String dashboardJSON;
+	
+		public String getDashboardJSON() {
+			return dashboardJSON;
+		}
+
+		public void setDashboardJSON(String dashboardJSON) {
+			this.dashboardJSON = dashboardJSON;
+		}
+
+		public String getDashboardID()
+		{
+			return this.dashboardID;
+		}
+		
+		public void setDashboardID(String dashboardID)
+		{
+			this.dashboardID = dashboardID;
+		}
 		
 	}
 	

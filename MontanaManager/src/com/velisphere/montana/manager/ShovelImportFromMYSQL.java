@@ -24,7 +24,7 @@ public class ShovelImportFromMYSQL {
 
 		org.voltdb.client.Client voltShovel;
 		voltShovel = ClientFactory.createClient();
-		voltShovel.createConnection("127.0.0.1");
+		voltShovel.createConnection("192.168.1.101");
 
 		// MySQL
 

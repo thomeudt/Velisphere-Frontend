@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.visualization.client.VisualizationUtils;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.shared.GaugeData;
@@ -35,6 +36,8 @@ public class FlexBoard extends Composite{
 	static HTML SPACER = new HTML("&nbsp;<br>");
 	Row row;
 	
+	// Default constructor for a new FlexBoard
+	
 	public FlexBoard()
 	{
 		
@@ -46,6 +49,21 @@ public class FlexBoard extends Composite{
 		displayInitialField();
 		
 	}
+	
+	// Constructor to load an existing FlexBoard
+	
+	public FlexBoard(String dashID)
+	{
+		
+		gaugeList = new LinkedList<GaugeBox>();
+		verticalPanel = new VerticalPanel();
+		initWidget(verticalPanel);
+		//rowMap = new HashMap<Integer, Row>();
+		displayHeader();
+		displayInitialField();
+		
+	}
+	
 	
 	private void displayHeader()
 	{
@@ -111,7 +129,7 @@ public class FlexBoard extends Composite{
 			panel.add(txtName);
 			txtName.setText("");
 			Button btnSave = new Button("Save");
-			panel.add(btnSave);
+			panel.add(btnSave); 
 			saveDialog.add(panel);
 			saveDialog.setAutoHideEnabled(true);
 			
@@ -152,7 +170,7 @@ public class FlexBoard extends Composite{
 						@Override
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
-							
+							AppController.openDashBoardWithSelected(result);
 						}
 						
 					});
