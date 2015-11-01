@@ -136,7 +136,7 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 							DashData dashData = it.next();
 							tabMap.put(dashData.getDashboardID(), tabNumber);
 							tabNumber = tabNumber + 1;
-							DashTabLink tabLink = new DashTabLink();
+							final DashTabLink tabLink = new DashTabLink();
 							tabLink.setText(dashData.getDashboardName());
 							tabLink.setDashboardID(dashData.getDashboardID());
 							tabLink.setDashboardJSON(dashData.getJson());
@@ -149,7 +149,7 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 								public void onClick(ClickEvent event) {
 									  
 								  tbpEndpoint.clear();
-						        	  FlexBoard flexBoard = new FlexBoard();
+						        	  FlexBoard flexBoard = new FlexBoard(tabLink.getDashboardID());
 						        	  tbpEndpoint.add(flexBoard);
 						        								
 								}

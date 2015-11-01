@@ -29,6 +29,7 @@ import org.voltdb.client.ProcCallException;
 import org.voltdb.types.TimestampType;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -38,6 +39,7 @@ import com.velisphere.tigerspice.shared.ActionData;
 import com.velisphere.tigerspice.shared.DashData;
 import com.velisphere.tigerspice.shared.FavoriteData;
 import com.velisphere.tigerspice.shared.GaugeData;
+import com.velisphere.tigerspice.shared.SerializableLogicContainer;
 
 @SuppressWarnings("serial")
 public class GaugeServiceImpl extends RemoteServiceServlet implements
@@ -172,4 +174,77 @@ public class GaugeServiceImpl extends RemoteServiceServlet implements
 		return allDashes;
 	}
 
+	
+	@Override
+	public LinkedList<GaugeData> getGaugesForDashID(String dashID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+
+		LinkedList<GaugeData> gaugeDatas = new LinkedList<GaugeData>();
+		
+		DashData dash = new DashData();
+		try {
+
+			
+			// need to fix missing user id check!!!!
+			
+			 VoltTable[] results = voltCon.montanaClient.callProcedure("@AdHoc",
+				       "SELECT * FROM DASHBOARD WHERE DASHBOARDID = '" + dashID + "' ORDER BY NAME ASC").getResults();
+			
+			VoltTable result = results[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+					dash.setDashboardID(result.getString("DASHBOARDID"));
+					dash.setDashboardName(result.getString("NAME"));
+					dash.setJson(result.getString("JSON"));
+					//dash.setUserID(result.getString("USERID"));
+					
+				
+			}
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+			        
+				gaugeDatas = mapper.readValue(dash.getJson(), new TypeReference<LinkedList<GaugeData>>() { });
+				
+			     } catch (JsonGenerationException e) {
+			        System.out.println(e);
+			        } catch (JsonMappingException e) {
+			       System.out.println(e);
+			    } catch (IOException e) {
+			    System.out.println(e);
+			    } 
+
+
+			// System.out.println(allEndPoints);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return gaugeDatas;
+	}
+
+	
+	
 }

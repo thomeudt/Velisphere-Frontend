@@ -31,7 +31,8 @@ import com.velisphere.tigerspice.shared.GaugeData;
 
 @RemoteServiceRelativePath("voltGauges")
 public interface GaugeService extends RemoteService {
-		String saveDashboard(String gaugeName, LinkedList<GaugeData> gaugeDatas);
+		String saveDashboard(String dashName, LinkedList<GaugeData> gaugeDatas);
 		LinkedList<DashData> getAllDashboardsForUser(String userID);
-	
+		LinkedList<GaugeData> getGaugesForDashID(String dashID);
+		
 }

@@ -99,7 +99,9 @@ public class GaugeBox extends Composite {
 		initWidget(panel);
 		setConfigOkButton();
 		setTimer();
-		getData();
+		
+		getData(false);
+		
 	}
 	
 
@@ -538,13 +540,13 @@ public class GaugeBox extends Composite {
 				
 				panel.clear();
 				setTimer();
-				getData();
+				getData(true);
 			}
 			
 		});
 	}
 
-	private void getData()
+	private void getData(final boolean isFromConfigBox)
 	{
 		AnalyticsServiceAsync analyticsService = GWT
 				.create(AnalyticsService.class);
@@ -570,7 +572,7 @@ public class GaugeBox extends Composite {
 							
 							// if gauge type is numeric, round value 2 two decimals
 							
-							if (gaugeType == NUMERIC_GAUGE)
+							if (gaugeType == NUMERIC_GAUGE && isFromConfigBox == true)
 							{
 								Float numericalValue=Float.parseFloat(entry.getValue());
 								readout = NumberFormat.getFormat("0.00").format(numericalValue);

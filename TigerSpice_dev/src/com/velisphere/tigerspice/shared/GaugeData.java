@@ -13,6 +13,7 @@ public class GaugeData implements IsSerializable {
 	int[] redRange; 
 	double[] minMax;
 	
+	
 	public String getEndpointID() {
 		return endpointID;
 	}
