@@ -38,7 +38,20 @@
 		
 		<b:Column size="9" offset="0">
 		
-		    <b:Row>
+		  
+		<b:Row>
+		<b:Column size="8" offset="0">
+				    
+				<b:Paragraph>We recommend that you get started by following our "Getting Started Guide"
+				    - don't forget to take a look at our "Best Practice" tutorial, too.</b:Paragraph> 
+				<b:Paragraph>This evaluation version of VeliSphere is free of charge, and comes with absolutely no warranty,
+				support or performance guarantee. Your evaluation is explicitly at your own risk.</b:Paragraph> 
+				
+				    <b:Paragraph>To add new devices to your account, please use the "Device Provisioning Wizard".</b:Paragraph>
+			</b:Column>	
+		</b:Row>
+		
+		  <b:Row>
 			<b:Column size="8" offset="0">
 			    	<b:Heading size="3" >Debug/Version Information</b:Heading>
 				    <b:Paragraph>VeliSphere TigerSpice 0.8.1a</b:Paragraph>
@@ -60,30 +73,11 @@
 				   	    
 				    
 				    
-				    <b:Heading size="3" >Welcome Message</b:Heading>
-				<b:Paragraph>This is VeliSphere. We recommend that you get started by following our "Getting Started Guide"
-				    - don't forget to take a look at our "Best Practice" tutorial, too.</b:Paragraph> 
-				    <b:Paragraph>To add new devices to your account, please follow the "Device Provisioning Wizard".</b:Paragraph>
 				    
 				</b:Column>
 			
 		</b:Row>
 		    
-		<b:Row>
-		<b:Column size="8" offset="0">
-				<b:Heading size="3" >News</b:Heading>
-				
-				<b:Paragraph addStyleNames="smalltext-black">New pricing model available. Click here for more (...)</b:Paragraph>
-				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
-				 
-				 	<b:Heading size="3">Task list</b:Heading>
-				
-				<b:Paragraph addStyleNames="smalltext-black" >No open tasks.</b:Paragraph>
-				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
-				
-			</b:Column>	
-		</b:Row>
-		
 					    
 		
 		

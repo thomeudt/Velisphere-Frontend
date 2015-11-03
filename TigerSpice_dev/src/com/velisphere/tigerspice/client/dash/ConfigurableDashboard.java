@@ -68,6 +68,8 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 		initWidget(uiBinder.createAndBindUi(this));
 		tabMap = new LinkedHashMap<String, Integer>();
 		loadContent();				
+		
+	
 	}
 	
 	
@@ -75,7 +77,8 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 		initWidget(uiBinder.createAndBindUi(this));
 		tabMap = new LinkedHashMap<String, Integer>();
 		selectedDashID = dashID;
-		loadContent();				
+		loadContent();			
+	
 	}
 	
 	
@@ -135,7 +138,6 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 				
 							DashData dashData = it.next();
 							tabMap.put(dashData.getDashboardID(), tabNumber);
-							tabNumber = tabNumber + 1;
 							final DashTabLink tabLink = new DashTabLink();
 							tabLink.setText(dashData.getDashboardName());
 							tabLink.setDashboardID(dashData.getDashboardID());
@@ -143,6 +145,19 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 							tabLink.setCreateTabPane(false);
 							tabLink.setDataTarget("tbpEndpoint");
 							tabPanel.add(tabLink);
+							
+							// activate first tab content
+							
+							if(tabNumber == 0)
+							{
+								  tbpEndpoint.clear();
+					        	  FlexBoard flexBoard = new FlexBoard(tabLink.getDashboardID());
+					        	  tbpEndpoint.add(flexBoard);
+					        
+							}
+							
+							// add click handler for tab clicks
+							
 							tabLink.addClickHandler(new ClickHandler(){
 
 								@Override
@@ -154,6 +169,12 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 						        								
 								}
 							});
+							
+							// increment tab counter
+							
+							tabNumber = tabNumber + 1;
+							
+							
 						}
 
 						addNewTabLink();
@@ -162,11 +183,17 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 						{
 							Integer selectedTabNumber = tabMap.get(selectedDashID);
 							tabPanel.selectTab(selectedTabNumber);
+							// display gauges for selected dash
+							  tbpEndpoint.clear();
+					    	  FlexBoard flexBoard = new FlexBoard(selectedDashID);
+					    	  tbpEndpoint.add(flexBoard);
+					    
 							
 						}
 						else
 						{
 							tabPanel.selectTab(0);
+						
 							
 						};
 						

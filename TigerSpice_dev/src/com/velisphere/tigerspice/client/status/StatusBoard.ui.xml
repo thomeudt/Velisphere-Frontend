@@ -28,7 +28,7 @@
 
 		    
 		    <b:Column size="12" offset="0">
-				<b:PageHeader ui:field="pageHeader">Status Board</b:PageHeader>
+				<b:PageHeader ui:field="pageHeader">Status</b:PageHeader>
 			</b:Column>
 		</b:Row>
 			
@@ -44,10 +44,23 @@
 		
 		<b:TabPanel tabPosition="above" ui:field="tabPanel">
 		
-		    <b:TabPane heading="Subscription" active="true">
+			<b:TabPane heading="News" active="true">
+			    
+				<g:HTML><b>News</b><br></br><br></br></g:HTML>
+				<g:HTML>VeliSphere is now running in a public evaluation phase. Feel free to test out the functionality and 
+				features, but bear in min that we provide this service to you with no warranty or performance guarantee.<br></br><br></br>
+				<b>Evaluation is explicitly at your own risk</b></g:HTML>
+				
+					
+			
+			</b:TabPane>
+		
+		
+		    <b:TabPane heading="Subscription" active="false">
 		    <b:Row>
 		<b:Column size="6" offset="0">
-				<b:Heading size="4">Subscription Status</b:Heading>
+			<g:HTML><b>Subscription Information</b><br></br><br></br></g:HTML>
+			
 			</b:Column>	
 		</b:Row>
 		
@@ -65,7 +78,7 @@
 		</b:Row>
 		
 		<b:Row>
-		<b:Column size="6" offset="0">
+		<b:Column size="8" offset="0">
 			 <b:Paragraph ui:field="pgpUtilInfo" addStyleNames="smalltext">Upgrade your subscription to increase your endpoint limit.</b:Paragraph>
 			  <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
 			</b:Column>
@@ -74,20 +87,15 @@
 		    </b:TabPane>
 		    
 		    
-		    	<b:TabPane heading="System" active="false">
-			    <b:Heading size="4" >System: OK</b:Heading>
-				
-				<b:Paragraph ui:field="pgpStatusInfo" addStyleNames="smalltext">System is up.</b:Paragraph>
-				<b:Paragraph addStyleNames="smalltext" ui:field="pgpLogCount">...</b:Paragraph>
+		    	<b:TabPane heading="Service Status" active="false">
+			
+			<g:HTML><b>Service Status</b><br></br><br></br>
+							No service disruptions have been repored.</g:HTML>
+						
+			
 			</b:TabPane>
 			<b:TabPane heading="Alerts" active="false" ui:field="tbpAlerts">
 			    
-				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
-			</b:TabPane>
-			<b:TabPane heading="News" active="false">
-			    <b:Heading size="4" >News</b:Heading>
-				
-				<b:Paragraph addStyleNames="smalltext-black">New pricing model available. Click here for more (...)</b:Paragraph>
 				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
 			</b:TabPane>
 			

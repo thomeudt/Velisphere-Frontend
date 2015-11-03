@@ -17,35 +17,31 @@
 	<g:HTMLPanel>
 
 		<b:Row>
+
+<b:Column size="6">
+			
+
+			<b:Image ui:field="imgSplash"></b:Image>
+	</b:Column>
+
+
 			<b:Column size="6">
 				<b:Row>
 					<b:Column size="6">
 
-						<b:Heading size="1">VeliSphere 0.8.5b</b:Heading>
+						<b:Heading size="1">VeliSphere</b:Heading>
 
-						<b:Heading size="2">Gateway to the Internet of Things</b:Heading>
+						<b:Heading size="2">Making the Internet of Things work for You</b:Heading>
 
 						<b:Paragraph>
-							VeliSphere offers holistic device management, automation, and
-							predictive maintenance for the internet of things, based on an open
+							VeliSphere offers efficient provisioning, device management, automation, analytics
+							and location services for the internet of things, based on an open
 							technology stack.
 						</b:Paragraph>
-
-
 						<b:Paragraph>
-							If you're already registered with VeliSphere, please
-							click on the
-							login button below.
-
+						&nbsp;
 						</b:Paragraph>
-						<b:Paragraph>
-
-							New users can test drive VeliSphere using our demo account or sign
-							up here.
-						</b:Paragraph>
-
-
-
+				
 
 					</b:Column>
 				</b:Row>
@@ -61,11 +57,6 @@
 
 
 			</b:Column>
-<b:Column size="6">
-			
-
-			<b:Image ui:field="imgSplash"></b:Image>
-	</b:Column>
 	
 		</b:Row>
 		

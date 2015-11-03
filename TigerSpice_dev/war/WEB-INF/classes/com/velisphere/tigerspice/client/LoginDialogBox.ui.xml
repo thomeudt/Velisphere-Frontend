@@ -33,9 +33,7 @@ xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
             <b:CheckBox name="remember" value="true"> Remember Me </b:CheckBox>
             </label>
             <br></br>
-            <br></br>
             <g:Anchor href="#" ui:field="ancSignup">No Account? Sign up now!</g:Anchor>
-            <br></br>
             <br></br>
             <b:Button styleName="btn-primary btn" text="Login" ui:field="btnLogin" />      
         </div>    

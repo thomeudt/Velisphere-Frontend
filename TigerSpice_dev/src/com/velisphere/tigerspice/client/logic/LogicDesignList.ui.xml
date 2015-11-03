@@ -72,29 +72,16 @@
 
 					<b:TabPane heading="Logic Design Templates" ui:field="tbpTmplLogic"
 						active="false">
-						<b:Row>
-							<b:Column size="2">
-								<b:Paragraph addStyleNames="smalltext"
-									text="Logic Design Templates sorted by Vendor" />
-							</b:Column>
-							<b:Column size="4">
-								<b:Paragraph addStyleNames="smalltext" text="to be added" />
-							</b:Column>
-						</b:Row>
-
+								<g:HTML><b>Upcoming Feature</b><br></br><br></br>
+						This function will be added in a future release.</g:HTML>
+				
 					</b:TabPane>
 
 					<b:TabPane heading="Embedded Logic Designs" ui:field="tbpEmbLogic"
 						active="false">
-						<b:Row>
-							<b:Column size="2">
-								<b:Paragraph addStyleNames="smalltext" text="Embedded Logic Designs that are predefined by device class and designed by the device vendor" />
-							</b:Column>
-							<b:Column size="4">
-								<b:Paragraph addStyleNames="smalltext" text="to be added" />
-							</b:Column>
-						</b:Row>
-
+						<g:HTML><b>Upcoming Feature</b><br></br><br></br>
+						This function will be added in a future release.</g:HTML>
+				
 					</b:TabPane>
 
 

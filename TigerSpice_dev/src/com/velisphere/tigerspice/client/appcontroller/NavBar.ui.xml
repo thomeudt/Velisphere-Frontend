@@ -39,11 +39,11 @@
     
          <b:Nav>
              <b:NavLink ui:field="btnHome" icon="REORDER">Status</b:NavLink>
-             <b:NavLink ui:field="btnDash" icon="DASHBOARD">Monitor</b:NavLink>
-             <b:NavLink ui:field="btnSpheres" icon="WRENCH">Manage</b:NavLink>
-             <b:NavLink ui:field="btnRules" icon="SHARE_ALT">Connect</b:NavLink>
-             <b:NavLink ui:field="btnLocator" icon="LOCATION_ARROW">Locate</b:NavLink>
-             <b:NavLink ui:field="btnAnalytics" icon="BAR_CHART">Analyze</b:NavLink>
+             <b:NavLink ui:field="btnDash" icon="DASHBOARD">Dashboards</b:NavLink>
+             <b:NavLink ui:field="btnSpheres" icon="WRENCH">Device Manager</b:NavLink>
+             <b:NavLink ui:field="btnRules" icon="SHARE_ALT">Rules</b:NavLink>
+             <b:NavLink ui:field="btnLocator" icon="LOCATION_ARROW">Locations</b:NavLink>
+             <b:NavLink ui:field="btnAnalytics" icon="BAR_CHART">Analyzer</b:NavLink>
              
            
              <b:Dropdown ui:field="dpdAdmin" icon="TERMINAL" text="Admin">

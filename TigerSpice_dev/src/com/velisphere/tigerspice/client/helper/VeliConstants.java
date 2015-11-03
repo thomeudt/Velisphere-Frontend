@@ -10,5 +10,6 @@ public interface VeliConstants {
 	public static final String MAILSERVICE_PROPID = "b32e3663-2e9b-4acc-8c4a-4eb6dc47ae2a";
 	public static final String FAVORITE_ENDPOINT = "EP";
 	public static final String FAVORITE_LOGIC = "LG";
+	public static final String SUPERUSER_ID = "3a0dbab9-4550-4c2c-835d-901492a85399";
 	
 }

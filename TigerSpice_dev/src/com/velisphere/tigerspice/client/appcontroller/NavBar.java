@@ -48,6 +48,7 @@ import com.velisphere.tigerspice.client.admin.Overviewer;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
+import com.velisphere.tigerspice.client.helper.VeliConstants;
 import com.velisphere.tigerspice.client.logic.LogicDesignList;
 import com.velisphere.tigerspice.client.marketplace.MarketPlace;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
@@ -370,15 +371,29 @@ public class NavBar extends Composite implements HasText {
 	    	 forSearch.setVisible(false);
 	    	 btnHome.setVisible(true);
 	    	 dpdAccount.setVisible(true);
-	       	 dpdAdmin.setVisible(true);
 	       	 btnLocator.setVisible(true);
 	       	 btnManageEPC.setVisible(true);
 	       	 dpdAccount.setText(SessionHelper.getCurrentUserName());
-	  	 	btnShop.setVisible(false);
-	  	  		 
+	  	     btnShop.setVisible(false);
+	  	  
+	  	   checkAdmin();
 	    
 	}
 
+	
+	private void checkAdmin()
+	{
+		if (SessionHelper.getCurrentUserID() == VeliConstants.SUPERUSER_ID)
+		{
+			dpdAdmin.setVisible(true);	
+		}
+		else
+		{
+			dpdAdmin.setVisible(false);
+		}
+		
+      	 
+	}
 	
 	private void clearBandarole(){
 		RootPanel banderolePanel = RootPanel.get("banderole");

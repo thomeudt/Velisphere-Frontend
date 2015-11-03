@@ -20,7 +20,7 @@
 
 
 			<b:Column size="12" offset="0">
-				<b:PageHeader>Endpoint Manager</b:PageHeader>
+				<b:PageHeader>Device Manager</b:PageHeader>
 			</b:Column>
 		</b:Row>
 
@@ -37,22 +37,31 @@
 
 				<b:TabPanel tabPosition="above" ui:field="tabPanel">
 
-					<b:TabPane heading="My Spheres" active="true">
+					<b:TabPane heading="My Devices" active="true">
+					
+							<vssp:EndpointLister />
+
+					</b:TabPane>
 
 
+
+					<b:TabPane heading="My Spheres" active="false">
 
 
 
 						<b:Row>
-							<b:Column size="6">
-								<b:ListBox styleName="span6" ui:field="lstPrivateSpheres" />
+							<b:Column size="2">
+								<g:HTML><b>Select your Sphere</b></g:HTML>
+							</b:Column>
+							<b:Column size="4">
+								<b:ListBox styleName="span4" ui:field="lstPrivateSpheres" />
 							</b:Column>
 						</b:Row>
 
 
 
 						<b:Row>
-							<b:Column size="2" offset="0">
+							<b:Column size="2" offset="2">
 								<b:Button type="PRIMARY" ui:field="btnOpenSphere"
 									addStyleNames="btn-block" size="SMALL">Open Selected Sphere</b:Button>
 							</b:Column>
@@ -65,9 +74,6 @@
 
 
 
-						<b:HelpBlock addStyleNames="smalltext">Physical Endpoints:</b:HelpBlock>
-						<b:HelpBlock addStyleNames="smalltext">Virtual Endpoints:</b:HelpBlock>
-						<b:HelpBlock addStyleNames="smalltext">Endpoint Groups:</b:HelpBlock>
 
 
 
