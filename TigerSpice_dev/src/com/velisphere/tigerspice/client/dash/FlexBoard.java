@@ -143,8 +143,7 @@ public class FlexBoard extends Composite{
 									gaugeData.getGaugeType(), gaugeData.getGreenRange(), gaugeData.getYellowRange(),
 									gaugeData.getRedRange(), gaugeData.getMinMax());
 	
-							RootPanel.get().add(new HTML("GaugeType " + gaugeData.getGaugeType()));
- 							
+							
 							row.add(addGaugeColumnWithData(gaugeBox));		
 										
 						}
@@ -196,7 +195,6 @@ public class FlexBoard extends Composite{
 						gaugeData.setYellowRange(gaugeBox.getYellowRange());
 						gaugeData.setRedRange(gaugeBox.getRedRange());
 						gaugeDataList.add(gaugeData);
-						RootPanel.get().add(new HTML("Green Range Items: " + gaugeBox.getGreenRange()[1] + " / " + gaugeBox.getGreenRange()[2]));
 					}
 					
 					GaugeServiceAsync gaugeService = GWT
@@ -261,7 +259,6 @@ public class FlexBoard extends Composite{
 				}
 			*/	
 				row.add(addGaugeColumn());		
-				RootPanel.get().add(new HTML("GAUGE ADDING REQUESTED"));
 				
 				currentAddBoxColumn = addAddBoxColumn();
 				row.add(currentAddBoxColumn);

@@ -171,7 +171,6 @@ public class EndpointView extends Composite {
 		
 		initialize();
 		
-		RootPanel.get().add(new HTML("ViewMode: " + viewMode));
 		
 		switch(viewMode)
 		{

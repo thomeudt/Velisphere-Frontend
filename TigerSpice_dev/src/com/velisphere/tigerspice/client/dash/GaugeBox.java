@@ -461,7 +461,6 @@ public class GaugeBox extends Composite {
 
 
 
-		RootPanel.get().add(new HTML("Searching for " + propertyClassID));
 
 		PropertyClassServiceAsync propertyClassService = GWT
 				.create(PropertyClassService.class);
@@ -477,7 +476,6 @@ public class GaugeBox extends Composite {
 			@Override
 			public void onSuccess(PropertyClassData result) {
 
-				RootPanel.get().add(new HTML(result.propertyClassName));
 				gaugeLabel = result.propertyClassUnit;
 			
 				
@@ -564,8 +562,6 @@ public class GaugeBox extends Composite {
 					public void onSuccess(AnalyticsRawData result) {
 						// TODO Auto-generated method stub
 						
-						RootPanel.get().add(new HTML("Data Size: " + result.getPropertyValuePairs().size()));
-						
 						if(result.getPropertyValuePairs().size() > 0)
 						{
 							Map.Entry<String, String> entry = result.getPropertyValuePairs().entrySet().iterator().next();
@@ -626,7 +622,6 @@ public class GaugeBox extends Composite {
 					public void onSuccess(AnalyticsRawData result) {
 						// TODO Auto-generated method stub
 						
-						RootPanel.get().add(new HTML("Data Size: " + result.getPropertyValuePairs().size()));
 						
 						if(result.getPropertyValuePairs().size() > 0)
 						{

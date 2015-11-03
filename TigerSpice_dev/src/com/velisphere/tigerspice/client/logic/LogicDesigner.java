@@ -227,8 +227,7 @@ public class LogicDesigner extends Composite {
 					@Override
 					public void onLogicNameChanged(
 							LogicNameChangedEvent logicNameChangedEvent) {
-						RootPanel.get().add(new HTML("Name change completed to " + logicNameChangedEvent.getName()));
-
+			
 						brdMain.remove(bread2);						
 						bread2.setText(logicNameChangedEvent.getName());						
 						brdMain.add(bread2);

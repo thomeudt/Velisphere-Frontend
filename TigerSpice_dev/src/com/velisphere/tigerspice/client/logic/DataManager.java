@@ -62,20 +62,11 @@ public class DataManager {
 									public void onFailure(Throwable caught) {
 										// TODO Auto-generated method stub
 
-										RootPanel
-												.get()
-												.add(new HTML(
-														"Error from attempt to create checkpath: "
-																+ caught.getMessage()));
 									}
 
 									@Override
 									public void onSuccess(String result) {
 										// TODO Auto-generated method stub
-										RootPanel.get().add(
-												new HTML(
-														"Result from attempt to create checkpath: "
-																+ result));
 									}
 
 								});
@@ -90,47 +81,32 @@ public class DataManager {
 		Iterator<ConnectorSensorActor> it = canvas.getConnectorsSensorActor()
 				.iterator();
 
-		RootPanel.get().add(new HTML("P2P: started"));
-
+		
 		while (it.hasNext()) {
 
 			ConnectorSensorActor current = it.next();
 
-			RootPanel.get().add(new HTML("P2P: fetched connector"));
-
+		
 			// build action object
 			ActionObject action = new ActionObject();
 			action.actionID = current.getActionUUID();
-			RootPanel.get().add(new HTML("P2P: ID processed"));
 			action.actionName = "unused";
-			RootPanel.get().add(new HTML("P2P: Name processed"));
 			action.endpointClassID = current.getActor().getEndpointClassID();
-			RootPanel.get().add(new HTML("P2P: EPC processed"));
 			action.endpointID = current.getActor().getEndpointID();
-			RootPanel.get().add(new HTML("P2P: AEPID processed"));
 			action.endpointName = current.getActor().getContentRepresentation();
-			RootPanel.get().add(new HTML("P2P: Content processed"));
 			action.propertyID = current.getActor().getPropertyID();
-			RootPanel.get().add(new HTML("P2P: APID processed"));
 			action.propertyIdIntake = current.getSensor().getPropertyID();
-			RootPanel.get().add(new HTML("P2P: SPID processed"));
 			action.sensorEndpointID = current.getSensor().getEndpointID();
-			RootPanel.get().add(new HTML("P2P: SEPID processed"));
 			action.validValueIndex = current.getTypicalValueValue();
-			RootPanel.get().add(new HTML("P2P: Typical processed"));
 			action.manualValue = current.getManualValue();
-			RootPanel.get().add(new HTML("P2P: Manual processed"));
-
+		
 			if (current.getSourceValue() == ActionSourceConfig.currentSensorValue) {
 				action.valueFromInboundPropertyID = current.getValueFromSensorValue();
-				RootPanel.get().add(new HTML("P2P: Source processed"));
 			} else {
 				action.valueFromInboundPropertyID = "no";
-				RootPanel.get().add(new HTML("P2P: Source processed - empty"));
 			}
 
-			RootPanel.get().add(new HTML("P2P: built action object"));
-
+		
 			// TODO this can be simplified - we do not need to take care of
 			// multiple actions in new setup
 
@@ -138,8 +114,7 @@ public class DataManager {
 
 			actions.add(action);
 
-			RootPanel.get().add(new HTML("P2P: built action object list"));
-
+		
 			// send to database
 
 			CheckServiceAsync checkService = GWT.create(CheckService.class);
@@ -160,10 +135,6 @@ public class DataManager {
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
 
-							RootPanel.get().add(
-									new HTML(
-											"Result from attempt to generate check and action P2P: "
-													+ result));
 						}
 
 					});
@@ -176,13 +147,11 @@ public class DataManager {
 		Iterator<ConnectorSensorLogicCheck> it = canvas
 				.getConnectorsSensorLogicCheck().iterator();
 
-		RootPanel.get().add(new HTML("P2L: started"));
-
+	
 		while (it.hasNext()) {
 
 			final ConnectorSensorLogicCheck current = it.next();
 
-			RootPanel.get().add(new HTML("P2L: fetched connector"));
 
 			// TODO this can be simplified - we do not need to take care of
 			// multiple actions in new setup
@@ -192,26 +161,11 @@ public class DataManager {
 
 			LinkedList<ActionObject> actions = new LinkedList<ActionObject>();
 
-			RootPanel.get().add(new HTML("P2L: created empty actions list"));
 
 			// send check to database
 
 			CheckServiceAsync checkService = GWT.create(CheckService.class);
 
-			RootPanel.get().add(
-					new HTML("P2L: processing UUID " + current.getCheckUUID()));
-			RootPanel.get().add(
-					new HTML("P2L: processing sensor EPID "
-							+ current.getSensor().getEndpointID()));
-			RootPanel.get().add(
-					new HTML("P2L: processing sensor PID "
-							+ current.getSensor().getPropertyID()));
-			RootPanel.get().add(
-					new HTML("P2L: processing check value "
-							+ current.getCheckValue()));
-			RootPanel.get().add(
-					new HTML("P2L: processing operator "
-							+ current.getOperator()));
 
 			checkService.addNewCheck(current.getCheckUUID(), current
 					.getSensor().getEndpointID(), current.getSensor()
@@ -229,10 +183,6 @@ public class DataManager {
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
 
-							RootPanel.get().add(
-									new HTML(
-											"Result from attempt to generate check and action P2L "+ current.getCheckUUID()+": "
-													+ result));
 						}
 
 					});
@@ -303,10 +253,6 @@ public class DataManager {
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
 
-							RootPanel.get().add(
-									new HTML(
-											"Result from attempt to generate check and action L2P: "
-													+ result));
 						}
 
 					});
@@ -334,10 +280,6 @@ public class DataManager {
 							@Override
 							public void onSuccess(String result) {
 								// TODO Auto-generated method stub
-								RootPanel.get().add(
-										new HTML(
-												"Result from attempt to link checks and to multicheck: "
-														+ result));
 							}
 
 						});
@@ -372,10 +314,6 @@ public class DataManager {
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
 
-							RootPanel.get().add(
-									new HTML(
-											"Result from attempt to delete check L2P: "
-													+ result));
 						}
 
 					});
@@ -394,11 +332,6 @@ public class DataManager {
 						@Override
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
-
-							RootPanel.get().add(
-									new HTML(
-											"Result from attempt to delete actions L2P: "
-													+ result));
 						}
 
 					});
@@ -421,10 +354,6 @@ public class DataManager {
 							@Override
 							public void onSuccess(String result) {
 								// TODO Auto-generated method stub
-								RootPanel.get().add(
-										new HTML(
-												"Result from attempt to delete link between check and multicheck: "
-														+ result));
 							}
 
 						});
@@ -437,14 +366,12 @@ public class DataManager {
 		Iterator<ConnectorSensorActor> it = canvas
 				.getDeletedConnectorsSensorActor().iterator();
 
-		RootPanel.get().add(new HTML("Deleted P2P: started"));
-
+	
 		while (it.hasNext()) {
 
 			ConnectorSensorActor current = it.next();
 
-			RootPanel.get().add(new HTML("P2P: fetched connector"));
-
+	
 			// delete from database
 
 			CheckServiceAsync checkService = GWT.create(CheckService.class);
@@ -462,10 +389,6 @@ public class DataManager {
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
 
-							RootPanel.get().add(
-									new HTML(
-											"Result from attempt to delere check P2P: "
-													+ result));
 						}
 
 					});
@@ -485,10 +408,6 @@ public class DataManager {
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
 
-							RootPanel.get().add(
-									new HTML(
-											"Result from attempt to delete actions P2P: "
-													+ result));
 						}
 
 					});
@@ -501,13 +420,11 @@ public class DataManager {
 		Iterator<ConnectorSensorLogicCheck> it = canvas
 				.getDeletedConnectorsSensorLogicCheck().iterator();
 
-		RootPanel.get().add(new HTML("Deleted P2L: started"));
 
 		while (it.hasNext()) {
 
 			ConnectorSensorLogicCheck current = it.next();
 
-			RootPanel.get().add(new HTML("P2L: fetched connector"));
 
 			// send check to database
 
@@ -526,10 +443,6 @@ public class DataManager {
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
 
-							RootPanel.get().add(
-									new HTML(
-											"Result from attempt to delete check P2L: "
-													+ result));
 						}
 
 					});
@@ -549,10 +462,6 @@ public class DataManager {
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
 
-							RootPanel.get().add(
-									new HTML(
-											"Result from attempt to delete actions P2L: "
-													+ result));
 						}
 
 					});
@@ -562,8 +471,7 @@ public class DataManager {
 
 	public void loadUI(final String checkpathName) {
 
-		RootPanel.get().add(new HTML("UILOAD--- "));
-
+		
 		// create JSON factory
 
 		final JsonFabrik factory = new JsonFabrik(canvas);
@@ -600,12 +508,7 @@ public class DataManager {
 													SerializableLogicContainer result) {
 												// TODO Auto-generated method
 												// stub
-												RootPanel
-														.get()
-														.add(new HTML(
-																"Result from attempt to load checkpath: "
-																		+ result.toString()));
-
+											
 												factory.unpackContainer(result);
 											}
 
@@ -630,19 +533,12 @@ public class DataManager {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
-						RootPanel.get().add(
-								new HTML(
-										"Error from attempt to delete checkpath: "
-												+ caught.getMessage()));
 					}
 
 					@Override
 					public void onSuccess(String result) {
 						// TODO Auto-generated method stub
-						RootPanel.get().add(
-								new HTML(
-										"Result from attempt to delete checkpath: "
-												+ result));
+					
 					}
 
 				});

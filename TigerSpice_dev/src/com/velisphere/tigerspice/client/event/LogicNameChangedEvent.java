@@ -33,7 +33,6 @@ public class LogicNameChangedEvent extends GwtEvent<LogicNameChangedEventHandler
 		public LogicNameChangedEvent(String name)
 		{
 			this.name = name;
-			RootPanel.get().add(new HTML("Name Change Event Fired!"));
 			
 		}
 

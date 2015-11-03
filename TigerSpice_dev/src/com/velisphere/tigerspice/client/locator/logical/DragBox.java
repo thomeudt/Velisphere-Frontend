@@ -104,7 +104,6 @@ public class DragBox extends FocusPanel implements HasAllTouchHandlers {
 					public void onSuccess(EPCData result) {
 						// TODO Auto-generated method
 						// stub
-						RootPanel.get().add(new HTML("EPC URL " + result.endpointclassImageURL));
 						epcImage.setUrl(result.endpointclassImageURL);
 						epcImage.setWidth("40px");
 						epcImage.setHeight("30px");

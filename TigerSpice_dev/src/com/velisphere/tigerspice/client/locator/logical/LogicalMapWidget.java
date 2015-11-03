@@ -313,8 +313,6 @@ public class LogicalMapWidget extends Composite {
 			int x = (int) (xPosCenter + radius * Math.cos(radians));
 			int y = (int) (yPosCenter + radius * Math.sin(radians));
 
-			RootPanel.get().add(new HTML("x Pos " + x + "y Pos " + y));
-
 			counter++;
 
 			labelDirectory.put(endpoint.endpointId, endpointLabel);
@@ -511,8 +509,7 @@ public class LogicalMapWidget extends Composite {
 		EndpointServiceAsync endpointService = GWT
 				.create(EndpointService.class);
 		
-		RootPanel.get().add(new HTML("Missing Label Directoy: " + missingLabelDirectory.toString()));
-
+	
 		endpointService.getEndpointsForMultipleIDs(missingLabelDirectory,
 				new AsyncCallback<LinkedList<EndpointData>>() {
 
@@ -588,7 +585,6 @@ public class LogicalMapWidget extends Composite {
 									DraggedInCanvasEvent draggedInCanvasEvent) {
 								// TODO Auto-generated method stub
 
-								RootPanel.get().add(new HTML("DRAGGED FIRED"));
 								
 								drawLinksFromServer();
 

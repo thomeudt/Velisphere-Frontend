@@ -59,10 +59,7 @@ public class Overviewer {
 	public void loadContent() {
 
 		History.newItem("epce");
-		rootPanel = RootPanel.get("main");
-		rootPanel.clear();
-		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-
+		
 	
 		mainPanel = new VerticalPanel();
 		rootPanel.add(mainPanel);

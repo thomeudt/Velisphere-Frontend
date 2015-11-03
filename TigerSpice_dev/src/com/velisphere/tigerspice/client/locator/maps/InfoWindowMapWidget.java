@@ -185,15 +185,11 @@ public class InfoWindowMapWidget extends Composite {
   
   private void drawMarker( LinkedList<GeoLocationData> geoLocations) {
 	  
-	    HTML html = new HTML("LAT Size... ... " + geoLocations.size());
-	    RootPanel.get().add(html);
 		Iterator<GeoLocationData> it = geoLocations.iterator();
 		while (it.hasNext()) {
 			final GeoLocationData point = it.next();
 	        //Map.Entry<String, GeoDataForMap> locationPair = (Map.Entry<String, GeoDataForMap>)it.next();
 	        //final GeoDataForMap geoDataForMap = locationPair.getValue();
-	        html = new HTML("LAT/LON ... ... " + point.getValue());
-	        RootPanel.get().add(html);
 	        //drawMarker(Double.valueOf(geoDataForMap.getLat()), Double.valueOf(geoDataForMap.getLon()));
 	        //drawMarker(-76.3, 37.08);
 	   

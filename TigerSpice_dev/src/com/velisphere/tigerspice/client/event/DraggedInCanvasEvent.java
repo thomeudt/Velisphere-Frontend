@@ -71,7 +71,6 @@ public class DraggedInCanvasEvent extends GwtEvent<DraggedInCanvasEventHandler> 
 		{
 			this.dragBox = dragBox;
 			this.context = context;
-			RootPanel.get().add(new HTML("Event Fired..."));
 		}
 		
 		

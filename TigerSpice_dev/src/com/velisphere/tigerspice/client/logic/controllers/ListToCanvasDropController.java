@@ -25,7 +25,6 @@ public class ListToCanvasDropController extends AbsolutePositionDropController {
 	public void onDrop(DragContext context)
 	{
 		//super.onDrop(context);
-		RootPanel.get().add(new HTML("DropController says onDrop"));
 		
 		WidgetLocation dropTargetLocation = new WidgetLocation(dropTarget, null);
 		int dropTargetOffsetX = dropTargetLocation.getLeft()
@@ -34,7 +33,6 @@ public class ListToCanvasDropController extends AbsolutePositionDropController {
 		
 		 ExplorerLabel current = (ExplorerLabel) context.selectedWidgets.get(0);
 		
-		RootPanel.get().add(new HTML(current + " WAS DROPPED at " + (context.desiredDraggableX - dropTargetOffsetX) + " / " + (context.desiredDraggableY - dropTargetOffsetY)));
 		
 		int targetX = context.desiredDraggableX - dropTargetOffsetX;
 		int targetY = context.desiredDraggableY - dropTargetOffsetY;

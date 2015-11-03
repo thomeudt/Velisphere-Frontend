@@ -121,7 +121,6 @@ public class NewAlertWidget extends Composite {
 					public void onSuccess(LinkedList<PropertyData> result) {
 						// TODO Auto-generated method stub
 						
-						RootPanel.get().add(new HTML("Gotten results."));
 								
 						Iterator<PropertyData> it = result.iterator();
 						if (it.hasNext() == false) {
@@ -425,10 +424,7 @@ public class NewAlertWidget extends Composite {
 			public void onSuccess(String result) {
 				// TODO Auto-generated method stub
 				uuidAction = result;
-				RootPanel.get().add(new HTML("P2P: started"));
-
-				RootPanel.get().add(new HTML("P2P: fetched connector"));
-
+	
 				// create messageJSON
 				
 				AlertMailCreator mailCreator = new  AlertMailCreator();
@@ -455,27 +451,17 @@ public class NewAlertWidget extends Composite {
 								// build action object
 								ActionObject action = new ActionObject();
 								action.actionID = uuidAction;
-								RootPanel.get().add(new HTML("P2P: ID processed"));
 								action.actionName = "unused";
-								RootPanel.get().add(new HTML("P2P: Name processed"));
 								action.endpointClassID = VeliConstants.MAILSERVICE_EPCID;
-								RootPanel.get().add(new HTML("P2P: EPC processed"));
 								action.endpointID = VeliConstants.MAILSERVICE_EPID;
-								RootPanel.get().add(new HTML("P2P: AEPID processed"));
 								action.endpointName = "MAILSERVICE";
-								RootPanel.get().add(new HTML("P2P: Content processed"));
 								action.propertyID = VeliConstants.MAILSERVICE_PROPID;
-								RootPanel.get().add(new HTML("P2P: APID processed"));  
 								action.propertyIdIntake = lbxProperty.getValue();
-								RootPanel.get().add(new HTML("P2P: SPID processed"));
 								action.sensorEndpointID = endpointID;
-								RootPanel.get().add(new HTML("P2P: SEPID processed"));
 								action.valueFromInboundPropertyID = "no";
 								action.manualValue = jsonReadyEvent.getJson();
-								RootPanel.get().add(new HTML("P2P: Source processed"));
 								
-								RootPanel.get().add(new HTML("P2P: built action object"));
-
+	
 								// TODO this can be simplified - we do not need to take care of
 								// multiple actions in new setup
 
@@ -483,7 +469,6 @@ public class NewAlertWidget extends Composite {
 
 								actions.add(action);
 
-								RootPanel.get().add(new HTML("P2P: built action object list"));
 								
 								createCheck(actions);
 								

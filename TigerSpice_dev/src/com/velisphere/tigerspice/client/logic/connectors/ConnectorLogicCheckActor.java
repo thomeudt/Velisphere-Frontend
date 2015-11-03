@@ -303,7 +303,6 @@ public class ConnectorLogicCheckActor extends Connector {
 	  public SerializableLogicConnector getSerializableRepresentation()
       {
 		  
-		RootPanel.get().add(new HTML("Getting Rep L2P..."));
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
       	serializable.setLeftID(this.logicCheck.getId());
       	serializable.setRightID(this.actor.getUUID());
@@ -313,7 +312,6 @@ public class ConnectorLogicCheckActor extends Connector {
 		serializable.setType(SharedConstants.CONL2P);
 		serializable.setActionID(actionUUID);
 		serializable.setCheckID(checkUUID);
-		RootPanel.get().add(new HTML("Succeeded!"));
 		return serializable;
       	
       }

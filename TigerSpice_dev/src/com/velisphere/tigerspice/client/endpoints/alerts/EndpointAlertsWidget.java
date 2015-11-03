@@ -262,7 +262,6 @@ public class EndpointAlertsWidget extends Composite {
 		
 		enclosingPane.clear();
 		EditAlertWidget editAlertWidget = new EditAlertWidget(endpointID, currentAlertID);
-		RootPanel.get().add(new HTML("Edit for " + currentAlertID));
 		enclosingPane.add(editAlertWidget);
 		
 	}
@@ -286,7 +285,6 @@ public class EndpointAlertsWidget extends Composite {
 			@Override
 			public void onSuccess(String result) {
 				// TODO Auto-generated method stub
-				RootPanel.get().add(new HTML("DELETE SHOULD HAVE SUCCEEDED"));
 				AppController.openEndpoint(endpointID, VeliConstants.ENDPOINT_VIEWMODE_ALERTS);
 			}
 			

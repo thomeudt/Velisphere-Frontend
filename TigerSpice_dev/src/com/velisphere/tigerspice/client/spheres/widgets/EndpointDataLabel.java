@@ -65,7 +65,6 @@ public class EndpointDataLabel extends FocusPanel implements HasAllTouchHandlers
 			public void onClick(ClickEvent event) {
 				// TODO Auto-generated method stub
 				AppController.openEndpoint(endpointData.getId());
-				RootPanel.get().add(new HTML("CLICK"));
 			
 			}
 			

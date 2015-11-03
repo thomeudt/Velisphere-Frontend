@@ -45,7 +45,6 @@ class ListBoxDropController extends AbstractDropController {
     	  
     	  if(widget instanceof EndpointDataLabel)
     	  {
-    		 RootPanel.get().add(new HTML ("Class is " + context.selectedWidgets.get(0).getClass()));
     		 EndpointDataLabel labelClone = new EndpointDataLabel((EndpointDataLabel) widget);
     		
     		 if(from.isInSphere())
