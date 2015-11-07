@@ -55,9 +55,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -69,9 +67,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 							+ endpointID
 							+ "' ORDER BY TIME_STAMP");
 
-			System.out.println("Result: " + myResult);
-			System.out.println("Size: " + myResult.getFetchSize());
-
+			
 			
 			while (myResult.next()) {
 				AnalyticsRawData logItem = new AnalyticsRawData();
@@ -80,7 +76,6 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 				//logItem.addPropertyValuePair("Test", myResult.getString(2));
 				logItem.setTimeStamp(myResult.getString(3));
 				logData.add(logItem);
-				System.out.println(logItem);
 				// System.out.println("Retrieved: " + logItem.getValue());
 			}
 
@@ -119,9 +114,6 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 		writer.flush();
 		writer.close();
 	
-
-		System.out.println("[IN] Creating temporary file at "
-				+ tempFile.getAbsolutePath());
 		return tempFile.getAbsolutePath();
 	}
 	
@@ -140,7 +132,6 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 		int contentStartIndex = imageData.indexOf(encodingPrefix) + encodingPrefix.length();
 		
 		byte[] imageDataArray = Base64.decodeBase64(imageData.substring(contentStartIndex).getBytes());
-		System.out.println(String.valueOf(imageDataArray));
 		
 		
 		
@@ -155,8 +146,6 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 		
 		
 
-		System.out.println("[IN] Creating temporary file at "
-				+ tempFile.getAbsolutePath());
 		return tempFile.getAbsolutePath();
 	}
 
@@ -181,9 +170,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -235,9 +222,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -286,9 +271,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+		
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -335,9 +318,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -387,9 +368,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -443,9 +422,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -498,9 +475,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -549,9 +524,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -586,7 +559,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 				
 				geoItems.add(geoItem);
 				
-				System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue() + " for: " + geoItem.getEndpointName());
+				
 			}
 
 			mySelect.close();
@@ -621,9 +594,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -658,7 +629,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 				
 				geoItems.add(geoItem);
 				
-				System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue() + " for: " + geoItem.getEndpointName());
+				
 			}
 
 			mySelect.close();
@@ -693,9 +664,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -731,9 +700,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 				
 				
 				geoItems.add(geoItem);
-				
-				System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue() + " for: " + geoItem.getEndpointName());
-			}
+				}
 
 			mySelect.close();
 			conn.close();
@@ -768,9 +735,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -804,8 +769,6 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 				
 				
 				geoItems.add(geoItem);
-				
-				System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue() + " for: " + geoItem.getEndpointName());
 			}
 
 			mySelect.close();
@@ -839,9 +802,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -876,7 +837,6 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 				
 				geoItems.add(geoItem);
 				
-				System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue() + " for: " + geoItem.getEndpointName());
 			}
 
 			mySelect.close();
@@ -910,9 +870,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -948,7 +906,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 				
 				geoItems.add(geoItem);
 				
-				System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue() + " for: " + geoItem.getEndpointName());
+				//System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue() + " for: " + geoItem.getEndpointName());
 			}
 			
 
@@ -983,8 +941,8 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
+			//System.out.println(" [OK] Connected to Vertica on address: "
+			//		+ "16.1.1.113");
 
 			Statement mySelect = conn.createStatement();
 
@@ -1031,9 +989,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect

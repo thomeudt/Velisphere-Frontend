@@ -73,8 +73,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 	 				 
 			// display to console
 			jsonCheckpathObject = mapper.writeValueAsString(uiObject);
-			System.out.println("JSON generiert: " + jsonCheckpathObject);
-	 
+			
 		} catch (JsonGenerationException e) {
 	 
 			e.printStackTrace();
@@ -90,7 +89,6 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 		}
 	 
 
-		System.out.println("**************************ROTZE");
 		
 		
 
@@ -117,8 +115,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 			// display to console
 			jsonCheckpathObject = mapper.writeValueAsString(uiObject);
 			
-			System.out.println("JSON generiert: " + jsonCheckpathObject);
-	 
+			
 		} catch (JsonGenerationException e) {
 	 
 			e.printStackTrace();
@@ -157,7 +154,6 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 			voltCon.montanaClient.callProcedure("MULTICHECK.upsert",
 					checkId, operator, 0, 0, multicheckName, checkpathID);
 			
-			System.out.println("Adding Actions: " + actions);
 			Iterator<ActionObject> it = actions.iterator();
 			while (it.hasNext()){
 				ActionObject action = it.next();
@@ -206,9 +202,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 							"vertica", "1Suplies!");
 
 					conn.setAutoCommit(true);
-					System.out.println(" [OK] Connected to Vertica on address: "
-							+ ServerParameters.vertica_ip);
-
+					
 					Statement myInsert = conn.createStatement();
 
 					Iterator<ActionObject> it = actions.iterator();
@@ -527,7 +521,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 			        
 				uiObject = mapper.readValue(uiObjectJSON, CheckPathObjectTreeUNUSED.class);
 				
-			        System.out.println(uiObject);
+			       
 			    } catch (JsonGenerationException e) {
 			        System.out.println(e);
 			        } catch (JsonMappingException e) {
@@ -741,7 +735,6 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 			e1.printStackTrace();
 		}
 		
-		System.out.println("Updating Actions: " + actions);
 		Iterator<ActionObject> it = actions.iterator();
 		while (it.hasNext()){
 			ActionObject action = it.next();
@@ -796,9 +789,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ ServerParameters.vertica_ip);
-
+			
 			Statement myUpdate = conn.createStatement();
 
 			Iterator<ActionObject> itV = actions.iterator();
@@ -1113,7 +1104,6 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 					action.propertyID = result.getString("OUTBOUNDPROPERTYID");
 					action.propertyIdIntake = result.getString("INBOUNDPROPERTYID");
 					action.manualValue = result.getString("CUSTOMPAYLOAD");	
-					System.out.println("Inboundlentgh = " + result.getString("INBOUNDPROPERTYID").length());
 					action.valueFromInboundPropertyID = "Manual entry"; // this is the default
 					if (result.getString("INBOUNDPROPERTYID").length() > 0) action.valueFromInboundPropertyID = "Incoming value from sensor device";
 					
@@ -1191,8 +1181,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 					
 			ObjectMapper mapper = new ObjectMapper();
 			
-			System.out.println("Intake: " + object.toString());
-		 
+			
 			String jsonCheckpathObject = "E0"; 
 			
 			try {
@@ -1201,8 +1190,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 		 				 
 				// display to console
 				jsonCheckpathObject = mapper.writeValueAsString(object);
-				System.out.println("JSON generiert: " + jsonCheckpathObject);
-		 
+				
 			} catch (JsonGenerationException e) {
 		 
 				e.printStackTrace();
@@ -1230,8 +1218,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 					
 			ObjectMapper mapper = new ObjectMapper();
 			
-			System.out.println("Intake: " + object.toString());
-		 
+			
 			String jsonCheckpathObject = "E0"; 
 			
 			try {
@@ -1240,8 +1227,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 		 				 
 				// display to console
 				jsonCheckpathObject = mapper.writeValueAsString(object);
-				System.out.println("JSON generiert: " + jsonCheckpathObject);
-		 
+				
 			} catch (JsonGenerationException e) {
 		 
 				e.printStackTrace();
@@ -1269,8 +1255,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 	public String createJsonFromConnector(SerializableLogicConnector object) {
 		ObjectMapper mapper = new ObjectMapper();
 		
-		System.out.println("Intake: " + object.toString());
-	 
+		
 		String jsonCheckpathObject = "E0"; 
 		
 		try {
@@ -1279,8 +1264,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 	 				 
 			// display to console
 			jsonCheckpathObject = mapper.writeValueAsString(object);
-			System.out.println("JSON generiert: " + jsonCheckpathObject);
-	 
+			
 		} catch (JsonGenerationException e) {
 	 
 			e.printStackTrace();
@@ -1305,8 +1289,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 	public String createJsonFromContainer(SerializableLogicContainer object) {
 		ObjectMapper mapper = new ObjectMapper();
 		
-		System.out.println("Intake: " + object.toString());
-	 
+		
 		String jsonCheckpathObject = ""; 
 		
 		try {
@@ -1315,8 +1298,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 	 				 
 			// display to console
 			jsonCheckpathObject = mapper.writeValueAsString(object);
-			System.out.println("JSON generiert: " + jsonCheckpathObject);
-	 
+			
 		} catch (JsonGenerationException e) {
 	 
 			e.printStackTrace();
@@ -1378,7 +1360,7 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 			        
 				serializableLogicContainer = mapper.readValue(uiObjectJSON, SerializableLogicContainer.class);
 				
-			        System.out.println(serializableLogicContainer);
+			        
 			    } catch (JsonGenerationException e) {
 			        System.out.println(e);
 			        } catch (JsonMappingException e) {

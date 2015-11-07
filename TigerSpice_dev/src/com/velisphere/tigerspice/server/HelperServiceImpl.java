@@ -105,6 +105,14 @@ public class HelperServiceImpl extends RemoteServiceServlet implements HelperSer
 
 		montanaStatsContext = voltCon.montanaClient.createStatsContext();
 				
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
 		return montanaStatsContext.toString();
 		
 	}

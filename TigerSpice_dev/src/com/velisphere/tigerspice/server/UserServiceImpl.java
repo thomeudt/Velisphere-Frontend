@@ -199,9 +199,7 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 						"vertica", "1Suplies!");
 
 				conn.setAutoCommit(true);
-				System.out.println(" [OK] Connected to Vertica on address: "
-						+ "16.1.1.113");
-
+				
 				Statement myInsert = conn.createStatement();
 				myInsert.executeUpdate("INSERT INTO VLOGGER.USER VALUES ('"
 						+ userID + "','" + userName + "','" + eMail
@@ -255,18 +253,15 @@ public class UserServiceImpl extends RemoteServiceServlet implements
 					// extract the value in column checkid
 					//userHashMap.put(result.getString("USERID"), result.getString("USERNAME"));
 					userIDs.add(result.getString("USERID"));
-					System.out.println("ID: " + result.getString("USERID"));
-				
+					
 			}
 			
-			System.out.println("IDs " + userIDs.toString());
 			
 			Iterator<String> it = userIDs.iterator();
 			
 			while (it.hasNext()){
 				
 				String currentUserID = it.next();
-				System.out.println("Current: " + currentUserID);
 				
 				final ClientResponse findUserName = voltCon.montanaClient
 						.callProcedure("UI_SelectUserForUserID", currentUserID);

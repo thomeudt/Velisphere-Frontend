@@ -91,6 +91,15 @@ public class AMQPServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
 					
 		HashMap<String, String> messageHash = new HashMap<String, String>();
 		messageHash.put("getIsAlive", "1");
@@ -402,6 +411,14 @@ public class AMQPServiceImpl extends RemoteServiceServlet implements
 
 			System.out.println("Secret in DB: " + secret );
 			
+			try {
+				voltCon.closeDatabase();
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
 					
 			return secret;
 		

@@ -256,9 +256,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+		
 			Statement myInsert = conn.createStatement();
 			myInsert.executeUpdate("INSERT INTO vlogger.ENDPOINT_SPHERE_LINK VALUES ('"
 					+ uuid + "','" + endpointID + "','" + sphereID + "') ");
@@ -328,9 +326,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement myDelete = conn.createStatement();
 			myDelete.executeUpdate("DELETE FROM vlogger.ENDPOINT_SPHERE_LINK WHERE ENDPOINTID = '"
 					+ endpointID + "' AND SPHEREID = '" + sphereID + "'");
@@ -524,11 +520,8 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		HttpServletRequest request = getThreadLocalRequest();
 		HttpSession session = request.getSession();
 		Captcha captcha = (Captcha) session.getAttribute(Captcha.NAME);
-		System.out.println("[IN] Captcha Word " + captchaWord);
-		System.out.println("[IN] Captcha on Session " + Captcha.NAME);
 		if (captcha.isCorrect(captchaWord)) {
 
-			System.out.println("[IN] Correct Captcha");
 			VoltConnector voltCon = new VoltConnector();
 
 			try {
@@ -583,10 +576,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			}
 
 			if (uep.getTimestamp() != null) {
-				System.out.println("Time "
-						+ (new Date().getTime() - (Timestamp.valueOf(uep
-								.getTimestamp()).getTime())));
-
+			
 				if ((new Date().getTime() - (Timestamp.valueOf(uep.time_stamp)
 						.getTime())) > 600000000)
 					uep = null;
@@ -718,9 +708,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement myInsert = conn.createStatement();
 			myInsert.executeUpdate("INSERT INTO VLOGGER.ENDPOINT VALUES ('"
 					+ endpointID + "','" + endpointName + "','"
@@ -862,9 +850,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 
 			final String endpointID = it.next();
 
-			System.out.println("[DB] Looking for links belonging to "
-					+ endpointID);
-
+			
 			LinkedList<LogicLinkTargetData> targetsForEndpointID = new LinkedList<LogicLinkTargetData>();
 
 			try {
@@ -890,9 +876,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 
 					String checkpathID = result.getString("CHECKPATHID");
 
-					System.out.println("[DB] Looking for actions in checkpath "
-							+ checkpathID);
-
+					
 					try {
 
 						final ClientResponse findAction = voltCon.montanaClient
@@ -919,10 +903,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 										.setTargetEndpointID(resultActionQuery
 												.getString("TARGETENDPOINTID"));
 								targetsForEndpointID.add(targetData);
-								System.out
-										.println("[DB] Found and adding to target list "
-												+ targetData.toString());
-
+								
 							} else
 								System.out
 										.println("[DB] Discarding emptry result: "
@@ -944,17 +925,9 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			}
 
 			if (linkedEndpointsForEndpointID.containsKey(endpointID)) {
-				System.out.println("[DB] Appending list of "
-						+ targetsForEndpointID.toString() + " to Key "
-						+ endpointID);
-				System.out.println("[DB] >>>>");
 				linkedEndpointsForEndpointID.get(endpointID).addAll(
 						targetsForEndpointID);
 			} else {
-				System.out.println("[DB] Creating full list of "
-						+ targetsForEndpointID.toString() + " to Key "
-						+ endpointID);
-				System.out.println("[DB] >>>>");
 				linkedEndpointsForEndpointID.put(endpointID,
 						targetsForEndpointID);
 			}
@@ -968,8 +941,6 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			e.printStackTrace();
 		}
 
-		System.out.println("[DB] Returning "
-				+ linkedEndpointsForEndpointID.toString());
 		return linkedEndpointsForEndpointID;
 	}
 
@@ -1484,12 +1455,19 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 					
 			}
 
-			System.out.println("Secret in DB: " + secret );
 			} catch (IOException | ProcCallException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	
+
+			try {
+				voltCon.closeDatabase();
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
 					
 			return secret;
 		

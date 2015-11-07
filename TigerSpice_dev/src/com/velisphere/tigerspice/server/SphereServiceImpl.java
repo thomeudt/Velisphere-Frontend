@@ -267,9 +267,7 @@ public class SphereServiceImpl extends RemoteServiceServlet implements
 						"vertica", "1Suplies!");
 
 				conn.setAutoCommit(true);
-				System.out.println(" [OK] Connected to Vertica on address: "
-						+ "16.1.1.113");
-
+			
 				Statement myInsert = conn.createStatement();
 				myInsert.executeUpdate("INSERT INTO VLOGGER.SPHERE VALUES ('"
 						+ sphereID + "','" + sphereName + "','0')");
