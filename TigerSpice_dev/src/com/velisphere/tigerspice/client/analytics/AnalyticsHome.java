@@ -108,7 +108,7 @@ public class AnalyticsHome extends Composite {
 	public void loadContent() {
 
 		// set page header welcome back message
-		pageHeader.setText("VeliSphere Analytics");
+		pageHeader.setText("Analyzer");
 
 		final LogServiceAsync logService = GWT.create(LogService.class);
 

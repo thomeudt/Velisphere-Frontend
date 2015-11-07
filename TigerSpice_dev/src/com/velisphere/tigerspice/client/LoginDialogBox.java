@@ -72,7 +72,11 @@ public class LoginDialogBox extends Composite{
 		txtUsername = new TextBox();
 		txtPassword = new PasswordTextBox();
 		
+		
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		txtPassword.getElement().setAttribute("autocapitalize", "off");
+		txtPassword.getElement().setAttribute("autocomplete", "off");
 		
 		aleError.setVisible(false);
 	

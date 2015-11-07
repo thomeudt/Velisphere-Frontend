@@ -91,7 +91,7 @@ public class Locator extends Composite {
 	public void loadContent() {
 
 		// set page header welcome back message
-		pageHeader.setText("VeliSphere Location Service");
+		pageHeader.setText("Locations");
 
 		bread0 = new NavLink();
 		bread0.setText("Home");

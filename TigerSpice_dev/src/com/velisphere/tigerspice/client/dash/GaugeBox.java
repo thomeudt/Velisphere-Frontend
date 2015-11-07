@@ -75,7 +75,8 @@ public class GaugeBox extends Composite {
 	static int NUMERIC_GAUGE = 1;
 	static int ALPHANUMERIC_GAUGE = 2;
 	static int BOOLEAN_GAUGE = 3;
-
+	ChartLoader chartLoader;
+	HTML errorHTML;
 	
 
 	public GaugeBox() {
@@ -88,6 +89,9 @@ public class GaugeBox extends Composite {
 		initWidget(panel);
 		panel.setHeight("180px");
 		setConfigOkButton();
+
+		chartLoader = new ChartLoader(ChartPackage.GAUGE);
+		
 		configure();
 		
 	}
@@ -105,8 +109,19 @@ public class GaugeBox extends Composite {
 		setConfigOkButton();
 		setTimer();
 		panel.setHeight("180px");
+	
+
+		// Pre-Load Chart Package so that load is complete by the time data is obtained from database
+		chartLoader = new ChartLoader(ChartPackage.GAUGE);
+		chartLoader.loadApi(new Runnable() {
+
+			@Override
+			public void run() {
+			}
+		});
 		
-		getData(false);
+		
+		getPropertyData();
 		
 	}
 	
@@ -162,6 +177,55 @@ public class GaugeBox extends Composite {
 	}
 
 
+	
+	private void getPropertyData()
+	{
+		PropertyServiceAsync propertyService = GWT
+				.create(PropertyService.class);
+
+		propertyService.getPropertyDetailsForPropertyID(propertyID, new AsyncCallback<PropertyData>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(PropertyData result) {
+				// TODO Auto-generated method stub
+		
+				
+				description.setHTML("<br><b><i>"+result.getName()+"</b></i>");
+				
+				
+				PropertyClassServiceAsync propertyClassService = GWT
+						.create(PropertyClassService.class);
+
+				propertyClassService.getPropertyClassForPropertyClassID(result.propertyclassId, new AsyncCallback<PropertyClassData>(){
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(PropertyClassData result) {
+
+						gaugeLabel = result.propertyClassUnit;
+
+						getData(false);
+		
+				
+					}
+				});
+								
+			}
+
+		});
+
+	}
 
 	
 	
@@ -189,9 +253,7 @@ public class GaugeBox extends Composite {
 		}
 		else if (gaugeType == NUMERIC_GAUGE)
 		{
-			//VisualizationUtils.loadVisualizationApi(onLoadCallbackNumericGauge, Gauge.PACKAGE);	
-			
-			ChartLoader chartLoader = new ChartLoader(ChartPackage.GAUGE);
+
 			chartLoader.loadApi(new Runnable() {
 
 				@Override
@@ -201,9 +263,10 @@ public class GaugeBox extends Composite {
 					numericGauge.setHeight("180px");
 					numericGauge.setWidth(getParent().getOffsetWidth()+"px");
 					
+					drawNumericGauge();
 					panel.add(numericGauge);
 					panel.add(controls());
-					drawNumericGauge();
+	
 				}
 			});
 			
@@ -217,7 +280,8 @@ public class GaugeBox extends Composite {
 			showBooleanGauge();
 		}
 		
-		
+		errorHTML = new HTML("");
+		panel.add(errorHTML);
 		
 	}
 
@@ -585,7 +649,7 @@ public class GaugeBox extends Composite {
 					@Override
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
-						panel.add(new HTML("Error obtaining data."));
+						errorHTML.setHTML("<small>One or more cycles lost due to communication issues.<small>");
 					}
 
 					@Override
@@ -647,8 +711,8 @@ public class GaugeBox extends Composite {
 					@Override
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
-						panel.add(new HTML("Error obtaining data."));
-					}
+						errorHTML.setHTML("<small>One or more cycles lost due to communication issues.<small>");
+						}
 
 					@Override
 					public void onSuccess(AnalyticsRawData result) {
@@ -664,7 +728,6 @@ public class GaugeBox extends Composite {
 							if (gaugeType == NUMERIC_GAUGE)
 							{
 						
-								
 								Float numericalValue=Float.parseFloat(entry.getValue());
 								readout = NumberFormat.getFormat("0.00").format(numericalValue);
 
@@ -696,7 +759,6 @@ public class GaugeBox extends Composite {
 								animation.setDuration(800);
 								option.setAnimation(animation);
 								
-								numericGauge = new Gauge();
 								numericGauge.draw(data, option);
 
 							
@@ -722,6 +784,8 @@ public class GaugeBox extends Composite {
 						{
 							// re-set gauge type to empty
 							gaugeType = EMPTY_GAUGE;
+							alphaGauge.setText(readout);
+							
 						}
 	
 						
