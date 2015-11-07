@@ -66,11 +66,12 @@ public class Send {
 		messageMap.put("TYPE", "REG");
 		messageMap.put("EPID", senderQueueName);
 		messageMap.putAll(message);
-	
-				
+
 		String messagePackJSON = MessageFabrik.buildMessagePack(messageMap);
+		System.out.println("........Target Queue: " + targetQueueName);
 		
 		String hMAC = HashTool.getHmacSha1(messagePackJSON, MessageValidator.getSecretFromMontana(targetQueueName));
+		
 
 		HashMap<String, String> submittableMessage = new HashMap<String, String>();
 		

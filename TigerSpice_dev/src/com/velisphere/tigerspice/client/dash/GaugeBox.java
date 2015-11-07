@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+
 import com.github.gwtbootstrap.client.ui.AlertBlock;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.ListBox;
@@ -25,10 +26,13 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
-import com.google.gwt.visualization.client.DataTable;
-import com.google.gwt.visualization.client.VisualizationUtils;
-import com.google.gwt.visualization.client.visualizations.Gauge;
+import com.googlecode.gwt.charts.client.ChartLoader;
+import com.googlecode.gwt.charts.client.ChartPackage;
+import com.googlecode.gwt.charts.client.ColumnType;
+import com.googlecode.gwt.charts.client.DataTable;
+import com.googlecode.gwt.charts.client.gauge.Gauge;
+import com.googlecode.gwt.charts.client.gauge.GaugeOptions;
+import com.googlecode.gwt.charts.client.options.Animation;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
@@ -82,6 +86,7 @@ public class GaugeBox extends Composite {
 		redRange = new int[2];
 		minMax = new double[2];
 		initWidget(panel);
+		panel.setHeight("180px");
 		setConfigOkButton();
 		configure();
 		
@@ -99,6 +104,7 @@ public class GaugeBox extends Composite {
 		initWidget(panel);
 		setConfigOkButton();
 		setTimer();
+		panel.setHeight("180px");
 		
 		getData(false);
 		
@@ -183,7 +189,24 @@ public class GaugeBox extends Composite {
 		}
 		else if (gaugeType == NUMERIC_GAUGE)
 		{
-			VisualizationUtils.loadVisualizationApi(onLoadCallbackNumericGauge, Gauge.PACKAGE);	
+			//VisualizationUtils.loadVisualizationApi(onLoadCallbackNumericGauge, Gauge.PACKAGE);	
+			
+			ChartLoader chartLoader = new ChartLoader(ChartPackage.GAUGE);
+			chartLoader.loadApi(new Runnable() {
+
+				@Override
+				public void run() {
+					// Create and attach the chart
+					numericGauge = new Gauge();
+					numericGauge.setHeight("180px");
+					numericGauge.setWidth(getParent().getOffsetWidth()+"px");
+					
+					panel.add(numericGauge);
+					panel.add(controls());
+					drawNumericGauge();
+				}
+			});
+			
 		}
 		else if (gaugeType == ALPHANUMERIC_GAUGE)
 		{
@@ -252,8 +275,10 @@ public class GaugeBox extends Composite {
 	}
 
 	
-	private Runnable onLoadCallbackNumericGauge = new Runnable() {
-		public void run() {
+	private void drawNumericGauge()  {
+		
+			readout = NumberFormat.getFormat("0.00").format(Float.parseFloat(readout));
+
 			
 			Double gaugeValue = Double.parseDouble(readout);
 			
@@ -264,23 +289,28 @@ public class GaugeBox extends Composite {
 			data.addRows(1);
 			data.setValue(0, 0, gaugeLabel);
 			data.setValue(0, 1, gaugeValue);
-			Gauge.Options option = Gauge.Options.create();
+			GaugeOptions option = GaugeOptions.create();
 
-			option.setHeight(180);
-			option.setWidth(180);
-			option.setGreenRange(greenRange[0], greenRange[1]);
+			//option.setHeight(180);
+			//option.setWidth(180);
+			option.setGreenFrom(greenRange[0]);
+			option.setGreenTo(greenRange[1]);
 			option.setMinorTicks(10);
-			option.setRedRange(redRange[0], redRange[1]);
-			option.setYellowRange(yellowRange[0], yellowRange[1]);
-			option.set("min", minMax[0]);
-			option.set("max", minMax[1]);
-			option.set("animation.duration", Double.valueOf(800));
+			option.setYellowFrom(yellowRange[0]);
+			option.setYellowTo(yellowRange[1]);
+			option.setRedFrom(redRange[0]);
+			option.setRedTo(redRange[1]);
 			
-			numericGauge = new Gauge(data, option);
-			panel.add(numericGauge);
-			panel.add(controls());
+			
+			option.setMin(minMax[0]);
+			option.setMax(minMax[1]);
+			Animation animation = Animation.create();
+			animation.setDuration(800);
+			option.setAnimation(animation);
+			
+			numericGauge.draw(data, option);
 
-		}
+		
 	};
 
 	private HorizontalPanel controls() {
@@ -570,6 +600,7 @@ public class GaugeBox extends Composite {
 							
 							if (gaugeType == NUMERIC_GAUGE && isFromConfigBox == true)
 							{
+								
 								Float numericalValue=Float.parseFloat(entry.getValue());
 								readout = NumberFormat.getFormat("0.00").format(numericalValue);
 								minMax[0] = Double.parseDouble(minMaxPanel.startBox.getValue());
@@ -580,12 +611,13 @@ public class GaugeBox extends Composite {
 								yellowRange[1] = Integer.parseInt(yellowPanel.endBox.getValue());
 								redRange[0] = Integer.parseInt(redPanel.startBox.getValue());
 								redRange[1] = Integer.parseInt(redPanel.endBox.getValue());
-								
+								addGauge();
 							}
 							else
 							{
 
-								readout = entry.getValue();	
+								readout = entry.getValue();
+								addGauge();
 							}
 								
 						}
@@ -595,7 +627,7 @@ public class GaugeBox extends Composite {
 							gaugeType = EMPTY_GAUGE;
 						}
 						
-						addGauge();
+						
 					}
 			
 				});
@@ -635,6 +667,7 @@ public class GaugeBox extends Composite {
 								
 								Float numericalValue=Float.parseFloat(entry.getValue());
 								readout = NumberFormat.getFormat("0.00").format(numericalValue);
+
 								Double gaugeValue = Double.parseDouble(readout);
 								
 								DataTable data = DataTable.create();
@@ -644,19 +677,30 @@ public class GaugeBox extends Composite {
 								data.addRows(1);
 								data.setValue(0, 0, gaugeLabel);
 								data.setValue(0, 1, gaugeValue);
-								Gauge.Options option = Gauge.Options.create();
+								GaugeOptions option = GaugeOptions.create();
 
-								option.setHeight(180);
-								option.setWidth(180);
-								option.setGreenRange(greenRange[0], greenRange[1]);
+								//option.setHeight(180);
+								//option.setWidth(180);
+								option.setGreenFrom(greenRange[0]);
+								option.setGreenTo(greenRange[1]);
 								option.setMinorTicks(10);
-								option.setRedRange(redRange[0], redRange[1]);
-								option.setYellowRange(yellowRange[0], yellowRange[1]);
-								option.set("min", minMax[0]);
-								option.set("max", minMax[1]);
-								option.set("animation.duration", Double.valueOf(800));
+								option.setYellowFrom(yellowRange[0]);
+								option.setYellowTo(yellowRange[1]);
+								option.setRedFrom(redRange[0]);
+								option.setRedTo(redRange[1]);
 								
+								
+								option.setMin(minMax[0]);
+								option.setMax(minMax[1]);
+								Animation animation = Animation.create();
+								animation.setDuration(800);
+								option.setAnimation(animation);
+								
+								numericGauge = new Gauge();
 								numericGauge.draw(data, option);
+
+							
+							
 							}
 							else if (gaugeType == BOOLEAN_GAUGE)
 								
