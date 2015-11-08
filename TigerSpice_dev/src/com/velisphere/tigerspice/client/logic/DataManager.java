@@ -17,6 +17,7 @@ import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.JSONreadyEvent;
 import com.velisphere.tigerspice.client.event.JSONreadyEventHandler;
 import com.velisphere.tigerspice.client.helper.ActionSourceConfig;
+import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorLogicCheckActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorLogicCheck;
@@ -50,6 +51,11 @@ public class DataManager {
 					public void onJSONready(JSONreadyEvent jsonReadyEvent) {
 
 						// send to database
+						
+						final AnimationLoading animationLoading = new AnimationLoading("Saving rule...");
+						animationLoading.showLoadAnimation();
+
+						
 						CheckPathServiceAsync checkpathService = GWT
 								.create(CheckPathService.class);
 
@@ -67,6 +73,7 @@ public class DataManager {
 									@Override
 									public void onSuccess(String result) {
 										// TODO Auto-generated method stub
+										animationLoading.removeLoadAnimation();
 									}
 
 								});
@@ -117,6 +124,10 @@ public class DataManager {
 		
 			// send to database
 
+			final AnimationLoading animationLoading = new AnimationLoading("Saving physical/physical link...");
+			animationLoading.showLoadAnimation();
+
+			
 			CheckServiceAsync checkService = GWT.create(CheckService.class);
 
 			checkService.addNewCheck(current.getCheckUUID(), current
@@ -134,7 +145,7 @@ public class DataManager {
 						@Override
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
-
+							animationLoading.removeLoadAnimation();
 						}
 
 					});
@@ -164,6 +175,11 @@ public class DataManager {
 
 			// send check to database
 
+			
+			final AnimationLoading animationLoading = new AnimationLoading("Saving physical/logical links...");
+			animationLoading.showLoadAnimation();
+
+			
 			CheckServiceAsync checkService = GWT.create(CheckService.class);
 
 
@@ -182,7 +198,7 @@ public class DataManager {
 						@Override
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
-
+							animationLoading.removeLoadAnimation();
 						}
 
 					});
@@ -236,6 +252,10 @@ public class DataManager {
 
 			// send multicheck to database
 
+			final AnimationLoading animationLoading = new AnimationLoading("Saving logical/physical links...");
+			animationLoading.showLoadAnimation();
+
+			
 			CheckPathServiceAsync checkpathService = GWT
 					.create(CheckPathService.class);
 
@@ -253,11 +273,16 @@ public class DataManager {
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
 
+							animationLoading.removeLoadAnimation();
 						}
 
 					});
 
 			// link checks
+			
+			final AnimationLoading secondAnimationLoading = new AnimationLoading("Processing links...");
+			secondAnimationLoading.showLoadAnimation();
+
 
 			Iterator<ConnectorSensorLogicCheck> pit = current.getLogicCheck()
 					.getChildConnectors().iterator();
@@ -280,6 +305,7 @@ public class DataManager {
 							@Override
 							public void onSuccess(String result) {
 								// TODO Auto-generated method stub
+								secondAnimationLoading.removeLoadAnimation();
 							}
 
 						});
@@ -297,6 +323,10 @@ public class DataManager {
 			ConnectorLogicCheckActor current = it.next();
 
 			// delete multicheck from database
+			
+			final AnimationLoading animationLoading = new AnimationLoading("Removing orphan logical/physical links...");
+			animationLoading.showLoadAnimation();
+
 
 			CheckPathServiceAsync checkpathService = GWT
 					.create(CheckPathService.class);
@@ -314,11 +344,17 @@ public class DataManager {
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
 
+							animationLoading.removeLoadAnimation();
 						}
 
 					});
 
 			// delete actions from database
+			
+
+			final AnimationLoading secondAnimationLoading = new AnimationLoading("Removing orphan actions...");
+			secondAnimationLoading.showLoadAnimation();
+
 
 			checkpathService.deleteAllActionsForMulticheckId(
 					current.getCheckUUID(), new AsyncCallback<String>() {
@@ -332,12 +368,19 @@ public class DataManager {
 						@Override
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
+
+							secondAnimationLoading.removeFromParent();
 						}
 
 					});
 
 			// delete links to checks
 
+
+			final AnimationLoading thirdAnimationLoading = new AnimationLoading("Removing orphan links...");
+			thirdAnimationLoading.showLoadAnimation();
+
+			
 			Iterator<ConnectorSensorLogicCheck> pit = current.getLogicCheck()
 					.getDeletedChildConnectors().iterator();
 
@@ -354,6 +397,7 @@ public class DataManager {
 							@Override
 							public void onSuccess(String result) {
 								// TODO Auto-generated method stub
+								thirdAnimationLoading.removeLoadAnimation();
 							}
 
 						});
@@ -373,6 +417,11 @@ public class DataManager {
 
 	
 			// delete from database
+			
+
+			final AnimationLoading animationLoading = new AnimationLoading("Removing orphan physical/physical links...");
+			animationLoading.showLoadAnimation();
+
 
 			CheckServiceAsync checkService = GWT.create(CheckService.class);
 
@@ -389,11 +438,17 @@ public class DataManager {
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
 
+							animationLoading.removeLoadAnimation();
 						}
 
 					});
 
 			// delete actions from database
+			
+
+			final AnimationLoading secondAnimationLoading = new AnimationLoading("Removing orphan actions...");
+			secondAnimationLoading.showLoadAnimation();
+
 
 			checkService.deleteAllActionsForCheckId(current.getCheckUUID(),
 					new AsyncCallback<String>() {
@@ -407,7 +462,7 @@ public class DataManager {
 						@Override
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
-
+							secondAnimationLoading.removeLoadAnimation();
 						}
 
 					});
@@ -423,6 +478,11 @@ public class DataManager {
 
 		while (it.hasNext()) {
 
+
+			final AnimationLoading animationLoading = new AnimationLoading("Removing orphan physical/logical links...");
+			animationLoading.showLoadAnimation();
+
+			
 			ConnectorSensorLogicCheck current = it.next();
 
 
@@ -442,13 +502,18 @@ public class DataManager {
 						@Override
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
-
+							animationLoading.removeLoadAnimation();
 						}
 
 					});
 
 			// delete actions from database
 
+
+			final AnimationLoading secondAnimationLoading = new AnimationLoading("Removing orphan actions...");
+			secondAnimationLoading.showLoadAnimation();
+
+			
 			checkService.deleteAllActionsForCheckId(current.getCheckUUID(),
 					new AsyncCallback<String>() {
 
@@ -461,7 +526,7 @@ public class DataManager {
 						@Override
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
-
+							secondAnimationLoading.removeLoadAnimation();
 						}
 
 					});
@@ -487,6 +552,12 @@ public class DataManager {
 						jsonReadyHandler.removeHandler();
 
 						// send to database
+						
+
+						final AnimationLoading animationLoading = new AnimationLoading("Loading chart...");
+						animationLoading.showLoadAnimation();
+
+						
 						CheckPathServiceAsync checkpathService = GWT
 								.create(CheckPathService.class);
 
@@ -510,6 +581,7 @@ public class DataManager {
 												// stub
 											
 												factory.unpackContainer(result);
+												animationLoading.removeLoadAnimation();
 											}
 
 										});
@@ -523,6 +595,11 @@ public class DataManager {
 	public void deleteCheckpath() {
 
 		// send to database
+		
+		final AnimationLoading animationLoading = new AnimationLoading("Deleting rule...");
+		animationLoading.showLoadAnimation();
+
+		
 		CheckPathServiceAsync checkpathService = GWT
 				.create(CheckPathService.class);
 
@@ -538,6 +615,8 @@ public class DataManager {
 					@Override
 					public void onSuccess(String result) {
 						// TODO Auto-generated method stub
+						
+						animationLoading.removeLoadAnimation();
 					
 					}
 

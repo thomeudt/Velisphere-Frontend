@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.JSONreadyEvent;
+import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorLogicCheckActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorLogicCheck;
@@ -128,6 +129,10 @@ public class JsonFabrik {
 		// create json for all physical items
 
 				
+		final AnimationLoading animationLoading = new AnimationLoading("Processing chart...");
+		animationLoading.showLoadAnimation();
+
+		
 		CheckPathServiceAsync checkPathService = GWT
 				.create(CheckPathService.class);
 
@@ -148,6 +153,7 @@ public class JsonFabrik {
 						checkpathJSON = result;
 						EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new JSONreadyEvent());
 
+						animationLoading.removeLoadAnimation();
 					}
 
 				});

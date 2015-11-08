@@ -45,7 +45,6 @@ public class AnimationLoading extends DialogBox {
 		
 		setWidget(uiBinder.createAndBindUi(this));
 		setGlassEnabled(true);
-		stgLoading.addStyleName("vcenter");
 		
 		
 	}
@@ -54,8 +53,6 @@ public class AnimationLoading extends DialogBox {
 		
 		setWidget(uiBinder.createAndBindUi(this));
 		setGlassEnabled(true);
-		stgLoading.addStyleName("vcenter");
-		this.addStyleName("vcenter");
 		stgLoading.setText(text);
 		//this.setPopupPosition(50, 50);
 		//RootPanel rootPanel = RootPanel.get();
@@ -69,24 +66,24 @@ public class AnimationLoading extends DialogBox {
 	public void showLoadAnimation() {
 		RootPanel rootPanel = RootPanel.get("main");
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-		rootPanel.add(this, 25, 40);
+		rootPanel.add(this, rootPanel.getOffsetWidth()/2, 40);
 		
 	}
+
 
 
 	public void showLoadAnimation(String text) {
 		stgLoading.setText(text);
 		RootPanel rootPanel = RootPanel.get("main");
 		rootPanel.getElement().getStyle().setPosition(Position.RELATIVE);
-		rootPanel.add(this, 25, 40);
-		
+		rootPanel.add(this, rootPanel.getOffsetWidth()/2, 40);
+			
 		
 	}
 
 	public void removeLoadAnimation() {
 		
 		RootPanel rootPanel = RootPanel.get("main");
-		
 		rootPanel.remove(this);
 	}
 

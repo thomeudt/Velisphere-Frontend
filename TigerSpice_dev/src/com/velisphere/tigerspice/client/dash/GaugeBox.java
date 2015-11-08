@@ -41,6 +41,7 @@ import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
 import com.velisphere.tigerspice.client.event.DraggedInCanvasEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.RemoveGaugeFromDashEvent;
+import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
@@ -183,6 +184,10 @@ public class GaugeBox extends Composite {
 	
 	private void getPropertyData()
 	{
+		final AnimationLoading animationLoading = new AnimationLoading("Loading device properties...");
+		animationLoading.showLoadAnimation();
+
+		
 		PropertyServiceAsync propertyService = GWT
 				.create(PropertyService.class);
 
@@ -198,9 +203,15 @@ public class GaugeBox extends Composite {
 			public void onSuccess(PropertyData result) {
 				// TODO Auto-generated method stub
 		
+
+				animationLoading.removeLoadAnimation();
 				
 				description.setHTML("<br><b><i>"+result.getName()+"</b></i>");
 				
+				
+				final AnimationLoading secondAnimationLoading = new AnimationLoading("Loading property classes...");
+				secondAnimationLoading.showLoadAnimation();
+
 				
 				PropertyClassServiceAsync propertyClassService = GWT
 						.create(PropertyClassService.class);
@@ -216,10 +227,11 @@ public class GaugeBox extends Composite {
 					@Override
 					public void onSuccess(PropertyClassData result) {
 
+
 						gaugeLabel = result.propertyClassUnit;
 
 						getData(false);
-		
+						secondAnimationLoading.removeLoadAnimation();
 				
 					}
 				});
@@ -452,6 +464,11 @@ public class GaugeBox extends Composite {
 	
 	private void fillEndpointDropDown(final ListBox lbxEndpoints)
 	{
+		
+		final AnimationLoading animationLoading = new AnimationLoading("Loading Device List...");
+		animationLoading.showLoadAnimation();
+
+		
 		EndpointServiceAsync endpointService = GWT
 				.create(EndpointService.class);
 
@@ -498,6 +515,7 @@ public class GaugeBox extends Composite {
 					
 				});
 
+				animationLoading.removeLoadAnimation();
 				
 			}
 			
@@ -507,6 +525,11 @@ public class GaugeBox extends Composite {
 	
 	private void fillPropertyDropDown(String endpointID)
 	{
+		
+		final AnimationLoading animationLoading = new AnimationLoading("Loading property list...");
+		animationLoading.showLoadAnimation();
+
+		
 		PropertyServiceAsync propertyService = GWT
 				.create(PropertyService.class);
 
@@ -555,7 +578,8 @@ public class GaugeBox extends Composite {
 					
 				});
 
-							
+					
+				animationLoading.removeLoadAnimation();
 			}
 			
 		});
@@ -565,6 +589,9 @@ public class GaugeBox extends Composite {
 	private void getPropertyClassData(String propertyClassID)
 	{
 
+
+		final AnimationLoading animationLoading = new AnimationLoading("Loading property classes...");
+		animationLoading.showLoadAnimation();
 
 
 
@@ -608,6 +635,7 @@ public class GaugeBox extends Composite {
 				}
 				panel.add(btnOK);
 		
+				animationLoading.removeLoadAnimation();
 			}
 		});
 		
@@ -652,6 +680,11 @@ public class GaugeBox extends Composite {
 
 	private void getData(final boolean isFromConfigBox)
 	{
+		
+		final AnimationLoading animationLoading = new AnimationLoading("Loading Data");
+		animationLoading.showLoadAnimation();
+
+		
 		AnalyticsServiceAsync analyticsService = GWT
 				.create(AnalyticsService.class);
 		
@@ -703,7 +736,7 @@ public class GaugeBox extends Composite {
 							gaugeType = EMPTY_GAUGE;
 						}
 						
-						
+						animationLoading.removeLoadAnimation();
 					}
 			
 				});
@@ -714,6 +747,10 @@ public class GaugeBox extends Composite {
 
 	private void updateData()
 	{
+		
+		final AnimationLoading animationLoading = new AnimationLoading("Refreshing data...");
+		animationLoading.showLoadAnimation();
+
 		AnalyticsServiceAsync analyticsService = GWT
 				.create(AnalyticsService.class);
 		
@@ -723,7 +760,7 @@ public class GaugeBox extends Composite {
 					@Override
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
-						errorHTML.setHTML("<small>One or more cycles lost due to communication issues.<small>");
+						errorHTML.setHTML("<small>Connection unreliable.<small>");
 						}
 
 					@Override
@@ -800,7 +837,7 @@ public class GaugeBox extends Composite {
 							
 						}
 	
-						
+						animationLoading.removeFromParent();
 					}
 
 				});

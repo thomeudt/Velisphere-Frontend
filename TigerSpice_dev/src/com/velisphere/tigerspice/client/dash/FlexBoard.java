@@ -32,6 +32,7 @@ import com.velisphere.tigerspice.client.event.DraggedToCanvasEventHandler;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.RemoveGaugeFromDashEvent;
 import com.velisphere.tigerspice.client.event.RemoveGaugeFromDashEventHandler;
+import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.shared.DashData;
 import com.velisphere.tigerspice.shared.GaugeData;
 
@@ -128,6 +129,10 @@ public class FlexBoard extends Composite{
 	private void loadExistingFields()
 	{
 		
+
+		final AnimationLoading animationLoading = new AnimationLoading("Loading gauges...");
+		animationLoading.showLoadAnimation();
+		
 		GaugeServiceAsync gaugeService = GWT
 				.create(GaugeService.class);
 
@@ -160,7 +165,7 @@ public class FlexBoard extends Composite{
 						currentAddBoxColumn = addAddBoxColumn();
 						row.add(currentAddBoxColumn);
 
-						
+						animationLoading.removeLoadAnimation();
 					
 					}
 
@@ -189,6 +194,10 @@ public class FlexBoard extends Composite{
 
 				@Override
 				public void onClick(ClickEvent event) {
+					
+					final AnimationLoading animationLoading = new AnimationLoading("Saving gauges...");
+					animationLoading.showLoadAnimation();
+
 					
 					LinkedList<GaugeData> gaugeDataList = new LinkedList<GaugeData>();
 					
@@ -226,6 +235,7 @@ public class FlexBoard extends Composite{
 						
 					});
 					saveDialog.removeFromParent();
+					animationLoading.removeLoadAnimation();
 				}
 				
 			});

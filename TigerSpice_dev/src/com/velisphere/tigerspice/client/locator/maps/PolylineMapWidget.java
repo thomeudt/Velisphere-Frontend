@@ -55,6 +55,7 @@ import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.FilterAppliedEvent;
 import com.velisphere.tigerspice.client.event.FilterAppliedEventHandler;
+import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.widgets.FilterSphereEndpointWidget;
 import com.velisphere.tigerspice.shared.GeoLocationData;
 
@@ -393,6 +394,9 @@ public class PolylineMapWidget extends Composite {
   
   private void getMarkersForMap() {
 
+		final AnimationLoading animationLoading = new AnimationLoading("Loading markers...");
+		animationLoading.showLoadAnimation();
+
 
 		AnalyticsServiceAsync analyticsService = GWT
 				.create(AnalyticsService.class);
@@ -418,7 +422,7 @@ public class PolylineMapWidget extends Composite {
 						drawMap();
 					    drawPolyline();
 						
-						
+						animationLoading.removeLoadAnimation();
 					}
 
 				});
@@ -427,6 +431,9 @@ public class PolylineMapWidget extends Composite {
   
   private void getMarkersForMapSingleEndpoint(String endpointID) {
 
+
+		final AnimationLoading animationLoading = new AnimationLoading("Loading markers...");
+		animationLoading.showLoadAnimation();
 
 		AnalyticsServiceAsync analyticsService = GWT
 				.create(AnalyticsService.class);
@@ -450,7 +457,7 @@ public class PolylineMapWidget extends Composite {
 						allGeoDataForMap = result;
 						drawMap();
 					    drawPolyline();
-						
+						animationLoading.removeFromParent();
 					}
 
 				});
@@ -460,6 +467,10 @@ public class PolylineMapWidget extends Composite {
 private void getMarkersForMapSphere(String sphereID) {
 
 
+	final AnimationLoading animationLoading = new AnimationLoading("Loading markers...");
+	animationLoading.showLoadAnimation();
+
+	
 		AnalyticsServiceAsync analyticsService = GWT
 				.create(AnalyticsService.class);
 
@@ -483,6 +494,7 @@ private void getMarkersForMapSphere(String sphereID) {
 						drawMap();
 					    drawPolyline();
 						
+					    animationLoading.removeLoadAnimation();
 					}
 
 				});

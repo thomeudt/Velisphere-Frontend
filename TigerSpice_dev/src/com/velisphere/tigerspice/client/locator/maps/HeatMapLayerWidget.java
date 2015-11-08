@@ -59,6 +59,7 @@ import com.velisphere.tigerspice.client.event.CheckpathCalculatedEventHandler;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.FilterAppliedEvent;
 import com.velisphere.tigerspice.client.event.FilterAppliedEventHandler;
+import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.helper.widgets.FilterSphereEndpointWidget;
 import com.velisphere.tigerspice.client.locator.helpers.GeoDataForMap;
 import com.velisphere.tigerspice.shared.GeoLocationData;
@@ -213,6 +214,10 @@ public class HeatMapLayerWidget extends Composite {
   private void getMarkersForMap() {
 
 
+		final AnimationLoading animationLoading = new AnimationLoading("Loading markers...");
+		animationLoading.showLoadAnimation();
+
+	  
 		AnalyticsServiceAsync analyticsService = GWT
 				.create(AnalyticsService.class);
 
@@ -235,7 +240,7 @@ public class HeatMapLayerWidget extends Composite {
 						allGeoDataForMap = result;
 						compileHeatMapData();
 						drawMap();
-						
+						animationLoading.removeLoadAnimation();
 					}
 
 				});
@@ -244,6 +249,9 @@ public class HeatMapLayerWidget extends Composite {
 
   
   private void getMarkersForMapSingleEndpoint(String endpointID) {
+
+		final AnimationLoading animationLoading = new AnimationLoading("Loading markers...");
+		animationLoading.showLoadAnimation();
 
 
 		AnalyticsServiceAsync analyticsService = GWT
@@ -268,7 +276,7 @@ public class HeatMapLayerWidget extends Composite {
 						allGeoDataForMap = result;
 						compileHeatMapData();
 						drawMap();
-						
+						animationLoading.removeLoadAnimation();
 					}
 
 				});
@@ -276,6 +284,9 @@ public class HeatMapLayerWidget extends Composite {
 	}
 
   private void getMarkersForMapSphere(String sphereID) {
+
+		final AnimationLoading animationLoading = new AnimationLoading("Loading markers...");
+		animationLoading.showLoadAnimation();
 
 
 		AnalyticsServiceAsync analyticsService = GWT
@@ -300,6 +311,7 @@ public class HeatMapLayerWidget extends Composite {
 						allGeoDataForMap = result;
 						compileHeatMapData();
 						drawMap();
+						animationLoading.removeLoadAnimation();
 						
 					}
 
