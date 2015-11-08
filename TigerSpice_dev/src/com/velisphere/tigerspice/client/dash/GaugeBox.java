@@ -38,6 +38,9 @@ import com.velisphere.tigerspice.client.analytics.AnalyticsServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
+import com.velisphere.tigerspice.client.event.DraggedInCanvasEvent;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.RemoveGaugeFromDashEvent;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
 import com.velisphere.tigerspice.client.propertyclasses.PropertyClassService;
@@ -399,13 +402,22 @@ public class GaugeBox extends Composite {
 		removeButton.setSize(ButtonSize.MINI);
 		removeButton.setType(ButtonType.DANGER);
 
-		final Composite gauge = this;
+		final GaugeBox gauge = this;
 
 		removeButton.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
+				
+				// remove physically
 				gauge.getParent().removeFromParent();
+				
+				
+				// remove from gauge list in parent flex board by triggering remove event 
+				
+				EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new RemoveGaugeFromDashEvent(gauge));
+		
+				
 				if (refreshTimer != null)
 					refreshTimer.cancel();
 

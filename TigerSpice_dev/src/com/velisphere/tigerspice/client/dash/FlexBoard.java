@@ -14,6 +14,8 @@ import com.github.gwtbootstrap.client.ui.resources.ButtonSize;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -25,6 +27,11 @@ import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
+import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
+import com.velisphere.tigerspice.client.event.DraggedToCanvasEventHandler;
+import com.velisphere.tigerspice.client.event.EventUtils;
+import com.velisphere.tigerspice.client.event.RemoveGaugeFromDashEvent;
+import com.velisphere.tigerspice.client.event.RemoveGaugeFromDashEventHandler;
 import com.velisphere.tigerspice.shared.DashData;
 import com.velisphere.tigerspice.shared.GaugeData;
 
@@ -38,6 +45,7 @@ public class FlexBoard extends Composite{
 	static HTML SPACER = new HTML("&nbsp;<br>");
 	Row row;
 	String dashID;
+	HandlerRegistration removeGaugeHandler;
 	
 	// Default constructor for a new FlexBoard
 	
@@ -50,6 +58,7 @@ public class FlexBoard extends Composite{
 		//rowMap = new HashMap<Integer, Row>();
 		displayHeader();
 		displayInitialField();
+		setRemoveGaugeEventHandler();
 		
 	}
 	
@@ -64,6 +73,7 @@ public class FlexBoard extends Composite{
 		//rowMap = new HashMap<Integer, Row>();
 		displayHeader();
 		loadExistingFields();
+		setRemoveGaugeEventHandler();
 		
 	}
 	
@@ -290,7 +300,22 @@ public class FlexBoard extends Composite{
 		return column;
 	}
 	
-	
+	private void setRemoveGaugeEventHandler()
+	{
+
+		removeGaugeHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(
+				RemoveGaugeFromDashEvent.TYPE, new RemoveGaugeFromDashEventHandler() {
+
+					@Override
+					public void onGaugeBoxRemoved(
+							RemoveGaugeFromDashEvent removeGaugeFromDashEvent) {
+						
+						gaugeList.remove(removeGaugeFromDashEvent.getGaugeBox());
+						
+					}
+				});
+
+	}
 	
 	
 	
