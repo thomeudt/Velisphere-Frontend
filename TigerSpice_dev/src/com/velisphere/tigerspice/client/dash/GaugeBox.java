@@ -497,6 +497,8 @@ public class GaugeBox extends Composite {
 
 					@Override
 					public void onChange(ChangeEvent event) {
+						
+						removeNumericGaugeProps();
 						endpointID = lbxEndpoints.getSelectedValue();
 						
 						if (lbxProperties.isAttached())
@@ -620,10 +622,12 @@ public class GaugeBox extends Composite {
 					if (result.propertyClassDatatype == "String")
 					{
 						gaugeType = ALPHANUMERIC_GAUGE;	
+						removeNumericGaugeProps();
 					} else
 						if (result.propertyClassDatatype == "Byte")
 						{
-							gaugeType = BOOLEAN_GAUGE;	
+							gaugeType = BOOLEAN_GAUGE;
+							removeNumericGaugeProps();
 						}
 							
 				
@@ -659,7 +663,18 @@ public class GaugeBox extends Composite {
 					
 	}
 
-	
+
+	private void removeNumericGaugeProps()
+	{
+		if(minMaxPanel!=null && minMaxPanel.isVisible())
+		{
+			minMaxPanel.removeFromParent();
+		
+			greenPanel.removeFromParent();
+			yellowPanel.removeFromParent();
+			redPanel.removeFromParent();
+		}	
+	}
 	
 	private void setConfigOkButton()
 	{

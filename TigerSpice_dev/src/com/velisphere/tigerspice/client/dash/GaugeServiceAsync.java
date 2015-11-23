@@ -32,7 +32,7 @@ import com.velisphere.tigerspice.shared.PropertyData;
 import com.velisphere.tigerspice.shared.UserData;
 
 public interface GaugeServiceAsync {
-	void saveDashboard(String dashName, LinkedList<GaugeData> gaugeDatas, AsyncCallback<String> callback);
+	void saveDashboard(String userID, String dashName, LinkedList<GaugeData> gaugeDatas, AsyncCallback<String> callback);
 	void getAllDashboardsForUser(String userID, AsyncCallback<LinkedList<DashData>> callback);
 	void getGaugesForDashID(String dashID, AsyncCallback<LinkedList<GaugeData>> callback);
 

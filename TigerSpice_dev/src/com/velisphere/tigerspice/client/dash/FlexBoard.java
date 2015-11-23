@@ -39,9 +39,8 @@ import com.velisphere.tigerspice.shared.GaugeData;
 public class FlexBoard extends Composite{
 	
 	VerticalPanel verticalPanel;
-	//int rowCount = 0;
-	//HashMap<Integer, Row> rowMap;
-	LinkedList<GaugeBox> gaugeList;
+	Button btnSave;
+	LinkedList<Object> gaugeList;
 	FlexColumn currentAddBoxColumn;
 	static HTML SPACER = new HTML("&nbsp;<br>");
 	Row row;
@@ -53,10 +52,9 @@ public class FlexBoard extends Composite{
 	public FlexBoard()
 	{
 		
-		gaugeList = new LinkedList<GaugeBox>();
+		gaugeList = new LinkedList<Object>();
 		verticalPanel = new VerticalPanel();
 		initWidget(verticalPanel);
-		//rowMap = new HashMap<Integer, Row>();
 		displayHeader();
 		displayInitialField();
 		setRemoveGaugeEventHandler();
@@ -68,7 +66,7 @@ public class FlexBoard extends Composite{
 	public FlexBoard(String dashID)
 	{
 		this.dashID = dashID;
-		gaugeList = new LinkedList<GaugeBox>();
+		gaugeList = new LinkedList<Object>();
 		verticalPanel = new VerticalPanel();
 		initWidget(verticalPanel);
 		//rowMap = new HashMap<Integer, Row>();
@@ -84,7 +82,7 @@ public class FlexBoard extends Composite{
 		row = new Row();
 		verticalPanel.add(row);
 		Column saveDashboardColumn = new Column(2);
-		Button btnSave = new Button("Save");
+		btnSave = new Button("Save");
 		btnSave.setSize(ButtonSize.SMALL);
 		btnSave.setType(ButtonType.PRIMARY);
 		saveDashboardColumn.add(btnSave);
@@ -201,25 +199,36 @@ public class FlexBoard extends Composite{
 					
 					LinkedList<GaugeData> gaugeDataList = new LinkedList<GaugeData>();
 					
-					Iterator<GaugeBox> it = gaugeList.iterator();
+					Iterator<Object> it = gaugeList.iterator();
 					while (it.hasNext())
 					{
-						GaugeBox gaugeBox = it.next();
-						GaugeData gaugeData = new GaugeData();
-						gaugeData.setEndpointID(gaugeBox.getEndpointID());
-						gaugeData.setPropertyID(gaugeBox.getPropertyID());
-						gaugeData.setGaugeType(gaugeBox.getGaugeType());
-						gaugeData.setMinMax(gaugeBox.getMinMax());
-						gaugeData.setGreenRange(gaugeBox.getGreenRange());
-						gaugeData.setYellowRange(gaugeBox.getYellowRange());
-						gaugeData.setRedRange(gaugeBox.getRedRange());
-						gaugeDataList.add(gaugeData);
+						Object object = it.next();
+						if(object.getClass()==GaugeBox.class)
+						{
+							GaugeBox gaugeBox = (GaugeBox) object;
+							GaugeData gaugeData = new GaugeData();
+							gaugeData.setEndpointID(gaugeBox.getEndpointID());
+							gaugeData.setPropertyID(gaugeBox.getPropertyID());
+							gaugeData.setGaugeType(gaugeBox.getGaugeType());
+							gaugeData.setMinMax(gaugeBox.getMinMax());
+							gaugeData.setGreenRange(gaugeBox.getGreenRange());
+							gaugeData.setYellowRange(gaugeBox.getYellowRange());
+							gaugeData.setRedRange(gaugeBox.getRedRange());
+							gaugeDataList.add(gaugeData);	
+						}
+						
+						if(object.getClass()==SwitchBox.class)
+						{
+							SwitchBox switchBox = (SwitchBox) object;
+							
+						}
+						
 					}
 					
 					GaugeServiceAsync gaugeService = GWT
 							.create(GaugeService.class);
 					
-					gaugeService.saveDashboard(txtName.getText(), gaugeDataList, new AsyncCallback<String>(){
+					gaugeService.saveDashboard(SessionHelper.getCurrentUserID(), txtName.getText(), gaugeDataList, new AsyncCallback<String>(){
 
 						@Override
 						public void onFailure(Throwable caught) {
@@ -256,28 +265,19 @@ public class FlexBoard extends Composite{
 	{
 		VerticalPanel panel = new VerticalPanel();
 		
-		Button button = new Button("Add +");
-		button.setSize(ButtonSize.LARGE);
-		button.setType(ButtonType.SUCCESS);
-		panel.add(button);
+		Button gaugeButton = new Button("Add Gauge...");
+		gaugeButton.setSize(ButtonSize.DEFAULT);
+		gaugeButton.setType(ButtonType.SUCCESS);
 		
-		button.addClickHandler(new ClickHandler(){
+		panel.add(gaugeButton);
+		
+		gaugeButton.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
 				
-		//		Row lastRow = rowMap.get(rowCount);
 				row.remove(currentAddBoxColumn);
 				
-		/*		
-				if(fieldCount % 6 == 0)
-				{
-					RootPanel.get().add(new HTML("ROW ADDING REQUESTED"));
-					verticalPanel.add(SPACER);
-					addRow();
-					lastRow = rowMap.get(rowCount);
-				}
-			*/	
 				row.add(addGaugeColumn());		
 				
 				currentAddBoxColumn = addAddBoxColumn();
@@ -286,6 +286,29 @@ public class FlexBoard extends Composite{
 			}
 			
 		});
+
+		
+		Button switchButton = new Button("Add Switch...");
+		switchButton.setSize(ButtonSize.DEFAULT);
+		switchButton.setType(ButtonType.PRIMARY);
+		panel.add(switchButton);
+		
+		switchButton.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				
+				row.remove(currentAddBoxColumn);
+				
+				row.add(addSwitchColumn());		
+				
+				currentAddBoxColumn = addAddBoxColumn();
+				row.add(currentAddBoxColumn);
+
+			}
+			
+		});
+
 		
 		return panel;
 		
@@ -300,6 +323,18 @@ public class FlexBoard extends Composite{
 		gaugeList.add(gaugeBox);
 		return column;
 	}
+
+	
+	private Column addSwitchColumn()
+	{
+		
+		FlexColumn column = new FlexColumn(2);
+		SwitchBox switchBox = new SwitchBox();
+		column.add(switchBox);
+		gaugeList.add(switchBox);
+		return column;
+	}
+
 	
 	private Column addGaugeColumnWithData(GaugeBox gaugeBox)
 	{

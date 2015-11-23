@@ -192,7 +192,8 @@ interface MyBinder extends UiBinder<Widget, ConfigurableDashboard>{}
 						}
 						else
 						{
-							tabPanel.selectTab(0);
+							if (tabNumber != 0)
+								tabPanel.selectTab(0);
 						
 							
 						};

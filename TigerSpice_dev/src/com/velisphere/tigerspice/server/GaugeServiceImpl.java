@@ -47,7 +47,7 @@ public class GaugeServiceImpl extends RemoteServiceServlet implements
 
 	
 	@Override
-	public String saveDashboard(String dashName,
+	public String saveDashboard(String userID, String dashName,
 			LinkedList<GaugeData> gaugeDatas) {
 	
 		ObjectMapper mapper = new ObjectMapper();
@@ -56,10 +56,10 @@ public class GaugeServiceImpl extends RemoteServiceServlet implements
 		 		
 		try {
 	 				 
-			// display to console
+			// create JSON data
 			jsonGauges = mapper.writeValueAsString(gaugeDatas);
 			
-			System.out.println("JSON generiert: " + jsonGauges);
+			//System.out.println("JSON generiert: " + jsonGauges);
 	 
 			
 			VoltConnector voltCon = new VoltConnector();
@@ -77,7 +77,7 @@ public class GaugeServiceImpl extends RemoteServiceServlet implements
 			try {
 
 				voltCon.montanaClient.callProcedure("DASHBOARD.insert", gaugeID,
-						dashName, jsonGauges);
+						dashName, jsonGauges, userID);
 			} catch (NoConnectionsException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -136,10 +136,8 @@ public class GaugeServiceImpl extends RemoteServiceServlet implements
 		try {
 
 			
-			// need to fix missing user id check!!!!
-			
 			 VoltTable[] results = voltCon.montanaClient.callProcedure("@AdHoc",
-				       "SELECT * FROM DASHBOARD ORDER BY NAME ASC").getResults();
+				       "SELECT DASHBOARDID, NAME, USERID FROM DASHBOARD WHERE USERID = '"+userID+"' ORDER BY NAME ASC").getResults();
 			
 			VoltTable result = results[0];
 			// check if any rows have been returned
@@ -149,8 +147,12 @@ public class GaugeServiceImpl extends RemoteServiceServlet implements
 					DashData dash = new DashData();
 					dash.setDashboardID(result.getString("DASHBOARDID"));
 					dash.setDashboardName(result.getString("NAME"));
-					dash.setJson(result.getString("JSON"));
-					//dash.setUserID(result.getString("USERID"));
+					
+					// Leave out JSON to improve performance when only reading names to populate tabpane
+					
+					//dash.setJson(result.getString("JSON"));
+					
+					dash.setUserID(result.getString("USERID"));
 					
 					allDashes.add(dash);
 					
@@ -198,8 +200,6 @@ public class GaugeServiceImpl extends RemoteServiceServlet implements
 		try {
 
 			
-			// need to fix missing user id check!!!!
-			
 			 VoltTable[] results = voltCon.montanaClient.callProcedure("@AdHoc",
 				       "SELECT * FROM DASHBOARD WHERE DASHBOARDID = '" + dashID + "' ORDER BY NAME ASC").getResults();
 			
@@ -210,7 +210,7 @@ public class GaugeServiceImpl extends RemoteServiceServlet implements
 					dash.setDashboardID(result.getString("DASHBOARDID"));
 					dash.setDashboardName(result.getString("NAME"));
 					dash.setJson(result.getString("JSON"));
-					//dash.setUserID(result.getString("USERID"));
+					dash.setUserID(result.getString("USERID"));
 					
 				
 			}

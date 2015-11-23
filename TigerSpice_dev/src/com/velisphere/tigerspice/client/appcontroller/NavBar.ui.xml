@@ -39,7 +39,7 @@
     
          <b:Nav>
              <b:NavLink ui:field="btnHome" icon="REORDER">Status</b:NavLink>
-             <b:NavLink ui:field="btnDash" icon="DASHBOARD">Dashboards</b:NavLink>
+             <b:NavLink ui:field="btnDash" icon="DASHBOARD">Dash</b:NavLink>
              <b:NavLink ui:field="btnSpheres" icon="WRENCH">Device Manager</b:NavLink>
              <b:NavLink ui:field="btnRules" icon="SHARE_ALT">Rules</b:NavLink>
              <b:NavLink ui:field="btnLocator" icon="LOCATION_ARROW">Locations</b:NavLink>

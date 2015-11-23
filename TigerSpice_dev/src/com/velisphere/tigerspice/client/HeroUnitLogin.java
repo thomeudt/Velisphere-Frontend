@@ -45,7 +45,7 @@ public class HeroUnitLogin extends Composite implements HasText {
 
 	public HeroUnitLogin() {
 		initWidget(uiBinder.createAndBindUi(this));
-		imgSplash.setUrl("http://41.media.tumblr.com/86905a26349fe508ddfa9614fcc42d89/tumblr_n3vuzrEjDJ1sfie3io1_1280.jpg");
+		imgSplash.setUrl("https://41.media.tumblr.com/86905a26349fe508ddfa9614fcc42d89/tumblr_n3vuzrEjDJ1sfie3io1_1280.jpg");
 		
 	}
 	
