@@ -35,6 +35,8 @@ import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.RemoveGaugeFromDashEvent;
 import com.velisphere.tigerspice.client.event.RemoveGaugeFromDashEventHandler;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
+import com.velisphere.tigerspice.client.helper.UuidService;
+import com.velisphere.tigerspice.client.helper.UuidServiceAsync;
 import com.velisphere.tigerspice.shared.DashData;
 import com.velisphere.tigerspice.shared.GaugeData;
 
@@ -48,6 +50,7 @@ public class FlexBoard extends Composite{
 	static HTML SPACER = new HTML("&nbsp;<br>");
 	Row row;
 	String dashID;
+	String dashName = "";
 	HandlerRegistration removeGaugeHandler;
 	
 	// Default constructor for a new FlexBoard
@@ -72,7 +75,7 @@ public class FlexBoard extends Composite{
 		gaugeList = new LinkedList<Object>();
 		verticalPanel = new VerticalPanel();
 		initWidget(verticalPanel);
-		//rowMap = new HashMap<Integer, Row>();
+		getDashName();
 		displayHeader();
 		loadExistingFields();
 		setRemoveGaugeEventHandler();
@@ -126,6 +129,8 @@ public class FlexBoard extends Composite{
 			@Override
 			public void onClick(ClickEvent event) {
 				
+				deleteDashboard();
+				
 			}
 			
 		});
@@ -144,17 +149,36 @@ public class FlexBoard extends Composite{
 		
 	}
 
-	/*
-	private Row addRow()
+	
+	private void getDashName()
 	{
-		Row row = new Row();
-		rowCount ++;
-		rowMap.put(rowCount, row);
-		verticalPanel.add(row);
-		return row;
-	}
-	*/
+		final AnimationLoading animationLoading = new AnimationLoading("Loading gauges...");
+		animationLoading.showLoadAnimation();
+		
+		GaugeServiceAsync gaugeService = GWT
+				.create(GaugeService.class);
 
+		gaugeService.getDashboardName(dashID, new AsyncCallback<String>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						// TODO Auto-generated method stub
+						animationLoading.removeLoadAnimation();
+						dashName = result;
+						
+					}
+			
+				});
+		
+	}
+	
 	private void loadExistingFields()
 	{
 		
@@ -226,8 +250,9 @@ public class FlexBoard extends Composite{
 			saveDialog.setStyleName("wellappleblue");
 			VerticalPanel panel = new VerticalPanel();
 			final TextBox txtName = new TextBox();
+			txtName.setText(dashName);
 			panel.add(txtName);
-			txtName.setText("");
+		
 			Button btnSave = new Button("Save");
 			panel.add(btnSave); 
 			saveDialog.add(panel);
@@ -242,7 +267,7 @@ public class FlexBoard extends Composite{
 					animationLoading.showLoadAnimation();
 
 					
-					LinkedList<GaugeData> gaugeDataList = new LinkedList<GaugeData>();
+					final LinkedList<GaugeData> gaugeDataList = new LinkedList<GaugeData>();
 					
 					Iterator<Object> it = gaugeList.iterator();
 					while (it.hasNext())
@@ -275,24 +300,35 @@ public class FlexBoard extends Composite{
 						
 					}
 					
-					GaugeServiceAsync gaugeService = GWT
-							.create(GaugeService.class);
-					
-					gaugeService.saveDashboard(SessionHelper.getCurrentUserID(), txtName.getText(), gaugeDataList, new AsyncCallback<String>(){
+					if(dashID==null)
+					{
+						UuidServiceAsync uuidService = GWT
+								.create(UuidService.class);
+						uuidService.getUuid(new AsyncCallback<String>()
+								{
 
-						@Override
-						public void onFailure(Throwable caught) {
-							// TODO Auto-generated method stub
+									@Override
+									public void onFailure(Throwable caught) {
+										// TODO Auto-generated method stub
+										
+									}
+
+									@Override
+									public void onSuccess(String result) {
+										dashID = result;
+										saveDashboard(txtName.getText(), gaugeDataList);
+									}
 							
-						}
+								});
+							
+					}
 
-						@Override
-						public void onSuccess(String result) {
-							// TODO Auto-generated method stub
-							AppController.openDashBoardWithSelected(result);
-						}
-						
-					});
+					else
+					{
+						saveDashboard(txtName.getText(), gaugeDataList);
+							
+					}
+					
 					saveDialog.removeFromParent();
 					animationLoading.removeLoadAnimation();
 				}
@@ -302,8 +338,67 @@ public class FlexBoard extends Composite{
 
 		}
 
-	
 
+	private void saveDashboard(String dashName, LinkedList<GaugeData> gaugeDataList)
+	{
+		
+		final AnimationLoading animationLoading = new AnimationLoading("Saving dashboard...");
+		animationLoading.showLoadAnimation();
+		
+		
+		GaugeServiceAsync gaugeService = GWT
+				.create(GaugeService.class);
+		
+		gaugeService.saveDashboard(SessionHelper.getCurrentUserID(), dashName, dashID,  gaugeDataList, new AsyncCallback<String>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				// TODO Auto-generated method stub
+				animationLoading.removeLoadAnimation();
+				AppController.openDashBoardWithSelected(result);
+			}
+			
+		});
+
+	}
+
+	private void deleteDashboard()
+	{
+		
+		final AnimationLoading animationLoading = new AnimationLoading("Deleting dashboard...");
+		animationLoading.showLoadAnimation();
+		
+		GaugeServiceAsync gaugeService = GWT
+				.create(GaugeService.class);
+		gaugeService.deleteDashboard(dashID, new AsyncCallback<String>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				// TODO Auto-generated method stub
+				
+				animationLoading.removeLoadAnimation();
+				AppController.openDashBoard();
+				
+			}
+			
+		});
+			
+		
+	}
+	
+	
 	private FlexColumn addAddBoxColumn()
 	{
 		FlexColumn column = new FlexColumn(2);

@@ -47,11 +47,10 @@ public class GaugeServiceImpl extends RemoteServiceServlet implements
 
 	
 	@Override
-	public String saveDashboard(String userID, String dashName,
+	public String saveDashboard(String userID, String dashName, String dashID, 
 			LinkedList<GaugeData> gaugeDatas) {
 	
 		ObjectMapper mapper = new ObjectMapper();
-		String gaugeID = UUID.randomUUID().toString();
 		String jsonGauges = "";
 		 		
 		try {
@@ -76,8 +75,10 @@ public class GaugeServiceImpl extends RemoteServiceServlet implements
 
 			try {
 
-				voltCon.montanaClient.callProcedure("DASHBOARD.insert", gaugeID,
+				
+				voltCon.montanaClient.callProcedure("DASHBOARD.upsert", dashID,
 						dashName, jsonGauges, userID);
+				
 			} catch (NoConnectionsException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -112,9 +113,117 @@ public class GaugeServiceImpl extends RemoteServiceServlet implements
 
 		
 		
-		return gaugeID;
+		return dashID;
 	}
 	
+
+	@Override
+	public String deleteDashboard(String dashID) {
+	
+		 		
+			VoltConnector voltCon = new VoltConnector();
+
+			try {
+				voltCon.openDatabase();
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			try {
+
+				
+				voltCon.montanaClient.callProcedure("DASHBOARD.delete", dashID);
+				
+			} catch (NoConnectionsException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (ProcCallException e1){
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		
+
+			
+
+			try {
+				voltCon.closeDatabase();
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		
+	
+		return "OK";
+}
+
+
+	@Override
+	public String getDashboardName(String dashID) {
+	
+
+			String dashName = "";
+			VoltConnector voltCon = new VoltConnector();
+
+			try {
+				voltCon.openDatabase();
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			try {
+
+				
+				VoltTable[] results = voltCon.montanaClient.callProcedure("@AdHoc",
+					       "SELECT NAME FROM DASHBOARD WHERE DASHBOARDID = '"+dashID+"' ORDER BY NAME ASC").getResults();
+
+				VoltTable result = results[0];
+				// check if any rows have been returned
+
+				while (result.advanceRow()) {
+					{
+						dashName = result.getString("NAME");
+						
+					}
+				}
+
+				
+			} catch (NoConnectionsException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (ProcCallException e1){
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		
+
+			
+			
+
+			try {
+				voltCon.closeDatabase();
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		
+	
+		return dashName;
+}
+
 	
 	@Override
 	public LinkedList<DashData> getAllDashboardsForUser(String userID)
