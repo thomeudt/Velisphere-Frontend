@@ -5,6 +5,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class GaugeData implements IsSerializable {
 
 
+	private boolean isSwitch;
 	private String endpointID;
 	private String propertyID;
 	int gaugeType;
@@ -56,5 +57,13 @@ public class GaugeData implements IsSerializable {
 	public void setMinMax(double[] minMax) {
 		this.minMax = minMax;
 	}
+	public boolean isSwitch() {
+		return isSwitch;
+	}
+	public void setSwitch(boolean isSwitch) {
+		this.isSwitch = isSwitch;
+	}
+
+
 
 }

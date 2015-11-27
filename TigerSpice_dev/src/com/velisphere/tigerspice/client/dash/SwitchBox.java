@@ -1,15 +1,14 @@
 package com.velisphere.tigerspice.client.dash;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import com.github.gwtbootstrap.client.ui.AlertBlock;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.ButtonGroup;
 import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.TextBox;
-import com.github.gwtbootstrap.client.ui.constants.AlertType;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
 import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.resources.ButtonSize;
@@ -18,20 +17,21 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.TimeZone;
+import com.google.gwt.i18n.shared.DateTimeFormat;
+import com.google.gwt.i18n.shared.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.kiouri.sliderbar.client.view.SliderBarHorizontal;
+import com.velisphere.tigerspice.client.amqp.AMQPService;
+import com.velisphere.tigerspice.client.amqp.AMQPServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
-import com.velisphere.tigerspice.client.event.EventUtils;
-import com.velisphere.tigerspice.client.event.RemoveGaugeFromDashEvent;
 import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.properties.PropertyService;
 import com.velisphere.tigerspice.client.properties.PropertyServiceAsync;
@@ -52,6 +52,7 @@ public class SwitchBox extends Composite{
 	String propertyID;
 	HashMap<String, PropertyData> propertyDataMap = new HashMap<String, PropertyData>();
 	Boolean isOnOffSwitch;
+	HTML submitStatus = new HTML("");
 
 	
 	public SwitchBox()
@@ -64,8 +65,45 @@ public class SwitchBox extends Composite{
 		addSwitch();
 
 	}
-
 	
+	public SwitchBox(String endpointID, String propertyID)
+	{
+		this.endpointID = endpointID;
+		this.propertyID = propertyID;
+		panel = new VerticalPanel();
+		panel.setHeight("180px");
+		initWidget(panel);
+		getPropertyData();
+	}
+
+	public String getEndpointID() {
+		return endpointID;
+	}
+
+
+	public void setEndpointID(String endpointID) {
+		this.endpointID = endpointID;
+	}
+
+
+	public String getPropertyID() {
+		return propertyID;
+	}
+
+
+	public void setPropertyID(String propertyID) {
+		this.propertyID = propertyID;
+	}
+
+	public Boolean getIsOnOffSwitch() {
+		return isOnOffSwitch;
+	}
+
+	public void setIsOnOffSwitch(Boolean isOnOffSwitch) {
+		this.isOnOffSwitch = isOnOffSwitch;
+	}
+
+		
 	private void addSwitch()
 	{
 	
@@ -73,12 +111,12 @@ public class SwitchBox extends Composite{
 		configure();
 		
 	}
+
+	
 	
 	private void configure() {
 		showConfigureBox();
 		
-		
-
 	}
 	
 	private void showConfigureBox()
@@ -292,6 +330,7 @@ public class SwitchBox extends Composite{
 			@Override
 			public void onSuccess(PropertyClassData result) {
 
+				animationLoading.removeLoadAnimation();
 				
 				if (result.propertyClassDatatype == "Double")
 				{
@@ -318,7 +357,7 @@ public class SwitchBox extends Composite{
 				}
 				panel.add(btnOK);
 		
-				animationLoading.removeLoadAnimation();
+				
 			}
 		});
 		
@@ -372,37 +411,236 @@ public class SwitchBox extends Composite{
 		buttonGroup.add(on);
 		buttonGroup.add(off);
 		
-		SimplePanel simplePanel = new SimplePanel();
-		simplePanel.setHeight("180px");
-		simplePanel.setWidth("180px");
+		SimplePanel switchPanel = new SimplePanel();
+		switchPanel.setHeight("140px");
+		switchPanel.setWidth("180px");
 		
-		simplePanel.add(buttonGroup);
+		switchPanel.add(buttonGroup);
 	
+		SimplePanel statusPanel = new SimplePanel();
+		statusPanel.setHeight("40px");
+		statusPanel.setWidth("180px");
 		
-		panel.add(simplePanel);
+		statusPanel.add(submitStatus);
+		
+		panel.add(switchPanel);
+		panel.add(statusPanel);
+
+		off.addClickHandler(new ClickHandler()
+		{
+
+			@Override
+			public void onClick(ClickEvent event) {
+				sendMessage("0");
+				
+			}
+		});
+
+		on.addClickHandler(new ClickHandler()
+		{
+
+			@Override
+			public void onClick(ClickEvent event) {
+				sendMessage("1");
+				
+			}
+		});
+
 		
 	}
 
 	private void addEntryField()
 	{
 		
-		TextBox textBox = new TextBox();
+		final TextBox textBox = new TextBox();
 		textBox.addStyleName("span2");
 		
 
-		SimplePanel simplePanel = new SimplePanel();
-		simplePanel.setHeight("180px");
-		simplePanel.setWidth("180px");
+		SimplePanel entryPanel = new SimplePanel();
+		entryPanel.setHeight("40px");
+		entryPanel.setWidth("180px");
 		
-		simplePanel.add(textBox);
+		entryPanel.add(textBox);
+		
+		SimplePanel buttonPanel = new SimplePanel();
+		buttonPanel.setHeight("100px");
+		buttonPanel.setWidth("180px");
+		
+		Button sendButton = new Button("Send");
+		sendButton.setBaseIcon(IconType.PLAY);
+		sendButton.setType(ButtonType.SUCCESS);
+		buttonPanel.add(sendButton);
+	
+		SimplePanel statusPanel = new SimplePanel();
+		statusPanel.setHeight("40px");
+		statusPanel.setWidth("180px");
+		
+		statusPanel.add(submitStatus);
 	
 		
-		panel.add(simplePanel);
+		panel.add(entryPanel);
+		panel.add(buttonPanel);
+		panel.add(statusPanel);
+		
+		
+		sendButton.addClickHandler(new ClickHandler()
+		{
+
+			@Override
+			public void onClick(ClickEvent event) {
+				sendMessage(textBox.getText());
+				
+			}
+		});
+			
+		
 		
 	}
 
-	
+	private void sendMessage(String message)
+	{
+		
+		final AnimationLoading animationLoading = new AnimationLoading("Submitting data...");
+		animationLoading.showLoadAnimation();
+
+		
+		AMQPServiceAsync amqpService = GWT
+				.create(AMQPService.class);
+		
+		amqpService.sendRegMessage(endpointID, propertyID, message, new AsyncCallback<String>()
+				{
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						animationLoading.removeLoadAnimation();
+						Date date = new Date();
+						DateTimeFormat dtf = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_SHORT);
+						submitStatus.setHTML("<i>Data sent at <br>" + dtf.format(date, TimeZone.createTimeZone(0))+"</i>");
+						
+					}
+			
+				});
+		
+
+		
+	}
  
+	private void getPropertyData()
+	{
+		final AnimationLoading animationLoading = new AnimationLoading("Loading device properties...");
+		animationLoading.showLoadAnimation();
+
+		
+		PropertyServiceAsync propertyService = GWT
+				.create(PropertyService.class);
+
+		propertyService.getPropertyDetailsForPropertyID(propertyID, new AsyncCallback<PropertyData>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(PropertyData result) {
+				// TODO Auto-generated method stub
+		
+
+				animationLoading.removeLoadAnimation();
+				
+				description.setHTML("<br><b><i>"+result.getName()+"</b></i>");
+				
+				
+				final AnimationLoading secondAnimationLoading = new AnimationLoading("Loading property classes...");
+				secondAnimationLoading.showLoadAnimation();
+
+				
+				PropertyClassServiceAsync propertyClassService = GWT
+						.create(PropertyClassService.class);
+
+				propertyClassService.getPropertyClassForPropertyClassID(result.propertyclassId, new AsyncCallback<PropertyClassData>(){
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(PropertyClassData result) {
+
+						secondAnimationLoading.removeLoadAnimation();
+						displayExistingSwitch(result.propertyClassId);
+
+										
+					}
+				});
+								
+			}
+
+		});
+
+	}
+
+	private void displayExistingSwitch(String propertyClassID)
+	{
+
+
+			final AnimationLoading animationLoading = new AnimationLoading("Loading property classes...");
+			animationLoading.showLoadAnimation();
+
+
+
+			PropertyClassServiceAsync propertyClassService = GWT
+					.create(PropertyClassService.class);
+
+			propertyClassService.getPropertyClassForPropertyClassID(propertyClassID, new AsyncCallback<PropertyClassData>(){
+
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onSuccess(PropertyClassData result) {
+
+					panel.add(description);
+
+					
+					if (result.propertyClassDatatype == "Double")
+					{
+						isOnOffSwitch = false;
+						addEntryField();
+						
+					} else
+						if (result.propertyClassDatatype == "String")
+						{
+							isOnOffSwitch = false;
+							addEntryField();
+						} else
+							if (result.propertyClassDatatype == "Byte")
+							{
+								isOnOffSwitch = true;
+								addOnOffButton();
+								
+							}
+	
+					panel.add(controls());
+					
+					
+					animationLoading.removeLoadAnimation();
+				}
+			});
+		
+	}
 	
 }
 

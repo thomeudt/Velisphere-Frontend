@@ -253,7 +253,7 @@ public class LogicDesigner extends Composite {
 				new ClickHandler(){ 
 				public void onClick(ClickEvent event)  {
 					FavoriteData favoriteData = new FavoriteData();
-					favoriteData.setName("Logic " + bread2.getText());
+					favoriteData.setName("Rule: " + bread2.getText());
 					favoriteData.setTargetId(checkpathID);
 					favoriteData.setUserId(SessionHelper.getCurrentUserID());
 					favoriteData.setType(VeliConstants.FAVORITE_LOGIC);

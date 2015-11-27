@@ -10,6 +10,7 @@ import com.github.gwtbootstrap.client.ui.ListBox;
 import com.github.gwtbootstrap.client.ui.Row;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import com.github.gwtbootstrap.client.ui.constants.ButtonType;
+import com.github.gwtbootstrap.client.ui.constants.IconType;
 import com.github.gwtbootstrap.client.ui.resources.ButtonSize;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -21,6 +22,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.visualization.client.VisualizationUtils;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
@@ -40,6 +42,7 @@ public class FlexBoard extends Composite{
 	
 	VerticalPanel verticalPanel;
 	Button btnSave;
+	Button btnDelete;
 	LinkedList<Object> gaugeList;
 	FlexColumn currentAddBoxColumn;
 	static HTML SPACER = new HTML("&nbsp;<br>");
@@ -81,14 +84,22 @@ public class FlexBoard extends Composite{
 	{
 		row = new Row();
 		verticalPanel.add(row);
+
+		Column titleColumn = new Column(2);
+		titleColumn.add(new HTML("<b>Dashboard Controls:</b>"));
+		row.add(titleColumn);
+
+		
+		
 		Column saveDashboardColumn = new Column(2);
 		btnSave = new Button("Save");
 		btnSave.setSize(ButtonSize.SMALL);
-		btnSave.setType(ButtonType.PRIMARY);
+		btnSave.setType(ButtonType.SUCCESS);
+		btnSave.setBaseIcon(IconType.SAVE);
+		btnSave.setWidth("80%");
 		saveDashboardColumn.add(btnSave);
 		row.add(saveDashboardColumn);
 	
-		row.add(new HTML("<br>&nbsp;<br>"));
 		
 		btnSave.addClickHandler(new ClickHandler(){
 
@@ -98,7 +109,27 @@ public class FlexBoard extends Composite{
 			}
 			
 		});
+
+		Column deleteDashboardColumn = new Column(2);
+		btnDelete = new Button("Delete");
+		btnDelete.setSize(ButtonSize.SMALL);
+		btnDelete.setType(ButtonType.DANGER);
+		btnDelete.setBaseIcon(IconType.TRASH);
+		btnDelete.setWidth("80%");
+		deleteDashboardColumn.add(btnDelete);
+		row.add(deleteDashboardColumn);
+	
+		row.add(new HTML("<br>&nbsp;<br>"));
 		
+		btnDelete.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				
+			}
+			
+		});
+
 		
 	}
 	
@@ -152,13 +183,27 @@ public class FlexBoard extends Composite{
 						{
 
 							GaugeData gaugeData = it.next();
-							GaugeBox gaugeBox = new GaugeBox(gaugeData.getEndpointID(), gaugeData.getPropertyID(), 
-									gaugeData.getGaugeType(), gaugeData.getGreenRange(), gaugeData.getYellowRange(),
-									gaugeData.getRedRange(), gaugeData.getMinMax());
-	
+						
+							if(gaugeData.isSwitch() == true)
+							{
+		
+								SwitchBox switchBox = new SwitchBox(gaugeData.getEndpointID(), gaugeData.getPropertyID());
+		
+								
+								row.add(addSwitchColumnWithData(switchBox));		
+		
+							}
+							else
+							{
+								GaugeBox gaugeBox = new GaugeBox(gaugeData.getEndpointID(), gaugeData.getPropertyID(), 
+										gaugeData.getGaugeType(), gaugeData.getGreenRange(), gaugeData.getYellowRange(),
+										gaugeData.getRedRange(), gaugeData.getMinMax());
+		
+								
+								row.add(addGaugeColumnWithData(gaugeBox));		
+							}
 							
-							row.add(addGaugeColumnWithData(gaugeBox));		
-										
+																
 						}
 						currentAddBoxColumn = addAddBoxColumn();
 						row.add(currentAddBoxColumn);
@@ -220,6 +265,11 @@ public class FlexBoard extends Composite{
 						if(object.getClass()==SwitchBox.class)
 						{
 							SwitchBox switchBox = (SwitchBox) object;
+							GaugeData switchData = new GaugeData();
+							switchData.setSwitch(true);
+							switchData.setEndpointID(switchBox.getEndpointID());
+							switchData.setPropertyID(switchBox.getPropertyID());
+							gaugeDataList.add(switchData);	
 							
 						}
 						
@@ -264,11 +314,15 @@ public class FlexBoard extends Composite{
 	private VerticalPanel addBox()
 	{
 		VerticalPanel panel = new VerticalPanel();
-		
+		panel.setHeight("180px");
+		SimplePanel upperSpacer = new SimplePanel();
+		upperSpacer.setHeight("20px");
+		panel.add(upperSpacer);
 		Button gaugeButton = new Button("Add Gauge...");
 		gaugeButton.setSize(ButtonSize.DEFAULT);
-		gaugeButton.setType(ButtonType.SUCCESS);
-		
+		gaugeButton.setType(ButtonType.PRIMARY);
+		gaugeButton.setBaseIcon(IconType.DASHBOARD);
+		gaugeButton.setWidth("120px");
 		panel.add(gaugeButton);
 		
 		gaugeButton.addClickHandler(new ClickHandler(){
@@ -287,10 +341,14 @@ public class FlexBoard extends Composite{
 			
 		});
 
+		panel.add(new HTML("or"));
+		
 		
 		Button switchButton = new Button("Add Switch...");
+		switchButton.setBaseIcon(IconType.POWER_OFF);
 		switchButton.setSize(ButtonSize.DEFAULT);
 		switchButton.setType(ButtonType.PRIMARY);
+		switchButton.setWidth("120px");
 		panel.add(switchButton);
 		
 		switchButton.addClickHandler(new ClickHandler(){
@@ -344,6 +402,16 @@ public class FlexBoard extends Composite{
 		gaugeList.add(gaugeBox);
 		return column;
 	}
+	
+	private Column addSwitchColumnWithData(SwitchBox switchBox)
+	{
+		
+		FlexColumn column = new FlexColumn(2);
+		column.add(switchBox);
+		gaugeList.add(switchBox);
+		return column;
+	}
+	
 	
 	private void setRemoveGaugeEventHandler()
 	{

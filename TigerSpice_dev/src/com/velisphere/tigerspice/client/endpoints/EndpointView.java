@@ -396,7 +396,7 @@ public class EndpointView extends Composite {
 				new ClickHandler(){ 
 				public void onClick(ClickEvent event)  {
 					FavoriteData favoriteData = new FavoriteData();
-					favoriteData.setName("Endpoint " + pghEndpointName.getText());
+					favoriteData.setName("Device: " + pghEndpointName.getText());
 					favoriteData.setTargetId(endpointID);
 					favoriteData.setUserId(SessionHelper.getCurrentUserID());
 					favoriteData.setType(VeliConstants.FAVORITE_ENDPOINT);
