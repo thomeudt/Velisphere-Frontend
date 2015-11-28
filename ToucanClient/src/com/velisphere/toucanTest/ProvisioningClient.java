@@ -49,8 +49,6 @@ public class ProvisioningClient {
 			
 		});
 		
-		
-		
 		// Create a trust manager that does not validate certificate chains
 		TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
 		    public X509Certificate[] getAcceptedIssuers(){return null;}
@@ -67,8 +65,6 @@ public class ProvisioningClient {
 		    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 		
   
-		
-	
 		//Client client = ClientBuilder.newClient();
 		
 		Client client = ClientBuilder.newBuilder()	      

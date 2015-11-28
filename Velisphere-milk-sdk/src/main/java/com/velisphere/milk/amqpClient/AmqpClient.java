@@ -82,7 +82,7 @@ public class AmqpClient implements Runnable {
 
 			//channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 
-			System.out.println(" [IN] Server Startup Completed.");
+			System.out.println(" [IN] Client Startup Completed.");
 			System.out
 					.println(" [IN] Waiting for messages. To exit press CTRL+C");
 
@@ -250,20 +250,20 @@ public class AmqpClient implements Runnable {
 
 		System.out.println();
 		System.out
-				.println("    * *    VeliSphere SDK Server v0.2.5 / AMQP (Milk)");
+				.println("    * *    VeliSphere SDK Client v0.3 / AMQP (Milk)");
 		System.out
 				.println("    * * *  Copyright (C) 2015 Thorsten Meudt/Connected Things Lab. All rights reserved.");
 		System.out.println("**   *    ");
 		System.out.println("  * *   ");
 		System.out
-				.println("   *       VeliSphere SDK Server is part of the VeliSphere IoTS ecosystem.");
+				.println("   *       VeliSphere SDK Client is part of the VeliSphere IoTS ecosystem.");
 		System.out.println();
 		System.out.println();
 		System.out
 				.println(" [IN] This product includes GeoLite data created by MaxMind, available from http://www.maxmind.com");
 		System.out.println();
 		System.out.println();
-		System.out.println(" [IN] Starting server...");
+		System.out.println(" [IN] Starting client...");
 
 		// load config data
 

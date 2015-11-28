@@ -2,8 +2,8 @@
 # RPC service class, partial path of RPC policy file
 com.velisphere.tigerspice.client.vendors.VendorService, 7573C474C88B94414CC6AF05621F4346.gwt.rpc
 com.velisphere.tigerspice.client.endpointclasses.EPCService, BECAC3528028FC869638CFDFC2B67CA3.gwt.rpc
+com.velisphere.tigerspice.client.dash.GaugeService, D191BFC58F37D00AB4FAF79E0D74A5B7.gwt.rpc
 com.velisphere.tigerspice.client.helper.HelperService, 72EFE5B991BAEFD2B946C9B9FD98D3E6.gwt.rpc
-com.velisphere.tigerspice.client.dash.GaugeService, F29549EDECECEF724A1E8927EC5E79A8.gwt.rpc
 com.velisphere.tigerspice.client.favorites.FavoriteService, D47349CA6CF98BE9C58CFA8CC9CA2C46.gwt.rpc
 com.velisphere.tigerspice.client.users.UserService, DDB2D6A58F92F41FD99AD26CB04DD9B9.gwt.rpc
 com.velisphere.tigerspice.client.analytics.LogService, E4E9E22A4149212797719E9109597213.gwt.rpc

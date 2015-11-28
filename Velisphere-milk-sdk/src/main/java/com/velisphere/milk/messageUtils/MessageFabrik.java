@@ -62,7 +62,7 @@ public class MessageFabrik {
 
 	
 	
-	public static String extractProperty(String jsonInput, String propertyID) throws JsonProcessingException, IOException 
+	public static String extractProperty(String jsonInput, String propertyID) throws IOException 
 	{
 
 		ObjectMapper mapper = new ObjectMapper();

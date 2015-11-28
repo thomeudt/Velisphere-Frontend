@@ -15,12 +15,13 @@ public class ConfigFileAccess {
 			Properties props = new Properties();
 			props.setProperty("Secret Key", secret);
 			props.setProperty("Endpoint ID", endpointID);
-			props.setProperty("isProvisioned", String.valueOf(isProvisioned));
+			props.setProperty("Provisioned", String.valueOf(isProvisioned));
+			props.setProperty("Endpoint Class ID", ConfigData.epcid);
 
 			File f = new File(System.getProperty("user.dir")
 					+ System.getProperty("file.separator")
 					+ "velisphere_config.xml");
-			System.out.println(System.getProperty("user.dir"));
+			System.out.println("[IN] velisphere_config.xml stored at: " + System.getProperty("user.dir"));
 			OutputStream out = new FileOutputStream(f);
 			props.storeToXML(out,
 					"This file contains Velisphere authentication information. Do not overwrite!");
@@ -57,6 +58,10 @@ public class ConfigFileAccess {
 
 		ConfigData.secret = props.getProperty("Secret Key");
 		ConfigData.epid = props.getProperty("Endpoint ID");
+		ConfigData.epcid = props.getProperty("Endpoint Class ID");
+		if (props.getProperty("Provisioned") == "yes")
+			ConfigData.provisioned = true; 
+			else ConfigData.provisioned =false;
 
 	}
 

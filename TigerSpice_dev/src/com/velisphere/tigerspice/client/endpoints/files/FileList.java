@@ -183,7 +183,7 @@ public class FileList extends Composite {
 											public void onSuccess(String result) {
 												
 												AppController
-												.openDirectLink("http://127.0.0.1:8082/rest/files/get/binary/download/"+selected.fileType+"/"+selected.endpointId+"/"+result);
+												.openDirectLink("https://www.velisphere.com/ToucanServer/rest/files/get/binary/download/"+selected.fileType+"/"+selected.endpointId+"/"+result);
 												
 											}
 										}

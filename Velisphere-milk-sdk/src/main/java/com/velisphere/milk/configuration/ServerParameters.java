@@ -37,7 +37,7 @@ public class ServerParameters {
 			
 			ServerParameters.bunny_ip = response.readEntity(String.class);
 
-			System.out.println("Rabbit IP: " + ServerParameters.bunny_ip);
+			System.out.println(" [IN] Message broker URL: " + ServerParameters.bunny_ip);
 
 	  }
 }
