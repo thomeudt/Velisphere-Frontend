@@ -26,6 +26,7 @@ import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
+import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.shared.FileData;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
@@ -78,6 +79,11 @@ public class FileList extends Composite {
 			
 			// fill
 			
+			final AnimationLoading animationLoading = new AnimationLoading();
+			animationLoading.showLoadAnimation("Loading Inbox Content");
+
+			
+			
 			rpcService
 					.getAllFileData(endpointId,new AsyncCallback<LinkedList<FileData>>() {
 
@@ -102,7 +108,7 @@ public class FileList extends Composite {
 									+ "or that the endpoint is experiencing connectivity issues preventing documents from being uploaded."));
 							
 
-							
+							animationLoading.removeLoadAnimation();
 							
 							
 						
@@ -163,7 +169,10 @@ public class FileList extends Composite {
 							if (selected != null) {
 								
 								
-								//Window.alert("You selected: " + selected.name);
+
+								final AnimationLoading animationLoading = new AnimationLoading();
+								animationLoading.showLoadAnimation("Retrieving File");
+
 								
 								EndpointServiceAsync endpointService = GWT
 										.create(EndpointService.class);
@@ -182,8 +191,12 @@ public class FileList extends Composite {
 											@Override
 											public void onSuccess(String result) {
 												
+												// this needs to be moved to a server that is BEHIND the firewall!
+												
 												AppController
 												.openDirectLink("https://www.velisphere.com/ToucanServer/rest/files/get/binary/download/"+selected.fileType+"/"+selected.endpointId+"/"+result);
+												
+												animationLoading.removeLoadAnimation();
 												
 											}
 										}

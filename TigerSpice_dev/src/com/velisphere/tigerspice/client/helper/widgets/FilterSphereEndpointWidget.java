@@ -52,7 +52,7 @@ public class FilterSphereEndpointWidget extends Composite {
 	ListBox lbxEndpointFilter;
 	Button btnApply;
 
-	String userID;
+
 	String sphereID;
 	String endpointID;
 	String propertyID;
@@ -60,8 +60,6 @@ public class FilterSphereEndpointWidget extends Composite {
 	String propertyName;
 
 	public FilterSphereEndpointWidget() {
-
-		this.userID = SessionHelper.getCurrentUserID();
 		this.sphereID = "0";
 		this.endpointID = "0";
 		buildWidget();
@@ -70,7 +68,6 @@ public class FilterSphereEndpointWidget extends Composite {
 	
 	public FilterSphereEndpointWidget(String sphereID, String endpointID) {
 
-		this.userID = SessionHelper.getCurrentUserID();
 		this.sphereID = sphereID;
 		this.endpointID = endpointID;
 		buildWidget();
@@ -98,7 +95,6 @@ public class FilterSphereEndpointWidget extends Composite {
 		Row filterRow2 = new Row();
 		Column filterCol2 = new Column(2);
 		lbxSphereFilter = new ListBox();
-		//lbxSphereFilter.setAlternateSize(AlternateSize.MEDIUM);
 		lbxSphereFilter.addStyleName("span2");
 		filterCol2.add(lbxSphereFilter);
 
@@ -131,10 +127,6 @@ public class FilterSphereEndpointWidget extends Composite {
 		filterRow5.add(filterCol5);
 
 
-		
-		
-		
-
 		vp.add(filterRow1);
 		vp.add(filterRow2);
 		vp.add(filterRow3);
@@ -142,16 +134,19 @@ public class FilterSphereEndpointWidget extends Composite {
 		vp.add(filterRow5);
 
 		
-		populateSphereList(userID);
-		
+		populateSphereList();
+		populateFullEndpointList();
 		
 		// add handlers for selection options
 
 		lbxSphereFilter.addChangeHandler(new ChangeHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
-
-				populateEndpointList(lbxSphereFilter.getValue());
+				if(lbxSphereFilter.getSelectedValue() == "0")
+				{
+					populateFullEndpointList();
+				} else
+					populateFilteredEndpointList(lbxSphereFilter.getValue());
 			}
 		});
 		lbxEndpointFilter.addChangeHandler(new ChangeHandler() {
@@ -173,19 +168,15 @@ public class FilterSphereEndpointWidget extends Composite {
 
 	}
 
-	private void populateSphereList(String userID) {
+	private void populateSphereList() {
 
 		lbxSphereFilter.addItem("--- No Filter",
 				"0");
-		lbxEndpointFilter.addItem("--- No Filter",
-				"0");
-
-
 		
 		final SphereServiceAsync sphereService = GWT
 				.create(SphereService.class);
 
-		sphereService.getAllSpheresForUserID(userID,
+		sphereService.getAllSpheresForUserID(SessionHelper.getCurrentUserID(),
 				new AsyncCallback<LinkedList<SphereData>>() {
 					@Override
 					public void onFailure(Throwable caught) {
@@ -206,13 +197,12 @@ public class FilterSphereEndpointWidget extends Composite {
 						
 						lbxSphereFilter.setSelectedValue(sphereID);
 						
-						populateEndpointList(lbxSphereFilter.getValue());
-
+		
 					}
 				});
 	}
 
-	private void populateEndpointList(String sphereID) {
+	private void populateFilteredEndpointList(String sphereID) {
 
 		
 		
@@ -252,6 +242,48 @@ public class FilterSphereEndpointWidget extends Composite {
 
 	}
 
+
+	private void populateFullEndpointList() {
+
+		
+		String currentUser = SessionHelper.getCurrentUserID();
+		
+		final EndpointServiceAsync endpointService = GWT
+				.create(EndpointService.class);
+
+		endpointService.getEndpointsForUser(currentUser,
+				new AsyncCallback<LinkedList<EndpointData>>() {
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onSuccess(LinkedList<EndpointData> result) {
+						lbxEndpointFilter.clear();
+						
+						lbxEndpointFilter.addItem("--- No Filter",
+								"0");
+
+						
+						
+						Iterator<EndpointData> iT = result.iterator();
+						while (iT.hasNext()) {
+							EndpointData endpoint = iT.next();
+
+							lbxEndpointFilter.addItem(endpoint.getName(),
+									endpoint.getId());
+
+						}
+
+						
+						lbxEndpointFilter.setSelectedValue(endpointID);
+	
+					}
+				});
+
+	}
 
 	
 	
