@@ -302,7 +302,8 @@ public class NavBar extends Composite implements HasText {
 	
 	@UiHandler("btnLogout")
 	void logout (ClickEvent event) {
-		Cookies.removeCookie("sid");
+		Cookies.removeCookie("sid", "/");
+		
 		clearBandarole();
 		Login loginScreen = new Login();
 		loginScreen.onModuleLoad();
