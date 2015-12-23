@@ -131,16 +131,8 @@ public class NavBar extends Composite implements HasText {
 
 	@UiHandler("btnAccount")
 	void openNewAccountScreen (ClickEvent event) {
-		// Window.alert("Logging In");
-		
-		clearBandarole();
-		NewAccountScreen newAccountScreen = new NewAccountScreen();
-		newAccountScreen.open();
-			
-		
-		
-		
-		// loginDialogBox.setVisible(false);
+				
+		AppController.openChangeAccount();
 		
 		
 	}

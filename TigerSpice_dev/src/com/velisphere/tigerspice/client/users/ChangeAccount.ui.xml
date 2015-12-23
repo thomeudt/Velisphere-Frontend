@@ -1,0 +1,89 @@
+<!-- CONFIDENTIAL INFORMATION __________________ Copyright (C) 2014 Thorsten 
+	Meudt / Connected Things Lab All Rights Reserved. NOTICE: All information 
+	contained herein is, and remains the property of Thorsten Meudt and its suppliers, 
+	if any. The intellectual and technical concepts contained herein are proprietary 
+	to Thorsten Meudt and its suppliers and may be covered by Patents, patents 
+	in process, and are protected by trade secret or copyright law. Dissemination 
+	of this information or reproduction of this material is strictly forbidden 
+	unless prior written permission is obtained from Thorsten Meudt. -->
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:gu="urn:import:gwtupload.client"  xmlns:vsad="urn:import:com.velisphere.tigerspice.client.admin.epc" 
+	xmlns:vsepc="urn:import:com.velisphere.tigerspice.client.endpointclasses">
+	<g:HTMLPanel>
+
+		<b:Row>
+			<b:Column size="12" offset="0">
+				<b:PageHeader>Manage Account</b:PageHeader>
+			</b:Column>
+		</b:Row>
+  
+
+
+		<b:Row>
+
+			
+			<b:Column size="12" offset="0">
+
+				<b:Form type="HORIZONTAL">
+
+					<b:Alert type="ERROR" close="false" ui:field="aleError" />
+					<b:Alert type="SUCCESS" close="false" ui:field="aleSuccess" />
+
+					<g:HTML ui:field="htmChangeHeader" HTML="Change Password"/>
+					<b:Fieldset>
+						<b:ControlGroup>
+							<b:ControlLabel>Old Password</b:ControlLabel>
+
+							<b:Controls>
+								<b:PasswordTextBox b:id="txtOldPW" ui:field="txtOldPW" />
+							</b:Controls>
+						</b:ControlGroup>
+
+						<b:ControlGroup>
+							<b:ControlLabel>New Password</b:ControlLabel>
+
+							<b:Controls>
+								<b:PasswordTextBox b:id="txtNewPW" ui:field="txtNewPW" />
+							</b:Controls>
+						</b:ControlGroup>
+
+						<b:ControlGroup>
+							<b:ControlLabel>Confirm New Password</b:ControlLabel>
+
+							<b:Controls>
+								<b:PasswordTextBox b:id="txtConfirmPW" ui:field="txtConfirmPW" />
+							</b:Controls>
+						</b:ControlGroup>
+
+				
+						<b:ControlGroup>
+						    	<b:Controls>
+								<b:Button styleName="btn btn-primary" text="Change Password"
+									ui:field="btnChangePassword" />
+							</b:Controls>
+						</b:ControlGroup>
+
+						<g:HTML ui:field="htmCloseHeader" HTML="Close Account"/>
+
+
+						<b:ControlGroup>
+						    	<b:Controls>
+								<b:Button styleName="btn btn-danger" text="Close Account"
+									ui:field="btnCloseAccount" />
+							</b:Controls>
+						</b:ControlGroup>
+
+
+
+					</b:Fieldset>
+				</b:Form>
+
+			</b:Column>
+		</b:Row>
+
+
+
+	</g:HTMLPanel>
+</ui:UiBinder> 

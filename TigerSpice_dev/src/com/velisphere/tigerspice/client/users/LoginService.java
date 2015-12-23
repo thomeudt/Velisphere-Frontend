@@ -43,10 +43,7 @@ public interface LoginService extends RemoteService
     }
  
     UserData loginServer(String name, String password);
- 
     UserData loginFromSessionServer();
-     
-    boolean changePassword(String name, String newPassword);
- 
+    Boolean changePassword(String name, String oldPassword, String newPassword);
     void logout();
 }

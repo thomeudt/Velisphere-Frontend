@@ -27,6 +27,6 @@ public interface LoginServiceAsync {
 	
 	void loginServer(String name, String password, AsyncCallback<UserData> callback);
 	void loginFromSessionServer (AsyncCallback<UserData> callback);
-	void changePassword(String name, String newPassword, AsyncCallback<Boolean> callback);
+	void changePassword(String name, String oldPassword, String newPassword, AsyncCallback<Boolean> callback);
 	void logout(AsyncCallback<Void> callback);	
 }

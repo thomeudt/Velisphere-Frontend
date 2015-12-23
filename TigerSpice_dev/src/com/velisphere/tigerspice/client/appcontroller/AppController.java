@@ -37,6 +37,7 @@ import com.velisphere.tigerspice.client.spheres.SphereLister;
 import com.velisphere.tigerspice.client.spheres.SphereView;
 import com.velisphere.tigerspice.client.spheres.SphereViewPublic;
 import com.velisphere.tigerspice.client.status.StatusBoard;
+import com.velisphere.tigerspice.client.users.ChangeAccount;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 
 // this class manages all navigational calls within the application
@@ -828,4 +829,21 @@ public class AppController {
 		}		
 	});
 	}
+
+	public static void openChangeAccount()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			ChangeAccount changeAccount = new ChangeAccount();
+			openWithHistoryHandler("changeAccount", changeAccount);
+		}		
+	});
+	}
+
+
+
 }

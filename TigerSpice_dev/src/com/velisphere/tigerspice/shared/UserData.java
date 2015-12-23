@@ -33,7 +33,26 @@ public class UserData implements IsSerializable
 	public String userPassword;
 	public String sessionID;
 	public Boolean loggedIn = false;
+	public String planID;
+	public String apiKey;
+
 	
+	public String getPlanID() {
+		return planID;
+	}
+
+	public void setPlanID(String planID) {
+		this.planID = planID;
+	}
+
+	public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
+
 	
 	
 	public String getEmail(){
