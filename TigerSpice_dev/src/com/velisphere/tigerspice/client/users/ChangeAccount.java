@@ -2,6 +2,7 @@ package com.velisphere.tigerspice.client.users;
 
 import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.Button;
+import com.github.gwtbootstrap.client.ui.CheckBox;
 import com.github.gwtbootstrap.client.ui.PasswordTextBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -15,6 +16,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
+import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.endpointclasses.EPCService;
 import com.velisphere.tigerspice.client.endpointclasses.EPCServiceAsync;
@@ -40,7 +42,8 @@ public class ChangeAccount extends Composite {
 	HTML htmChangeHeader;
 	@UiField
 	HTML htmCloseHeader;
-
+	@UiField
+	CheckBox cbxConfirmClose;
 
 	
 	
@@ -71,6 +74,18 @@ public class ChangeAccount extends Composite {
 			}
 			
 		});
+		
+		btnCloseAccount.addClickHandler(new ClickHandler()
+		{
+
+			@Override
+			public void onClick(ClickEvent event) {
+				executeCloseAccount();
+				
+			}
+			
+		});
+		
 		
 	}
 	
@@ -123,6 +138,63 @@ public class ChangeAccount extends Composite {
 			
 		{
 			aleError.setText("Your passwords in 'New Password' and 'Confirm New Password' do not match!");
+			aleError.setVisible(true);
+			aleSuccess.setVisible(false);
+		}
+		
+			
+	}	
+	
+	private void executeCloseAccount()
+	{
+		
+		
+	
+		if(cbxConfirmClose.getValue() == true)
+		{
+			final LoginServiceAsync loginService = GWT
+					.create(LoginService.class);
+
+			
+			
+			loginService.closeAccount(SessionHelper.getCurrentUserID(), new AsyncCallback<Boolean>() {
+
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+					aleError.setText("Account close request could not be processed on the server. Please try again later.");
+					aleError.setVisible(true);
+					aleSuccess.setVisible(false);
+				}
+
+				@Override
+				public void onSuccess(Boolean result) {
+					// TODO Auto-generated method stub
+					
+					if (result == true)
+					{
+						aleSuccess.setText("Account close successful!");
+						aleSuccess.setVisible(true);
+						aleError.setVisible(false);
+						AppController.openCloseAccountConfirm();
+					}
+					else
+					{
+						aleError.setText("Account close request could not be processed on the server. Please try again later.");
+						aleError.setVisible(true);
+						aleSuccess.setVisible(false);
+					}
+					
+				}
+
+			});
+			
+		}
+		
+		else
+			
+		{
+			aleError.setText("Please check the confirmation checkbox if you really want to close your account!");
 			aleError.setVisible(true);
 			aleSuccess.setVisible(false);
 		}

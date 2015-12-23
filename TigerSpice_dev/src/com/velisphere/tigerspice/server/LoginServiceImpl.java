@@ -207,6 +207,49 @@ public class LoginServiceImpl extends RemoteServiceServlet implements
 		return success;
 
 	}
+	
+	
+	@Override
+	public Boolean closeAccount(String userID) {
+		
+		VoltConnector voltCon = new VoltConnector();
+		Boolean success = false;
+		
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+
+			voltCon.montanaClient.callProcedure("@AdHoc",
+				       "DELETE FROM USER WHERE USERID = '"+userID+"'");
+			
+			success = true;
+
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return success;
+
+	}
+	
 
 	private UserData getUserAlreadyFromSession() {
 		UserData user = null;

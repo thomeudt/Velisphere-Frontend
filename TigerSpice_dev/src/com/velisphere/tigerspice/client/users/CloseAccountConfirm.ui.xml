@@ -15,7 +15,7 @@
 
 		<b:Row>
 			<b:Column size="12" offset="0">
-				<b:PageHeader>Manage Account</b:PageHeader>
+				<b:PageHeader>Your account has been deleted.</b:PageHeader>
 			</b:Column>
 		</b:Row>
   
@@ -32,53 +32,12 @@
 					<b:Alert type="SUCCESS" close="false" ui:field="aleSuccess" />
 
 					<g:HTML ui:field="htmChangeHeader" HTML="Change Password"/>
-					<b:Fieldset>
-						<b:ControlGroup>
-							<b:ControlLabel>Old Password</b:ControlLabel>
-
-							<b:Controls>
-								<b:PasswordTextBox b:id="txtOldPW" ui:field="txtOldPW" />
-							</b:Controls>
-						</b:ControlGroup>
-
-						<b:ControlGroup>
-							<b:ControlLabel>New Password</b:ControlLabel>
-
-							<b:Controls>
-								<b:PasswordTextBox b:id="txtNewPW" ui:field="txtNewPW" />
-							</b:Controls>
-						</b:ControlGroup>
-
-						<b:ControlGroup>
-							<b:ControlLabel>Confirm New Password</b:ControlLabel>
-
-							<b:Controls>
-								<b:PasswordTextBox b:id="txtConfirmPW" ui:field="txtConfirmPW" />
-							</b:Controls>
-						</b:ControlGroup>
-
+					<b:Button styleName="btn btn-danger" text="Logout"
+									ui:field="btnLogout" />
 				
-						<b:ControlGroup>
-						    	<b:Controls>
-								<b:Button styleName="btn btn-primary" text="Change Password"
-									ui:field="btnChangePassword" />
-							</b:Controls>
-						</b:ControlGroup>
-
-						<g:HTML ui:field="htmCloseHeader" HTML="Close Account"/>
 
 
-						<b:ControlGroup>
-						    	<b:Controls>
-								<b:Button styleName="btn btn-danger" text="Close Account"
-									ui:field="btnCloseAccount" />
-									<b:CheckBox text="Confirm Close Account"	ui:field="cbxConfirmClose" />
-							</b:Controls>
-						</b:ControlGroup>
-
-
-
-					</b:Fieldset>
+			
 				</b:Form>
 
 			</b:Column>

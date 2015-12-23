@@ -38,6 +38,7 @@ import com.velisphere.tigerspice.client.spheres.SphereView;
 import com.velisphere.tigerspice.client.spheres.SphereViewPublic;
 import com.velisphere.tigerspice.client.status.StatusBoard;
 import com.velisphere.tigerspice.client.users.ChangeAccount;
+import com.velisphere.tigerspice.client.users.CloseAccountConfirm;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 
 // this class manages all navigational calls within the application
@@ -844,6 +845,19 @@ public class AppController {
 	});
 	}
 
+	public static void openCloseAccountConfirm()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			CloseAccountConfirm closeAccountConfirm = new CloseAccountConfirm();
+			openWithHistoryHandler("closeAccountConfirm", closeAccountConfirm);
+		}		
+	});
+	}
 
 
 }
