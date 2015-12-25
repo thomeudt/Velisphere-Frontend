@@ -510,7 +510,7 @@ public class SimpleLineChart {
 					@Override
 					public void onSuccess(String result) {
 						AppController
-								.openDirectLink("/tigerspice_dev/tigerspiceDownloads?privateURL="
+								.openDirectLink("/velisphere/tigerspiceDownloads?privateURL="
 										+ result
 										+ "&outboundFileName=Sensortrail_for_"
 										+ endpointName
@@ -545,7 +545,7 @@ public class SimpleLineChart {
 					public void onSuccess(String result) {
 						
 						AppController
-								.openDirectLink("/tigerspice_dev/tigerspiceDownloads?privateURL="
+								.openDirectLink("/velisphere/tigerspiceDownloads?privateURL="
 										+ result
 										+ "&outboundFileName=Sensortrail_for_"
 										+ endpointName

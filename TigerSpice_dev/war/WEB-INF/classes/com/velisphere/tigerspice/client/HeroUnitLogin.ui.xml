@@ -29,19 +29,9 @@
 				<b:Row>
 					<b:Column size="6">
 
-						<b:Heading size="1">VeliSphere</b:Heading>
+						<b:Heading size="1">VeliSphere (Testing)</b:Heading>
 
-						<b:Heading size="2">Making the Internet of Things work for You</b:Heading>
-
-						<b:Paragraph>
-							VeliSphere offers efficient provisioning, device management, automation, analytics
-							and location services for the internet of things, based on an open
-							technology stack.
-						</b:Paragraph>
-						<b:Paragraph>
-						&nbsp;
-						</b:Paragraph>
-				
+						<b:Heading size="3">Internet of Things. And you're in control.</b:Heading>
 
 					</b:Column>
 				</b:Row>

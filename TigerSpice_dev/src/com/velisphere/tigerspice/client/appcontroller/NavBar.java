@@ -76,6 +76,8 @@ public class NavBar extends Composite implements HasText {
 	@UiField NavLink btnShop;
 	@UiField NavForm forSearch;
 	@UiField NavLink btnHome;
+	@UiField NavLink btnBilling;
+	@UiField NavLink btnSupport;
 	@UiField Brand brdHome;
 	
 	
@@ -368,7 +370,8 @@ public class NavBar extends Composite implements HasText {
 	       	 btnManageEPC.setVisible(true);
 	       	 dpdAccount.setText(SessionHelper.getCurrentUserName());
 	  	     btnShop.setVisible(false);
-	  	  
+	  	     btnBilling.setDisabled(true);
+	  	     btnSupport.setDisabled(true);
 	  	   checkAdmin();
 	    
 	}
@@ -385,6 +388,12 @@ public class NavBar extends Composite implements HasText {
 			dpdAdmin.setVisible(false);
 		}
 		
+		// disable also closing/pw change for demo account)
+		
+		if (SessionHelper.getCurrentUserID() == "e8c2f32c-3990-42bd-9dbf-5ebf6720f2b5")
+		{
+			btnAccount.setDisabled(true);
+		}
       	 
 	}
 	
