@@ -37,6 +37,7 @@ public interface UserService extends RemoteService {
 	Vector<UserData> getAllUserDetails();
 	String addNewUser(String userName, String password, String eMail, String captchaWord);
 	HashMap<String, String> getAllUsersWithPublicSpheres();
+	
 }
 
 

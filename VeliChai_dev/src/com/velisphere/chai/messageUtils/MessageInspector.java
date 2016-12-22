@@ -28,6 +28,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.Map.Entry;
 
+import org.voltdb.client.NoConnectionsException;
+import org.voltdb.client.ProcCallException;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.velisphere.chai.VelisphereMart;
 import com.velisphere.chai.dataObjects.ActionObject;
@@ -53,41 +56,87 @@ public class MessageInspector implements Runnable {
 	public void run() {
 		HashMap<String, String> forEvaluation = new HashMap<String, String>();
 		
-		System.out.println(" [IN] Message JSON:"+ messageBody);
+		//System.out.println(" [IN] Message JSON:"+ messageBody);
 		
+		String[] hMACandPayload = new String[2];
+		boolean validationResult = false;
+
+		// parse outer JSON
 		
 		try {
-			forEvaluation = MessageFactory.extractKeyPropertyPairs(messageBody);
+			hMACandPayload = MessageFabrik.parseOuterJSON(messageBody);
+			
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		// parse inner JSON
+		
+		try {
+			System.out.println("HMAC: " + hMACandPayload[0]);
+			System.out.println("Payload: " + hMACandPayload[1]);
+			forEvaluation = MessageFabrik.extractKeyPropertyPairs(hMACandPayload[1]);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		System.out.println(" [IN] Message Type:"+ forEvaluation.get("TYPE"));
+		// validate if received HMAC matches calculated HMAC based on secret stored in DB
 		
-		if (forEvaluation.get("TYPE").equals("REG"))
-		{
-			try {
-				regularMessage(forEvaluation);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-				
+		try {
+			System.out.println(" [IN] For Evaluation:"+ forEvaluation);
+			validationResult = MessageValidator.validateHmac(hMACandPayload[0], hMACandPayload[1], forEvaluation.get("EPID"));
+		} catch (NoConnectionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProcCallException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 		
-		if (forEvaluation.get("TYPE").equals("CTL"))
+		// if evaluation is positive, go ahead
+		
+		if (validationResult)
 		{
-			try {
-				controlMessage(forEvaluation);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			System.out.println(" [IN] Message Type:"+ forEvaluation.get("TYPE"));
+			
+			if (forEvaluation.get("TYPE").equals("REG"))
+			{
+				try {
+					regularMessage(forEvaluation);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+					
 			}
-				
+			
+			if (forEvaluation.get("TYPE").equals("CTL"))
+			{
+				try {
+					controlMessage(forEvaluation);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+					
+			}
+			
 		}
 		
-	return;
+		else
+			
+		{
+			System.out.println(" [IN] Message rejected - HMAC not matching. Possibly an attempted security breach.");
+			
+			//TODO write notification of security breach into database
+		}
+		
+			return;
 	}
 	
 	
@@ -109,8 +158,8 @@ public class MessageInspector implements Runnable {
 			
 			LinkedList<ActionObject> executedActions = new LinkedList<ActionObject>();
 			
-			System.out.println(" [IN] Regular Message Received");
-			System.out.println(" [IN] Key: " + e.getKey() + " / Value: " + e.getValue());
+			//System.out.println(" [IN] Regular Message Received");
+			//System.out.println(" [IN] Key: " + e.getKey() + " / Value: " + e.getValue());
 						
 			if (e.getKey() != "EPID" && e.getKey() != null
 					&& e.getKey() != "SECTOK"
@@ -149,12 +198,12 @@ public class MessageInspector implements Runnable {
 			Map.Entry<String, String> e = (Map.Entry<String, String>) it
 					.next();
 			
-			System.out.println(" [IN] Control Message Received");
-			System.out.println(" [IN] Key: " + e.getKey() + " / Value: " + e.getValue());
+			//System.out.println(" [IN] Control Message Received");
+			//System.out.println(" [IN] Key: " + e.getKey() + " / Value: " + e.getValue());
 			
 			if (e.getKey() == "setState")
 			{
-				System.out.println(" [IN] State Update received from " + EPID);
+				//System.out.println(" [IN] State Update received from " + EPID);
 				ServiceEngine.setEndpointState(EPID, e.getValue());
 				
 			}

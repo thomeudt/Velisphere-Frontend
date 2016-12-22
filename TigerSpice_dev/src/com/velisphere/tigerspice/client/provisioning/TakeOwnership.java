@@ -20,7 +20,7 @@ import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
-import com.velisphere.tigerspice.client.helper.ErrorCodes;
+import com.velisphere.tigerspice.client.helper.VeliConstants;
 
 public class TakeOwnership extends Composite {
 
@@ -54,7 +54,7 @@ public class TakeOwnership extends Composite {
 		this.endpointclassID = endpointclassID;
 		
 
-		System.out.println("ÜPID: " + uEPID);
+		System.out.println("uPID: " + uEPID);
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		aleError.setVisible(false);
@@ -100,7 +100,7 @@ public class TakeOwnership extends Composite {
 					        	System.out.println("[OK] " + result);
 								AppController.openProvisioningSuccess(); 
 						  }
-						  else if (result.equals(ErrorCodes.VOLT_INSERTFAILED))
+						  else if (result.equals(VeliConstants.VOLT_INSERTFAILED))
 						  {							  
 					        	System.out.println("[ER] " + result);
 					        	aleError.setVisible(true);

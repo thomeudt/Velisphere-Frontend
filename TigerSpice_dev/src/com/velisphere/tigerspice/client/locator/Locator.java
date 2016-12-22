@@ -26,7 +26,6 @@ import com.velisphere.tigerspice.client.analytics.LogService;
 import com.velisphere.tigerspice.client.analytics.LogServiceAsync;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
-import com.velisphere.tigerspice.client.endpoints.EndpointActorWidget;
 import com.velisphere.tigerspice.client.event.CheckpathCalculatedEvent;
 import com.velisphere.tigerspice.client.event.CheckpathCalculatedEventHandler;
 import com.velisphere.tigerspice.client.event.EventUtils;
@@ -92,7 +91,7 @@ public class Locator extends Composite {
 	public void loadContent() {
 
 		// set page header welcome back message
-		pageHeader.setText("VeliSphere Location Service");
+		pageHeader.setText("Locations");
 
 		bread0 = new NavLink();
 		bread0.setText("Home");

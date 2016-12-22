@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.velisphere.tigerspice.client.event.DraggedToCanvasEvent;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.JSONreadyEvent;
+import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorLogicCheckActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorLogicCheck;
@@ -41,14 +42,10 @@ public class JsonFabrik {
 		this.physicalItemHashMap = new HashMap<String, PhysicalItem>();
 		this.logicCheckHashMap = new HashMap<String, LogicCheck>();
 
-		RootPanel.get().add(new HTML("Fabrik initialized."));
 				
 		generateContainer();
-		
-		RootPanel.get().add(new HTML("Fabrik: Container generated."));
 		generateJSON();
-		RootPanel.get().add(new HTML("Fabrik: JSON generated."));
-
+	
 	}
 	
 	
@@ -69,7 +66,6 @@ public class JsonFabrik {
 
 				logicContainer.addPhysicalItem(it.next()
 						.getSerializableRepresentation());
-				RootPanel.get().add(new HTML("Container: Physical item added."));			
 			}
 				
 		
@@ -78,16 +74,13 @@ public class JsonFabrik {
 
 			Iterator<LogicCheck> il = canvas.getLogicChecks().iterator();
 			
-			RootPanel.get().add(new HTML("Container: Iterator for Logic Check created: " + canvas.getLogicChecks().size()));
-
+	
 			while (il.hasNext()) {
 
-				RootPanel.get().add(new HTML("Container: Processing "));
-
+	
 				logicContainer.addLogicCheck(il.next()
 						.getSerializableRepresentation());
-				RootPanel.get().add(new HTML("Container: Logical item added."));
-
+	
 			}
 		
 		
@@ -96,15 +89,13 @@ public class JsonFabrik {
 		Iterator<ConnectorLogicCheckActor> icl = canvas
 				.getConnectorsLogicCheckActor().iterator();
 
-		RootPanel.get().add(new HTML("Container: Iterator for L2P created: " + canvas.getConnectorsLogicCheckActor().size()));
 		
 		while (icl.hasNext()) {
 
 			SerializableLogicConnector current = icl.next().getSerializableRepresentation();
 			
 			logicContainer.addConnector(current);
-			RootPanel.get().add(new HTML("Container: L2P connector added."));
-
+	
 		}
 
 		// create json for P2P connectors
@@ -112,15 +103,11 @@ public class JsonFabrik {
 		Iterator<ConnectorSensorActor> ics = canvas.getConnectorsSensorActor()
 				.iterator();
 		
-		RootPanel.get().add(new HTML("Container: Iterator for P2P created: " + canvas.getConnectorsSensorActor().size()));
-
+	
 		while (ics.hasNext()) {
-			RootPanel.get().add(new HTML("Container: P2P traversed."));
 			SerializableLogicConnector current = ics.next().getSerializableRepresentation();
-			RootPanel.get().add(new HTML("Container: P2P serialized."));
 			
 			logicContainer.addConnector(current);
-			RootPanel.get().add(new HTML("Container: P2P connector added."));
 		}
 
 		// create json for P2L connectors
@@ -128,16 +115,12 @@ public class JsonFabrik {
 		Iterator<ConnectorSensorLogicCheck> ict = canvas
 				.getConnectorsSensorLogicCheck().iterator();
 
-		RootPanel.get().add(new HTML("Container: Iterator for P2L created: " + canvas.getConnectorsSensorLogicCheck().size()));
-
+	
 		
 		while (ict.hasNext()) {
-			RootPanel.get().add(new HTML("Container: P2L traversed."));
 			SerializableLogicConnector current = ict.next().getSerializableRepresentation();
-			RootPanel.get().add(new HTML("Container: P2L serialized."));
 			
 			logicContainer.addConnector(current);
-			RootPanel.get().add(new HTML("Container: P2L connector added."));
 		}
 
 	}
@@ -145,8 +128,11 @@ public class JsonFabrik {
 	private void generateJSON() {
 		// create json for all physical items
 
-		RootPanel.get().add(new HTML("JSON: Requested."));
 				
+		final AnimationLoading animationLoading = new AnimationLoading("Processing chart...");
+		animationLoading.showLoadAnimation();
+
+		
 		CheckPathServiceAsync checkPathService = GWT
 				.create(CheckPathService.class);
 
@@ -157,9 +143,7 @@ public class JsonFabrik {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
-						RootPanel.get().add(
-								new HTML("ERROR " + caught.getMessage()));
-
+					
 					}
 
 					@Override
@@ -169,6 +153,7 @@ public class JsonFabrik {
 						checkpathJSON = result;
 						EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new JSONreadyEvent());
 
+						animationLoading.removeLoadAnimation();
 					}
 
 				});
@@ -273,14 +258,11 @@ public class JsonFabrik {
 	
 			SerializableLogicConnector currentSerializable = it.next();
 
-			RootPanel.get().add(new HTML("Trying to check P2P Type..."));
-
+	
 			
 			if (currentSerializable.getType()==SharedConstants.CONP2P)
 			{
 				
-			
-			//	RootPanel.get().add(new HTML("Innert " + currentSerializable.getLeftEndpointID() + ".." + lookupLeft +" -- " + lookupRight + "from "+ physicalItemHashMap.keySet().toString()));
 				
 				ConnectorSensorActor current = new ConnectorSensorActor(
 						physicalItemHashMap.get(currentSerializable.getLeftID()), 
@@ -298,7 +280,6 @@ public class JsonFabrik {
 				
 			}
 			
-			RootPanel.get().add(new HTML("Succeeded!"));
 			
 		}
 		
@@ -318,7 +299,6 @@ public class JsonFabrik {
 			{
 				
 			
-			//	RootPanel.get().add(new HTML("Innert " + currentSerializable.getLeftEndpointID() + ".." + lookupLeft +" -- " + lookupRight + "from "+ physicalItemHashMap.keySet().toString()));
 				
 				
 				
@@ -354,8 +334,6 @@ public class JsonFabrik {
 			if (currentSerializable.getType()==SharedConstants.CONL2P)
 			{
 				
-			
-			//	RootPanel.get().add(new HTML("Innert " + currentSerializable.getLeftEndpointID() + ".." + lookupLeft +" -- " + lookupRight + "from "+ physicalItemHashMap.keySet().toString()));
 				
 
 				

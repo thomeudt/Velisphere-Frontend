@@ -88,10 +88,12 @@ public class SessionHelper {
 	}
 
 	public static String getCurrentUserName() {
+		SessionHelper.validateCurrentSession();
 		return userName;
 	}
 
 	public static String getCurrentUserID() {
+		SessionHelper.validateCurrentSession();
 		return userID;
 	}
 

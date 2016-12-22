@@ -17,14 +17,30 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client.event;
 
-import com.google.common.eventbus.EventBus;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 
 public class JSONreadyEvent extends GwtEvent<JSONreadyEventHandler> {
 
+		String json;
 		
+		public JSONreadyEvent() {
+			super();
+			
+		}
+	
+		public JSONreadyEvent(String json) {
+			super();
+			this.json = json;
+		}
+
+		
+		public String getJson() {
+			return json;
+		}
+
+
 		public static Type<JSONreadyEventHandler> TYPE = new Type<JSONreadyEventHandler>();
 
 		  @Override

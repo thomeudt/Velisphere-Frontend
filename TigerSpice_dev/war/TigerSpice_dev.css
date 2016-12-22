@@ -56,6 +56,11 @@ html { background:  transparent }
   color: green;
 }
 
+.fillSize {
+    height: 100%;
+    width: 100%;
+}
+
 .negativeChange {
   color: red;
 }

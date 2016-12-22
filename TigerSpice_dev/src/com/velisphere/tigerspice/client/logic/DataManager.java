@@ -17,6 +17,7 @@ import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.JSONreadyEvent;
 import com.velisphere.tigerspice.client.event.JSONreadyEventHandler;
 import com.velisphere.tigerspice.client.helper.ActionSourceConfig;
+import com.velisphere.tigerspice.client.helper.AnimationLoading;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorLogicCheckActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorActor;
 import com.velisphere.tigerspice.client.logic.connectors.ConnectorSensorLogicCheck;
@@ -50,6 +51,11 @@ public class DataManager {
 					public void onJSONready(JSONreadyEvent jsonReadyEvent) {
 
 						// send to database
+						
+						final AnimationLoading animationLoading = new AnimationLoading("Saving rule...");
+						animationLoading.showLoadAnimation();
+
+						
 						CheckPathServiceAsync checkpathService = GWT
 								.create(CheckPathService.class);
 
@@ -62,20 +68,12 @@ public class DataManager {
 									public void onFailure(Throwable caught) {
 										// TODO Auto-generated method stub
 
-										RootPanel
-												.get()
-												.add(new HTML(
-														"Error from attempt to create checkpath: "
-																+ caught.getMessage()));
 									}
 
 									@Override
 									public void onSuccess(String result) {
 										// TODO Auto-generated method stub
-										RootPanel.get().add(
-												new HTML(
-														"Result from attempt to create checkpath: "
-																+ result));
+										animationLoading.removeLoadAnimation();
 									}
 
 								});
@@ -90,47 +88,32 @@ public class DataManager {
 		Iterator<ConnectorSensorActor> it = canvas.getConnectorsSensorActor()
 				.iterator();
 
-		RootPanel.get().add(new HTML("P2P: started"));
-
+		
 		while (it.hasNext()) {
 
 			ConnectorSensorActor current = it.next();
 
-			RootPanel.get().add(new HTML("P2P: fetched connector"));
-
+		
 			// build action object
 			ActionObject action = new ActionObject();
 			action.actionID = current.getActionUUID();
-			RootPanel.get().add(new HTML("P2P: ID processed"));
 			action.actionName = "unused";
-			RootPanel.get().add(new HTML("P2P: Name processed"));
 			action.endpointClassID = current.getActor().getEndpointClassID();
-			RootPanel.get().add(new HTML("P2P: EPC processed"));
 			action.endpointID = current.getActor().getEndpointID();
-			RootPanel.get().add(new HTML("P2P: AEPID processed"));
 			action.endpointName = current.getActor().getContentRepresentation();
-			RootPanel.get().add(new HTML("P2P: Content processed"));
 			action.propertyID = current.getActor().getPropertyID();
-			RootPanel.get().add(new HTML("P2P: APID processed"));
 			action.propertyIdIntake = current.getSensor().getPropertyID();
-			RootPanel.get().add(new HTML("P2P: SPID processed"));
 			action.sensorEndpointID = current.getSensor().getEndpointID();
-			RootPanel.get().add(new HTML("P2P: SEPID processed"));
 			action.validValueIndex = current.getTypicalValueValue();
-			RootPanel.get().add(new HTML("P2P: Typical processed"));
 			action.manualValue = current.getManualValue();
-			RootPanel.get().add(new HTML("P2P: Manual processed"));
-
+		
 			if (current.getSourceValue() == ActionSourceConfig.currentSensorValue) {
 				action.valueFromInboundPropertyID = current.getValueFromSensorValue();
-				RootPanel.get().add(new HTML("P2P: Source processed"));
 			} else {
 				action.valueFromInboundPropertyID = "no";
-				RootPanel.get().add(new HTML("P2P: Source processed - empty"));
 			}
 
-			RootPanel.get().add(new HTML("P2P: built action object"));
-
+		
 			// TODO this can be simplified - we do not need to take care of
 			// multiple actions in new setup
 
@@ -138,10 +121,13 @@ public class DataManager {
 
 			actions.add(action);
 
-			RootPanel.get().add(new HTML("P2P: built action object list"));
-
+		
 			// send to database
 
+			final AnimationLoading animationLoading = new AnimationLoading("Saving physical/physical link...");
+			animationLoading.showLoadAnimation();
+
+			
 			CheckServiceAsync checkService = GWT.create(CheckService.class);
 
 			checkService.addNewCheck(current.getCheckUUID(), current
@@ -159,11 +145,7 @@ public class DataManager {
 						@Override
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
-
-							RootPanel.get().add(
-									new HTML(
-											"Result from attempt to generate check and action P2P: "
-													+ result));
+							animationLoading.removeLoadAnimation();
 						}
 
 					});
@@ -176,13 +158,11 @@ public class DataManager {
 		Iterator<ConnectorSensorLogicCheck> it = canvas
 				.getConnectorsSensorLogicCheck().iterator();
 
-		RootPanel.get().add(new HTML("P2L: started"));
-
+	
 		while (it.hasNext()) {
 
 			final ConnectorSensorLogicCheck current = it.next();
 
-			RootPanel.get().add(new HTML("P2L: fetched connector"));
 
 			// TODO this can be simplified - we do not need to take care of
 			// multiple actions in new setup
@@ -192,26 +172,16 @@ public class DataManager {
 
 			LinkedList<ActionObject> actions = new LinkedList<ActionObject>();
 
-			RootPanel.get().add(new HTML("P2L: created empty actions list"));
 
 			// send check to database
 
+			
+			final AnimationLoading animationLoading = new AnimationLoading("Saving physical/logical links...");
+			animationLoading.showLoadAnimation();
+
+			
 			CheckServiceAsync checkService = GWT.create(CheckService.class);
 
-			RootPanel.get().add(
-					new HTML("P2L: processing UUID " + current.getCheckUUID()));
-			RootPanel.get().add(
-					new HTML("P2L: processing sensor EPID "
-							+ current.getSensor().getEndpointID()));
-			RootPanel.get().add(
-					new HTML("P2L: processing sensor PID "
-							+ current.getSensor().getPropertyID()));
-			RootPanel.get().add(
-					new HTML("P2L: processing check value "
-							+ current.getCheckValue()));
-			RootPanel.get().add(
-					new HTML("P2L: processing operator "
-							+ current.getOperator()));
 
 			checkService.addNewCheck(current.getCheckUUID(), current
 					.getSensor().getEndpointID(), current.getSensor()
@@ -228,11 +198,7 @@ public class DataManager {
 						@Override
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
-
-							RootPanel.get().add(
-									new HTML(
-											"Result from attempt to generate check and action P2L "+ current.getCheckUUID()+": "
-													+ result));
+							animationLoading.removeLoadAnimation();
 						}
 
 					});
@@ -286,6 +252,10 @@ public class DataManager {
 
 			// send multicheck to database
 
+			final AnimationLoading animationLoading = new AnimationLoading("Saving logical/physical links...");
+			animationLoading.showLoadAnimation();
+
+			
 			CheckPathServiceAsync checkpathService = GWT
 					.create(CheckPathService.class);
 
@@ -303,15 +273,16 @@ public class DataManager {
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
 
-							RootPanel.get().add(
-									new HTML(
-											"Result from attempt to generate check and action L2P: "
-													+ result));
+							animationLoading.removeLoadAnimation();
 						}
 
 					});
 
 			// link checks
+			
+			final AnimationLoading secondAnimationLoading = new AnimationLoading("Processing links...");
+			secondAnimationLoading.showLoadAnimation();
+
 
 			Iterator<ConnectorSensorLogicCheck> pit = current.getLogicCheck()
 					.getChildConnectors().iterator();
@@ -334,10 +305,7 @@ public class DataManager {
 							@Override
 							public void onSuccess(String result) {
 								// TODO Auto-generated method stub
-								RootPanel.get().add(
-										new HTML(
-												"Result from attempt to link checks and to multicheck: "
-														+ result));
+								secondAnimationLoading.removeLoadAnimation();
 							}
 
 						});
@@ -355,6 +323,10 @@ public class DataManager {
 			ConnectorLogicCheckActor current = it.next();
 
 			// delete multicheck from database
+			
+			final AnimationLoading animationLoading = new AnimationLoading("Removing orphan logical/physical links...");
+			animationLoading.showLoadAnimation();
+
 
 			CheckPathServiceAsync checkpathService = GWT
 					.create(CheckPathService.class);
@@ -372,15 +344,17 @@ public class DataManager {
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
 
-							RootPanel.get().add(
-									new HTML(
-											"Result from attempt to delete check L2P: "
-													+ result));
+							animationLoading.removeLoadAnimation();
 						}
 
 					});
 
 			// delete actions from database
+			
+
+			final AnimationLoading secondAnimationLoading = new AnimationLoading("Removing orphan actions...");
+			secondAnimationLoading.showLoadAnimation();
+
 
 			checkpathService.deleteAllActionsForMulticheckId(
 					current.getCheckUUID(), new AsyncCallback<String>() {
@@ -395,16 +369,18 @@ public class DataManager {
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
 
-							RootPanel.get().add(
-									new HTML(
-											"Result from attempt to delete actions L2P: "
-													+ result));
+							secondAnimationLoading.removeFromParent();
 						}
 
 					});
 
 			// delete links to checks
 
+
+			final AnimationLoading thirdAnimationLoading = new AnimationLoading("Removing orphan links...");
+			thirdAnimationLoading.showLoadAnimation();
+
+			
 			Iterator<ConnectorSensorLogicCheck> pit = current.getLogicCheck()
 					.getDeletedChildConnectors().iterator();
 
@@ -421,10 +397,7 @@ public class DataManager {
 							@Override
 							public void onSuccess(String result) {
 								// TODO Auto-generated method stub
-								RootPanel.get().add(
-										new HTML(
-												"Result from attempt to delete link between check and multicheck: "
-														+ result));
+								thirdAnimationLoading.removeLoadAnimation();
 							}
 
 						});
@@ -437,15 +410,18 @@ public class DataManager {
 		Iterator<ConnectorSensorActor> it = canvas
 				.getDeletedConnectorsSensorActor().iterator();
 
-		RootPanel.get().add(new HTML("Deleted P2P: started"));
-
+	
 		while (it.hasNext()) {
 
 			ConnectorSensorActor current = it.next();
 
-			RootPanel.get().add(new HTML("P2P: fetched connector"));
-
+	
 			// delete from database
+			
+
+			final AnimationLoading animationLoading = new AnimationLoading("Removing orphan physical/physical links...");
+			animationLoading.showLoadAnimation();
+
 
 			CheckServiceAsync checkService = GWT.create(CheckService.class);
 
@@ -462,15 +438,17 @@ public class DataManager {
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
 
-							RootPanel.get().add(
-									new HTML(
-											"Result from attempt to delere check P2P: "
-													+ result));
+							animationLoading.removeLoadAnimation();
 						}
 
 					});
 
 			// delete actions from database
+			
+
+			final AnimationLoading secondAnimationLoading = new AnimationLoading("Removing orphan actions...");
+			secondAnimationLoading.showLoadAnimation();
+
 
 			checkService.deleteAllActionsForCheckId(current.getCheckUUID(),
 					new AsyncCallback<String>() {
@@ -484,11 +462,7 @@ public class DataManager {
 						@Override
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
-
-							RootPanel.get().add(
-									new HTML(
-											"Result from attempt to delete actions P2P: "
-													+ result));
+							secondAnimationLoading.removeLoadAnimation();
 						}
 
 					});
@@ -501,13 +475,16 @@ public class DataManager {
 		Iterator<ConnectorSensorLogicCheck> it = canvas
 				.getDeletedConnectorsSensorLogicCheck().iterator();
 
-		RootPanel.get().add(new HTML("Deleted P2L: started"));
 
 		while (it.hasNext()) {
 
+
+			final AnimationLoading animationLoading = new AnimationLoading("Removing orphan physical/logical links...");
+			animationLoading.showLoadAnimation();
+
+			
 			ConnectorSensorLogicCheck current = it.next();
 
-			RootPanel.get().add(new HTML("P2L: fetched connector"));
 
 			// send check to database
 
@@ -525,17 +502,18 @@ public class DataManager {
 						@Override
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
-
-							RootPanel.get().add(
-									new HTML(
-											"Result from attempt to delete check P2L: "
-													+ result));
+							animationLoading.removeLoadAnimation();
 						}
 
 					});
 
 			// delete actions from database
 
+
+			final AnimationLoading secondAnimationLoading = new AnimationLoading("Removing orphan actions...");
+			secondAnimationLoading.showLoadAnimation();
+
+			
 			checkService.deleteAllActionsForCheckId(current.getCheckUUID(),
 					new AsyncCallback<String>() {
 
@@ -548,11 +526,7 @@ public class DataManager {
 						@Override
 						public void onSuccess(String result) {
 							// TODO Auto-generated method stub
-
-							RootPanel.get().add(
-									new HTML(
-											"Result from attempt to delete actions P2L: "
-													+ result));
+							secondAnimationLoading.removeLoadAnimation();
 						}
 
 					});
@@ -562,8 +536,7 @@ public class DataManager {
 
 	public void loadUI(final String checkpathName) {
 
-		RootPanel.get().add(new HTML("UILOAD--- "));
-
+		
 		// create JSON factory
 
 		final JsonFabrik factory = new JsonFabrik(canvas);
@@ -579,6 +552,12 @@ public class DataManager {
 						jsonReadyHandler.removeHandler();
 
 						// send to database
+						
+
+						final AnimationLoading animationLoading = new AnimationLoading("Loading chart...");
+						animationLoading.showLoadAnimation();
+
+						
 						CheckPathServiceAsync checkpathService = GWT
 								.create(CheckPathService.class);
 
@@ -600,13 +579,9 @@ public class DataManager {
 													SerializableLogicContainer result) {
 												// TODO Auto-generated method
 												// stub
-												RootPanel
-														.get()
-														.add(new HTML(
-																"Result from attempt to load checkpath: "
-																		+ result.toString()));
-
+											
 												factory.unpackContainer(result);
+												animationLoading.removeLoadAnimation();
 											}
 
 										});
@@ -620,6 +595,11 @@ public class DataManager {
 	public void deleteCheckpath() {
 
 		// send to database
+		
+		final AnimationLoading animationLoading = new AnimationLoading("Deleting rule...");
+		animationLoading.showLoadAnimation();
+
+		
 		CheckPathServiceAsync checkpathService = GWT
 				.create(CheckPathService.class);
 
@@ -630,19 +610,14 @@ public class DataManager {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
-						RootPanel.get().add(
-								new HTML(
-										"Error from attempt to delete checkpath: "
-												+ caught.getMessage()));
 					}
 
 					@Override
 					public void onSuccess(String result) {
 						// TODO Auto-generated method stub
-						RootPanel.get().add(
-								new HTML(
-										"Result from attempt to delete checkpath: "
-												+ result));
+						
+						animationLoading.removeLoadAnimation();
+					
 					}
 
 				});

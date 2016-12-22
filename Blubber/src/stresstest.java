@@ -18,13 +18,26 @@
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.velisphere.milk.amqpClient.AmqpClient;
+
+import ChatExample.ChatEventInitiator;
+import ChatExample.EventResponder;
+
 
 public class stresstest {
 
 	public static void main(String[] args) throws Exception {
 
-		ServerParameters.my_queue_name = "E1";
+		ServerParameters.my_queue_name = "02308838-5853-45c0-a188-bbd604e0a6e2";
 		//ServerParameters.my_queue_name = "EX1";
+
+		
+		EventResponder eventResponder = new EventResponder();
+		ChatEventInitiator initiator = new ChatEventInitiator();
+		initiator.addListener(eventResponder);
+		
+		AmqpClient.startClient(initiator);
+		
 		
 		int numworkers = 32;
 		

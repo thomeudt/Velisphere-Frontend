@@ -5,8 +5,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.voltdb.*;
-import org.voltdb.client.*;
 
 
 
@@ -30,7 +28,7 @@ public class PreLoadMart {
 	         {
 	         conn = DriverManager.getConnection
 	            (
-	            "jdbc:vertica://16.1.1.116:5433/VelisphereMart", "vertica", "1Suplies!"
+	            "jdbc:vertica://127.0.0.1:5433/VelisphereMart", "vertica", "1Suplies!"
 	            );
 	         
 	         conn.setAutoCommit(true);
@@ -53,8 +51,8 @@ public class PreLoadMart {
 	      
 	      Statement myInsert = conn.createStatement();
 	    
-	      /**
-	      myInsert.addBatch("INSERT INTO VLOGGER.SPHERE VALUES ('1000', 'Home Tübingen', '0')");
+	      
+	      myInsert.addBatch("INSERT INTO VLOGGER.SPHERE VALUES ('1000', 'Home Tï¿½bingen', '0')");
 	      myInsert.addBatch("INSERT INTO VLOGGER.SPHERE VALUES ('1001', 'My Car', '0')");
 	      
 	       	       
@@ -108,10 +106,10 @@ public class PreLoadMart {
 	        
 	      myInsert.addBatch("INSERT INTO VLOGGER.PROPERTYCLASS VALUES ('PC_GEO_LAT', 'Latitude', 'String', '')");
 	      myInsert.addBatch("INSERT INTO VLOGGER.PROPERTYCLASS VALUES ('PC_GEO_LON', 'Longitude', 'String', '')");
-	        */
+	       
 	      myInsert.addBatch("INSERT INTO VLOGGER.PROPERTYCLASS VALUES ('PC_GEO_LATLON', 'Composite Lat/Lon', 'String', '')");
 	      
-	          /*      	        	        
+	                	        	        
 	        System.out.println("Property Classes loaded");
 	        
 	       
@@ -161,7 +159,7 @@ public class PreLoadMart {
 	        
 	      	        
 	        System.out.println("Plans loaded");
-	      **/
+	      
 	        myInsert.executeBatch();
 	        myInsert.close();
 	        conn.close();

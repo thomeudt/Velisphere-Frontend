@@ -38,51 +38,19 @@
 		
 		<b:Column size="9" offset="0">
 		
-		    <b:Row>
-			<b:Column size="8" offset="0">
-			    	<b:Heading size="3" >Debug/Version Information</b:Heading>
-				    <b:Paragraph>VeliSphere TigerSpice 0.8.0</b:Paragraph>
-				    <b:Paragraph>VeliSphere Montana Database Version 0.7.9 or newer required</b:Paragraph>
-				    <b:Paragraph>VoltDB 4.9.2 or newer required</b:Paragraph>
-				    <b:Paragraph>VeliSphere Mart Version 0.7.6 or newer required</b:Paragraph>
-				    <b:Paragraph>Vertica 7.0.1 or newer required</b:Paragraph>
-				    <b:Paragraph>Optimized for Apache Tomcat 8</b:Paragraph>
-				    <b:Paragraph ui:field="voltIP">... </b:Paragraph>
-				    <b:Paragraph ui:field="voltHostID">... </b:Paragraph>
-				    <b:Paragraph ui:field="voltHostName">... </b:Paragraph>
-				    <b:Paragraph ui:field="voltConnHostName">... </b:Paragraph>
-				    <b:Paragraph ui:field="voltConnID">... </b:Paragraph>
-				    <b:Paragraph ui:field="voltBytesRead">... </b:Paragraph>
-				    <b:Paragraph ui:field="voltBytesWritten">... </b:Paragraph>
-				    <b:Paragraph ui:field="voltMsgRead">... </b:Paragraph>
-				    <b:Paragraph ui:field="voltMsgWritten">... </b:Paragraph>
-				    <b:Paragraph ui:field="voltTimestamp">... </b:Paragraph>
-				   	    
-				    
-				    
-				    <b:Heading size="3" >Welcome Message</b:Heading>
-				<b:Paragraph>This is VeliSphere. We recommend that you get started by following our "Getting Started Guide"
-				    - don't forget to take a look at our "Best Practice" tutorial, too.</b:Paragraph> 
-				    <b:Paragraph>To add new devices to your account, please follow the "Device Provisioning Wizard".</b:Paragraph>
-				    
-				</b:Column>
-			
-		</b:Row>
-		    
+		  
 		<b:Row>
 		<b:Column size="8" offset="0">
-				<b:Heading size="3" >News</b:Heading>
+				    
+				<b:Paragraph>We recommend that you get started by following our "Getting Started Guide"
+				    - don't forget to take a look at our "Best Practice" tutorial, too.</b:Paragraph> 
+				<b:Paragraph>This evaluation version of VeliSphere is free of charge, and comes with absolutely no warranty,
+				support or performance guarantee. Your evaluation is explicitly at your own risk.</b:Paragraph> 
 				
-				<b:Paragraph addStyleNames="smalltext-black">New pricing model available. Click here for more (...)</b:Paragraph>
-				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
-				 
-				 	<b:Heading size="3">Task list</b:Heading>
-				
-				<b:Paragraph addStyleNames="smalltext-black" >No open tasks.</b:Paragraph>
-				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
-				
+				    <b:Paragraph>To add new devices to your account, please use the "Device Provisioning Wizard".</b:Paragraph>
 			</b:Column>	
 		</b:Row>
+		
 		
 					    
 		

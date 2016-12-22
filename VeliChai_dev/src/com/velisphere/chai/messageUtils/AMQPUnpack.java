@@ -50,7 +50,7 @@ public class AMQPUnpack implements Runnable {
 			// Prefetch of 100 has proven to be a good choice for performance
 			// reasons, but this needs further evaluation
 
-			int prefetchCount = 1;
+			int prefetchCount = 50;
 			try {
 				channel.basicQos(prefetchCount);
 			} catch (IOException e2) {

@@ -2,10 +2,9 @@ package com.velisphere.fs;
 
 import java.util.HashMap;
 
-import sensors.Constants;
-
-import com.velisphere.fs.sdk.Server;
-import com.velisphere.fs.sdk.ServerParameters;
+import com.velisphere.fs.sensorsAndConfigs.Constants;
+import com.velisphere.milk.amqpClient.AmqpClient;
+import com.velisphere.milk.configuration.ConfigData;
 
 import flightsim.simconnect.SimConnect;
 import flightsim.simconnect.data.LatLonAlt;
@@ -40,6 +39,7 @@ public class SendCommands {
 	Float temperatureTAT = e.getDataFloat32();
 	Integer totalWeight = e.getDataInt32();
 	Integer autoBrake = e.getDataInt32();
+	String flightNumber = e.getDataString8();
 	
 	
 	// print to users
@@ -54,6 +54,7 @@ public class SendCommands {
 	System.out.println("\tAoA: " + aoA.toString());
 	System.out.println("\tLatitude: " + lat.toString());
 	System.out.println("\tLogitude: " + lon.toString());
+	System.out.println("\tFlight Number: " + flightNumber);
 	
 	// line separator
 	if (e.getEntryNumber() == e.getOutOf())
@@ -121,17 +122,22 @@ public class SendCommands {
 	messageHash.put(Constants.autoBrake,
 			String.valueOf(autoBrake));
 	
+	messageHash.put(Constants.flightNumber,
+			String.valueOf(flightNumber));
+	
 	
 	System.out.println("Message Hash Sent to Controller: "
 			+ messageHash);
 
 	try {
-		Server.sendHashTable(messageHash, ServerParameters.my_queue_name, "REG");
+		AmqpClient.sendHashTable(messageHash, ConfigData.epid, "REG");
 	} catch (Exception e1) {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
 	}
 
 }
+	
+	
 
 }

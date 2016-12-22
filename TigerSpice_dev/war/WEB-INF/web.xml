@@ -7,15 +7,6 @@
 
   <!-- Servlets --> 
 
-<servlet>
-  <servlet-name>remoteLoggingServiceImpl</servlet-name>
-  <servlet-class>com.google.gwt.libideas.logging.server.RemoteLoggingServiceImpl</servlet-class>
-</servlet>
-
-<servlet-mapping>
-  <servlet-name>remoteLoggingServiceImpl</servlet-name>
-  <url-pattern>/tigerspice_dev/logging</url-pattern>
-</servlet-mapping>
 
 <servlet>
     <servlet-name>userdataServlet</servlet-name>
@@ -158,6 +149,17 @@
     <url-pattern>/tigerspice_dev/verticaAnalytics</url-pattern>
   </servlet-mapping>
 
+<servlet>
+    <servlet-name>gaugeServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.GaugeServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>gaugeServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltGauges</url-pattern>
+  </servlet-mapping>
+
+
 
 <servlet>
     <servlet-name>downloadServlet</servlet-name>
@@ -243,6 +245,17 @@
     <url-pattern>/tigerspice_dev/rabbitAMQP</url-pattern>
   </servlet-mapping>
 
+
+ <servlet>
+    <servlet-name>favoriteServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.FavoriteServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>favoriteServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltFavorite</url-pattern>
+  </servlet-mapping>
+  
 
 
   <!-- Default page to serve -->

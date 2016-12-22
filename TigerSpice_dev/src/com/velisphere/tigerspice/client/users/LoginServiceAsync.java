@@ -18,8 +18,6 @@
 package com.velisphere.tigerspice.client.users;
 
 
-import java.util.Vector;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.velisphere.tigerspice.shared.UserData;
 
@@ -27,6 +25,7 @@ public interface LoginServiceAsync {
 	
 	void loginServer(String name, String password, AsyncCallback<UserData> callback);
 	void loginFromSessionServer (AsyncCallback<UserData> callback);
-	void changePassword(String name, String newPassword, AsyncCallback<Boolean> callback);
+	void changePassword(String id, String oldPassword, String newPassword, AsyncCallback<Boolean> callback);
+	void closeAccount(String id, AsyncCallback<Boolean> callback);
 	void logout(AsyncCallback<Void> callback);	
 }

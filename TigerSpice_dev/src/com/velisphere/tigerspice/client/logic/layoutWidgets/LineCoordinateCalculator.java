@@ -89,7 +89,6 @@ public class LineCoordinateCalculator {
 		
 		if (targetAboveSource == true)
 		{
-			RootPanel.get().add(new HTML("ABOVE SOURCE"));
 			calcSourceX = (int) (sourceLocation.getLeft() + source.getElement().getClientWidth() * 0.5);
 			calcTargetX = (int) (targetLocation.getLeft() + target.getElement().getClientWidth() * 0.5);
 			calcSourceY = sourceLocation.getTop();
@@ -98,7 +97,6 @@ public class LineCoordinateCalculator {
 		
 		if (targetBelowSource == true)
 		{
-			RootPanel.get().add(new HTML("BELOW SOURCE"));
 			calcSourceX = (int) (sourceLocation.getLeft() + source.getElement().getClientWidth() * 0.5);
 			calcTargetX = (int) (targetLocation.getLeft() + target.getElement().getClientWidth() * 0.5);
 			calcSourceY = sourceLocation.getTop() + source.getElement().getClientHeight();
@@ -107,7 +105,6 @@ public class LineCoordinateCalculator {
 		
 		if (targetLeftOfSource == true)
 		{
-			RootPanel.get().add(new HTML("LEFT OF  SOURCE"));
 			calcSourceX = sourceLocation.getLeft();
 			calcTargetX = targetLocation.getLeft() + target.getElement().getClientWidth();
 			calcSourceY = (int) (sourceLocation.getTop() + source.getElement().getClientHeight() * 0.5);
@@ -116,7 +113,6 @@ public class LineCoordinateCalculator {
 		
 		if (targetRightOfSource == true)
 		{
-			RootPanel.get().add(new HTML("RIGHT OF SOURCE"));
 			calcSourceX = sourceLocation.getLeft() + source.getElement().getOffsetWidth();
 			calcTargetX = targetLocation.getLeft();
 			calcSourceY = (int) (sourceLocation.getTop() + source.getElement().getOffsetHeight() * 0.5);

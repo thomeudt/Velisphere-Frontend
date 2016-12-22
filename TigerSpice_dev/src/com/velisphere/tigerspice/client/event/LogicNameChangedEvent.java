@@ -17,7 +17,6 @@
  ******************************************************************************/
 package com.velisphere.tigerspice.client.event;
 
-import com.google.common.eventbus.EventBus;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -34,7 +33,6 @@ public class LogicNameChangedEvent extends GwtEvent<LogicNameChangedEventHandler
 		public LogicNameChangedEvent(String name)
 		{
 			this.name = name;
-			RootPanel.get().add(new HTML("Name Change Event Fired!"));
 			
 		}
 

@@ -20,13 +20,13 @@ public class AuthenticationClient {
 		String username = "a";
 		String password = "a";
 			
-			WebTarget target = client.target( "http://localhost:8080/ToucanServer/rest/authentication/put" );
+			WebTarget target = client.target( "http://localhost:8082/rest/user/put/" );
 
 			//Response response = target.path( "endpoint" ).path( sb.toString() ).request().put( Entity.text("f67528e4-80f7-4832-a5fd-3082bd4e7385") );
 			
 			
 			
-			Response response = target.path( "user" ).path(username).request().put( Entity.text(password) );
+			Response response = target.path( "authrequest" ).path(username).request().put( Entity.text(password) );
 			System.out.println("User tried to log in: " + username);	
 		
 			System.out.println ("Reponse from server: " + response);

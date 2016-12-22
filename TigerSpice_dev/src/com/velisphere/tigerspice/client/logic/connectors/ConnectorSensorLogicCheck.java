@@ -96,7 +96,6 @@ public class ConnectorSensorLogicCheck extends Connector {
 			createBaseLayout();
 			}
 		lbxOperator.setSelectedValue(lbxOperatorValue);
-		RootPanel.get().add(new HTML("Operator Value: " + this.lbxOperatorValue));
 		txtCheckValue.setValue(txtCheckValueContent);
 	}
 	
@@ -359,7 +358,6 @@ public class ConnectorSensorLogicCheck extends Connector {
 	
 	 public SerializableLogicConnector getSerializableRepresentation()
      {
-		RootPanel.get().add(new HTML("Getting Rep P2L..."));
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
      	serializable.setLeftID(this.sensor.getUUID());
      	serializable.setRightID(this.logicCheck.getId());
@@ -368,7 +366,6 @@ public class ConnectorSensorLogicCheck extends Connector {
 		serializable.setType(SharedConstants.CONP2L);
 		serializable.setActionID(actionUUID);
 		serializable.setCheckID(checkUUID);
-		RootPanel.get().add(new HTML("Succeeded!"));
 		return serializable;
      	
      }

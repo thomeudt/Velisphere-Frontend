@@ -31,7 +31,6 @@ public class LogicLocatorDragDropController extends AbsolutePositionDropControll
 	{
 		super.onDrop(context);
 		
-		RootPanel.get().add(new HTML("DropController says onDrop for class " +context.selectedWidgets.get(0).getClass().getName() ));
 		
 		WidgetLocation dropTargetLocation = new WidgetLocation(dropTarget, null);
 		int dropTargetOffsetX = dropTargetLocation.getLeft()

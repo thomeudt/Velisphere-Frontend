@@ -72,7 +72,11 @@ public class LoginDialogBox extends Composite{
 		txtUsername = new TextBox();
 		txtPassword = new PasswordTextBox();
 		
+		
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		txtPassword.getElement().setAttribute("autocapitalize", "off");
+		txtPassword.getElement().setAttribute("autocomplete", "off");
 		
 		aleError.setVisible(false);
 	
@@ -149,6 +153,8 @@ public class LoginDialogBox extends Composite{
 	@UiHandler("ancSignup")
 	void redirectSignup (ClickEvent event)  {
 		// Window.alert("Logging In");
+		
+		
 		RootPanel.get("main").clear();
 		NewAccountWidget newAccount = new NewAccountWidget();
 		RootPanel.get("main").add(newAccount);

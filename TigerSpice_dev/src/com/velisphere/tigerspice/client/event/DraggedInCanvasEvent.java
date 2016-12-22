@@ -19,7 +19,6 @@ package com.velisphere.tigerspice.client.event;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.github.gwtbootstrap.client.ui.Button;
-import com.google.common.eventbus.EventBus;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -72,7 +71,6 @@ public class DraggedInCanvasEvent extends GwtEvent<DraggedInCanvasEventHandler> 
 		{
 			this.dragBox = dragBox;
 			this.context = context;
-			RootPanel.get().add(new HTML("Event Fired..."));
 		}
 		
 		

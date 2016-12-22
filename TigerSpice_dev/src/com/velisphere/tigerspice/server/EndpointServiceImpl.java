@@ -18,7 +18,10 @@
 package com.velisphere.tigerspice.server;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.UnknownHostException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -27,10 +30,13 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.UUID;
 import java.util.Vector;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.client.Client;
@@ -41,16 +47,26 @@ import javax.ws.rs.core.Response;
 
 import nl.captcha.Captcha;
 
+import org.apache.commons.codec.binary.Hex;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import org.mindrot.BCrypt;
 import org.voltdb.VoltTable;
 import org.voltdb.client.ClientResponse;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 import org.voltdb.types.TimestampType;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
-import com.velisphere.tigerspice.client.helper.ErrorCodes;
+import com.velisphere.tigerspice.client.helper.VeliConstants;
+import com.velisphere.tigerspice.shared.AlertData;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.LogicLinkTargetData;
 import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
@@ -240,9 +256,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+		
 			Statement myInsert = conn.createStatement();
 			myInsert.executeUpdate("INSERT INTO vlogger.ENDPOINT_SPHERE_LINK VALUES ('"
 					+ uuid + "','" + endpointID + "','" + sphereID + "') ");
@@ -312,9 +326,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement myDelete = conn.createStatement();
 			myDelete.executeUpdate("DELETE FROM vlogger.ENDPOINT_SPHERE_LINK WHERE ENDPOINTID = '"
 					+ endpointID + "' AND SPHEREID = '" + sphereID + "'");
@@ -508,11 +520,8 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		HttpServletRequest request = getThreadLocalRequest();
 		HttpSession session = request.getSession();
 		Captcha captcha = (Captcha) session.getAttribute(Captcha.NAME);
-		System.out.println("[IN] Captcha Word " + captchaWord);
-		System.out.println("[IN] Captcha on Session " + Captcha.NAME);
 		if (captcha.isCorrect(captchaWord)) {
 
-			System.out.println("[IN] Correct Captcha");
 			VoltConnector voltCon = new VoltConnector();
 
 			try {
@@ -567,10 +576,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			}
 
 			if (uep.getTimestamp() != null) {
-				System.out.println("Time "
-						+ (new Date().getTime() - (Timestamp.valueOf(uep
-								.getTimestamp()).getTime())));
-
+			
 				if ((new Date().getTime() - (Timestamp.valueOf(uep.time_stamp)
 						.getTime())) > 600000000)
 					uep = null;
@@ -589,18 +595,9 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			String endpointclassID, String userID)
 
 	{
-
-		/*
-		 * TODO: ADD ERROR HANDLING VERIFY IF DUPLICATE ENTRY!!!!!!!!!!
-		 */
-
-		// first add to VoltDB
-
-		String errorTracker = new String("OK");
-
+		
 		VoltConnector voltCon = new VoltConnector();
-		String linkID = UUID.randomUUID().toString();
-
+		
 		try {
 			voltCon.openDatabase();
 		} catch (UnknownHostException e1) {
@@ -610,11 +607,67 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+	
+		// lookup secret
+		
+		String secret = "";
+		
+		ClientResponse findEndpoint;
+		try {
+			findEndpoint = voltCon.montanaClient
+					.callProcedure("SEC_SelectSecretForUEPID",
+							endpointID);
+			
+			final VoltTable findEndpointResults[] = findEndpoint
+					.getResults();
+
+			VoltTable result = findEndpointResults[0];
+			// check if any rows have been returned
+
+			
+			
+			while (result.advanceRow()) 
+				{
+					// extract the value in column checkid
+
+					secret = result
+							.getString("SECRET");
+
+				}
+
+		} catch (NoConnectionsException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (ProcCallException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+
+				
+		
+		
+		/*
+		 * TODO: ADD ERROR HANDLING VERIFY IF DUPLICATE ENTRY!!!!!!!!!!
+		 */
+
+		
+		
+		// first add to VoltDB
+
+		String errorTracker = new String("OK");
+
+		
+		String linkID = UUID.randomUUID().toString();
+
+	
 
 		try {
 
 			voltCon.montanaClient.callProcedure("ENDPOINT.insert", endpointID,
-					endpointName, endpointclassID, new TimestampType(), "UNKNOWN");
+					endpointName, endpointclassID, new TimestampType(), "UNKNOWN", secret);
 			voltCon.montanaClient.callProcedure("ENDPOINT_USER_LINK.insert",
 					linkID, endpointID, userID);
 		} catch (NoConnectionsException e1) {
@@ -624,7 +677,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (ProcCallException e1) {
-			errorTracker = ErrorCodes.VOLT_INSERTFAILED;
+			errorTracker = VeliConstants.VOLT_INSERTFAILED;
 
 			System.out
 					.println("[ER] ENDPOINT COULD NOT BE PROVISIONED, PROBABLY ALREADY EXISTS");
@@ -655,9 +708,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement myInsert = conn.createStatement();
 			myInsert.executeUpdate("INSERT INTO VLOGGER.ENDPOINT VALUES ('"
 					+ endpointID + "','" + endpointName + "','"
@@ -674,6 +725,28 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 
 		// third add to rabbitMQ
 
+		// create password by hashing secret
+		StringBuffer pwHash = null;
+
+		MessageDigest sh;
+		try {
+			sh = MessageDigest.getInstance("SHA-512");
+		  sh.update(secret.getBytes());
+	        //Get the hash's bytes
+		  
+			 pwHash = new StringBuffer();
+	            for (byte b : sh.digest()) pwHash.append(Integer.toHexString(0xff & b));
+
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+					
+		System.out.println("[IN] RabbitMQ password created: "
+				+ pwHash);				
+		//Add password bytes to digest
+      
+		
 		// create rabbitMQ account
 		Client rabbitClient = ClientBuilder.newClient();
 		HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic(
@@ -682,10 +755,12 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		WebTarget target = rabbitClient
 				.target("http://"+ServerParameters.rabbit_ip+":15672/api/users/" + endpointID);
 		Response response = target.request().put(
-				Entity.json("{\"password\":\"" + endpointID
-						+ "\",\"tags\":\"\"}")); // replace endpoint ID with API
-													// Key later on
+				Entity.json("{\"password\":\"" + pwHash
+						+ "\",\"tags\":\"\"}")); 
+												
 
+
+		
 		System.out.println("[IN] RabbitMQ account creation started, result: "
 				+ response);
 
@@ -695,8 +770,9 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 				.target("http://"+ServerParameters.rabbit_ip+":15672/api/permissions/hClients/"
 						+ endpointID);
 		response = target.request().put(
-				Entity.json("{\"configure\":\"\",\"write\":\"\",\"read\":\""
-						+ endpointID + ".*\"}"));
+				Entity.json("{\"configure\":\"" + endpointID 
+						+ ".*\",\"write\":\"" + endpointID 
+						+ ".*\",\"read\":\"" + endpointID + ".*\"}"));
 		System.out
 				.println("[IN] RabbitMQ read permission for clients queue requested, result: "
 						+ response);
@@ -709,11 +785,31 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		response = target
 				.request()
 				.put(Entity
-						.json("{\"configure\":\"\",\"write\":\"controller\",\"read\":\"\"}"));
+						.json("{\"configure\":\"\",\"write\":\".*\",\"read\":\"\"}"));
 		System.out
 				.println("[IN] RabbitMQ write permission for controller queue requested, result: "
 						+ response);
+        
 
+		// create persistent queue
+
+		System.out
+		.println("[IN] Now create a queue for "+endpointID);
+
+		
+		target = rabbitClient
+						.target("http://"+ServerParameters.rabbit_ip+":15672/api/queues/hClients/"
+								+ endpointID);
+		response = target
+						.request()
+						.put(Entity
+								.json("{\"auto_delete\":false,\"durable\":true}"));
+		System.out
+						.println("[IN] RabbitMQ create of persistent queue requested, result: "
+								+ response);
+
+		
+		
 		return errorTracker;
 
 	}
@@ -754,9 +850,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 
 			final String endpointID = it.next();
 
-			System.out.println("[DB] Looking for links belonging to "
-					+ endpointID);
-
+			
 			LinkedList<LogicLinkTargetData> targetsForEndpointID = new LinkedList<LogicLinkTargetData>();
 
 			try {
@@ -782,9 +876,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 
 					String checkpathID = result.getString("CHECKPATHID");
 
-					System.out.println("[DB] Looking for actions in checkpath "
-							+ checkpathID);
-
+					
 					try {
 
 						final ClientResponse findAction = voltCon.montanaClient
@@ -811,10 +903,7 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 										.setTargetEndpointID(resultActionQuery
 												.getString("TARGETENDPOINTID"));
 								targetsForEndpointID.add(targetData);
-								System.out
-										.println("[DB] Found and adding to target list "
-												+ targetData.toString());
-
+								
 							} else
 								System.out
 										.println("[DB] Discarding emptry result: "
@@ -836,17 +925,9 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			}
 
 			if (linkedEndpointsForEndpointID.containsKey(endpointID)) {
-				System.out.println("[DB] Appending list of "
-						+ targetsForEndpointID.toString() + " to Key "
-						+ endpointID);
-				System.out.println("[DB] >>>>");
 				linkedEndpointsForEndpointID.get(endpointID).addAll(
 						targetsForEndpointID);
 			} else {
-				System.out.println("[DB] Creating full list of "
-						+ targetsForEndpointID.toString() + " to Key "
-						+ endpointID);
-				System.out.println("[DB] >>>>");
 				linkedEndpointsForEndpointID.put(endpointID,
 						targetsForEndpointID);
 			}
@@ -860,8 +941,6 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 			e.printStackTrace();
 		}
 
-		System.out.println("[DB] Returning "
-				+ linkedEndpointsForEndpointID.toString());
 		return linkedEndpointsForEndpointID;
 	}
 
@@ -937,5 +1016,489 @@ public class EndpointServiceImpl extends RemoteServiceServlet implements
 		return endpointsForMultipleEndpointIDs;
 
 	}
+	
+	@Override
+	public String addNewAlert(AlertData alert)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+		
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	
+		
+
+		//  add to VoltDB
+
+		
+		String alertID = UUID.randomUUID().toString();
+		alert.setAlertID(alertID);
+
+		try {
+
+			voltCon.montanaClient.callProcedure("ALERT.insert", alert.getAlertID(),
+					alert.getUserID(), alert.getEndpointID(), alert.getAlertName(), alert.getProperty(), alert.getOperator(), alert.getThreshold(),
+					alert.getType(), alert.getRecipient(), alert.getText(), alert.getCheckpathID());
+			
+			
+		} catch (NoConnectionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProcCallException e1) {
+			
+			System.out
+					.println("[ER] ALERT COULD NOT BE ADDED");
+			
+			e1.printStackTrace();
+
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// 
+		return alertID;
+
+	}
+	
+	
+	@Override
+	public LinkedHashMap<String, String> getAllAlertsForEndpoint(String endpointID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		LinkedHashMap<String, String> allAlerts = new LinkedHashMap<String, String>();
+		try {
+
+			final ClientResponse findAllUsers = voltCon.montanaClient
+					.callProcedure("UI_SelectAllAlertsForEndpoint", endpointID);
+
+			final VoltTable findAllUsersResults[] = findAllUsers.getResults();
+
+			VoltTable result = findAllUsersResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					
+					allAlerts.put(result.getString("ALERTID"), result.getString("ALERTNAME"));
+					
+				}
+			}
+
+			// System.out.println(allEndPoints);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return allAlerts;
+	}
+	
+	@Override
+	public LinkedList<AlertData> getAllAlertsForUser(String userID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		LinkedList<AlertData> allAlerts = new LinkedList<AlertData>();
+		try {
+
+			
+			 VoltTable[] results = voltCon.montanaClient.callProcedure("@AdHoc",
+				       "SELECT * FROM ALERT " +
+				       "WHERE USERID='" + userID+"'").getResults();
+			
+			
+
+			VoltTable result = results[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					AlertData alert = new AlertData();
+					alert.setAlertID(result.getString("ALERTID"));
+					alert.setAlertName(result.getString("ALERTNAME"));
+					alert.setCheckpathID(result.getString("CHECKPATHID"));
+					alert.setEndpointID(result.getString("ENDPOINTID"));
+					alert.setOperator(result.getString("OPERATOR"));
+					alert.setProperty(result.getString("PROPERTY"));
+					alert.setRecipient(result.getString("RECIPIENT"));
+					alert.setText(result.getString("TEXT"));
+					alert.setThreshold(result.getString("THRESHOLD"));
+					alert.setType(result.getString("TYPE"));
+					alert.setUserID(result.getString("USERID"));
+					
+					
+					allAlerts.add(alert);
+					
+				}
+			}
+
+			// System.out.println(allEndPoints);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return allAlerts;
+	}
+	
+	
+	
+	@Override
+	public AlertData getAlertDetails(String alertID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		AlertData alert = new AlertData();
+		
+		try {
+
+			final ClientResponse findAllUsers = voltCon.montanaClient
+					.callProcedure("UI_SelectAllAlertDetails", alertID);
+
+			final VoltTable findAllUsersResults[] = findAllUsers.getResults();
+
+			VoltTable result = findAllUsersResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					
+					alert.setAlertID(result.getString("ALERTID"));
+					alert.setAlertName(result.getString("ALERTNAME"));
+					alert.setCheckpathID(result.getString("CHECKPATHID"));
+					alert.setEndpointID(result.getString("ENDPOINTID"));
+					alert.setOperator(result.getString("OPERATOR"));
+					alert.setProperty(result.getString("PROPERTY"));
+					alert.setRecipient(result.getString("RECIPIENT"));
+					alert.setText(result.getString("TEXT"));
+					alert.setType(result.getString("TYPE"));
+					alert.setThreshold(result.getString("THRESHOLD"));
+					alert.setUserID(result.getString("USERID"));
+					
+					
+				}
+			}
+
+			// System.out.println(allEndPoints);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return alert;
+	}
+
+
+	
+	@Override
+	public String deleteAlert(String alertID, String checkpathID)
+
+	{
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		// first we delete the alert from the alert table
+		
+		try {
+			voltCon.montanaClient.callProcedure("ALERT.delete",
+					alertID);
+		} catch (NoConnectionsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ProcCallException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		// next we delete the related checkpath from the checkpath table
+		
+				try {
+					voltCon.montanaClient.callProcedure("CHECKPATH.delete",
+							checkpathID);
+				} catch (NoConnectionsException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ProcCallException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+		// now we delete the check that is contained in this checkpath
+				
+				try {
+					voltCon.montanaClient.callProcedure("@AdHoc",
+				       "DELETE FROM CHECK " +
+				       "WHERE CHECKPATHID='" + checkpathID + "'");
+				} catch (NoConnectionsException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ProcCallException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+		// now we delete the action that is contained in this checkpath
+				
+				try {
+					voltCon.montanaClient.callProcedure("@AdHoc",
+				       "DELETE FROM ACTION " +
+				       "WHERE CHECKPATHID='" + checkpathID + "'");
+				} catch (NoConnectionsException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ProcCallException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+	// now we delete the outbound property action that is contained in this checkpath
+				
+				try {
+					voltCon.montanaClient.callProcedure("@AdHoc",
+				       "DELETE FROM OUTBOUNDPROPERTYACTION " +
+				       "WHERE CHECKPATHID='" + checkpathID + "'");
+				} catch (NoConnectionsException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ProcCallException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "OK";
+
+	}
+	
+	public String getUploadHmacJSON(String uploadID, String endpointID)
+	{		
+		
+		String hMacUploadID = null;
+		
+		hMacUploadID = getHmacSha1(uploadID, getSecretFromMontana(endpointID));
+		
+		String[] uploadIDandHmac = new String[2];
+		uploadIDandHmac[0] = uploadID;
+		uploadIDandHmac[1] = hMacUploadID;
+		
+		return buildMessagePack(uploadIDandHmac);
+		
+			
+	}
+	
+		
+	public String buildMessagePack(Object object)
+	{
+	
+				
+		ObjectMapper mapper = new ObjectMapper();
+		StringWriter writer = new StringWriter();
+		try {
+			mapper.writeValue(writer, object);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return writer.toString();
+	
+	}
+	
+		
+		public String getSecretFromMontana(String endpointID) 
+		{
+			
+
+			String secret = null;
+			
+			VoltConnector voltCon = new VoltConnector();
+			
+			try {
+				voltCon.openDatabase();
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			
+			ClientResponse findSecret;
+			try {
+				findSecret = voltCon.montanaClient
+						.callProcedure("SEC_SelectSecretForEndpointID", endpointID);
+		
+			final VoltTable findSecretResults[] = findSecret.getResults();
+
+			VoltTable result = findSecretResults[0];
+
+			while (result.advanceRow()) {
+					
+					secret = result
+							.getString("SECRET");
+					
+			}
+
+			} catch (IOException | ProcCallException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			try {
+				voltCon.closeDatabase();
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+					
+			return secret;
+		
+		}
+	
+		
+		
+		public String getHmacSha1(String value, String key) {
+	        try {
+	            // Get an hmac_sha1 key from the raw key bytes
+	            byte[] keyBytes = key.getBytes();           
+	            SecretKeySpec signingKey = new SecretKeySpec(keyBytes, "HmacSHA1");
+
+	            // Get an hmac_sha1 Mac instance and initialize with the signing key
+	            Mac mac = Mac.getInstance("HmacSHA1");
+	            mac.init(signingKey);
+
+	            // Compute the hmac on input data bytes
+	            byte[] rawHmac = mac.doFinal(value.getBytes());
+
+	            // Convert raw bytes to Hex
+	            byte[] hexBytes = new Hex().encode(rawHmac);
+
+	            //  Covert array of Hex bytes to a String
+	            return new String(hexBytes, "UTF-8");
+	        } catch (Exception e) {
+	            throw new RuntimeException(e);
+	        }
+	    }
+	
+
+	
 
 }

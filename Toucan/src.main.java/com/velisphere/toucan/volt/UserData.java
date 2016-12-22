@@ -25,49 +25,40 @@ import java.util.UUID;
 
 public class UserData
 {
-	public String userID;
-	public String userEmail;
+	public String userID;	
 	public String userName;
-	public String userPassword;
-	public String sessionID;
-	public Boolean loggedIn = false;
+	public String apiKey;
 	
 	
 	
-	public String getEmail(){
-		return userEmail;
+	
+	
+	
+		
+	public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
 	}
 	
-	public String getName(){
-		return userName;
-	}
-	
-	public String getId(){
+	public String getUserID() {
 		return userID;
 	}
-	
-	public void setUserPwHash(String password){
-		this.userPassword = password;
+
+	public void setUserID(String userID) {
+		this.userID = userID;
 	}
 
-	public String getSessionId() {
-		return sessionID;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setSessionId(String sID) {
-		this.sessionID = sID;		
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
-	
-	public boolean getLoggedIn() {
-	
-		return loggedIn;
-	}
-
-	public void setLoggedIn(Boolean loggedInStatus) {
-		
-		this.loggedIn = loggedInStatus;
-	}
 
 	
 }

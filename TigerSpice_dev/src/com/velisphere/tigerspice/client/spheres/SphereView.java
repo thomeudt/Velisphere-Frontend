@@ -320,13 +320,11 @@ public class SphereView extends Composite {
 						
 						sphereName = result.getName();
 						if(result.getIsPublic() == 1){
-							RootPanel.get().add(new HTML("Shared Sphere Value " + result.getIsPublic()));
 							colShareAlert.add(new AlertWidget(new HTML("<b>&nbsp;Privacy Alert:</b> This is a shared sphere, visible to other VeliSphere users. Other user will be able to access sensor data from this Sphere."), AlertType.WARNING));
 							cbxPublic.setValue(true);
 						}
 						else
 						{
-							RootPanel.get().add(new HTML("Private Sphere Value " + result.getIsPublic()));
 							colShareAlert.clear();
 							cbxPublic.setValue(false);
 						}
@@ -378,8 +376,9 @@ public class SphereView extends Composite {
 	}
 	
 	
-	@UiFactory SphereEditorWidget makeSphereEditor() { // method name is insignificant
-	    return new SphereEditorWidget(this.sphereID, this.sphereName);
+	@UiFactory SphereEditor makeSphereEditor() { // method name is insignificant
+	    // return new SphereEditorWidget(this.sphereID, this.sphereName);
+		return new SphereEditor(this.sphereID, this.sphereName);
 	  }
 	
 }

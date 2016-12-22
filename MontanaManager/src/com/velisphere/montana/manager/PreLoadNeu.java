@@ -16,7 +16,7 @@ public class PreLoadNeu {
 	        //public static String volt_ip = "16.1.1.149"; // for local db
 	    	//public static String volt_ip = "ec2-54-200-17-56.us-west-2.compute.amazonaws.com"; // for aws db
 	        
-	        preLoader.createConnection("16.1.1.84");
+	        preLoader.createConnection("192.168.1.101");
 	        //preLoader.createConnection("54.200.77.57");
 	        
 	        /*
@@ -25,16 +25,16 @@ public class PreLoadNeu {
 	        
 	        
 	        
-	        preLoader.callProcedure("SPHERE.insert", "1000", "Home Tübingen", "0");
+	        preLoader.callProcedure("SPHERE.insert", "1000", "Home Tï¿½bingen", "0");
 	        preLoader.callProcedure("SPHERE.insert", "1001", "My Car", "0");
 	       
 	        
 	        System.out.println("Spheres loaded");
 	        
 	        
-	        preLoader.callProcedure("USER.insert", "1000", "thmeu", "thorsten@thorsten-meudt.de", "asa", "PAYPERUSE");
-	        preLoader.callProcedure("USER.insert", "1001", "utmeu", "ute_lechner@yahoo.de", "asa", "PAYPERUSE");
-	        preLoader.callProcedure("USER.insert", "1002", "lcmeu", "charlotte@thorsten-meudt.de", "asa", "PAYPERUSE");
+	        preLoader.callProcedure("USER.insert", "1000", "thmeu", "thorsten@thorsten-meudt.de", "asa", "PAYPERUSE", "LEER");
+	        preLoader.callProcedure("USER.insert", "1001", "utmeu", "ute_lechner@yahoo.de", "asa", "PAYPERUSE", "LEER");
+	        preLoader.callProcedure("USER.insert", "1002", "lcmeu", "charlotte@thorsten-meudt.de", "asa", "PAYPERUSE", "LEER");
 	        
 	        System.out.println("Users loaded");
 	        
@@ -44,10 +44,10 @@ public class PreLoadNeu {
 	        
 	        System.out.println("Endpointclasses loaded");
 	        
-	        preLoader.callProcedure("ENDPOINT.insert", "E1", "PiPhidget", "EPC2", new TimestampType(), "UNKNOWN");
-	        preLoader.callProcedure("ENDPOINT.insert", "E2", "Blubber Thorsten", "EPC1", new TimestampType(), "UNKNOWN");
-	        preLoader.callProcedure("ENDPOINT.insert", "E3", "Blubber Ute", "EPC1", new TimestampType(), "UNKNOWN");
-	        preLoader.callProcedure("ENDPOINT.insert", "E4", "Reference Home Controller App", "EPC3", new TimestampType(), "UNKNOWN");
+	        preLoader.callProcedure("ENDPOINT.insert", "E1", "PiPhidget", "EPC2", new TimestampType(), "UNKNOWN", "LEER");
+	        preLoader.callProcedure("ENDPOINT.insert", "E2", "Blubber Thorsten", "EPC1", new TimestampType(), "UNKNOWN","LEER");
+	        preLoader.callProcedure("ENDPOINT.insert", "E3", "Blubber Ute", "EPC1", new TimestampType(), "UNKNOWN","LEER");
+	        preLoader.callProcedure("ENDPOINT.insert", "E4", "Reference Home Controller App", "EPC3", new TimestampType(), "UNKNOWN","LEER");
 	        
 	        System.out.println("Endpoints loaded");
 	        
@@ -132,7 +132,7 @@ public class PreLoadNeu {
 	        
 	        while (i<3){
 	        	preLoader.callProcedure("CHECK.insert", "CA"+i, "E1"+i, "PR1", "1", "=", "0", "0", "Switch 1 on", "CP1"+i); // Checks if switch 1 is on
-	        	preLoader.callProcedure("CHECKPATH.insert", "CP1"+i, "Dummy "+i, "", ""); // Checkpath Button 1,2,3,4 gedrückt UNUSED
+	        	preLoader.callProcedure("CHECKPATH.insert", "CP1"+i, "Dummy "+i, "", ""); // Checkpath Button 1,2,3,4 gedrï¿½ckt UNUSED
 	        	preLoader.callProcedure("CHECKSTATE.insert", "CA"+i, 0, "CP1"+i);
 	        	preLoader.callProcedure("MULTICHECK.insert", "MC1"+i, "AND", "0", "0", "Test 5", "CP1"+i);
 	        	preLoader.callProcedure("MULTICHECK_CHECK_LINK.insert", "1000"+i, "MC1"+i, "CA"+i, "CP1"+i);	
@@ -178,12 +178,12 @@ public class PreLoadNeu {
 	        System.out.println("Multichecks and Multichecks linked");
 	        
         
-	        preLoader.callProcedure("CHECKPATH.insert", "CP1", "Dummy 1", "", ""); // Checpath für alle Buttons
+	        preLoader.callProcedure("CHECKPATH.insert", "CP1", "Dummy 1", "", ""); // Checpath fï¿½r alle Buttons
 	        preLoader.callProcedure("CHECKPATH.insert", "CP2", "Dummy 2", "", ""); // Checkpath Messenger
-	        preLoader.callProcedure("CHECKPATH.insert", "CP3", "Dummy 3", "", ""); // Checkpath Button 5 gedrückt UNUSED
-	        preLoader.callProcedure("CHECKPATH.insert", "CP4", "Dummy 4", "", ""); // Checkpath Button 1,2,3,4 gedrückt UNUSED
-	        preLoader.callProcedure("CHECKPATH.insert", "CP5", "Dummy 5", "", ""); // Checkpath Button 1,2,3,4 gedrückt UNUSED
-	        preLoader.callProcedure("CHECKPATH.insert", "CP6", "Dummy 5", "", ""); // Checkpath Button 1,2,3,4 gedrückt UNUSED
+	        preLoader.callProcedure("CHECKPATH.insert", "CP3", "Dummy 3", "", ""); // Checkpath Button 5 gedrï¿½ckt UNUSED
+	        preLoader.callProcedure("CHECKPATH.insert", "CP4", "Dummy 4", "", ""); // Checkpath Button 1,2,3,4 gedrï¿½ckt UNUSED
+	        preLoader.callProcedure("CHECKPATH.insert", "CP5", "Dummy 5", "", ""); // Checkpath Button 1,2,3,4 gedrï¿½ckt UNUSED
+	        preLoader.callProcedure("CHECKPATH.insert", "CP6", "Dummy 5", "", ""); // Checkpath Button 1,2,3,4 gedrï¿½ckt UNUSED
 	        
 	        System.out.println("Checkpaths loaded");
 

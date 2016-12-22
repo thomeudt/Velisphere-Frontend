@@ -17,6 +17,8 @@
  ******************************************************************************/
 import java.io.IOException;
 
+import ChatExample.MainScreen;
+
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
@@ -51,7 +53,7 @@ public class Pong implements Runnable {
     QueueingConsumer.Delivery delivery = consumer.nextDelivery();
     String message = new String(delivery.getBody());
     System.out.println(" [x] Received '" + message + "'");
-    Send.main("PONG:" + message, "adam");
+    SendOld.main("PONG:" + message, "adam");
     
     boolean admFilterResult = filterMqttAdmMessage(message);   
     if(admFilterResult==false){

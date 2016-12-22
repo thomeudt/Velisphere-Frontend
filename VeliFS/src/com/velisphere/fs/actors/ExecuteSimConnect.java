@@ -42,6 +42,31 @@ public class ExecuteSimConnect {
 		
 	}
 	
+	public static void setVariable(int dataDefintionID, String datumName, String unitsName, SimConnectDataType dataType, String targetValue) throws IOException {
+		SimConnect sc = new SimConnect("VeliFS");
+		
+		sc.addToDataDefinition(dataDefintionID, datumName, unitsName, dataType);
+		DataWrapper dw = new DataWrapper(8);
+	
+		dw.putString8(targetValue);
+		sc.setDataOnSimObject(dataDefintionID, 1, false, 1,  dw);
+		
+		DispatcherTask dt = new DispatcherTask(sc);
+		dt.addOpenHandler(new OpenHandler() {
+			public void handleOpen(SimConnect sender, RecvOpen e) {
+				System.out.println("Connected : " + e.toString());
+			}
+
+			});
+		dt.addExceptionHandler(new ExceptionHandler() {
+			public void handleException(SimConnect sender, RecvException e) {
+				System.out.println("Error: " + e.getException() + " packet " + e.getSendID() + " arg "+ e.getIndex());
+			}
+			});
+		new Thread(dt).start();
+		
+	}
+	
 	public static void sendEvent(String EventName, String requestCid, String requestParam) throws IOException, ConfigurationNotFoundException {
 		
 		

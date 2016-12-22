@@ -27,7 +27,6 @@ public class ExplorerLabel extends Label {
 		this.endpointID = endpointID;
 		this.isActor = isActor;
 		this.isSensor = isSensor;
-		RootPanel.get().add(new HTML("SENSOR..." + this.isSensor));
 		removeDefaultMouseDown();
 		
 	}

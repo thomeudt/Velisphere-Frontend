@@ -26,7 +26,9 @@ import au.com.bytecode.opencsv.CSVWriter;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.velisphere.tigerspice.client.analytics.AnalyticsService;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
+import com.velisphere.tigerspice.shared.ActionData;
 import com.velisphere.tigerspice.shared.AnalyticsRawData;
+import com.velisphere.tigerspice.shared.FileData;
 import com.velisphere.tigerspice.shared.GeoLocationData;
 import com.velisphere.tigerspice.shared.TableRowData;
 
@@ -53,9 +55,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -67,8 +67,11 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 							+ endpointID
 							+ "' ORDER BY TIME_STAMP");
 
+			
+			
 			while (myResult.next()) {
 				AnalyticsRawData logItem = new AnalyticsRawData();
+				
 				logItem.addPropertyValuePair(myResult.getString(1), myResult.getString(2));
 				//logItem.addPropertyValuePair("Test", myResult.getString(2));
 				logItem.setTimeStamp(myResult.getString(3));
@@ -77,6 +80,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -109,9 +113,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 
 		writer.flush();
 		writer.close();
-
-		System.out.println("[IN] Creating temporary file at "
-				+ tempFile.getAbsolutePath());
+	
 		return tempFile.getAbsolutePath();
 	}
 	
@@ -130,7 +132,6 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 		int contentStartIndex = imageData.indexOf(encodingPrefix) + encodingPrefix.length();
 		
 		byte[] imageDataArray = Base64.decodeBase64(imageData.substring(contentStartIndex).getBytes());
-		System.out.println(String.valueOf(imageDataArray));
 		
 		
 		
@@ -145,8 +146,6 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 		
 		
 
-		System.out.println("[IN] Creating temporary file at "
-				+ tempFile.getAbsolutePath());
 		return tempFile.getAbsolutePath();
 	}
 
@@ -171,9 +170,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -196,6 +193,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -224,9 +222,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -243,6 +239,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -253,6 +250,9 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 		return timestamp;
 	}
 
+	
+	
+	
 	public String getEndpointLogCount(String endpointID) {
 
 		Connection conn;
@@ -271,9 +271,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+		
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -290,6 +288,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -319,9 +318,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -338,6 +335,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -370,9 +368,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -393,6 +389,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -402,6 +399,8 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 
 		return logItem;
 	}
+	
+	
 	
 	@Override
 	public AnalyticsRawData getCurrentActorState(String endpointID,
@@ -423,9 +422,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -448,6 +445,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -477,9 +475,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -498,6 +494,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -527,9 +524,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -564,10 +559,11 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 				
 				geoItems.add(geoItem);
 				
-				System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue() + " for: " + geoItem.getEndpointName());
+				
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -598,9 +594,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -635,10 +629,11 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 				
 				geoItems.add(geoItem);
 				
-				System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue() + " for: " + geoItem.getEndpointName());
+				
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -669,9 +664,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -707,11 +700,10 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 				
 				
 				geoItems.add(geoItem);
-				
-				System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue() + " for: " + geoItem.getEndpointName());
-			}
+				}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -743,9 +735,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -779,11 +769,10 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 				
 				
 				geoItems.add(geoItem);
-				
-				System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue() + " for: " + geoItem.getEndpointName());
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -813,9 +802,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -850,10 +837,10 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 				
 				geoItems.add(geoItem);
 				
-				System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue() + " for: " + geoItem.getEndpointName());
 			}
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -883,9 +870,7 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 					"vertica", "1Suplies!");
 
 			conn.setAutoCommit(true);
-			System.out.println(" [OK] Connected to Vertica on address: "
-					+ "16.1.1.113");
-
+			
 			Statement mySelect = conn.createStatement();
 
 			ResultSet myResult = mySelect
@@ -921,11 +906,12 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 				
 				geoItems.add(geoItem);
 				
-				System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue() + " for: " + geoItem.getEndpointName());
+				//System.out.println("Retrieved: " + geoItem.getPropertyClassID() + geoItem.getValue() + " for: " + geoItem.getEndpointName());
 			}
 			
 
 			mySelect.close();
+			conn.close();
 
 		} catch (SQLException e) {
 			System.err.println("Could not connect to the database.\n");
@@ -935,6 +921,116 @@ public class AnalyticsServiceImpl extends RemoteServiceServlet implements
 
 		return geoItems;
 	}
+	
+	@Override
+	public ActionData getLastActionExecuted(String actionID) {
+
+		Connection conn;
+		ActionData actionData = new ActionData();
+
+		try {
+			Class.forName("com.vertica.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Could not find the JDBC driver class.\n");
+			e.printStackTrace();
+
+		}
+		try {
+			conn = DriverManager.getConnection("jdbc:vertica://"
+					+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+					"vertica", "1Suplies!");
+
+			conn.setAutoCommit(true);
+			//System.out.println(" [OK] Connected to Vertica on address: "
+			//		+ "16.1.1.113");
+
+			Statement mySelect = conn.createStatement();
+
+			ResultSet myResult = mySelect
+					.executeQuery("SELECT actionid, payload, time_stamp FROM vlogger.actionexecutedlog WHERE ACTIONID = '"+actionID+"' ORDER BY time_stamp DESC LIMIT 1;");
+
+			while (myResult.next()) {
+				
+				actionData.setActionID(myResult.getString(1));
+				actionData.setPayload(myResult.getString(2));
+				actionData.setTimestamp(myResult.getString(3));
+				// System.out.println("Retrieved: " + logItem.getValue());
+			}
+
+			mySelect.close();
+			conn.close();
+
+		} catch (SQLException e) {
+			System.err.println("Could not connect to the database.\n");
+			e.printStackTrace();
+
+		}
+
+		return actionData;
+	}
+
+	@Override
+	public LinkedList<FileData> getAllFileData(String endpointID) {
+
+
+		Connection conn;
+		LinkedList<FileData> fileData = new LinkedList<FileData>();
+
+		try {
+			Class.forName("com.vertica.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.err.println("Could not find the JDBC driver class.\n");
+			e.printStackTrace();
+
+		}
+		try {
+			conn = DriverManager.getConnection("jdbc:vertica://"
+					+ ServerParameters.vertica_ip + ":5433/VelisphereMart",
+					"vertica", "1Suplies!");
+
+			conn.setAutoCommit(true);
+			
+			Statement mySelect = conn.createStatement();
+
+			ResultSet myResult = mySelect
+					.executeQuery("select * from vlogger.FILEUPLOAD where endpointid = '"
+							+ endpointID
+							+ "' ORDER BY TIME_STAMP");
+
+			
+			while (myResult.next()) {
+				FileData fileItem = new FileData();
+				
+				fileItem.setFileId(myResult.getString(1));
+				fileItem.setFileName(myResult.getString(2));
+				fileItem.setOriginalFileName(myResult.getString(3));
+				fileItem.setFileType(myResult.getString(4));
+
+				fileItem.setEndpointId(myResult.getString(5));
+
+				fileItem.setTimeStamp(myResult.getString(6));
+			
+				fileData.add(fileItem);
+			}
+
+			mySelect.close();
+			conn.close();
+
+		} catch (SQLException e) {
+			System.err.println("Could not connect to the database.\n");
+			e.printStackTrace();
+
+		}
+
+		return fileData;
+
+	
+	
+	}
+
+	
+	
+	
 
 	
 }

@@ -122,7 +122,6 @@ public class ConnectorSensorActor extends Connector {
 	public void save()
 	{
 		
-		RootPanel.get().add(new HTML("Connector: Saving"));
 		lbxOperatorValue = lbxOperator.getValue();
 		lbxSourceValue = lbxSource.getValue();
 		lbxTypicalValuesValue = lbxTypicalValues.getValue();
@@ -163,7 +162,7 @@ public class ConnectorSensorActor extends Connector {
 		Column col0b = new Column(4);
 		col0b.add(new HTML("<b>Define Connection between "
 				+ sensor.getContentRepresentation() + " " + "and "
-				+ actor.getContentRepresentation() + "</b> " + this.getCheckUUID()));
+				+ actor.getContentRepresentation() + "</b> "));
 		row0.add(col0b);
 
 		verticalPanel.add(row0);
@@ -482,27 +481,16 @@ public class ConnectorSensorActor extends Connector {
 
 	public SerializableLogicConnector getSerializableRepresentation() {
 				
-		RootPanel.get().add(new HTML("Connector: Serialization Requested"));
 		SerializableLogicConnector serializable = new SerializableLogicConnector();
-		RootPanel.get().add(new HTML("Connector: Serialized rep initialized"));
 		serializable.setLeftID(sensor.getUUID());
-		RootPanel.get().add(new HTML("Connector: Got sensor"));
 		serializable.setRightID(actor.getUUID());
-		RootPanel.get().add(new HTML("Connector: Got actor"));
 		serializable.setLbxOperatorValue(this.lbxOperatorValue);
-		RootPanel.get().add(new HTML("Connector: Got operator"));
 		serializable.setLbxSourceValue(this.lbxSourceValue);
-		RootPanel.get().add(new HTML("Connector: Got source"));
 		serializable.setLbxTypicalValuesValue(this.lbxTypicalValuesValue);
-		RootPanel.get().add(new HTML("Connector: Got typical"));
 		serializable.setLbxValueFromSensorValue(this.lbxValueFromSensorValue);
-		RootPanel.get().add(new HTML("Connector: Got valusesnse"));
 		serializable.setTxtCheckValueContent(this.txtCheckValueContent);
-		RootPanel.get().add(new HTML("Connector: Got checkval"));
 		serializable.setTxtManualEntryContent(this.txtManualEntryContent);
-		RootPanel.get().add(new HTML("Connector: Got manual " +this.txtManualEntryContent ));
 		serializable.setType(SharedConstants.CONP2P);
-		RootPanel.get().add(new HTML("Connector: Got type"));
 		serializable.setActionID(actionUUID);
 		serializable.setCheckID(checkUUID);
 		return serializable;

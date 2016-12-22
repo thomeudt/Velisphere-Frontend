@@ -15,7 +15,10 @@ import javax.ws.rs.core.Response;
 import org.voltdb.client.NoConnectionsException;
 import org.voltdb.client.ProcCallException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.velisphere.toucan.amqp.VoltConnector;
+import com.velisphere.toucan.dataObjects.SecretData;
+import com.velisphere.toucan.security.HashTool;
 
 @Path("/provisioning")
 public class Provisioning {
@@ -32,6 +35,7 @@ public class Provisioning {
 
 		VoltConnector voltCon = new VoltConnector();
 		String uEPID = UUID.randomUUID().toString();
+		String secretKey = HashTool.generateKey();
 
 		try {
 			voltCon.openDatabase();
@@ -47,10 +51,14 @@ public class Provisioning {
 			System.out.println("UEPID: " + uEPID);
 			System.out.println("Identifier: " + identifier);
 			System.out.println("EPC: " + endpointClassID);
+						
+			
+			System.out.println("Secret Key: " + secretKey);
+			System.out.println("Signature (HMAC): " + HashTool.getHmacSha1(uEPID, secretKey));
 
 			voltCon.montanaClient.callProcedure(
 					"UNPROVISIONED_ENDPOINT.insert", uEPID, identifier,
-					endpointClassID, new Timestamp(System.currentTimeMillis()));
+					endpointClassID, new Timestamp(System.currentTimeMillis()),secretKey);
 		} catch (NoConnectionsException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -69,7 +77,17 @@ public class Provisioning {
 			e.printStackTrace();
 		}
 
-		return Response.ok(uEPID).build();
+		
+		SecretData secretData = new SecretData();
+		secretData.setEpid(uEPID);
+		secretData.setSecret(secretKey);
+		
+		ObjectMapper mapper = new ObjectMapper();
+
+		String jsonString = mapper.writeValueAsString(secretData);
+		
+		
+		return Response.ok(jsonString).build();
 		// return Response.noContent().build();
 
 	}

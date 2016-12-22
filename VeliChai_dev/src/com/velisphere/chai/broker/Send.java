@@ -21,15 +21,16 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.json.simple.JSONObject;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.velisphere.chai.ServerParameters;
+import com.velisphere.chai.messageUtils.MessageFabrik;
+import com.velisphere.chai.messageUtils.MessageValidator;
+import com.velisphere.chai.security.HashTool;
+
 
 public class Send {
 
@@ -44,7 +45,7 @@ public class Send {
 	public static void main(String message, String queue_name) throws Exception {
 		BrokerConnection bc = new BrokerConnection();
 		Channel channel = bc.establishTxChannel();
-		channel.queueDeclare(queue_name, false, false, false, null);
+		//channel.queueDeclare(queue_name, false, false, false, null);
 		message = "[" + "via controller" + "] " + message;
 		channel.basicPublish("", queue_name, null, message.getBytes());
 		channel.close();
@@ -56,11 +57,9 @@ public class Send {
 
 		BrokerConnection bc = new BrokerConnection();
 		Channel channel = bc.establishTxChannel();
-		channel.queueDeclare(senderQueueName, false, false, false, null);
+		//channel.queueDeclare(senderQueueName, false, false, false, null);
 
 
-		ObjectMapper mapper = new ObjectMapper();
-		StringWriter writer = new StringWriter();
 		HashMap<String, String> messageMap = new HashMap<String, String>();
 		messageMap.put("SECTOK", null);
 		messageMap.put("TIMESTAMP", null);
@@ -68,15 +67,25 @@ public class Send {
 		messageMap.put("EPID", senderQueueName);
 		messageMap.putAll(message);
 
+		String messagePackJSON = MessageFabrik.buildMessagePack(messageMap);
+		System.out.println("........Target Queue: " + targetQueueName);
 		
-		mapper.writeValue(writer, messageMap);
+		String hMAC = HashTool.getHmacSha1(messagePackJSON, MessageValidator.getSecretFromMontana(targetQueueName));
 		
-		//System.out.println("Target: " + targetQueueName);
+
+		HashMap<String, String> submittableMessage = new HashMap<String, String>();
+		
+		submittableMessage.put(hMAC, messagePackJSON);
+				
+		String submittableJSON = MessageFabrik.buildMessagePack(submittableMessage);
+		
+		//System.out.println("HMAC:" + hMAC);
+		//System.out.println("Submittable:" + submittableJSON);
+		//System.out.println("Target Queue:" + targetQueueName);
+		
 
 		channel.basicPublish("", targetQueueName, null,
-				writer.toString().getBytes());
-
-		//System.out.println(" [x] Sent '" + writer.toString() + "' from " + senderQueueName + " to " + targetQueueName);
+				submittableJSON.getBytes());
 
 		channel.close();
 		
@@ -90,10 +99,10 @@ public class Send {
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
 
-		channel.queueDeclare(queue_name, false, false, false, null);
+		//channel.queueDeclare(queue_name, false, false, false, null);
 
 		channel.basicPublish("", queue_name, null, jsonContainer.getBytes());
-		System.out.println(" [x] Sent '" + jsonContainer + "'");
+		//System.out.println(" [x] Sent '" + jsonContainer + "'");
 
 		channel.close();
 		connection.close();

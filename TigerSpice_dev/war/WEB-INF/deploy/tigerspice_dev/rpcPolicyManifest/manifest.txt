@@ -1,17 +1,20 @@
 # Module tigerspice_dev
 # RPC service class, partial path of RPC policy file
-com.velisphere.tigerspice.client.endpointclasses.EPCService, 136CD2C39F33F332C8A4C048E0D2BD23.gwt.rpc
-com.velisphere.tigerspice.client.users.UserService, 178DF6A571574ECA24C4EEC247726E2E.gwt.rpc
-com.velisphere.tigerspice.client.users.LoginService, BFDC1AC69E750AC71E777E990371A77F.gwt.rpc
-com.velisphere.tigerspice.client.propertyclasses.PropertyClassService, BF36FE91C65705BC928605E73598ABA7.gwt.rpc
-com.velisphere.tigerspice.client.vendors.VendorService, E9179FBF33EFE145CC0A815A19EE96D4.gwt.rpc
-com.velisphere.tigerspice.client.endpoints.EndpointService, 6405D4FFCF68C41720146A490C9F5E58.gwt.rpc
-com.velisphere.tigerspice.client.helper.HelperService, F72E5F6DD787EE9408E8C1925E452956.gwt.rpc
-com.velisphere.tigerspice.client.properties.PropertyService, 7C9B98145536A1673C0AD1285B70F402.gwt.rpc
-com.velisphere.tigerspice.client.logic.CheckPathService, 602FF9AE61431929946C4914D7AFF463.gwt.rpc
-com.velisphere.tigerspice.client.checks.CheckService, 9FD481A534CD16B3E11DA89097CE0A9F.gwt.rpc
-com.velisphere.tigerspice.client.spheres.SphereService, 3751519F3BA43E00CFAFD4247B86770E.gwt.rpc
-com.velisphere.tigerspice.client.amqp.AMQPService, 5C5385E946E7686CF878D3EBFAE4DB53.gwt.rpc
-com.velisphere.tigerspice.client.helper.UuidService, 2172C6809B6608B43A130781BBEE3C8B.gwt.rpc
-com.velisphere.tigerspice.client.analytics.LogService, 8F9979FDE36DBECD10C78E90512C6762.gwt.rpc
-com.velisphere.tigerspice.client.analytics.AnalyticsService, E8871D0A4C5F25544138B47961B72727.gwt.rpc
+com.velisphere.tigerspice.client.vendors.VendorService, 7573C474C88B94414CC6AF05621F4346.gwt.rpc
+com.velisphere.tigerspice.client.endpointclasses.EPCService, BECAC3528028FC869638CFDFC2B67CA3.gwt.rpc
+com.velisphere.tigerspice.client.dash.GaugeService, D191BFC58F37D00AB4FAF79E0D74A5B7.gwt.rpc
+com.velisphere.tigerspice.client.helper.HelperService, 72EFE5B991BAEFD2B946C9B9FD98D3E6.gwt.rpc
+com.velisphere.tigerspice.client.users.LoginService, 83754B90DE21A67A2B4F6D3B30E92A7D.gwt.rpc
+com.velisphere.tigerspice.client.favorites.FavoriteService, D47349CA6CF98BE9C58CFA8CC9CA2C46.gwt.rpc
+com.velisphere.tigerspice.client.analytics.LogService, E4E9E22A4149212797719E9109597213.gwt.rpc
+com.velisphere.tigerspice.client.propertyclasses.PropertyClassService, F60BC1E3A3B75D22F63A68D6C7B838B5.gwt.rpc
+com.velisphere.tigerspice.client.analytics.AnalyticsService, 74864ABFB89E57F357F1CA676E6A961E.gwt.rpc
+com.velisphere.tigerspice.client.spheres.SphereService, E172568DE2505BA0B898D8D2A2441217.gwt.rpc
+com.velisphere.tigerspice.client.actions.ActionService, 95232FB7948C5C74556B53ED3E0112AD.gwt.rpc
+com.velisphere.tigerspice.client.checks.CheckService, B1B11C9338E152CECAAF2C066CB5F035.gwt.rpc
+com.velisphere.tigerspice.client.amqp.AMQPService, CDA335AB8E8B0B1458CA180E60FFE7E4.gwt.rpc
+com.velisphere.tigerspice.client.helper.UuidService, A37FE1FD3C18421DF1D489D9A20447EB.gwt.rpc
+com.velisphere.tigerspice.client.logic.CheckPathService, 7D47EC028C899DAE637C5325E4FCE2F3.gwt.rpc
+com.velisphere.tigerspice.client.endpoints.EndpointService, 379248493F8B6E81AC48EA33ABA3903B.gwt.rpc
+com.velisphere.tigerspice.client.properties.PropertyService, 12D2AE953CE09EA4BF1E57F5B0766877.gwt.rpc
+com.velisphere.tigerspice.client.users.UserService, 6843F62123AADB4C29A8D8961617ADBE.gwt.rpc

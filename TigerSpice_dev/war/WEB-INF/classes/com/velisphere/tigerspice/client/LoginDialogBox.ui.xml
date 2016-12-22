@@ -1,46 +1,65 @@
-<!--
-  CONFIDENTIAL INFORMATION
-   __________________
-    
-    Copyright (C) 2014 Thorsten Meudt / Connected Things Lab
-    All Rights Reserved.
-   
-   NOTICE:  All information contained herein is, and remains
-   the property of Thorsten Meudt and its suppliers,
-   if any.  The intellectual and technical concepts contained
-   herein are proprietary to Thorsten Meudt
-   and its suppliers and may be covered by Patents,
-   patents in process, and are protected by trade secret or copyright law.
-   Dissemination of this information or reproduction of this material
-   is strictly forbidden unless prior written permission is obtained
-   from Thorsten Meudt.
--->
+<!-- CONFIDENTIAL INFORMATION __________________ Copyright (C) 2014 Thorsten 
+	Meudt / Connected Things Lab All Rights Reserved. NOTICE: All information 
+	contained herein is, and remains the property of Thorsten Meudt and its suppliers, 
+	if any. The intellectual and technical concepts contained herein are proprietary 
+	to Thorsten Meudt and its suppliers and may be covered by Patents, patents 
+	in process, and are protected by trade secret or copyright law. Dissemination 
+	of this information or reproduction of this material is strictly forbidden 
+	unless prior written permission is obtained from Thorsten Meudt. -->
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<g:HTMLPanel>
 
-<div class="row">
-    <div class="span6 offset0">
-      <div class="well" style="background-color: rgba(245, 245, 245, 0.95)">
-        <legend>Sign in</legend>
-          <div id="login-form">
-            <b:Alert type="ERROR" close="false" ui:field="aleError" />      
-            <b:TextBox styleName="span5" ui:field="txtUsername" name="username" />
-            <b:PasswordTextBox styleName="span5" ui:field="txtPassword" name="password" /> 
-            <label class="checkbox">
-            <b:CheckBox name="remember" value="true"> Remember Me </b:CheckBox>
-            </label>
-            <br></br>
-            <br></br>
-            <g:Anchor href="#" ui:field="ancSignup">No Account? Sign up now!</g:Anchor>
-            <br></br>
-            <br></br>
-            <b:Button styleName="btn-primary btn" text="Login" ui:field="btnLogin" />      
-        </div>    
-      </div>
-    </div>
-</div>
+		<div class="row">
+			<div class="span6 offset0">
+				<div class="well" style="background-color: rgba(245, 245, 245, 0.95)">
+					<legend>Sign in and try</legend>
+					<div id="login-form">
+						<b:Alert type="ERROR" close="false" ui:field="aleError" />
+						
+						<b:Fieldset>
+							<b:ControlGroup>
+								<b:ControlLabel>E-Mail Address (For demo, use: demo@connectedthingslab.com)</b:ControlLabel>
+
+								<b:Controls>
+									<b:TextBox styleName="span5" ui:field="txtUsername"
+										name="username" />
+								</b:Controls>
+							</b:ControlGroup>
+
+							<b:ControlGroup>
+								<b:ControlLabel>Password (For demo, use: demo)</b:ControlLabel>
+
+								<b:Controls>
+									<b:PasswordTextBox styleName="span5"
+										ui:field="txtPassword" name="password" />
+
+								</b:Controls>
+							</b:ControlGroup>
+							<b:ControlGroup>
+								<b:Controls>
+
+									<b:CheckBox name="remember" value="true"> Remember Me </b:CheckBox>
+						<g:Anchor href="#" ui:field="ancSignup">No Account? Sign up now!</g:Anchor>
+						<br></br>
+
+								</b:Controls>
+							</b:ControlGroup>
+							<b:ControlGroup>
+								<b:Controls>
+
+									<b:Button styleName="btn-primary btn" text="Login"
+										ui:field="btnLogin" />
+								</b:Controls>
+							</b:ControlGroup>
+
+						</b:Fieldset>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

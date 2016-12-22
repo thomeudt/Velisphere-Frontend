@@ -3,20 +3,10 @@ package com.velisphere.fs;
 import java.io.IOException;
 import java.util.HashMap;
 
-
-
-
-
-
-
-
-
 import com.velisphere.fs.actors.Flaps;
 import com.velisphere.fs.actors.Gear;
 import com.velisphere.fs.actors.SimFunctions;
-import com.velisphere.fs.sdk.CTLInitiator;
-import com.velisphere.fs.sdk.Server;
-import com.velisphere.fs.sdk.ServerParameters;
+import com.velisphere.milk.amqpClient.AmqpClient;
 
 import flightsim.simconnect.SimConnect;
 import flightsim.simconnect.SimConnectDataType;
@@ -43,16 +33,17 @@ public class FsConnect {
 		final int requestID = 1;
 		final int fourSeceventID = 1;
 
+		
 		// Activate Event Responders
 
-		CTLEventResponder eventResponder = new CTLEventResponder();
+		FsEventResponder eventResponder = new FsEventResponder();
 		
-		CTLInitiator initiator = new CTLInitiator();
+		FsEventInitiator initiator = new FsEventInitiator();
 		initiator.addListener(eventResponder);
 
 		// Start Server
 
-		Server.startServer("10100729-eb58-45e0-b02e-df01bb904f2f", initiator);
+		AmqpClient.startClient(initiator);
 
 		// Start SimConnect
 
@@ -60,7 +51,7 @@ public class FsConnect {
 		//Flaps.full();
 		
 		
-		simConnect = new SimConnect("AIList");
+		simConnect = new SimConnect("VeliFS Listener");
 
 		simConnect.addToDataDefinition(dataDefID, "STRUCT LATLONALT", null,
 				SimConnectDataType.LATLONALT);
@@ -108,6 +99,8 @@ public class FsConnect {
 				SimConnectDataType.INT32);
 		simConnect.addToDataDefinition(dataDefID, "AUTO BRAKE SWITCH CB", null,
 				SimConnectDataType.INT32);
+		simConnect.addToDataDefinition(dataDefID, "ATC FLIGHT NUMBER", null,
+				SimConnectDataType.STRING8);
 		
 		
 		// get warned every 4 seconds when in sim mode
@@ -123,7 +116,7 @@ public class FsConnect {
 			public void handleOpen(SimConnect sender, RecvOpen e) {
 				// TODO Auto-generated method stub
 
-				System.out.println("Connected to " + e.getApplicationName());
+				System.out.println(" [IN] Connected to " + e.getApplicationName());
 
 			}
 		});

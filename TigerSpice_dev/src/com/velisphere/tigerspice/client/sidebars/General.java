@@ -19,7 +19,11 @@ import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;
 import com.velisphere.tigerspice.client.endpoints.EndpointService;
 import com.velisphere.tigerspice.client.endpoints.EndpointServiceAsync;
+import com.velisphere.tigerspice.client.favorites.FavoriteService;
+import com.velisphere.tigerspice.client.favorites.FavoriteServiceAsync;
+import com.velisphere.tigerspice.client.helper.VeliConstants;
 import com.velisphere.tigerspice.shared.EndpointData;
+import com.velisphere.tigerspice.shared.FavoriteData;
 
 public class General extends Composite {
 
@@ -41,8 +45,9 @@ public class General extends Composite {
 		ancMarket.setHref("#");
 		ancGettingStarted.setHref("#");
 		ancBestPractices.setHref("#");
-		ddlFavs.setVisibleItemCount(3);
+		//ddlFavs.setVisibleItemCount(3);
 		populateShortcuts();
+		populateFavorites();
 
 	}
 
@@ -76,6 +81,77 @@ public class General extends Composite {
 			public void onChange(ChangeEvent event) {
 
 				AppController.openEndpoint(ddlShortcut.getValue());
+			}
+		});
+
+	}
+	
+	
+	
+	void populateFavorites(){
+		
+		
+	
+		final FavoriteServiceAsync favoriteService = GWT
+				.create(FavoriteService.class);
+		
+		ddlFavs.addItem("Select Favorite");
+		
+		favoriteService.getAllFavoritesForUser(SessionHelper.getCurrentUserID(), new AsyncCallback<LinkedList<FavoriteData>>(){
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+
+			@Override
+			public void onSuccess(LinkedList<FavoriteData> result) {
+				
+				Iterator<FavoriteData> it = result.iterator();
+				while(it.hasNext()){
+					FavoriteData favoriteData = it.next();
+					
+					
+					ddlFavs.addItem(favoriteData.getName(), favoriteData.getId());
+					
+				}
+			}
+
+		});
+		
+		ddlFavs.addChangeHandler(new ChangeHandler() {
+			@Override
+			public void onChange(ChangeEvent event) {
+
+				favoriteService.getFavoriteForFavoriteID(ddlFavs.getValue(), new AsyncCallback<FavoriteData>(){
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(FavoriteData result) {
+						// TODO Auto-generated method stub
+						
+						if(result.getType() == VeliConstants.FAVORITE_ENDPOINT){
+							AppController.openEndpoint(result.getTargetId());
+						}
+						
+						if(result.getType() == VeliConstants.FAVORITE_LOGIC){
+							AppController.openLogicDesign(result.getTargetId());
+						}
+						
+					}
+
+					
+					
+				});
+				
+				
 			}
 		});
 

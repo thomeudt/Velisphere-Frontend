@@ -160,7 +160,7 @@ public class LogServiceImpl extends RemoteServiceServlet implements
 	      
 	      Statement mySelect = conn.createStatement();
           ResultSet myResult = mySelect.executeQuery
-                    ("select * from TotalMessagesPerEndpoint");
+                    ("select * from vlogger.TotalMessagesPerEndpoint");
 
           while (myResult.next())
              {

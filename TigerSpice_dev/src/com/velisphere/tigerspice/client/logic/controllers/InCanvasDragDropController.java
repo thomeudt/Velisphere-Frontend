@@ -31,7 +31,6 @@ public class InCanvasDragDropController extends AbsolutePositionDropController {
 	{
 		super.onDrop(context);
 		
-		RootPanel.get().add(new HTML("DropController says onDrop for class " +context.selectedWidgets.get(0).getClass().getName() ));
 		
 		WidgetLocation dropTargetLocation = new WidgetLocation(dropTarget, null);
 		int dropTargetOffsetX = dropTargetLocation.getLeft()
@@ -42,7 +41,6 @@ public class InCanvasDragDropController extends AbsolutePositionDropController {
 		if (context.selectedWidgets.get(0).getClass() == PhysicalItem.class)
 		{
 			PhysicalItem canvasLabel = (PhysicalItem) context.selectedWidgets.get(0);
-			RootPanel.get().add(new HTML(canvasLabel.getContentRepresentation() + " WAS DROPPED at " + (context.desiredDraggableX - dropTargetOffsetX) + " / " + (context.desiredDraggableY - dropTargetOffsetY)));
 			EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new DraggedInCanvasEvent(context, canvasLabel));
 		}
 		else if (context.selectedWidgets.get(0).getClass() == LogicCheckAnd.class)

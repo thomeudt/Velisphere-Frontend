@@ -60,43 +60,25 @@
 						<vsan:ChartActorHistoryWidget />
 					</b:TabPane>
 					<b:TabPane heading="Anomalies" active="false">
-						<b:Heading size="4">Spheres: OK</b:Heading>
-
-						<b:Paragraph addStyleNames="smalltext-black">No errors reported in any
-							sphere.</b:Paragraph>
-						<b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
-					</b:TabPane>
-					<b:TabPane heading="Custom Analytics" active="false">
-						<b:Heading size="4">Endpoints: OK</b:Heading>
-
-						<b:Paragraph addStyleNames="smalltext-black">All endpoints are
-							functioning.</b:Paragraph>
-						<b:Paragraph addStyleNames="smalltext-black">Maximum time out of
-							contact: 14 min for endpoint X</b:Paragraph>
-
+						<g:HTML><b>Upcoming Feature</b><br></br><br></br>
+						This function will be added in a future release.</g:HTML>
 					</b:TabPane>
 					<b:TabPane heading="Time of Day" active="false">
-						<b:Heading size="4">Logic Designs: OK</b:Heading>
-
-						<b:Paragraph addStyleNames="smalltext-black">All logic designs function
-							properly.</b:Paragraph>
-						<b:Paragraph addStyleNames="smalltext-black">No failed actions reported.</b:Paragraph>
-
-					</b:TabPane>
+						<g:HTML><b>Upcoming Feature</b><br></br><br></br>
+						This function will be added in a future release.</g:HTML>
+										</b:TabPane>
 					<b:TabPane heading="Most active Sensors" active="false">
-						<b:Heading size="4">News</b:Heading>
-
-						<b:Paragraph addStyleNames="smalltext-black">New pricing model
-							available. Click here for more (...)</b:Paragraph>
-						<b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
-					</b:TabPane>
+						<g:HTML><b>Upcoming Feature</b><br></br><br></br>
+						This function will be added in a future release.</g:HTML>
+						</b:TabPane>
 					<b:TabPane heading="Most active Actors" active="false">
-						<b:Heading size="4">Task list</b:Heading>
+						<g:HTML><b>Upcoming Feature</b><br></br><br></br>
+						This function will be added in a future release.</g:HTML>
+					</b:TabPane>
 
-						<b:Paragraph addStyleNames="smalltext-black">No open
-							tasks.</b:Paragraph>
-						<b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
-
+					<b:TabPane heading="Custom Analytics" active="false">
+						<g:HTML><b>Upcoming Feature</b><br></br><br></br>
+						Custom analytics will be added in a future release.</g:HTML>
 					</b:TabPane>
 
 

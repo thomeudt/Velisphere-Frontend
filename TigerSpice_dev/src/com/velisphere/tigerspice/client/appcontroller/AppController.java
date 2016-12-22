@@ -18,7 +18,7 @@ import com.velisphere.tigerspice.client.admin.propertyclass.CreatePropertyClass;
 import com.velisphere.tigerspice.client.admin.propertyclass.EditPropertyClass;
 import com.velisphere.tigerspice.client.admin.vendor.CreateVendor;
 import com.velisphere.tigerspice.client.analytics.AnalyticsHome;
-import com.velisphere.tigerspice.client.dashboard.Dashboard;
+import com.velisphere.tigerspice.client.dash.ConfigurableDashboard;
 import com.velisphere.tigerspice.client.documentation.BestPractices;
 import com.velisphere.tigerspice.client.documentation.GettingStarted;
 import com.velisphere.tigerspice.client.endpoints.EndpointView;
@@ -33,10 +33,12 @@ import com.velisphere.tigerspice.client.marketplace.MarketPlace;
 import com.velisphere.tigerspice.client.provisioning.ProvisioningSuccess;
 import com.velisphere.tigerspice.client.provisioning.ProvisioningWizard;
 import com.velisphere.tigerspice.client.provisioning.TakeOwnership;
-
 import com.velisphere.tigerspice.client.spheres.SphereLister;
 import com.velisphere.tigerspice.client.spheres.SphereView;
 import com.velisphere.tigerspice.client.spheres.SphereViewPublic;
+import com.velisphere.tigerspice.client.status.StatusBoard;
+import com.velisphere.tigerspice.client.users.ChangeAccount;
+import com.velisphere.tigerspice.client.users.CloseAccountConfirm;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 
 // this class manages all navigational calls within the application
@@ -96,6 +98,31 @@ public class AppController {
 	}
 
 
+
+	static void openDashSelectedWithHistoryHandler(final String token, final String dashID)
+	{
+		History.newItem(token);
+		RootPanel.get("main").clear();
+		RootPanel.get("main").add(new ConfigurableDashboard(dashID));
+				
+		History.addValueChangeHandler(new ValueChangeHandler<String>() {
+
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+
+				String historyToken = event.getValue();
+				
+		        // Parse the history token
+
+	          if (historyToken.equals(token)) {
+	        	  RootPanel.get("main").clear();
+  	      		  RootPanel.get("main").add(new ConfigurableDashboard(dashID));
+		        }
+			}
+		    });
+	}
+
+	
 	static void openSphereWithHistoryHandler(final String token, final String sphereId)
 	{
 		History.newItem(token);
@@ -193,6 +220,33 @@ public class AppController {
 		    });
 	}
 
+	static void openEndpointViewModeWithHistoryHandler(final String token, final String endpointID, final int viewMode)
+	{
+		History.newItem(token);
+		RootPanel.get("main").clear();
+		RootPanel.get("main").add(new EndpointView("", "",
+				endpointID, "", "", viewMode));
+				 
+		
+		History.addValueChangeHandler(new ValueChangeHandler<String>() {
+
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+
+				String historyToken = event.getValue();
+				
+		        // Parse the history token
+
+	          if (historyToken.equals(token)) {
+	        	  RootPanel.get("main").clear();
+	        	  RootPanel.get("main").add(new EndpointView("0", "0",
+	      				endpointID, "", "", viewMode));
+		        }
+			}
+		    });
+	}
+
+	
 	static void openEndpointPublicWithHistoryHandler(final String token, final String endpointID)
 	{
 		History.newItem(token);
@@ -269,7 +323,7 @@ public class AppController {
 		
 	
 
-	public static void openDashboard()
+	public static void openStatusBoard()
 	{	
 		SessionHelper.validateCurrentSession();
 		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
@@ -277,11 +331,40 @@ public class AppController {
 	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
 			sessionHandler.removeHandler();
 			//userID = SessionHelper.getCurrentUserID();
-			Dashboard dashboard = new Dashboard();
+			StatusBoard statusboard = new StatusBoard();
+			openWithHistoryHandler("statusboard", statusboard);
+		}		
+	});
+	}
+	
+	public static void openDashBoard()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//userID = SessionHelper.getCurrentUserID();
+			ConfigurableDashboard dashboard = new ConfigurableDashboard();
 			openWithHistoryHandler("dashboard", dashboard);
 		}		
 	});
 	}
+	
+	public static void openDashBoardWithSelected(final String dashID)
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//userID = SessionHelper.getCurrentUserID();
+			openDashSelectedWithHistoryHandler("dashboard"+dashID, dashID);
+		}		
+	});
+	}
+	
+	
 	
 	public static void openHome()
 	{	
@@ -653,6 +736,20 @@ public class AppController {
 	});
 	}
 	
+	public static void openEndpoint(final String endpointID, final int viewMode)
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			
+			openEndpointViewModeWithHistoryHandler("view_endpoint_"+endpointID+"_mode_"+viewMode, endpointID, viewMode);
+		}		
+	});
+	}
+
+	
 	public static void openEPCInput(final String id, final String message)
 	{	
 		SessionHelper.validateCurrentSession();
@@ -733,4 +830,34 @@ public class AppController {
 		}		
 	});
 	}
+
+	public static void openChangeAccount()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			ChangeAccount changeAccount = new ChangeAccount();
+			openWithHistoryHandler("changeAccount", changeAccount);
+		}		
+	});
+	}
+
+	public static void openCloseAccountConfirm()
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			//String userID = SessionHelper.getCurrentUserID();
+			CloseAccountConfirm closeAccountConfirm = new CloseAccountConfirm();
+			openWithHistoryHandler("closeAccountConfirm", closeAccountConfirm);
+		}		
+	});
+	}
+
+
 }

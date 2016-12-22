@@ -50,12 +50,15 @@ public class PasswordChecker {
 						
 						
 						user.userName = result.getString("USERNAME");
-						user.userPassword = result.getString("USERPWHASH");
-						boolean pwValid = BCrypt.checkpw(password, user.userPassword);
+						
+						boolean pwValid = BCrypt.checkpw(password, result.getString("USERPWHASH"));
 				    	
 				    	if (pwValid == true)
 				    		{
-				    			user.userID = result.getString("USERID");
+				    			user.setUserID(result.getString("USERID"));
+				    			user.setApiKey(result.getString("APIKEY"));
+				    			user.setUserName(result.getString("USERNAME"));
+				    			
 				    		} 
 					}
 				}

@@ -89,12 +89,9 @@ public class InCanvasLinkDropController extends SimpleDropController {
 			if (phyicalDropTarget.getIsActor() == 1)
 			{
 				super.onDrop(context);
-				RootPanel.get().add(new HTML("DropController says onDrop"));
 				LinkCreator linkCreator = (LinkCreator) context.draggable;
-			    //RootPanel.get().add(new HTML(linkCreator.getSource().getContentRepresentation() + " was dropped on " + dropTarget.getContentRepresentation()));
 			    if(linkCreator.isLogic())
 			    {
-			    	RootPanel.get().add(new HTML("Was logic..."));
 			    	EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new LinkedInCanvasL2PEvent((LogicCheck) linkCreator.getSource(), phyicalDropTarget));
 			    }
 			    else
@@ -112,7 +109,6 @@ public class InCanvasLinkDropController extends SimpleDropController {
 			super.onDrop(context);
 			
 			
-			RootPanel.get().add(new HTML("DropController says onGENERICDrop"));
 			LinkCreator linkCreator = (LinkCreator) context.draggable;
 			 EventUtils.RESETTABLE_EVENT_BUS.fireEvent(new LinkedInCanvasP2LEvent((PhysicalItem) linkCreator.getSource(), logicDropTarget));
 			

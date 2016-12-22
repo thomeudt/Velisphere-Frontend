@@ -43,6 +43,7 @@ public class VoltConnector {
 			/*
 			 * Instantiate a client and connect to the database.
 			 */
+			montanaClient.drain();
 			montanaClient.close();			
 		}
 	

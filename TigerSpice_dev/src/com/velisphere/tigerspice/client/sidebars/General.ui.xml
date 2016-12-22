@@ -16,7 +16,7 @@
 			
 			<b:Heading size="4">Shortcuts</b:Heading>
 				
-			<g:Anchor ui:field="ancProvisioning">Device Provisioning Wizard<br></br></g:Anchor>
+			<g:Anchor ui:field="ancProvisioning">Provisioning Wizard<br></br></g:Anchor>
 			
 			<g:Anchor ui:field="ancGettingStarted">Getting Started<br></br></g:Anchor>
 			

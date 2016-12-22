@@ -46,7 +46,7 @@ public class ChaiWorker {
 		 */
 
 		System.out.println();
-		System.out.println("    * *    VeliSphere Worker Node (chai) v0.8.0d");
+		System.out.println("    * *    VeliSphere Secure Worker Node (chai) v0.8.5b");
 		System.out.println("    * * *  Copyright (C) 2015 Thorsten Meudt/Connected Things Lab. All rights reserved.");
 		System.out.println("**   *    ");
 		System.out.println("  * *   ");

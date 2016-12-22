@@ -27,6 +27,7 @@ import com.github.gwtbootstrap.client.ui.Navbar;
 import com.github.gwtbootstrap.client.ui.ResponsiveNavbar;
 import com.github.gwtbootstrap.client.ui.constants.NavbarPosition;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -44,13 +45,14 @@ import com.google.gwt.user.client.ui.Widget;
 import com.velisphere.tigerspice.client.LoggedOutHome;
 import com.velisphere.tigerspice.client.Login;
 import com.velisphere.tigerspice.client.admin.Overviewer;
-import com.velisphere.tigerspice.client.dashboard.Dashboard;
 import com.velisphere.tigerspice.client.event.EventUtils;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEvent;
 import com.velisphere.tigerspice.client.event.SessionVerifiedEventHandler;
+import com.velisphere.tigerspice.client.helper.VeliConstants;
 import com.velisphere.tigerspice.client.logic.LogicDesignList;
 import com.velisphere.tigerspice.client.marketplace.MarketPlace;
 import com.velisphere.tigerspice.client.spheres.SphereLister;
+import com.velisphere.tigerspice.client.status.StatusBoard;
 import com.velisphere.tigerspice.client.users.LoginService;
 import com.velisphere.tigerspice.client.users.LoginSuccess;
 import com.velisphere.tigerspice.client.users.NewAccountScreen;
@@ -65,13 +67,17 @@ public class NavBar extends Composite implements HasText {
 	@UiField Dropdown dpdAccount;
 	@UiField Dropdown dpdAdmin;
 	@UiField NavLink btnSearch;
+	@UiField NavLink btnDash;
 	@UiField NavLink btnLocator;
 	@UiField NavLink btnManageEPC;
 	@UiField NavLink btnSpheres;
 	@UiField NavLink btnRules;
 	@UiField NavLink btnAnalytics;
+	@UiField NavLink btnShop;
 	@UiField NavForm forSearch;
 	@UiField NavLink btnHome;
+	@UiField NavLink btnBilling;
+	@UiField NavLink btnSupport;
 	@UiField Brand brdHome;
 	
 	
@@ -90,14 +96,16 @@ public class NavBar extends Composite implements HasText {
 		initWidget(uiBinder.createAndBindUi(this));
 		navbar.setPosition(NavbarPosition.TOP);
 		//navbar.setWidth(RootPanel.get("main").getElement().getStyle().getWidth());
-		brdHome.setHref("#home");
+		//brdHome.setHref("#");
 
+		brdHome.getElement().getStyle().setCursor(Cursor.POINTER); 
 		btnLister.setVisible(false);
 	
    	 btnLogout.setVisible(false);
    	 btnAccount.setVisible(false);
    	 btnSearch.setVisible(false);
    	 btnSpheres.setVisible(false);
+   	 btnDash.setVisible(false);
    	 btnRules.setVisible(false);
    	 btnAnalytics.setVisible(false);
    	 forSearch.setVisible(false);
@@ -106,7 +114,8 @@ public class NavBar extends Composite implements HasText {
    	 dpdAdmin.setVisible(false);
    	 btnLocator.setVisible(false);
    	 btnManageEPC.setVisible(false);
-   	 
+	 	btnShop.setVisible(false);
+	 	  
    	 
    	 
 	    //checkWithServerIfSessionIdIsStillLegal();
@@ -124,50 +133,41 @@ public class NavBar extends Composite implements HasText {
 
 	@UiHandler("btnAccount")
 	void openNewAccountScreen (ClickEvent event) {
-		// Window.alert("Logging In");
-		
-		clearBandarole();
-		NewAccountScreen newAccountScreen = new NewAccountScreen();
-		newAccountScreen.open();
-			
-		
-		
-		
-		// loginDialogBox.setVisible(false);
+				
+		AppController.openChangeAccount();
 		
 		
 	}
 	
 	@UiHandler("btnHome")
+	void openStatus (ClickEvent event) {
+		
+		AppController.openStatusBoard();
+		
+	}
+
+	@UiHandler("brdHome")
 	void openHome (ClickEvent event) {
 		
-		AppController.openDashboard();
+		AppController.openHome();
 		
-		/**
-		String sessionID = Cookies.getCookie("sid");
-		clearBandarole();
-	     if (sessionID != null){
-			
-			RootPanel.get("main").clear();
-			Dashboard dashboard = new Dashboard();
-			RootPanel.get("main").add(dashboard);
-		}
-	     else
-	    	 {
-	    	 
-	    	 NewAccountScreen newAccountScreen = new NewAccountScreen();
-				newAccountScreen.open();
-			
-		}
-		**/
 	}
+
+	
+	@UiHandler("btnDash")
+	void openDash (ClickEvent event) {
+		
+		AppController.openDashBoard();
+		
+	}
+	
 	
 	@UiHandler("brdHome")
 	void openHomeBrand (ClickEvent event) {
 		
-		//AppController.openHome();
+		AppController.openHome();
 		
-		
+		/*
 		String sessionID = Cookies.getCookie("sid");
 		clearBandarole();
 	     if (sessionID != null){
@@ -180,7 +180,8 @@ public class NavBar extends Composite implements HasText {
 	    	 {
 	    	 LoggedOutHome loggedOutHome = new LoggedOutHome();
 	    	 loggedOutHome.open();
-		}	
+		}
+		*/	
 			
 	}
 	
@@ -295,7 +296,8 @@ public class NavBar extends Composite implements HasText {
 	
 	@UiHandler("btnLogout")
 	void logout (ClickEvent event) {
-		Cookies.removeCookie("sid");
+		Cookies.removeCookie("sid", "/");
+		
 		clearBandarole();
 		Login loginScreen = new Login();
 		loginScreen.onModuleLoad();
@@ -321,10 +323,12 @@ public class NavBar extends Composite implements HasText {
    	 	btnAccount.setVisible(false);
    	 	btnSearch.setVisible(false);
    	 	btnSpheres.setVisible(false);
+   	 	btnDash.setVisible(false);
    	 	btnRules.setVisible(false);
    	    btnAnalytics.setVisible(false);
    	 	forSearch.setVisible(false);
    	 	btnHome.setVisible(false);
+   	 	btnShop.setVisible(false);
    	 	
 		
    	 	SessionHelper.validateCurrentSession();		
@@ -356,19 +360,42 @@ public class NavBar extends Composite implements HasText {
 	    	 btnAccount.setVisible(true);
 	    	 btnSearch.setVisible(false);
 	    	 btnSpheres.setVisible(true);
+	    	 btnDash.setVisible(true);
 	    	 btnRules.setVisible(true);
 	    	 btnAnalytics.setVisible(true);
 	    	 forSearch.setVisible(false);
 	    	 btnHome.setVisible(true);
 	    	 dpdAccount.setVisible(true);
-	       	 dpdAdmin.setVisible(true);
 	       	 btnLocator.setVisible(true);
 	       	 btnManageEPC.setVisible(true);
-	       	 dpdAccount.setTitle(SessionHelper.getCurrentUserName());
-			 
+	       	 dpdAccount.setText(SessionHelper.getCurrentUserName());
+	  	     btnShop.setVisible(false);
+	  	     btnBilling.setDisabled(true);
+	  	     btnSupport.setDisabled(true);
+	  	   checkAdmin();
 	    
 	}
 
+	
+	private void checkAdmin()
+	{
+		if (SessionHelper.getCurrentUserID() == VeliConstants.SUPERUSER_ID)
+		{
+			dpdAdmin.setVisible(true);	
+		}
+		else
+		{
+			dpdAdmin.setVisible(false);
+		}
+		
+		// disable also closing/pw change for demo account)
+		
+		if (SessionHelper.getCurrentUserID() == "e8c2f32c-3990-42bd-9dbf-5ebf6720f2b5")
+		{
+			btnAccount.setDisabled(true);
+		}
+      	 
+	}
 	
 	private void clearBandarole(){
 		RootPanel banderolePanel = RootPanel.get("banderole");

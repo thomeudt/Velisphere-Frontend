@@ -165,12 +165,7 @@ public class Explorer extends Composite {
 			@Override
 			public void onDragEnd(DragEndEvent event) {
 				// TODO Auto-generated method stub
-				RootPanel.get().add(new HTML("X Coord Drop: " + String.valueOf(event.getContext().mouseX)));
-				RootPanel.get().add(new HTML("Y Coord Drop: " + String.valueOf(event.getContext().mouseY)));
-	
-				RootPanel.get().add(new HTML("Widget Class " + event.getContext().selectedWidgets.get(0).getClass()));
-				ExplorerLabel current = (ExplorerLabel) event.getContext().selectedWidgets.get(0);
-				RootPanel.get().add(new HTML("Widget Content " + current.getText()));
+						ExplorerLabel current = (ExplorerLabel) event.getContext().selectedWidgets.get(0);
 				
 			}
 
