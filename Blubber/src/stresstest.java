@@ -18,15 +18,29 @@
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import ChatExample.ChatServer;
+import ChatExample.EventInitiator;
+import ChatExample.EventResponder;
+
 
 public class stresstest {
 
 	public static void main(String[] args) throws Exception {
 
+		ServerParameters.my_queue_name = "E1";
+		//ServerParameters.my_queue_name = "EX1";
+
 		
-		int numworkers = 100;
+		EventResponder eventResponder = new EventResponder();
+		EventInitiator initiator = new EventInitiator();
+		initiator.addListener(eventResponder);
 		
-		ExecutorService B52 = Executors.newFixedThreadPool(1000);
+		ChatServer.startServer(ServerParameters.my_queue_name, initiator);
+		
+		
+		int numworkers = 32;
+		
+		ExecutorService B52 = Executors.newFixedThreadPool(128);
 		Bombarder[] bombThread = new Bombarder[numworkers];
 		for (int i = 0; i < numworkers; i++) {
         
@@ -34,7 +48,6 @@ public class stresstest {
 			B52.execute(bombThread[i]);
             
         }
-		
 		
 	 	B52.shutdown();
 		

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="target/classes" path="src">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/commons-cli-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/commons-lang3-3.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/guava-12.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/jetty-continuation-7.6.1.v20120215.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/jetty-http-7.6.1.v20120215.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/jetty-io-7.6.1.v20120215.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/jetty-server-7.6.1.v20120215.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/jetty-util-7.6.1.v20120215.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/jline-2.10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/jna.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/jsch-0.1.48.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/protobuf-java-2.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/servlet-api-2.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/slf4j-api-1.6.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/slf4j-nop-1.6.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/snappy-java-1.0.5-M3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/voltdb-3.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/voltdb/zmq-2.1.11.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/vertica/vertica-jdbc-7.0.1-0.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

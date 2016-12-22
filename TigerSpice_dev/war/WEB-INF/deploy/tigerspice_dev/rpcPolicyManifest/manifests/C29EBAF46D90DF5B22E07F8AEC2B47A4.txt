@@ -1,0 +1,2 @@
+serviceClass: com.velisphere.tigerspice.client.helper.UuidService
+path: 2172C6809B6608B43A130781BBEE3C8B.gwt.rpc
