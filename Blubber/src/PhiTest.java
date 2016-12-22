@@ -59,7 +59,7 @@ public class PhiTest
 					
 					System.out.println("Message Hash Sent to Controller: " + messageHash);
 					
-					Send.sendHashTable(messageHash, "controller");
+					SendOld.sendHashTable(messageHash, "controller");
 					
 					
 				} catch (Exception e) {

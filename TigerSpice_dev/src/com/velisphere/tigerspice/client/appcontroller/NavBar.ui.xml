@@ -31,7 +31,7 @@
        
     
          
-     <b:ResponsiveNavbar ui:field="navbar">
+     <b:Navbar ui:field="navbar">
          
          <g:HorizontalPanel addStyleNames="container">
          
@@ -75,7 +75,7 @@
          </b:Nav>
          </g:HorizontalPanel>
        
-     </b:ResponsiveNavbar>
+     </b:Navbar>
           
     
      

@@ -21,8 +21,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Vector;
+import java.util.LinkedHashMap;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.velisphere.tigerspice.shared.AlertData;
 import com.velisphere.tigerspice.shared.EPCData;
 import com.velisphere.tigerspice.shared.EndpointData;
 import com.velisphere.tigerspice.shared.LogicLinkTargetData;
@@ -31,7 +33,7 @@ import com.velisphere.tigerspice.shared.UnprovisionedEndpointData;
 import com.velisphere.tigerspice.shared.UserData;
 
 public interface EndpointServiceAsync {
-	void getAllEndpointDetails(AsyncCallback<Vector<EndpointData>> callback);
+	void getAllEndpointDetails(AsyncCallback<LinkedList<EndpointData>> callback);
 	void getEndpointsForSphere(String sphereID, AsyncCallback<LinkedList<EndpointData>> callback);
 	void addEndpointToSphere(String endpointID, String sphereID, AsyncCallback<String> callback);
 	void getEndpointsForMultipleIDs(LinkedList<String> endpointIDs, AsyncCallback<LinkedList<EndpointData>> callback);
@@ -42,4 +44,10 @@ public interface EndpointServiceAsync {
 	void getUnprovisionedEndpoints(String endpointID, String captchaWord, AsyncCallback<UnprovisionedEndpointData> callback);
 	void addNewEndpoint(String endpointID, String endpointName, String endpointclassID, String userID, AsyncCallback<String> callback);
 	void getLinksForEndpointList(LinkedList<String> endpointID, AsyncCallback<HashMap<String, LinkedList<LogicLinkTargetData>>> callback); 
+	void getAllAlertsForEndpoint(String endpointID, AsyncCallback<LinkedHashMap<String, String>> callback);
+	void addNewAlert(AlertData alert, AsyncCallback<String> callback);
+	void getAlertDetails(String alertID, AsyncCallback<AlertData> callback);
+	void deleteAlert(String alertID, String checkpathID, AsyncCallback<String> callback);
+	void getAllAlertsForUser(String userID, AsyncCallback<LinkedList<AlertData>> callback); 
+	
 }

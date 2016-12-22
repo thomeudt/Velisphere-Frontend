@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.velisphere.tigerspice.shared.ActionData;
 import com.velisphere.tigerspice.shared.AnalyticsRawData;
 import com.velisphere.tigerspice.shared.GeoLocationData;
 import com.velisphere.tigerspice.shared.TableRowData;
@@ -27,6 +28,7 @@ import com.velisphere.tigerspice.shared.TableRowData;
 		LinkedList<GeoLocationData> getGeoLocationTrailSphere(String userID, String sphereID);
 		LinkedList<GeoLocationData> getGeoLocationSingleEndpoint(String userID, String endpointID);
 		LinkedList<GeoLocationData> getGeoLocationSphere(String userID, String sphereID);
+		ActionData getLastActionExecuted(String actionID);
 		
 	}
 

@@ -32,9 +32,9 @@ public class PreLoadNeu {
 	        System.out.println("Spheres loaded");
 	        
 	        
-	        preLoader.callProcedure("USER.insert", "1000", "thmeu", "thorsten@thorsten-meudt.de", "asa", "PAYPERUSE");
-	        preLoader.callProcedure("USER.insert", "1001", "utmeu", "ute_lechner@yahoo.de", "asa", "PAYPERUSE");
-	        preLoader.callProcedure("USER.insert", "1002", "lcmeu", "charlotte@thorsten-meudt.de", "asa", "PAYPERUSE");
+	        preLoader.callProcedure("USER.insert", "1000", "thmeu", "thorsten@thorsten-meudt.de", "asa", "PAYPERUSE", "LEER");
+	        preLoader.callProcedure("USER.insert", "1001", "utmeu", "ute_lechner@yahoo.de", "asa", "PAYPERUSE", "LEER");
+	        preLoader.callProcedure("USER.insert", "1002", "lcmeu", "charlotte@thorsten-meudt.de", "asa", "PAYPERUSE", "LEER");
 	        
 	        System.out.println("Users loaded");
 	        
@@ -44,10 +44,10 @@ public class PreLoadNeu {
 	        
 	        System.out.println("Endpointclasses loaded");
 	        
-	        preLoader.callProcedure("ENDPOINT.insert", "E1", "PiPhidget", "EPC2", new TimestampType());
-	        preLoader.callProcedure("ENDPOINT.insert", "E2", "Blubber Thorsten", "EPC1", new TimestampType());
-	        preLoader.callProcedure("ENDPOINT.insert", "E3", "Blubber Ute", "EPC1", new TimestampType());
-	        preLoader.callProcedure("ENDPOINT.insert", "E4", "Reference Home Controller App", "EPC3", new TimestampType());
+	        preLoader.callProcedure("ENDPOINT.insert", "E1", "PiPhidget", "EPC2", new TimestampType(), "UNKNOWN", "LEER");
+	        preLoader.callProcedure("ENDPOINT.insert", "E2", "Blubber Thorsten", "EPC1", new TimestampType(), "UNKNOWN","LEER");
+	        preLoader.callProcedure("ENDPOINT.insert", "E3", "Blubber Ute", "EPC1", new TimestampType(), "UNKNOWN","LEER");
+	        preLoader.callProcedure("ENDPOINT.insert", "E4", "Reference Home Controller App", "EPC3", new TimestampType(), "UNKNOWN","LEER");
 	        
 	        System.out.println("Endpoints loaded");
 	        

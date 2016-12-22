@@ -20,7 +20,6 @@
 xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 		xmlns:ct="urn:import:com.google.gwt.user.cellview.client"
-		xmlns:vsrl="urn:import:com.velisphere.tigerspice.client.rules"
 		xmlns:vsch="urn:import:com.velisphere.tigerspice.client.checks">
 		<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images'/>
 	<g:HTMLPanel>

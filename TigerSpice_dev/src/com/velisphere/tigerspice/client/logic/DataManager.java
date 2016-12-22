@@ -122,7 +122,7 @@ public class DataManager {
 			RootPanel.get().add(new HTML("P2P: Manual processed"));
 
 			if (current.getSourceValue() == ActionSourceConfig.currentSensorValue) {
-				action.valueFromInboundPropertyID = current.getSourceValue();
+				action.valueFromInboundPropertyID = current.getValueFromSensorValue();
 				RootPanel.get().add(new HTML("P2P: Source processed"));
 			} else {
 				action.valueFromInboundPropertyID = "no";
@@ -180,7 +180,7 @@ public class DataManager {
 
 		while (it.hasNext()) {
 
-			ConnectorSensorLogicCheck current = it.next();
+			final ConnectorSensorLogicCheck current = it.next();
 
 			RootPanel.get().add(new HTML("P2L: fetched connector"));
 
@@ -231,7 +231,7 @@ public class DataManager {
 
 							RootPanel.get().add(
 									new HTML(
-											"Result from attempt to generate check and action P2L: "
+											"Result from attempt to generate check and action P2L "+ current.getCheckUUID()+": "
 													+ result));
 						}
 
@@ -261,10 +261,13 @@ public class DataManager {
 			action.propertyID = current.getActor().getPropertyID();
 			action.propertyIdIntake = "";
 			action.sensorEndpointID = "";
-			action.valueFromInboundPropertyID = current.getSourceIndex();
-			action.validValueIndex = current.getTypicalValueIndex();
+			
+			action.validValueIndex = current.getTypicalValueValue();
 			action.manualValue = current.getManualValue();
+			
 
+			action.valueFromInboundPropertyID = "no";
+			
 			// TODO this can be simplified - we do not need to take care of
 			// multiple actions in new setup
 
@@ -496,7 +499,7 @@ public class DataManager {
 	public void processDeletedP2L() {
 
 		Iterator<ConnectorSensorLogicCheck> it = canvas
-				.getConnectorsSensorLogicCheck().iterator();
+				.getDeletedConnectorsSensorLogicCheck().iterator();
 
 		RootPanel.get().add(new HTML("Deleted P2L: started"));
 

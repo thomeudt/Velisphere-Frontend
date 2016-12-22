@@ -58,6 +58,9 @@ public class VelisphereMart {
       
       myInsert.addBatch("INSERT INTO VLOGGER.ENDPOINTPROPERTYLOG VALUES ('"+transactionID+"', '"+endpointID+"', '"+propertyID+"', '"+entry+"', STATEMENT_TIMESTAMP())");
       
+      
+      //System.out.println(transactionID+"', '"+endpointID+"', '"+propertyID+"', '"+entry+"', STATEMENT_TIMESTAMP())");
+      
       Iterator<ActionObject> aIT = executedActions.iterator();
       
       while (aIT.hasNext()){

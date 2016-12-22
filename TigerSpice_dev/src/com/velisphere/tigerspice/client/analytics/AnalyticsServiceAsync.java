@@ -3,6 +3,7 @@ package com.velisphere.tigerspice.client.analytics;
 import java.util.LinkedList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.velisphere.tigerspice.shared.ActionData;
 import com.velisphere.tigerspice.shared.AnalyticsRawData;
 import com.velisphere.tigerspice.shared.GeoLocationData;
 import com.velisphere.tigerspice.shared.TableRowData;
@@ -26,6 +27,6 @@ public interface AnalyticsServiceAsync {
 	void getGeoLocationTrailSphere(String userID, String sphereID, AsyncCallback<LinkedList<GeoLocationData>> callback);
 	void getGeoLocationSingleEndpoint(String userID, String endpointID, AsyncCallback<LinkedList<GeoLocationData>> callback);
 	void getGeoLocationSphere(String userID, String sphereID, AsyncCallback<LinkedList<GeoLocationData>> callback);
-
+	void getLastActionExecuted(String actionID, AsyncCallback<ActionData> callback);
 }
 

@@ -153,7 +153,7 @@ public class HomeController {
 		        	messageHash.put("PR4", b4);
 		        	messageHash.put("PR5", b5);
 		        	
-		        	Send.sendHashTable(messageHash, "controller");
+		        	SendOld.sendHashTable(messageHash, "controller");
 
 		        	// Send.main("lightsoff", "phi");
 				} catch (Exception e) {

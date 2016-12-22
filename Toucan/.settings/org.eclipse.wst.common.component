@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="Toucan">
+    <wb-module deploy-name="ToucanServer">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="context-root" value="Toucan"/>
-        <property name="java-output-path" value="/Toucan/build/classes"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src.main.java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
+        <property name="java-output-path" value="/ToucanServer/build/classes"/>
+        <property name="context-root" value="ToucanServer"/>
     </wb-module>
 </project-modules>

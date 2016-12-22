@@ -47,9 +47,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.widget.core.client.button.TextButton;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.info.Info;
+
 import com.velisphere.tigerspice.client.admin.propertyclass.EditPropertyClassInputWidget;
 import com.velisphere.tigerspice.client.appcontroller.AppController;
 import com.velisphere.tigerspice.client.appcontroller.SessionHelper;

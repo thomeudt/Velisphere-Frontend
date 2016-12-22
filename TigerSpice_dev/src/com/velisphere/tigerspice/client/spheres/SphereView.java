@@ -378,8 +378,9 @@ public class SphereView extends Composite {
 	}
 	
 	
-	@UiFactory SphereEditorWidget makeSphereEditor() { // method name is insignificant
-	    return new SphereEditorWidget(this.sphereID, this.sphereName);
+	@UiFactory SphereEditor makeSphereEditor() { // method name is insignificant
+	    // return new SphereEditorWidget(this.sphereID, this.sphereName);
+		return new SphereEditor(this.sphereID, this.sphereName);
 	  }
 	
 }

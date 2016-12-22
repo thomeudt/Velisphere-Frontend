@@ -131,16 +131,6 @@ public class EPCList extends Composite {
 							
 							
 							//Window.alert("You selected: " + selected.name);
-							/**
-							final EditEPCInputPage editEPCWidget = new EditEPCInputPage(selected.id, selected.name, selected.imageURL);
-					
-							editEPCWidget.setAutoHideEnabled(true);
-
-							//multicheckDialogBox.setAnimationEnabled(true);
-
-							editEPCWidget.show();
-							editEPCWidget.center();
-							**/
 							
 							AppController.openEPCInput(selected.id, "");
 

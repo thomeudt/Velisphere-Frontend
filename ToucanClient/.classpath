@@ -23,5 +23,8 @@
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/Jersey/osgi-resource-locator-1.0.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/Jersey/persistence-api-1.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/Jersey/validation-api-1.1.0.Final.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/jackson-annotations-2.2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/jackson-core-2.2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/jackson-databind-2.2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

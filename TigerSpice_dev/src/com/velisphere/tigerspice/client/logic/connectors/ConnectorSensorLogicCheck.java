@@ -96,6 +96,7 @@ public class ConnectorSensorLogicCheck extends Connector {
 			createBaseLayout();
 			}
 		lbxOperator.setSelectedValue(lbxOperatorValue);
+		RootPanel.get().add(new HTML("Operator Value: " + this.lbxOperatorValue));
 		txtCheckValue.setValue(txtCheckValueContent);
 	}
 	
@@ -120,6 +121,16 @@ public class ConnectorSensorLogicCheck extends Connector {
 		
 	}
 
+	private void fillFields()
+	{
+		
+		lbxOperator.setSelectedValue(lbxOperatorValue);
+		
+		txtCheckValue.setValue(txtCheckValueContent);
+		
+		
+	}
+	
 	
 	
 	private void createBaseLayout()
@@ -320,6 +331,7 @@ public class ConnectorSensorLogicCheck extends Connector {
 						
 						else lbxOperator.addItem("Invalid Endpoint Configuration");
 
+						fillFields();
 					}
 
 				});

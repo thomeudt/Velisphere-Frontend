@@ -51,7 +51,7 @@
 		
 					<b:Row>
 				    <b:Column size="10" offset="0">
-				    <vssp:SphereEditorWidget ui:field="sphereEditor" />
+				    <vssp:SphereEditor ui:field="sphereEditor" />
 				    </b:Column>
 					</b:Row>		
 				

@@ -101,13 +101,8 @@ public class ConnectorSensorActor extends Connector {
 			{
 			createBaseLayout();
 			}
-		lbxOperator.setSelectedValue(lbxOperatorValue);
-		lbxSource.setSelectedValue(lbxSourceValue);
-		lbxTypicalValues.setSelectedValue(lbxTypicalValuesValue);
-		lbxValueFromSensor.setSelectedValue(lbxValueFromSensorValue);
-		txtCheckValue.setValue(txtCheckValueContent);
-		txtManualEntry.setValue(txtManualEntryContent);
-		setVisibleValueFields();	
+		setVisibleValueFields();
+		
 	}
 	
 	@Override
@@ -118,12 +113,7 @@ public class ConnectorSensorActor extends Connector {
 		{
 		createBaseLayout();
 		}
-		lbxOperator.setSelectedValue(lbxOperatorValue);
-		lbxSource.setSelectedValue(lbxSourceValue);
-		lbxTypicalValues.setSelectedValue(lbxTypicalValuesValue);
-		lbxValueFromSensor.setSelectedValue(lbxValueFromSensorValue);
-		txtCheckValue.setValue(txtCheckValueContent);
-		txtManualEntry.setValue(txtManualEntryContent);
+		
 		setVisibleValueFields();	
 		
 	}
@@ -141,6 +131,18 @@ public class ConnectorSensorActor extends Connector {
 		txtManualEntryContent = txtManualEntry.getValue();	
 	}
 
+	private void fillFields()
+	{
+		setVisibleValueFields();
+		lbxOperator.setSelectedValue(lbxOperatorValue);
+		lbxSource.setSelectedValue(lbxSourceValue);
+		lbxTypicalValues.setSelectedValue(lbxTypicalValuesValue);
+		lbxValueFromSensor.setSelectedValue(lbxValueFromSensorValue);
+		txtCheckValue.setValue(txtCheckValueContent);
+		txtManualEntry.setValue(txtManualEntryContent);
+		
+	}
+	
 	private void createBaseLayout() {
 		this.layoutCreated = true;
 		this.setStyleName("wellwhite");
@@ -273,6 +275,8 @@ public class ConnectorSensorActor extends Connector {
 			}
 
 		});
+		
+		
 
 	}
 	
@@ -337,6 +341,7 @@ public class ConnectorSensorActor extends Connector {
 									sensorProperty.propertyId);
 
 						}
+						fillFields();
 
 					}
 
@@ -456,6 +461,7 @@ public class ConnectorSensorActor extends Connector {
 							lbxOperator
 									.addItem("Invalid Endpoint Configuration");
 
+						fillFields();
 					}
 
 				});
@@ -530,6 +536,11 @@ public class ConnectorSensorActor extends Connector {
 	public String getManualValue() {
 		return txtManualEntryContent;
 	}
+	
+	public String getValueFromSensorValue() {
+		return String.valueOf(lbxValueFromSensorValue);
+	}
+	
 
 	
 	

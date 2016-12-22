@@ -13,5 +13,10 @@
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/fsuipc/kryonet-debug-2.18.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/fsuipc/commons-el-1.0/commons-el.jar"/>
 	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/fsuipc/commons-lang3-3.3.2/commons-lang3-3.3.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/jackson-core-2.2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/jackson-databind-2.2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/jars/jackson-annotations-2.2.3.jar"/>
+	<classpathentry kind="lib" path="/ToucanServer/target/toucan-server-0.0.1-SNAPSHOT/WEB-INF/lib/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/thorsten/Documents/velisphereX/SDK/velisphereClientSDK.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

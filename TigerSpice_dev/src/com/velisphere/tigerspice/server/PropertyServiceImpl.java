@@ -648,6 +648,79 @@ public class PropertyServiceImpl extends RemoteServiceServlet implements
 
 		return propertyData;
 	}
+	
+	@Override
+	public LinkedList<PropertyData> getConfiguratorPropertiesForEndpointID(
+			String endpointID) {
+		
+		VoltConnector voltCon = new VoltConnector();
+
+		try {
+			voltCon.openDatabase();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		LinkedList<PropertyData> configPropertiesForEndpoint = new LinkedList<PropertyData>();
+		try {
+
+			final ClientResponse findAllProperties = voltCon.montanaClient
+					.callProcedure("UI_SelectConfigPropertiesForEndpoint",
+							endpointID);
+
+			final VoltTable findAllPropertiesResults[] = findAllProperties
+					.getResults();
+
+			VoltTable result = findAllPropertiesResults[0];
+			// check if any rows have been returned
+
+			while (result.advanceRow()) {
+				{
+					// extract the value in column checkid
+					PropertyData propertyData = new PropertyData();
+					propertyData.propertyId = result.getString("PROPERTYID");
+					propertyData.propertyName = result
+							.getString("PROPERTYNAME");
+					propertyData.propertyclassId = result
+							.getString("PROPERTYCLASSID");
+					propertyData.endpointclassId = result
+							.getString("ENDPOINTCLASSID");
+					propertyData.isActor = (byte) result
+							.get("ACT", VoltType.TINYINT);
+					propertyData.isSensor = (byte) result
+							.get("SENSE", VoltType.TINYINT);
+					propertyData.isConfigurable = (byte) result
+							.get("CONFIGURABLE", VoltType.TINYINT);
+					propertyData.status = (byte) result
+							.get("STATUS", VoltType.TINYINT);
+					
+					
+					configPropertiesForEndpoint.add(propertyData);
+
+				}
+			}
+
+			//Collections.sort(propertiesForEndpointClass);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			voltCon.closeDatabase();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return configPropertiesForEndpoint;
+	}
+
 
 
 }

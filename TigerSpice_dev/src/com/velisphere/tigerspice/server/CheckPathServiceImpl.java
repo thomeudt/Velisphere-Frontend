@@ -164,7 +164,8 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 				voltCon.montanaClient.callProcedure("ACTION.upsert",
 						action.actionID, action.actionName, action.endpointID, "", 0, "", checkId, checkpathID);
 				voltCon.montanaClient.callProcedure("OUTBOUNDPROPERTYACTION.upsert",
-						action.actionID, action.propertyID, action.propertyIdIntake, "", "", action.manualValue, action.actionID, checkpathID);
+						action.actionID, action.propertyID, action.valueFromInboundPropertyID, "", "", action.manualValue, action.actionID, checkpathID);
+				
 			}
 
 			
@@ -608,6 +609,8 @@ public class CheckPathServiceImpl extends RemoteServiceServlet implements
 				
 	}
 
+	
+	
 
 	@Override
 	public CheckPathDataUNUSED getCheckpathDetails(String checkpathId) 

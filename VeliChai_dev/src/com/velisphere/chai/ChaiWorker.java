@@ -18,15 +18,15 @@
 package com.velisphere.chai;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.ConsumerCancelledException;
-import com.rabbitmq.client.QueueingConsumer;
-import com.rabbitmq.client.ShutdownSignalException;
+import com.velisphere.chai.broker.BrokerConnection;
+import com.velisphere.chai.engines.BusinessLogicEngine;
+import com.velisphere.chai.messageUtils.AMQPUnpack;
 
 public class ChaiWorker {
 
@@ -46,11 +46,11 @@ public class ChaiWorker {
 		 */
 
 		System.out.println();
-		System.out.println("    * *    VeliSphere Chai v0.7.7d - VeliSphere Worker Node");
-		System.out.println("    * * *  Copyright (C) 2014 Thorsten Meudt/Connected Things Lab. All rights reserved.");
+		System.out.println("    * *    VeliSphere Secure Worker Node (chai) v0.8.2");
+		System.out.println("    * * *  Copyright (C) 2015 Thorsten Meudt/Connected Things Lab. All rights reserved.");
 		System.out.println("**   *    ");
 		System.out.println("  * *   ");
-		System.out.println("   *       VeliSphere Chai is part of the VeliSphere IoTS ecosystem.");
+		System.out.println("   *       VeliSphere Worker Node is part of the VeliSphere IoTS ecosystem.");
 		System.out.println();
 
 		/*
@@ -65,7 +65,15 @@ public class ChaiWorker {
 		 * Creating the connection to Rabbit
 		 */
 
-		BrokerConnection.establishConnection();
+		try {
+			BrokerConnection.establishConnection();
+		} catch (KeyManagementException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println(" [OK] Connection to AMQP Broker successful.");
 		
 		// Open the IMDB Database

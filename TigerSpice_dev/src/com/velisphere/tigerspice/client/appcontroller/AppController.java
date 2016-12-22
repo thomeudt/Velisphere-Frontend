@@ -193,6 +193,33 @@ public class AppController {
 		    });
 	}
 
+	static void openEndpointViewModeWithHistoryHandler(final String token, final String endpointID, final int viewMode)
+	{
+		History.newItem(token);
+		RootPanel.get("main").clear();
+		RootPanel.get("main").add(new EndpointView("", "",
+				endpointID, "", "", viewMode));
+				 
+		
+		History.addValueChangeHandler(new ValueChangeHandler<String>() {
+
+			@Override
+			public void onValueChange(ValueChangeEvent<String> event) {
+
+				String historyToken = event.getValue();
+				
+		        // Parse the history token
+
+	          if (historyToken.equals(token)) {
+	        	  RootPanel.get("main").clear();
+	        	  RootPanel.get("main").add(new EndpointView("0", "0",
+	      				endpointID, "", "", viewMode));
+		        }
+			}
+		    });
+	}
+
+	
 	static void openEndpointPublicWithHistoryHandler(final String token, final String endpointID)
 	{
 		History.newItem(token);
@@ -652,6 +679,20 @@ public class AppController {
 		}		
 	});
 	}
+	
+	public static void openEndpoint(final String endpointID, final int viewMode)
+	{	
+		SessionHelper.validateCurrentSession();
+		sessionHandler = EventUtils.RESETTABLE_EVENT_BUS.addHandler(SessionVerifiedEvent.TYPE, new SessionVerifiedEventHandler()     {
+		@Override
+	    public void onSessionVerified(SessionVerifiedEvent sessionVerifiedEvent) {
+			sessionHandler.removeHandler();
+			
+			openEndpointViewModeWithHistoryHandler("view_endpoint_"+endpointID+"_mode_"+viewMode, endpointID, viewMode);
+		}		
+	});
+	}
+
 	
 	public static void openEPCInput(final String id, final String message)
 	{	

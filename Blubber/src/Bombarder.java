@@ -1,5 +1,7 @@
 import java.util.HashMap;
 
+import ChatExample.ChatServer;
+
 /*******************************************************************************
  * CONFIDENTIAL INFORMATION
  *  __________________
@@ -41,7 +43,7 @@ public class Bombarder implements Runnable {
 	        	//messageHash.put("PR4", "1");
 	        	//messageHash.put("PR5", "1");
 	        	
-	        	Send.sendHashTable(messageHash, "controller");
+	        	ChatServer.sendHashTable(messageHash, "controller", "REG");
 	        	//Send.sendHashTable(messageHash, "controller");
 
 	        	

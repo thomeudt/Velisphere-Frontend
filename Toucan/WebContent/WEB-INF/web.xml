@@ -1,30 +1,55 @@
-<web-app id="WebApp_ID" version="2.4"
-	xmlns="http://java.sun.com/xml/ns/j2ee" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
-	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<display-name>VeliSphere Restful Web Services (Toucan v0.1a)</display-name>
- 
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+
+	<display-name>my-real-app-war</display-name>
+
+
+
+
+	<display-name>VeliSphere Restful Web Services (Toucan v0.1)</display-name>
+
 	<servlet>
 		<servlet-name>jersey-serlvet</servlet-name>
-		
-             <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
-                
+
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+
 		<init-param>
-		     <param-name>jersey.config.server.provider.packages</param-name>
-		     <param-value>com.velisphere.toucan.webservices</param-value>
+			<param-name>jersey.config.server.provider.packages</param-name>
+			<param-value>com.velisphere.toucan.webservices</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
-	
+
 	</servlet>
 
-		  
+
 
 	<servlet-mapping>
 		<servlet-name>jersey-serlvet</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
- 
+
+
+	<servlet>
+		<servlet-name>downloadServlet</servlet-name>
+		<servlet-class>com.velisphere.toucan.helpers.DownloadServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>downloadServlet</servlet-name>
+		<url-pattern>/tigerspiceDownloads</url-pattern>
+	</servlet-mapping>
+
+
+
+
+
+
 </web-app>
 
 

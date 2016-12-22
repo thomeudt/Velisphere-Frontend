@@ -17,6 +17,8 @@
  ******************************************************************************/
 import java.io.IOException;
 
+import ChatExample.MainScreen;
+
 import com.phidgets.PhidgetException;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
