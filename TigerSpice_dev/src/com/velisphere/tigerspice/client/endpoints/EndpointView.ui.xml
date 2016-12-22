@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- CONFIDENTIAL INFORMATION __________________ 
+	Copyright (C) 2014 Thorsten Meudt / Connected Things Lab All Rights Reserved. 
+	NOTICE: All information contained herein is, and remains the property of 
+	Thorsten Meudt and its suppliers, if any. The intellectual and technical 
+	concepts contained herein are proprietary to Thorsten Meudt and its suppliers 
+	and may be covered by Patents, patents in process, and are protected by trade 
+	secret or copyright law. Dissemination of this information or reproduction 
+	of this material is strictly forbidden unless prior written permission is 
+	obtained from Thorsten Meudt. -->
+
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:ct="urn:import:com.google.gwt.user.cellview.client" xmlns:vspy="urn:import:com.velisphere.tigerspice.client.properties"
+	xmlns:vsep="urn:import:com.velisphere.tigerspice.client.endpoints"
+	xmlns:vsma="urn:import:com.velisphere.tigerspice.client.locator.maps"
+	xmlns:vslg="urn:import:com.velisphere.tigerspice.client.locator.logical"
+	xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
+	<ui:with field='res' type='com.velisphere.tigerspice.client.images.Images' />
+	<g:HTMLPanel>
+		<b:Breadcrumbs divider="&gt;" ui:field="brdMain" />
+		<b:Row>
+			<b:Column size="12" offset="0">
+				<b:PageHeader ui:field="pghEndpointName">Loading...</b:PageHeader>
+			</b:Column>
+		</b:Row>
+
+		<b:Row>
+
+			<b:Column size="2" offset="0" ui:field="imageColumn">
+				<g:Image ui:field="imgEPCImage" />
+			</b:Column>
+
+
+			<b:Column size="8" offset="0">
+
+
+				<b:TabPanel tabPosition="above" ui:field="tabPanel">
+
+					<b:TabLink text="Status" icon="INFO" dataTarget="tbpEndpoint"
+						createTabPane="false" ui:field="tblGeneral" />
+
+
+
+					<b:TabLink text="Sensors" icon="RSS" dataTarget="tbpEndpoint"
+						createTabPane="false" ui:field="tblSensors" />
+
+
+
+					<b:TabLink text="Actors" icon="GEARS" dataTarget="tbpEndpoint"
+						createTabPane="false" ui:field="tblActors" />
+
+
+
+					<b:TabLink text="Alerts" icon="EXCLAMATION" dataTarget="tbpEndpoint"
+						createTabPane="false" ui:field="tblAlerts" />
+
+
+
+					<b:TabLink text="Configure" icon="WRENCH" dataTarget="tbpEndpoint"
+						createTabPane="false" ui:field="tblConfiguration" />
+
+
+
+					<b:TabLink text="Relations" icon="EXCHANGE" dataTarget="tbpEndpoint"
+						createTabPane="false" ui:field="tblConnectionMap" />
+
+
+
+					<b:TabLink text="Location" icon="MAP_MARKER" dataTarget="tbpEndpoint"
+						createTabPane="false" ui:field="tblLocationMap" />
+
+
+
+					<b:TabLink text="Inbox" icon="INBOX" dataTarget="tbpInbox"
+						createTabPane="false" ui:field="tblInbox" />
+
+
+
+
+					<b:TabPane href="tbpEndpoint" createTabLink="false"
+						ui:field="tbpEndpoint" />
+
+
+				</b:TabPanel>
+			</b:Column>
+
+			<b:Column size="2" offset="0">
+				<vssb:General />
+
+			</b:Column>
+
+		</b:Row>
+	</g:HTMLPanel>
+
+
+</ui:UiBinder> 
+
+

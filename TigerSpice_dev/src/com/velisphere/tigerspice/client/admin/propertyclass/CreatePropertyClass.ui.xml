@@ -1,0 +1,77 @@
+<!-- CONFIDENTIAL INFORMATION __________________ Copyright (C) 2014 Thorsten 
+	Meudt / Connected Things Lab All Rights Reserved. NOTICE: All information 
+	contained herein is, and remains the property of Thorsten Meudt and its suppliers, 
+	if any. The intellectual and technical concepts contained herein are proprietary 
+	to Thorsten Meudt and its suppliers and may be covered by Patents, patents 
+	in process, and are protected by trade secret or copyright law. Dissemination 
+	of this information or reproduction of this material is strictly forbidden 
+	unless prior written permission is obtained from Thorsten Meudt. -->
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:gu="urn:import:gwtupload.client" xmlns:vsad="urn:import:com.velisphere.tigerspice.client.admin.propertyclass">
+	<g:HTMLPanel>
+
+		<b:Row>
+			<b:Column size="12" offset="0">
+				<b:PageHeader>Create a new Property Class</b:PageHeader>
+			</b:Column>
+		</b:Row>
+
+
+
+		<b:Row>
+
+		<b:Column size="2" offset="0">
+				<vsad:AdminMenuPropertyClass ui:field="menu"></vsad:AdminMenuPropertyClass>
+			</b:Column>
+
+
+			<b:Column size="8" offset="0">
+
+				<b:Form type="HORIZONTAL">
+
+					<b:Alert type="ERROR" close="false" ui:field="aleError">
+
+					</b:Alert>
+
+					<b:Fieldset>
+						<b:ControlGroup>
+							<b:ControlLabel>Name</b:ControlLabel>
+
+							<b:Controls>
+								<b:TextBox b:id="txtPCName" ui:field="txtPCName" />
+
+							</b:Controls>
+						</b:ControlGroup>
+
+						<b:ControlGroup>
+							<b:ControlLabel>Datatype</b:ControlLabel>
+							<b:Controls>
+								<b:ListBox b:id="lbxDataType" ui:field="lbxDataType" />
+							</b:Controls>
+						</b:ControlGroup>
+						<b:ControlGroup>
+							<b:ControlLabel>Unit of measure</b:ControlLabel>
+							<b:Controls>
+								<b:TextBox b:id="txtUnit" ui:field="txtUnit" />
+							</b:Controls>
+						</b:ControlGroup>
+						
+						<b:ControlGroup>
+						    	<b:Controls>
+								<b:Button styleName="btn btn-primary" text="Create Endpoint Class"
+									ui:field="btnUpload" />
+							</b:Controls>
+						</b:ControlGroup>
+
+					</b:Fieldset>
+				</b:Form>
+
+			</b:Column>
+		</b:Row>
+
+
+
+	</g:HTMLPanel>
+</ui:UiBinder>  

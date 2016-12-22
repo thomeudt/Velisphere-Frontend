@@ -1,0 +1,110 @@
+<!--
+  CONFIDENTIAL INFORMATION
+   __________________
+   
+    Copyright (C) 2014 Thorsten Meudt / Connected Things Lab
+    All Rights Reserved.
+   
+   NOTICE:  All information contained herein is, and remains
+   the property of Thorsten Meudt and its suppliers,
+   if any.  The intellectual and technical concepts contained
+   herein are proprietary to Thorsten Meudt
+   and its suppliers and may be covered by Patents,
+   patents in process, and are protected by trade secret or copyright law.
+   Dissemination of this information or reproduction of this material
+   is strictly forbidden unless prior written permission is obtained
+   from Thorsten Meudt.
+-->
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
+	<g:HTMLPanel>
+
+		<b:Breadcrumbs divider=">" ui:field="brdMain">
+		</b:Breadcrumbs>
+
+		<b:Row>
+
+		    
+		    <b:Column size="12" offset="0">
+				<b:PageHeader ui:field="pageHeader">Dashboard</b:PageHeader>
+			</b:Column>
+		</b:Row>
+			
+
+	
+				
+
+		<b:Row>
+		
+		<b:Column size="10" offset="0">
+		
+
+		
+		<b:TabPanel tabPosition="above" ui:field="tabPanel">
+		
+		    <b:TabPane heading="Subscription" active="true">
+		    <b:Row>
+		<b:Column size="6" offset="0">
+				<b:Heading size="4">Subscription Status</b:Heading>
+			</b:Column>	
+		</b:Row>
+		
+		
+		
+		<b:Row>
+			<b:Column size="8" offset="0">
+				<b:StackProgressBar ui:field="pgbUtilization">
+					<b:Bar color="SUCCESS" ui:field="pgbGreen" text="Utilization" percent="0" />
+					<b:Bar color="WARNING" ui:field="pgbYellow" text="" percent="0" />
+					<b:Bar color="DANGER" ui:field="pgbRed" text="" percent="0" />
+				</b:StackProgressBar>
+			</b:Column>
+			
+		</b:Row>
+		
+		<b:Row>
+		<b:Column size="6" offset="0">
+			 <b:Paragraph ui:field="pgpUtilInfo" addStyleNames="smalltext">Upgrade your subscription to increase your endpoint limit.</b:Paragraph>
+			  <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
+			</b:Column>
+		</b:Row>
+		
+		    </b:TabPane>
+		    
+		    
+		    	<b:TabPane heading="System" active="false">
+			    <b:Heading size="4" >System: OK</b:Heading>
+				
+				<b:Paragraph ui:field="pgpStatusInfo" addStyleNames="smalltext">System is up.</b:Paragraph>
+				<b:Paragraph addStyleNames="smalltext" ui:field="pgpLogCount">...</b:Paragraph>
+			</b:TabPane>
+			<b:TabPane heading="Alerts" active="false" ui:field="tbpAlerts">
+			    
+				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
+			</b:TabPane>
+			<b:TabPane heading="News" active="false">
+			    <b:Heading size="4" >News</b:Heading>
+				
+				<b:Paragraph addStyleNames="smalltext-black">New pricing model available. Click here for more (...)</b:Paragraph>
+				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
+			</b:TabPane>
+			
+		
+		</b:TabPanel>
+			    
+		
+		
+	</b:Column>
+
+<b:Column size="2" offset="0">
+		
+    <vssb:General></vssb:General>
+			
+			</b:Column>	
+		
+</b:Row>
+
+	</g:HTMLPanel>
+</ui:UiBinder> 

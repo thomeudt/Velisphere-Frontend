@@ -1,0 +1,103 @@
+<!--
+  CONFIDENTIAL INFORMATION
+   __________________
+   
+    Copyright (C) 2014 Thorsten Meudt / Connected Things Lab
+    All Rights Reserved.
+   
+   NOTICE:  All information contained herein is, and remains
+   the property of Thorsten Meudt and its suppliers,
+   if any.  The intellectual and technical concepts contained
+   herein are proprietary to Thorsten Meudt
+   and its suppliers and may be covered by Patents,
+   patents in process, and are protected by trade secret or copyright law.
+   Dissemination of this information or reproduction of this material
+   is strictly forbidden unless prior written permission is obtained
+   from Thorsten Meudt.
+-->
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:b="urn:import:com.github.gwtbootstrap.client.ui" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:vssb="urn:import:com.velisphere.tigerspice.client.sidebars">
+	<g:HTMLPanel>
+
+		<b:Breadcrumbs divider=">" ui:field="brdMain">
+		</b:Breadcrumbs>
+
+		<b:Row>
+
+		    
+		    <b:Column size="12" offset="0">
+				<b:PageHeader ui:field="pageHeader">Welcome back.</b:PageHeader>
+			</b:Column>
+		</b:Row>
+			
+		
+
+		<b:Row>
+		
+		<b:Column size="9" offset="0">
+		
+		    <b:Row>
+			<b:Column size="8" offset="0">
+			    	<b:Heading size="3" >Debug/Version Information</b:Heading>
+				    <b:Paragraph>VeliSphere TigerSpice 0.8.1a</b:Paragraph>
+				    <b:Paragraph>VeliSphere Montana Database Version 0.8.1a or newer required</b:Paragraph>
+				    <b:Paragraph>VoltDB 4.9.2 or newer required</b:Paragraph>
+				    <b:Paragraph>VeliSphere Mart Version 0.7.6 or newer required</b:Paragraph>
+				    <b:Paragraph>Vertica 7.0.1 or newer required</b:Paragraph>
+				    <b:Paragraph>Optimized for Apache Tomcat 8</b:Paragraph>
+				    <b:Paragraph ui:field="voltIP">... </b:Paragraph>
+				    <b:Paragraph ui:field="voltHostID">... </b:Paragraph>
+				    <b:Paragraph ui:field="voltHostName">... </b:Paragraph>
+				    <b:Paragraph ui:field="voltConnHostName">... </b:Paragraph>
+				    <b:Paragraph ui:field="voltConnID">... </b:Paragraph>
+				    <b:Paragraph ui:field="voltBytesRead">... </b:Paragraph>
+				    <b:Paragraph ui:field="voltBytesWritten">... </b:Paragraph>
+				    <b:Paragraph ui:field="voltMsgRead">... </b:Paragraph>
+				    <b:Paragraph ui:field="voltMsgWritten">... </b:Paragraph>
+				    <b:Paragraph ui:field="voltTimestamp">... </b:Paragraph>
+				   	    
+				    
+				    
+				    <b:Heading size="3" >Welcome Message</b:Heading>
+				<b:Paragraph>This is VeliSphere. We recommend that you get started by following our "Getting Started Guide"
+				    - don't forget to take a look at our "Best Practice" tutorial, too.</b:Paragraph> 
+				    <b:Paragraph>To add new devices to your account, please follow the "Device Provisioning Wizard".</b:Paragraph>
+				    
+				</b:Column>
+			
+		</b:Row>
+		    
+		<b:Row>
+		<b:Column size="8" offset="0">
+				<b:Heading size="3" >News</b:Heading>
+				
+				<b:Paragraph addStyleNames="smalltext-black">New pricing model available. Click here for more (...)</b:Paragraph>
+				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
+				 
+				 	<b:Heading size="3">Task list</b:Heading>
+				
+				<b:Paragraph addStyleNames="smalltext-black" >No open tasks.</b:Paragraph>
+				 <b:Paragraph addStyleNames="smalltext">&nbsp;</b:Paragraph>
+				
+			</b:Column>	
+		</b:Row>
+		
+					    
+		
+		
+	</b:Column>
+
+<b:Column size="2" offset="1">
+			
+			<vssb:General></vssb:General>
+			
+			
+			
+			</b:Column>	
+		
+</b:Row>
+
+	</g:HTMLPanel>
+</ui:UiBinder> 

@@ -1,0 +1,35 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+		xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+	<ui:style>
+		
+	</ui:style>
+	<g:HTMLPanel>
+<b:Row>
+	    	    <b:Column size="2" offset="0">
+			<b:Heading size="4">Quick Access</b:Heading>
+			<b:ListBox addStyleNames="smalltext span2" ui:field="ddlShortcut"></b:ListBox>
+			
+			<b:Heading size="4">Favorites</b:Heading>
+			<b:ListBox addStyleNames="smalltext span2" ui:field="ddlFavs"></b:ListBox>
+			
+			<b:Heading size="4">Shortcuts</b:Heading>
+				
+			<g:Anchor ui:field="ancProvisioning">Provisioning Wizard<br></br></g:Anchor>
+			
+			<g:Anchor ui:field="ancGettingStarted">Getting Started<br></br></g:Anchor>
+			
+			<g:Anchor ui:field="ancBestPractices">Best Practices<br></br></g:Anchor>
+			
+			<g:Anchor ui:field="ancMarket">Market Place<br></br></g:Anchor>
+			<g:Anchor>Logic Simulator<br></br></g:Anchor>
+			
+			
+			
+			
+			</b:Column>	
+		
+</b:Row>
+	</g:HTMLPanel>
+</ui:UiBinder> 

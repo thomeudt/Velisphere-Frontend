@@ -1,0 +1,1 @@
+select count(*) from vlogger.checkexecutedlog where hit = true;

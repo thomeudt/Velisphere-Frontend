@@ -20,11 +20,15 @@ package com.velisphere.chai;
 public class ServerParameters {
 
 	public static String bunny_ip;
-	public static String DestinationQueue = "thorsten";
+	public static String DestinationQueue = "";
 	public static String ldapUrl;
 	public static String ldapPrincipal;
 	public static String ldapPassword;
 	public static String controllerQueueName;
 	public static Integer threadpoolSize;
 	public static String msgTypeAdministrativeRequest = "*ADM*";
+    //public static String volt_ip = "16.1.1.149"; // for local db
+	public static String volt_ip = "ec2-54-213-184-238.us-west-2.compute.amazonaws.com"; // for aws db
+	// public static String volt_ip = "ec2-54-200-208-195.us-west-2.compute.amazonaws.com"; // for strato db
+	public static String vertica_ip = "127.0.0.1";
 }

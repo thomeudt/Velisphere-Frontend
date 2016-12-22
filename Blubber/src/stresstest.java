@@ -18,15 +18,30 @@
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.velisphere.milk.amqpClient.AmqpClient.AmqpClient;
+
+import ChatExample.ChatEventInitiator;
+import ChatExample.EventResponder;
+
 
 public class stresstest {
 
 	public static void main(String[] args) throws Exception {
 
+		ServerParameters.my_queue_name = "5ef196ae-0803-441d-b3f8-a374cbeb647c";
+		//ServerParameters.my_queue_name = "EX1";
+
 		
-		int numworkers = 100;
+		EventResponder eventResponder = new EventResponder();
+		ChatEventInitiator initiator = new ChatEventInitiator();
+		initiator.addListener(eventResponder);
 		
-		ExecutorService B52 = Executors.newFixedThreadPool(1000);
+		AmqpClient.startClient(initiator);
+		
+		
+		int numworkers = 32;
+		
+		ExecutorService B52 = Executors.newFixedThreadPool(128);
 		Bombarder[] bombThread = new Bombarder[numworkers];
 		for (int i = 0; i < numworkers; i++) {
         
@@ -34,7 +49,6 @@ public class stresstest {
 			B52.execute(bombThread[i]);
             
         }
-		
 		
 	 	B52.shutdown();
 		

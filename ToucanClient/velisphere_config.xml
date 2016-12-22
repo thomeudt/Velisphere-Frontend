@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>This file contains Velisphere authentication information. Do not overwrite!</comment>
+<entry key="Secret Key">v9OLVQlNJBQTt8NVmwAx3nb3QrYblNJOX0L741UpQP+nr7SdsLUHuz2WU/d46w4kX/eU/CKJGx1rRjEff6UzkQ==</entry>
+<entry key="Endpoint ID">f217be48-3cb1-49ac-a737-95c3396e3ba2</entry>
+</properties>
