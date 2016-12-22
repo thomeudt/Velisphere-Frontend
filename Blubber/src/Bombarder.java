@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 /*******************************************************************************
  * CONFIDENTIAL INFORMATION
  *  __________________
@@ -28,7 +30,17 @@ public class Bombarder implements Runnable {
 		
 		while (i<1000) {
 			try {
-				Send.main("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH.", "adam");
+				HashMap<String, String> messageHash = new HashMap<String, String>();
+				messageHash.put("PR1", "1");
+				messageHash.put("PR2", "1");
+	        	messageHash.put("PR3", "1");
+	        	messageHash.put("PR4", "1");
+	        	messageHash.put("PR5", "1");
+	        	
+	        	Send.sendHashTable(messageHash, "controller");
+	        	//Send.sendHashTable(messageHash, "controller");
+
+	        	
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

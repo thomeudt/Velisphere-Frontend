@@ -1,0 +1,81 @@
+<!--
+  CONFIDENTIAL INFORMATION
+   __________________
+   
+    Copyright (C) 2013 Thorsten Meudt 
+    All Rights Reserved.
+   
+   NOTICE:  All information contained herein is, and remains
+   the property of Thorsten Meudt and its suppliers,
+   if any.  The intellectual and technical concepts contained
+   herein are proprietary to Thorsten Meudt
+   and its suppliers and may be covered by Patents,
+   patents in process, and are protected by trade secret or copyright law.
+   Dissemination of this information or reproduction of this material
+   is strictly forbidden unless prior written permission is obtained
+   from Thorsten Meudt.
+-->
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<g:HTMLPanel>
+
+      <b:WellForm styleName="wellsilver">
+        <b:Legend ui:field="lgdHeader">Logic Check</b:Legend>
+        
+            <b:Row>
+            <b:Column size="2">
+            <b:Paragraph addStyleNames="smalltext" text="Title or short description" />
+            </b:Column>                   
+            <b:Column size="3">                    
+            <b:TextBox styleName="span3" ui:field="txtMulticheckTitle" />
+            </b:Column>
+            </b:Row>
+            <b:Row>
+            <b:Column size="2">
+            <b:Paragraph addStyleNames="smalltext" text="List of checks connected to this logic check" />
+            </b:Column>
+            <b:Column size="3">
+            <b:ListBox styleName="span3" ui:field="lstLinkedChecksID"/> 
+            </b:Column>
+            </b:Row>
+            
+            <b:Row>
+            <b:Column size="2">
+            <b:Paragraph addStyleNames="smalltext" text="Combination type - trigger rule if all connected checks are true (AND) or at least one of them is true (OR)" />
+            </b:Column>
+            <b:Column size="3">
+            <b:ListBox styleName="span3" ui:field="lstCombination"/> 
+            </b:Column>
+            </b:Row>
+           
+            
+            
+            <b:Row>
+            <b:Column size="2">
+            <b:Paragraph addStyleNames="smalltext" text="Action to be fired" />
+            </b:Column>
+            <b:Column size="3">
+            <b:TextBox styleName="span3" ui:field="txtRuleTriggered" /> 
+            </b:Column>
+            </b:Row>
+                 
+            <b:Row>
+            <b:Column size="1">
+            <b:Button styleName="btn-success btn" text="Save" ui:field="btnSave" />  
+            </b:Column>
+            <b:Column size="1">
+            <b:Button styleName="btn-danger btn" text="Delete" ui:field="btnDelete" />  
+            </b:Column>
+            </b:Row>
+            
+                
+           
+      </b:WellForm>
+      
+     
+           
+    
+	</g:HTMLPanel>
+</ui:UiBinder> 

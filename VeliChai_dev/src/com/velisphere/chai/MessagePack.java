@@ -18,9 +18,15 @@
 package com.velisphere.chai;
 
 import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashMap;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * This class contains all methods needed to extract values from a MessagePack or to build a new MessagePack
@@ -47,6 +53,48 @@ public class MessagePack {
 		jp.close();		 
 
 		return foundValue;  
-
 	}
+
+	public static HashMap<String, String> extractKeyPropertyPair(String jsonInput) throws JsonProcessingException, IOException 
+	{
+
+		JsonParser jp = ChaiWorker.factory.createParser(jsonInput);
+		HashMap<String, String> foundMap = new HashMap<String, String>();
+
+		while (jp.nextToken() != JsonToken.END_OBJECT) {
+
+			String fieldname = jp.getCurrentName();
+			foundMap.put(jp.getCurrentName(), jp.getText());
+		}
+
+		jp.close();		 
+
+		return foundMap;  
+	}
+	
+	public static String buildMessagePack(Object object)
+	{
+	
+		// unused
+		
+		ObjectMapper mapper = new ObjectMapper();
+		StringWriter writer = new StringWriter();
+		try {
+			mapper.writeValue(writer, object);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return writer.toString();
+	
+	}
+
+
+
 }

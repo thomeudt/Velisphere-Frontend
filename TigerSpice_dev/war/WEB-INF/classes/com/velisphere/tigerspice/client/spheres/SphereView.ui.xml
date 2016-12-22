@@ -1,0 +1,73 @@
+<!--
+  CONFIDENTIAL INFORMATION
+   __________________
+   
+    Copyright (C) 2013 Thorsten Meudt 
+    All Rights Reserved.
+   
+   NOTICE:  All information contained herein is, and remains
+   the property of Thorsten Meudt and its suppliers,
+   if any.  The intellectual and technical concepts contained
+   herein are proprietary to Thorsten Meudt
+   and its suppliers and may be covered by Patents,
+   patents in process, and are protected by trade secret or copyright law.
+   Dissemination of this information or reproduction of this material
+   is strictly forbidden unless prior written permission is obtained
+   from Thorsten Meudt.
+-->
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"  xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+	xmlns:vsep='urn:import:com.velisphere.tigerspice.client.endpoints'
+	xmlns:vssp='urn:import:com.velisphere.tigerspice.client.spheres'>
+	<ui:style>
+		
+	</ui:style>
+	<g:HTMLPanel>
+	    
+	    <b:Breadcrumbs divider=">" ui:field="brdMain">
+		</b:Breadcrumbs>
+	    <b:Row>
+			<b:Column size="1" offset="0">
+			    <b:Image url="./images/sphere_green.png" />
+			</b:Column>
+			<b:Column size="11" offset="0">
+				<b:PageHeader ui:field="pghSphereNameHeader">Sphere</b:PageHeader>
+			</b:Column>
+		</b:Row>
+		
+	    
+	    <b:Row>
+				        
+	        <b:Column size="2" offset="0">
+			<b:Well>
+			<b:Strong ui:field="pgpInformHeader">Sphere Information</b:Strong>
+			<b:Paragraph addStyleNames="smalltext">Geo location:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Endpoint #:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Critical Endpoints:</b:Paragraph>
+			<b:Paragraph addStyleNames="smalltext">Add Endpoint:</b:Paragraph>
+			<b:Button type="SUCCESS" size="MINI">Autoprovisioned</b:Button>
+			</b:Well>
+			</b:Column>
+				        
+			
+			<b:Column size="9" offset="0">
+		
+					<b:Row>
+				    <b:Column size="9" offset="0">
+				    <vssp:SphereEditorWidget ui:field="sphereEditor" />
+				    </b:Column>
+					</b:Row>		
+				
+					
+					
+			
+			</b:Column>
+		
+			
+		</b:Row>
+	    
+		
+	
+	</g:HTMLPanel>
+</ui:UiBinder> 

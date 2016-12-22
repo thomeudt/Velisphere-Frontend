@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+              http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5"
+         xmlns="http://java.sun.com/xml/ns/javaee">
+
+  <!-- Servlets -->
+
+<servlet>
+  <servlet-name>remoteLoggingServiceImpl</servlet-name>
+  <servlet-class>com.google.gwt.libideas.logging.server.RemoteLoggingServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+  <servlet-name>remoteLoggingServiceImpl</servlet-name>
+  <url-pattern>/tigerspice_dev/logging</url-pattern>
+</servlet-mapping>
+
+<servlet>
+    <servlet-name>userdataServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.UserServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>userdataServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltUser</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>logdataServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.LogServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>logdataServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltLog</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>epcdataServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.EPCServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>epcdataServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltEPC</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>endpoindataServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.EndpointServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>endpoindataServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltEndpoint</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>propertydataServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.PropertyServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>propertydataServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltProperty</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>logindataServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.LoginServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>logindataServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltLogin</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>spheredataServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.SphereServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>spheredataServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltSphere</url-pattern>
+  </servlet-mapping>
+  
+<servlet>
+    <servlet-name>checkdataServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.CheckServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>checkdataServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltCheck</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>propertyclassdataServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.PropertyClassServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>propertyclassdataServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltPropertyClass</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>uuidServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.UuidServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>uuidServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltUuid</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>checkPathServlet</servlet-name>
+    <servlet-class>com.velisphere.tigerspice.server.CheckPathServiceImpl</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>checkPathServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltCheckPath</url-pattern>
+  </servlet-mapping>
+
+
+<servlet>
+    <servlet-name>requestFactoryServlet</servlet-name>
+    <servlet-class>com.google.web.bindery.requestfactory.server.RequestFactoryServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>requestFactoryServlet</servlet-name>
+    <url-pattern>/tigerspice_dev/voltRequests</url-pattern>
+  </servlet-mapping>
+
+
+
+  <!-- Default page to serve -->
+  <welcome-file-list>
+    <welcome-file>TigerSpice_dev.html</welcome-file>
+  </welcome-file-list>
+
+</web-app>

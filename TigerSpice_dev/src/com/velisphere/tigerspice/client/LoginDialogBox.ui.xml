@@ -1,0 +1,46 @@
+<!--
+  CONFIDENTIAL INFORMATION
+   __________________
+   
+    Copyright (C) 2013 Thorsten Meudt 
+    All Rights Reserved.
+   
+   NOTICE:  All information contained herein is, and remains
+   the property of Thorsten Meudt and its suppliers,
+   if any.  The intellectual and technical concepts contained
+   herein are proprietary to Thorsten Meudt
+   and its suppliers and may be covered by Patents,
+   patents in process, and are protected by trade secret or copyright law.
+   Dissemination of this information or reproduction of this material
+   is strictly forbidden unless prior written permission is obtained
+   from Thorsten Meudt.
+-->
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<g:HTMLPanel>
+
+<div class="row">
+    <div class="span4 offset0">
+      <div class="well" style="background-color: rgba(245, 245, 245, 0.95)">
+        <legend>Sign in to Perspectives</legend>
+          <div id="login-form">
+            <b:Alert type="ERROR" close="false" ui:field="aleError" />      
+            <b:TextBox styleName="span3" ui:field="txtUsername" name="username" />
+            <b:PasswordTextBox styleName="span3" ui:field="txtPassword" name="password" /> 
+            <label class="checkbox">
+            <b:CheckBox name="remember" value="true"> Remember Me </b:CheckBox>
+            </label>
+            <br></br>
+            <br></br>
+            <g:Anchor href="#" ui:field="ancSignup">No Account? Sign up now!</g:Anchor>
+            <br></br>
+            <br></br>
+            <b:Button styleName="btn-success btn" text="Login" ui:field="btnLogin" />      
+        </div>    
+      </div>
+    </div>
+</div>
+	</g:HTMLPanel>
+</ui:UiBinder> 
