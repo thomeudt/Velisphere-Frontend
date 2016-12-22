@@ -24,6 +24,7 @@ import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 
+
 public class Recv implements Runnable {
 
 	
@@ -53,7 +54,9 @@ public class Recv implements Runnable {
     
     boolean admFilterResult = filterMqttAdmMessage(message);   
     if(admFilterResult==false){
-    MainScreen.updateHistory(message);
+    
+    	String addText = MessagePack.extractProperty(message, "PR9");
+    	MainScreen.updateHistory(addText);
     }
     else
     {

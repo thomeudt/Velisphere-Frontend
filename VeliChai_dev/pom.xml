@@ -59,5 +59,21 @@
   		<artifactId>jackson-databind</artifactId>
   		<version>2.2.2</version>
   	</dependency>
+  	<dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>spring-context</artifactId>
+  		<version>3.2.4.RELEASE</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.springframework.amqp</groupId>
+  		<artifactId>spring-amqp</artifactId>
+  		<version>1.2.0.RELEASE</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.springframework.amqp</groupId>
+  		<artifactId>spring-rabbit</artifactId>
+  		<version>1.2.0.RELEASE</version>
+  	</dependency>
   </dependencies>
+ 
 </project>

@@ -43,6 +43,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Font;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 
@@ -138,9 +139,14 @@ public class MainScreen {
 		btnSendMessage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					
 					updateHistory(txtMessageToSend.getText());
-					Send.main(txtMessageToSend.getText(), txtSendToQueue.getText());
+					// Send.main(txtMessageToSend.getText(), txtSendToQueue.getText());
+					
+					HashMap<String, String> messageHash = new HashMap<String, String>();
+					messageHash.put("PR6", txtSendToQueue.getText());
+					messageHash.put("PR7", "["+ ServerParameters.my_queue_name + "]" + txtMessageToSend.getText());
+					messageHash.put("PR8", "1");
+		        	Send.sendHashTable(messageHash, "controller");
 					
 					txtMessageToSend.setText("");
 				} catch (Exception e) {
@@ -186,18 +192,12 @@ public class MainScreen {
 			
 				try {
 					ServerParameters.my_queue_name = txtMyQueue.getText();
-					
-					 
-					
-							
-					
 					t = new Thread(new Recv(), "listener");
 					t.start();
 					btnSendMessage.setEnabled(true);
-			
 					// Connect user queue to blubber.all fanout exchange for broadcasts.
-					QueueMgmt.bindQueueFanout(ServerParameters.my_queue_name, "blubber.all");
-					
+					// QueueMgmt.bindQueueFanout(ServerParameters.my_queue_name, "blubber.all");
+				
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
