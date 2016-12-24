@@ -47,7 +47,3 @@ veli-gwt-virtualization is obsolete and needs to be removed
 
 
 
-MailService
------------
-
-
