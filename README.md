@@ -29,7 +29,7 @@ TigerSpice_dev
 
 Worker (processing the AMQP message queue)
 ------------------------------------------
-VeliChai_dev 
+VeliChai_dev (requires RabbitMQ set up on a seperate server, not included in this repo)
 
 REST Interface (endpoints that can't use AMQP can use REST via this servlet)
 ----------------------------------------------------------------------------
