@@ -13,6 +13,12 @@ Licensed under GPLv2.
 
 For 3rd party libraries, licensing terms and copyright of the respective owner apply (see readme files).
 
+For some background information, please also refer to the following documents:
+
+external.pdf --> some high level information of what we were trying to accomplish
+velisphere data exchange format.pdf	--> some information on the data format used to exchange data between sensors/actors and the chai worker
+velisphere security --> some information on how securtiy is implemented in VeliSphere
+
 Structure is as follows:
 
 GWT (Google Web Toolkit) based Frontend
